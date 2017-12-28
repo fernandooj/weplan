@@ -2,17 +2,20 @@ import {StyleSheet} from 'react-native';
 
 
 export const SplashStyle = StyleSheet.create({
-	contenedor:{
+	container:{
+		alignItems: 'center',
+		flexDirection:'column',
+		justifyContent: 'center',
 	},
-	cabezera:{
-		backgroundColor:"rgba(0,0,0,0.2)",
-		borderTopLeftRadius: 0 , 
-		borderTopRightRadius:0 , 
-		borderBottomLeftRadius: 40,  
-		borderBottomRightRadius: 40,  
+	iconHead:{
+		width: 100,
+		height:100,
+ 		marginTop:90,
+ 		marginBottom:40,
 	},
-	estilo:{
-
-	}
+	btn:{
+ 		marginTop:40
+	},
+ 
 
 })
