@@ -3,11 +3,13 @@ import React from 'react';
  import {  StackNavigator }  from 'react-navigation';
  
 
+import homeComponent from './components/home/homeComponent';
 import splashComponent from './components/splash/splashComponent';
  
 
 const NavigationApp = StackNavigator({
-    Home:     {screen: splashComponent },
+	Home:     {screen: splashComponent },
+	Splash:   {screen: homeComponent }, 
 })
 
  

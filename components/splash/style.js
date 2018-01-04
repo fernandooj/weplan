@@ -16,6 +16,11 @@ export const SplashStyle = StyleSheet.create({
 	btn:{
  		marginTop:40
 	},
- 
-
+	textInput:{                                   
+		paddingLeft: 10,
+		height: 40,
+		borderColor: 'gray', 
+		borderWidth: 1, 
+		borderRadius: 5,
+	},
 })
