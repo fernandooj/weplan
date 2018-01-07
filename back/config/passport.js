@@ -28,18 +28,13 @@ module.exports =  function(passport){
 **/
 //////////////////////////////////////////////////////////////////////////////////////////
     passport.use(new GoogleStrategy({
-
         clientID        : configAuth.googleAuth.clientID,
         clientSecret    : configAuth.googleAuth.clientSecret,
         callbackURL     : configAuth.googleAuth.callbackURL,
-
     },
     function(token, refreshToken, profile, done) {
         console.log(profile)
-        // make the code asynchronous
-        // User.findOne won't fire until we have all our data back from Google
         process.nextTick(function() {
-
             // try to find the user based on their google id
             User.findOne({ 'google.id' : profile.id }, function(err, user) {
                 if (err)
@@ -155,6 +150,7 @@ passport.use(new FacebookStrategy({
             passReqToCallback : true // allows us to pass back the entire request to the callback
         }, 
         function(req, email, password, done) {
+            console.log(req.body)
             // User.findOne wont fire unless data is sent back
             process.nextTick(function() {
                 let newUser = new User();
@@ -168,7 +164,11 @@ passport.use(new FacebookStrategy({
                             'local.password':   newUser.generateHash(req.body.password),
                             'email'   : email,
                             'puntaje' : 10,
-                            'tipo'    : 'suscriptor'
+                            'nombre'    : 'suscriptor',
+                            'nacimiento'    : 'suscriptor',
+                            'tipo'    : 'suscriptor',
+                            'tipo'    : 'suscriptor',
+                            'tipo'    : 'suscriptor',
                         }}, function(err, userList) {
                             if (err)
                                 throw err;
@@ -191,15 +191,15 @@ passport.use(new FacebookStrategy({
 
     passport.use('local-login', new LocalStrategy({
         // by default, local strategy uses username and password, we will override with email
-        usernameField : 'email',
+        usernameField : 'username',
         passwordField : 'password',
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
-    function(req, email, password, done) { // callback with email and password from our form
+    function(req, username, password, done) { // callback with email and password from our form
 
         // find a user whose email is the same as the forms email
         // we are checking to see if the user trying to login already exists
-        User.findOne({ 'local.email' :  email }, function(err, user) {
+        User.findOne({ 'local.username' :  username }, function(err, user) {
             // if there are any errors, return the error before anything else
             if (err)
                 return done(err);

@@ -19,7 +19,6 @@ class userServices {
 		newUsuario.save(callback);	 
 	}
 	verificaToken(token, callback){
-		console.log(token)
 		User.findOne({'local.username':token.username, 'local.token': token.token}, callback)
 	}
 	activaUsuario(user, callback){
@@ -40,27 +39,23 @@ class userServices {
 		let newUsuario = new User();
 		if (user.password) {
 			User.findByIdAndUpdate(id._id, {$set: {
-	            'username':       user.username,
+	            'nombre':       user.nombre,
 	            'nacimiento': 	  user.nacimiento,
 	            'local.password': newUsuario.generateHash(user.password),
 	            'sexo':       	  user.sexo,
-	            'sobre_mi':   	  user.sobre_mi,
-	            'pais':       	  user.pais,
+	            'pais':  	  	  user.pais,
 	            'ciudad':     	  user.ciudad,
-	            'direccion':  	  user.direccion,
-	            'telefono':   	  user.telefono,
+	            'tipo':   	  	  user.tipo,
 	            'updatedAt':       moment().format('YYYY-MM-DD h:mm:ss')
         	}}, callback);
 		}else{
 			User.findByIdAndUpdate(id._id, {$set: {
-	            'username':       user.username,
+	            'nombre':       user.nombre,
 	            'nacimiento': 	  user.nacimiento,
 	            'sexo':       	  user.sexo,
-	            'sobre_mi':   	  user.sobre_mi,
 	            'pais':       	  user.pais,
 	            'ciudad':     	  user.ciudad,
-	            'direccion':  	  user.direccion,
-	            'telefono':   	  user.telefono,
+	            'tipo':   	  	  user.tipo,
 	            'updatedAt':      moment().format('YYYY-MM-DD h:mm:ss')
         	}}, callback);
 		}

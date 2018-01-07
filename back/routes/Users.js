@@ -83,31 +83,31 @@ module.exports = function(app, passport){
 
 
     app.post('/x/v1/user/resend_token', function(req, res){
-            if(req.body.tipo==1){
-                let mailOptions = {
-                    from: '<weplanapp@weplanapp.com>',                              // email del que se envia
-                    to: req.body.username,                                        // al usuario que se la va enviar
-                    subject: 'Registro',                                            // mensaje en el sujeto
-                    html:  `Tu codigo de verificacion es:<b> ${randonNumber} </b>`  // texto
-                };
-                transporter.sendMail(mailOptions, (error, info) => {
-                    if (error) {
-                        return console.log(error);
-                    }
-                });
-                res.json({ status: 'SUCCESS', message: 'Codigo enviado', code:1 });
-            }else{
-                client.api.messages
-                    .create({
-                      body: `Tu codigo es: ${randonNumber}` ,
-                      to:  req.body.username,
-                      from: '+17328750948',
-                    }).then(function(data) {
-                        res.json({ status: 'SUCCESS', message: 'Codigo enviado', code:1 });
-                    }).catch(function(err) {
-                        res.json({ status: 'ERROR', message: 'no se pudo crear el usuario', code:0 });
-                });      
-            }
+        if(req.body.tipo==1){
+            let mailOptions = {
+                from: '<weplanapp@weplanapp.com>',                              // email del que se envia
+                to: req.body.username,                                        // al usuario que se la va enviar
+                subject: 'Registro',                                            // mensaje en el sujeto
+                html:  `Tu codigo de verificacion es:<b> ${randonNumber} </b>`  // texto
+            };
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    return console.log(error);
+                }
+            });
+            res.json({ status: 'SUCCESS', message: 'Codigo enviado', code:1 });
+        }else{
+            client.api.messages
+                .create({
+                  body: `Tu codigo es: ${randonNumber}` ,
+                  to:  req.body.username,
+                  from: '+17328750948',
+                }).then(function(data) {
+                    res.json({ status: 'SUCCESS', message: 'Codigo enviado', code:1 });
+                }).catch(function(err) {
+                    res.json({ status: 'ERROR', message: 'no se pudo crear el usuario', code:0 });
+            });      
+        }
     })
 
 
@@ -115,57 +115,42 @@ module.exports = function(app, passport){
 
     ///////////////////////////////////////////////////////////////////////////
     /*
-    activar usuario despues de hacer click en el email
+    activar usuario despues de insertar el codigo
     */
     ///////////////////////////////////////////////////////////////////////////
     app.post('/x/v1/user/token/', function(req, res, next){
+        console.log(req.body.username)
         userServices.verificaToken(req.body, function(err, token){
             if(!token){
                 return res.json({ status: 'FAIL', message: 'no conciden', code:0})        
             } else{
-                userServices.activaUsuario(req.body, function(err, Activado){  
-                    if (Activado) {
+                userServices.activaUsuario(req.body, function(err, activado){  
+                console.log(activado['_id'])
+                    if (activado) {
                         //return res.redirect('/perfil'); 
-                        return res.json({ status: 'SUCCESS', message: 'Usuario Activado', user: req.body.username });                
+                        req.session.usuario =  {id: activado['_id'], username: req.body.username}
+                        return res.json({ status: 'SUCCESS', message: 'Usuario activado', user: activado });                
                     }
                 })
-                req.session.usuario =  {id: req.body.username}
             }
         }) 
     })
 
-
-
     ///////////////////////////////////////////////////////////////////////////
     /*
-    Formulario despues que se activa, actualiza su perfil
+    modificar usuarios
     */
     ///////////////////////////////////////////////////////////////////////////
-
-    app.post('/x/v1/user/sign_up_profile', passport.authenticate('local-signup', {
-        successRedirect : '/x/v1/user/success_sign_up_profile',  // redirect to the secure profile section
-        failureRedirect : '/x/v1/user/fail_sign_up_profile',   // redirect back to the signup page if there is an error
-        failureFlash : true  
-    }))
- 
-    ///////////////////////////////////////////////////////////////////////////
-    /*
-    si edito el perfil exitosamente 
-    */
-    ///////////////////////////////////////////////////////////////////////////
-    app.get('/x/v1/user/success_sign_up_profile', function(req, res) {    
-        res.json({ status: 'SUCCESS', message: 'Usuario Actualizado', user: req.user});        
-    });
-
-
-    ///////////////////////////////////////////////////////////////////////////
-    /*
-    si NO edito el perfil exitosamente 
-    */
-    ///////////////////////////////////////////////////////////////////////////
-    app.get('/x/v1/user/fail_sign_up_profile', function(req, res) {    
-        res.json({ status: 'FAIL' });        
-    });
+    app.put('/x/v1/user/update/:_id', function(req, res, next){
+        console.log(req.params)
+        userServices.edit(req.body, req.params, function(err, user){
+            if(!user){
+                res.json({ status: 'FAIL', message: 'Usuario Innactivo'}) 
+            } else{
+                res.json({ status: 'SUCCESS', message: 'Usuario Activado', user: user });                
+            }
+        }) 
+    })
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -186,7 +171,7 @@ module.exports = function(app, passport){
     */
     ///////////////////////////////////////////////////////////////////////////
     app.get('/x/v1/user/profile', function(req, res){
-        console.log(req.session)
+        console.log(req)
         if(!req.user && !req.session.usuario){
             res.json({status:'FAIL', user: 'SIN SESION' })
         }else{
@@ -194,7 +179,7 @@ module.exports = function(app, passport){
             if(req.user) {
                 res.json({status:'SUCCESS', user: req.user})  
             }else{
-                res.json({status:'SUCCESSLOCAL', user: { local: {id:req.session.usuario.id, email:req.session.usuario.email  } } })   
+                res.json({status:'SUCCESSLOCAL', user: { local: {id:req.session.usuario.id, username:req.session.usuario.username  } } })   
             }    
              
         } 
@@ -284,36 +269,7 @@ module.exports = function(app, passport){
         }
     })
 
-    ///////////////////////////////////////////////////////////////////////////
-    /*
-    modificar usuarios
-    */
-    ///////////////////////////////////////////////////////////////////////////
-    app.put('/x/v1/user/update', function(req, res, next){
-        userServices.edit(req.body, req.user, function(err, user){
-            if(!user){
-                res.json({ status: 'FAIL', message: 'Usuario Innactivo'}) 
-            } else{
-                res.json({ status: 'SUCCESS', message: 'Usuario Activado', user: req.query.email });                
-            }
-        }) 
-    })
 
-
-    ///////////////////////////////////////////////////////////////////////////
-    /*
-    modificar puntos
-    */
-    ///////////////////////////////////////////////////////////////////////////
-    app.put('/x/v1/user/update/:usuarioId/:puntaje', function(req, res, next){
-        userServices.editaPuntaje(req.params.usuarioId, req.params.puntaje, function(err, user){
-            if(!user){
-                res.json({ status: 'FAIL', message: 'Usuario Innactivo'}) 
-            } else{
-                res.json({ status: 'SUCCESS', message: 'Puntaje Modificado', user });                
-            }
-        }) 
-    })
 
 
     ///////////////////////////////////////////////////////////////////////////
