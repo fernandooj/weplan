@@ -1,11 +1,16 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableHighlight, ImageBackground, Button, Alert} from 'react-native'
+import {View, Text, Image, TouchableHighlight, ImageBackground, Button, Alert, TextInput, ScrollView} from 'react-native'
 import { Constants, Google } from 'expo';
 import {SplashStyle} from '../splash/style'
  
  
 
 export default class splashComponent extends Component{
+    constructor(props) {
+    super(props);
+    this.state = { text: 'Register your e-mail',
+                   texto: 'Register your cell-phone'};
+  }
 	 _handleFacebookLogin = async () => {
     try {
       const { type, token } = await Facebook.logInWithReadPermissionsAsync(
@@ -89,6 +94,7 @@ export default class splashComponent extends Component{
 	render(){
 		const {navigate} = this.props.navigation
 		return(
+    <ScrollView>
 			<View style={SplashStyle.container}>
 				<TouchableHighlight onPress={()=> navigate('Inicio')}>
 					<Image 
@@ -104,13 +110,36 @@ export default class splashComponent extends Component{
 			        />
 			    </View>
 				<View style={SplashStyle.btn}>
-			        <Button
+			   <Button
 						style={SplashStyle.btn}
 						title="Login with Google"
 						onPress={this._handleGoogleLogin}
 			        />
 			    </View>
+        <View style={SplashStyle.btn}>
+          <TextInput
+              style={SplashStyle.textInput}                                    
+              placeholder= "Register E-mail"
+            />
+          <Button
+            style={SplashStyle.btn}
+            title="Login with E-mail"
+            onPress={this._handleGoogleLogin}
+              />
+          </View>
+        <View style={SplashStyle.btn}>
+          <TextInput
+              style={SplashStyle.textInput}
+              placeholder= "Register Number"
+            />
+          <Button
+            style={SplashStyle.btn}
+            title="Login with Cellphone"
+            onPress={this._handleGoogleLogin}
+              />
+          </View>      
 			</View>
+    </ScrollView>
 		)
 	}
 }
