@@ -1,0 +1,32 @@
+{
+  "name": "Venfer ",
+  "version": "0.1.0",
+  "description": "api Venfer",
+  "main": "server.js",
+  "author": "fernando ortiz <fernandooj@ymail.com>",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.17.1",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "^1.3.2",
+    "cookie-parser": "^1.4.3",
+    "cookie-session": "^2.0.0-beta.3",
+    "express": "latest",
+    "express-fileupload": "^0.1.3",
+    "express-form-data": "^2.0.0",
+    "express-jquery": "^1.8.3",
+    "express-redirect": "^1.2.2",
+    "express-session": "^1.15.2",
+    "moment": "^2.18.1",
+    "mongoose": "^4.6.0",
+    "mongoose-file": "0.0.2",
+    "morgan": "^1.7.0",
+    "multer": "^1.3.0",
+    "nodemailer": "^4.3.1",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1",
+    "passport-google-oauth": "^1.0.0",
+    "passport-local": "^1.0.0",
+    "twilio": "^3.11.0"
+  }
+}
