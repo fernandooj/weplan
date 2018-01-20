@@ -1,7 +1,14 @@
 node_modules/**/*
 app/node_modules/**/*
 back/node_modules/**/*
+front/node_modules/**/*
 .expo/*
 npm-debug.*
 /recursos
 recursos/
+
+build/
+.idea
+.gradle
+local.properties
+*.iml
