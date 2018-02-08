@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, Dimensions, TouchableHighlight, TouchableOpacity, TextInput, Alert, ScrollView, ImageBackground} from 'react-native'
+import {View, Text, Dimensions, TouchableHighlight, TouchableOpacity, TextInput, Alert, ScrollView, ImageBackground, Linking} from 'react-native'
 import {LoginStyle} from '../login/style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
@@ -31,7 +31,7 @@ export default class LoginComponent extends Component{
 			        value={this.state.text}
 			        underlineColorAndroid='transparent'
            			placeholder="Email / Telefono"
-           			placeholderTextColor="#ffffff" 
+           			placeholderTextColor="#8F9093" 
 			    />
 				<TextInput
 			        style={LoginStyle.input}
@@ -39,7 +39,7 @@ export default class LoginComponent extends Component{
 			        value={this.state.text}
 			        underlineColorAndroid='transparent'
            			placeholder="Contraseña"
-           			placeholderTextColor="#ffffff" 
+           			placeholderTextColor="#8F9093" 
 			    />
 			    <TouchableOpacity  style={LoginStyle.submit}>
 			    	<Text  style={LoginStyle.textSubmit}>Sign In</Text>
@@ -49,15 +49,15 @@ export default class LoginComponent extends Component{
 			    	<Text  style={LoginStyle.text}>¿Olvidaste tu contraseña?</Text>
 			    </View>
 			    <View style={LoginStyle.logos}>
-			      <TouchableOpacity>
+			      <TouchableOpacity onPress={() => Linking.openURL('http://159.89.141.0:8080/x/v1/auth/facebook')} >
 			        <Icon name='facebook' style={LoginStyle.facebook} />
 			      </TouchableOpacity>
-			      <TouchableOpacity>
+			      <TouchableOpacity onPress={() => Linking.openURL('http://159.89.141.0:8080/x/v1/auth/google')}>
 			        <Icon name='google' style={LoginStyle.google} />
 			      </TouchableOpacity>
 			    </View>  
 			    <Text style={LoginStyle.text}>¿Aún no haces parte de Weplan? </Text>	
-			     <TouchableOpacity onPress={()=> navigate('Registro')}>
+			     <TouchableOpacity onPress={()=> navigate('Registro')} >
  					<Text style={LoginStyle.btnRegistro}>Registrate</Text>
  				</TouchableOpacity>
 			</ImageBackground>

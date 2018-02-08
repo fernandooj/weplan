@@ -9,12 +9,12 @@ export default class insertCodeComponent extends Component{
 	constructor(props) {
 	  super(props);
 	  this.state = {
-	  	 
+	  	 codigo:null
 	  };
 	}
 	render(){
 		const {navigate} = this.props.navigation
-		console.log(this.props.navigation.state['params'])
+		const {codigo} = this.state 
 		return(
 			<ImageBackground style={LoginStyle.fondo}	source={require('../login/fondo.png')} >
 				<View>
@@ -30,22 +30,34 @@ export default class insertCodeComponent extends Component{
 			        value={this.state.text}
 			        underlineColorAndroid='transparent'
            			placeholder="Inserte su codigo"
-           			placeholderTextColor="#ffffff" 
+           			placeholderTextColor="#8F9093" 
+           			keyboardType='numeric'
+           			maxLength={4} 
 			    />			 
 			    <TouchableHighlight  style={LoginStyle.submit} onPress={this.handleSubmit.bind(this)}>
 			    	<Text  style={LoginStyle.textSubmit}>Activar Cuenta</Text>
 			    </TouchableHighlight>
+			    {
+			    	codigo==0
+			    	?<Text style={LoginStyle.textAlert}>Codigo Incorrecto</Text>
+			    	:null
+			    }
 			</ImageBackground>
 		)
 	}
 	handleSubmit(){
+		const {navigate} = this.props.navigation
 		const username = this.props.navigation.state['params']
-		console.log(username)
 		let token = this.state.text;
 
 		axios.post('/x/v1/user/token', {username, token})
 		.then((res)=>{
-			console.log(res)
+			console.log(res.data)
+			if(res.data.status=='SUCCESS'){
+				navigate('editPerfil') 
+			}else{
+				this.setState({codigo:0})
+			}
 		})
 		.catch((err)=>{
 			console.log(err)

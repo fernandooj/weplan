@@ -23,7 +23,7 @@ axios.defaults.baseURL = 'http://159.89.141.0:8080/';
 
 
 const NavigationApp = StackNavigator({
-    Home:       {screen: editPerfilComponent },
+    Home:       {screen: LoginComponent },
     Registro:   {screen: RegistroComponent },
     insertCode: {screen: insertCodeComponent },
     editPerfil: {screen: editPerfilComponent },
