@@ -36,14 +36,41 @@ module.exports = function(app, passport){
     Guardar solo email
     */
     ///////////////////////////////////////////////////////////////////////////
-    randonNumber = Math.floor(1000 + Math.random() * 9000);
+
     app.post('/x/v1/user/sign_up', function(req, res){
         userServices.getEmail(req.body, function(err, users){
+            randonNumber = Math.floor(1000 + Math.random() * 9000);
             if (users) {
                 if(users["estado"]=='inactivo'){
-                    res.json({ status: 'FAIL', message: 'este usuario ya existe, y es innactivo', code:3 });    
+                    userServices.modifacaCodigo(req.body, randonNumber, function(err, user){
+                        if(req.body.tipo==1){
+                            let mailOptions = {
+                                from: '<weplanapp@weplanapp.com>',                              // email del que se envia
+                                to:   req.body.username,                                        // al usuario que se la va enviar
+                                subject: 'Registro',                                            // mensaje en el sujeto
+                                html:  `Tu codigo de verificacion es:<b> ${randonNumber} </b>`  // texto
+                            };
+                            transporter.sendMail(mailOptions, (error, info) => {
+                                if (error) {
+                                    return console.log(error);
+                                }
+                            });
+                            res.json({ status: 'SUCCESS', message: 'Reenvieando mensaje', code:1 });
+                        }else{
+                            client.api.messages
+                                .create({
+                                  body: `Tu codigo es: ${randonNumber}` ,
+                                  to:  req.body.username,
+                                  from: '+17328750948',
+                                }).then(function(data) {
+                                    res.json({ status: 'SUCCESS', message: 'Reenvieando el mensaje', code:1 });
+                                }).catch(function(err) {
+                                    res.json({ status: 'SUCCESS', message: 'no se pudo enviar el mensaje', code:0 });
+                            });      
+                        } 
+                    })     
                 }else{
-                    res.json({ status: 'FAIL', message: 'este usuario ya existe y esta activado', code:2 });    
+                    res.json({ status: 'FAIL', message: 'este usuario ya existe', code:2 });    
                 }
             }else{
                 userServices.create(req.body, randonNumber, function(err, user){

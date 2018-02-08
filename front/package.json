@@ -7,8 +7,14 @@
     "test": "jest"
   },
   "dependencies": {
+    "axios": "^0.17.1",
     "react": "16.2.0",
-    "react-native": "0.52.0"
+    "react-native": "0.52.0",
+    "react-native-fa-icons": "^3.0.1",
+    "react-native-fontawesome": "^5.7.0",
+    "react-native-image-picker": "^0.26.7",
+    "react-native-scalable-image": "^0.3.5",
+    "react-navigation": "^1.0.0-beta.27"
   },
   "devDependencies": {
     "babel-jest": "22.1.0",

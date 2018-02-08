@@ -4,8 +4,7 @@ back/node_modules/**/*
 front/node_modules/**/*
 .expo/*
 npm-debug.*
-/recursos
-recursos/
+
 
 build/
 .idea

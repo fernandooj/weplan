@@ -18,6 +18,14 @@ class userServices {
 		newUsuario.estado =   "inactivo"
 		newUsuario.save(callback);	 
 	}
+	modifacaCodigo(idUser, code, callback){
+		console.log(idUser)
+		User.findOne({'local.username':idUser.username}, function(err, user){
+			User.findByIdAndUpdate(user._id, {$set:{
+				'local.token':code
+			}}, callback );	
+		})
+	}
 	verificaToken(token, callback){
 		User.findOne({'local.username':token.username, 'local.token': token.token}, callback)
 	}
