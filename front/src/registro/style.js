@@ -25,13 +25,14 @@ export const LoginStyle = StyleSheet.create({
 		width:240,
 		paddingTop:10,
 		paddingBottom:10,
-		backgroundColor: 'rgba(143, 153, 176, 0.43)',
+		backgroundColor:'rgba(117, 139, 252, 0.6)',
 		borderRadius: 50,
+		color:'#ffffff'
 
 	},
 	textSubmit:{
 		textAlign: 'center',
-		color: '#1234A0' 
+		color:'#ffffff',
 	},
 	logos:{
 		flexDirection: 'row',

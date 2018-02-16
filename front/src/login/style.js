@@ -12,23 +12,25 @@ export const LoginStyle = StyleSheet.create({
 		marginTop:10,
 		width:240,
 		height:40,
-		backgroundColor: '#F2F4F4',
+		backgroundColor: '#E3E3E5',
 		borderRadius: 50,
+		borderWidth: 0.5,
+		borderColor: '#d6d7da',
 		borderBottomWidth:0,
 		paddingLeft:20,
+		color: '#8F9093',
 	},
 	submit:{
 		marginTop:10,
 		width:240,
 		paddingTop:10,
 		paddingBottom:10,
-		backgroundColor: 'rgba(143, 153, 176, 0.43)',
+		backgroundColor: 'rgba(62,78,102, .45)',
 		borderRadius: 50,
-
 	},
 	textSubmit:{
 		textAlign: 'center',
-		color: '#1234A0' 
+		color: '#ffffff' 
 	},
 	logos:{
 		flexDirection: 'row',
@@ -50,7 +52,6 @@ export const LoginStyle = StyleSheet.create({
 	google:{
 		fontSize:25,
 		backgroundColor:'#DD2D1B',
-
 		paddingTop:20,
 		paddingBottom:10,
 		paddingLeft:23,
@@ -60,22 +61,24 @@ export const LoginStyle = StyleSheet.create({
 		borderColor: '#ffffff',
 		color:'#ffffff'	
 	},
-	btnRegistro:{
-		backgroundColor:'rgba(117, 139, 252, 0.6)',
-		color:'#ffffff',
-		marginTop:20,
-		borderRadius: 50,
-		padding:10,
-		fontSize:20,
-		width:240,
-		textAlign: 'center', 
-	},
 	textAlert:{
-		color:'#ffffff',
+		color:'#7585eb',
 		marginTop:20,
 		padding:20,
 		textAlign: 'center',
-	}
+	},
+	signup_btn:{
+		backgroundColor:'rgba(117, 139, 252, 0.6)',
+		marginTop:20,
+		borderRadius: 50,
+		padding:10,
+		width:240,
+	},
+	btnRegistro:{
+		color:'#ffffff',
+		textAlign: 'center', 
+		fontSize:17
+	},
 })
 
 

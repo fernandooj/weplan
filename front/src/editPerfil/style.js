@@ -40,43 +40,76 @@ export const LoginStyle = StyleSheet.create({
 		marginTop:20
 	},
 	textAlert:{
-		color:'#ffffff',
+		color:'#7585eb',
 		marginTop:20,
 		padding:20,
 		textAlign: 'center',
 	},
 	date:{
-		width:260,
+		width:265,
 		flexDirection: 'row',
 	},
-	datePicker:{
-		width:'33%',
-		color:'#ffffff',
+	containDatePicker:{
 		backgroundColor:'#8FA8F7',
 		borderRadius:50,
+		width:'31%',
 		marginRight:10,
 		marginTop:10,
-		padding:0
 	},
-	genero:{
+	containDatePickerYear:{
+		backgroundColor:'#8FA8F7',
+		borderRadius:50,
+		width:'34%',
+		marginRight:10,
+		marginTop:10,
+	},
+	datePicker:{
+		width:'100%',
+		color:'#ffffff',
+		padding:0,
+        height:40,
+	},
+	containDatePickerGenero:{
+		backgroundColor:'#8FA8F7',
+		borderRadius:50,
 		marginTop:10,
 		marginBottom:10,
 		width:240,
+	},
+	genero:{
 		color:'#ffffff',
-		backgroundColor:'#8FA8F7',
-		borderRadius:50,
 		borderWidth: 0.5,
 		borderColor: '#d6d7da',
 	},
 	avatarContainer: {
 		borderColor: '#9B9B9B',
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
+		borderRadius: 75
 	  },
 	avatar: {
 		borderRadius: 75,
 		width: 150,
 		height: 150
+	},
+	signup_btn:{
+		backgroundColor:'rgba(117, 139, 252, 0.6)',
+		marginTop:20,
+		borderRadius: 50,
+		padding:10,
+		width:240,
+	},
+	btnRegistro:{
+		color:'#ffffff',
+		textAlign: 'center', 
+		fontSize:17
+	},
+	contenedorCofres:{
+		flexDirection: 'row',
+		justifyContent: 'center',
+	},
+	imagenes:{
+		width:'33%'
 	}
 })
 

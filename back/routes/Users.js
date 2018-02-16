@@ -60,7 +60,7 @@ module.exports = function(app, passport){
                             client.api.messages
                                 .create({
                                   body: `Tu codigo es: ${randonNumber}` ,
-                                  to:  req.body.username,
+                                  to:  `+57 ${req.body.username}`,
                                   from: '+17328750948',
                                 }).then(function(data) {
                                     res.json({ status: 'SUCCESS', message: 'Reenvieando el mensaje', code:1 });
@@ -229,13 +229,19 @@ module.exports = function(app, passport){
     LOGIN FACEBOOK
     */
     ///////////////////////////////////////////////////////////////////////////
-    app.get('/x/v1/auth/facebook', passport.authenticate('facebook'));
+    /*app.get('/x/v1/auth/facebook', passport.authenticate('facebook'));
     app.get('/x/v1/auth/facebook/callback',
         passport.authenticate('facebook', {
-            successRedirect : '/',
+            successRedirect : 'OAuthLogin://login?user=' + JSON.stringify(req.user),
             failureRedirect : '/registrarse'
         })
-    );
+    );*/
+
+    app.get('/x/v1/auth/facebook',
+    passport.authenticate('facebook', { failureRedirect: '/x/v1/auth/facebook' }),
+    // Redirect user back to the mobile app using Linking with a custom protocol OAuthLogin
+    (req, res) => res.redirect('OAuthLogin://login?user=' + JSON.stringify(req.user)));
+
 
     ///////////////////////////////////////////////////////////////////////////
     /*
@@ -244,11 +250,9 @@ module.exports = function(app, passport){
     ///////////////////////////////////////////////////////////////////////////
     app.get('/x/v1/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
     app.get('/x/v1/auth/google/callback',
-        passport.authenticate('google', {
-            successRedirect : '/',
-            failureRedirect : '/registrarse'
-        })
-    );
+    passport.authenticate('google', { failureRedirect: '/x/v1/auth/google' }),
+    (req, res) => res.redirect('OAuthLogin://login?user=' + JSON.stringify(req.user)));
+
 
     ///////////////////////////////////////////////////////////////////////////
     /*

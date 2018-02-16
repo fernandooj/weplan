@@ -87,7 +87,7 @@ app.use(allowCrossDomain);
 
 // required for passport
 app.use(cookieSession({ 
-	name: '23eirofjiw8',
+  name: '23eirofjiw8',
    keys: ['key1', 'key2']
 })); /// session secret
 

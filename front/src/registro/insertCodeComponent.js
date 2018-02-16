@@ -34,7 +34,7 @@ export default class insertCodeComponent extends Component{
            			keyboardType='numeric'
            			maxLength={4} 
 			    />			 
-			    <TouchableHighlight  style={LoginStyle.submit} onPress={this.handleSubmit.bind(this)}>
+			    <TouchableHighlight  style={LoginStyle.signup_btn} onPress={this.handleSubmit.bind(this)}>
 			    	<Text  style={LoginStyle.textSubmit}>Activar Cuenta</Text>
 			    </TouchableHighlight>
 			    {

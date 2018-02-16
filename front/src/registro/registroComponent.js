@@ -32,7 +32,7 @@ export default class RegistroComponent extends Component{
            			placeholderTextColor="#8F9093" 
 			    />		
 
-			    <TouchableHighlight  style={LoginStyle.submit} onPress={this.handleSubmit.bind(this)}>
+			    <TouchableHighlight  style={LoginStyle.signup_btn} onPress={this.handleSubmit.bind(this)}>
 			    	<Text  style={LoginStyle.textSubmit}>Sign Up</Text>
 			    </TouchableHighlight>
 			    {
