@@ -42,7 +42,7 @@ module.exports = function(app, passport){
             randonNumber = Math.floor(1000 + Math.random() * 9000);
             if (users) {
                 if(users["estado"]=='inactivo'){
-                    userServices.modifacaCodigo(req.body, randonNumber, function(err, user){
+                    userServices.modificaCodigo(req.body, randonNumber, function(err, user){
                         if(req.body.tipo==1){
                             let mailOptions = {
                                 from: '<weplanapp@weplanapp.com>',                              // email del que se envia
@@ -60,12 +60,12 @@ module.exports = function(app, passport){
                             client.api.messages
                                 .create({
                                   body: `Tu codigo es: ${randonNumber}` ,
-                                  to:  `+57 ${req.body.username}`,
+                                  to:  `+57${req.body.username}`,
                                   from: '+17328750948',
                                 }).then(function(data) {
                                     res.json({ status: 'SUCCESS', message: 'Reenvieando el mensaje', code:1 });
-                                }).catch(function(err) {
-                                    res.json({ status: 'SUCCESS', message: 'no se pudo enviar el mensaje', code:0 });
+                                }).catch(function(err) { 
+                                    res.json({ status: 'SUCCESS', message: 'no se pudo enviar el msn', code:0 });
                             });      
                         } 
                     })     
@@ -94,12 +94,12 @@ module.exports = function(app, passport){
                             client.api.messages
                                 .create({
                                   body: `Tu codigo es: ${randonNumber}` ,
-                                  to:  req.body.username,
+                                  to:  `+57${req.body.username}`,
                                   from: '+17328750948',
                                 }).then(function(data) {
                                     res.json({ status: 'SUCCESS', message: 'Usuario Creado', user: user, code:1 });
                                 }).catch(function(err) {
-                                  res.json({ status: 'ERROR', message: 'no se pudo crear el usuario', user: user, code:0 });
+                                   res.json({ status: 'ERROR', message: 'no se pudo crear el usuario', user: user, code:0 });
                             });      
                         }
                     }
@@ -198,7 +198,7 @@ module.exports = function(app, passport){
     */
     ///////////////////////////////////////////////////////////////////////////
     app.get('/x/v1/user/profile', function(req, res){
-        console.log(req)
+        //console.log(req)
         if(!req.user && !req.session.usuario){
             res.json({status:'FAIL', user: 'SIN SESION' })
         }else{
@@ -226,33 +226,30 @@ module.exports = function(app, passport){
 
     ///////////////////////////////////////////////////////////////////////////
     /*
-    LOGIN FACEBOOK
+    LOGIN SOCIAL MEDIA GOOGLE / FACEBOOK
     */
     ///////////////////////////////////////////////////////////////////////////
-    /*app.get('/x/v1/auth/facebook', passport.authenticate('facebook'));
-    app.get('/x/v1/auth/facebook/callback',
-        passport.authenticate('facebook', {
-            successRedirect : 'OAuthLogin://login?user=' + JSON.stringify(req.user),
-            failureRedirect : '/registrarse'
+    app.post('/x/v1/user/facebook', function(req, res){
+    
+        userServices.facebook(req.body, function(err, user){
+            if (err) {
+                res.json({status:'FAIL', err, code:0})    
+            }else{
+                res.json({status: 'SUCCESS', user, code:1})
+            }
         })
-    );*/
-
-    app.get('/x/v1/auth/facebook',
-    passport.authenticate('facebook', { failureRedirect: '/x/v1/auth/facebook' }),
-    // Redirect user back to the mobile app using Linking with a custom protocol OAuthLogin
-    (req, res) => res.redirect('OAuthLogin://login?user=' + JSON.stringify(req.user)));
+    })
 
 
-    ///////////////////////////////////////////////////////////////////////////
-    /*
-    LOGIN GOOGLE
-    */
-    ///////////////////////////////////////////////////////////////////////////
-    app.get('/x/v1/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
-    app.get('/x/v1/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: '/x/v1/auth/google' }),
-    (req, res) => res.redirect('OAuthLogin://login?user=' + JSON.stringify(req.user)));
-
+    app.post('/x/v1/user/google', function(req, res){
+        userServices.google(req.body, function(err, user){
+            if (err) {
+                res.json({status:'FAIL', err, code:0})    
+            }else{
+                res.json({status: 'SUCCESS', user, code:1})
+            }
+        })
+    })
 
     ///////////////////////////////////////////////////////////////////////////
     /*

@@ -10,6 +10,7 @@
     "axios": "^0.17.1",
     "react": "16.2.0",
     "react-native": "0.52.0",
+    "react-native-easy-grid": "^0.1.17",
     "react-native-fa-icons": "^3.0.1",
     "react-native-fbsdk": "^0.7.0",
     "react-native-fontawesome": "^5.7.0",

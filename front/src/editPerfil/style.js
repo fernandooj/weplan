@@ -2,8 +2,8 @@ import {StyleSheet, Dimensions, PixelRatio} from 'react-native';
 const win = Dimensions.get('window');
 export const LoginStyle = StyleSheet.create({ 
 	fondo:{
-		flex: 1,
-		alignItems: 'center',
+		//flex: 1,
+		//alignItems: 'center',
 		backgroundColor:'#ffffff'
 		/*justifyContent: 'center', justifica contenido verticalmente */
 	},
@@ -105,11 +105,16 @@ export const LoginStyle = StyleSheet.create({
 		fontSize:17
 	},
 	contenedorCofres:{
-		flexDirection: 'row',
-		justifyContent: 'center',
+		 flexDirection: 'row', justifyContent: 'flex-end',
+		 flex: 1, 
 	},
 	imagenes:{
-		width:'33%'
+		
+	},
+	imagenCofre:{
+		 
+		 
+		flex: 1 
 	}
 })
 

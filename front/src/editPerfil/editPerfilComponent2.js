@@ -44,6 +44,7 @@ export default class editPerfilComponent2 extends Component{
 					<Image
 						style={LoginStyle.imagenCofre}
 						width={100}
+						height={100}
 						source={{uri: e.imagen }}
 				    />
 				    <Text>{e.texto}</Text>
@@ -75,7 +76,7 @@ export default class editPerfilComponent2 extends Component{
 	}
 	handleSubmit(){
 		const {navigate} = this.props.navigation
-		navigate('editPerfil1') 
+		navigate('Home') 
 	}
 	 
 }

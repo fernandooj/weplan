@@ -41,12 +41,12 @@ export const LoginStyle = StyleSheet.create({
 		backgroundColor:'#1175C9',
 		paddingTop:20,
 		paddingBottom:10,
-		paddingLeft:23,
-		paddingRight:15,
+		paddingLeft:24,
+		paddingRight:17,
 		borderRadius: 50,
 		borderWidth: 5,
 		marginRight:20,
-		borderColor: '#ffffff',
+		borderColor: '#D4DBE5',
 		color:'#ffffff'	
 	},
 	google:{
@@ -54,11 +54,11 @@ export const LoginStyle = StyleSheet.create({
 		backgroundColor:'#DD2D1B',
 		paddingTop:20,
 		paddingBottom:10,
-		paddingLeft:23,
-		paddingRight:15,
+		paddingLeft:22,
+		paddingRight:14,
 		borderRadius: 50,
 		borderWidth: 5,
-		borderColor: '#ffffff',
+		borderColor: '#FFD8D9',
 		color:'#ffffff'	
 	},
 	textAlert:{

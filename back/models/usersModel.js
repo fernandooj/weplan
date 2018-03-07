@@ -12,35 +12,23 @@ let moment   = require('moment');
 /********** genero la base la coleccion llamada users   ****************/
 /////////////////////////////////////////////////////////////////////////
 let UserSchema = mongoose.Schema({
-	createdAt:   { type: String, default: moment().format('YYYY-MM-DD h:mm:ss') },
-	username:    String,
-	nombre:      String,
-	nacimiento:  String,
-	sexo :       String,
-	pais:        String,
-	ciudad:      String,
-	extension:   String,
-	email:    	 String,
-	tipo:        String,
-	estado:      String,
-	//updatedAt:   { type: Date }
-	local:{
-		username:    String,
-		password:    String,
-		token:       String,
-	},
-	facebook         : {
-        id           : String,
-        token        : String,
-        email        : String,
-        username     : String
-    },
-    google           : {
-        id           : String,
-        token        : String,
-        email        : String,
-        name         : String
-    }
+	createdAt	: { type: String, default: moment().format('YYYY-MM-DD h:mm:ss') },
+	username	: String,
+	nombre		: String,
+	nacimiento  : String,
+	sexo 		: String,
+	pais		: String,
+	ciudad		: String,
+	photo	 	: String,
+	email		: String,
+	tipo		: String,
+	acceso		: String,
+	estado		: String,
+	updatedAt	: { type: String, default: moment().format('YYYY-MM-DD h:mm:ss') },
+	username	: String,
+	password 	: String,
+	token		: String,
+	idUser      : String,
 });
 
  

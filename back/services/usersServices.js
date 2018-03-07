@@ -8,29 +8,51 @@ class userServices {
 		User.find({}, callback)
 	}
 	getEmail(user, callback){
-		User.findOne({'local.username':user.username}, callback)
+		User.findOne({'username':user.username}, callback)
 	}
 
 	create(user, randonNumber, callback ){ 
 		let newUsuario = new User() 
-		newUsuario.local.username = user.username,
-		newUsuario.local.token =    randonNumber,
-		newUsuario.estado =   "inactivo"
+		newUsuario.username = user.username,
+		newUsuario.token    = randonNumber,
+		newUsuario.estado   = "inactivo"
+		newUsuario.tipo	    = "local"
 		newUsuario.save(callback);	 
 	}
-	modifacaCodigo(idUser, code, callback){
-		console.log(idUser)
-		User.findOne({'local.username':idUser.username}, function(err, user){
+	facebook(user, callback){
+		let newUsuario = new User() 
+		console.log(user)
+		newUsuario.token = user.accessToken
+		newUsuario.email = user.email
+		newUsuario.name  = user.name
+		newUsuario.photo = user.photo
+		newUsuario.idUser 	 = user.idUser
+		newUsuario.tipo	 = user.tipo
+		newUsuario.save(callback)
+	}
+	google(user, callback){
+		let newUsuario = new User() 
+		console.log(user)
+		newUsuario.token = user.accessToken
+		newUsuario.email = user.email
+		newUsuario.name  = user.name
+		newUsuario.photo = user.photo
+		newUsuario.idUser 	 = user.idUser
+		newUsuario.tipo	 = user.tipo
+		newUsuario.save(callback)
+	}
+	modificaCodigo(idUser, code, callback){
+		User.findOne({'username':idUser.username}, function(err, user){
 			User.findByIdAndUpdate(user._id, {$set:{
-				'local.token':code
+				'token':code
 			}}, callback );	
 		})
 	}
 	verificaToken(token, callback){
-		User.findOne({'local.username':token.username, 'local.token': token.token}, callback)
+		User.findOne({'username':token.username, 'token': token.token}, callback)
 	}
 	activaUsuario(user, callback){
-		User.findOne({ 'local.username' :  user.username }, function(error, user) {
+		User.findOne({ 'username' :  user.username }, function(error, user) {
 			User.findByIdAndUpdate(user._id, {$set: {
                 'estado':'activo'
             }}, callback);
@@ -49,7 +71,7 @@ class userServices {
 			User.findByIdAndUpdate(id._id, {$set: {
 	            'nombre':       user.nombre,
 	            'nacimiento': 	  user.nacimiento,
-	            'local.password': newUsuario.generateHash(user.password),
+	            'password': newUsuario.generateHash(user.password),
 	            'sexo':       	  user.sexo,
 	            'pais':  	  	  user.pais,
 	            'ciudad':     	  user.ciudad,
@@ -60,6 +82,7 @@ class userServices {
 			User.findByIdAndUpdate(id._id, {$set: {
 	            'nombre':       user.nombre,
 	            'nacimiento': 	  user.nacimiento,
+	            'password': newUsuario.generateHash(user.password),
 	            'sexo':       	  user.sexo,
 	            'pais':       	  user.pais,
 	            'ciudad':     	  user.ciudad,
@@ -68,7 +91,6 @@ class userServices {
         	}}, callback);
 		}
 	}
-
 
 
 	avatar(id, extension, callback){
