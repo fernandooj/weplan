@@ -23,21 +23,18 @@ class categoriasServices{
 		Categoria.find({Categoria:null}).populate('UsuarioCrea').populate('UsuarioModifica').exec(callback)
 	}
 	getById(id, callback){
-		console.log(id)
 		Categoria.find({Categoria:id}).exec(callback)
 	}
 	create(categoria, user, callback){
 		var newCategoria = new Categoria({
 			name: categoria.name,
-			slug: categoria.slug,
 			descripcion: categoria.descripcion,
 			Categoria: categoria.idPadre,
 			estatus: true,
 			UsuarioCrea: user,
-			createdAt : categoria.id,
+			createdAt : moment().format('YYYY-MM-DD h:mm:ss'),
 		});
 		newCategoria.save(callback)
-
 	}
 	modify(categoria, user, callback){
 		Categoria.findByIdAndUpdate(categoria.id, {$set: {

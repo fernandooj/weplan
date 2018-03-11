@@ -50,8 +50,8 @@ router.get('/:id', function(req,res){
 
 // insertar 
 router.post('/', function(req, res){
-	if (req.user) {
-		categoriasServices.create(req.body, req.user.id, function(err, categoria){
+	if (req.session.usuario) {
+		categoriasServices.create(req.body, req.session.usuario.user._id, function(err, categoria){
 			if (!err) {
 				res.json({ status: 'SUCCESS', message: 'Categoria Creada', categoria });
 			}else{

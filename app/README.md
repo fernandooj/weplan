@@ -1,2 +1,0 @@
-# weplan
-app mobile weplan

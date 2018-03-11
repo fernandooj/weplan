@@ -10,7 +10,11 @@ class userServices {
 	getEmail(user, callback){
 		User.findOne({'username':user.username}, callback)
 	}
+	login(user, callback){
+		//let password = user.password
 
+		User.findOne({ 'username' :  user.username }, callback)
+	}
 	create(user, randonNumber, callback ){ 
 		let newUsuario = new User() 
 		newUsuario.username = user.username,
@@ -21,7 +25,7 @@ class userServices {
 	}
 	facebook(user, callback){
 		let newUsuario = new User() 
-		console.log(user)
+
 		newUsuario.token = user.accessToken
 		newUsuario.email = user.email
 		newUsuario.name  = user.name
@@ -65,17 +69,18 @@ class userServices {
 		    'updatedAt':  moment().format('YYYY-MM-DD h:mm:ss')
 		}}, callback);
 	}
-	edit(user, id, callback){
+	edit(user, id, ruta, callback){
 		let newUsuario = new User();
 		if (user.password) {
 			User.findByIdAndUpdate(id._id, {$set: {
-	            'nombre':       user.nombre,
+	            'nombre':         user.nombre,
 	            'nacimiento': 	  user.nacimiento,
-	            'password': newUsuario.generateHash(user.password),
+	            'password': 	  newUsuario.generateHash(user.password),
 	            'sexo':       	  user.sexo,
 	            'pais':  	  	  user.pais,
 	            'ciudad':     	  user.ciudad,
 	            'tipo':   	  	  user.tipo,
+	            'photo':   	  	  ruta,
 	            'updatedAt':       moment().format('YYYY-MM-DD h:mm:ss')
         	}}, callback);
 		}else{

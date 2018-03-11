@@ -7,6 +7,9 @@ let randonNumber=null;  /// numero randon que genera el codigo de verificacion, 
 let transporter=null;   /// variable que guarda la configuracion para el envio del email
 let client = null; 
 
+let moment   = require('moment');
+let fecha = moment().format('YYYY-MM-DD-h-mm')
+
 ///////////////////////////////////////////////////////////////////////////
 /*
     CONFIGURACION DATOS TWILIO
@@ -80,7 +83,7 @@ module.exports = function(app, passport){
                         if(req.body.tipo==1){
                             let mailOptions = {
                                 from: '<weplanapp@weplanapp.com>',                              // email del que se envia
-                                to: user.local.username,                                        // al usuario que se la va enviar
+                                to: user.username,                                        // al usuario que se la va enviar
                                 subject: 'Registro',                                            // mensaje en el sujeto
                                 html:  `Tu codigo de verificacion es:<b> ${randonNumber} </b>`  // texto
                             };
@@ -152,10 +155,10 @@ module.exports = function(app, passport){
                 return res.json({ status: 'FAIL', message: 'no conciden', code:0})        
             } else{
                 userServices.activaUsuario(req.body, function(err, activado){  
-                console.log(activado['_id'])
+                    console.log(activado)
                     if (activado) {
-                        //return res.redirect('/perfil'); 
-                        req.session.usuario =  {id: activado['_id'], username: req.body.username}
+                        
+                        req.session.usuario =  activado
                         return res.json({ status: 'SUCCESS', message: 'Usuario activado', user: activado });                
                     }
                 })
@@ -169,12 +172,19 @@ module.exports = function(app, passport){
     */
     ///////////////////////////////////////////////////////////////////////////
     app.put('/x/v1/user/update/:_id', function(req, res, next){
-        console.log(req.params)
-        userServices.edit(req.body, req.params, function(err, user){
+        
+ 
+        // let extension = req.body.photo.name.split('.').pop()
+        // let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
+        // let fullUrl = '../static/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
+        // let ruta = req.protocol+'://'+req.get('Host') + '/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
+        let ruta = null
+        userServices.edit(req.body, req.params, ruta, function(err, user){
             if(!user){
-                res.json({ status: 'FAIL', message: 'Usuario Innactivo'}) 
+                res.json({ status: 'FAIL', message: err}) 
             } else{
-                res.json({ status: 'SUCCESS', message: 'Usuario Activado', user: user });                
+                res.json({ status: 'SUCCESS', message: 'Usuario Activado', user: user }); 
+                //fs.rename(req.body.photo.path, path.join(__dirname, fullUrl))                
             }
         }) 
     })
@@ -186,11 +196,26 @@ module.exports = function(app, passport){
     */
     ///////////////////////////////////////////////////////////////////////////
 
-    app.post('/x/v1/user/login', passport.authenticate('local-login', {
-        successRedirect : '/x/v1/user/profile', // redirect to the secure profile section
-        failureRedirect : '/x/v1/user/loginFail', // redirect back to the signup page if there is an error
-        failureFlash : true // allow flash messages
-    }));
+    app.post('/x/v1/user/login', function(req,res,next){
+        userServices.login(req.body, function(err, user){
+            if (err) {
+                res.json({status:'FAIL', err, code:0 })
+            }else{
+                if(user==null){
+                    res.json({status:'FAIL', user: 'Usuario no existe', code:2 })
+                }else{
+                    if(user.validPassword(req.body.password)){
+                        req.session.usuario = {user:user}
+                        res.json({status:'SUCCESS', user: user, code:1 })
+                        
+                    }else{
+                        res.json({status:'FAIL', user: 'Datos incorrectos', code:0 })
+                        
+                    }     
+                }
+            }
+        })
+    });
 
     ///////////////////////////////////////////////////////////////////////////
     /*
@@ -198,20 +223,12 @@ module.exports = function(app, passport){
     */
     ///////////////////////////////////////////////////////////////////////////
     app.get('/x/v1/user/profile', function(req, res){
-        //console.log(req)
         if(!req.user && !req.session.usuario){
-            res.json({status:'FAIL', user: 'SIN SESION' })
+            res.json({status:'FAIL', user: 'SIN SESION', code:0 })
         }else{
             //res.json({'user': req.user, 'user': req.session.usuario })
-            if(req.user) {
-                res.json({status:'SUCCESS', user: req.user})  
-            }else{
-                res.json({status:'SUCCESSLOCAL', user: { local: {id:req.session.usuario.id, username:req.session.usuario.username  } } })   
-            }    
-             
+                res.json({status:'SUCCESS', user: req.session.usuario, code:1})  
         } 
-        
-         
     })
 
     ///////////////////////////////////////////////////////////////////////////
@@ -230,12 +247,22 @@ module.exports = function(app, passport){
     */
     ///////////////////////////////////////////////////////////////////////////
     app.post('/x/v1/user/facebook', function(req, res){
-    
-        userServices.facebook(req.body, function(err, user){
-            if (err) {
-                res.json({status:'FAIL', err, code:0})    
+        console.log(req.body)
+        userServices.getEmail(req.body, function(err, users){
+            
+            if (!users) {
+                userServices.facebook(req.body, function(err, user){
+
+                    if (err) {
+                        res.json({status:'FAIL', err, code:0})    
+                    }else{
+                        req.session.usuario = {user:user}
+                        res.json({status: 'SUCCESS', mensaje:user, code:1})
+                    }
+                })
             }else{
-                res.json({status: 'SUCCESS', user, code:1})
+                req.session.usuario = {user:users}
+                res.json({status: 'SUCCESS', users, code:1})
             }
         })
     })
@@ -306,24 +333,23 @@ module.exports = function(app, passport){
     */
     ///////////////////////////////////////////////////////////////////////////
     app.post('/x/v1/user/avatar/:id', function(req, res){
-    let extension = req.files.files.name.split('.').pop();
-    userServices.avatar(req.params.id, extension, function(err, categoria){
-        if (!err) {
-            res.json({ status: 'SUCCESS', message: 'Avatar Actualizado', categoria });
-            fs.rename(req.files.files.path, path.join(__dirname, "../../front/docs/public/uploads/avatar/"+categoria._id+"."+extension));
-        }else{
-            res.json({ status: 'FAIL', message: err }); 
-        }
+        let extension = req.files.files.name.split('.').pop();
+        userServices.avatar(req.params.id, extension, function(err, categoria){
+            if (!err) {
+                res.json({ status: 'SUCCESS', message: 'Avatar Actualizado', categoria });
+                fs.rename(req.files.files.path, path.join(__dirname, "../../front/docs/public/uploads/avatar/"+categoria._id+"."+extension));
+            }else{
+                res.json({ status: 'FAIL', message: err }); 
+            }
+        })
     })
-})
 
     // =====================================
     // LOGOUT ==============================
     // =====================================
     app.get('/x/v1/logout', function(req, res) {
-        req.logout();
-        req.session.destroy();
-        res.redirect('/');
+        req.session.usuario = null
+        res.json({status: 'SUCCESS', message:'sesion terminada', code:1})
     });
 
          

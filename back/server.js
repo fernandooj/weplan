@@ -14,18 +14,9 @@ const fileUpload = require('express-fileupload');
 
 // importo las rutas
 let categoriaRutas = require('./routes/Categoria.js');
-let generoRutas = require('./routes/Genero.js');
-let libroRutas = require('./routes/Libro.js');
-let libroByIdRutas = require('./routes/LibroById.js');
-let usersRutas = require('./routes/Users.js');
-let tituloRutas = require('./routes/Titulo.js');
 let paisRutas = require('./routes/Pais.js');
-let conversacionRutas = require('./routes/Conversacion.js');
-let mensajeRutas = require('./routes/Mensaje.js');
-let resenaRutas = require('./routes/Resena.js');
-let ventaRutas = require('./routes/Venta.js');
-let resumenRutas = require('./routes/Resumen.js');
-let libroDeseaRutas = require('./routes/LibroDesea.js');
+let amigoUser = require('./routes/amigoUser.js');
+let planRutas = require('./routes/Plan.js');
 
 const path          = require('path');
 //let mongoStore   = require('connect-mongo')(session)
@@ -41,17 +32,10 @@ let flash    = require('connect-flash');
 /////////////////////////////////////////////////////////////////////////
 let port = process.env.port || 8080;
 
-
-
-
-
 /////////////////////////////////////////////////////////////////////////
 /********* importo el archivo de configuracion de passport   ***********/
 /////////////////////////////////////////////////////////////////////////
 require('./config/passport')(passport); // pass passport for configuration
-
-
-    
 
 
 // da acceso para los servicios
@@ -66,17 +50,17 @@ let allowCrossDomain = function(req, res, next) {
 };
 
 //llamo al archivo de configuracion
-mongoose.connect(config.database)
+mongoose.connect(config.database, { useMongoClient: true })
 
 // llamo a los archivos estaticos
 app.get('/:url', (req, res) => {
-  res.sendFile(path.join(__dirname, '../front/docs/index.html'));
+  res.sendFile(path.join(__dirname, '/static'));
 });
 app.get('/:url/:url', (req, res) => {
-  res.sendFile(path.join(__dirname, '../front/docs/index.html'));
+  res.sendFile(path.join(__dirname, '/static'));
 });
 
-app.use(express.static('../front/docs'));
+app.use(express.static('static'));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -88,7 +72,10 @@ app.use(allowCrossDomain);
 // required for passport
 app.use(cookieSession({ 
   name: '23eirofjiw8',
-   keys: ['key1', 'key2']
+  keys: ['key1', 'key2'],
+   rolling: true,
+  resave: true, 
+  saveUninitialized: false
 })); /// session secret
 
 app.use(formidable.parse({ keepExtensions:true }))
@@ -114,17 +101,10 @@ app.use(flash());
 
 // creo la ruta de las categorias
 app.use('/x/v1/cat/categoria', categoriaRutas)
-app.use('/x/v1/gen/genero', generoRutas)
-app.use('/x/v1/lib/libro', libroRutas)
-app.use('/x/v1/lib/libroById', libroByIdRutas)
-app.use('/x/v1/tit/titulo', tituloRutas)
+app.use('/x/v1/ami/amigoUser', amigoUser)
 app.use('/x/v1/pap/pais', paisRutas)
-app.use('/x/v1/con/conversacion', conversacionRutas)
-app.use('/x/v1/men/mensaje', mensajeRutas)
-app.use('/x/v1/res/resena', resenaRutas)
-app.use('/x/v1/ven/venta', ventaRutas)
-app.use('/x/v1/res/resumen', resumenRutas)
-app.use('/x/v1/lib/libroDesea', libroDeseaRutas)
+app.use('/x/v1/pla/plan', planRutas)
+
 require('./routes/Users.js')(app, passport);
 
 app.listen(port)
