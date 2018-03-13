@@ -173,12 +173,19 @@ module.exports = function(app, passport){
     ///////////////////////////////////////////////////////////////////////////
     app.put('/x/v1/user/update/:_id', function(req, res, next){
         
- 
-        // let extension = req.body.photo.name.split('.').pop()
-        // let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
-        // let fullUrl = '../static/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
-        // let ruta = req.protocol+'://'+req.get('Host') + '/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
         let ruta = null
+        console.log(req.files)
+        if (req.files) {
+            let extension = req.files.imagen.name.split('.').pop()
+            let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
+            let fullUrl = '../static/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
+            ruta = req.protocol+'://'+req.get('Host') + '/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
+        }else{
+            ruta = req.protocol+'://'+req.get('Host') + '/avatar.png'
+        }
+        
+
+ 
         userServices.edit(req.body, req.params, ruta, function(err, user){
             if(!user){
                 res.json({ status: 'FAIL', message: err}) 
@@ -247,9 +254,9 @@ module.exports = function(app, passport){
     */
     ///////////////////////////////////////////////////////////////////////////
     app.post('/x/v1/user/facebook', function(req, res){
-        console.log(req.body)
+        console.log('/////')
         userServices.getEmail(req.body, function(err, users){
-            
+        console.log(req.users)    
             if (!users) {
                 userServices.facebook(req.body, function(err, user){
 
@@ -284,8 +291,9 @@ module.exports = function(app, passport){
     */
     ///////////////////////////////////////////////////////////////////////////
     app.get('/x/v1/users/', function(req,res){
-        if(req.user){
-            if (req.user.tipo=='admin') {
+        console.log(req.session.usuario)
+        if(req.session.usuario){
+            if (req.session.usuario.user.acceso=='admin') {
                 userServices.get(function(err, usuarios){
                     if(!err){
                         res.json({status:'SUCCESS', usuarios})
@@ -296,6 +304,27 @@ module.exports = function(app, passport){
             }else{
                 res.json({ status: 'FAIL', message:'No tienes acceso'})
             }
+        }else{
+            res.json({ status: 'FAIL', message:'usuario no logueado'})  
+        }
+    })
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    /*
+    lista usuarios solo activos y suscriptores
+    */
+    ///////////////////////////////////////////////////////////////////////////
+    app.get('/x/v1/users/activos', function(req,res){
+        console.log(req.session.usuario)
+        if(req.session.usuario){
+            userServices.getActivos(function(err, usuarios){
+                if(!err){
+                    res.json({status:'SUCCESS', usuarios})
+                }else{
+                    res.json({ status: 'FAIL', err}) 
+                }
+            })
         }else{
             res.json({ status: 'FAIL', message:'usuario no logueado'})  
         }

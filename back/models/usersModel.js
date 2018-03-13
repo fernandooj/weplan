@@ -29,6 +29,7 @@ let UserSchema = mongoose.Schema({
 	password 	: String,
 	token		: String,
 	idUser      : String,
+	acceso      : String
 });
 
  

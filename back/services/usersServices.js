@@ -15,34 +15,42 @@ class userServices {
 
 		User.findOne({ 'username' :  user.username }, callback)
 	}
+	getActivos(callback){
+		User.find({ 'estado' :  'activo', 'acceso':'suscriptor' }, callback)
+	}
 	create(user, randonNumber, callback ){ 
 		let newUsuario = new User() 
 		newUsuario.username = user.username,
 		newUsuario.token    = randonNumber,
 		newUsuario.estado   = "inactivo"
 		newUsuario.tipo	    = "local"
+		newUsuario.acceso   = user.acceso
 		newUsuario.save(callback);	 
 	}
 	facebook(user, callback){
 		let newUsuario = new User() 
-
 		newUsuario.token = user.accessToken
 		newUsuario.email = user.email
-		newUsuario.name  = user.name
+		newUsuario.username = user.email
+		newUsuario.nombre  = user.nombre
 		newUsuario.photo = user.photo
 		newUsuario.idUser 	 = user.idUser
 		newUsuario.tipo	 = user.tipo
+		newUsuario.acceso   = user.acceso
+		newUsuario.estado   = "activo"
 		newUsuario.save(callback)
 	}
 	google(user, callback){
 		let newUsuario = new User() 
-		console.log(user)
 		newUsuario.token = user.accessToken
 		newUsuario.email = user.email
-		newUsuario.name  = user.name
+		newUsuario.nombre  = user.nombre
+		newUsuario.username = user.email
 		newUsuario.photo = user.photo
 		newUsuario.idUser 	 = user.idUser
 		newUsuario.tipo	 = user.tipo
+		newUsuario.acceso   = user.acceso
+		newUsuario.estado   = "activo"
 		newUsuario.save(callback)
 	}
 	modificaCodigo(idUser, code, callback){
@@ -70,7 +78,7 @@ class userServices {
 		}}, callback);
 	}
 	edit(user, id, ruta, callback){
-		let newUsuario = new User();
+		let newUsuario = new User(); 
 		if (user.password) {
 			User.findByIdAndUpdate(id._id, {$set: {
 	            'nombre':         user.nombre,
@@ -92,6 +100,7 @@ class userServices {
 	            'pais':       	  user.pais,
 	            'ciudad':     	  user.ciudad,
 	            'tipo':   	  	  user.tipo,
+	            'photo':   	  	  ruta,
 	            'updatedAt':      moment().format('YYYY-MM-DD h:mm:ss')
         	}}, callback);
 		}
