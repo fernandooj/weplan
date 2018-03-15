@@ -27,12 +27,27 @@ router.get('/:id', function(req, res){
 })
 
 router.post('/', function(req, res){
-	amigoUserService.create(req.body, function(err, usuarios){
-		if (err) {
-			res.json({status:'FAIL', err, code:0})    
+	let id = req.session.usuario._id
+	amigoUserService.buscarUsuario(id, function(err, usuarios){
+		if (usuarios) {
+			amigoUserService.update(req.body, id, function(err, usuarios){
+				if (err) {
+					res.json({status:'FAIL', err, code:0})    
+				}else{
+					res.json({status:'SUCCESS', mensaje:usuarios, code:1})    
+				}
+			})
 		}else{
-			res.json({status:'SUCCESS', mensaje:usuarios, code:1})    
+			amigoUserService.create(req.body, id, function(err, usuarios){
+				if (err) {
+					res.json({status:'FAIL', err, code:0})    
+				}else{
+					res.json({status:'SUCCESS', mensaje:usuarios, code:1})    
+				}
+			})
 		}
 	})
+	 
+	
 })
 module.exports = router
