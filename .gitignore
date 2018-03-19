@@ -3,6 +3,7 @@ app/node_modules/**/*
 back/node_modules/**/*
 front/node_modules/**/*
 weplan_app/node_modules/**/*
+weplan/node_modules/**/*
 recursos/
 .expo/*
 npm-debug.*
