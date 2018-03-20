@@ -3,11 +3,13 @@ package com.weplan;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.magus.fblogin.FacebookLoginPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +26,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new MapsPackage()
+            new RNGoogleSigninPackage(),
+            new MapsPackage(),
+            new FacebookLoginPackage()
       );
     }
 
