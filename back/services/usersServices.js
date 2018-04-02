@@ -5,7 +5,7 @@ let moment   = require('moment');
 
 class userServices {
 	get(callback){
-		User.find({}, callback)
+		User.find({}, null, {sort: {_id: -1}}, callback)
 	}
 	getEmail(user, callback){
 		User.findOne({'username':user.username}, callback)
@@ -70,9 +70,8 @@ class userServices {
             }}, callback);
 		})
 	}
-	tipo(user,callback){
+	enableDisable(user,callback){
 		User.findByIdAndUpdate(user.id, {$set: {
-		    'tipo':       user.tipo,
 		    'estado': 	  user.estado,
 		    'updatedAt':  moment().format('YYYY-MM-DD h:mm:ss')
 		}}, callback);
@@ -87,9 +86,8 @@ class userServices {
 	            'sexo':       	  user.sexo,
 	            'pais':  	  	  user.pais,
 	            'ciudad':     	  user.ciudad,
-	            'tipo':   	  	  user.tipo,
 	            'photo':   	  	  ruta,
-	            'updatedAt':       moment().format('YYYY-MM-DD h:mm:ss')
+	            'updatedAt':      moment().format('YYYY-MM-DD h:mm:ss')
         	}}, callback);
 		}else{
 			User.findByIdAndUpdate(id._id, {$set: {
@@ -99,11 +97,27 @@ class userServices {
 	            'sexo':       	  user.sexo,
 	            'pais':       	  user.pais,
 	            'ciudad':     	  user.ciudad,
-	            'tipo':   	  	  user.tipo,
 	            'photo':   	  	  ruta,
 	            'updatedAt':      moment().format('YYYY-MM-DD h:mm:ss')
         	}}, callback);
 		}
+	}
+	createUser(user, randonNumber, ruta, callback){
+		let newUsuario = new User() 
+		newUsuario.username = user.email
+		newUsuario.email 	= user.email
+		newUsuario.nombre 	= user.nombre
+		newUsuario.password =  newUsuario.generateHash(user.password)
+		newUsuario.telefono = user.telefono
+		newUsuario.estado   = user.estado
+		newUsuario.sexo   	= user.sexo
+		newUsuario.tipo	    = "local"
+		newUsuario.acceso   = user.acceso
+		newUsuario.ciudad   = user.ciudad
+		newUsuario.pais     = user.pais
+		newUsuario.token    = randonNumber
+		newUsuario.photo    = ruta
+		newUsuario.save(callback);
 	}
 
 

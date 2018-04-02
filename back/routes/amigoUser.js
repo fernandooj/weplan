@@ -17,7 +17,9 @@ router.get('/', function(req, res){
 })
 
 router.get('/:id', function(req, res){
-	amigoUserService.getById(req.params,function(err, respuesta){
+	let id = req.session.usuario._id
+	amigoUserService.getById(id, function(err, respuesta){
+		console.log(respuesta)
 		if (err) {
 			res.json({status:'FAIL', err, code:0})    
 		}else{

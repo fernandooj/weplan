@@ -21,6 +21,7 @@ let UserSchema = mongoose.Schema({
 	ciudad		: String,
 	photo	 	: String,
 	email		: String,
+	telefono	: String,
 	tipo		: String,
 	acceso		: String,
 	estado		: String,
@@ -28,7 +29,6 @@ let UserSchema = mongoose.Schema({
 	username	: String,
 	password 	: String,
 	token		: String,
-	idUser      : String,
 	acceso      : String
 });
 

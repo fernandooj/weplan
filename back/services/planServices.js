@@ -6,25 +6,29 @@ let planSchema = require('../models/planModel.js')
 
 class planServices {
 	get(callback){
-		planSchema.find({}, callback)
+		planSchema.find({}, null, {sort: {_id: -1}}).populate('asignados').exec(callback)
 	}
-	getById(id, callback){
+	getById(asignados, callback){
+		planSchema.find({$or:[{'asignados':asignados},{'idUsuario':asignados}]}, callback)
+	}
+	create(planData, id, callback){
+		let plan 			= new planSchema();
+		plan.nombre 		= planData.nombre	
+		plan.descripcion	= planData.descripcion	
+		plan.restricciones  = planData.restricciones	
+		plan.idUsuario 		= id	
+		plan.fechaLugar 	= planData.fechaLugar
 
-	}
-	create(planData, nameFile, callback){
-		console.log(nameFile)
-		let plan = new planSchema();
-		plan.nombre = planData.nombre	
-		plan.descripcion = planData.descripcion	
-		plan.restricciones = planData.restricciones	
-		plan.idUsuario = planData.idUsuario	
-		plan.fechaLugar = planData.fechaLugar
-		plan.imagen = nameFile	
-		plan.lat = planData.lat	
-		plan.lng = planData.lng	
-		plan.lugar = planData.lugar	
-		plan.asignados = planData.asignados	
+		plan.lat 			= planData.lat	
+		plan.lng 			= planData.lng	
+		plan.lugar 			= planData.lugar	
+		plan.asignados 		= planData.asignados	
 		plan.save(callback)
+	}
+	uploadImage(id, nameFile, callback){
+		planSchema.findByIdAndUpdate(id, {$set: {
+	        'imagen': nameFile,
+        }}, callback);	
 	}
 }
 

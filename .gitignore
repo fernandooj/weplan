@@ -5,6 +5,11 @@ front/node_modules/**/*
 weplan_app/node_modules/**/*
 weplan/node_modules/**/*
 recursos/
+admin/build/
+admin/dist/
+admin/public/assets/
+admin/node_modules/**/*
+
 .expo/*
 npm-debug.*
 

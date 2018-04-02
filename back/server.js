@@ -11,12 +11,15 @@ let cookieParser = require('cookie-parser');
 let cookieSession = require('cookie-session')
 let formidable   = require('express-form-data');
 const fileUpload = require('express-fileupload');
+let SocketIO     = require('./socket.js')
+
 
 // importo las rutas
 let categoriaRutas = require('./routes/Categoria.js');
 let paisRutas = require('./routes/Pais.js');
 let amigoUser = require('./routes/amigoUser.js');
 let planRutas = require('./routes/Plan.js');
+let chatRutas = require('./routes/Chat.js');
 
 const path          = require('path');
 //let mongoStore   = require('connect-mongo')(session)
@@ -25,6 +28,11 @@ const path          = require('path');
 /////////////////////////////////////////////////////////////////////////   
 let passport = require('passport');
 let flash    = require('connect-flash');
+
+ 
+let http = require('http')
+let server = http.Server(app)
+SocketIO(server)
 
 
 /////////////////////////////////////////////////////////////////////////
@@ -54,13 +62,13 @@ mongoose.connect(config.database, { useMongoClient: true })
 
 // llamo a los archivos estaticos
 app.get('/:url', (req, res) => {
-  res.sendFile(path.join(__dirname, '/static'));
+  res.sendFile(path.join(__dirname, '../admin/docs/index.html'));
 });
 app.get('/:url/:url', (req, res) => {
-  res.sendFile(path.join(__dirname, '/static'));
+  res.sendFile(path.join(__dirname, '../admin/docs/index.html'));
 });
 
-app.use(express.static('static'));
+app.use(express.static('../admin/docs'));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -84,7 +92,7 @@ app.use(formidable.parse({ keepExtensions:true }))
 /*app.use( session( {
     saveUninitialized: false,
     resave: false,
-    secret: "parientico",
+    secret: "parientico",plaplan
     store: new mongoStore( {
         mongooseConnection: mongoose.connection
     } )
@@ -104,8 +112,9 @@ app.use('/x/v1/cat/categoria', categoriaRutas)
 app.use('/x/v1/ami/amigoUser', amigoUser)
 app.use('/x/v1/pap/pais', paisRutas)
 app.use('/x/v1/pla/plan', planRutas)
+app.use('/x/v1/cha/chat', chatRutas)
 
 require('./routes/Users.js')(app, passport);
 
-app.listen(port)
+server.listen(port)
 console.log("run in: " + port)

@@ -158,7 +158,7 @@ module.exports = function(app, passport){
                     console.log(activado)
                     if (activado) {
                         
-                        req.session.usuario =  activado
+                        req.session.usuario =  {user:activado}
                         return res.json({ status: 'SUCCESS', message: 'Usuario activado', user: activado });                
                     }
                 })
@@ -174,11 +174,13 @@ module.exports = function(app, passport){
     app.put('/x/v1/user/update/:_id', function(req, res, next){
         
         let ruta = null
+        let fullUrl = null
         console.log(req.files)
+        console.log(req.body)
         if (req.files) {
             let extension = req.files.imagen.name.split('.').pop()
             let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
-            let fullUrl = '../static/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
+            fullUrl = '../static/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
             ruta = req.protocol+'://'+req.get('Host') + '/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
         }else{
             ruta = req.protocol+'://'+req.get('Host') + '/avatar.png'
@@ -191,7 +193,7 @@ module.exports = function(app, passport){
                 res.json({ status: 'FAIL', message: err}) 
             } else{
                 res.json({ status: 'SUCCESS', message: 'Usuario Activado', user: user }); 
-                //fs.rename(req.body.photo.path, path.join(__dirname, fullUrl))                
+                fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))                
             }
         }) 
     })
@@ -234,7 +236,7 @@ module.exports = function(app, passport){
             res.json({status:'FAIL', user: 'SIN SESION', code:0 })
         }else{
             //res.json({'user': req.user, 'user': req.session.usuario })
-                res.json({status:'SUCCESS', user: req.session.usuario, code:1})  
+            res.json({status:'SUCCESS', user: req.session.usuario, code:1})  
         } 
     })
 
@@ -254,7 +256,6 @@ module.exports = function(app, passport){
     */
     ///////////////////////////////////////////////////////////////////////////
     app.post('/x/v1/user/facebook', function(req, res){
-        console.log('/////')
         userServices.getEmail(req.body, function(err, users){
         console.log(req.users)    
             if (!users) {
@@ -293,7 +294,7 @@ module.exports = function(app, passport){
     app.get('/x/v1/users/', function(req,res){
         console.log(req.session.usuario)
         if(req.session.usuario){
-            if (req.session.usuario.user.acceso=='admin') {
+            if (req.session.usuario.user.acceso=='superAdmin') {
                 userServices.get(function(err, usuarios){
                     if(!err){
                         res.json({status:'SUCCESS', usuarios})
@@ -332,13 +333,13 @@ module.exports = function(app, passport){
 
     ///////////////////////////////////////////////////////////////////////////
     /*
-    modifica tipo y activa/desactiva
+    Activa / Desactiva
     */
     ///////////////////////////////////////////////////////////////////////////
     app.post('/x/v1/users/', function(req,res){
-        if(req.user){
-            if (req.user.tipo=='admin') {
-                userServices.tipo(req.body, function(err, usuarios){
+        if(req.session.usuario){
+            if (req.session.usuario.user.acceso=='superAdmin') {
+                userServices.enableDisable(req.body, function(err, usuarios){
                     if(!err){
                         res.json({status:'SUCCESS', usuarios})
                     }else{
@@ -354,6 +355,45 @@ module.exports = function(app, passport){
     })
 
 
+    ///////////////////////////////////////////////////////////////////////////
+    /*
+    Crea Usuario desde el administrador
+    */
+    ///////////////////////////////////////////////////////////////////////////
+    app.post('/x/v1/users/createUser', function(req,res){
+        let randonNumber = Math.floor(1000 + Math.random() * 9000);
+        let ruta = null 
+        if(req.session.usuario){
+            if (req.session.usuario.user.acceso=='superAdmin') {
+                if (req.files) {
+                    let extension = req.files.imagen.name.split('.').pop()
+                    let fullUrl = '../static/uploads/plan/'+fecha+'_'+randonNumber+'.'+extension
+                    ruta = req.protocol+'://'+req.get('Host') + '/uploads/plan/'+fecha+'_'+randonNumber+'.'+extension
+                    userServices.createUser(req.body, randonNumber, ruta, function(err, usuarios){
+                        if(err){
+                            res.json({err})
+                        }else{
+                            res.json({ status: 'SUCCESS', message: plan, code:1 }); 
+                            fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))
+                        }
+                    })
+                }else{
+                    ruta = req.protocol+'://'+req.get('Host') + '/avatar.png'
+                    userServices.createUser(req.body, randonNumber, ruta, function(err, usuarios){
+                        if(!err){
+                            res.json({status:'SUCCESS', usuarios})
+                        }else{
+                            res.json({ status: 'FAIL', err}) 
+                        }
+                    })
+                }
+            }else{
+                res.json({ status: 'FAIL', message:'No tienes acceso'})
+            }
+        }else{
+            res.json({ status: 'FAIL', message:'usuario no logueado'})  
+        }
+    })
 
 
     ///////////////////////////////////////////////////////////////////////////
