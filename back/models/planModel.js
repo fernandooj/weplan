@@ -9,6 +9,8 @@ let moment   = require('moment');
 let planSchema = mongoose.Schema({
 	createdAt	  : { type: String, default: moment().format('YYYY-MM-DD h:mm') },
 	nombre        : { type : String },
+	tipo		  : { type: String},
+	estado		  : { type: String},
 	descripcion   : { type : String },
 	imagen        : { type : String },
 	restricciones : [{type:String}],

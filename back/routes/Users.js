@@ -175,8 +175,6 @@ module.exports = function(app, passport){
         
         let ruta = null
         let fullUrl = null
-        console.log(req.files)
-        console.log(req.body)
         if (req.files) {
             let extension = req.files.imagen.name.split('.').pop()
             let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
@@ -317,7 +315,6 @@ module.exports = function(app, passport){
     */
     ///////////////////////////////////////////////////////////////////////////
     app.get('/x/v1/users/activos', function(req,res){
-        console.log(req.session.usuario)
         if(req.session.usuario){
             userServices.getActivos(function(err, usuarios){
                 if(!err){
@@ -363,17 +360,21 @@ module.exports = function(app, passport){
     app.post('/x/v1/users/createUser', function(req,res){
         let randonNumber = Math.floor(1000 + Math.random() * 9000);
         let ruta = null 
+        console.log(req.files)
         if(req.session.usuario){
             if (req.session.usuario.user.acceso=='superAdmin') {
                 if (req.files) {
-                    let extension = req.files.imagen.name.split('.').pop()
-                    let fullUrl = '../static/uploads/plan/'+fecha+'_'+randonNumber+'.'+extension
-                    ruta = req.protocol+'://'+req.get('Host') + '/uploads/plan/'+fecha+'_'+randonNumber+'.'+extension
+                    let extension1 = req.files.imagen.name.split('.').pop()
+                    let extension = extension1=='blob' ?'png' :extension1
+                    console.log(extension)
+                    let fullUrl = '../static/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
+
+                    ruta = req.protocol+'://'+req.get('Host') + '/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
                     userServices.createUser(req.body, randonNumber, ruta, function(err, usuarios){
                         if(err){
                             res.json({err})
                         }else{
-                            res.json({ status: 'SUCCESS', message: plan, code:1 }); 
+                            res.json({ status: 'SUCCESS', message: usuarios, code:1 }); 
                             fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))
                         }
                     })

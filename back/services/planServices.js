@@ -11,14 +11,18 @@ class planServices {
 	getById(asignados, callback){
 		planSchema.find({$or:[{'asignados':asignados},{'idUsuario':asignados}]}, callback)
 	}
+	getByclientes(callback){
+		planSchema.find({estado:'activo', tipo:'cliente'}, null, {sort: {_id: -1}}, callback)
+	}
 	create(planData, id, callback){
 		let plan 			= new planSchema();
+		plan.tipo 		    = planData.tipo	
 		plan.nombre 		= planData.nombre	
 		plan.descripcion	= planData.descripcion	
 		plan.restricciones  = planData.restricciones	
+		plan.estado         = 'activo'	
 		plan.idUsuario 		= id	
 		plan.fechaLugar 	= planData.fechaLugar
-
 		plan.lat 			= planData.lat	
 		plan.lng 			= planData.lng	
 		plan.lugar 			= planData.lugar	

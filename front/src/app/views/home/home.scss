@@ -1,0 +1,35 @@
+/*  IPORTANT: Comment this way  and not JS way "//" */
+
+
+/*  better naming with camelCase than kebab-case */
+
+.homeInfo {
+  .mainTitle {
+    color: #222 !important;
+    font-weight: 800;
+  }
+  .lightNote {
+    font-size: 0.7em;
+  }
+}
+.logo{
+	width:80%;
+	margin:20px auto;
+}
+.alertaError{
+	padding: 12px;
+	text-align: center;
+	margin-top: 15px;
+}
+.input{
+    background-color: #f2dede !important;
+    border-color: #ebccd1 !important;
+}
+.input::placeholder{
+	color:white !important
+}
+.active{
+      color: #495057;
+    background-color: #fff;
+    border-color: #dee2e6 #dee2e6 #fff;
+}

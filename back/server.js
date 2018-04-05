@@ -62,13 +62,13 @@ mongoose.connect(config.database, { useMongoClient: true })
 
 // llamo a los archivos estaticos
 app.get('/:url', (req, res) => {
-  res.sendFile(path.join(__dirname, '../admin/docs/index.html'));
+  res.sendFile(path.join(__dirname, '../front/docs/index.html'));
 });
 app.get('/:url/:url', (req, res) => {
-  res.sendFile(path.join(__dirname, '../admin/docs/index.html'));
+  res.sendFile(path.join(__dirname, '../front/docs/index.html'));
 });
 
-app.use(express.static('../admin/docs'));
+app.use(express.static('../front/docs/'));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());

@@ -18,16 +18,26 @@ router.get('/', function(req, res){
 	})
 })
 
-router.get('/:id', function(req, res){
+router.get('/:clientes', function(req, res){
 	let id = req.session.usuario.user._id
-	planServices.getById(id, function(err, planes){
-		console.log(err)
-		if (err) {
-			res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
-		}else{
-			res.json({ status: 'SUCCESS', message: planes, code:1 });	
-		}
-	})
+	if (req.params.clientes=='clientes') {
+		planServices.getByclientes(function(err, planes){
+			if (err) {
+				res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
+			}else{
+				res.json({ status: 'SUCCESS', message: planes, code:1 });	
+			}
+		})	
+	}else{
+		planServices.getById(id, function(err, planes){
+			if (err) {
+				res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
+			}else{
+				res.json({ status: 'SUCCESS', message: planes, code:1 });	
+			}
+		})
+	}
+	
 })
 
 
@@ -44,12 +54,12 @@ router.post('/', function(req, res){
 
 router.put('/', (req, res)=>{
 	let ruta = null 
-
+	console.log(req.files.imagen)
 	if (req.files.imagen) {
 		let extension = req.files.imagen.name.split('.').pop()
 		let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
-		let fullUrl = '../static/uploads/plan/'+fecha+'_'+randonNumber+'.'+extension
-		ruta = req.protocol+'://'+req.get('Host') + '/uploads/plan/'+fecha+'_'+randonNumber+'.'+extension
+		let fullUrl = '../../front/docs/public/uploads/plan/'+fecha+'_'+randonNumber+'.'+extension
+		ruta = req.protocol+'://'+req.get('Host') + '/public/uploads/plan/'+fecha+'_'+randonNumber+'.'+extension
 		planServices.uploadImage(req.body.id, ruta, (err, plan)=>{
 			if(err){
 				res.json({err})
