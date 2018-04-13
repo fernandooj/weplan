@@ -23,9 +23,7 @@ export default class ChatComponent extends Component{
 		let imagen = this.props.navigation.state.params.imagen
 		let nombrePlan = this.props.navigation.state.params.nombre
 
-		// let planId = '5ab87c8d8ec90a6b4419500e'
-		// let imagen = 'http://159.89.141.0:8080/uploads/plan/2018-03-26-4-51_90430576.jpg'
-		// let nombrePlan = 'el socio era un amigo muy chido el socio era un amigo muy chido el socio era un amigo muy chido '
+		 
 		this.setState({planId, imagen, nombrePlan})
 		console.log({planId, imagen, nombrePlan})
 		//const {planId} = this.state

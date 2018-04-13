@@ -53,6 +53,18 @@ export const HomeStyle = StyleSheet.create({
 		flexDirection:'row',
 		justifyContent: 'flex-start',
 	},
+	footer3:{
+		flexWrap: 'wrap', 
+		alignItems: 'flex-start',
+		flexDirection:'row',
+		justifyContent: 'flex-start',
+		backgroundColor:"rgba(0,0,0,0)",
+	},
+	iconFooter3:{
+		width:100,
+		height:100,
+		backgroundColor:"rgba(0,0,0,0)",
+	},
 	iconFooter:{
 		width:35,
 	 	height:35,

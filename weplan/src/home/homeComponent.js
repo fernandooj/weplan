@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, ImageBackground, TextInput, ScrollView} from 'react-native'
+import {View, Text, Image, TouchableOpacity, ImageBackground, TextInput, ScrollView, NativeModules} from 'react-native'
 import {HomeStyle} from '../home/style'
 import axios from 'axios'
 import Modal from 'react-native-modalbox';
@@ -104,25 +104,44 @@ export default class homeComponent extends Component{
 			)			
 		})
 	}
+	updatePlanes(){
+		axios.get('/x/v1/pla/plan/clientes')
+		.then(e=>{
+			this.setState({planes:e.data.message})
+		})
+		.catch(err=>{
+			console.log(err)
+		})
+	}
+	handleScroll(event) {
+		if(event.nativeEvent.contentOffset.y<=0){
+			axios.get('/x/v1/pla/plan/clientes')
+			.then(e=>{
+				this.setState({planes:e.data.message})
+			})
+			.catch(err=>{
+				console.log(err)
+			})
+		}
+	}
 	render(){
 		const {navigate} = this.props.navigation
 		const filteredData = this.state.filteredData
 		const rows = this.getRow(filteredData)
-		console.log(this.state.planes)
 		return(	 
 			<View style={HomeStyle.contenedor}>
 				<View style={HomeStyle.cabezera}>
 					<TouchableOpacity onPress={() => this.refs.modal2.open()}>
 						<Image source={require('./icon1.png')} style={HomeStyle.iconHead} />
 					</TouchableOpacity>
-					<TouchableOpacity onPress={()=> navigate('misPlanes')} >
+					<TouchableOpacity onPress={()=> this.updatePlanes()} >
 						<Image source={require('./icon2.png')} style={HomeStyle.iconHead} />
 					</TouchableOpacity>
 					<TouchableOpacity onPress={this.closeSession.bind(this)} >
 						<Image source={require('./icon3.png')} style={HomeStyle.iconHead} />
 					</TouchableOpacity>
 				</View>
-				<ScrollView style={HomeStyle.contenedorPlan}>
+				<ScrollView style={HomeStyle.contenedorPlan} onScroll={this.handleScroll.bind(this)} scrollEventThrottle={16}>
 				{
 					this.renderPlans()
 				}
@@ -133,6 +152,17 @@ export default class homeComponent extends Component{
 					</TouchableOpacity>
 				</View>/*}
 				{/* modal to add friends */}
+				<View style={HomeStyle.footer3} >
+					<TouchableOpacity onPress={()=> navigate('createPlan')} >
+						<Image source={require('./icon10.png')} style={HomeStyle.iconFooter3} />
+					</TouchableOpacity>
+					<TouchableOpacity onPress={()=> navigate('createPlan')} >
+						<Image source={require('./icon11.png')} style={HomeStyle.iconFooter3} />
+					</TouchableOpacity>
+					<TouchableOpacity onPress={()=> navigate('misPlanes')} >
+						<Image source={require('./icon12.png')} style={HomeStyle.iconFooter3} />
+					</TouchableOpacity>
+				</View>
 				<Modal style={HomeStyle.modal} backdrop={true}  position={"top"} ref={"modal2"}>
 					<View style={HomeStyle.titulo}>
 						<Button onPress={() => this.refs.modal2.close()} style={HomeStyle.btnModal}> &#60; </Button>
