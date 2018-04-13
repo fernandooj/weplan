@@ -375,15 +375,15 @@ export default class Planes extends PureComponent {
   }
 
   handleDrop(files) {
-  console.log(files)
-  var data = new FormData();
-  //data.append('imagen', files);
+    console.log(files)
+    var data = new FormData();
+    //data.append('imagen', files);
 
-  files.forEach((file, index) => {
-    data.append('imagen', file);
-  });
- 
-  axios({
+    files.forEach((file, index) => {
+      data.append('imagen', file);
+    });
+   
+    axios({
       method: 'post', //you can set what request you want to be
       url: '/x/v1/users/createUser',
       data: data,
@@ -399,9 +399,7 @@ export default class Planes extends PureComponent {
     .catch((err)=>{
       console.log(err)
     })
-
- 
-}
+  }
   handleSubmit(){
     const {nombre, descripcion, fechaLugar, x, value, imagen, tipo} = this.state
     console.log({nombre, descripcion, fechaLugar, x, value, imagen, tipo})
