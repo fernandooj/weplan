@@ -25,4 +25,5 @@ weplan_app/build/
 weplan_app/.idea
 weplan_app/.gradle
 weplan_app/local.properties
+weplan_app/front/docs/public/uploads/
 *.iml
