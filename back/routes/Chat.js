@@ -13,7 +13,7 @@ router.get('/:id', (req, res)=>{
 		if (err) {
 			res.json({status:'FAIL', err, code:0})   
 		}else{
-			res.json({status:'SUCCESS', mensaje:chat, code:1}) 
+			res.json({status:'SUCCESS', mensaje:chat, total:chat.length, code:1}) 
 		}
 	})
 })
@@ -27,7 +27,6 @@ router.post('/', (req, res)=>{
 	let planId  = req.body.planId
 	let mensaje = req.body.mensaje
 	let fecha   = req.body.fecha
-	console.log(id)
 	if (!photo) {
 		photo = req.protocol+'://'+req.get('Host') + '/avatar.png'
 	}
@@ -37,7 +36,8 @@ router.post('/', (req, res)=>{
 		id, photo, planId, mensaje, fecha, nombre
 	}
 	cliente.publish('chat', JSON.stringify(mensajeJson))
-	chatServices.create(req.body, id, (err, chat)=>{
+	chatServices.create(req.body, id, null, (err, chat)=>{
+		console.log('chat')
 		if (err) {
 			res.json({status:'FAIL', err, code:0})   
 		}else{
@@ -45,5 +45,5 @@ router.post('/', (req, res)=>{
 		}
 	})	
 })
-
+	
 module.exports = router

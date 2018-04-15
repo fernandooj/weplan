@@ -19,3 +19,10 @@ build/
 .gradle
 local.properties
 *.iml
+
+
+weplan_app/build/
+weplan_app/.idea
+weplan_app/.gradle
+weplan_app/local.properties
+*.iml

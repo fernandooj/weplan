@@ -20,6 +20,7 @@ let paisRutas = require('./routes/Pais.js');
 let amigoUser = require('./routes/amigoUser.js');
 let planRutas = require('./routes/Plan.js');
 let chatRutas = require('./routes/Chat.js');
+let itemRutas = require('./routes/Item.js');
 
 const path          = require('path');
 //let mongoStore   = require('connect-mongo')(session)
@@ -113,6 +114,7 @@ app.use('/x/v1/ami/amigoUser', amigoUser)
 app.use('/x/v1/pap/pais', paisRutas)
 app.use('/x/v1/pla/plan', planRutas)
 app.use('/x/v1/cha/chat', chatRutas)
+app.use('/x/v1/ite/item', itemRutas)
 
 require('./routes/Users.js')(app, passport);
 
