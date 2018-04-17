@@ -8,6 +8,9 @@ class planServices {
 	get(callback){
 		planSchema.find({}, null, {sort: {_id: -1}}).populate('asignados').exec(callback)
 	}
+	getByIdPlan(_id,callback){
+		planSchema.find({estado:'activo', _id}, null, {sort: {_id: -1}}).populate('asignados').exec(callback)
+	}
 	getById(asignados, callback){
 		planSchema.find({$or:[{'asignados':asignados},{'idUsuario':asignados}]}, callback)
 	}

@@ -72,11 +72,16 @@ router.post('/', function(req, res){
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
-	itemServices.create(req.body, id, ruta, (err, plan)=>{
+	itemServices.create(req.body, id, ruta, (err, item)=>{
 		if(err){
 			res.json({err})
 		}else{
-			createChat(req.body, res, id, plan)			
+			if (req.body.enviarChat){
+				createChat(req.body, res, id, item)
+			}else{
+				res.json({ status: 'SUCCESS', mensaje: item, code:1 });	
+			}
+						
 		}
 	})
 })

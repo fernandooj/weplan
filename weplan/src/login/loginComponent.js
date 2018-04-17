@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, TouchableOpacity, TextInput, Alert,  ImageBackground, AsyncStorage} from 'react-native'
+import {View, Text, TouchableOpacity, TextInput, Alert,  ImageBackground, ScrollView} from 'react-native'
 import {LoginStyle} from '../login/style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
@@ -104,52 +104,54 @@ export default class LoginComponent extends Component{
 		const {navigate} = this.props.navigation
 		var user = { _id: this.state.userId || -1 };
 		return(
-			<ImageBackground style={LoginStyle.fondo}	source={require('./fondo.png')} >
-				<View>
-				  
-					<Image
-						style={LoginStyle.image}
-						width={220} // height will be calculated automatically
-						source={require('./logo.png')}
-				   />
-				</View>
-				<TextInput
-			        style={LoginStyle.input}
-			        onChangeText={(username) => this.setState({username})}
-			        value={this.state.username}
-			        underlineColorAndroid='transparent'
-           			placeholder="Email / Telefono"
-           			placeholderTextColor="#8F9093" 
-			    />
-				<TextInput
-			        style={LoginStyle.input}
-			        onChangeText={(password) => this.setState({password})}
-			        value={this.state.password}
-			        underlineColorAndroid='transparent'
-           			placeholder="Contraseña"
-           			placeholderTextColor="#8F9093" 
-           			secureTextEntry
-			    />
-			    <TouchableOpacity style={LoginStyle.submit} onPress={this.handleSubmit.bind(this)}>
-			    	<Text style={LoginStyle.textSubmit}>Sign In</Text>
-			    </TouchableOpacity>
-			    <View style={LoginStyle.logos}>
-			    	<Text style={LoginStyle.text}>Recuérdame</Text>
-			    	<Text style={LoginStyle.text}>¿Olvidaste tu contraseña?</Text>
-			    </View>
-			    <View style={LoginStyle.logos}>
-			      <TouchableOpacity onPress={this._signInFacebook.bind(this)} >
-			        <Icon name='facebook' style={LoginStyle.facebook} />
-			      </TouchableOpacity>
-			      <TouchableOpacity onPress={this._signInGoogle.bind(this)} >
-			        <Icon name='google' style={LoginStyle.google} />
-			      </TouchableOpacity>
-			    </View>  
-			    <Text style={LoginStyle.text}>¿Aún no haces parte de Weplan? </Text>	
-			     <TouchableOpacity onPress={()=> navigate('Registro')} style={LoginStyle.signup_btn}>
- 					<Text style={LoginStyle.btnRegistro}>Registrate</Text>
- 				</TouchableOpacity>
-			</ImageBackground>
+			<ScrollView>
+				<ImageBackground style={LoginStyle.fondo}	source={require('./fondo.png')} >
+					<View>
+					  
+						<Image
+							style={LoginStyle.image}
+							width={220} // height will be calculated automatically
+							source={require('./logo.png')}
+					   />
+					</View>
+					<TextInput
+				        style={LoginStyle.input}
+				        onChangeText={(username) => this.setState({username})}
+				        value={this.state.username}
+				        underlineColorAndroid='transparent'
+	           			placeholder="Email / Telefono"
+	           			placeholderTextColor="#8F9093" 
+				    />
+					<TextInput
+				        style={LoginStyle.input}
+				        onChangeText={(password) => this.setState({password})}
+				        value={this.state.password}
+				        underlineColorAndroid='transparent'
+	           			placeholder="Contraseña"
+	           			placeholderTextColor="#8F9093" 
+	           			secureTextEntry
+				    />
+				    <TouchableOpacity style={LoginStyle.submit} onPress={this.handleSubmit.bind(this)}>
+				    	<Text style={LoginStyle.textSubmit}>Sign In</Text>
+				    </TouchableOpacity>
+				    <View style={LoginStyle.logos}>
+				    	<Text style={LoginStyle.text}>Recuérdame</Text>
+				    	<Text style={LoginStyle.text}>¿Olvidaste tu contraseña?</Text>
+				    </View>
+				    <View style={LoginStyle.logos}>
+				      <TouchableOpacity onPress={this._signInFacebook.bind(this)} >
+				        <Icon name='facebook' style={LoginStyle.facebook} />
+				      </TouchableOpacity>
+				      <TouchableOpacity onPress={this._signInGoogle.bind(this)} >
+				        <Icon name='google' style={LoginStyle.google} />
+				      </TouchableOpacity>
+				    </View>  
+				    <Text style={LoginStyle.text}>¿Aún no haces parte de Weplan? </Text>	
+				     <TouchableOpacity onPress={()=> navigate('Registro')} style={LoginStyle.signup_btn}>
+	 					<Text style={LoginStyle.btnRegistro}>Registrate</Text>
+	 				</TouchableOpacity>
+				</ImageBackground>
+			</ScrollView>
 		)
 	}
  
@@ -160,7 +162,6 @@ export default class LoginComponent extends Component{
 		const {navigate} = this.props.navigation
 		axios.post('/x/v1/user/login/', {username, password} )
 		.then((res)=>{
-			console.log(res.data.code)
 			if(res.data.code==0){
 				alert('error en los datos')
 			}else if (res.data.code==1){

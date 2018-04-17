@@ -7,41 +7,41 @@ let path = require('path')
 let moment   = require('moment');
 let fecha = moment().format('YYYY-MM-DD-h-mm')
 
-let pagoServices = require('../services/pagoServices.js')
+let abonoServices = require('../services/abonoServices.js')
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////	 GET ALL 	//////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 router.get('/', function(req, res){
-	pagoServices.getALL((err, pago)=>{
+	abonoServices.getALL((err, abono)=>{
 		if(err){
 			res.json({err, code:0})
 		}else{
-			res.json({ status: 'SUCCESS', mensaje: pago, total:pago.length, code:1 });				
+			res.json({ status: 'SUCCESS', mensaje: abono, total:abono.length, code:1 });				
 		}
 	})
 })
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////	 GET BY USER/PAGO 	///////////////////////////////////////////////
+/////////////////////////	 GET BY USER/abono 	///////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 router.get('/:user', function(req, res){
 	let id = req.session.usuario.user._id
 	console.log(id)
 	if (req.params.user=='user') {
-		pagoServices.getByidUSer(id, (err, pago)=>{
+		abonoServices.getByidUSer(id, (err, abono)=>{
 			if(err){
 				res.json({err, code:0})
 			}else{
-				res.json({ status: 'SUCCESS', mensaje: pago, total:pago.length,  code:1 });				
+				res.json({ status: 'SUCCESS', mensaje: abono, total:abono.length,  code:1 });				
 			}
 		})
 	}else{
-		pagoServices.getByItem(req.params.user, (err, pago)=>{
+		abonoServices.getByItem(req.params.user, (err, abono)=>{
 			if(err){
 				res.json({err, code:0})
 			}else{
-				res.json({ status: 'SUCCESS', mensaje: pago, total:pago.length, code:1 });				
+				res.json({ status: 'SUCCESS', mensaje: abono, total:abono.length, code:1 });				
 			}
 		})
 	}
@@ -50,11 +50,11 @@ router.get('/:user', function(req, res){
 
 router.post('/', function(req, res){
 	let id = req.session.usuario.user._id
-	pagoServices.create(req.body, id, (err, pago)=>{
+	abonoServices.create(req.body, id, (err, abono)=>{
 		if(err){
 			res.json({err})
 		}else{
-			res.json({ status: 'SUCCESS', mensaje: pago, total:pago.length, code:1 });					
+			res.json({ status: 'SUCCESS', mensaje: abono, total:abono.length, code:1 });					
 		}
 	})
 })

@@ -21,6 +21,8 @@ let amigoUser = require('./routes/amigoUser.js');
 let planRutas = require('./routes/Plan.js');
 let chatRutas = require('./routes/Chat.js');
 let itemRutas = require('./routes/Item.js');
+let pagoRutas = require('./routes/Pago.js');
+let abonoRutas= require('./routes/Abono.js');
 
 const path          = require('path');
 //let mongoStore   = require('connect-mongo')(session)
@@ -115,6 +117,8 @@ app.use('/x/v1/pap/pais', paisRutas)
 app.use('/x/v1/pla/plan', planRutas)
 app.use('/x/v1/cha/chat', chatRutas)
 app.use('/x/v1/ite/item', itemRutas)
+app.use('/x/v1/pag/pago', pagoRutas)
+app.use('/x/v1/abo/abono', abonoRutas)
 
 require('./routes/Users.js')(app, passport);
 
