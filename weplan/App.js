@@ -18,6 +18,7 @@ import homeComponent        from './src/home/homeComponent';
 import createPlanComponent  from './src/createPlan/createPlanComponent';
 import MisPlanesComponent   from './src/misPlanes/misPlanesComponent';
 import ChatComponent        from './src/chat/chatComponent';
+import ItemComponent        from './src/item/itemComponent';
 
 export const URL = 'http://159.89.141.0:8080/';
 axios.defaults.baseURL = URL;
@@ -32,6 +33,7 @@ const NavigationApp = StackNavigator({
     editPerfil1: {screen: editPerfilComponent1 },
     editPerfil2: {screen: editPerfilComponent2 },
     inicio:      {screen: homeComponent },
+    createPlan:  {screen: createPlanComponent },
 },{ headerMode: 'none' })
 
 const NavigationAppLogin = StackNavigator({
@@ -46,6 +48,7 @@ const NavigationAppLogin = StackNavigator({
     createPlan:  {screen: createPlanComponent },
     misPlanes:   {screen: MisPlanesComponent },
     chat:        {screen: ChatComponent },
+    item:        {screen: ItemComponent },
 },{ headerMode: 'none' })
 
 class Splash extends Component <{}>{
@@ -67,7 +70,7 @@ export default class App extends Component<{}> {
   componentWillMount() {
     axios.get('/x/v1/user/profile/')
     .then((res)=>{
-      //console.log(res.data)
+      console.log(res.data)
       if(res.data.code==1){
         this.setState({local:1})
       }else{

@@ -159,10 +159,6 @@ export const CreatePlanStyle = StyleSheet.create({
 		paddingTop: 50,
 		flex: 1
 	},
-	btnModal: {
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
 	input:{
 		marginTop:10,
 		width:240,
@@ -182,45 +178,15 @@ export const CreatePlanStyle = StyleSheet.create({
 	lista:{
 		 flex:1
 	},
-	subLista:{
-		width:'100%',
-		flexDirection:'row',
-		alignItems: 'flex-start',
-		marginTop:10
-	},
-	avatar:{
-		height: 60,
-		width: 60,
-		borderRadius: 30,
-
-	},
-	avatar2:{
-		height: 60,
-		width: 60,
-		borderRadius: 30,
-		borderWidth: 3.5,
-		borderColor: '#C2E3EE',
-	},
-	textoAvatar:{
-		fontSize:22,
-		marginLeft:20,
-		marginTop:20
-	},
-	agregado:{
-		position:'absolute',
-		left:40,
-		bottom:0,
-		height: 27,
-		width: 27,
-	},
-	titulo:{
-		flexDirection:'row',
-		alignItems: 'flex-start',
-	},
+	
 	btnModal:{
 		fontSize:20,
 		color:'#969696',
-		marginTop:2,
+		marginTop:5,
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginRight:10,
+		marginLeft:10,
 	},
 	btnHecho:{
 		backgroundColor: '#8FA8F7',

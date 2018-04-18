@@ -11,7 +11,8 @@ export default class ChatComponent extends Component{
 	constructor(props){
 		super(props)
 		this.state={
-			mensajes: []
+			mensajes: [],
+			nombrePlan:''
 		}
 		this.onReceivedMessage = this.onReceivedMessage.bind(this);
 
@@ -19,16 +20,22 @@ export default class ChatComponent extends Component{
 
 	componentWillMount(){
 		console.log(this.props.navigation.state.params)
-		let planId = this.props.navigation.state.params.planId
-		let imagen = this.props.navigation.state.params.imagen
-		let nombrePlan = this.props.navigation.state.params.nombre
-
-		 
-		this.setState({planId, imagen, nombrePlan})
-		console.log({planId, imagen, nombrePlan})
+		let planId = this.props.navigation.state.params		 
+		//let planId = '5ad3e90d2e1d1c33eec1359b'		 
+	 
 		//const {planId} = this.state
 		this.socket = SocketIOClient('http://159.89.141.0:8080/');
 		this.socket.on('userJoined'+planId, this.onReceivedMessage);
+
+		/////////////////	OBTENGO EL PLAN
+		axios.get('/x/v1/pla/plan/getbyid/'+planId) 
+		.then((res)=>{
+			this.setState({imagen: res.data.message[0].imagen, nombrePlan: res.data.message[0].nombre, planId})
+		})
+		.catch((err)=>{
+			console.log(err)
+		})
+
 
 		/////////////////	OBTENGO EL PERFIL
 		axios.get('/x/v1/user/profile') 
@@ -74,6 +81,7 @@ export default class ChatComponent extends Component{
  
 	renderCabezera(){
 		const {planId, imagen, nombrePlan} = this.state
+		const {navigate} = this.props.navigation
 		return(
 			<View>
 				<View style={ChatStyle.cabezera}>
@@ -82,7 +90,7 @@ export default class ChatComponent extends Component{
 					<TouchableOpacity onPress={() => this.opciones.bind(this)} style={ChatStyle.iconContenedor}>
 						<Image source={require('./preguntar.png')} style={ChatStyle.icon}  />
 					</TouchableOpacity>
-					<TouchableOpacity onPress={() => this.opciones.bind(this)} style={ChatStyle.iconContenedor}>
+					<TouchableOpacity onPress={()=> navigate('item', planId)} style={ChatStyle.iconContenedor}>
 						<Image source={require('./cuentas.png')} style={ChatStyle.icon}  />
 					</TouchableOpacity>
 				</View>
@@ -118,7 +126,7 @@ export default class ChatComponent extends Component{
 	}
 
 	render(){
-		console.log(this.state.planId)
+
 		return(
 			<View style={ChatStyle.contenedorGeneral} > 
 				{this.renderCabezera()}

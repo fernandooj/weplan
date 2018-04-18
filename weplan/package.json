@@ -7,11 +7,17 @@
     "test": "jest"
   },
   "dependencies": {
+    "@ercpereda/react-native-accordion": "^2.0.6",
     "axios": "^0.18.0",
     "moment": "^2.22.0",
     "react": "16.2.0",
+    "react-accessible-accordion": "^2.3.1",
     "react-addons-update": "^15.6.2",
+    "react-collapsible": "^2.0.4",
+    "react-dom": "^16.3.1",
     "react-native": "0.53.3",
+    "react-native-accordion": "^1.0.1",
+    "react-native-awesome-alerts": "^1.0.7",
     "react-native-button": "^2.3.0",
     "react-native-datepicker": "^1.6.0",
     "react-native-fa-icons": "^3.0.1",
@@ -24,7 +30,10 @@
     "react-native-maps": "^0.20.1",
     "react-native-modalbox": "^1.4.2",
     "react-native-scalable-image": "^0.4.0",
+    "react-native-ui-xg": "0.0.6",
     "react-navigation": "^1.1.2",
+    "react-onclickoutside": "^6.7.1",
+    "react-responsive-accordion": "^1.0.0",
     "socket.io-client": "^2.0.4"
   },
   "devDependencies": {

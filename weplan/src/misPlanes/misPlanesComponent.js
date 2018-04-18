@@ -57,6 +57,7 @@ export default class MisPlanesComponent extends Component{
 		const {navigate} = this.props.navigation
 		let imagen = imagenPlan ?imagenPlan : URL+'fondoPlan.png'
 		let dataPlan = {planId, imagen, nombre}
-		navigate('chat', dataPlan)
+		let id = planId
+		navigate('chat', id)
 	}
 }
