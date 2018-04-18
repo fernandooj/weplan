@@ -57,6 +57,7 @@ router.get('/:user', function(req, res){
 router.post('/', function(req, res){
 	let id = req.session.usuario.user._id
 	let ruta =null
+	console.log(req.body.enviarChat)
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////	 GENERATE AND SAVE THE IMAGE 	///////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -76,7 +77,7 @@ router.post('/', function(req, res){
 		if(err){
 			res.json({err})
 		}else{
-			if (req.body.enviarChat){
+			if (req.body.enviarChat=='true'){
 				createChat(req.body, res, id, item)
 			}else{
 				res.json({ status: 'SUCCESS', mensaje: item, code:1 });	
@@ -95,7 +96,7 @@ let createChat = function(req, res, id, plan){
 		if(err){
 			res.json({err, code:0})
 		}else{
-			res.json({ status: 'SUCCESS', mensaje: chat, code:1 });	
+			res.json({ status: 'SUCCESS', mensaje: chat, code:1, other:'save chat' });	
 		}
 	})
 }
