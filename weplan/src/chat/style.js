@@ -90,7 +90,7 @@ export const ChatStyle = StyleSheet.create({
 		marginBottom:100
 	},
 
-	////////////////// box chat
+	////////////////// box chat /////////////////
 	contenedorBox:{
 
 	},
@@ -139,8 +139,103 @@ export const ChatStyle = StyleSheet.create({
 	mensaje:{
 		padding: 20,
 		shadowOffset: { width: 0, height: 2 },
-	}
+	},
 
+	////////////////// box chat item /////////////////
+ 
+	header:{
+		width:screenWidth/1.54,
+		height:45,
+	 	alignSelf: 'flex-end',  
+		zIndex:10, 
+		position:'absolute',
+		top: 28,
+		right:18,  
+		borderTopLeftRadius:10,  
+	},  
+	modal:{
+	  paddingBottom:10
+	},
+	iconAvatar:{
+		position:'absolute',
+		top:17,  
+		right:5,
+		zIndex:100,
+		width:50,
+		height:50,
+		borderRadius:25,
+		zIndex:1000,
+		borderColor:'#9CB7F5',
+		borderWidth:5,
+	},
+	fotografia:{
+		position:'absolute',
+		top:80, 
+		right:screenWidth/2,
+		zIndex:100,
+		width:100,
+		height:100,
+		borderRadius:50, 
+		zIndex:1000,
+		borderColor:'#9CB7F5',
+		borderWidth:3,
+	},
+	nombre:{
+		color:'white',
+		fontSize:23,
+		alignSelf: 'flex-end',  
+		marginTop:9,
+		marginRight:80
+	},
+	titulo:{
+		color:'#4A4A4A',
+		fontSize:25,
+		marginLeft:80,
+		marginTop:30,
+	},
+	descripcion:{
+		color:'#5664ba',
+		fontSize:21,
+		marginLeft:80
+	},
+	valor:{
+		color:'#969696',
+		fontSize:18,
+		marginLeft:80,
+		marginTop:20,
+	},
+
+	///////// interes ///////////
+	contenedorInteres:{
+		flexDirection:'row',
+		alignSelf: 'flex-end', 
+		width:screenWidth/1.2,
+ 		justifyContent: 'center', 
+ 		position:'relative',
+ 		top:-10,
+ 	},
+	btnInteres:{
+		flexDirection:'row' 
+	},
+	imagenInteres:{
+		width:45,
+		height:45,
+		position:'relative',
+		zIndex:5
+	},
+	textoInteres:{
+		fontSize:12,
+		borderWidth:1,
+		borderRadius:10,
+		borderColor:'#5664ba',
+		position:'relative',
+		padding:7, 
+		paddingLeft:14, 
+		height:30,
+		top:10,
+		left:-14,
+		zIndex:0
+	}
 })
 
 

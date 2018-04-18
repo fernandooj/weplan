@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, TextInput, ScrollView, TouchableOpacity, Image } from 'react-native'
+import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground } from 'react-native'
 import axios from 'axios'
 import SocketIOClient from 'socket.io-client';
 
@@ -20,8 +20,8 @@ export default class ChatComponent extends Component{
 
 	componentWillMount(){
 		console.log(this.props.navigation.state.params)
-		let planId = this.props.navigation.state.params		 
-		//let planId = '5ad3e90d2e1d1c33eec1359b'		 
+		//let planId = this.props.navigation.state.params		 
+		let planId = '5ad68ae03f201846174bb61f'		 
 	 
 		//const {planId} = this.state
 		this.socket = SocketIOClient('http://159.89.141.0:8080/');
@@ -58,7 +58,12 @@ export default class ChatComponent extends Component{
 					id: e.userId._id,
 					nombre:e.userId.nombre,
 					photo:e.userId.photo,
-					mensaje:e.mensaje
+					mensaje:e.mensaje,
+					itemId: e.itemId ?e.itemId._id :null ,
+					titulo:e.itemId ?e.itemId.titulo :null,
+					descripcion:e.itemId ?e.itemId.descripcion :null,
+					rutaImagen:e.itemId ?e.itemId.rutaImagen :null,
+					valor:e.itemId ?e.itemId.valor :null
 				}
 			})
 			this.setState({mensajes})
@@ -70,7 +75,6 @@ export default class ChatComponent extends Component{
 	}
 	componentWillReceiveProps(NextProps){
 		console.log(this.props)
-		console.log(NextProps)	
 	}
 
 	onReceivedMessage(messages) {
@@ -104,24 +108,65 @@ export default class ChatComponent extends Component{
 		)
 	}
 	renderMensajes(){
+		function formatDollar(num) {
+		    var p = num.toFixed(0).split(".");
+		    return "$" + p[0].split("").reverse().reduce(function(acc, num, i, orig) {
+		        return  num=="-" ? acc : num + (i && !(i % 3) ? "," : "") + acc;
+		    }, "") + "." + p[1];
+		}
 		return this.state.mensajes.map((e,key)=>{
-			return (
-				<View key={key} style={ChatStyle.contenedorBox}>
-					<View style={e.id== this.state.id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]}>
-						<Text style={e.id== this.state.id ?ChatStyle.nombre :[ChatStyle.nombre, ChatStyle.nombreLeft]}>{e.nombre}</Text>
-						<Text style={ChatStyle.mensaje}>{e.mensaje}</Text>
-						
-					    <Text style={ChatStyle.fecha} >{e.fecha}</Text>
-					</View>
-					<Image
-						style={e.id== this.state.id ?ChatStyle.photo : [ChatStyle.photo, ChatStyle.photoLeft]}
-						width={50}
-						height={50}
-						source={{uri: e.photo}}
-				    />
-				</View>	
-			)
+			if (e.mensaje!==null) {
 				
+				return (
+					<View key={key} style={ChatStyle.contenedorBox}>
+						<View style={e.id== this.state.id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]}>
+							<Text style={e.id== this.state.id ?ChatStyle.nombre :[ChatStyle.nombre, ChatStyle.nombreLeft]}>{e.nombre}</Text>
+							<Text style={ChatStyle.mensaje}>{e.mensaje}</Text>
+							
+						    <Text style={ChatStyle.fecha} >{e.fecha}</Text>
+						</View>
+						<Image
+							style={e.id== this.state.id ?ChatStyle.photo : [ChatStyle.photo, ChatStyle.photoLeft]}
+							width={50}
+							height={50}
+							source={{uri: e.photo}}
+					    />
+					</View>	
+				)
+			}else{
+				return (
+					<View style={ChatStyle.container} key={key} >
+		         	<View style={ChatStyle.modalIn}>
+			          	{/* imagen avatar */}
+			            <Image source={require('./item2.png')} style={ChatStyle.header} />
+							<Image source={{uri: e.photo}} style={ChatStyle.iconAvatar} />
+
+				         {/* fotografia item */}
+				         <Image source={{uri: e.rutaImagen}} style={ChatStyle.fotografia} />
+  
+				         {/* rest modal */} 
+				         <View style={[ChatStyle.box, ChatStyle.modal]}> 
+				             <Text style={ChatStyle.nombre}>{e.nombre}</Text>
+				             <Text style={ChatStyle.titulo}>{e.titulo}</Text>
+				             <Text style={ChatStyle.descripcion}>{e.descripcion}</Text>  
+				             <Text style={ChatStyle.valor}>{'$ '+Number(e.valor).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>  
+				       	</View>
+
+				       	<View style={ChatStyle.contenedorInteres}>
+					       	<TouchableOpacity onPress={()=> navigate('item')} style={ChatStyle.btnInteres} >
+					       		<Image source={require('./me_interesa.png')} style={ChatStyle.imagenInteres} />
+					       		<Text style={ChatStyle.textoInteres}>Me Interesa</Text>
+					       	</TouchableOpacity>
+					       	<TouchableOpacity onPress={()=> navigate('item')} style={ChatStyle.btnInteres} >
+					       		<Image source={require('./no_me_interesa.png')} style={ChatStyle.imagenInteres} />
+					       		<Text style={ChatStyle.textoInteres}>no me Interesa</Text>
+					       	</TouchableOpacity>
+					      </View> 	
+		      		</View>
+		     		</View>
+				)
+			}
+			
 		})
 	}
 

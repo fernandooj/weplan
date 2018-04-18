@@ -61,7 +61,7 @@ export default class ItemComponent extends Component{
 				  		?<CrearItemComponent close={(value)=>this.setState({show:value})} planId={this.props.navigation.state.params} />
 				  		:null 
 				  	}
-	<View style={ItemStyle.subContentItem}>
+				<View style={ItemStyle.subContentItem}>
 				{/*****   boton para mostrar crear item	*****/}
 				  	<TouchableOpacity onPress={()=>this.setState({show:true})}>
 						<Text>+Crear Item</Text>
