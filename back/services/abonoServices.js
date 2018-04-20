@@ -26,7 +26,3 @@ class abonoServices{
 }
 
 module.exports = new abonoServices()
-
-
- 
-  

@@ -63,32 +63,17 @@ router.get('/id/:id', (req, res)=>{
 })
  
 
-///////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////	 		SAVE ITEM		///////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////	 		SAVE ITEM		//////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
 router.post('/', function(req, res){
 	let id = req.session.usuario.user._id
-	let ruta =null
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////	 GENERATE AND SAVE THE IMAGE 	///////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	if (req.files.imagen) {
-		let extension = req.files.imagen.name.split('.').pop()
-		let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
-		let fullUrl = '../../front/docs/public/uploads/item/'+fecha+'_'+randonNumber+'.'+extension
-		ruta = req.protocol+'://'+req.get('Host') + '/public/uploads/item/'+fecha+'_'+randonNumber+'.'+extension
-		fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))
-	}else{
-		ruta = req.protocol+'://'+req.get('Host') + '/plan.png'
-	}
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////
-
-	itemServices.create(req.body, id, ruta, (err, item)=>{
+	itemServices.create(req.body, id, (err, item)=>{
 		if(err){
 			res.json({err})
 		}else{
-			if (req.body.enviarChat=='true'){
+			if (req.body.enviarChat===true){
+				console.log(req.body.enviarChat)
 				createChat(req.body, res, id, item)
 			}else{
 				res.json({ status: 'SUCCESS', mensaje: item, code:1 });	
@@ -97,7 +82,6 @@ router.post('/', function(req, res){
 		}
 	})
 })
-
 
 /////////////////////////////////////////////////////////////////////////////
 ///////////////////////		FUNCTION TO CREATE CHAT 	/////////////////////
@@ -111,6 +95,36 @@ let createChat = function(req, res, id, plan){
 		}
 	})
 }
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////	 		SAVE IMAGEN		//////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
+
+router.post('/:id', (req,res)=>{
+	let ruta =null
+
+	if (req.files.imagen) {
+		let extension = req.files.imagen.name.split('.').pop()
+		let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
+		let fullUrl = '../../front/docs/public/uploads/item/'+fecha+'_'+randonNumber+'.'+extension
+		ruta = req.protocol+'://'+req.get('Host') + '/public/uploads/item/'+fecha+'_'+randonNumber+'.'+extension
+		fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))
+	}else{
+		ruta = req.protocol+'://'+req.get('Host') + '/item.png'
+	}
+	itemServices.uploadImage(req.params.id, ruta, (err, plan)=>{
+		if(err){
+			res.json({err})
+		}else{
+			res.json({ status: 'SUCCESS', message: plan, code:1 });	
+			
+		}
+	})
+
+})
+
+
 
 
 

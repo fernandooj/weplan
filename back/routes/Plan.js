@@ -64,7 +64,6 @@ router.post('/', function(req, res){
 
 router.put('/', (req, res)=>{
 	let ruta = null 
-	console.log(req.files.imagen)
 	if (req.files.imagen) {
 		let extension = req.files.imagen.name.split('.').pop()
 		let randonNumber = Math.floor(90000000 + Math.random() * 1000000)

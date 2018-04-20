@@ -14,19 +14,23 @@ class itemServices {
  	getByPlan(planId, callback){
 		itemSchema.find({planId}, callback)
  	}
-	create(itemData, id, ruta, callback){
+	create(itemData, id, callback){
 		let item 		 = new itemSchema();
 		item.titulo 	 = itemData.titulo	
 		item.tipo 		 = itemData.tipo	
 		item.descripcion = itemData.descripcion
-		item.estado      = 'activo'	
-		item.rutaImagen  = ruta		
+		item.estado      = 'activo'		
 		item.userId 	 = id	
 		item.enviarChat  = itemData.enviarChat
 		item.valor 		 = itemData.valor		
 		item.planId 	 = itemData.planId			
 		item.asignados 	 = itemData.asignados	
 		item.save(callback)
+	}
+	uploadImage(id, nameFile, callback){
+		itemSchema.findByIdAndUpdate(id, {$set: {
+	        'rutaImagen': nameFile,
+        }}, callback);	
 	}
  
 }
