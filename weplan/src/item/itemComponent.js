@@ -18,7 +18,6 @@ export default class ItemComponent extends Component{
 		axios.get('/x/v1/ite/item/user')
 		.then(e=>{
 			console.log(e.data)
-			//this.setState({tabs:{description:{misItems:e.data.mensaje}}})
 			this.setState({misItems:e.data.mensaje})
 		})
 		.catch(err=>{
@@ -27,20 +26,32 @@ export default class ItemComponent extends Component{
 	}
 	renderHeader(info) {
 		return (
-		  <View style={ItemStyle.header}>
-		    <Text style={ItemStyle.headerText}>{info}</Text>
+		  <View style={info=='Items' ?[ItemStyle.headerCollapsable, ItemStyle.headerCollapsableFirst] :ItemStyle.headerCollapsable }>
+		    <Text style={info=='Items' ?[ItemStyle.headerText, ItemStyle.headerTextFirst] :ItemStyle.headerText }>{info}</Text>
 		  </View>
 		);
 	}
 
 	renderContent(info) {
-			return info.map((e, key)=>{
+		console.log(info)
+	   const {navigate} = this.props.navigation
+	   if(info.length>0){
+	   	return info.map((e, key)=>{
 				return (
-				  <View style={ItemStyle.content} key={key}>
-				    <Text style={ItemStyle.contentText}>{e.titulo}</Text>
-				  </View>
+				  	<View style={ItemStyle.content} key={key}>
+				  		<TouchableOpacity style={!key==0 ?ItemStyle.boton: [ItemStyle.boton, ItemStyle.botonFirst]} onPress={()=>navigate('pago', e._id)}>
+					   		<Text style={ItemStyle.contentText}>
+					   			{e.titulo}  
+					   		</Text>
+					   		<Text style={ItemStyle.value}>+ {e.valor}</Text>
+					   	</TouchableOpacity>
+				  	</View>
 				)
 			})
+	   }else{
+	   	return(<View><Text>Cargando</Text></View>)
+	   }
+		
 	}
   	render() {
 		const {show, misItems} = this.state
@@ -68,18 +79,18 @@ export default class ItemComponent extends Component{
 				  	</TouchableOpacity>
 				  	
 				{/*****   Acordeon de los items	*****/}
-				  	{
+				  	{ 
 				  		misItems.length>0
 				  		?<Accordion
 					      style={ItemStyle.accordion}
-					      items = {tabs}
+					      items = {tabs} 
 					      headerRender = {this.renderHeader}
-					      contentRender = {this.renderContent}
+					      contentRender = {this.renderContent.bind(this)}
 					      headerName = "name"
 					      contentName = "description"
-					      maxHeight = {90}
+					    
 					      duration = {100}
-					      backgroundColor = {'#fff'}
+					 
 					    />
 					    :null
 				  	}

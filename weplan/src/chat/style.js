@@ -112,7 +112,7 @@ export const ChatStyle = StyleSheet.create({
 		position:'relative',
 		zIndex:10
 	},
-	boxLeft:{
+	boxLeft:{ 
 		alignSelf: 'flex-start',
 	},
 	nombre:{
@@ -153,6 +153,11 @@ export const ChatStyle = StyleSheet.create({
 		right:18,  
 		borderTopLeftRadius:10,  
 	},  
+	headerLeft:{
+		alignSelf: 'flex-start',
+		left:18,
+		borderTopRightRadius:10,  
+	},
 	modal:{
 	  paddingBottom:10
 	},
@@ -168,6 +173,9 @@ export const ChatStyle = StyleSheet.create({
 		borderColor:'#9CB7F5',
 		borderWidth:5,
 	},
+	iconAvatarLeft:{
+		left:5
+	},
 	fotografia:{
 		position:'absolute',
 		top:80, 
@@ -180,23 +188,39 @@ export const ChatStyle = StyleSheet.create({
 		borderColor:'#9CB7F5',
 		borderWidth:3,
 	},
+	fotografiaLeft:{
+		left:screenWidth/2,
+	},
 	nombre:{
 		color:'white',
 		fontSize:23,
 		alignSelf: 'flex-end',  
-		marginTop:9,
+		marginTop:8,
 		marginRight:80
-	},
+	}, 
+	nombreLeft:{ 
+		position:'relative',
+ 		left:30 															
+	}, 
 	titulo:{
 		color:'#4A4A4A',
 		fontSize:25,
 		marginLeft:80,
 		marginTop:30,
+
 	},
+	tituloLeft:{
+		marginLeft:5,
+		width:screenWidth/3
+	},
+
 	descripcion:{
 		color:'#5664ba',
 		fontSize:21,
 		marginLeft:80
+	},
+	descripcionLeft:{
+		marginLeft:5
 	},
 	valor:{
 		color:'#969696',
@@ -204,7 +228,9 @@ export const ChatStyle = StyleSheet.create({
 		marginLeft:80,
 		marginTop:20,
 	},
-
+	valorLeft:{
+		marginLeft:5
+	},
 	///////// interes ///////////
 	contenedorInteres:{
 		flexDirection:'row',
@@ -213,6 +239,9 @@ export const ChatStyle = StyleSheet.create({
  		justifyContent: 'center', 
  		position:'relative',
  		top:-10,
+ 	},
+ 	contenedorInteresLeft:{
+		alignSelf: 'flex-start', 
  	},
 	btnInteres:{
 		flexDirection:'row' 

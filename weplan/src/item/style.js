@@ -6,6 +6,7 @@ export const ItemStyle = StyleSheet.create({
 	//////////// pagina principal   //////////
 	contentItem: {
 		flex: 1,
+		height:screenHeight,
 		backgroundColor: '#F8F8F8',		 
 	}, 
 	subContentItem:{
@@ -20,21 +21,47 @@ export const ItemStyle = StyleSheet.create({
 	},
 	content: {
 		padding: 0 ,
-		backgroundColor: '#fff',
-		width:'100%'
+		backgroundColor: '#F8F8F8',		
+		width:'100%',
+		borderBottomWidth:0
 	},
-	header: {
+	headerCollapsable: {
 		padding: 10,
 		borderColor: '#8796F4',
 		borderBottomWidth:1,
 	},
+	headerCollapsableFirst:{
+		borderColor: '#AFE1F2',
+	},
 	headerText: {
 		color: '#8796F4',
+		padding:0, 
+		height:23,
+		fontSize:20 
+	},
+	headerTextFirst:{
+		color:'#AFE1F2',
+	},
+	boton:{
+		flexDirection:'row',
+		width:'100%',
+		padding: 10,  
+		borderBottomWidth:1,
+		borderBottomColor:'#ffffff',
+		borderTopWidth:1,
+		borderTopColor:'#cacaca',
+	},
+	botonTextFirst:{
+		borderTopWidth:0
 	},
 	contentText: {
-		padding: 10, 
+		 width:'50%',
 	},
-
+	value:{
+		color:'#79CF40',
+		alignSelf: 'flex-start', 
+		width:'40%',
+	},
   	//////////// crear item  //////////
 	container:{
 		backgroundColor:'rgba(0,0,0,.6)',

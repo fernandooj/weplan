@@ -106,47 +106,45 @@ export default class CrearItemComponent extends Component{
   }
  
   handleSubmit(){
-    const {titulo, descripcion, valor, imagen, enviarChat} = this.state
-    console.log(this.props.planId)
+    const {titulo, descripcion, valor, imagen, enviarChat, asignados} = this.state
     let planId = this.props.planId
     //let planId = '5ad3e90d2e1d1c33eec1359b'
 
     let data = new FormData();
-    data.append('imagen', imagen);
-    data.append('tipo', 1);
-    data.append('descripcion', descripcion);
-    data.append('enviarChat', enviarChat);
-    data.append('valor', valor);
-    data.append('titulo', titulo);
-    data.append('planId', planId);
+    
+ 
 
-
-    axios({
-          method: 'post', //you can set what request you want to be
-          url: '/x/v1/ite/item',
-          data: data,
-          headers: { 
-            'Accept': 'application/json',
-            'Content-Type': 'multipart/form-data'
-          }
-        })
+    axios.post('/x/v1/ite/item', {descripcion, enviarChat, valor, titulo, planId, asignados, tipo:1})
     .then(e=>{
-      console.log(e.data.code)
-       this.props.close(false)
-      if(e.data.code==1){ 
-
-        
-      }else{
-        Alert.alert(
-         'Error!, intenta nuevamente'
-        )
-      }
+      console.log(e.data)
+      let id = e.data.mensaje._id
+      data.append('imagen', imagen);
+      axios({
+            method: 'post', //you can set what request you want to be
+            url: '/x/v1/ite/item/'+id,
+            data: data,
+            headers: { 
+              'Accept': 'application/json',
+              'Content-Type': 'multipart/form-data'
+            }
+          })
+      .then(res=>{       
+        if(res.data.code==1){ 
+          //this.props.close(false)
+        }else{
+          Alert.alert(
+           'Error!, intenta nuevamente'
+          )
+        }
+      })
+      .catch(err=>{
+        console.log(err)
+      })
     })
     .catch(err=>{
       console.log(err)
     })
   }
-
 }
 
  

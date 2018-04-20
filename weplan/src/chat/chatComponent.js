@@ -138,21 +138,30 @@ export default class ChatComponent extends Component{
 					<View style={ChatStyle.container} key={key} >
 		         	<View style={ChatStyle.modalIn}>
 			          	{/* imagen avatar */}
-			            <Image source={require('./item2.png')} style={ChatStyle.header} />
-							<Image source={{uri: e.photo}} style={ChatStyle.iconAvatar} />
+			            <Image source={require('./item2.png')} 
+			            	style={e.id== this.state.id ?ChatStyle.header :[ChatStyle.header, ChatStyle.headerLeft]} 
+			            	/>
+							<Image source={{uri: e.photo}}
+								style={e.id== this.state.id ?ChatStyle.iconAvatar :[ChatStyle.iconAvatar, ChatStyle.iconAvatarLeft]} 
+							/>
 
 				         {/* fotografia item */}
-				         <Image source={{uri: e.rutaImagen}} style={ChatStyle.fotografia} />
+				         <Image source={{uri: e.rutaImagen}}
+				         	style={e.id== this.state.id ?ChatStyle.fotografia :[ChatStyle.fotografia, ChatStyle.fotografiaLeft]}
+				         />
   
-				         {/* rest modal */} 
-				         <View style={[ChatStyle.box, ChatStyle.modal]}> 
-				             <Text style={ChatStyle.nombre}>{e.nombre}</Text>
-				             <Text style={ChatStyle.titulo}>{e.titulo}</Text>
-				             <Text style={ChatStyle.descripcion}>{e.descripcion}</Text>  
-				             <Text style={ChatStyle.valor}>{'$ '+Number(e.valor).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>  
+				         {/* rest modal  
+				         <View style={[ChatStyle.box, ChatStyle.modal]}>*/} 
+				         <View style={e.id== this.state.id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft,  ChatStyle.modal]}>
+				             <Text style={e.id== this.state.id ?ChatStyle.nombre :[ChatStyle.nombre, ChatStyle.nombreLeft]}>{e.nombre}</Text>
+				             <Text style={e.id== this.state.id ?ChatStyle.titulo :[ChatStyle.titulo, ChatStyle.tituloLeft]}>{e.titulo}</Text>
+				             <Text style={e.id== this.state.id ?ChatStyle.descripcion :[ChatStyle.descripcion, ChatStyle.descripcionLeft]}>{e.descripcion}</Text>  
+				             <Text style={e.id== this.state.id ?ChatStyle.valor :[ChatStyle.valor, ChatStyle.valorLeft] }>
+				             	{'$ '+Number(e.valor).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
+				             </Text>  
 				       	</View>
 
-				       	<View style={ChatStyle.contenedorInteres}>
+				       	<View style={e.id== this.state.id ?ChatStyle.contenedorInteres :[ChatStyle.contenedorInteres, ChatStyle.contenedorInteresLeft]}>
 					       	<TouchableOpacity onPress={()=> navigate('item')} style={ChatStyle.btnInteres} >
 					       		<Image source={require('./me_interesa.png')} style={ChatStyle.imagenInteres} />
 					       		<Text style={ChatStyle.textoInteres}>Me Interesa</Text>

@@ -23,7 +23,6 @@ export default class ChatComponent extends Component{
 		let planId = this.props.navigation.state.params		 
 		//let planId = '5ad3e90d2e1d1c33eec1359b'		 
 	 
-		//const {planId} = this.state
 		this.socket = SocketIOClient('http://159.89.141.0:8080/');
 		this.socket.on('userJoined'+planId, this.onReceivedMessage);
 
@@ -68,11 +67,7 @@ export default class ChatComponent extends Component{
 			console.log(res)
 		})
 	}
-	componentWillReceiveProps(NextProps){
-		console.log(this.props)
-		console.log(NextProps)	
-	}
-
+ 
 	onReceivedMessage(messages) {
 	 	this.setState({
 		  mensajes: update(this.state.mensajes, {$push: [messages]})
