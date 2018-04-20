@@ -5,6 +5,9 @@ let itemSchema = require('../models/itemModel.js')
 
 
 class itemServices {
+	getById(_id, callback){
+		itemSchema.find({_id}, callback)
+	}
  	getByidUSer(userId, callback){
  		itemSchema.find({userId}, callback)
  	}

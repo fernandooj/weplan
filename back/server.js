@@ -25,6 +25,7 @@ let pagoRutas = require('./routes/Pago.js');
 let abonoRutas= require('./routes/Abono.js');
 
 const path          = require('path');
+
 //let mongoStore   = require('connect-mongo')(session)
 /////////////////////////////////////////////////////////////////////////
 /***** librerias necesarias para el login con facebook | google  *******/
