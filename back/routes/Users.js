@@ -178,8 +178,8 @@ module.exports = function(app, passport){
         if (req.files) {
             let extension = req.files.imagen.name.split('.').pop()
             let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
-            fullUrl = '../static/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
-            ruta = req.protocol+'://'+req.get('Host') + '/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
+            fullUrl = '../static/public/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
+            ruta = req.protocol+'://'+req.get('Host') + '/public/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
         }else{
             ruta = req.protocol+'://'+req.get('Host') + '/avatar.png'
         }

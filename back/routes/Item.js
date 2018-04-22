@@ -29,7 +29,6 @@ router.get('/', function(req, res){
 ///////////////////////////////////////////////////////////////////////////////////////////////
 router.get('/:user', (req, res)=>{
 	let id = req.session.usuario.user._id
-	console.log(id)
 	if (req.params.user=='user') {
 		itemServices.getByidUSer(id, (err, plan)=>{
 			if(err){
@@ -73,7 +72,6 @@ router.post('/', function(req, res){
 			res.json({err})
 		}else{
 			if (req.body.enviarChat===true){
-				console.log(req.body.enviarChat)
 				createChat(req.body, res, id, item)
 			}else{
 				res.json({ status: 'SUCCESS', mensaje: item, code:1 });	
@@ -86,12 +84,12 @@ router.post('/', function(req, res){
 /////////////////////////////////////////////////////////////////////////////
 ///////////////////////		FUNCTION TO CREATE CHAT 	/////////////////////
 /////////////////////////////////////////////////////////////////////////////
-let createChat = function(req, res, id, plan){
-	chatServices.create(req, id, plan._id, (err,chat)=>{
+let createChat = function(req, res, id, item){
+	chatServices.create(req, id, item._id, (err,chat)=>{
 		if(err){
 			res.json({err, code:0})
 		}else{
-			res.json({ status: 'SUCCESS', mensaje: chat, code:1, other:'save chat' });	
+			res.json({ status: 'SUCCESS', mensaje: item, chat, code:1, other:'save chat' });	
 		}
 	})
 }
@@ -103,7 +101,6 @@ let createChat = function(req, res, id, plan){
 
 router.post('/:id', (req,res)=>{
 	let ruta =null
-
 	if (req.files.imagen) {
 		let extension = req.files.imagen.name.split('.').pop()
 		let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
@@ -114,10 +111,11 @@ router.post('/:id', (req,res)=>{
 		ruta = req.protocol+'://'+req.get('Host') + '/item.png'
 	}
 	itemServices.uploadImage(req.params.id, ruta, (err, plan)=>{
+		
 		if(err){
-			res.json({err})
+			res.json({err, code:0})
 		}else{
-			res.json({ status: 'SUCCESS', message: plan, code:1 });	
+			res.json({ status: 'SUCCESS', plan, code:1 });	
 			
 		}
 	})

@@ -5,7 +5,6 @@ let itemSchema = require('../models/itemModel.js');
 
 class chatServices{
 	getByPlan(planId, callback){
-		console.log(planId)
 		chatSchema.find({planId}).populate('itemId').populate('userId').exec(callback)
 	}
 	create(data, id, itemId, callback){

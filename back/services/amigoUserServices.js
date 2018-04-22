@@ -8,10 +8,9 @@ class amigoUserService{
 		amigoUser.find({}).populate('asignados').exec(callback)
 	}
 	getById(idUsuario, callback){
-		amigoUser.find({idUsuario:idUsuario}).populate('asignados').exec(callback)
+		amigoUser.find({idUsuario}).populate('asignados').exec(callback)
 	}
 	buscarUsuario(idUsuario, callback){
-		console.log(idUsuario)
 		amigoUser.findOne({idUsuario}, callback)
 	}
 	create(user, idUsuario, callback){
@@ -20,9 +19,9 @@ class amigoUserService{
 		amigoUsers.asignados = user.asignados
 		amigoUsers.save(callback)
 	}
-	update(user, idUsuario, callback){
+	update(nuevoIds, idUsuario, callback){
 		amigoUser.findOneAndUpdate({idUsuario}, {$set: {
-	            'asignados': 	  user.asignados,
+	            'asignados': 	  nuevoIds,
 	            'updatedAt':       moment().format('YYYY-MM-DD h:mm:ss')
         	}}, callback);
 	}
