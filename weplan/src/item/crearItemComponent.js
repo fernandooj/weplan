@@ -4,17 +4,35 @@ import {ItemStyle}        from '../item/style'
 import axios              from 'axios'
 import TakePhotoComponent from '../takePhoto/takePhotoComponent.js'
 import AgregarAmigosComponent    from '../agregarAmigos/agregarAmigos.js'
- 
+import socket from '../../socket.js'
+import moment from 'moment'
+
 export default class CrearItemComponent extends Component{
   constructor(props) {
     super(props);
     this.state = {
       titulo:'',
+      descripcion:'',
+      valor:0,
       enviarChat:false,
       adjuntarAmigos:false,
       asignados:[]
     }  
   }
+  componentWillMount(){
+    ///////////////// OBTENGO EL PERFIL
+    axios.get('/x/v1/user/profile') 
+    .then((res)=>{
+      let id = res.data.user.user._id
+      let photo = res.data.user.user.photo
+      let nombre = res.data.user.user.nombre
+      this.setState({id, photo, nombre})
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
+
   render() {
     const {enviarChat, valor, adjuntarAmigos, asignados} = this.state
     return (
@@ -106,21 +124,40 @@ export default class CrearItemComponent extends Component{
   }
  
   handleSubmit(){
-    const {titulo, descripcion, valor, imagen, enviarChat, asignados} = this.state
+    const {titulo, descripcion, valor, imagen, enviarChat, asignados, id, nombre, photo} = this.state
+    const fecha = moment().format('h:mm')
+
     let planId = this.props.planId
     //let planId = '5ad3e90d2e1d1c33eec1359b'
 
     let data = new FormData();
     
- 
+    // id: e.userId._id,
+    // nombre:e.userId.nombre,
+    // photo:e.userId.photo,
+    // mensaje:e.mensaje,
+    // itemId: e.itemId ?e.itemId._id :null ,
+    // titulo:e.itemId ?e.itemId.titulo :null,
+    // descripcion:e.itemId ?e.itemId.descripcion :null,
+    // rutaImagen:e.itemId ?e.itemId.rutaImagen :null,
+    // valor:e.itemId ?e.itemId.valor :null
 
     axios.post('/x/v1/ite/item', {descripcion, enviarChat, valor, titulo, planId, asignados, tipo:1})
     .then(e=>{
-      let id = e.data.mensaje._id
+      let itemId = e.data.mensaje._id
+ 
+     
+
       data.append('imagen', imagen);
+      data.append('planId', planId);
+      data.append('fecha',  fecha);
+      data.append('titulo', titulo);
+      data.append('descripcion', descripcion);
+      data.append('valor', valor);
+
       axios({
             method: 'post', //you can set what request you want to be
-            url: '/x/v1/ite/item/'+id,
+            url: '/x/v1/ite/item/'+itemId,
             data: data,
             headers: { 
               'Accept': 'application/json',

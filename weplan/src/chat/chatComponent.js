@@ -6,7 +6,7 @@ import SocketIOClient from 'socket.io-client';
 import {ChatStyle} from '../chat/style'
 import update from 'react-addons-update';
 import moment from 'moment'
-
+import {URL} from '../../App.js'
 export default class ChatComponent extends Component{
 	constructor(props){
 		super(props)
@@ -19,11 +19,11 @@ export default class ChatComponent extends Component{
 	}
 
 	componentWillMount(){
-		let planId = this.props.navigation.state.params		 
+		let planId = this.props.navigation.state.params	
+		console.log(planId)	 
 		//let planId = '5ad68ae03f201846174bb61f'		 
 	 
-		//const {planId} = this.state
-		this.socket = SocketIOClient('http://159.89.141.0:8080/');
+		this.socket = SocketIOClient(URL);
 		this.socket.on('userJoined'+planId, this.onReceivedMessage);
 
 		/////////////////	OBTENGO EL PLAN
@@ -217,14 +217,6 @@ export default class ChatComponent extends Component{
 		const fecha = moment().format('h:mm')
 		const {planId, mensaje, id, photo} = this.state
 		
-		const Fullmensaje = {
-			planId, mensaje, id, photo, fecha
-		}
-		console.log(Fullmensaje)
-		this.textInput.clear()
-		this.socket.emit('userJoined'+planId, JSON.stringify(Fullmensaje))
-
-
 		axios.post('/x/v1/cha/chat', {planId, mensaje, fecha})
 		.then((res)=>{
 			console.log(res.data)

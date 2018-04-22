@@ -5,7 +5,9 @@ let router = express.Router()
 let fs = require('fs')
 let path = require('path')
 let moment   = require('moment');
-let fecha = moment().format('YYYY-MM-DD-h-mm')
+let fechab = moment().format('YYYY-MM-DD-h-mm')
+let redis        = require('redis')
+let cliente      = redis.createClient()
 
 let itemServices = require('../services/itemServices.js')
 let chatServices = require('../services/chatServices.js')
@@ -72,7 +74,7 @@ router.post('/', function(req, res){
 			res.json({err})
 		}else{
 			if (req.body.enviarChat===true){
-				createChat(req.body, res, id, item)
+				createChat(req, res, id, item)
 			}else{
 				res.json({ status: 'SUCCESS', mensaje: item, code:1 });	
 			}
@@ -85,7 +87,7 @@ router.post('/', function(req, res){
 ///////////////////////		FUNCTION TO CREATE CHAT 	/////////////////////
 /////////////////////////////////////////////////////////////////////////////
 let createChat = function(req, res, id, item){
-	chatServices.create(req, id, item._id, (err,chat)=>{
+	chatServices.create(req.body, id, item._id, (err,chat)=>{
 		if(err){
 			res.json({err, code:0})
 		}else{
@@ -100,16 +102,36 @@ let createChat = function(req, res, id, item){
 //////////////////////////////////////////////////////////////////////////////////////////
 
 router.post('/:id', (req,res)=>{
+
+
+
 	let ruta =null
 	if (req.files.imagen) {
 		let extension = req.files.imagen.name.split('.').pop()
 		let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
-		let fullUrl = '../../front/docs/public/uploads/item/'+fecha+'_'+randonNumber+'.'+extension
-		ruta = req.protocol+'://'+req.get('Host') + '/public/uploads/item/'+fecha+'_'+randonNumber+'.'+extension
+		let fullUrl = '../../front/docs/public/uploads/item/'+fechab+'_'+randonNumber+'.'+extension
+		ruta = req.protocol+'://'+req.get('Host') + '/public/uploads/item/'+fechab+'_'+randonNumber+'.'+extension
 		fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))
 	}else{
 		ruta = req.protocol+'://'+req.get('Host') + '/item.png'
 	}
+
+	let id   = req.session.usuario.user._id
+	let photo   = req.session.usuario.user.photo
+	let nombre  = req.session.usuario.user.nombre
+	let mensaje  = null
+	let planId  = req.body.planId
+	let fecha   = req.body.fecha
+	let itemId  = req.params.id
+	let titulo = req.body.titulo
+	let descripcion = req.body.descripcion
+	let valor  = req.body.valor
+
+	let mensajeJson={
+		itemId, mensaje, id, photo, planId, mensaje, fecha, nombre, titulo, descripcion, valor, rutaImagen:ruta
+	}
+	cliente.publish('chat', JSON.stringify(mensajeJson))
+
 	itemServices.uploadImage(req.params.id, ruta, (err, plan)=>{
 		
 		if(err){

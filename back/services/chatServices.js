@@ -8,7 +8,6 @@ class chatServices{
 		chatSchema.find({planId}).populate('itemId').populate('userId').exec(callback)
 	}
 	create(data, id, itemId, callback){
-		console.log(itemId)
 		let chat = new chatSchema();
 		chat.userId  = id
 		chat.planId  = data.planId

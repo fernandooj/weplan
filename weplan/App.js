@@ -27,15 +27,20 @@ axios.defaults.baseURL = URL;
 
 const win = Dimensions.get('window');
 const NavigationApp = StackNavigator({
-    Home:        {screen: LoginComponent },
-    Login:       {screen: LoginComponent },
-    Registro:    {screen: RegistroComponent },
-    insertCode:  {screen: insertCodeComponent },
-    editPerfil:  {screen: editPerfilComponent },
-    editPerfil1: {screen: editPerfilComponent1 },
-    editPerfil2: {screen: editPerfilComponent2 },
-    inicio:      {screen: homeComponent },
-    createPlan:  {screen: createPlanComponent },
+    Home:          {screen: homeComponent },
+    Login:         {screen: LoginComponent },
+    Registro:      {screen: RegistroComponent },
+    insertCode:    {screen: insertCodeComponent },
+    editPerfil:    {screen: editPerfilComponent },
+    editPerfil1:   {screen: editPerfilComponent1 },
+    editPerfil2:   {screen: editPerfilComponent2 },
+    inicio:        {screen: homeComponent },
+    createPlan:    {screen: createPlanComponent },
+    misPlanes:     {screen: MisPlanesComponent },
+    chat:          {screen: ChatComponent },
+    item:          {screen: ItemComponent },
+    ajustes:       {screen: ajustesComponent },
+    ajustesAmigos: {screen: ajustesAmigosComponent },
 },{ headerMode: 'none' })
 
 const NavigationAppLogin = StackNavigator({
@@ -91,6 +96,7 @@ export default class App extends Component<{}> {
   // }
   render() {
     const {google, local} = this.state
+    console.log(local)
     if (local==null) {
       return (
          <Splash />)
