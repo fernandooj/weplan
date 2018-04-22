@@ -1,9 +1,9 @@
- import React, {Component} from 'react'
+import React, {Component} from 'react'
 import {View, Text, Image, TouchableOpacity, TextInput, StyleSheet, ScrollView} from 'react-native'
 import {ItemStyle} from '../item/style'
 import Accordion from 'react-native-accordion-xg';
 import axios from 'axios'
-import 	CrearItemComponent from './crearItemComponent'
+import CrearItemComponent from './crearItemComponent'
  
 
 
@@ -12,9 +12,22 @@ import 	CrearItemComponent from './crearItemComponent'
 export default class ItemComponent extends Component{
 	state={
 		show:false,
-		misItems:[]
+		misItems:[],
+		items:[]
 	}
 	componentWillMount(){
+		console.log(this.props.navigation.state.params)
+		let planId = this.props.navigation.state.params	
+		
+		axios.get('/x/v1/ite/item/'+planId)
+		.then(e=>{
+			console.log(e.data)
+			this.setState({items:e.data.mensaje})
+		})
+		.catch(err=>{
+			console.log(err)
+		})
+
 		axios.get('/x/v1/ite/item/user')
 		.then(e=>{
 			console.log(e.data)

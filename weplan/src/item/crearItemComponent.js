@@ -116,7 +116,6 @@ export default class CrearItemComponent extends Component{
 
     axios.post('/x/v1/ite/item', {descripcion, enviarChat, valor, titulo, planId, asignados, tipo:1})
     .then(e=>{
-      console.log(e.data)
       let id = e.data.mensaje._id
       data.append('imagen', imagen);
       axios({
@@ -128,7 +127,8 @@ export default class CrearItemComponent extends Component{
               'Content-Type': 'multipart/form-data'
             }
           })
-      .then(res=>{       
+      .then(res=>{  
+        console.log(res.data)     
         if(res.data.code==1){ 
           //this.props.close(false)
         }else{

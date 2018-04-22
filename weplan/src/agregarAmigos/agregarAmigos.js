@@ -21,7 +21,7 @@ export default class AgregarAmigosComponent extends Component{
 	componentWillMount(){
 		axios.get('/x/v1/ami/amigoUser/true')
 		.then((res)=>{
-			let allList = res.data.mensaje[0].asignados.map((item)=>{
+			let allList = res.data.asignados[0].asignados.map((item)=>{
 				return {
 					id:item._id,
 					username:item.username,
