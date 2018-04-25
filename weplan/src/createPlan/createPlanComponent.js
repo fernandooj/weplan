@@ -30,6 +30,7 @@ export default class createPlanComponent extends Component{
  			restricciones:[],
  			imagen:null,
  			adjuntarAmigos:false,
+ 			mapa:false,
  			tipo:'suscripcion'
 		}
 	}
@@ -63,7 +64,7 @@ export default class createPlanComponent extends Component{
 	///////////////////////////////////////////////////  	RENDER  	/////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	render(){
-		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos} = this.state
+		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa} = this.state
 
 		return (
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} > 
@@ -135,9 +136,13 @@ export default class createPlanComponent extends Component{
 				{/*  mapa  */}
 					<View style={CreatePlanStyle.cajaInpunts}>
 				    	<Image source={require('./map.png')} style={CreatePlanStyle.iconInput} />
-					     <TouchableOpacity onPress={() => this.refs.modal1.open()}>
+					     <TouchableOpacity onPress={() => this.setState({mapa:true})}>
 					    	<Text style={direccion ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnInputSinPadding]}>{direccion ?direccion.substr(0,60) :'Ubicación'}</Text>
 					    </TouchableOpacity>
+					    {mapa ?<MapaPlanComponent 
+							close={()=>this.setState({mapa:false})} 						   					    /////////   cierro el modal
+							updateStateX={(lat,lng, direccion)=>this.updateStateX(lat,lng, direccion)}  /////////	me devuelve la posicion del marcador 
+						/>: null }	
 					</View>
 
 				{/*  restricciones  */}
@@ -166,13 +171,7 @@ export default class createPlanComponent extends Component{
 					</TouchableOpacity>
 			    </View>	
 
-			    {/* modal maps */}
-				<Modal style={CreatePlanStyle.modal} backdrop={false}  position={"top"} ref={"modal1"} swipeToClose={false} >
-					<MapaPlanComponent 
-						closeModal={(e)=>this.closemodal()} 						   					    /////////   cierro el modal
-						updateStateX={(lat,lng, direccion)=>this.updateStateX(lat,lng, direccion)}  /////////	me devuelve la posicion del marcador 
-					/>	
-        		</Modal>
+			  
 
         		{/* modal restricciones */}
 				<Modal style={CreatePlanStyle.modal} backdrop={false}  position={"top"} ref={"modal2"} swipeToClose={false} >

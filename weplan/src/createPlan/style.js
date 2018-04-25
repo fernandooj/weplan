@@ -103,18 +103,30 @@ export const CreatePlanStyle = StyleSheet.create({
 	///////////////////////////////////////
 	/////////////// mapa //////////////////
 	///////////////////////////////////////
+	tituloMapa:{
+		flexDirection:'row',
+	},
 	container: {
 		marginTop:0,
 		height: 600,
-		width: '100%',
-		justifyContent: 'flex-end',
-		alignItems: 'center',
 	},
 	map: {
-		height: 600, 
+		marginTop:0,
+		height: 500, 
 		width: '100%',
 	},
-
+	btnClose:{
+		marginLeft:20,
+		width:'8%'
+	},
+	imagenClose:{
+		width:10,
+		height:20,
+		marginTop:10
+	},
+	buscador:{
+		width:'100%'
+	},
 	///////////////////////////////////////
 	////////// restricciones //////////////
 	///////////////////////////////////////

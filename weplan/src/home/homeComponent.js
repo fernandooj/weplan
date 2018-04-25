@@ -38,7 +38,7 @@ export default class homeComponent extends Component{
 					<View style={HomeStyle.footer}>
 						<View style={HomeStyle.footer1}>
 							<Text style={HomeStyle.textFooter1}>{e.nombre}</Text>
-							<Image source={require('./icon4.png')} style={HomeStyle.iconHead} />
+							<Image source={require('./icon4.png')} style={HomeStyle.iconVer} />
 						</View>
 						<Text style={HomeStyle.textFooter2}>{e.descripcion}</Text>
 						<View style={HomeStyle.footer2}>
@@ -96,14 +96,25 @@ export default class homeComponent extends Component{
 				</ScrollView>
  
 				<View style={HomeStyle.footer3} >
-					<TouchableOpacity onPress={()=> navigate('createPlan')} >
-						<Image source={require('./icon10.png')} style={HomeStyle.iconFooter3} />
+					<TouchableOpacity onPress={()=> navigate('Home')} style={HomeStyle.btnFooter3}>
+						<Image source={require('./home.png')} style={HomeStyle.iconFooter3} />
+						<Text style={HomeStyle.textoFooter3}>Home</Text>
 					</TouchableOpacity>
-					<TouchableOpacity onPress={()=> navigate('createPlan')} >
-						<Image source={require('./icon11.png')} style={HomeStyle.iconFooter3} />
+					<TouchableOpacity onPress={()=> navigate('createPlan')} style={HomeStyle.btnFooter3}>
+						<Image source={require('./mi_wallet.png')} style={HomeStyle.iconFooter3} />
+						<Text style={HomeStyle.textoFooter3}>My Wallet</Text>
 					</TouchableOpacity>
-					<TouchableOpacity onPress={()=> navigate('misPlanes')} >
-						<Image source={require('./icon12.png')} style={HomeStyle.iconFooter3} />
+					<TouchableOpacity onPress={()=> navigate('createPlan')} style={HomeStyle.btnFooter3} >
+						<Image source={require('./crear_plan.png')} style={HomeStyle.iconFooter3} />
+						<Text style={HomeStyle.textoFooter3}>Crear Plan</Text>
+					</TouchableOpacity>
+					<TouchableOpacity onPress={()=> navigate('misPlanes')} style={HomeStyle.btnFooter3} >
+						<Image source={require('./mis_planes.png')} style={HomeStyle.iconFooter3} />
+						<Text style={HomeStyle.textoFooter3}>Planes</Text> 
+					</TouchableOpacity>
+					<TouchableOpacity onPress={()=> navigate('notificaciones')} style={HomeStyle.btnFooter3} >
+						<Image source={require('./notificaciones.png')} style={HomeStyle.iconFooter3} />
+						<Text style={HomeStyle.textoFooter3}>Notificacion</Text>
 					</TouchableOpacity>
 				</View>
 				

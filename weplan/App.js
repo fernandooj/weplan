@@ -46,7 +46,7 @@ const NavigationApp = StackNavigator({
 },{ headerMode: 'none' })
 
 const NavigationAppLogin = StackNavigator({
-    Home:          {screen: ItemComponent },
+    Home:          {screen: homeComponent },
     Login:         {screen: LoginComponent },
     Registro:      {screen: RegistroComponent },
     insertCode:    {screen: insertCodeComponent },

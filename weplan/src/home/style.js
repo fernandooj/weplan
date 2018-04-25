@@ -31,21 +31,32 @@ export const HomeStyle = StyleSheet.create({
 	 	marginRight:40
 	},
 	fondo:{
-		height:screenHeight,
+		height:screenHeight/1.18,
 	},
 	footer:{
 		position:'absolute',
 		bottom:0,
 		width:'100%',
-		backgroundColor:"rgba(0,0,0,0.79)",
+		backgroundColor:"rgba(0,0,0,0.66)",  
 		paddingLeft:20,
-		paddingBottom:20,
+	 
 	},
 	footer1:{
-		flexWrap: 'wrap', 
-		alignItems: 'flex-start',
 		flexDirection:'row',
-		justifyContent: 'flex-start',
+	},
+	iconVer:{
+	 	width:40,
+	 	height:40,
+	 	marginTop:10,
+	 	marginBottom:10,
+	 	width:'10%'
+	},
+
+	textFooter1:{
+		color:'#ffffff',
+		fontSize:17,
+		marginTop:20,
+		width:'85%'
 	},
 	footer2:{
 		flexWrap: 'wrap', 
@@ -55,29 +66,33 @@ export const HomeStyle = StyleSheet.create({
 	},
 	footer3:{
 		flexWrap: 'wrap', 
-		alignItems: 'flex-start',
-		flexDirection:'row',
-		justifyContent: 'flex-start',
 		backgroundColor:"rgba(0,0,0,0)",
+		alignItems: 'center',
+	},
+	btnFooter3:{
+		alignItems: 'center',
+		width:'17%', 
+		marginLeft:'1.5%', 
+		marginRight:'1.5%',
+		paddingTop:10, 
+		paddingBottom:10 
 	},
 	iconFooter3:{
-		width:100,
-		height:100,
-		backgroundColor:"rgba(0,0,0,0)",
-	},
+		width:'77%', 
+		height:45,  
+	}, 
 	iconFooter:{
 		width:35,
 	 	height:35,
 	 	marginTop:10,
-	 	marginBottom:10,
+	 	marginBottom:10, 
 	 	marginLeft:2,
 	 	marginRight:2
 	},
-	textFooter1:{
-		color:'#ffffff',
-		fontSize:17,
-		marginTop:20
+	textoFooter3:{
+		fontSize:11,
 	},
+
 	textFooter2:{
 		color:'#ffffff',
 		marginTop:0
@@ -105,76 +120,7 @@ export const HomeStyle = StyleSheet.create({
 		justifyContent: 'center',
 	},
 
-	////////// modal //////////////
-	//////////////////////////////
-	wrapper: {
-		paddingTop: 50,
-		flex: 1
-	},
-	btnModal: {
-		 justifyContent: 'center',
-    	alignItems: 'center'
-	},
-	input:{
-		marginTop:10,
-		width:240,
-		height:40,
-		backgroundColor: '#f0f2f2',
-		borderRadius: 50,
-		borderWidth: 0.5,
-		borderColor: '#cccccc',
-		borderBottomWidth:0,
-		paddingLeft:20,
-		color: '#8F9093',
-	}, 
-	text: {
-		color:'#969696',
-		fontSize: 22
-	},
-	lista:{
-		 flex:1
-	},
-	subLista:{
-		width:'100%',
-		flexDirection:'row',
-		alignItems: 'flex-start',
-		marginTop:10
-	},
-	avatar:{
-		height: 60,
-		width: 60,
-		borderRadius: 30,
-
-	},
-	avatar2:{
-		height: 60,
-		width: 60,
-		borderRadius: 30,
-		borderWidth: 3.5,
-		borderColor: '#C2E3EE',
-	},
-	textoAvatar:{
-		fontSize:22,
-		marginLeft:20,
-		marginTop:20
-	},
-	agregado:{
-		position:'absolute',
-		left:40,
-		bottom:0,
-		height: 27,
-		width: 27,
-	},
-	titulo:{
-		flexDirection:'row',
-		alignItems: 'flex-start',
-	},
-	btnModal:{
-		fontSize:20,
-		color:'#969696',
-		marginTop:2,
-
-	}
+	 
 })
 
 
