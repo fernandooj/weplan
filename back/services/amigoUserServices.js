@@ -8,6 +8,7 @@ class amigoUserService{
 		amigoUser.find({}).populate('asignados').exec(callback)
 	}
 	getById(idUsuario, callback){
+		console.log(idUsuario)
 		amigoUser.find({idUsuario}).populate('asignados').exec(callback)
 	}
 	buscarUsuario(idUsuario, callback){

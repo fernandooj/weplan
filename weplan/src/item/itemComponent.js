@@ -7,7 +7,7 @@ import CrearItemComponent from './crearItemComponent'
  
 
 
-
+ 
 
 export default class ItemComponent extends Component{
 	state={
@@ -16,66 +16,90 @@ export default class ItemComponent extends Component{
 		items:[]
 	}
 	componentWillMount(){
-		console.log(this.props.navigation.state.params)
-		let planId = this.props.navigation.state.params	
-		
+		//let planId = this.props.navigation.state.params	
+		let planId = '5add2142ef82f12d625e9db1'
+		console.log(planId)
 		axios.get('/x/v1/ite/item/'+planId)
 		.then(e=>{
-			console.log(e.data)
-			this.setState({items:e.data.mensaje})
+			let todosItemsPlan=[]
+			e.data.item.filter((e)=>{
+				axios.get('/x/v1/pag/pago/suma/'+e._id)
+				.then(res=>{
+					//console.log(res.data)
+					res.data.pago.filter(item=>{
+	   				todosItemsPlan.push({
+	   					deuda:item.monto, id:e._id,
+							titulo:e.titulo,
+							valor:e.valor,
+							rutaImagen: e.rutaImagen,
+							descripcion: e.descripcion,
+							userId: e.descripcion,
+							nombre: e.userId.nombre,
+							status: item.monto<0 ?'noAsignado' : 'asignado'
+						})
+					})
+					console.log(todosItemsPlan)
+					this.setState({items: todosItemsPlan})
+				})
+				.catch(err=>{
+					console.log(err)
+				})
+			})		
 		})
 		.catch(err=>{
 			console.log(err)
 		})
 
-		axios.get('/x/v1/ite/item/user')
-		.then(e=>{
-			console.log(e.data)
-			this.setState({misItems:e.data.mensaje})
-		})
-		.catch(err=>{
-			console.log(err)
-		})
+		
 	}
-	renderHeader(info) {
+	renderAcordeon() {
 		return (
-		  <View style={info=='Items' ?[ItemStyle.headerCollapsable, ItemStyle.headerCollapsableFirst] :ItemStyle.headerCollapsable }>
-		    <Text style={info=='Items' ?[ItemStyle.headerText, ItemStyle.headerTextFirst] :ItemStyle.headerText }>{info}</Text>
-		  </View>
+			<View>
+			  	<View style={ItemStyle.headerCollapsable }>
+			    	<Text style={ItemStyle.headerText}>Mis Items</Text>
+			    	{this.renderItems()}
+			  	</View>
+
+			  	<View style={[ItemStyle.headerCollapsable, ItemStyle.headerCollapsableFirst]}>
+			    	<Text style={[ItemStyle.headerText, ItemStyle.headerTextFirst]}>Items</Text>
+			    	 
+			  	</View>
+			</View>
 		);
 	}
 
-	renderContent(info) {
-		console.log(info)
+	renderItems() {
 	   const {navigate} = this.props.navigation
-	   if(info.length>0){
-	   	return info.map((e, key)=>{
+ 
+	   if(this.state.items.length>0){
+	   	return this.state.items.map((e, key)=>{
 				return (
-				  	<View style={ItemStyle.content} key={key}>
-				  		<TouchableOpacity style={!key==0 ?ItemStyle.boton: [ItemStyle.boton, ItemStyle.botonFirst]} onPress={()=>navigate('pago', e._id)}>
-					   		<Text style={ItemStyle.contentText}>
-					   			{e.titulo}  
-					   		</Text>
-					   		<Text style={ItemStyle.value}>+ {e.valor}</Text>
+					 
+				   <View style={ItemStyle.content} key={key}>
+				  		<TouchableOpacity style={!key==0 ?ItemStyle.boton: [ItemStyle.boton, ItemStyle.botonFirst]} 
+				  				onPress={e.status=='noAsignado' ?()=>navigate('pago', e.id) :()=>navigate('deuda', e.id)}>
+					   		<View style={ItemStyle.contentText}>
+						   		<Text style={ItemStyle.tituloItem}>
+						   			{e.titulo}  
+						   		</Text>
+					   		{e.status=='noAsignado' ?<Text style={ItemStyle.by}>By {e.nombre}</Text> :null}
+					   		</View>	
+								<Text style={e.deuda>=0 ?ItemStyle.value :ItemStyle.valueNoAsignado}>
+									{'$ '+Number(e.deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
+								</Text>
+					    
+					   		
 					   	</TouchableOpacity>
-				  	</View>
+				  	</View> 
 				)
 			})
 	   }else{
-	   	return(<View><Text>Cargando</Text></View>)
+	   	null
 	   }
 		
 	}
   	render() {
-		const {show, misItems} = this.state
-		const tabs = [{
-		    name: 'Mis Items',
-		    description: misItems  	
-		},{
-		    name: 'Items',
-		    description: misItems  	
-		}]
-
+		const {show, items, itemsPlan} = this.state
 		return (
 			<ScrollView  style={ItemStyle.contentItem}>
 			  
@@ -91,22 +115,7 @@ export default class ItemComponent extends Component{
 						<Text>+Crear Item</Text>
 				  	</TouchableOpacity>
 				  	
-				{/*****   Acordeon de los items	*****/}
-				  	{ 
-				  		misItems.length>0
-				  		?<Accordion
-					      style={ItemStyle.accordion}
-					      items = {tabs} 
-					      headerRender = {this.renderHeader}
-					      contentRender = {this.renderContent.bind(this)}
-					      headerName = "name"
-					      contentName = "description"
-					    
-					      duration = {100}
-					 
-					    />
-					    :null
-				  	}
+				 	{this.renderAcordeon()}
 			  	</View>
 			</ScrollView>
 		);

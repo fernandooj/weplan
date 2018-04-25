@@ -178,7 +178,7 @@ module.exports = function(app, passport){
         if (req.files) {
             let extension = req.files.imagen.name.split('.').pop()
             let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
-            fullUrl = '../static/public/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
+            fullUrl = '../../front/docs/public/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
             ruta = req.protocol+'://'+req.get('Host') + '/public/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
         }else{
             ruta = req.protocol+'://'+req.get('Host') + '/avatar.png'
@@ -190,6 +190,7 @@ module.exports = function(app, passport){
             if(!user){
                 res.json({ status: 'FAIL', message: err}) 
             } else{
+                
                 res.json({ status: 'SUCCESS', message: 'Usuario Activado', user: user }); 
                 fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))                
             }

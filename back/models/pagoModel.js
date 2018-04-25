@@ -7,7 +7,7 @@ let moment   = require('moment');
 
 
 let pagoSchema = mongoose.Schema({
-	monto         : { type : String },
+	monto         : { type : Number },
 	metodo		  : { type : String },
 	descripcion   : { type : String },
 	estado		  : { type : String},

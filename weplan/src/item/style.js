@@ -62,6 +62,17 @@ export const ItemStyle = StyleSheet.create({
 		alignSelf: 'flex-start', 
 		width:'40%',
 	},
+	valueNoAsignado:{
+		color:'#c5012b',
+		alignSelf: 'flex-start', 
+		width:'40%',
+	},
+	by:{
+		fontSize:13
+	},
+	tituloItem:{
+		fontSize:16
+	},
   	//////////// crear item  //////////
 	container:{
 		backgroundColor:'rgba(0,0,0,.6)',

@@ -17,13 +17,15 @@ export default class ajustesAmigosComponent extends Component{
 		/////////////////	OBTENGO EL PERFIL /////////////////////
 		axios.get('/x/v1/users/activos')
 		.then((res)=>{
+			console.log(res.data)
 			let todosUsuarios = res.data.usuarios.map((item)=>{
 				return {
 					id:item._id,
 					username:item.username,
 					photo: item.photo,
 					nombre: item.nombre,
-					estado: true
+					estado: true,
+					 
 				}
 			})
 
@@ -31,7 +33,7 @@ export default class ajustesAmigosComponent extends Component{
 			axios.get('/x/v1/ami/amigoUser/id')
 			.then((res)=>{
 				let amigosAsignados=[]
-				console.log(res.data.asignados)
+				console.log(res.data)
 				if(res.data.asignados[0]!=undefined){
 					amigosAsignados = res.data.asignados[0].asignados.map((item)=>{
 					return {
@@ -39,7 +41,8 @@ export default class ajustesAmigosComponent extends Component{
 						username:item.username,
 						photo: item.photo,
 						nombre: item.nombre,
-						estado: true
+						estado: true,
+						
 					}
 				})
 				}
@@ -90,10 +93,10 @@ export default class ajustesAmigosComponent extends Component{
  	getRow(filteredData){
 		return filteredData.map((data, key)=>{
 			return  <TouchableOpacity style={AjustesStyle.registro} key={key} onPress={(e)=>this.updateState(data.id, data.estado)} > 
-						<Image source={{ uri: data.photo}}  style={data.estado ?AjustesStyle.avatarA :AjustesStyle.avatarA2} /> 
-						<Text style={AjustesStyle.textoAvatar}>{data.nombre}</Text>
-						{!data.estado ?<Image source={require('./agregado.png')} style={AjustesStyle.agregado}/> :null} 
-				    </TouchableOpacity>
+					<Image source={{ uri: data.photo}}  style={data.estado ?AjustesStyle.avatarA :AjustesStyle.avatarA2} /> 
+					<Text style={AjustesStyle.textoAvatar}>{data.nombre}</Text>
+					{!data.estado ?<Image source={require('./agregado.png')} style={AjustesStyle.agregado}/> :null} 
+			    </TouchableOpacity>
 		})
 	}
 
@@ -185,14 +188,9 @@ export default class ajustesAmigosComponent extends Component{
 						</View>
 						{
 							show
-					 
 							?this.renderAmigos()
-
-					 
 							:this.renderAmigosGrupos()
 						}
-						
-
 					</View>	
 				</View>
 			</View>

@@ -132,20 +132,10 @@ export default class CrearItemComponent extends Component{
 
     let data = new FormData();
     
-    // id: e.userId._id,
-    // nombre:e.userId.nombre,
-    // photo:e.userId.photo,
-    // mensaje:e.mensaje,
-    // itemId: e.itemId ?e.itemId._id :null ,
-    // titulo:e.itemId ?e.itemId.titulo :null,
-    // descripcion:e.itemId ?e.itemId.descripcion :null,
-    // rutaImagen:e.itemId ?e.itemId.rutaImagen :null,
-    // valor:e.itemId ?e.itemId.valor :null
-
     axios.post('/x/v1/ite/item', {descripcion, enviarChat, valor, titulo, planId, asignados, tipo:1})
     .then(e=>{
-      let itemId = e.data.mensaje._id
- 
+      let itemId = e.data.item._id
+      console.log(e.data.item._id)
      
 
       data.append('imagen', imagen);
@@ -154,6 +144,13 @@ export default class CrearItemComponent extends Component{
       data.append('titulo', titulo);
       data.append('descripcion', descripcion);
       data.append('valor', valor);
+      // axios.post('x/v1/pag/pago', {monto:valor, metodo:null, descripcion:descripcion, itemId})
+      // .then(e=>
+      //   console.log(e.data)
+      // )
+      // .catch(err=>{
+      //   console.log(err)
+      // })
 
       axios({
             method: 'post', //you can set what request you want to be

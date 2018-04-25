@@ -27,13 +27,12 @@ router.get('/', function(req, res){
 ///////////////////////////////////////////////////////////////////////////////////////////////
 router.get('/:user', function(req, res){
 	let id = req.session.usuario.user._id
-	console.log(id)
 	if (req.params.user=='user') {
 		pagoServices.getByidUSer(id, (err, pago)=>{
 			if(err){
 				res.json({err, code:0})
 			}else{
-				res.json({ status: 'SUCCESS', mensaje: pago, total:pago.length,  code:1 });				
+				res.json({ status: 'SUCCESS', pago, total:pago.length,  code:1 });				
 			}
 		})
 	}else{
@@ -41,10 +40,20 @@ router.get('/:user', function(req, res){
 			if(err){
 				res.json({err, code:0})
 			}else{
-				res.json({ status: 'SUCCESS', mensaje: pago, total:pago.length, code:1 });				
+				res.json({ status: 'SUCCESS', pago, total:pago.length, code:1 });				
 			}
 		})
 	}
+})
+
+router.get('/suma/:idItem', function(req, res){
+	pagoServices.suma(req.params.idItem, req.session.usuario.user._id, (err, pago)=>{
+		if(err){
+			res.json({err, code:0})
+		}else{
+			res.json({ status: 'SUCCESS', pago, total:pago.length, code:1 });				
+		}
+	})
 })
 
 

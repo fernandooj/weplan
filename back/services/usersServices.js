@@ -11,8 +11,6 @@ class userServices {
 		User.findOne({'username':user.username}, callback)
 	}
 	login(user, callback){
-		//let password = user.password
-
 		User.findOne({ 'username' :  user.username }, callback)
 	}
 	getActivos(callback){

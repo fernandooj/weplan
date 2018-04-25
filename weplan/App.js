@@ -19,6 +19,7 @@ import createPlanComponent    from './src/createPlan/createPlanComponent';
 import MisPlanesComponent     from './src/misPlanes/misPlanesComponent';
 import ChatComponent          from './src/chat/chatComponent';
 import ItemComponent          from './src/item/itemComponent';
+import pagoComponent          from './src/pago/pagoComponent';
 import ajustesComponent       from './src/ajustes/ajustesComponent';
 import ajustesAmigosComponent from './src/ajustes/amigosComponent';
 
@@ -41,10 +42,11 @@ const NavigationApp = StackNavigator({
     item:          {screen: ItemComponent },
     ajustes:       {screen: ajustesComponent },
     ajustesAmigos: {screen: ajustesAmigosComponent },
+    pago:          {screen: pagoComponent },
 },{ headerMode: 'none' })
 
 const NavigationAppLogin = StackNavigator({
-    Home:          {screen: homeComponent },
+    Home:          {screen: ItemComponent },
     Login:         {screen: LoginComponent },
     Registro:      {screen: RegistroComponent },
     insertCode:    {screen: insertCodeComponent },
@@ -58,6 +60,7 @@ const NavigationAppLogin = StackNavigator({
     item:          {screen: ItemComponent },
     ajustes:       {screen: ajustesComponent },
     ajustesAmigos: {screen: ajustesAmigosComponent },
+    pago:          {screen: pagoComponent },
 },{ headerMode: 'none' })
 
 class Splash extends Component <{}>{

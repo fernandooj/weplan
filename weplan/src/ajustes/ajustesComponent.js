@@ -29,6 +29,7 @@ export default class ajustesComponent extends Component{
 	}
 	renderPerfil(){
 		const {perfil} = this.state
+		console.log(perfil)
 		if (perfil!==undefined) {
 			return(
 				<View style={AjustesStyle.perfil}>
