@@ -1,7 +1,7 @@
  import React, {Component} from 'react'
 import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Alert} from 'react-native'
 import {PagoStyle} from '../pago/style'
- 
+import CabezeraComponent from '../ajustes/cabezera.js'
 import axios from 'axios'
  
  
@@ -11,15 +11,18 @@ export default class pagoComponent extends Component{
  		item:{asignados:[], userId:{}},
  		cc:false,
  		debito:false,
- 		efectivo:false
+ 		efectivo:false,
+ 		valor:0
  	}
 	componentWillMount(){
-	 	console.log(this.props.navigation.state.params)
-	 	let itemId = this.props.navigation.state.params
+	 	console.log(this.props.navigation.state)
+	 	let itemId = this.props.navigation.state.params.id
+	 	let valor  = this.props.navigation.state.params.valor
+	 	let planId = this.props.planId
 	 	//let itemId = '5add22fdef82f12d625e9db6'
 	 	axios.get('x/v1/ite/item/id/'+itemId)
 	 	.then(e=>{
-	 		this.setState({item:e.data.mensaje[0], itemId})
+	 		this.setState({item:e.data.mensaje[0], itemId, valor, planId})
 	 	})
 	 	.catch(err=>{
 	 		console.log(e.err)
@@ -28,8 +31,7 @@ export default class pagoComponent extends Component{
 	 
 
 	renderItem(){
-		const {item} = this.state
-		let valorDebe = Math.round((item.valor/(item.asignados.length+1))/1000)*1000
+		const {item, valor} = this.state
 		return(
 			<View>
 			{/* ITEM INFORMACION */}
@@ -54,7 +56,7 @@ export default class pagoComponent extends Component{
 			{/* DEUDA */}
 				<View style={PagoStyle.contenedorDeuda}>
 					<Text style={PagoStyle.tituloDeuda}>Deuda</Text>
-					<Text style={PagoStyle.valorDeuda}>{'$ '+Number(valorDebe).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+					<Text style={PagoStyle.valorDeuda}>{'$ '+Number(valor).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
 				</View>
 
 			{/* SEPARADOR */}
@@ -141,25 +143,32 @@ export default class pagoComponent extends Component{
 	    }  
  	}
   	render() {
-		return (
-			<ScrollView>
-				<View style={PagoStyle.contentItem}>
-					<View><Text>atras</Text></View>
-					<View style={PagoStyle.contenedor}>
-						{this.renderItem()}
-						{this.renderPago()}
-					</View>			  
-				</View>
-			</ScrollView>
-		);
+  		const {valor} = this.state
+  		const {navigate} = this.props.navigation
+		if (valor!==0) {
+			return (
+				<ScrollView>
+					<View style={PagoStyle.contentItem}>
+						<CabezeraComponent navigate={navigate} url={'item'} parameter={this.state.planId} />
+						<View style={PagoStyle.contenedor}>
+							{this.renderItem()}
+							{this.renderPago()}
+						</View>			  
+					</View>
+				</ScrollView>
+			);
+		}else{
+			return (<View><Text>Cargando...</Text></View>)
+		}
 	}
 	handleSubmit(e){
-		const {monto, metodo, descripcion, itemId, item} = this.state
-
-		let valorDebe = Math.round((item.valor/(item.asignados.length+1))/1000)*1000
-		console.log(monto, metodo, descripcion, itemId)
-
-		if (monto>valorDebe) {
+		let {monto, metodo, descripcion, itemId, valor} = this.state
+		monto = parseInt(monto)
+		valor = Math.abs			(valor)
+  		const {navigate} = this.props.navigation
+		console.log(monto, metodo, descripcion, itemId, valor)
+		console.log(Math.abs(valor))		
+		if (monto> valor) {
 			Alert.alert(
 			  'el monto no puede ser mayor a tu deuda',
 			  '',
@@ -170,9 +179,17 @@ export default class pagoComponent extends Component{
 			)
 		}else{
 			axios.post('x/v1/pag/pago', {monto, metodo, descripcion, itemId})
-			.then(e=>
-				console.log(e.data)
-			)
+			.then(e=>{
+				Alert.alert(
+				  'tu pago fue actualizado',
+				  '',
+				  [
+				    {text: 'OK', onPress: () => navigate('item', {itemId, monto})},
+				  ],
+				  { cancelable: false }
+				)
+				
+			})
 			.catch(err=>{
 				console.log(err)
 			})

@@ -1,5 +1,6 @@
 import {StyleSheet, Dimensions} from 'react-native';
 var screenHeight = Dimensions.get('window').height;
+var screenWidth = Dimensions.get('window').width;
 export const HomeStyle = StyleSheet.create({
 	contenedor:{
 		flex: 1,
@@ -31,12 +32,12 @@ export const HomeStyle = StyleSheet.create({
 	 	marginRight:40
 	},
 	fondo:{
-		height:screenHeight/1.18,
+		height:screenHeight-(screenHeight/7.3),
 	},
 	footer:{
 		position:'absolute',
 		bottom:0,
-		width:'100%',
+		width:screenWidth,
 		backgroundColor:"rgba(0,0,0,0.66)",  
 		paddingLeft:20,
 	 

@@ -2,7 +2,8 @@ import React, {Component} from 'react'
 import {View, Text, Image, TouchableOpacity, TextInput} from 'react-native'
 import {AjustesStyle} from '../ajustes/style'
 import axios from 'axios'
- 
+import CabezeraComponent from './cabezera.js'
+
 
 
 export default class ajustesAmigosComponent extends Component{
@@ -71,19 +72,14 @@ export default class ajustesAmigosComponent extends Component{
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  	renderCabezera(){
  		return(
- 			<View>
- 				<View>
- 					<Text>regresar </Text>
- 				</View>
- 				<View>
- 					<TouchableOpacity>
- 						<Text>Amigos</Text>
- 					</TouchableOpacity>
- 					<TouchableOpacity>
- 						<Text>Explorar</Text>
- 					</TouchableOpacity>
- 				</View>
- 			</View>
+			<View style={AjustesStyle.registro}>
+				<TouchableOpacity style={AjustesStyle.btnCabezera} >
+					<Text style={AjustesStyle.textCabezera}>Amigos</Text>
+				</TouchableOpacity>
+				<TouchableOpacity style={[AjustesStyle.btnCabezera, AjustesStyle.btnCabezeraActive]}>
+					<Text style={AjustesStyle.textCabezera}>Explorar</Text>
+				</TouchableOpacity>
+			</View>
  		)
  	}
 
@@ -108,13 +104,13 @@ export default class ajustesAmigosComponent extends Component{
 		const filtered = this.state.allList.filter(function(e){
 			return (e.username.search(regex)> -1)	
 		})
-		if (event.length>0) {
+		if (event.length>0){
 			this.setState({filteredData:filtered, show:true})
 		}else{
-			this.setState({filteredData:[]})
+			this.setState({filteredData:[], show:false})
 		}
 	}
-
+ 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////					RENDER LISTADO AMIGOS						/////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -142,12 +138,12 @@ export default class ajustesAmigosComponent extends Component{
  		
  	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////					RENDER AMIGOS AGREGADOS						/////////////////////////////////////////
+	////////////////////////////////				RENDER AMIGOS AGREGADOS					/////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  	renderAmigosGrupos(){
  		return(
  			<View style={AjustesStyle.lista}>
-				<TouchableOpacity>
+				<TouchableOpacity  style={AjustesStyle.registro}>
 					<Image source={require('./nuevo.png')} style={AjustesStyle.btnNuevoGrupo} />
 					<Text>Crear Grupo</Text>
 				</TouchableOpacity>
@@ -165,10 +161,11 @@ export default class ajustesAmigosComponent extends Component{
 
 	render(){
 		const {show} = this.state
+		const {navigate} = this.props.navigation
 		return(
 			<View>
+				<CabezeraComponent navigate={navigate} url={'ajustes'} />
 				{this.renderCabezera()}
-				
 				<View style={AjustesStyle.contenedor}>
 					<View style={AjustesStyle.subContenedorA}>
 						{/* buscador  */}
@@ -204,8 +201,6 @@ export default class ajustesAmigosComponent extends Component{
 			return item
 		})
 		this.setState({filteredData})
-		console.log({id, estado})
-
 		if (estado) {
 			this.setState({asignados: this.state.asignados.concat([id])})
 		}else{

@@ -22,6 +22,7 @@ let planRutas = require('./routes/Plan.js');
 let chatRutas = require('./routes/Chat.js');
 let itemRutas = require('./routes/Item.js');
 let pagoRutas = require('./routes/Pago.js');
+let restriccionRutas= require('./routes/restricciones.js');
 let abonoRutas= require('./routes/Abono.js');
 
 const path          = require('path');
@@ -120,6 +121,7 @@ app.use('/x/v1/cha/chat', chatRutas)
 app.use('/x/v1/ite/item', itemRutas)
 app.use('/x/v1/pag/pago', pagoRutas)
 app.use('/x/v1/abo/abono', abonoRutas)
+app.use('/x/v1/res/restriccion', restriccionRutas)
 
 require('./routes/Users.js')(app, passport);
 

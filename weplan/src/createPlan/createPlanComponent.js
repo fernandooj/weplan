@@ -14,7 +14,7 @@ import RestriccionesPlanComponent from './restricciones.js'
 import MapaPlanComponent 		    from './mapa.js'
 import AgregarAmigosComponent    from '../agregarAmigos/agregarAmigos.js'
 import TakePhotoComponent 	  		 from '../takePhoto/takePhotoComponent.js'
- 
+import CabezeraComponent from '../ajustes/cabezera.js'
 
 
 
@@ -31,20 +31,13 @@ export default class createPlanComponent extends Component{
  			imagen:null,
  			adjuntarAmigos:false,
  			mapa:false,
- 			tipo:'suscripcion'
+ 			tipo:'suscripcion',
+ 			restriccion:false,
+ 			iconCreate:true
 		}
 	}
 
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////  GENERO EL ARRAY DE LAS RESTRICCIONES //////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	updateStateRestriccion(estado, nombre){
-		if (estado) {
-			this.setState({restricciones: this.state.restricciones.concat([nombre])})
-		}else{
-			this.setState({restricciones:this.state.restricciones.filter(function(val){return val != nombre}) })
-		}
-	}
+
 
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,10 +45,10 @@ export default class createPlanComponent extends Component{
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	updateStateX(lat,lng, direccion){
 		if (direccion) {
-			this.setState({lat,lng, direccion})
+			this.setState({lat,lng, direccion, mapa:false})
 		}else{
 			let direccion1 = lat+','+lng 
-			this.setState({lat,lng, direccion:direccion1})
+			this.setState({lat,lng, direccion:direccion1, mapa:false})
 		}
 		
 	}
@@ -64,20 +57,16 @@ export default class createPlanComponent extends Component{
 	///////////////////////////////////////////////////  	RENDER  	/////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	render(){
-		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa} = this.state
-
+		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate} = this.state
+		const {navigate} = this.props.navigation
 		return (
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} > 
-				<View style={CreatePlanStyle.encabezado}>
-					<Text>
-						&#60;
-					</Text>
-				</View>
+				<CabezeraComponent navigate={navigate} url={'Home'} parameter={this.state.planId} />
 				<View style={CreatePlanStyle.encabezadoPlan}>
 					<TakePhotoComponent fuente={'cam.png'} ancho={120} alto={100} updateImagen={(imagen) => {this.setState({imagen})}} />
 					<TextInput
 						style={CreatePlanStyle.input}
-						onChangeText={(nombre) => this.setState({nombre})}
+						onChangeText={(nombre) => this.setState({nombre,iconCreate:false})}
 						value={nombre}
 						underlineColorAndroid='transparent'
 						placeholder="NOMBRE DE TU PLAN"
@@ -87,7 +76,7 @@ export default class createPlanComponent extends Component{
 			   <View style={CreatePlanStyle.contenedor} >
 					{/* Descripcion  */}	
 					<View style={CreatePlanStyle.cajaInpunts}>
-						<Text style={CreatePlanStyle.textInput}>Descri</Text>
+						 
 						<TextInput
 							style={CreatePlanStyle.textarea}
 							onChangeText={(descripcion) => this.setState({descripcion})}
@@ -100,7 +89,7 @@ export default class createPlanComponent extends Component{
 					</View>
 				{/* fecha  */}
 				    <View style={CreatePlanStyle.cajaInpunts}>
-				    	<Text style={CreatePlanStyle.textInput}>Fecha</Text>
+				    	<Image source={require('./fecha.png')} style={CreatePlanStyle.iconInput} />
 					    <DatePicker
 				    		customStyles={{
 		                        dateInput: {
@@ -135,12 +124,12 @@ export default class createPlanComponent extends Component{
 
 				{/*  mapa  */}
 					<View style={CreatePlanStyle.cajaInpunts}>
-				    	<Image source={require('./map.png')} style={CreatePlanStyle.iconInput} />
+				    	 <Image source={require('./map.png')} style={CreatePlanStyle.iconInput} />
 					     <TouchableOpacity onPress={() => this.setState({mapa:true})}>
-					    	<Text style={direccion ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnInputSinPadding]}>{direccion ?direccion.substr(0,60) :'Ubicación'}</Text>
+					    	<Text style={direccion ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>{direccion ?direccion.substr(0,60) :'Ubicación'}</Text>
 					    </TouchableOpacity>
 					    {mapa ?<MapaPlanComponent 
-							close={()=>this.setState({mapa:false})} 						   					    /////////   cierro el modal
+							close={()=> this.setState({mapa:false})} 						   			/////////   cierro el modal
 							updateStateX={(lat,lng, direccion)=>this.updateStateX(lat,lng, direccion)}  /////////	me devuelve la posicion del marcador 
 						/>: null }	
 					</View>
@@ -148,9 +137,14 @@ export default class createPlanComponent extends Component{
 				{/*  restricciones  */}
 					<View style={CreatePlanStyle.cajaInpunts}>
 				    	<Image source={require('./denied.png')} style={CreatePlanStyle.iconInput} />
-					    <TouchableOpacity onPress={() => this.refs.modal2.open()}>
+					    <TouchableOpacity onPress={(restricciones)=>this.setState({restricciones, restriccion:true})}>
 					    	<Text style={restricciones.length>0 ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>{restricciones.length>0 ?'tienes: '+restricciones.length+' Restricciones' :'Restricciones'}</Text>
 					    </TouchableOpacity>
+					    {restriccion 
+					    	?<RestriccionesPlanComponent  
+						    restriccion={(restricciones)=>this.setState({restricciones, restriccion:false})} />
+						    :null
+						}
 					</View>
 
 				{/*   amigos  */}
@@ -166,28 +160,19 @@ export default class createPlanComponent extends Component{
 					</View>
 
 				{/*  Crear Plan  */}
-					<TouchableOpacity onPress={this.handleSubmit.bind(this)} style={CreatePlanStyle.create}>
-						<Image source={require('./create.png')} style={CreatePlanStyle.createIcon} />
-					</TouchableOpacity>
+					{
+						iconCreate
+						?<Image source={require('./createDisable.png')} style={CreatePlanStyle.createIconDisable} />
+						:<TouchableOpacity onPress={this.handleSubmit.bind(this)} style={CreatePlanStyle.create}>
+							<Image source={require('./create.png')} style={CreatePlanStyle.createIcon} />
+						</TouchableOpacity>
+					}
 			    </View>	
-
-			  
-
-        		{/* modal restricciones */}
-				<Modal style={CreatePlanStyle.modal} backdrop={false}  position={"top"} ref={"modal2"} swipeToClose={false} >
-					<RestriccionesPlanComponent closeModal={(e)=>this.closemodal()} updateStateRestriccion={(estado, nombre)=>this.updateStateRestriccion(estado, nombre)} />
-        		</Modal>
-        		
-			  
 
 			</ScrollView>
 		)
 	}
-	closemodal(){
-		this.refs.modal1.close()
-		this.refs.modal2.close()
-		this.refs.modal3.close()
-	}
+ 
 	handleSubmit(){
 		const {navigate} = this.props.navigation
 		const {nombre, descripcion, fechaLugar, lat, lng, asignados, restricciones, imagen,tipo} = this.state

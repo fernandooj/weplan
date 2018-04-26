@@ -1,4 +1,5 @@
 import {StyleSheet, Dimensions} from 'react-native';
+var screenHeight = Dimensions.get('window').height;
 export const CreatePlanStyle = StyleSheet.create({ 
 	contenedor:{
 		alignItems: 'center',
@@ -26,11 +27,11 @@ export const CreatePlanStyle = StyleSheet.create({
 	textarea:{
 		borderWidth: 0,
 		alignItems: 'center',
-		marginTop:10,
-		width:240,
+		marginTop:5,
+		width:'80%',
 		height:40,
-		backgroundColor: '#D9E6F4',
-		borderRadius: 50,
+		backgroundColor: '#f1f3f3',
+		borderRadius: 20, 
 		paddingLeft:20,
 		height:60,
 		color:'#969696'
@@ -50,7 +51,7 @@ export const CreatePlanStyle = StyleSheet.create({
 		marginTop:10,
 		width:240,
 		height:40,
-		backgroundColor: '#D9E6F4',
+		backgroundColor: '#f1f3f3',
 		borderRadius: 50,
 		paddingLeft:20,
 	},
@@ -67,10 +68,8 @@ export const CreatePlanStyle = StyleSheet.create({
 		color:'#969696'
 	},
 	btnColor2Input:{
-		color:'#c9c9c9'
-	},
-	btnInputSinPadding:{
-		color:'#c9c9c9'
+		color:'#c9c9c9',
+		backgroundColor: '#f1f3f3',
 	},
 	cajaInpunts:{
 		flexDirection: 'row',
@@ -99,7 +98,12 @@ export const CreatePlanStyle = StyleSheet.create({
 		width:180,
 		height:90
 	},
-
+	createIconDisable:{
+		width:180,
+		height:63,
+		marginTop:20,
+		marginBottom:20
+	},
 	///////////////////////////////////////
 	/////////////// mapa //////////////////
 	///////////////////////////////////////
@@ -112,7 +116,7 @@ export const CreatePlanStyle = StyleSheet.create({
 	},
 	map: {
 		marginTop:0,
-		height: 500, 
+		height: screenHeight/1.3, 
 		width: '100%',
 	},
 	btnClose:{

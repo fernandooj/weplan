@@ -36,17 +36,33 @@ export const AjustesStyle = StyleSheet.create({
  		paddingBottom:10,
  	},
 
- 	////////////////////////////////////////////////////////////////////////////////
- 	////////////////////////////////////////////////////////////////////////////////
+
+ 	//////////////////////////////////////////////////////////////////////////////////////
+ 	///////////////////////			AMIGOS 			//////////////////////////////////////
+ 	/////////////////////////////////////////////////////////////////////////////////////
  	contenedorA:{
 
  	},
  	registro:{
  		flexDirection:'row',
+ 		alignItems: 'center',
+ 	},
+ 	btnCabezera:{
+ 		padding:15,
+ 		width:'50%',
+ 		alignItems: 'center',
+ 	},
+ 	btnCabezeraActive:{
+		backgroundColor:'#dedede',
+ 	},
+ 	textCabezera:{
+ 		alignItems: 'center',
  	},
  	contenedorBuscar:{
  		flexDirection:'row',
- 		position:'relative'
+ 		position:'relative',
+ 		marginBottom:20,
+ 		marginTop:20,
  	},
  	subContenedorA:{
  		width:'90%',	
@@ -61,8 +77,11 @@ export const AjustesStyle = StyleSheet.create({
  		padding:0,
  		paddingLeft:15
  	},
- 	btnBuscar:{
-
+ 	btnNuevoGrupo:{
+ 		width:25,
+ 		height:25,
+ 		marginRight:10,
+ 		marginBottom:10 
  	},
  	btnSearch:{
  		width:23,
@@ -106,4 +125,39 @@ export const AjustesStyle = StyleSheet.create({
 		height: 27,
 		width: 27,
 	},
+	tituloGrupo:{
+		color:'#7788f2',
+		fontSize:20,
+		marginTop:10,
+		marginBottom:10,
+	},
+ 	////////////////////////////////////////////////////////////////////////////////
+ 	////////////////////////////////////////////////////////////////////////////////
+ 	contenedorBack:{
+ 		flexDirection:'row',
+ 		backgroundColor:'#dadede',
+ 		width:screenWidth,
+ 		padding:10
+ 	},
+ 	imgBack:{
+ 		width:14,
+ 		height:15
+ 	},
+ 	btnBack:{
+ 		width:'85%',
+ 		marginLeft:20
+ 	},
+ 	btnEdit:{
+ 		width:'15%'
+ 	},
+ 	separador:{
+		borderWidth:2,
+		borderTopColor:'#ffffff',
+		borderBottomColor:'#CACACA',
+		borderLeftColor:'#f8f8f8',
+		borderRightColor:'#f8f8f8',
+		marginTop:5,
+		marginBottom:5
+	},
+
 })

@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {View, Text, Image, TouchableOpacity, ImageBackground, TextInput, ScrollView, NativeModules} from 'react-native'
 import {HomeStyle} from '../home/style'
 import axios from 'axios'
- 
 
 
 export default class homeComponent extends Component{
@@ -26,11 +25,8 @@ export default class homeComponent extends Component{
 		})
 		.catch(err=>{
 			console.log(err)
-		})
-
-		
+		})	
 	}
-	
 	renderPlans(){
 		return this.state.planes.map((e, key)=>{
 			return(
@@ -121,21 +117,8 @@ export default class homeComponent extends Component{
 		   </View>
 		)
 	}
-
 	closeSession(){
-		const {navigate} = this.props.navigation
-		axios.get('/x/v1/logout/')
-		.then((res)=>{
-			console.log(res.data)
-			if(res.data.code==1){
-				navigate('Login')
-			}else if (res.data.code==1){
-				alert('error intenta nuevamente')
-			}
-		})
-		.catch((err)=>{
-			console.log(err)
-		})
 		
 	}
+
 }

@@ -20,15 +20,17 @@ import MisPlanesComponent     from './src/misPlanes/misPlanesComponent';
 import ChatComponent          from './src/chat/chatComponent';
 import ItemComponent          from './src/item/itemComponent';
 import pagoComponent          from './src/pago/pagoComponent';
+import pagoDeudaComponent     from './src/pago/pagoDeudaComponent';
 import ajustesComponent       from './src/ajustes/ajustesComponent';
 import ajustesAmigosComponent from './src/ajustes/amigosComponent';
+ 
 
 export const URL = 'http://159.89.141.0:8080/';
 axios.defaults.baseURL = URL;
 
 const win = Dimensions.get('window');
 const NavigationApp = StackNavigator({
-    Home:          {screen: homeComponent },
+    Home:          {screen: LoginComponent },
     Login:         {screen: LoginComponent },
     Registro:      {screen: RegistroComponent },
     insertCode:    {screen: insertCodeComponent },
@@ -43,6 +45,7 @@ const NavigationApp = StackNavigator({
     ajustes:       {screen: ajustesComponent },
     ajustesAmigos: {screen: ajustesAmigosComponent },
     pago:          {screen: pagoComponent },
+    pagoDeuda:     {screen: pagoDeudaComponent },
 },{ headerMode: 'none' })
 
 const NavigationAppLogin = StackNavigator({
@@ -61,6 +64,7 @@ const NavigationAppLogin = StackNavigator({
     ajustes:       {screen: ajustesComponent },
     ajustesAmigos: {screen: ajustesAmigosComponent },
     pago:          {screen: pagoComponent },
+    pagoDeuda:     {screen: pagoDeudaComponent },
 },{ headerMode: 'none' })
 
 class Splash extends Component <{}>{
@@ -82,10 +86,11 @@ export default class App extends Component<{}> {
   componentWillMount() {
     axios.get('/x/v1/user/profile/')
     .then((res)=>{
+      console.log(res.data)
       if(res.data.code==1){
         this.setState({local:1})
       }else{
-         this.setState({local:2})
+        this.setState({local:2})
       }
     })
     .catch((err)=>{

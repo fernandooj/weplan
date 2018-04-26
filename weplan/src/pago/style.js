@@ -70,12 +70,12 @@ export const PagoStyle = StyleSheet.create({
 	tituloDeuda:{
 		fontSize:22,
 		color:'#8796F4',
-		width:'80%',
+		width:'75%',
 	},
 	valorDeuda:{
 		fontSize:18,
 		color:'#c5012b',
-		width:'20%',
+		width:'25%',
 	},
 	montoTitulo:{
 		width:'50%',
@@ -118,6 +118,30 @@ export const PagoStyle = StyleSheet.create({
 		width:150,
 		height:60,
 		marginBottom:10
+	}, 
+
+	///////////		pago deuda 		//////////////
+	pagoDeudaContenedor:{
+		flexDirection:'row',
+		marginTop:10,
+	},
+	pagoDeudaAvatar:{
+		width:50,
+		height:50,
+		borderRadius:35,
+		borderWidth: 5,
+		borderColor:'#a5a5a5',
+	},
+	pagoDeudaNombre:{
+		width:'55%',
+		fontSize:18,
+		marginLeft:12,
+		marginTop:10
+	},
+	pagoDeudaMonto:{
+		color:'#c5012b',
+		fontSize:20,
+		marginTop:7
 	}
 })
 

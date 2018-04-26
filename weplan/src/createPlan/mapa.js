@@ -5,7 +5,7 @@ import Icon from 'react-native-fa-icons';
  
 import MapView, { AnimatedRegion, Marker } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import Button from 'react-native-button';
+ 
  
 
 
@@ -151,6 +151,13 @@ export default class MapaPlanComponent extends Component{
 						    onDragEnd={(e) => {this.setState({ x: e.nativeEvent.coordinate }); console.log(e.nativeEvent.coordinate)}}
 						  />
 				        </MapView>
+				        <View  style={CreatePlanStyle.contenedorRes}>
+				       		<TouchableOpacity 
+				       			onPress={() => { this.props.updateStateX(this.state.x.latitude, this.state.x.latitude,this.state.direccion)} } 
+								style={CreatePlanStyle.btnHecho}>
+								<Text style={CreatePlanStyle.textoHecho}>Hecho !</Text>
+							</TouchableOpacity>
+						</View>
 				    </View>
 			    </Modal>    
 			</View>

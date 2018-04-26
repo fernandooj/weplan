@@ -12,8 +12,8 @@ export const ItemStyle = StyleSheet.create({
 	subContentItem:{
 		flex: 1,
 		height:screenHeight,
-		marginRight:'10%',
-		marginLeft:'10%'
+		marginRight:'4%',
+		marginLeft:'4%'
 	},
 	accordion: {
 		borderTopWidth: 1,
@@ -27,20 +27,22 @@ export const ItemStyle = StyleSheet.create({
 	},
 	headerCollapsable: {
 		padding: 10,
-		borderColor: '#8796F4',
-		borderBottomWidth:1,
 	},
 	headerCollapsableFirst:{
 		borderColor: '#AFE1F2',
 	},
 	headerText: {
 		color: '#8796F4',
-		padding:0, 
-		height:23,
-		fontSize:20 
+		 
+		fontSize:20,		
+		borderColor: '#8796F4',
+		borderBottomWidth:1,
+		padding: 10,
 	},
 	headerTextFirst:{
 		color:'#AFE1F2',
+		borderColor: '#AFE1F2',
+		borderBottomWidth:1,
 	},
 	boton:{
 		flexDirection:'row',
@@ -51,11 +53,11 @@ export const ItemStyle = StyleSheet.create({
 		borderTopWidth:1,
 		borderTopColor:'#cacaca',
 	},
-	botonTextFirst:{
+	botonFirst:{
 		borderTopWidth:0
 	},
 	contentText: {
-		 width:'50%',
+		width:'74%',
 	},
 	value:{
 		color:'#79CF40',
@@ -71,8 +73,22 @@ export const ItemStyle = StyleSheet.create({
 		fontSize:13
 	},
 	tituloItem:{
-		fontSize:16
+		fontSize:16,
 	},
+	valueItems:{
+		fontSize:22,
+		color: '#8796F4',
+	},
+	btnNuevoGrupo:{
+ 		width:25,
+ 		height:25,
+ 		marginRight:10,
+ 		marginLeft:14, 
+ 	},
+ 	contenedorNuevo:{
+		flexDirection:'row',
+		marginTop:10
+ 	},
   	//////////// crear item  //////////
 	container:{
 		backgroundColor:'rgba(0,0,0,.6)',

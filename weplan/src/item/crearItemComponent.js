@@ -135,7 +135,7 @@ export default class CrearItemComponent extends Component{
     axios.post('/x/v1/ite/item', {descripcion, enviarChat, valor, titulo, planId, asignados, tipo:1})
     .then(e=>{
       let itemId = e.data.item._id
-      console.log(e.data.item._id)
+      console.log(planId)
      
 
       data.append('imagen', imagen);
@@ -144,13 +144,6 @@ export default class CrearItemComponent extends Component{
       data.append('titulo', titulo);
       data.append('descripcion', descripcion);
       data.append('valor', valor);
-      // axios.post('x/v1/pag/pago', {monto:valor, metodo:null, descripcion:descripcion, itemId})
-      // .then(e=>
-      //   console.log(e.data)
-      // )
-      // .catch(err=>{
-      //   console.log(err)
-      // })
 
       axios({
             method: 'post', //you can set what request you want to be
@@ -164,6 +157,7 @@ export default class CrearItemComponent extends Component{
       .then(res=>{  
         console.log(res.data)     
         if(res.data.code==1){ 
+          this.props.updateItems(itemId, valor, titulo)
           //this.props.close(false)
         }else{
           Alert.alert(
