@@ -41,6 +41,7 @@ export const ChatStyle = StyleSheet.create({
 	nombrePlan:{
 		color:'#ffffff',
 		fontSize:15,
+		marginLeft:25,
 		width:screenWidth/2.5,
 		lineHeight: 17,
 	},

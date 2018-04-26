@@ -20,9 +20,8 @@ export default class ChatComponent extends Component{
 
 	componentWillMount(){
 		let planId = this.props.navigation.state.params	
-		console.log(planId)	 
-		//let planId = '5ad68ae03f201846174bb61f'		 
-	 
+		//let planId = '5ad68ae03f201846174bb61f'	
+		console.log(planId)	 	 
 		this.socket = SocketIOClient(URL);
 		this.socket.on('userJoined'+planId, this.onReceivedMessage);
 
@@ -88,7 +87,9 @@ export default class ChatComponent extends Component{
 		return(
 			<View>
 				<View style={ChatStyle.cabezera}>
-					<Text style={ChatStyle.regresar}>&#60;</Text>		
+					<TouchableOpacity onPress={()=> navigate('misPlanes')} style={ChatStyle.iconContenedor}>
+						<Text style={ChatStyle.regresar}>&#60;</Text>		
+					</TouchableOpacity>
 					<Text style={ChatStyle.nombrePlan}>{nombrePlan.substring(0, 60)}</Text>
 					<TouchableOpacity onPress={() => this.opciones.bind(this)} style={ChatStyle.iconContenedor}>
 						<Image source={require('./preguntar.png')} style={ChatStyle.icon}  />
@@ -107,12 +108,7 @@ export default class ChatComponent extends Component{
 		)
 	}
 	renderMensajes(){
-		function formatDollar(num) {
-		    var p = num.toFixed(0).split(".");
-		    return "$" + p[0].split("").reverse().reduce(function(acc, num, i, orig) {
-		        return  num=="-" ? acc : num + (i && !(i % 3) ? "," : "") + acc;
-		    }, "") + "." + p[1];
-		}
+		const {navigate} = this.props.navigation
 		return this.state.mensajes.map((e,key)=>{
 			if (e.mensaje!==null) {
 				
@@ -161,11 +157,11 @@ export default class ChatComponent extends Component{
 				       	</View>
 
 				       	<View style={e.id== this.state.id ?ChatStyle.contenedorInteres :[ChatStyle.contenedorInteres, ChatStyle.contenedorInteresLeft]}>
-					       	<TouchableOpacity onPress={()=> navigate('item')} style={ChatStyle.btnInteres} >
+					       	<TouchableOpacity onPress={()=> navigate('')} style={ChatStyle.btnInteres} >
 					       		<Image source={require('./me_interesa.png')} style={ChatStyle.imagenInteres} />
 					       		<Text style={ChatStyle.textoInteres}>Me Interesa</Text>
 					       	</TouchableOpacity>
-					       	<TouchableOpacity onPress={()=> navigate('item')} style={ChatStyle.btnInteres} >
+					       	<TouchableOpacity onPress={()=> navigate('')} style={ChatStyle.btnInteres} >
 					       		<Image source={require('./no_me_interesa.png')} style={ChatStyle.imagenInteres} />
 					       		<Text style={ChatStyle.textoInteres}>no me Interesa</Text>
 					       	</TouchableOpacity>

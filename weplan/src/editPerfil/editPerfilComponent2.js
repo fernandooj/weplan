@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import {View, Text,  TouchableOpacity, TextInput, ScrollView, Picker, ImageBackground, StyleSheet, PixelRatio} from 'react-native'
+import {View, Text, Image, TouchableOpacity,  ScrollView,  Alert} from 'react-native'
 import {LoginStyle} from '../editPerfil/style'
-import Image from 'react-native-scalable-image';
+//import Image from 'react-native-scalable-image';
 import axios from 'axios';
  
 
@@ -10,26 +10,28 @@ export default class editPerfilComponent2 extends Component{
 	constructor(props) {
 	  super(props);
 	  this.state = {
-		cofre:[
-			{imagen:'https://image.ibb.co/fAQvOx/cofre.png', imagena:'https://image.ibb.co/doP5Ox/cofre_Abierto.png', texto:'Rumba', estado:false},
-			{imagen:'https://image.ibb.co/fAQvOx/cofre.png', imagena:'https://image.ibb.co/doP5Ox/cofre_Abierto.png', texto:'Cafe', estado:false},
-			{imagen:'https://image.ibb.co/fAQvOx/cofre.png', imagena:'https://image.ibb.co/doP5Ox/cofre_Abierto.png', texto:'Viajes', estado:false},
-
-		],
-		cofre2:[
-			{imagen:'https://image.ibb.co/fAQvOx/cofre.png', imagena:'https://image.ibb.co/doP5Ox/cofre_Abierto.png', texto:'Cine', estado:false},
-			{imagen:'https://image.ibb.co/fAQvOx/cofre.png', imagena:'https://image.ibb.co/doP5Ox/cofre_Abierto.png', texto:'Teatro', estado:false},
-			{imagen:'https://image.ibb.co/fAQvOx/cofre.png', imagena:'https://image.ibb.co/doP5Ox/cofre_Abierto.png', texto:'Deportes', estado:false},
-			
-		],
-		cofre3:[
-			{imagen:'https://image.ibb.co/fAQvOx/cofre.png', imagena:'https://image.ibb.co/doP5Ox/cofre_Abierto.png', texto:'Rumba', estado:false},
-			{imagen:'https://image.ibb.co/fAQvOx/cofre.png', imagena:'https://image.ibb.co/doP5Ox/cofre_Abierto.png', texto:'Cafe', estado:false},
-			{imagen:'https://image.ibb.co/fAQvOx/cofre.png', imagena:'https://image.ibb.co/doP5Ox/cofre_Abierto.png', texto:'Viajes', estado:false},
-		]
+		    restriccionArray:[],
+		    categoria:[],
+		    activo:false
 	  };
 	}
 	componentWillMount(){
+		axios.get('x/v1/cat/categoriaPlan')
+	 	.then(e=>{
+	 		let categoria = e.data.categoria.map(e=>{
+	 			return {
+	 				id:e._id,
+	 				icon:e.ruta,
+	 				nombre:e.nombre,
+	 				estado:false
+	 			}
+	 		})
+	 		this.setState({categoria})
+	 	})
+	 	.catch(err=>{
+	 		console.log(e.err)
+	 	})
+
 		axios.get('/x/v1/user/profile')
 		.then((res)=>{
 			console.log(res.data)
@@ -39,98 +41,81 @@ export default class editPerfilComponent2 extends Component{
 		})
 	}
  
- 	renderCofres(){
- 		return this.state.cofre.map((e, key)=>{
- 			let estado = e.estado
- 			return(
- 				<TouchableOpacity key={key} style={LoginStyle.imagenes} onPress={(e)=>this.handleChangeState(key, estado)} >
-					<Image
-						style={LoginStyle.imagenCofre}
-						width={70}
-						height={55}
-						source={{uri: !e.estado ?e.imagen :e.imagena}}
-				    />
-				    <Text style={!e.estado ?LoginStyle.textoCofre : LoginStyle.textoCofre2}>{e.texto}</Text>
- 				</TouchableOpacity>
- 			)
- 		})
- 	}
- 	renderCofres2(){
- 		return this.state.cofre2.map((e, key)=>{
- 			let estado = e.estado
- 			return(
- 				<TouchableOpacity key={key} style={LoginStyle.imagenes} onPress={(e)=>this.handleChangeState2(key, estado)} >
-					<Image
-						style={LoginStyle.imagenCofre}
-						width={70}
-						height={55}
-						source={{uri: !e.estado ?e.imagen :e.imagena}}
-				    />
-					<Text style={!e.estado ?LoginStyle.textoCofre : LoginStyle.textoCofre2}>{e.texto}</Text>
- 				</TouchableOpacity>
- 			)
- 		})
- 	}
- 	renderCofres3(){
- 		return this.state.cofre3.map((e, key)=>{
- 			let estado = e.estado
- 			return(
- 				<TouchableOpacity key={key} style={LoginStyle.imagenes} onPress={(e)=>this.handleChangeState3(key, estado)} >
-					<Image
-						style={LoginStyle.imagenCofre}
-						width={70}
-						height={55}
-						source={{uri: !e.estado ?e.imagen :e.imagena}}
-				    />
-					<Text style={!e.estado ?LoginStyle.textoCofre : LoginStyle.textoCofre2}>{e.texto}</Text>
- 				</TouchableOpacity>
- 			)
- 		})
- 	}
+ 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////  GENERO EL ARRAY DE LAS RESTRICCIONES //////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	updateStateRestriccion(id, estado){
+		if (estado) {
+			this.setState({restriccionArray: this.state.restriccionArray.concat([id])})
+		}else{
+			this.setState({restriccionArray:this.state.restriccionArray.filter(function(val){return val != id}) })
+		}
+	}
+
+	renderCategoria(){
+		return this.state.categoria.map((e, key)=>{
+			return(
+				<TouchableOpacity key={key} style={LoginStyle.touchRes} 
+					onPress={(index)=> {this.updateState(e.id, e.estado); this.updateStateRestriccion(e.id, e.estado)} }>
+					<Image source={{ uri: e.icon}} style={LoginStyle.iconRes} />
+					{
+						e.estado
+						?<Image source={require('./categoriaCheck.png')} style={LoginStyle.banRes} />
+						:<Image source={require('./categoriaCheckDisable.png')} style={LoginStyle.banRes} />
+					}
+					<Text style={LoginStyle.textoRes}>{e.nombre}</Text>
+				</TouchableOpacity>
+			)
+		})
+	}
 	render(){
+		console.log(this.state.restriccionArray.lenth)
+		const {activo} = this.state
 		return(
 			<ScrollView style={LoginStyle.fondoUltimo}>
-				<View >
-					<View>
+				<View style={LoginStyle.contenedorRes}>
 						<Image
 							style={LoginStyle.image}
-							width={380}
-							source={require('./encabezado2.png')}
+							source={require('./eligePlanTitulo.png')}
 					    />
-					</View> 
 			    </View>
-			    <View style={LoginStyle.contenedorCofres}>{this.renderCofres()}</View>
-			    <View style={LoginStyle.contenedorCofres}>{this.renderCofres2()}</View>
-			    <View style={LoginStyle.contenedorCofres}>{this.renderCofres3()}</View>
+			    <View style={LoginStyle.contenedorCofres}>
+			    	{this.renderCategoria()}
+			    </View>
+			    
 			    <View style={LoginStyle.contenedorBtnlisto}>
-				    <TouchableOpacity  style={LoginStyle.estasListoBtn} onPress={this.handleSubmit.bind(this)}>
-				    	<Text  style={LoginStyle.btnEstasListo}>!Estas Listo!</Text>
-				    </TouchableOpacity>
+			    	{
+			    		!this.state.restriccionArray.length>0
+			    		?<TouchableOpacity  style={LoginStyle.estasListoBtn} onPress={this.selecciona.bind(this)}>
+					    	<Text  style={LoginStyle.btnEstasListo}>!Estas Listo!</Text>
+					    </TouchableOpacity>
+					    :<TouchableOpacity  style={[LoginStyle.estasListoBtn, LoginStyle.estasListoBtnActivo]} onPress={this.handleSubmit.bind(this)}>
+					    	<Text  style={[LoginStyle.btnEstasListo, LoginStyle.btnEstasListoActivo]}>!Estas Listo!</Text>
+					    </TouchableOpacity>
+			    	}
+				    
 				</View>    
 			</ScrollView>
 		)
 	}
-	handleChangeState(key, estado) {
- 		let newData = this.state.cofre.map((e, index)=>{
- 			if(key==index) e.estado = !estado
- 			return e
- 		})
- 		this.setState({cofre:newData})
+	updateState(id, estado, restricciones){
+		let categoria = this.state.categoria.map((item, key)=>{
+			if(item.id == id) item.estado = !estado
+			return item
+		})
+		this.setState({categoria})
+ 
 	}
-	handleChangeState2(key, estado) {
- 		let newData = this.state.cofre2.map((e, index)=>{
- 			if(key==index) e.estado = !estado
- 			return e
- 		})
- 		this.setState({cofre2:newData})
-	}
-	handleChangeState3(key, estado) {
-
- 		let newData = this.state.cofre3.map((e, index)=>{
- 			if(key==index) e.estado = !estado
- 			return e
- 		})
- 		this.setState({cofre3:newData})
+	selecciona(){
+		 
+		Alert.alert(
+		  'Selecciona al menos una categoria',
+		  '',
+		  [
+		    {text: 'OK', onPress: () => console.log('OK Pressed')},
+		  ],
+		  { cancelable: false }
+		)
 	}
 	handleSubmit(){
 		const {navigate} = this.props.navigation

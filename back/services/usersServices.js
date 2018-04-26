@@ -10,6 +10,10 @@ class userServices {
 	getEmail(user, callback){
 		User.findOne({'username':user.username}, callback)
 	}
+	getEmailFacebook(username, callback){
+		console.log(username)
+		User.findOne({'username':username}, callback)
+	}
 	login(user, callback){
 		User.findOne({ 'username' :  user.username }, callback)
 	}

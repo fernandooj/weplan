@@ -63,7 +63,7 @@ export default class createPlanComponent extends Component{
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} > 
 				<CabezeraComponent navigate={navigate} url={'Home'} parameter={this.state.planId} />
 				<View style={CreatePlanStyle.encabezadoPlan}>
-					<TakePhotoComponent fuente={'cam.png'} ancho={120} alto={100} updateImagen={(imagen) => {this.setState({imagen})}} />
+					<TakePhotoComponent fuente={'cam.png'} ancho={170} alto={120} updateImagen={(imagen) => {this.setState({imagen})}} />
 					<TextInput
 						style={CreatePlanStyle.input}
 						onChangeText={(nombre) => this.setState({nombre,iconCreate:false})}

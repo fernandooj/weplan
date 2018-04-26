@@ -225,19 +225,7 @@ module.exports = function(app, passport){
         })
     });
 
-    ///////////////////////////////////////////////////////////////////////////
-    /*
-    si el login es exitoso
-    */
-    ///////////////////////////////////////////////////////////////////////////
-    app.get('/x/v1/user/profile', function(req, res){
-        if(req.session.usuario==undefined){
-            res.json({status:'FAIL', user: 'SIN SESION', code:0 })
-        }else{
-            //res.json({'user': req.user, 'user': req.session.usuario })
-            res.json({status:'SUCCESS', user: req.session.usuario, code:1})  
-        } 
-    })
+
 
     ///////////////////////////////////////////////////////////////////////////
     /*
@@ -254,25 +242,49 @@ module.exports = function(app, passport){
     LOGIN SOCIAL MEDIA GOOGLE / FACEBOOK
     */
     ///////////////////////////////////////////////////////////////////////////
+    // app.post('/x/v1/user/facebook', function(req, res){
+    //     userServices.getEmail(req.body, function(err, users){
+    //     console.log(req.users)    
+    //         if (!users) {
+    //             console.log(1)
+    //             userServices.facebook(req.body, function(err, user){
+    //                 if (err) {
+    //                     res.json({status:'FAIL', err, code:0})    
+    //                 }else{
+    //                     req.session.usuario = {user:user}
+    //                     res.json({status: 'SUCCESS', mensaje:user, code:1})
+    //                 }
+    //             })
+    //         }else{
+    //             console.log(2)
+    //             req.session.usuario = {user:users}
+    //             res.json({status: 'SUCCESS', users, code:1})
+    //         }
+    //     })
+    // })
     app.post('/x/v1/user/facebook', function(req, res){
-        userServices.getEmail(req.body, function(err, users){
-        console.log(req.users)    
-            if (!users) {
-                userServices.facebook(req.body, function(err, user){
-
-                    if (err) {
-                        res.json({status:'FAIL', err, code:0})    
-                    }else{
-                        req.session.usuario = {user:user}
-                        res.json({status: 'SUCCESS', mensaje:user, code:1})
-                    }
-                })
+        userServices.getEmailFacebook(req.body.username, (err, data)=>{   
+            if (!data) {
+                console.log(1)
+                existe(req, res)
             }else{
-                req.session.usuario = {user:users}
-                res.json({status: 'SUCCESS', users, code:1})
+                console.log(2)
+                req.session.usuario = {user:data}
+                res.json({status: 'SUCCESS', data, code:1})
             }
         })
     })
+    let existe = function(req, res){
+        userServices.facebook(req.body, (err, user)=>{
+            if (err) {
+                res.json({status:'FAIL', err, code:0})    
+            }else{
+                req.session.usuario = {user:user}
+                res.json({status: 'SUCCESS', mensaje:user, code:1})
+            }
+        })
+    }
+
 
 
     app.post('/x/v1/user/google', function(req, res){
@@ -283,6 +295,20 @@ module.exports = function(app, passport){
                 res.json({status: 'SUCCESS', user, code:1})
             }
         })
+    })
+
+    ///////////////////////////////////////////////////////////////////////////
+    /*
+    si el login es exitoso
+    */
+    ///////////////////////////////////////////////////////////////////////////
+    app.get('/x/v1/user/profile', function(req, res){
+        console.log(req.session.usuario)
+        if(req.session.usuario===undefined || req.session.usuario.user==null){
+            res.json({status:'FAIL', user: 'SIN SESION', code:0 })
+        }else{
+            res.json({status:'SUCCESS', user: req.session.usuario, code:1})  
+        } 
     })
 
     ///////////////////////////////////////////////////////////////////////////
@@ -419,7 +445,9 @@ module.exports = function(app, passport){
     // LOGOUT ==============================
     // =====================================
     app.get('/x/v1/logout', function(req, res) {
-        req.session.usuario = null
+        req.session.usuario = null;
+        req.session = null;
+        console.log(req.session)
         res.json({status: 'SUCCESS', message:'sesion terminada', code:1})
     });
 

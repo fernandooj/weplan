@@ -9,8 +9,9 @@ export const LoginStyle = StyleSheet.create({
 		/*justifyContent: 'center', justifica contenido verticalmente */
 	},
 	image:{
-        width: win.width,
-        height: win.height,
+		marginTop:10,
+        width:'70%',
+        height:60
 	},
 	input:{
 		marginTop:10,
@@ -106,7 +107,7 @@ export const LoginStyle = StyleSheet.create({
 		fontSize:17
 	},
 	contenedorCofres:{
-		 flexDirection: 'row', 
+		alignItems: 'center',
 		justifyContent: 'center',
 		flex: 1, 
 		backgroundColor:'#ffffff'
@@ -132,16 +133,22 @@ export const LoginStyle = StyleSheet.create({
 		color:'#ffffff'
 	},
 	estasListoBtn:{
-		backgroundColor:'#CECFD6',
+		backgroundColor:'#e8e8e8',
 		marginTop:20,
 		borderRadius: 50,
 		padding:10,
 		width:240,
 	},
 	btnEstasListo:{
-		color:'#6177C9',
+		color:'#828693',
 		textAlign: 'center', 
 		fontSize:15
+	},
+	estasListoBtnActivo:{
+		backgroundColor:'#a5b8f6',
+	},
+	btnEstasListoActivo:{
+		color:'#FCFCFC',
 	},
 	contenedorBtnlisto:{
 		backgroundColor:'#ffffff',
@@ -154,6 +161,42 @@ export const LoginStyle = StyleSheet.create({
 
 		backgroundColor:'#ffffff'
 		/*justifyContent: 'center', justifica contenido verticalmente */
+	},
+
+	///////////////////////////////////////
+	////////// LISTADO PLANES //////////////
+	///////////////////////////////////////
+	contenedorRes:{
+		alignItems: 'center',
+	},
+	touchRes:{
+		flexDirection:'row',
+		width:'70%',
+		paddingTop:15,
+		paddingBottom:15,
+	},
+	iconRes:{
+		width:75,
+		height:75
+	},
+	textoRes:{
+		position:'relative',
+		top:20,
+		fontSize:20,
+		color:'#969696'
+	},
+	banRes:{
+		position:'relative', 
+		top:50,
+		left:-20, 
+		width:21,
+		height:21
+	},
+	banResInactive:{
+		color:'#9B9B9B'
+	},
+	banResActive:{
+		color:'#FF5959'
 	},
 })
 

@@ -39,7 +39,7 @@ export const CreatePlanStyle = StyleSheet.create({
 	encabezadoPlan:{
 		alignItems: 'center',
 		backgroundColor:'#F2F4F4',
-		paddingTop: 50,
+		paddingTop: 30,
 		paddingBottom: 30,
 	},
 	iconCamera:{

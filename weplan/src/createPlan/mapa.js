@@ -48,20 +48,20 @@ export default class MapaPlanComponent extends Component{
 			  ],
 			  { cancelable: false }
 			),
-		{enableHighAccuracy: true, timeout:20000, maximumAge:1000})
+		{enableHighAccuracy: true, timeout:5000, maximumAge:0})
 
-		this.watchID = navigator.geolocation.watchPosition(e=>{
-			let lat =parseFloat(e.coords.latitude)
-			let lng = parseFloat(e.coords.longitude)
-			let x = {
-				latitude : lat,
-				longitude : lng,
-				latitudeDelta : LATITUD_DELTA,
-				longitudeDelta : LONGITUDE_DELTA
-			}
-			this.setState({x})
-			console.log(x)
-		})
+		// this.watchID = navigator.geolocation.watchPosition(e=>{
+		// 	let lat =parseFloat(e.coords.latitude)
+		// 	let lng = parseFloat(e.coords.longitude)
+		// 	let x = {
+		// 		latitude : lat,
+		// 		longitude : lng,
+		// 		latitudeDelta : LATITUD_DELTA,
+		// 		longitudeDelta : LONGITUDE_DELTA
+		// 	}
+		// 	this.setState({x})
+		// 	console.log(x)
+		// })
 	}
 	componentWillUnmont(){
 		navigator.geolocation.clearWatch(this.watchID)

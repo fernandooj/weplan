@@ -23,6 +23,7 @@ let chatRutas = require('./routes/Chat.js');
 let itemRutas = require('./routes/Item.js');
 let pagoRutas = require('./routes/Pago.js');
 let restriccionRutas= require('./routes/restricciones.js');
+let categoriaPlanRutas= require('./routes/categoriaPlan.js');
 let abonoRutas= require('./routes/Abono.js');
 
 const path          = require('path');
@@ -84,11 +85,9 @@ app.use(allowCrossDomain);
 
 // required for passport
 app.use(cookieSession({ 
-  name: '23eirofjiw8',
+  name: 'weplan',
   keys: ['key1', 'key2'],
-   rolling: true,
-  resave: true, 
-  saveUninitialized: false
+ 
 })); /// session secret
 
 app.use(formidable.parse({ keepExtensions:true }))
@@ -121,6 +120,7 @@ app.use('/x/v1/cha/chat', chatRutas)
 app.use('/x/v1/ite/item', itemRutas)
 app.use('/x/v1/pag/pago', pagoRutas)
 app.use('/x/v1/abo/abono', abonoRutas)
+app.use('/x/v1/cat/categoriaPlan', categoriaPlanRutas)
 app.use('/x/v1/res/restriccion', restriccionRutas)
 
 require('./routes/Users.js')(app, passport);

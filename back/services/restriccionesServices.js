@@ -13,7 +13,6 @@ class restriccionesServices{
 		amigoUsers.ruta   = ruta
 		amigoUsers.save(callback)
 	}
- 
 }
 
 

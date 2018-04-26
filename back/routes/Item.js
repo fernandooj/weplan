@@ -142,8 +142,10 @@ let createPlan = function(req, res, id, item){
 	data.map(e=>{
 		pagoServices.create(e, null, (err, pago)=>{
 			if(err){
-				res.json({err, code:0})
+				console.log(err)
+				//res.json({err, code:0})
 			}else{
+				console.log(pago)
 				//res.json({ status: 'SUCCESS', pago, code:1 });					
 			}
 		})

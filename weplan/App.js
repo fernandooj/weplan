@@ -47,8 +47,8 @@ const NavigationApp = StackNavigator({
     pago:          {screen: pagoComponent },
     pagoDeuda:     {screen: pagoDeudaComponent },
 },{ headerMode: 'none' })
-
-const NavigationAppLogin = StackNavigator({
+ 
+const NavigationAppLogin = StackNavigator({  
     Home:          {screen: homeComponent },
     Login:         {screen: LoginComponent },
     Registro:      {screen: RegistroComponent },
