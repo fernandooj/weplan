@@ -265,6 +265,31 @@ export const ChatStyle = StyleSheet.create({
 		top:10,
 		left:-14,
 		zIndex:0
+	},
+
+	///////////////////////////////// contenedor 3	//////////
+	contenedorOpciones:{
+		flexDirection:'row',
+		alignItems: 'center',
+	},
+	imagenPregunta:{
+		width:100,
+		height:100,
+		borderRadius:50,
+		zIndex:1000,
+		borderColor:'#9CB7F5',
+		borderWidth:5,
+	},
+	textoPregunta:{
+		width:100,
+		height:100,
+		borderRadius:50,
+		zIndex:1000,
+		borderColor:'#9CB7F5',
+		borderWidth:5,
+		position:'relative',
+	 
+
 	}
 })
 

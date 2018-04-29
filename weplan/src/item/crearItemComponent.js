@@ -132,10 +132,10 @@ export default class CrearItemComponent extends Component{
 
     let data = new FormData();
     
-    axios.post('/x/v1/ite/item', {descripcion, enviarChat, valor, titulo, planId, asignados, tipo:1})
+    axios.post('/x/v1/ite/item', {descripcion, valor, titulo, planId, asignados, tipo:1})
     .then(e=>{
       let itemId = e.data.item._id
-      console.log(planId)
+      console.log(e.data.item)
      
 
       data.append('imagen', imagen);
@@ -144,6 +144,8 @@ export default class CrearItemComponent extends Component{
       data.append('titulo', titulo);
       data.append('descripcion', descripcion);
       data.append('valor', valor);
+      data.append('enviarChat', enviarChat);
+      data.append('itemId', itemId);
 
       axios({
             method: 'post', //you can set what request you want to be
@@ -158,7 +160,6 @@ export default class CrearItemComponent extends Component{
         console.log(res.data)     
         if(res.data.code==1){ 
           this.props.updateItems(itemId, valor, titulo)
-          //this.props.close(false)
         }else{
           Alert.alert(
            'Error!, intenta nuevamente'

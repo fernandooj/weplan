@@ -11,7 +11,7 @@ let abonoSchema = mongoose.Schema({
 	estado		  : { type : String},
 	itemId     	  : {type: Schema.Types.ObjectId, ref:'Item'},
 	userId     	  : {type: Schema.Types.ObjectId, ref:'User'}, 
-	userIdAbona    : {type: Schema.Types.ObjectId, ref:'User'}, 
+	userIdAbona   : {type: Schema.Types.ObjectId, ref:'User'}, 
 	createdAt	  : { type: String, default: moment().format('YYYY-MM-DD h:mm') },
 })
 

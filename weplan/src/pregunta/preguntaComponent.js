@@ -3,13 +3,13 @@ import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native'
 import {ItemStyle} from '../item/style'
 import Accordion from 'react-native-accordion-xg';
 import axios from 'axios'
-import CrearItemComponent from './crearItemComponent'
+import CrearPreguntaComponent from './crearPreguntaComponent'
 import CabezeraComponent from '../ajustes/cabezera.js'
 import update from 'react-addons-update';
 
  
 
-export default class ItemComponent extends Component{
+export default class PreguntaComponent extends Component{
 	state={
 		show:false,
 		misItems:[],
@@ -19,50 +19,9 @@ export default class ItemComponent extends Component{
 	}
 	componentWillMount(){
 		let planId = this.props.navigation.state.params	
-		this.setState({planId})
-		axios.get('/x/v1/ite/item/'+planId)
-		.then(e=>{
-			console.log(e.data)
-			let items=[]
-			////////////////////////////////////////////////////////////////////////
-			////////////////////		busco los pagos asignados		////////////////
-			e.data.item.filter((e)=>{
-				axios.get('/x/v1/pag/pago/suma/'+e._id)
-				.then(res=>{
-					res.data.pago.filter(item=>{
-	   				items.push({
-	   						deuda:item.monto, 
-	   						id:e._id,
-								titulo:e.titulo,
-								nombre: e.userId.nombre,
-								status: item.monto<0 ?'noAsignado' : 'asignado'
-						})
-					})
-					this.setState({items})
-				})
-				.catch(err=>{
-					console.log(err)
-				})
-			})
-			////////////////////////////////////////////////////////////////////////
-			////////////////////////////////////////////////////////////////////////
-			let todosItems = e.data.item.map((e)=>{																				////
-			let monto = e.asignados.length==0 ?e.valor :Math.ceil((e.valor/(e.asignados.length+1))/1000)*1000;	////																 
-				return {																														////
-					id:e._id,																												////	
-					deuda:monto,																											////
-					titulo:e.titulo,																										////
-					nombre:e.userId.nombre,																								////
-					status:monto<0 ?'noAsignado' : 'asignado' 																	////
-				}																																////
-			})
-			this.setState({todosItems})
-			//////////////////////////////////////////////////////////////////////////////////
-			//////////////////////////////////////////////////////////////////////////////////
-		})		 
-		.catch(err=>{
-			console.log(err)
-		})	
+		//let planId = '5ae236db9455a84f5576a175'
+		console.log(planId)
+	 	this.setState({planId})
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	}
 	renderAcordeon() {
@@ -71,7 +30,7 @@ export default class ItemComponent extends Component{
 			<View>
 			  	<View style={ItemStyle.headerCollapsable }>
 			    	<TouchableOpacity onPress={()=>this.setState({render:true})}>
-			    		<Text style={ItemStyle.headerText}>Mis Items</Text>
+			    		<Text style={ItemStyle.headerText}>Mis Preguntas</Text>
 			    	</TouchableOpacity>
 			    	{	render
 			    		?this.renderMiItems()
@@ -81,7 +40,7 @@ export default class ItemComponent extends Component{
 
 			  	<View style={[ItemStyle.headerCollapsable, ItemStyle.headerCollapsableFirst]}>
 			    	<TouchableOpacity onPress={this.joinItems.bind(this)}>
-			    		<Text style={[ItemStyle.headerText, ItemStyle.headerTextFirst]}>Items</Text>
+			    		<Text style={[ItemStyle.headerText, ItemStyle.headerTextFirst]}>Preguntas</Text>
 			    	</TouchableOpacity>
 			    	 {
 			    	 	!render
@@ -158,14 +117,13 @@ export default class ItemComponent extends Component{
   	render() {
 		const {show, items, itemsPlan} = this.state
 		const {navigate} = this.props.navigation
-		console.log(this.state.planId)
 		return (
 			<ScrollView  style={ItemStyle.contentItem}>
 			  	<CabezeraComponent navigate={navigate} url={'chat'} parameter={this.state.planId} />
 			  	{/*****   show the modal to create component	*****/}
 				  	{
 				  		show
-				  		?<CrearItemComponent  
+				  		?<CrearPreguntaComponent  
 				  			planId={this.props.navigation.state.params}
 				  			updateItems={(id, deuda, titulo)=>this.updateItems(id, deuda, titulo)}
 				  			close={()=>this.setState({show:false})}
@@ -176,7 +134,7 @@ export default class ItemComponent extends Component{
 				{/*****   boton para mostrar crear item	*****/}
 				  	<TouchableOpacity onPress={()=>this.setState({show:true})} style={ItemStyle.contenedorNuevo}>
 						<Image source={require('../ajustes/nuevo.png')} style={ItemStyle.btnNuevoGrupo} />
-						<Text>Crear Item</Text>
+						<Text>Crear Pregunta</Text>
 				  	</TouchableOpacity>
 				  	
 				 	{this.renderAcordeon()}

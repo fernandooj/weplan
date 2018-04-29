@@ -23,7 +23,7 @@ router.post('/', (req, res)=>{
 	////////////////  recupero el id del usuario / el id del plan / el mensaje
 	let id      = req.session.usuario.user._id
 	let photo   = req.session.usuario.user.photo
-	let nombre   = req.session.usuario.user.nombre
+	let nombre  = req.session.usuario.user.nombre
 	let planId  = req.body.planId
 	let mensaje = req.body.mensaje
 	let fecha   = req.body.fecha
@@ -36,7 +36,7 @@ router.post('/', (req, res)=>{
 		id, photo, planId, mensaje, fecha, nombre
 	}
 	cliente.publish('chat', JSON.stringify(mensajeJson))
-	chatServices.create(req.body, id, null, (err, chat)=>{
+	chatServices.create(req.body, id, 1, (err, chat)=>{
 		console.log('chat')
 		if (err) {
 			res.json({status:'FAIL', err, code:0})   

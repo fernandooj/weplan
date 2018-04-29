@@ -19,6 +19,7 @@ import createPlanComponent    from './src/createPlan/createPlanComponent';
 import MisPlanesComponent     from './src/misPlanes/misPlanesComponent';
 import ChatComponent          from './src/chat/chatComponent';
 import ItemComponent          from './src/item/itemComponent';
+import preguntaComponent      from './src/pregunta/preguntaComponent';
 import pagoComponent          from './src/pago/pagoComponent';
 import pagoDeudaComponent     from './src/pago/pagoDeudaComponent';
 import ajustesComponent       from './src/ajustes/ajustesComponent';
@@ -46,6 +47,7 @@ const NavigationApp = StackNavigator({
     ajustesAmigos: {screen: ajustesAmigosComponent },
     pago:          {screen: pagoComponent },
     pagoDeuda:     {screen: pagoDeudaComponent },
+    pregunta:      {screen: preguntaComponent },
 },{ headerMode: 'none' })
  
 const NavigationAppLogin = StackNavigator({  
@@ -61,6 +63,7 @@ const NavigationAppLogin = StackNavigator({
     misPlanes:     {screen: MisPlanesComponent },
     chat:          {screen: ChatComponent },
     item:          {screen: ItemComponent },
+    pregunta:      {screen: preguntaComponent },
     ajustes:       {screen: ajustesComponent },
     ajustesAmigos: {screen: ajustesAmigosComponent },
     pago:          {screen: pagoComponent },
