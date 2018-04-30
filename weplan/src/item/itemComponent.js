@@ -160,28 +160,30 @@ export default class ItemComponent extends Component{
 		const {navigate} = this.props.navigation
 		console.log(this.state.planId)
 		return (
-			<ScrollView  style={ItemStyle.contentItem}>
-			  	<CabezeraComponent navigate={navigate} url={'chat'} parameter={this.state.planId} />
-			  	{/*****   show the modal to create component	*****/}
-				  	{
-				  		show
-				  		?<CrearItemComponent  
-				  			planId={this.props.navigation.state.params}
-				  			updateItems={(id, deuda, titulo)=>this.updateItems(id, deuda, titulo)}
-				  			close={()=>this.setState({show:false})}
-				  		 />
-				  		:null 
-				  	}
-				<View style={ItemStyle.subContentItem}>
-				{/*****   boton para mostrar crear item	*****/}
-				  	<TouchableOpacity onPress={()=>this.setState({show:true})} style={ItemStyle.contenedorNuevo}>
-						<Image source={require('../ajustes/nuevo.png')} style={ItemStyle.btnNuevoGrupo} />
-						<Text>Crear Item</Text>
-				  	</TouchableOpacity>
-				  	
-				 	{this.renderAcordeon()}
-			  	</View>
-			</ScrollView>
+			<View  style={ItemStyle.contentItem}>
+				<CabezeraComponent navigate={navigate} url={'chat'} parameter={this.state.planId} />
+				<ScrollView>
+				  	{/*****   show the modal to create component	*****/}
+					  	{
+					  		show
+					  		?<CrearItemComponent  
+					  			planId={this.props.navigation.state.params}
+					  			updateItems={(id, deuda, titulo)=>this.updateItems(id, deuda, titulo)}
+					  			close={()=>this.setState({show:false})}
+					  		 />
+					  		:null 
+					  	}
+					<View style={ItemStyle.subContentItem}>
+					{/*****   boton para mostrar crear item	*****/}
+					  	<TouchableOpacity onPress={()=>this.setState({show:true})} style={ItemStyle.contenedorNuevo}>
+							<Image source={require('../ajustes/nuevo.png')} style={ItemStyle.btnNuevoGrupo} />
+							<Text>Crear Item</Text>
+					  	</TouchableOpacity>
+					  	
+					 	{this.renderAcordeon()}
+				  	</View>
+				</ScrollView>
+			</View>
 		);
 	}
 }

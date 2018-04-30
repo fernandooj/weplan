@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, ImageBackground, TextInput, ScrollView, NativeModules} from 'react-native'
+import {View, Text, Image, TouchableOpacity, ImageBackground, ScrollView} from 'react-native'
 import {HomeStyle} from '../home/style'
 import axios from 'axios'
 

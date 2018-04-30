@@ -30,6 +30,7 @@ export default class pagoComponent extends Component{
 
 	renderItem(){
 		const {item, valor} = this.state
+		console.log(item)
 		return(
 			<View>
 			{/* ITEM INFORMACION */}
@@ -192,8 +193,6 @@ export default class pagoComponent extends Component{
 				console.log(err)
 			})
 		}
-
-		
 	}
 }
 

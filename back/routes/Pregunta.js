@@ -89,6 +89,7 @@ router.post('/:id', (req,res)=>{
 	let ruta  = null
 	let ruta2 = null
 	let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
+	let randonNumber2 = Math.floor(90000000 + Math.random() * 1000000)
 	let tipo  = null
 	let pregunta1 = null
 	let pregunta2 = null
@@ -105,8 +106,8 @@ router.post('/:id', (req,res)=>{
 	////////////////////////////////////////  RECIVO LA SEGUNDA IMAGEN 		/////////////////////////////////////////
 	if (req.files.imagen2) {
 		let extension2 = req.files.imagen2.name.split('.').pop()
-		let fullUrl2 = '../../front/docs/public/uploads/pregunta/'+fechab+'_'+randonNumber+'.'+extension2
-		ruta2 = req.protocol+'://'+req.get('Host') + '/public/uploads/pregunta/'+fechab+'_'+randonNumber+'.'+extension2
+		let fullUrl2 = '../../front/docs/public/uploads/pregunta/'+fechab+'_'+randonNumber2+'.'+extension2
+		ruta2 = req.protocol+'://'+req.get('Host') + '/public/uploads/pregunta/'+fechab+'_'+randonNumber2+'.'+extension2
 		fs.rename(req.files.imagen2.path, path.join(__dirname, fullUrl2))
 	}else{
 		ruta2 = req.protocol+'://'+req.get('Host') + '/pregunta.png'
@@ -134,37 +135,37 @@ router.post('/:id', (req,res)=>{
 		pregunta2=ruta2
 	}
 
-	let preguntaId   = req.params.id
-	let userId       = req.session.usuario.user._id
-	let photo        = req.session.usuario.user.photo
-	let nombre       = req.session.usuario.user.nombre
-
-	let tipoPregunta = tipo
-	let pTitulo      = req.body.titulo
-	let pDescripcion = req.body.descripcion
-	let tipoChat 	 = 3
-	let estado 	 	 =false
-
-	let mensajeJson={
-		preguntaId, userId, photo, nombre, tipoPregunta, pregunta1, pregunta2, pTitulo, pDescripcion, tipoChat, estado
-	}
-	cliente.publish('chat', JSON.stringify(mensajeJson))
-
 	preguntaServices.uploadImage(req.params.id, tipo, pregunta1, pregunta2, (err, pregunta)=>{
 		
 		if(err){
 			res.json({err, code:0})
 		}else{
-			createChat(req, res, id, pregunta)
+			createChat(req, res, id, tipo, pregunta1, pregunta2, pregunta)
 		}
 	})
 
 	/////////////////////////////////////////////////////////////////////////////
 	///////////////////////		FUNCTION TO CREATE CHAT 	/////////////////////
 	/////////////////////////////////////////////////////////////////////////////
-	let createChat = (req, res, id, pregunta)=>{
-		console.log('si hay chat')
+	let createChat = (req, res, id, tipo, pregunta1, pregunta2, pregunta)=>{
 		chatServices.create(req.body, id,  3, (err,chat)=>{
+			let mensajeJson={
+				id :         pregunta._id,
+				planId: 	 req.body.planId, 
+				preguntaId:  req.params.id, 
+				userId: 	 req.session.usuario.user._id, 
+				photo:  	 req.session.usuario.user.photo, 
+				nombre: 	 req.session.usuario.user.nombre, 
+				tipoPregunta:tipo, 
+				pregunta1,   
+				pregunta2, 
+				pTitulo: 	 pregunta.titulo,
+				pDescripcion:pregunta.descripcion, 
+				tipoChat    :3, 
+				estado: 	true
+			}
+			cliente.publish('chat', JSON.stringify(mensajeJson))
+			
 			if(err){
 				res.json({err, code:0})
 			}else{

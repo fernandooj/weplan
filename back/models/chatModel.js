@@ -11,6 +11,7 @@ let chatSchema = Schema({
 	planId : 	{type: Schema.Types.ObjectId, ref: 'Plan'},
 	mensaje: 	String,
 	tipo: 	 	String,
+	estado:     Boolean,
 	itemId:     {type: Schema.Types.ObjectId, ref: 'Item'},
 	preguntaId: {type: Schema.Types.ObjectId, ref: 'Pregunta'},
 	createdAt:  {type: String, default: moment().format('YYYY-MM-DD h:mm:ss') },

@@ -16,6 +16,7 @@ module.exports = function(server){
 		if (canal=='chat') {
 			console.log('+++++++++++++++')
 			let newInfo = JSON.parse(info)
+			console.log(newInfo)
 			io.emit('userJoined'+newInfo.planId, JSON.parse(info))
 		}
 	})

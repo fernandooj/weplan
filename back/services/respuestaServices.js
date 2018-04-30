@@ -19,10 +19,19 @@ class respuestaServices{
 		respuesta.valor= data.valor
 		respuesta.save(callback)
 	}
-	cuenta(data, callback){
+	cuenta(data, valor, userId, callback){
+		console.log(data.idPregunta)
+		////////////////////////////////////  cuenta todas las respuestas ////////////////////////////////////
 		respuestaSchema.count({idPregunta: data.idPregunta}).exec((err, totalRespuestas)=>{
-			respuestaSchema.count({idPregunta: data.idPregunta, valor:data.valor}).exec((err, totalValor)=>{
-				callback(totalRespuestas, totalValor)
+
+			////////////////////////////////////  cuenta las respuestas con valor 1 //////////////////////////
+			respuestaSchema.count({idPregunta: data.idPregunta, valor}).exec((err, totalValor)=>{
+
+				////////////////////////////////////  cuenta las respuestas del usuario //////////////////////////
+				respuestaSchema.count({idPregunta: data.idPregunta, userId}).exec((err, totalIdUsuario)=>{
+
+					callback(totalRespuestas, totalValor, totalIdUsuario)
+				});
 			});
 		});
 	}

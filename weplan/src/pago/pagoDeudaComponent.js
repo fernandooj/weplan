@@ -1,15 +1,18 @@
- import React, {Component} from 'react'
+import React, {Component} from 'react'
 import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Alert} from 'react-native'
 import {PagoStyle} from '../pago/style'
-import CabezeraComponent from '../ajustes/cabezera.js'
 import axios from 'axios'
+import CabezeraComponent from '../ajustes/cabezera.js'
+import AbonarComponent   from './abonarComponent.js'
+
  
  
 
 export default class pagoDeudaComponent extends Component{
  	state={
  		item:{asignados:[], userId:{}},
- 		valor:0
+ 		valor:0,
+ 		show:false
  	}
 	componentWillMount(){
 	 	console.log(this.props.navigation.state)
@@ -55,10 +58,11 @@ export default class pagoDeudaComponent extends Component{
 	renderAsignados(){
 		const valor = this.state.item.valor
 		const nAsignados = this.state.item.asignados.length
-		let monto = Math.ceil((valor/(nAsignados+1))/1000)*1000;	////	
+		let monto = Math.ceil((valor/(nAsignados+1))/1000)*1000;
+		console.log(this.state.item.asignados)	
 		return this.state.item.asignados.map((e, key)=>{
 			return(
-	 			<TouchableOpacity style={PagoStyle.pagoDeudaContenedor} key={key}>
+	 			<TouchableOpacity style={PagoStyle.pagoDeudaContenedor} key={key} onPress={()=>this.setState({show:true,userId:e._id, photo:e.photo, nombre:e.nombre, monto})}>
 	 				<Image source={{uri: e.photo}} style={PagoStyle.pagoDeudaAvatar}/>
 	 				<Text style={PagoStyle.pagoDeudaNombre}>{e.nombre}</Text>
 	 				<Text style={PagoStyle.pagoDeudaMonto}>{'$ '+Number(monto).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
@@ -70,13 +74,28 @@ export default class pagoDeudaComponent extends Component{
  
   	render() {
   		const {navigate} = this.props.navigation
+  		const {show, monto, photo, nombre, itemId, userId} = this.state
 		return (
-			<ScrollView>
+			<ScrollView style={PagoStyle.container}>
 				<View style={PagoStyle.contentItem}>
 					<CabezeraComponent navigate={navigate} url={'item'} parameter={this.state.planId} />
+					{
+				  		show
+				  		?<AbonarComponent
+				  			photo={photo}
+				  			nombre={nombre}
+				  			valor={monto}
+				  			itemId={itemId}
+				  			userId={userId}
+				  			updateItems={(id, deuda, titulo)=>this.updateItems(id, deuda, titulo)}
+				  			close={()=>this.setState({show:false})}
+				  		 />
+				  		:null 
+				  	}
 					<View style={PagoStyle.contenedor}>
 						{this.renderItem()}
 						{this.renderAsignados()}
+						
 					</View>			  
 				</View>
 			</ScrollView>

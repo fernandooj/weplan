@@ -19,8 +19,9 @@ export default class ChatComponent extends Component{
 	}
 
 	componentWillMount(){
-		let planId = this.props.navigation.state.params	
-		//let planId = '5ae236db9455a84f5576a175'	 
+		//let planId = this.props.navigation.state.params	
+		let planId = '5ae236db9455a84f5576a175'	
+		console.log(planId) 
 		this.socket = SocketIOClient(URL);
 		this.socket.on('userJoined'+planId, this.onReceivedMessage);
 
@@ -50,32 +51,48 @@ export default class ChatComponent extends Component{
 		axios.get('/x/v1/cha/chat/'+planId)
 		.then(e=>{
 			console.log(e.data.mensaje)
-			let mensajes = e.data.mensaje.map((e)=>{
-				return {
-					id: 		e._id,
-					userId: 	e.userId._id,
-					nombre 		:e.userId.nombre,
-					photo 		:e.userId.photo,
-					mensaje 	:e.mensaje,
-					itemId 		:e.itemId ?e.itemId._id :null ,
-					titulo 		:e.itemId ?e.itemId.titulo :null,
-					descripcion :e.itemId ?e.itemId.descripcion :null,
-					rutaImagen	:e.itemId ?e.itemId.rutaImagen :null,
-					valor 		:e.itemId ?e.itemId.valor :null,
-					preguntaId	:e.preguntaId ?e.preguntaId._id :null,
-					pTitulo		:e.preguntaId ?e.preguntaId.titulo :null,
-					pDescripcion:e.preguntaId ?e.preguntaId.descripcion :null,
-					pregunta1	:e.preguntaId ?e.preguntaId.pregunta1 :null,
-					pregunta1	:e.preguntaId ?e.preguntaId.pregunta2 :null,
-					respuesta1  :null,
-					respuesta2  :null,
-					tipoPregunta:e.preguntaId ?e.preguntaId.tipo :null,
-					tipoChat	:e.tipo,
-					estado      :false,
-				}
+			let mensajes=[]
+			/////////////////////////////   filtro mensajes con porcentajes  /////////////////
+			e.data.mensaje.map((e)=>{
+				let idPregunta= e.preguntaId ?e.preguntaId._id :1
+				axios.get('/x/v1/res/respuesta/'+idPregunta)
+				.then(res=>{ 
+
+					mensajes.push({
+						id: 		    e._id,
+						userId: 	    e.userId._id,
+						nombre 		:e.userId.nombre,
+						photo 		:e.userId.photo,
+						mensaje 	   :e.mensaje,
+						itemId 		:e.itemId ?e.itemId._id :null ,
+						titulo 		:e.itemId ?e.itemId.titulo :null,
+						descripcion :e.itemId ?e.itemId.descripcion :null,
+						rutaImagen	:e.itemId ?e.itemId.rutaImagen :null,
+						valor 		:e.itemId ?e.itemId.valor :null,
+						preguntaId	:e.preguntaId ?e.preguntaId._id :null,
+						pTitulo		:e.preguntaId ?e.preguntaId.titulo :null,
+						pDescripcion:e.preguntaId ?e.preguntaId.descripcion :null,
+						pregunta1	:e.preguntaId ?e.preguntaId.pregunta1 :null,
+						pregunta2	:e.preguntaId ?e.preguntaId.pregunta2 :null,
+						respuesta1  :res.data.porcentaje1,
+						respuesta2  :res.data.porcentaje2,
+						tipoPregunta:e.preguntaId ?e.preguntaId.tipo :null,
+						tipoChat	   :e.tipo,
+						estado      :e.estado,
+						porcentaje1 :res.data.porcentaje1,
+						porcentaje2 :res.data.porcentaje2,
+						asignado    :res.data.asignado
+					})
+					console.log(mensajes)
+					this.setState({mensajes})
+				})
+				.catch(err=>{
+					console.log(err)
+				})
 			})
-			this.setState({mensajes})
-			console.log(mensajes)
+			/////////////////////////////////////////////////////////////////////////////////
+			
+			 
 		})
 		.catch(res=>{
 			console.log(res)
@@ -120,19 +137,19 @@ export default class ChatComponent extends Component{
 	}
 	renderMensajes(){
 		const {navigate} = this.props.navigation
-		return this.state.mensajes.map((e,key)=>{
+		const {id, mensajes} = this.state
+		return mensajes.map((e,key)=>{
 			if (e.tipoChat==1) {
-				
 				return (
 					<View key={key} style={ChatStyle.contenedorBox}>
-						<View style={e.userId== this.state.id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]}>
-							<Text style={e.userId== this.state.id ?ChatStyle.nombre :[ChatStyle.nombre, ChatStyle.nombreLeft]}>{e.nombre}</Text>
+						<View style={e.userId== id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]}>
+							<Text style={e.userId== id ?ChatStyle.nombre :[ChatStyle.nombre, ChatStyle.nombreLeft]}>{e.nombre}</Text>
 							<Text style={ChatStyle.mensaje}>{e.mensaje}</Text>
 							
 						    <Text style={ChatStyle.fecha} >{e.fecha}</Text>
 						</View>
 						<Image
-							style={e.userId== this.state.id ?ChatStyle.photo : [ChatStyle.photo, ChatStyle.photoLeft]}
+							style={e.userId== id ?ChatStyle.photo : [ChatStyle.photo, ChatStyle.photoLeft]}
 							width={50}
 							height={50}
 							source={{uri: e.photo}}
@@ -145,29 +162,29 @@ export default class ChatComponent extends Component{
 			         	<View style={ChatStyle.modalIn}>
 				          	{/* imagen avatar */}
 				            <Image source={require('./item2.png')} 
-				            	style={e.userId== this.state.id ?ChatStyle.header :[ChatStyle.header, ChatStyle.headerLeft]} 
+				            	style={e.userId== id ?ChatStyle.header :[ChatStyle.header, ChatStyle.headerLeft]} 
 				            	/>
 								<Image source={{uri: e.photo}}
-									style={e.userId== this.state.id ?ChatStyle.iconAvatar :[ChatStyle.iconAvatar, ChatStyle.iconAvatarLeft]} 
+									style={e.userId== id ?ChatStyle.iconAvatar :[ChatStyle.iconAvatar, ChatStyle.iconAvatarLeft]} 
 								/>
 
 					         {/* fotografia item */}
 					         <Image source={{uri: e.rutaImagen}}
-					         	style={e.userId== this.state.id ?ChatStyle.fotografia :[ChatStyle.fotografia, ChatStyle.fotografiaLeft]}
+					         	style={e.userId== id ?ChatStyle.fotografia :[ChatStyle.fotografia, ChatStyle.fotografiaLeft]}
 					         />
 	  
 					         {/* rest modal  
 					         <View style={[ChatStyle.box, ChatStyle.modal]}>*/} 
-					         <View style={e.userId== this.state.id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft,  ChatStyle.modal]}>
-					             <Text style={e.userId== this.state.id ?ChatStyle.nombre :[ChatStyle.nombre, ChatStyle.nombreLeft]}>{e.nombre}</Text>
-					             <Text style={e.userId== this.state.id ?ChatStyle.titulo :[ChatStyle.titulo, ChatStyle.tituloLeft]}>{e.titulo}</Text>
-					             <Text style={e.userId== this.state.id ?ChatStyle.descripcion :[ChatStyle.descripcion, ChatStyle.descripcionLeft]}>{e.descripcion}</Text>  
-					             <Text style={e.userId== this.state.id ?ChatStyle.valor :[ChatStyle.valor, ChatStyle.valorLeft] }>
+					         <View style={e.userId== id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft,  ChatStyle.modal]}>
+					             <Text style={e.userId== id ?ChatStyle.nombre :[ChatStyle.nombre, ChatStyle.nombreLeft]}>{e.nombre}</Text>
+					             <Text style={e.userId== id ?ChatStyle.titulo :[ChatStyle.titulo, ChatStyle.tituloLeft]}>{e.titulo}</Text>
+					             <Text style={e.userId== id ?ChatStyle.descripcion :[ChatStyle.descripcion, ChatStyle.descripcionLeft]}>{e.descripcion}</Text>  
+					             <Text style={e.userId== id ?ChatStyle.valor :[ChatStyle.valor, ChatStyle.valorLeft] }>
 					             	{'$ '+Number(e.valor).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
 					             </Text>  
 					       	</View>
 
-					       	<View style={e.userId== this.state.id ?ChatStyle.contenedorInteres :[ChatStyle.contenedorInteres, ChatStyle.contenedorInteresLeft]}>
+					       	<View style={e.userId== id ?ChatStyle.contenedorInteres :[ChatStyle.contenedorInteres, ChatStyle.contenedorInteresLeft]}>
 						       	<TouchableOpacity onPress={()=> navigate('')} style={ChatStyle.btnInteres} >
 						       		<Image source={require('./me_interesa.png')} style={ChatStyle.imagenInteres} />
 						       		<Text style={ChatStyle.textoInteres}>Me Interesa</Text>
@@ -182,24 +199,24 @@ export default class ChatComponent extends Component{
 				)
 			}else{
 				return(
-					<View key={key} style={ChatStyle.contenedorPregunta} >
+					<View key={key} style={ChatStyle.contenedorPreguntas} >
 					<Text>{e.pTitulo}</Text>
 					<Text>{e.pDescripcion}</Text>
 						<View >
 							{
 								e.tipoPregunta==1 
 								?<View style={ChatStyle.contenedorOpciones}>
-								 	<TouchableOpacity onPress={()=> this.handleSubmitPregunta(e.preguntaId, 1, e.id)} style={ChatStyle.btnInteres} >
+								 	<TouchableOpacity onPress={!e.asignado ?()=> this.handleSubmitPregunta(e.preguntaId, 1, e.id) :null} style={ChatStyle.btnInteres} >
 										{
-											e.estado 
-											?<Text style={ChatStyle.textoPregunta}>{e.respuesta1} %</Text> 
+											e.asignado 
+											?<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.respuesta1} %</Text></View> 
 											:<Image source={{uri:e.pregunta1}} style={ChatStyle.imagenPregunta} />
 										}
 									</TouchableOpacity>
-									<TouchableOpacity onPress={()=> this.handleSubmitPregunta(e.preguntaId, 2, e.id)} style={ChatStyle.btnInteres} >
+									<TouchableOpacity onPress={!e.asignado ?()=> this.handleSubmitPregunta(e.preguntaId, 2, e.id) :null} style={ChatStyle.btnInteres} >
 										{
-											e.estado 
-											?<Text style={ChatStyle.textoPregunta}>{e.respuesta2} %</Text> 
+											e.asignado
+											?<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.respuesta2} %</Text></View> 
 											:<Image source={{uri:e.pregunta2}} style={ChatStyle.imagenPregunta} />
 										}
 									</TouchableOpacity>
@@ -261,15 +278,15 @@ export default class ChatComponent extends Component{
 	opciones(){
 		console.log("opciones")
 	}
-	handleSubmitPregunta(idPregunta, valor, id){
-		console.log(id)
-		axios.post('/x/v1/res/respuesta', {valor, idPregunta})
+	handleSubmitPregunta(idPregunta, valor, idChat){
+		console.log(idChat)
+		axios.post('/x/v1/res/respuesta', {valor, idPregunta, idChat})
 		.then(res=>{
+			console.log(res.data)
 			let mensajes = this.state.mensajes.filter((e)=>{
-				if (e.id==id) e.respuesta1=res.data.porcentaje1; e.respuesta2=res.data.porcentaje2; e.estado=true
+				if (e.id==idChat) {e.respuesta1=res.data.porcentaje1; e.respuesta2=res.data.porcentaje2; e.asignado=true}
 				return e
 			})
-			console.log(mensajes)
 			this.setState({mensajes})
 		})
 		.catch(err=>{

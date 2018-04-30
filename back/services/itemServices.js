@@ -7,7 +7,7 @@ let mongoose = require('mongoose')
 
 class itemServices {
 	getById(_id, callback){
-		itemSchema.find({_id}).populate('asignados').exec(callback)
+		itemSchema.find({_id}).populate('asignados').populate('userId').exec(callback)
 	}
  	getByidUSer(userId, callback){
  		itemSchema.find({userId}).populate('userId').exec(callback)

@@ -1,7 +1,7 @@
 'use strict'
 
 let chatSchema = require('../models/chatModel.js');
-let itemSchema = require('../models/itemModel.js');
+ 
 
 class chatServices{
 	getByPlan(planId, callback){
@@ -12,11 +12,17 @@ class chatServices{
 		chat.userId      = id
 		chat.planId      = data.planId
 		chat.tipo        = tipo
+		chat.estado      = true
 		chat.mensaje     = data.mensaje
 		chat.itemId      = data.itemId
 		chat.preguntaId  = data.preguntaId
 		chat.save(callback)
 	}
+	// innactiva(_id, callback){
+	// 	chatSchema.findByIdAndUpdate(_id, {$set: {
+	//         'estado': false,
+ //        }}, callback);	
+	// }
 }
 
 module.exports = new chatServices()

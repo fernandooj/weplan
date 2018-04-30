@@ -51,7 +51,7 @@ const NavigationApp = StackNavigator({
 },{ headerMode: 'none' })
  
 const NavigationAppLogin = StackNavigator({  
-    Home:          {screen: homeComponent },
+    Home:          {screen: ChatComponent },
     Login:         {screen: LoginComponent },
     Registro:      {screen: RegistroComponent },
     insertCode:    {screen: insertCodeComponent },
@@ -89,7 +89,6 @@ export default class App extends Component<{}> {
   componentWillMount() {
     axios.get('/x/v1/user/profile/')
     .then((res)=>{
-      console.log(res.data)
       if(res.data.code==1){
         this.setState({local:1})
       }else{

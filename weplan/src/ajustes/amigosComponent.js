@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, TextInput} from 'react-native'
+import {View, Text, Image, TouchableOpacity, TextInput, ScrollView} from 'react-native'
 import {AjustesStyle} from '../ajustes/style'
 import axios from 'axios'
 import CabezeraComponent from './cabezera.js'
@@ -15,7 +15,7 @@ export default class ajustesAmigosComponent extends Component{
  		show:false
 	}
 	componentWillMount(){
-		/////////////////	OBTENGO EL PERFIL /////////////////////
+		/////////////////	OBTENGO LOS USUARIOS ACTIVOS 	/////////////////////
 		axios.get('/x/v1/users/activos')
 		.then((res)=>{
 			console.log(res.data)
@@ -37,30 +37,48 @@ export default class ajustesAmigosComponent extends Component{
 				console.log(res.data)
 				if(res.data.asignados[0]!=undefined){
 					amigosAsignados = res.data.asignados[0].asignados.map((item)=>{
-					return {
-						id:item._id,
-						username:item.username,
-						photo: item.photo,
-						nombre: item.nombre,
-						estado: true,
-						
-					}
-				})
+						return {
+							id:item._id,
+							username:item.username,
+							photo: item.photo,
+							nombre: item.nombre,
+							estado: true,
+							
+						}
+					})
 				}
-				
-				/////////////////////////////////////////////////////////////////////////////////
-				////////////////////	CONCATENO LOS DOS ARRAYS //////////////////////////////////
-				const diffBy = (pred) => (a, b) => a.filter(x => !b.some(y => pred(x, y)))
-				const makeSymmDiffFunc = (pred) => (a, b) => diffBy(pred)(a, b).concat(diffBy(pred)(b, a))
-				const myDiff = makeSymmDiffFunc((x, y) => x.id === y.id)
-				const allList = myDiff(todosUsuarios, amigosAsignados)
-				/////////////////////////////////////////////////////////////////////////////////
+
+				axios.get('/x/v1/user/profile') 
+				.then((res)=>{
+					let usuario = res.data.user.user
+					let miPerfil = []
+					miPerfil.push({id:usuario._id, username:usuario.username, photo: usuario.photo, nombre: usuario.nombre, estado: true})
+		 		
+					/////////////////////////////////////////////////////////////////////////////////
+					////////////////////	CONCATENO LOS DOS ARRAYS //////////////////////////////////
+					const diffBy = (pred) => (a, b) => a.filter(x => !b.some(y => pred(x, y)))
+					const makeSymmDiffFunc = (pred) => (a, b) => diffBy(pred)(a, b).concat(diffBy(pred)(b, a))
+					const myDiff = makeSymmDiffFunc((x, y) => x.id === y.id)
+					const allList1 = myDiff(todosUsuarios, amigosAsignados)
+					/////////////////////////////////////////////////////////////////////////////////
+					/////////////////////////////////////////////////////////////////////////////////
+					////////////////////	CONCATENO LOS DOS ARRAYS  ////////////////////////////////
+					const diffBy1 = (pred) => (a, b) => a.filter(x => !b.some(y => pred(x, y)))
+					const makeSymmDiffFunc1 = (pred) => (a, b) => diffBy1(pred)(a, b).concat(diffBy1(pred)(b, a))
+					const myDiff1 = makeSymmDiffFunc1((x, y) => x.id === y.id)
+					const allList = myDiff1(allList1, miPerfil)
+					/////////////////////////////////////////////////////////////////////////////////
+				 	console.log(amigosAsignados)
 					this.setState({allList, amigosAsignados})
-				})	
+
+				})
+				.catch((err)=>{
+					console.log(err)
+				})
+			})	
 			.catch((err)=>{
 				console.log(err)
 			})
-			
 		})	
 		.catch((err)=>{
 			console.log(err)
@@ -109,6 +127,7 @@ export default class ajustesAmigosComponent extends Component{
 		}else{
 			this.setState({filteredData:[], show:false})
 		}
+		console.log(filtered)
 	}
  
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -153,7 +172,7 @@ export default class ajustesAmigosComponent extends Component{
 				<Text style={AjustesStyle.tituloGrupo}>Amigos</Text>
 
 				{/*   listar amigos asignados  */}
-				{this.renderAmigosAsignados()}
+					{this.renderAmigosAsignados()}
 			</View>
  		)	
  	}
@@ -163,33 +182,37 @@ export default class ajustesAmigosComponent extends Component{
 		const {show} = this.state
 		const {navigate} = this.props.navigation
 		return(
-			<View>
+			<View style={AjustesStyle.contenedorA}>
 				<CabezeraComponent navigate={navigate} url={'ajustes'} />
-				{this.renderCabezera()}
-				<View style={AjustesStyle.contenedor}>
-					<View style={AjustesStyle.subContenedorA}>
-						{/* buscador  */}
-						<View style={AjustesStyle.contenedorBuscar}>
-			 				<TextInput
-								style={AjustesStyle.input}
-								onChangeText={this.filteredData.bind(this)}
-								value={this.state.username}
-								underlineColorAndroid='transparent'
-								placeholder="buscar amigos"
-								placeholderTextColor="#8F9093" 
-						   />
-						   <Image source={require('../agregarAmigos/search.png')} style={AjustesStyle.btnSearch} />
-						   <TouchableOpacity style={AjustesStyle.btnBuscar} onPress={this.handleSubmit.bind(this)}>
-						   	<Image source={require('./agregar.png')} style={AjustesStyle.btnAgregar} />
-						   </TouchableOpacity>
-						</View>
-						{
-							show
-							?this.renderAmigos()
-							:this.renderAmigosGrupos()
-						}
-					</View>	
-				</View>
+				<ScrollView>
+					{this.renderCabezera()}
+					<View style={AjustesStyle.contenedor}>
+						<View style={AjustesStyle.subContenedorA}>
+							{/* buscador  */}
+							<View style={AjustesStyle.contenedorBuscar}>
+				 				<TextInput
+									style={AjustesStyle.input}
+									onChangeText={this.filteredData.bind(this)}
+									value={this.state.username}
+									underlineColorAndroid='transparent'
+									placeholder="buscar amigos"
+									placeholderTextColor="#8F9093" 
+							   />
+							   <Image source={require('../agregarAmigos/search.png')} style={AjustesStyle.btnSearch} />
+							   <TouchableOpacity style={AjustesStyle.btnBuscar} onPress={this.handleSubmit.bind(this)}>
+							   	<Image source={require('./agregar.png')} style={AjustesStyle.btnAgregar} />
+							   </TouchableOpacity>
+							</View>
+							
+								{
+									show
+									?this.renderAmigos()
+									:this.renderAmigosGrupos()
+								}
+							
+						</View>	
+					</View>
+				</ScrollView>	
 			</View>
 		)
 	}

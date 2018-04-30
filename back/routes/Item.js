@@ -107,11 +107,11 @@ router.post('/', function(req, res){
 
 
 let createPago = function(req, res, id, item){
-	console.log(item.valor/(item.asignados.length+1))
+	
 	let deudaAsignados = Math.ceil((item.valor/(item.asignados.length+1))/1000)*1000
 	let deudaCreador = req.valor - (deudaAsignados * item.asignados.length)
 	 
-
+	console.log(deudaCreador)
 	let data = req.asignados.map(e=>{
 		return {
 			userId:e,
@@ -130,7 +130,7 @@ let createPago = function(req, res, id, item){
 				console.log(err)
 				//res.json({err, code:0})
 			}else{
-				console.log(pago)
+				//console.log(pago)
 				//res.json({ status: 'SUCCESS', pago, code:1 });					
 			}
 		})
@@ -171,23 +171,23 @@ router.post('/:id', (req,res)=>{
 /////////////////////////////////////////////////////////////////////////////
 ///////////////////////		FUNCTION TO CREATE CHAT 	/////////////////////
 /////////////////////////////////////////////////////////////////////////////
-let createChat = function(req, res, id, item, ruta){
-	let photo   = req.session.usuario.user.photo
-	let nombre  = req.session.usuario.user.nombre
-	let mensaje  = null
-	let planId  = req.body.planId
-	let fecha   = req.body.fecha
-	let itemId  = req.params.id
-	let titulo = req.body.titulo
-	let descripcion = req.body.descripcion
-	let valor  = req.body.valor
-
+let createChat = function(req, res, userId, item, ruta){
 	let mensajeJson={
-		itemId, mensaje, id, photo, planId, mensaje, fecha, nombre, titulo, descripcion, valor, rutaImagen:ruta
+		userId,
+		nombre:req.session.usuario.user.nombre,
+		photo:req.session.usuario.user.photo,
+		itemId:req.params.id, 
+		titulo:req.body.titulo, 
+		descripcion:req.body.descripcion, 
+		planId:req.body.planId, 
+		rutaImagen:ruta,
+		fecha:req.body.fecha, 
+		valor:req.body.valor, 
+		tipoChat:2
 	}
 	cliente.publish('chat', JSON.stringify(mensajeJson))
 
-	chatServices.create(req.body, id, 2, (err,chat)=>{
+	chatServices.create(req.body, userId, 2, (err,chat)=>{
 		if(err){
 			res.json({err, code:0})
 		}else{

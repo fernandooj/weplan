@@ -270,7 +270,6 @@ export const ChatStyle = StyleSheet.create({
 	///////////////////////////////// contenedor 3	//////////
 	contenedorOpciones:{
 		flexDirection:'row',
-		alignItems: 'center',
 	},
 	imagenPregunta:{
 		width:100,
@@ -280,16 +279,20 @@ export const ChatStyle = StyleSheet.create({
 		borderColor:'#9CB7F5',
 		borderWidth:5,
 	},
-	textoPregunta:{
+	contenedorPregunta:{
 		width:100,
 		height:100,
 		borderRadius:50,
 		zIndex:1000,
 		borderColor:'#9CB7F5',
-		borderWidth:5,
-		position:'relative',
+		borderWidth:5,	
+		flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+	},
+	textoPregunta:{
+		 
 	 
-
 	}
 })
 

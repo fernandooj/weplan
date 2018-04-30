@@ -131,7 +131,9 @@ export default class CrearItemComponent extends Component{
     //let planId = '5ad3e90d2e1d1c33eec1359b'
 
     let data = new FormData();
-    
+    let deudaAsignados = Math.ceil((valor/(asignados.length+1))/1000)*1000
+    let deudaCreador = valor - (deudaAsignados * asignados.length)
+
     axios.post('/x/v1/ite/item', {descripcion, valor, titulo, planId, asignados, tipo:1})
     .then(e=>{
       let itemId = e.data.item._id
@@ -159,7 +161,7 @@ export default class CrearItemComponent extends Component{
       .then(res=>{  
         console.log(res.data)     
         if(res.data.code==1){ 
-          this.props.updateItems(itemId, valor, titulo)
+          //this.props.updateItems(itemId, deudaCreador, titulo)
         }else{
           Alert.alert(
            'Error!, intenta nuevamente'

@@ -135,7 +135,7 @@ export default class CrearPreguntaComponent extends Component{
       data.append('pregunta1', pregunta1);
       data.append('pregunta2', pregunta2);
       data.append('preguntaId',preguntaId);
-      data.append('planId',planId);
+      data.append('planId', planId);
 
  
       axios({
@@ -149,14 +149,14 @@ export default class CrearPreguntaComponent extends Component{
           })
       .then(res=>{  
         console.log(res.data)     
-        // if(res.data.code==1){ 
-        //   this.props.updateItems(itemId, valor, titulo)
-        //   //this.props.close(false)
-        // }else{
-        //   Alert.alert(
-        //    'Error!, intenta nuevamente'
-        //   )
-        // }
+        if(res.data.code==1){ 
+          this.props.updateItems(preguntaId, titulo)
+          //this.props.close(false)
+        }else{
+          Alert.alert(
+           'Error!, intenta nuevamente'
+          )
+        }
       })
       .catch(err=>{
         console.log(err)

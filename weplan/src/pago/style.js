@@ -1,9 +1,15 @@
- import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 var screenWidth = Dimensions.get('window').width;
-
+var screenHeight = Dimensions.get('window').height;
 
 export const PagoStyle = StyleSheet.create({ 
+	container:{
+		flex:1,
+		height:screenHeight,
+	},
 	contentItem:{
+		flex:1,
+		height:screenHeight,
 		alignItems: 'center',
 		backgroundColor:'#f8f8f8'
 	},
