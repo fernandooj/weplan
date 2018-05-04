@@ -149,7 +149,6 @@ module.exports = function(app, passport){
     */
     ///////////////////////////////////////////////////////////////////////////
     app.post('/x/v1/user/token/', function(req, res, next){
-        console.log(req.body.username)
         userServices.verificaToken(req.body, function(err, token){
             if(!token){
                 return res.json({ status: 'FAIL', message: 'no conciden', code:0})        
@@ -174,8 +173,8 @@ module.exports = function(app, passport){
     */
     ///////////////////////////////////////////////////////////////////////////
 
-    app.post('/x/v1/user/login', function(req,res,next){
-        userServices.login(req.body, function(err, user){
+    app.post('/x/v1/user/login', (req,res)=>{
+        userServices.login(req.body, (err, user)=>{
             if (err) {
                 res.json({status:'FAIL', err, code:0 })
             }else{
@@ -183,9 +182,10 @@ module.exports = function(app, passport){
                     res.json({status:'FAIL', user: 'Usuario no existe', code:2 })
                 }else{
                     if(user.validPassword(req.body.password)){
+                        console.log(req.body.tokenPhone)
                         req.session.usuario = {user:user}
-                        res.json({status:'SUCCESS', user: user, code:1 })
-                        
+                        //res.json({status:'SUCCESS', user: user, code:1 })
+                        user.tokenPhone!==req.body.tokenPhone  ?modificaTokenPhone(req, res) :res.json({status: 'SUCCESS', user, code:1})
                     }else{
                         res.json({status:'FAIL', user: 'Datos incorrectos', code:0 })
                         

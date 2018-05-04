@@ -61,9 +61,11 @@ class userServices {
 		User.findOne({'username':token.username, 'token': token.token}, callback)
 	}
 	activaUsuario(user, callback){
-		User.findByIdAndUpdate(user._id, {$set: {
-            'estado':'activo'
-        }}, callback);
+		User.findOne({'username':user.username}, function(err, data){
+			User.findByIdAndUpdate(data._id, {$set:{
+				'estado':'activo'
+			}}, callback );	
+		})
 	}
 	enableDisable(user,callback){
 		User.findByIdAndUpdate(user.id, {$set: {

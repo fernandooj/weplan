@@ -25,6 +25,7 @@ export default class ajustesAmigosComponent extends Component{
 					username:item.username,
 					photo: item.photo,
 					nombre: item.nombre,
+					token: item.tokenPhone,
 					estado: true,
 					 
 				}
@@ -42,6 +43,7 @@ export default class ajustesAmigosComponent extends Component{
 							username:item.username,
 							photo: item.photo,
 							nombre: item.nombre,
+							token: item.tokenPhone,
 							estado: true,
 							
 						}
@@ -53,7 +55,7 @@ export default class ajustesAmigosComponent extends Component{
 					let usuario = res.data.user.user
 					let miPerfil = []
 					miPerfil.push({id:usuario._id, username:usuario.username, photo: usuario.photo, nombre: usuario.nombre, estado: true})
-		 		
+		 			this.setState({nombre:usuario.nombre, photo:usuario.photo})
 					/////////////////////////////////////////////////////////////////////////////////
 					////////////////////	CONCATENO LOS DOS ARRAYS //////////////////////////////////
 					const diffBy = (pred) => (a, b) => a.filter(x => !b.some(y => pred(x, y)))
@@ -85,43 +87,7 @@ export default class ajustesAmigosComponent extends Component{
 		})
 	}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////					ENVIO LA NOTIFICACION						///////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	sendRemoteNotification(token) {
-	    let body;
 
-	    if(Platform.OS === 'android'){
-	      body = {
-	        "to": token,
-	      	"data":{
-						"custom_notification": {
-							"title": "Simple FCM Client",
-							"body": "Click me to go to detail",
-							"sound": "default",
-							"priority": "high",
-	            "show_in_foreground": true,
-	            targetScreen: 'detail'
-	        	}
-	    		},
-	    		"priority": 10
-	      }
-	    } else {
-				body = {
-					"to": token,
-					"notification":{
-						"title": "Simple FCM Client",
-						"body": "Click me to go to detail",
-						"sound": "default"
-	        },
-	        data: {
-	          targetScreen: 'detail'
-	        },
-					"priority": 10
-				}
-			}
-	    firebaseClient.send(JSON.stringify(body), "notification");
-	}
 
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -133,7 +99,7 @@ export default class ajustesAmigosComponent extends Component{
 				<TouchableOpacity style={AjustesStyle.btnCabezera} >
 					<Text style={AjustesStyle.textCabezera}>Amigos</Text>
 				</TouchableOpacity>
-				<TouchableOpacity style={[AjustesStyle.btnCabezera, AjustesStyle.btnCabezeraActive]}>
+				<TouchableOpacity style={[AjustesStyle.btnCabezera, AjustesStyle.btnCabezeraActive]} onPress={()=>this.sendRemoteNotification('fepWwtFhjF4:APA91bH1Q7YQg6Fz0-HQEriIeIfWV9lvtRdpW_b2wbToaG3aL-1DjoUDDE0nnSFB0ZyoUp5PEQbZ68C-M8k_KT3IXGOFb0ICwBEDtRD6yUn9Ml-1pry6AfILgidkjQXD_cR-QJs_u4HG')}>
 					<Text style={AjustesStyle.textCabezera}>Explorar</Text>
 				</TouchableOpacity>
 			</View>
@@ -145,7 +111,7 @@ export default class ajustesAmigosComponent extends Component{
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  	getRow(filteredData){
 		return filteredData.map((data, key)=>{
-			return  <TouchableOpacity style={AjustesStyle.registro} key={key} onPress={(e)=>this.updateState(data.id, data.estado)} > 
+			return  <TouchableOpacity style={AjustesStyle.registro} key={key} onPress={()=>this.updateState(data.id, data.estado, data.token)} > 
 					<Image source={{ uri: data.photo}}  style={data.estado ?AjustesStyle.avatarA :AjustesStyle.avatarA2} /> 
 					<Text style={AjustesStyle.textoAvatar}>{data.nombre}</Text>
 					{!data.estado ?<Image source={require('./agregado.png')} style={AjustesStyle.agregado}/> :null} 
@@ -218,8 +184,9 @@ export default class ajustesAmigosComponent extends Component{
 
 
 	render(){
-		const {show} = this.state
+		const {show, token} = this.state
 		const {navigate} = this.props.navigation
+		console.log(token)
 		return(
 			<View style={AjustesStyle.contenedorA}>
 				<CabezeraComponent navigate={navigate} url={'ajustes'} />
@@ -257,26 +224,79 @@ export default class ajustesAmigosComponent extends Component{
 	}
 
 	
-	updateState(id, estado){
+	updateState(id, estado, token){
+		console.log(token)
 		let filteredData = this.state.filteredData.map(item=>{
 			if(item.id == id) item.estado = !estado
 			return item
 		})
-		this.setState({filteredData})
+		this.setState({filteredData, idAsignado:id, token})
 		if (estado) {
 			this.setState({asignados: this.state.asignados.concat([id])})
 		}else{
 			this.setState({asignados:this.state.asignados.filter(function(val){return val != id}) })
 		}
 	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////					ENVIO LA NOTIFICACION						///////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	sendRemoteNotification() {
+		const {nombre, token, photo} = this.state
+	    let body;
+
+	    if(Platform.OS === 'android'){
+	      body = {
+	        "to": token,
+	      	"data": {
+	            custom_notification: JSON.stringify({
+	              body: 'Alguien quiere agregarte comoo amigo',
+	              title: 'Message title',
+	              priority:"high",
+	              icon:"ic_notif",
+	              title: "test title",
+	              color:"#00ACD4",
+	              big_picture:photo,
+	              picture:photo,
+	              image:photo,
+	              show_in_foreground: true
+	            })
+	        },
+	    		"priority": 10
+	      }
+	    } else {
+				body = {
+					registration_ids: tokens,
+					data: {
+			            custom_notification: JSON.stringify({
+			              body: 'Message bodysss',
+			              title: 'Message title',
+			              priority:"high",
+			              icon:"ic_notif",
+			              title: "test title",
+			              color:"#00ACD4",
+			              big_picture:'https://image.path.com/data/apps/app-home2.png',
+			              picture:'https://image.path.com/data/apps/app-home2.png',
+			              image:'https://image.path.com/data/apps/app-home2.png',
+			              show_in_foreground: true
+			            })
+			        }
+        		}
+	         
+				 
+			
+			}
+	    firebaseClient.send(JSON.stringify(body), "notification");
+	}
 	handleSubmit(){
-		const {asignados} = this.state
-		console.log({asignados})
-		axios.post('/x/v1/ami/amigoUser', {asignados} )
+		const {idAsignado} = this.state
+	 
+		axios.post('/x/v1/ami/amigoUser', {asignado: idAsignado} )
 		.then((e)=>{
 			console.log(e.data)
 			if (e.data.code==1) {
 				this.setState({show:false})
+				this.sendRemoteNotification()
 			}else{
 				alert('error intenta nuevamente')
 			}

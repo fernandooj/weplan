@@ -18,7 +18,8 @@ let amigoUser = mongoose.Schema({
 	createdAt : { type: String, default: moment().format('YYYY-MM-DD h:mm:ss')},
 	updatedAt : { type: String, default: moment().format('YYYY-MM-DD h:mm:ss')},
 	idUsuario : { type: Schema.Types.ObjectId, ref:'User'},
-	asignados : [{type: Schema.Types.ObjectId, ref:'User'}],
+	asignado  : {type: Schema.Types.ObjectId, ref:'User'},
+	estado    : Boolean,
 })
 
 

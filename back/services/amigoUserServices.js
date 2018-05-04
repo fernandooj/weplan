@@ -14,17 +14,18 @@ class amigoUserService{
 	buscarUsuario(idUsuario, callback){
 		amigoUser.findOne({idUsuario}, callback)
 	}
-	create(user, idUsuario, callback){
+	create(asignado, idUsuario, callback){
 		let amigoUsers = new amigoUser();
 		amigoUsers.idUsuario = idUsuario
-		amigoUsers.asignados = user.asignados
+		amigoUsers.asignado  = asignado
+		amigoUsers.estado    = false
 		amigoUsers.save(callback)
 	}
-	update(nuevoIds, idUsuario, callback){
+	activa(idUsuario, callback){
 		amigoUser.findOneAndUpdate({idUsuario}, {$set: {
-	            'asignados': 	  nuevoIds,
-	            'updatedAt':       moment().format('YYYY-MM-DD h:mm:ss')
-        	}}, callback);
+            'estado': 	 true,
+            'updatedAt': moment().format('YYYY-MM-DD h:mm:ss')
+    	}}, callback);
 	}
 }
 

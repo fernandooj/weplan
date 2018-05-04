@@ -193,9 +193,9 @@ export default class LoginComponent extends Component{
 	}
  
 	handleSubmit(){
-		const {username, password} = this.state
+		const {username, password, token} = this.state
 		const {navigate} = this.props.navigation
-		axios.post('/x/v1/user/login/', {username, password} )
+		axios.post('/x/v1/user/login/', {username, password, tokenPhone:token} )
 		.then((res)=>{
 			console.log(res.data.code)
 			if(res.data.code==0){
