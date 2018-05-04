@@ -250,15 +250,16 @@ export default class ajustesAmigosComponent extends Component{
 	        "to": token,
 	      	"data": {
 	            custom_notification: JSON.stringify({
-	              body: 'Alguien quiere agregarte comoo amigo',
-	              title: 'Message title',
+	              title: 'Tienes una nueva solicitud de amistad',
+	              body: nombre + ' Quiere agregarte como amigo',
 	              priority:"high",
 	              icon:"ic_notif",
-	              title: "test title",
+	               
 	              color:"#00ACD4",
 	              big_picture:photo,
 	              picture:photo,
 	              image:photo,
+	              large_icon: photo,
 	              show_in_foreground: true
 	            })
 	        },
@@ -269,15 +270,15 @@ export default class ajustesAmigosComponent extends Component{
 					registration_ids: tokens,
 					data: {
 			            custom_notification: JSON.stringify({
-			              body: 'Message bodysss',
-			              title: 'Message title',
+			              title: 'Tienes una nueva solicitud de amistad',
+	              		  body: nombre + ' Quiere agregarte como amigo',
 			              priority:"high",
 			              icon:"ic_notif",
-			              title: "test title",
 			              color:"#00ACD4",
-			              big_picture:'https://image.path.com/data/apps/app-home2.png',
-			              picture:'https://image.path.com/data/apps/app-home2.png',
-			              image:'https://image.path.com/data/apps/app-home2.png',
+			              big_picture:photo,
+			              picture:photo,
+			              image:photo,
+			              large_icon: photo,
 			              show_in_foreground: true
 			            })
 			        }
