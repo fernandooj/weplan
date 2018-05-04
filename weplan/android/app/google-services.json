@@ -1,1 +1,55 @@
-{"web":{"client_id":"932062372725-vb226crjsufbqjghl6nbg7s92i5g133e.apps.googleusercontent.com","project_id":"weplan-1519435031604","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://accounts.google.com/o/oauth2/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"pF2mXS8dpE7S7K2AnKUlI0t2"}}
+{
+  "project_info": {
+    "project_number": "1050348791887",
+    "firebase_url": "https://weplan-notificaciones.firebaseio.com",
+    "project_id": "weplan-notificaciones",
+    "storage_bucket": "weplan-notificaciones.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1050348791887:android:424fb45a67929e93",
+        "android_client_info": {
+          "package_name": "com.weplan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1050348791887-dtee30j1mo4dkbvh6kbho0ihsnsb0cuu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.weplan",
+            "certificate_hash": "83d911ebc2c2148b6b05568ed8e7cfacc9d2edff"
+          }
+        },
+        {
+          "client_id": "1050348791887-odebi5jkgg9qpqfs0qjbgctk3s3c58t4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD4xMfz4S_Mrmbs_JSK1J9oVbkDgZZb4YA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1050348791887-odebi5jkgg9qpqfs0qjbgctk3s3c58t4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

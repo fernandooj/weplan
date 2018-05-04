@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <uses-sdk
         android:minSdkVersion="16"
@@ -20,6 +22,26 @@
       android:label="@string/app_name"
       android:icon="@mipmap/ic_launcher"
       android:theme="@style/AppTheme">
+<meta-data
+        tools:replace="android:value"
+        android:name="android.support.VERSION"
+        android:value="26.1.0" />
+        
+        <!-- Reference notifications push -->    
+        <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/ic_notif"/>
+
+        <service android:name="com.evollu.react.fcm.MessagingService" android:enabled="true" android:exported="true">
+            <intent-filter>
+              <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+          </service>
+
+          <service android:name="com.evollu.react.fcm.InstanceIdService" android:exported="false">
+            <intent-filter>
+              <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
 
       <activity
         android:name=".MainActivity"
@@ -52,14 +74,17 @@
             </intent-filter>
         </activity>
 
-        <!--reference your fb_app_id-->
+        <!-- Reference your fb_app_id -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/fb_app_id"/>
 
+        <!-- Reference a google maps -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCirZCzCiKJ_8kU6tzkR5w_ts7pgcnl4k8"/>
+            android:value="AIzaSyCirZCzCiKJ_8kU6tzkR5w_ts7pgcnl4k8"/>  
+
+
 
     </application>
 

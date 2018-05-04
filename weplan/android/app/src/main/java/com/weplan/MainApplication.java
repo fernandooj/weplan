@@ -1,8 +1,9 @@
 package com.weplan;
 
 import android.app.Application;
-
+//import android.content.Intent;
 import com.facebook.react.ReactApplication;
+import com.evollu.react.fcm.FIRMessagingPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.magus.fblogin.FacebookLoginPackage;
 //import co.apptailor.googlesignin.RNGoogleSigninPackage;
@@ -26,7 +27,8 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
+            new MainReactPackage(),
+            new FIRMessagingPackage(),
             new ImagePickerPackage(),
             //new RNGoogleSigninPackage(),
             new FacebookLoginPackage(),

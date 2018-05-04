@@ -3,7 +3,6 @@ import {View, Text, Image, TouchableOpacity, TextInput, Modal} from 'react-nativ
  
 import {AmigosStyle} from '../agregarAmigos/style'
 import Icon from 'react-native-fa-icons';
-import Button from 'react-native-button';
 import axios from 'axios'
 
 export default class AgregarAmigosComponent extends Component{

@@ -24,6 +24,7 @@ import pagoComponent          from './src/pago/pagoComponent';
 import pagoDeudaComponent     from './src/pago/pagoDeudaComponent';
 import ajustesComponent       from './src/ajustes/ajustesComponent';
 import ajustesAmigosComponent from './src/ajustes/amigosComponent';
+import PushComponent          from './src/push/pushComponent';
  
 
 export const URL = 'http://159.89.141.0:8080/';
@@ -48,6 +49,7 @@ const NavigationApp = StackNavigator({
     pago:          {screen: pagoComponent },
     pagoDeuda:     {screen: pagoDeudaComponent },
     pregunta:      {screen: preguntaComponent },
+    Push:          {screen: PushComponent },
 },{ headerMode: 'none' })
  
 const NavigationAppLogin = StackNavigator({  
@@ -68,6 +70,7 @@ const NavigationAppLogin = StackNavigator({
     ajustesAmigos: {screen: ajustesAmigosComponent },
     pago:          {screen: pagoComponent },
     pagoDeuda:     {screen: pagoDeudaComponent },
+    Push:          {screen: PushComponent },
 },{ headerMode: 'none' })
 
 class Splash extends Component <{}>{

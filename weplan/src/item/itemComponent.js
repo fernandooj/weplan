@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native'
 import {ItemStyle} from '../item/style'
-import Accordion from 'react-native-accordion-xg';
+ 
 import axios from 'axios'
 import CrearItemComponent from './crearItemComponent'
 import CabezeraComponent from '../ajustes/cabezera.js'
