@@ -149,25 +149,28 @@ android {
 }
 
 dependencies {
-   compile(project(':react-native-maps')){
+    compile(project(':react-native-maps')){
         exclude group: 'com.google.android.gms'
     }
     compile (project(':react-native-fcm')){
         exclude group: "com.google.firebase" 
     }
+  
+    compile(project(":react-native-google-signin")){ 
+        exclude group: "com.google.android.gms" 
+    }
 
     compile project(':react-native-image-picker')
-    //compile project(':react-native-google-signin')
     compile project(':react-native-facebook-login')
-    //compile project(':react-native-maps')
     compile fileTree(dir: "libs", include: ["*.jar"])
-    //noinspection GradleCompatible
-    
     compile "com.android.support:appcompat-v7:26.0.2"
     compile "com.facebook.react:react-native:+"  // From node_modules
 
+    //compile 'com.google.android.gms:play-services-auth:9.2.1'
     //compile "com.android.support:appcompat-v7:23.0.1"
-    //compile "com.facebook.react:react-native:+"  // From node_modules
+    compile ("com.google.android.gms:play-services-auth:10.0.1") {
+        force = true;
+    }
     compile ("com.google.android.gms:play-services-base:10.0.1") {
         force = true;
     }

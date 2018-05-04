@@ -1,12 +1,11 @@
 package com.weplan;
 
 import android.app.Application;
-//import android.content.Intent;
 import com.facebook.react.ReactApplication;
 import com.evollu.react.fcm.FIRMessagingPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.magus.fblogin.FacebookLoginPackage;
-//import co.apptailor.googlesignin.RNGoogleSigninPackage;
+import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -30,7 +29,7 @@ public class MainApplication extends Application implements ReactApplication {
             new MainReactPackage(),
             new FIRMessagingPackage(),
             new ImagePickerPackage(),
-            //new RNGoogleSigninPackage(),
+            new RNGoogleSigninPackage(),
             new FacebookLoginPackage(),
             new MapsPackage()
       );

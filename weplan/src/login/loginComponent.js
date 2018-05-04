@@ -4,7 +4,7 @@ import {LoginStyle} from '../login/style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
 import Icon from 'react-native-fa-icons';
-//import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
+import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
 
 import {FBLogin, FBLoginManager} from 'react-native-facebook-login';
 
@@ -26,47 +26,47 @@ export default class LoginComponent extends Component{
     	////////////////////////////////////////////////////////////////////////////////////
     	/////////////////////		LOAD GOOGLE DATA 	///////////////////////////////////
     	////////////////////////////////////////////////////////////////////////////////////
-   //  	GoogleSignin.configure({
-   //  		webClientId: '932062372725-h6ekncc3jltm4320c1tj9hljfis26hpe.apps.googleusercontent.com',
-	  //       offlineAccess: true // if you want to access Google API on behalf of the user FROM YOUR SERVER
-	  //   })
-   //  	.then(()=>{
-			// GoogleSignin.currentUserAsync().then((user) => {
-			// 	console.log(user);
-			// 	this.setState({user: user});
-			// }).done();	   
-   //  	})
+    	GoogleSignin.configure({
+    		webClientId: '744639294163-cl7325fm6jn0a1v8ar3c3f6t3ddn4p8f.apps.googleusercontent.com',
+	        offlineAccess: true // if you want to access Google API on behalf of the user FROM YOUR SERVER
+	    })
+    	.then(()=>{
+			GoogleSignin.currentUserAsync().then((user) => {
+				console.log(user);
+				this.setState({user: user});
+			}).done();	   
+    	})
 	}
 	_signInGoogle(){
 		console.log('google')
-		// const {navigate} = this.props.navigation 	
-		// GoogleSignin.signIn()
-		// .then((result) => {
-		// 	console.log(result);
-		// 	let accessToken = result.accessToken
-		// 	let idUser = result.id
-		// 	let nombre = result.name
-		// 	let photo = result.photo
-		// 	let email = result.email
-		// 	let username = result.email
-		// 	let tipo = 'google'
-		// 	let acceso = 'suscriptor'
-		// 	console.log({accessToken, idUser, nombre, photo, email, tipo})
-		// 	axios.post('/x/v1/user/google', {accessToken, idUser, nombre, photo, email, tipo, username, acceso})
-		// 	.then((e)=>{
-		// 		console.log(e)
-		// 		if (e.data.code==1) {
-		// 			navigate('editPerfil2') 
-		// 		}
-		// 	})
-		// 	.catch((err)=>{
-		// 		console.log(err)
-		// 	})
-		// })
-		// .catch((err) => {
-		// 	console.log('WRONG SIGNIN', err);
-		// })
-		// .done();
+		const {navigate} = this.props.navigation 	
+		GoogleSignin.signIn()
+		.then((result) => {
+			console.log(result);
+			let accessToken = result.accessToken
+			let idUser = result.id
+			let nombre = result.name
+			let photo = result.photo
+			let email = result.email
+			let username = result.email
+			let tipo = 'google'
+			let acceso = 'suscriptor'
+			console.log({accessToken, idUser, nombre, photo, email, tipo})
+			axios.post('/x/v1/user/google', {accessToken, idUser, nombre, photo, email, tipo, username, acceso})
+			.then((e)=>{
+				console.log(e)
+				if (e.data.code==1) {
+					navigate('editPerfil2') 
+				}
+			})
+			.catch((err)=>{
+				console.log(err)
+			})
+		})
+		.catch((err) => {
+			console.log('WRONG SIGNIN', err);
+		})
+		.done();
 	}
 	_signInFacebook(){
 		console.log('facebook')
