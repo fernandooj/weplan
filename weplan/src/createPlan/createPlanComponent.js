@@ -11,7 +11,7 @@ import moment from 'moment'
 
 
 import RestriccionesPlanComponent from './restricciones.js'
-//import MapaPlanComponent 		    from './mapa.js'
+import MapaPlanComponent 		    from './mapa.js'
 import AgregarAmigosComponent    from '../agregarAmigos/agregarAmigos.js'
 import TakePhotoComponent 	  		 from '../takePhoto/takePhotoComponent.js'
 import CabezeraComponent from '../ajustes/cabezera.js'
@@ -128,7 +128,10 @@ export default class createPlanComponent extends Component{
 					     <TouchableOpacity onPress={() => this.setState({mapa:true})}>
 					    	<Text style={direccion ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>{direccion ?direccion.substr(0,60) :'Ubicación'}</Text>
 					    </TouchableOpacity>
-					     	
+					    {mapa ?<MapaPlanComponent 
+							close={()=> this.setState({mapa:false})} 						   			/////////   cierro el modal
+							updateStateX={(lat,lng, direccion)=>this.updateStateX(lat,lng, direccion)}  /////////	me devuelve la posicion del marcador 
+						/>: null }	
 					</View>
 
 				{/*  restricciones  */}

@@ -82,7 +82,7 @@
         <!-- Reference a google maps -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCirZCzCiKJ_8kU6tzkR5w_ts7pgcnl4k8"/>  
+            android:value="AIzaSyCZ0J7H5vZ8Od70SATGS5u30f1UjTw4lIA"/>  
 
 
 

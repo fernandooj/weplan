@@ -31,30 +31,20 @@ class userServices {
 	}
 	facebook(user, callback){
 		let newUsuario = new User() 
-		newUsuario.token = user.accessToken
-		newUsuario.email = user.email
-		newUsuario.username = user.email
-		newUsuario.nombre  = user.nombre
-		newUsuario.photo = user.photo
-		newUsuario.idUser 	 = user.idUser
-		newUsuario.tipo	 = user.tipo
-		newUsuario.acceso   = user.acceso
-		newUsuario.estado   = "activo"
+		newUsuario.token 	  = user.accessToken
+		newUsuario.tokenPhone = user.tokenPhone
+		newUsuario.email 	  = user.email
+		newUsuario.username   = user.email
+		newUsuario.nombre  	  = user.nombre
+		newUsuario.photo 	  = user.photo
+		newUsuario.idUser 	  = user.idUser
+		newUsuario.tipo	 	  = user.tipo
+		newUsuario.acceso     = user.acceso
+		newUsuario.categorias = []
+		newUsuario.estado     = "activo"
 		newUsuario.save(callback)
 	}
-	google(user, callback){
-		let newUsuario = new User() 
-		newUsuario.token = user.accessToken
-		newUsuario.email = user.email
-		newUsuario.nombre  = user.nombre
-		newUsuario.username = user.email
-		newUsuario.photo = user.photo
-		newUsuario.idUser 	 = user.idUser
-		newUsuario.tipo	 = user.tipo
-		newUsuario.acceso   = user.acceso
-		newUsuario.estado   = "activo"
-		newUsuario.save(callback)
-	}
+	 
 	modificaCodigo(idUser, code, callback){
 		User.findOne({'username':idUser.username}, function(err, user){
 			User.findByIdAndUpdate(user._id, {$set:{
@@ -62,15 +52,18 @@ class userServices {
 			}}, callback );	
 		})
 	}
+	modificaTokenPhone(idUser, tokenPhone, callback){
+		User.findByIdAndUpdate(idUser, {$set:{
+			'tokenPhone':tokenPhone,
+		}}, callback );	
+	}
 	verificaToken(token, callback){
 		User.findOne({'username':token.username, 'token': token.token}, callback)
 	}
 	activaUsuario(user, callback){
-		User.findOne({ 'username' :  user.username }, function(error, user) {
-			User.findByIdAndUpdate(user._id, {$set: {
-                'estado':'activo'
-            }}, callback);
-		})
+		User.findByIdAndUpdate(user._id, {$set: {
+            'estado':'activo'
+        }}, callback);
 	}
 	enableDisable(user,callback){
 		User.findByIdAndUpdate(user.id, {$set: {
@@ -104,6 +97,12 @@ class userServices {
         	}}, callback);
 		}
 	}
+	editCategorias(id, categorias, callback){
+		User.findByIdAndUpdate(id, {$set: {
+		    'categorias': categorias,
+		    'updatedAt':  moment().format('YYYY-MM-DD h:mm:ss')
+		}}, callback);
+	}
 	createUser(user, randonNumber, ruta, callback){
 		let newUsuario = new User() 
 		newUsuario.username = user.email
@@ -119,10 +118,9 @@ class userServices {
 		newUsuario.pais     = user.pais
 		newUsuario.token    = randonNumber
 		newUsuario.photo    = ruta
+		newUsuario.categorias = []
 		newUsuario.save(callback);
 	}
-
-
 	avatar(id, extension, callback){
 		User.findByIdAndUpdate(id, {$set: {
             extension    : extension,

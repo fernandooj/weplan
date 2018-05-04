@@ -50,21 +50,21 @@ export default class MapaPlanComponent extends Component{
 			),
 		{enableHighAccuracy: true, timeout:5000, maximumAge:0})
 
-		// this.watchID = navigator.geolocation.watchPosition(e=>{
-		// 	let lat =parseFloat(e.coords.latitude)
-		// 	let lng = parseFloat(e.coords.longitude)
-		// 	let x = {
-		// 		latitude : lat,
-		// 		longitude : lng,
-		// 		latitudeDelta : LATITUD_DELTA,
-		// 		longitudeDelta : LONGITUDE_DELTA
-		// 	}
-		// 	this.setState({x})
-		// 	console.log(x)
-		// },
-		// (error) => this.setState({ error: error.message }),
-  //     	{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10 },
-  //     )
+		this.watchID = navigator.geolocation.watchPosition(e=>{
+			let lat =parseFloat(e.coords.latitude)
+			let lng = parseFloat(e.coords.longitude)
+			let x = {
+				latitude : lat,
+				longitude : lng,
+				latitudeDelta : LATITUD_DELTA,
+				longitudeDelta : LONGITUDE_DELTA
+			}
+			this.setState({x})
+			console.log(x)
+		},
+		(error) => this.setState({ error: error.message }),
+      	{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000, distanceFilter: 10 },
+      )
 	}
 	componentWillUnmont(){
 		navigator.geolocation.clearWatch(this.watchID)
@@ -109,7 +109,7 @@ export default class MapaPlanComponent extends Component{
 							}}
 							getDefaultValue={() => ''}
 							query={{
-								key: 'AIzaSyBdFabe3E1i8_3DICWf6MRRL867mlBTPDg',
+								key: 'AIzaSyCn_XO2J1yIl7I3UMy7hL6-0QmFJAOwIz8',
 								language: 'es', // language of the results
 							}}
 							styles={{

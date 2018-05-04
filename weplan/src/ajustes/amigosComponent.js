@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, TextInput, ScrollView} from 'react-native'
+import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Platform} from 'react-native'
 import {AjustesStyle} from '../ajustes/style'
 import axios from 'axios'
 import CabezeraComponent from './cabezera.js'
-
+import firebaseClient from  "../push/FirebaseClient";
 
 
 export default class ajustesAmigosComponent extends Component{
@@ -84,6 +84,45 @@ export default class ajustesAmigosComponent extends Component{
 			console.log(err)
 		})
 	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////					ENVIO LA NOTIFICACION						///////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	sendRemoteNotification(token) {
+	    let body;
+
+	    if(Platform.OS === 'android'){
+	      body = {
+	        "to": token,
+	      	"data":{
+						"custom_notification": {
+							"title": "Simple FCM Client",
+							"body": "Click me to go to detail",
+							"sound": "default",
+							"priority": "high",
+	            "show_in_foreground": true,
+	            targetScreen: 'detail'
+	        	}
+	    		},
+	    		"priority": 10
+	      }
+	    } else {
+				body = {
+					"to": token,
+					"notification":{
+						"title": "Simple FCM Client",
+						"body": "Click me to go to detail",
+						"sound": "default"
+	        },
+	        data: {
+	          targetScreen: 'detail'
+	        },
+					"priority": 10
+				}
+			}
+	    firebaseClient.send(JSON.stringify(body), "notification");
+	}
+
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////					RENDERIZO LA CABEZERA						/////////////////////////////////////////

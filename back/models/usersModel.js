@@ -5,6 +5,7 @@
 /***** importo bcrypt  para la encriptacion de la contraseña  **********/
 /////////////////////////////////////////////////////////////////////////
 let mongoose = require('mongoose');
+let Schema = mongoose.Schema
 let bcrypt   = require('bcrypt-nodejs');
 let moment   = require('moment');
 
@@ -14,6 +15,7 @@ let moment   = require('moment');
 let UserSchema = mongoose.Schema({
 	createdAt	: { type: String, default: moment().format('YYYY-MM-DD h:mm:ss') },
 	username	: String,
+	tokenPhone	: String,
 	nombre		: String,
 	nacimiento  : String,
 	sexo 		: String,
@@ -25,11 +27,12 @@ let UserSchema = mongoose.Schema({
 	tipo		: String,
 	acceso		: String,
 	estado		: String,
-	updatedAt	: { type: String, default: moment().format('YYYY-MM-DD h:mm:ss') },
+	updatedAt	: String,
 	username	: String,
 	password 	: String,
 	token		: String,
-	acceso      : String
+	categorias  :[{type: Schema.Types.ObjectId, ref:'CategoriaPlan'}],
+	acceso      : String,
 });
 
  

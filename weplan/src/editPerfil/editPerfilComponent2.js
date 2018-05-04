@@ -119,7 +119,25 @@ export default class editPerfilComponent2 extends Component{
 	}
 	handleSubmit(){
 		const {navigate} = this.props.navigation
-		navigate('inicio') 
+		console.log(this.state.restriccionArray)
+		axios.put('/x/v1/user/categoria', {categorias:this.state.restriccionArray})
+		.then(e=>{
+			if (e.data.code===1) {
+				navigate('inicio') 
+			}else{
+				Alert.alert(
+				  'Opss!! tus datos que falta algo',
+				  '',
+				  [
+				    {text: 'OK', onPress: () => console.log('OK Pressed')},
+				  ],
+				  { cancelable: false }
+				)
+			}
+		})
+		.catch(err=>{
+			console.log(err)
+		})
 	}
 	 
 }

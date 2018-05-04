@@ -166,36 +166,6 @@ module.exports = function(app, passport){
         }) 
     })
 
-    ///////////////////////////////////////////////////////////////////////////
-    /*
-    modificar usuarios
-    */
-    ///////////////////////////////////////////////////////////////////////////
-    app.put('/x/v1/user/update/:_id', function(req, res, next){
-        
-        let ruta = null
-        let fullUrl = null
-        if (req.files) {
-            let extension = req.files.imagen.name.split('.').pop()
-            let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
-            fullUrl = '../../front/docs/public/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
-            ruta = req.protocol+'://'+req.get('Host') + '/public/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
-        }else{
-            ruta = req.protocol+'://'+req.get('Host') + '/avatar.png'
-        }
-        
-
- 
-        userServices.edit(req.body, req.params, ruta, function(err, user){
-            if(!user){
-                res.json({ status: 'FAIL', message: err}) 
-            } else{
-                
-                res.json({ status: 'SUCCESS', message: 'Usuario Activado', user: user }); 
-                fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))                
-            }
-        }) 
-    })
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -237,65 +207,60 @@ module.exports = function(app, passport){
     })
 
 
+
     ///////////////////////////////////////////////////////////////////////////
     /*
-    LOGIN SOCIAL MEDIA GOOGLE / FACEBOOK
+    peticion que verifica si el usuario existe
     */
     ///////////////////////////////////////////////////////////////////////////
-    // app.post('/x/v1/user/facebook', function(req, res){
-    //     userServices.getEmail(req.body, function(err, users){
-    //     console.log(req.users)    
-    //         if (!users) {
-    //             console.log(1)
-    //             userServices.facebook(req.body, function(err, user){
-    //                 if (err) {
-    //                     res.json({status:'FAIL', err, code:0})    
-    //                 }else{
-    //                     req.session.usuario = {user:user}
-    //                     res.json({status: 'SUCCESS', mensaje:user, code:1})
-    //                 }
-    //             })
-    //         }else{
-    //             console.log(2)
-    //             req.session.usuario = {user:users}
-    //             res.json({status: 'SUCCESS', users, code:1})
-    //         }
-    //     })
-    // })
     app.post('/x/v1/user/facebook', function(req, res){
-        userServices.getEmailFacebook(req.body.username, (err, data)=>{   
-            if (!data) {
+        userServices.getEmailFacebook(req.body.username, (err, user)=>{   
+            if (!user) {
                 console.log(1)
                 existe(req, res)
             }else{
-                console.log(2)
-                req.session.usuario = {user:data}
-                res.json({status: 'SUCCESS', data, code:1})
+                console.log(req.body)
+                
+                req.session.usuario = {user}
+                user.tokenPhone!==req.body.tokenPhone  ?modificaTokenPhone(req, res) :res.json({status: 'SUCCESS', user, code:1})
             }
         })
     })
-    let existe = function(req, res){
+
+    ///////////////////////////////////////////////////////////////////////////
+    /*
+    si el usuario no existe lo creo en redes sociales
+    */
+    ///////////////////////////////////////////////////////////////////////////
+    const existe = (req, res)=>{
         userServices.facebook(req.body, (err, user)=>{
             if (err) {
                 res.json({status:'FAIL', err, code:0})    
             }else{
                 req.session.usuario = {user:user}
-                res.json({status: 'SUCCESS', mensaje:user, code:1})
+                res.json({status: 'SUCCESS', user, code:1})
+            }
+        })
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    /*
+    si el usuario modifico el token de su celular para notificaciones lo actualizo desde aca
+    */
+    ///////////////////////////////////////////////////////////////////////////
+    const modificaTokenPhone = (req, res)=>{
+        userServices.modificaTokenPhone(req.session.usuario.user._id, req.body.tokenPhone, (err, user)=>{
+            if (err) {
+                res.json({status:'FAIL', err, code:0})    
+            }else{
+                res.json({status: 'SUCCESS_MODIFICA', user, code:1})
             }
         })
     }
 
 
 
-    app.post('/x/v1/user/google', function(req, res){
-        userServices.google(req.body, function(err, user){
-            if (err) {
-                res.json({status:'FAIL', err, code:0})    
-            }else{
-                res.json({status: 'SUCCESS', user, code:1})
-            }
-        })
-    })
+ 
 
     ///////////////////////////////////////////////////////////////////////////
     /*
@@ -422,6 +387,50 @@ module.exports = function(app, passport){
         }
     })
 
+    ///////////////////////////////////////////////////////////////////////////
+    /*
+    modificar usuarios
+    */
+    ///////////////////////////////////////////////////////////////////////////
+    app.put('/x/v1/user/update/:_id', function(req, res, next){
+        let ruta = null
+        let fullUrl = null
+        if (req.files) {
+            let extension = req.files.imagen.name.split('.').pop()
+            let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
+            fullUrl = '../../front/docs/public/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
+            ruta = req.protocol+'://'+req.get('Host') + '/public/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
+        }else{
+            ruta = req.protocol+'://'+req.get('Host') + '/avatar.png'
+        }
+        
+
+ 
+        userServices.edit(req.body, req.params, ruta, function(err, user){
+            if(!user){
+                res.json({ status: 'FAIL', message: err}) 
+            } else{
+                
+                res.json({ status: 'SUCCESS', message: 'Usuario Activado', user: user }); 
+                fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))                
+            }
+        }) 
+    })
+    
+    ///////////////////////////////////////////////////////////////////////////
+    /*
+    modificar categorias
+    */
+    ///////////////////////////////////////////////////////////////////////////
+    app.put('/x/v1/user/categoria', (req, res)=>{
+        userServices.editCategorias(req.session.usuario.user._id, req.body.categorias, (err, user)=>{
+            if(!user){
+                res.json({ status: 'FAIL', err, code:0}) 
+            } else{
+                res.json({ status: 'SUCCESS', user, code:1 });            
+            }
+        }) 
+    })
 
     ///////////////////////////////////////////////////////////////////////////
     /*

@@ -147,7 +147,6 @@ export default class PushComponent extends Component {
 				"priority": 10
 			}
 		}
-
     firebaseClient.send(JSON.stringify(body), "notification");
   }
 
@@ -165,22 +164,6 @@ export default class PushComponent extends Component {
     firebaseClient.send(JSON.stringify(body), "data");
   }
 
-  showLocalNotificationWithAction() {
-    FCM.presentLocalNotification({
-      title: 'Test Notification with action',
-      body: 'Force touch to reply',
-      priority: "high",
-      show_in_foreground: true,
-      click_action: "com.myidentifi.fcm.text", // for ios
-      android_actions: JSON.stringify([{
-        id: "view",
-        title: 'view'
-      },{
-        id: "dismiss",
-        title: 'dismiss'
-      }]) // for android, take syntax similar to ios's. only buttons are supported
-    });
-  }
 
   render() {
     let { token, tokenCopyFeedback } = this.state;
@@ -212,9 +195,7 @@ export default class PushComponent extends Component {
           <Text style={styles.buttonText}>Show Local Notification</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => this.showLocalNotificationWithAction(token)} style={styles.button}>
-          <Text style={styles.buttonText}>Show Local Notification with Action</Text>
-        </TouchableOpacity>
+         
 
         <TouchableOpacity onPress={() => this.scheduleLocalNotification()} style={styles.button}>
           <Text style={styles.buttonText}>Schedule Notification in 5s</Text>
