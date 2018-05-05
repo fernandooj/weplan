@@ -184,7 +184,6 @@ export default class ajustesAmigosComponent extends Component{
 	render(){
 		const {show, token} = this.state
 		const {navigate} = this.props.navigation
-		console.log(token)
 		return(
 			<View style={AjustesStyle.contenedorA}>
 				<CabezeraComponent navigate={navigate} url={'ajustes'} />
@@ -244,44 +243,46 @@ export default class ajustesAmigosComponent extends Component{
 	    let body;
 
 	    if(Platform.OS === 'android'){
-	      body = {
-	        "to": token,
-	      	"data": {
-	            custom_notification: JSON.stringify({
-	              title: 'Tienes una solicitud de amistad',
-	              body: nombre + ' Quiere agregarte como amigo',
-	              priority:"high",
-	              icon:"ic_notif",
-	               
-	              color:"#00ACD4",
-	              big_picture:photo,
-	              picture:photo,
-	              image:photo,
-	              large_icon: photo,
-	              show_in_foreground: true
-	            })
-	        },
+	        body = {
+		        "to": token,
+		      	"data": {
+		            "custom":{
+		              title: 'Tienes una solicitud de amistad',
+		              body: nombre + ' Quiere agregarte como amigo',
+		              priority:"high",
+		              targetScreen:'createPlan',
+		              icon:"ic_notif",
+		              color:"#00ACD4",
+		              big_picture:photo,
+		              picture:photo,
+		              image:photo,
+		              large_icon: photo,
+		              show_in_foreground: true
+		            }
+		        },
 	    		"priority": 10
 	      }
 	    } else {
-				body = {
-					registration_ids: tokens,
-					data: {
-			            custom_notification: JSON.stringify({
-			              title: 'Tienes una solicitud de amistad',
-	              		  body: nombre + ' Quiere agregarte como amigo',
-			              priority:"high",
-			              icon:"ic_notif",
-			              color:"#00ACD4",
-			              big_picture:photo,
-			              picture:photo,
-			              image:photo,
-			              large_icon: photo,
-			              show_in_foreground: true
-			            })
-			        }
-        		}	 
-			}
+			body = {
+				registration_ids: tokens,
+				"data": {
+		            "custom": JSON.stringify({
+						title: 'Tienes una solicitud de amistaddadaa',
+						body: nombre + ' Quiere agregarte como amigo',
+						targetScreen:'createPlan',
+						priority:"high",
+						icon:"ic_notif",
+						color:"#00ACD4",
+						big_picture:photo,
+						picture:photo,
+						image:photo,
+						large_icon: photo,
+						show_in_foreground: true
+		            })
+		        }
+    		}	 
+		}
+		console.log(JSON.stringify(body))
 	    firebaseClient.send(JSON.stringify(body), "notification");
 	}
 	handleSubmit(){
