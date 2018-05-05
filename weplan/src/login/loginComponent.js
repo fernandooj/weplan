@@ -118,7 +118,7 @@ export default class LoginComponent extends Component{
 	    }
 
 	    FCM.getFCMToken().then(token => {
-	      console.log("TOKEN (getFCMToken)", token);
+	      console.log(token);
 	      this.setState({token: token || ""})
 	    });
 
@@ -132,7 +132,6 @@ export default class LoginComponent extends Component{
 	
 	render(){
 		const {navigate} = this.props.navigation
-		console.log(this.state.token)
 		return(
 			<ImageBackground style={LoginStyle.fondo} source={require('./fondo.png')} >
 				<View>

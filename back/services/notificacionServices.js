@@ -5,19 +5,21 @@ let moment = require('moment')
 
 class notificacionService{
 	get(callback){
-		//notificacionSchema.find({}).populate('asignado').exec(callback)
+		notificacionSchema.find({}).populate('idAmigoUser').exec(callback)
 	}
-	getById(idUsuario, callback){
-		// notificacionSchema.find({idUsuario}).populate('asignado').exec(callback)
+	getById(_id, callback){
+		notificacionSchema.find({_id}).populate('idAmigoUser').exec(callback)
 	}
-	buscarUsuario(idUsuario, callback){
-		// notificacionSchema.find({idUsuario}, callback)
+	getByUser(idUsuario, callback){
+		notificacionSchema.find({idUsuario}).populate('idAmigoUser').exec(callback)
 	}
-	create(asignado, idUsuario, callback){
+	create(idUsuarioAsigna, idUsuario, tipo, idTipo, callback){
 		let notificacionSchemas = new notificacionSchema();
-		notificacionSchemas.idUsuario = idUsuario
-		notificacionSchemas.asignado  = asignado
-		notificacionSchemas.estado    = false
+		notificacionSchemas.idUsuario    	   = idUsuario
+		notificacionSchemas.idUsuarioAsigna    = idUsuarioAsigna
+		notificacionSchemas.tipo         	   = tipo
+		notificacionSchemas.estado       	   = false
+		notificacionSchemas.idAmigoUser        = tipo==1 ?idTipo :null
 		notificacionSchemas.save(callback)
 	}
 	activa(idUsuario, callback){

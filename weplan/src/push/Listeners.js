@@ -56,14 +56,18 @@ export function registerAppListener(navigation){
     }
 
     if(notif.opened_from_tray){
-      if(notif.targetScreen === 'createPlan'){
-        setTimeout(()=>{
-          navigation.navigate('createPlan')
+       setTimeout(()=>{
+          navigation.navigate(notif.targetScreen, {id:notif.id})
         }, 500)
-      }
-      setTimeout(()=>{
-        alert(`User tapped notification\n${JSON.stringify(notif)}`)
-      }, 500)
+
+      // if(notif.targetScreen === 'createPlan'){
+      //   setTimeout(()=>{
+      //     navigation.navigate('createPlan')
+      //   }, 500)
+      // }
+      // setTimeout(()=>{
+      //   alert(`User tapped notification\n${JSON.stringify(notif)}`)
+      // }, 500)
     }
 
     if(Platform.OS ==='ios'){

@@ -2,7 +2,7 @@ import {StyleSheet, Dimensions} from 'react-native';
 var screenWidth = Dimensions.get('window').width;
 
 
-export const AjustesStyle = StyleSheet.create({ 
+export const NotificacionStyle = StyleSheet.create({ 
 	contenedor:{
 		alignItems: 'center',
 	},
@@ -131,8 +131,8 @@ export const AjustesStyle = StyleSheet.create({
 		marginTop:10,
 		marginBottom:10,
 	},
- 	//////////////////////////////////////////////////////////////////////////////////
- 	////////////////////////////	CABEZERA   //////////////////////////////////////
+ 	////////////////////////////////////////////////////////////////////////////////
+ 	////////////////////////////////////////////////////////////////////////////////
  	contenedorBack:{
  		flexDirection:'row',
  		backgroundColor:'#dadede',
@@ -140,18 +140,15 @@ export const AjustesStyle = StyleSheet.create({
  		padding:10
  	},
  	imgBack:{
- 		width:18,
- 		height:20
+ 		width:14,
+ 		height:15
  	},
  	btnBack:{
- 		width:'30%',
+ 		width:'85%',
  		marginLeft:20
  	},
  	btnEdit:{
- 		width:'30%'
- 	},
- 	textBack:{
- 		width:'30%'
+ 		width:'15%'
  	},
  	separador:{
 		borderWidth:2,

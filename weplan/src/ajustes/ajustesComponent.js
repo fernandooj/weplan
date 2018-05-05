@@ -10,7 +10,7 @@ export default class ajustesComponent extends Component{
 	state={
 		menus:[
 			{method:1, label:'Amigos', 		 	value:'ajustesAmigos', },
-			{method:1, label:'Notificaciones',  value:'notificaciones'},
+			{method:1, label:'Notificaciones',  value:'notificacion'},
 			{method:1, label:'My Wallet', 	 	value:'mi_wallet'},
 			{method:1, label:'Metodos de Pago', value:'metodos'},
 			{method:2, label:'Cerrar Sesion',   value:'closeSession'},

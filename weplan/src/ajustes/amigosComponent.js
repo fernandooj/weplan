@@ -289,19 +289,18 @@ export default class ajustesAmigosComponent extends Component{
 	}
 	handleSubmit(){
 		const {idAsignado} = this.state
-	 
-		// axios.post('/x/v1/ami/amigoUser', {asignado: idAsignado} )
-		// .then((e)=>{
-		// 	console.log(e.data)
-		// 	if (e.data.code==1) {
-		// 		this.setState({show:false})
-		 		this.sendRemoteNotification()
-		// 	}else{
-		// 		alert('error intenta nuevamente')
-		// 	}
-		// })
-		// .catch((err)=>{
-		// 	console.log(err)
-		// })
+		axios.post('/x/v1/ami/amigoUser', {asignado: idAsignado} )
+		.then((e)=>{
+			console.log(e.data)
+			if (e.data.code==1) {
+				this.setState({show:false})
+				this.sendRemoteNotification()
+			}else{
+				alert('error intenta nuevamente')
+			}
+		})
+		.catch((err)=>{
+			console.log(err)
+		})
 	}
 }

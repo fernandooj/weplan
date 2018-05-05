@@ -24,6 +24,7 @@ import pagoComponent          from './src/pago/pagoComponent';
 import pagoDeudaComponent     from './src/pago/pagoDeudaComponent';
 import ajustesComponent       from './src/ajustes/ajustesComponent';
 import ajustesAmigosComponent from './src/ajustes/amigosComponent';
+import notificacionComponent from './src/notificacion/notificacionComponent';
  
  
 
@@ -70,6 +71,7 @@ const NavigationAppLogin = StackNavigator({
     ajustesAmigos: {screen: ajustesAmigosComponent },
     pago:          {screen: pagoComponent },
     pagoDeuda:     {screen: pagoDeudaComponent },
+    notificacion:  {screen: notificacionComponent },
  
 },{ headerMode: 'none' })
 
