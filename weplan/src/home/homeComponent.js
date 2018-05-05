@@ -1,13 +1,16 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, ImageBackground, ScrollView} from 'react-native'
+import {View, Text, Image, TouchableOpacity, ImageBackground, ScrollView, Platform} from 'react-native'
 import {HomeStyle} from '../home/style'
 import axios from 'axios'
 
+import FCM, {NotificationActionType} from "react-native-fcm";
+import {registerKilledListener, registerAppListener} from "../push/Listeners";
 
+registerKilledListener();
 export default class homeComponent extends Component{
 	constructor(props){
 		super(props);
-		this.state={
+		this.state={ 
 			isOpen: false,
 			isDisabled: false,
 			swipeToClose: true,
@@ -27,6 +30,31 @@ export default class homeComponent extends Component{
 			console.log(err)
 		})	
 	}
+
+	  async componentDidMount(){
+	    registerAppListener(this.props.navigation);
+	    FCM.getInitialNotification().then(notif => {
+	      console.log(notif.targetScreen)
+	      this.setState({
+	        initNotif: notif
+	      })
+	      if(notif && notif.targetScreen === 'detail'){
+	        setTimeout(()=>{
+	          this.props.navigation.navigate('Detail')
+	        }, 500)
+	      }
+	    });
+
+	    try{
+	      let result = await FCM.requestPermissions({badge: false, sound: true, alert: true});
+	    } catch(e){
+	      console.error(e);
+	    }
+
+	     
+ 
+	  }
+
 	renderPlans(){
 		return this.state.planes.map((e, key)=>{
 			return(

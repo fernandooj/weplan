@@ -37,6 +37,7 @@ class MainPage extends Component {
   async componentDidMount(){
     registerAppListener(this.props.navigation);
     FCM.getInitialNotification().then(notif => {
+      console.log(notif.targetScreen)
       this.setState({
         initNotif: notif
       })

@@ -110,16 +110,6 @@ export default class LoginComponent extends Component{
 	}
 	async componentDidMount(){
 	    registerAppListener(this.props.navigation);
-	    FCM.getInitialNotification().then(notif => {
-	      this.setState({
-	        initNotif: notif
-	      })
-	      if(notif && notif.targetScreen === 'detail'){
-	        setTimeout(()=>{
-	          this.props.navigation.navigate('Detail')
-	        }, 500)
-	      }
-	    });
 
 	    try{
 	      let result = await FCM.requestPermissions({badge: false, sound: true, alert: true});
