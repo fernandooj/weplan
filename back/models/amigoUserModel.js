@@ -24,3 +24,7 @@ let amigoUser = mongoose.Schema({
 
 
 module.exports = mongoose.model('amigoUser', amigoUser)
+
+
+/// estado true ==>,  ya son amigos
+/// estado false ==>, esta esperando que acepte ser el amigo

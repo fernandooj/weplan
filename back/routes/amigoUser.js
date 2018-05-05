@@ -23,8 +23,7 @@ router.get('/:id', (req, res)=>{
 		if (err) {
 			res.json({status:'FAIL', err, code:0})    
 		}else{
-			//console.log(asignados[0].asignados)
-			res.json({status:'SUCCESSASI', asignados, code:1})    
+			res.json({status:'SUCCESS', asignados, code:1})    
 		}
 	})
 })
@@ -43,6 +42,9 @@ router.post('/', (req, res)=>{
 	})
 }) 
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///// 			cuando se crea la peticion de amistad tambien se crea la notificacion 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const creaNotificacion = (req, res, amigoUser)=>{
 	notificacionService.create(req.session.usuario.user._id, amigoUser.asignado, 1, amigoUser._id, (err, notificacion)=>{
 		if (err) {

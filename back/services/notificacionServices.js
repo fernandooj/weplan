@@ -18,13 +18,13 @@ class notificacionService{
 		notificacionSchemas.idUsuario    	   = idUsuario
 		notificacionSchemas.idUsuarioAsigna    = idUsuarioAsigna
 		notificacionSchemas.tipo         	   = tipo
-		notificacionSchemas.estado       	   = false
+		notificacionSchemas.estado       	   = true
 		notificacionSchemas.idAmigoUser        = tipo==1 ?idTipo :null
 		notificacionSchemas.save(callback)
 	}
-	activa(idUsuario, callback){
-		notificacionSchema.findOneAndUpdate({idUsuario}, {$set: {
-            'estado': 	 true,
+	desactiva(idUsuario, callback){
+		notificacionSchema.findOneAndUpdate({_id}, {$set: {
+            'estado': 	 false,
             'updatedAt': moment().format('YYYY-MM-DD h:mm:ss')
     	}}, callback);
 	}

@@ -12,7 +12,8 @@ export default class notificacionComponent extends Component{
 
 	}
 	componentWillMount(){
- 		axios.get('x/v1/not/notificacion/user')
+		console.log('tomatela te digo')
+ 		axios.get('/x/v1/not/notificacion/user/get/')
  		.then(e=>{ 
  			console.log(e.data)
  		}) 

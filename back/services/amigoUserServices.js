@@ -21,8 +21,8 @@ class amigoUserService{
 		amigoUsers.estado    = false
 		amigoUsers.save(callback)
 	}
-	activa(idUsuario, callback){
-		amigoUser.findOneAndUpdate({idUsuario}, {$set: {
+	activa(_id, callback){
+		amigoUser.findOneAndUpdate({_id}, {$set: {
             'estado': 	 true,
             'updatedAt': moment().format('YYYY-MM-DD h:mm:ss')
     	}}, callback);
