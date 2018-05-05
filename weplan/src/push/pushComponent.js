@@ -24,7 +24,7 @@ import firebaseClient from  "./FirebaseClient";
 
 registerKilledListener();
 
-export default class PushComponent extends Component {
+class MainPage extends Component {
   constructor(props) {
     super(props);
 
@@ -63,10 +63,10 @@ export default class PushComponent extends Component {
         console.log("APNS TOKEN (getFCMToken)", token);
       });
     }
-	  
-	  // topic example
-	  // FCM.subscribeToTopic('sometopic')
-	  // FCM.unsubscribeFromTopic('sometopic')
+    
+    // topic example
+    // FCM.subscribeToTopic('sometopic')
+    // FCM.unsubscribeFromTopic('sometopic')
   }
 
   showLocalNotification() {
@@ -121,53 +121,70 @@ export default class PushComponent extends Component {
     if(Platform.OS === 'android'){
       body = {
         "to": token,
-      	"data":{
-					"custom_notification": {
-						"title": "Simple FCM Client",
-						"body": "Click me to go to detail",
-						"sound": "default",
-						"priority": "high",
+        "data":{
+          "custom_notification": {
+            "title": "Simple FCM Client",
+            "body": "Click me to go to detail",
+            "sound": "default",
+            "priority": "high",
             "show_in_foreground": true,
             targetScreen: 'detail'
-        	}
-    		},
-    		"priority": 10
+          }
+        },
+        "priority": 10
       }
     } else {
-			body = {
-				"to": token,
-				"notification":{
-					"title": "Simple FCM Client",
-					"body": "Click me to go to detail",
-					"sound": "default"
+      body = {
+        "to": token,
+        "notification":{
+          "title": "Simple FCM Client",
+          "body": "Click me to go to detail",
+          "sound": "default"
         },
         data: {
           targetScreen: 'detail'
         },
-				"priority": 10
-			}
-		}
+        "priority": 10
+      }
+    }
+
     firebaseClient.send(JSON.stringify(body), "notification");
   }
 
   sendRemoteData(token) {
     let body = {
-    	"to": token,
+      "to": token,
       "data":{
-    		"title": "Simple FCM Client",
-    		"body": "This is a notification with only DATA.",
-    		"sound": "default"
-    	},
-    	"priority": "normal"
+        "title": "Simple FCM Client",
+        "body": "This is a notification with only DATA.",
+        "sound": "default"
+      },
+      "priority": "normal"
     }
 
     firebaseClient.send(JSON.stringify(body), "data");
   }
 
+  showLocalNotificationWithAction() {
+    FCM.presentLocalNotification({
+      title: 'Test Notification with action',
+      body: 'Force touch to reply',
+      priority: "high",
+      show_in_foreground: true,
+      click_action: "com.myidentifi.fcm.text", // for ios
+      android_actions: JSON.stringify([{
+        id: "view",
+        title: 'view'
+      },{
+        id: "dismiss",
+        title: 'dismiss'
+      }]) // for android, take syntax similar to ios's. only buttons are supported
+    });
+  }
 
   render() {
     let { token, tokenCopyFeedback } = this.state;
-    console.log(token)
+
     return (
       <View style={styles.container}>
       <ScrollView style={{paddingHorizontal: 20}}>
@@ -195,7 +212,9 @@ export default class PushComponent extends Component {
           <Text style={styles.buttonText}>Show Local Notification</Text>
         </TouchableOpacity>
 
-         
+        <TouchableOpacity onPress={() => this.showLocalNotificationWithAction(token)} style={styles.button}>
+          <Text style={styles.buttonText}>Show Local Notification with Action</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity onPress={() => this.scheduleLocalNotification()} style={styles.button}>
           <Text style={styles.buttonText}>Schedule Notification in 5s</Text>
@@ -238,17 +257,16 @@ class DetailPage extends Component {
   }
 }
 
-
-// export default StackNavigator({
-//   Main: {
-//     screen: MainPage,
-//   },
-//   Detail: {
-//     screen: DetailPage
-//   }
-// }, {
-//   initialRouteName: 'Main',
-// });
+export default StackNavigator({
+  Main: {
+    screen: MainPage,
+  },
+  Detail: {
+    screen: DetailPage
+  }
+}, {
+  initialRouteName: 'Main',
+});
 
 const styles = StyleSheet.create({
   container: {

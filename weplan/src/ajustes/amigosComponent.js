@@ -27,7 +27,6 @@ export default class ajustesAmigosComponent extends Component{
 					nombre: item.nombre,
 					token: item.tokenPhone,
 					estado: true,
-					 
 				}
 			})
 
@@ -35,17 +34,16 @@ export default class ajustesAmigosComponent extends Component{
 			axios.get('/x/v1/ami/amigoUser/id')
 			.then((res)=>{
 				let amigosAsignados=[]
-				console.log(res.data)
+				console.log(res.data.asignados)
 				if(res.data.asignados[0]!=undefined){
-					amigosAsignados = res.data.asignados[0].asignados.map((item)=>{
+					amigosAsignados = res.data.asignados.map((item)=>{
 						return {
-							id:item._id,
-							username:item.username,
-							photo: item.photo,
-							nombre: item.nombre,
-							token: item.tokenPhone,
-							estado: true,
-							
+							id:item.asignado._id,
+							username:item.asignado.username,
+							photo: item.asignado.photo,
+							nombre: item.asignado.nombre,
+							token: item.asignado.tokenPhone,
+							estado: true,	
 						}
 					})
 				}
@@ -250,7 +248,7 @@ export default class ajustesAmigosComponent extends Component{
 	        "to": token,
 	      	"data": {
 	            custom_notification: JSON.stringify({
-	              title: 'Tienes una nueva solicitud de amistad',
+	              title: 'Tienes una solicitud de amistad',
 	              body: nombre + ' Quiere agregarte como amigo',
 	              priority:"high",
 	              icon:"ic_notif",
@@ -270,7 +268,7 @@ export default class ajustesAmigosComponent extends Component{
 					registration_ids: tokens,
 					data: {
 			            custom_notification: JSON.stringify({
-			              title: 'Tienes una nueva solicitud de amistad',
+			              title: 'Tienes una solicitud de amistad',
 	              		  body: nombre + ' Quiere agregarte como amigo',
 			              priority:"high",
 			              icon:"ic_notif",

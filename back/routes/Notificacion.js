@@ -3,21 +3,21 @@
 
 let express = require('express')
 let router = express.Router();
-let amigoUserService = require('../services/amigoUserServices.js');
-let userServices 	 = require('./../services/usersServices.js') 
+let notificacionService = require('../services/notificacionServices.js');
+ 
 
 router.get('/', (req, res)=>{
-	amigoUserService.get((err, respuesta)=>{
+	notificacionService.get((err, notificacion)=>{
 		if (err) {
 			res.json({status:'FAIL', err, code:0})    
 		}else{
-			res.json({status:'SUCCESS', mensaje:respuesta, code:1})    
+			res.json({status:'SUCCESS', notificacion, code:1})    
 		}
 	})
 })
 
 router.get('/:id', (req, res)=>{ 
-	amigoUserService.getById(req.session.usuario.user._id, (err, asignados)=>{
+	notificacionService.getById(req.session.usuario.user._id, (err, asignados)=>{
 		if (err) {
 			res.json({status:'FAIL', err, code:0})    
 		}else{
@@ -31,21 +31,21 @@ router.get('/:id', (req, res)=>{
 
 router.post('/', (req, res)=>{
 	let id = req.session.usuario.user._id
-	amigoUserService.create(req.body.asignado, id, (err, usuarios)=>{
+	notificacionService.create(req.body.asignado, id, (err, notificacion)=>{
 		if (err) {
 			res.json({status:'FAIL', err, code:0})    
 		}else{
-			res.json({status:'SUCCESS', usuarios, code:1})    
+			res.json({status:'SUCCESS', notificacion, code:1})    
 		}
 	})
 	 
 })
 router.put('/', (req,res)=>{
-	amigoUserService.activa(req.body.id, (err, usuarios)=>{
+	notificacionService.activa(req.body.id, (err, notificacion)=>{
 		if (err) {
 			res.json({status:'FAIL', err, code:0})    
 		}else{
-			res.json({status:'SUCCESS', usuarios, code:1})    
+			res.json({status:'SUCCESS', notificacion, code:1})    
 		}
 	})
 })

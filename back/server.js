@@ -27,6 +27,7 @@ let respuestaRutas = require('./routes/Respuesta.js');
 let restriccionRutas= require('./routes/restricciones.js');
 let categoriaPlanRutas= require('./routes/categoriaPlan.js');
 let abonoRutas= require('./routes/Abono.js');
+let notificacionRutas= require('./routes/Notificacion.js');
 
 const path          = require('path');
 
@@ -107,10 +108,7 @@ app.use(formidable.parse({ keepExtensions:true }))
 
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
-app.use(flash()); 
-
-
- 
+app.use(flash());  
 
 
 // creo la ruta de las categorias
@@ -126,6 +124,7 @@ app.use('/x/v1/cat/categoriaPlan', categoriaPlanRutas)
 app.use('/x/v1/res/restriccion', restriccionRutas)
 app.use('/x/v1/pre/pregunta', preguntaRutas)
 app.use('/x/v1/res/respuesta', respuestaRutas)
+app.use('/x/v1/not/notificacion', notificacionRutas)
 
 require('./routes/Users.js')(app, passport);
 
