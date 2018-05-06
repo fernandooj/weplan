@@ -122,23 +122,23 @@ export default class homeComponent extends Component{
 				<View style={HomeStyle.footer3} >
 					<TouchableOpacity onPress={()=> navigate('Home')} style={HomeStyle.btnFooter3}>
 						<Image source={require('./home.png')} style={HomeStyle.iconFooter3} />
-						<Text style={HomeStyle.textoFooter3}>Home</Text>
+						{/*<Text style={HomeStyle.textoFooter3}>Home</Text>*/}
 					</TouchableOpacity>
-					<TouchableOpacity onPress={()=> navigate('createPlan')} style={HomeStyle.btnFooter3}>
+					<TouchableOpacity onPress={()=> navigate('wallet')} style={HomeStyle.btnFooter3}>
 						<Image source={require('./mi_wallet.png')} style={HomeStyle.iconFooter3} />
-						<Text style={HomeStyle.textoFooter3}>My Wallet</Text>
+						{/*<Text style={HomeStyle.textoFooter3}>My Wallet</Text>*/}
 					</TouchableOpacity>
-					<TouchableOpacity onPress={()=> navigate('createPlan')} style={HomeStyle.btnFooter3} >
-						<Image source={require('./crear_plan.png')} style={HomeStyle.iconFooter3} />
-						<Text style={HomeStyle.textoFooter3}>Crear Plan</Text>
+					<TouchableOpacity onPress={()=> navigate('createPlan')} style={[HomeStyle.btnFooter3, HomeStyle.btnFooter3Create]} >
+						<Image source={require('./crear_plan.png')} style={HomeStyle.iconFooter3Create} />
+						{/*<Text style={HomeStyle.textoFooter3}>Crear Plan</Text>*/}
 					</TouchableOpacity>
 					<TouchableOpacity onPress={()=> navigate('misPlanes')} style={HomeStyle.btnFooter3} >
 						<Image source={require('./mis_planes.png')} style={HomeStyle.iconFooter3} />
-						<Text style={HomeStyle.textoFooter3}>Planes</Text> 
+						{/*<Text style={HomeStyle.textoFooter3}>Planes</Text>*/} 
 					</TouchableOpacity>
-					<TouchableOpacity onPress={()=> navigate('notificaciones')} style={HomeStyle.btnFooter3} >
+					<TouchableOpacity onPress={()=> navigate('notificacion')} style={HomeStyle.btnFooter3} >
 						<Image source={require('./notificaciones.png')} style={HomeStyle.iconFooter3} />
-						<Text style={HomeStyle.textoFooter3}>Notificacion</Text>
+						{/*<Text style={HomeStyle.textoFooter3}>Notificacion</Text>*/}
 					</TouchableOpacity>
 				</View>
 				

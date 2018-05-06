@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Platform} from 'react-native'
-import {AjustesStyle} from '../ajustes/style'
+import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Alert} from 'react-native'
 import axios from 'axios'
-import CabezeraComponent from './cabezera.js'
-import firebaseClient from  "../push/FirebaseClient";
+
+import {AjustesStyle} from '../ajustes/style'
+import CabezeraComponent 	  from './cabezera.js'
+import {sendRemoteNotification} from '../push/envioNotificacion.js'
 
 
 export default class ajustesAmigosComponent extends Component{
@@ -18,7 +19,6 @@ export default class ajustesAmigosComponent extends Component{
 		/////////////////	OBTENGO LOS USUARIOS ACTIVOS 	/////////////////////
 		axios.get('/x/v1/users/activos')
 		.then((res)=>{
-			console.log(res.data)
 			let todosUsuarios = res.data.usuarios.map((item)=>{
 				return {
 					id:item._id,
@@ -29,32 +29,29 @@ export default class ajustesAmigosComponent extends Component{
 					estado: true,
 				}
 			})
-
-			//////////////////	 OBTENGO LOS USUARIOS ASIGNADOS  //////////////////////////
+			////////////////////////////////////////////////////////////////////////////////////
+			//////////////////	 OBTENGO LOS USUARIOS ASIGNADOS  ///////////////////////////////
 			axios.get('/x/v1/ami/amigoUser/id')
-			.then((res)=>{
-				let amigosAsignados=[]
-				console.log(res.data.asignados)
-				if(res.data.asignados[0]!=undefined){
-					amigosAsignados = res.data.asignados.map((item)=>{
-						return {
-							id:item.asignado._id,
-							username:item.asignado.username,
-							photo: item.asignado.photo,
-							nombre: item.asignado.nombre,
-							token: item.asignado.tokenPhone,
-							estado: true,	
-						}
-					})
-				}
-
+			.then((res2)=>{
 				axios.get('/x/v1/user/profile') 
 				.then((res)=>{
 					let usuario = res.data.user.user
 					let miPerfil = []
 					miPerfil.push({id:usuario._id, username:usuario.username, photo: usuario.photo, nombre: usuario.nombre, estado: true})
-		 			this.setState({nombre:usuario.nombre, photo:usuario.photo})
-					/////////////////////////////////////////////////////////////////////////////////
+
+					////////////////////////////////////////////////////////////////////////////////////////
+					////////////////////	FILTRO MIS AMIGOS ASIGNADOS   //////////////////////////////////
+					let amigosAsignados = res2.data.asignados.map((item)=>{
+						return {
+							id      : item.estado==true && item.asignado._id==usuario._id ?item.idUsuario._id      :item.asignado._id,
+							username: item.estado==true && item.asignado._id==usuario._id ?item.idUsuario.username :item.asignado.username,
+							photo   : item.estado==true && item.asignado._id==usuario._id ?item.idUsuario.photo    :item.asignado.photo,
+							nombre  : item.estado==true && item.asignado._id==usuario._id ?item.idUsuario.nombre   :item.asignado.nombre,
+							token   : item.asignado.tokenPhone,
+							estado  : item.estado,	
+						}
+					})
+					///////////////////////////////////////////////////////////////////////////////////
 					////////////////////	CONCATENO LOS DOS ARRAYS //////////////////////////////////
 					const diffBy = (pred) => (a, b) => a.filter(x => !b.some(y => pred(x, y)))
 					const makeSymmDiffFunc = (pred) => (a, b) => diffBy(pred)(a, b).concat(diffBy(pred)(b, a))
@@ -97,7 +94,7 @@ export default class ajustesAmigosComponent extends Component{
 				<TouchableOpacity style={AjustesStyle.btnCabezera} >
 					<Text style={AjustesStyle.textCabezera}>Amigos</Text>
 				</TouchableOpacity>
-				<TouchableOpacity style={[AjustesStyle.btnCabezera, AjustesStyle.btnCabezeraActive]} onPress={()=>this.sendRemoteNotification('fepWwtFhjF4:APA91bH1Q7YQg6Fz0-HQEriIeIfWV9lvtRdpW_b2wbToaG3aL-1DjoUDDE0nnSFB0ZyoUp5PEQbZ68C-M8k_KT3IXGOFb0ICwBEDtRD6yUn9Ml-1pry6AfILgidkjQXD_cR-QJs_u4HG')}>
+				<TouchableOpacity style={[AjustesStyle.btnCabezera, AjustesStyle.btnCabezeraActive]}>
 					<Text style={AjustesStyle.textCabezera}>Explorar</Text>
 				</TouchableOpacity>
 			</View>
@@ -148,14 +145,16 @@ export default class ajustesAmigosComponent extends Component{
 
 
  	renderAmigosAsignados(){
- 		const {amigosAsignados} = this.state
- 		return amigosAsignados.map((e, key)=>{
- 			return(
-	 			<View key={key} style={AjustesStyle.registro}>
-	 				 <Image source={{ uri: e.photo}}  style={AjustesStyle.avatarA} /> 
-	 				 <Text style={AjustesStyle.textoAvatar}>{e.nombre}</Text>
-	 			</View>
-	 		)
+ 		return this.state.amigosAsignados.map((e, key)=>{
+ 			if (e.estado) {
+ 				return(
+		 			<View key={key} style={AjustesStyle.registro}>
+		 				 <Image source={{ uri: e.photo}}  style={AjustesStyle.avatarA} /> 
+		 				 <Text style={AjustesStyle.textoAvatar}>{e.nombre}</Text>
+		 			</View>
+		 		)
+ 			}
+ 			
  		})
  		
  	}
@@ -236,67 +235,24 @@ export default class ajustesAmigosComponent extends Component{
 		}
 	}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////					ENVIO LA NOTIFICACION						///////////////////////////////////
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	sendRemoteNotification() {
-		const {nombre, token, photo} = this.state
-	    let body;
-
-	    if(Platform.OS === 'android'){
-	      body = {
-	        "to": token,
-	      	"data": {
-	            "custom_notification": {
-					title: 'Tienes una solicitud de amistad',
-					body: nombre + ' Quiere agregarte como amigo',
-					priority:"high",
-					icon:"ic_notif",
-					targetScreen:'notificacion',
-					color:"#00ACD4",
-					big_picture:photo,
-					picture:photo,
-					image:photo,
-					large_icon: photo,
-					show_in_foreground: true
-	            }
-	        },
-	    		"priority": 10
-	      }
-	    } else {
-				body = {
-					registration_ids: tokens,
-					"data": {
-			            "custom_notification": {
-							title: 'Tienes una solicitud de amistad',
-							body: nombre + ' Quiere agregarte como amigo',
-							priority:"high",
-							icon:"ic_notif",
-							color:"#00ACD4",
-							targetScreen:'notificacion',
-							big_picture:photo,
-							picture:photo,
-							image:photo,
-							large_icon: photo,
-							show_in_foreground: true
-			            }
-			        }
-        		}
-	        	 
-			
-			}
-	    firebaseClient.send(JSON.stringify(body), "notification");
-	}
+	
 	handleSubmit(){
-		const {idAsignado} = this.state
+		const {idAsignado, token} = this.state
 		axios.post('/x/v1/ami/amigoUser', {asignado: idAsignado} )
 		.then((e)=>{
 			console.log(e.data)
 			if (e.data.code==1) {
 				this.setState({show:false})
-				this.sendRemoteNotification()
+				sendRemoteNotification(1, token, "notificacion")
 			}else{
-				alert('error intenta nuevamente')
+				Alert.alert(
+				  'Opss!! revisa tus datos que falta algo',
+				  '',
+				  [
+				    {text: 'OK', onPress: () => console.log('OK Pressed')},
+				  ],
+				  { cancelable: false }
+				)
 			}
 		})
 		.catch((err)=>{

@@ -3,7 +3,7 @@ import {View, Text, Image, TouchableOpacity, Alert} from 'react-native'
 import {NotiStyle} from '../notificacion/style'
 import axios from 'axios'
 import CabezeraComponent from '../ajustes/cabezera.js'
-import {sendRemoteNotification} from '../push/envioNotificacion.js'
+ 
 
 
 export default class notificacionComponent extends Component{
@@ -45,7 +45,7 @@ export default class notificacionComponent extends Component{
 					 				<Text style={NotiStyle.tituloNoti}>{e.nombre}</Text> 
 					 				<Text style={NotiStyle.textoNoti}>{e.tipo==1 ?'te quiere agregar como amigo' :null}</Text>
 					 				<View style={NotiStyle.contenedorNoti}>
-						 				<TouchableOpacity  style={NotiStyle.btnNoti} onPress={()=>this.handleSubmit(e.id, e.idAmigoUser, 1, e.token)}>
+						 				<TouchableOpacity  style={NotiStyle.btnNoti} onPress={()=>this.handleSubmit(e.id, e.idAmigoUser, 1)}>
 						 					<Text  style={NotiStyle.textoNoti}> Agregar</Text>
 						 				</TouchableOpacity>
 						 				<TouchableOpacity  style={NotiStyle.btnNoti}>
@@ -78,12 +78,11 @@ export default class notificacionComponent extends Component{
 			</View>
 		)
 	}
-	handleSubmit(idNotificacion, idTipo, tipo, token){
+	handleSubmit(idNotificacion, idTipo, tipo){
 		axios.put('/x/v1/not/notificacion/'+idNotificacion+'/'+idTipo+'/'+tipo)
 		.then(e=>{
 			if (e.data.code==1) {
 				this.updateStado(idNotificacion)
-				sendRemoteNotification(2, token, 'ajustesAmigos')
 			}else{
 				Alert.alert(
 				  'Opss!! revisa tus datos que falta algo',

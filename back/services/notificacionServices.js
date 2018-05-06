@@ -11,7 +11,7 @@ class notificacionService{
 		notificacionSchema.find({_id}).populate('idAmigoUser').exec(callback)
 	}
 	getByUser(idUsuario, callback){
-		notificacionSchema.find({idUsuario}).populate('idAmigoUser').exec(callback)
+		notificacionSchema.find({idUsuario, estado:true}).populate('idAmigoUser').populate('idUsuarioAsigna').exec(callback)
 	}
 	create(idUsuarioAsigna, idUsuario, tipo, idTipo, callback){
 		let notificacionSchemas = new notificacionSchema();
@@ -22,7 +22,7 @@ class notificacionService{
 		notificacionSchemas.idAmigoUser        = tipo==1 ?idTipo :null
 		notificacionSchemas.save(callback)
 	}
-	desactiva(idUsuario, callback){
+	desactiva(_id, callback){
 		notificacionSchema.findOneAndUpdate({_id}, {$set: {
             'estado': 	 false,
             'updatedAt': moment().format('YYYY-MM-DD h:mm:ss')

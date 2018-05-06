@@ -2,7 +2,7 @@ import {StyleSheet, Dimensions} from 'react-native';
 var screenHeight = Dimensions.get('window').height;
 var screenWidth = Dimensions.get('window').width;
 
-export const PreguntaStyle = StyleSheet.create({ 
+export const EncuestaStyle = StyleSheet.create({ 
 	//////////// pagina principal   //////////
 	contentItem: {
 		flex: 1,

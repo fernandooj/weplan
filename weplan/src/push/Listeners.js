@@ -56,9 +56,10 @@ export function registerAppListener(navigation){
     }
 
     if(notif.opened_from_tray){
-       setTimeout(()=>{
-          navigation.navigate(notif.targetScreen, {id:notif.id})
-        }, 500)
+      console.log(notif.targetScreen)
+      setTimeout(()=>{
+        navigation.navigate(notif.targetScreen, {id:notif.id})
+      }, 500)
 
       // if(notif.targetScreen === 'createPlan'){
       //   setTimeout(()=>{

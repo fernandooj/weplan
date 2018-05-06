@@ -29,7 +29,7 @@ export default class LoginComponent extends Component{
     	/////////////////////		LOAD GOOGLE DATA 	///////////////////////////////////
     	////////////////////////////////////////////////////////////////////////////////////
     	GoogleSignin.configure({
-    		webClientId: '744639294163-cl7325fm6jn0a1v8ar3c3f6t3ddn4p8f.apps.googleusercontent.com',
+    		webClientId: '744639294163-qiif0tj6an0rsv3olo37dejfsh6n6q9n.apps.googleusercontent.com',
 	        offlineAccess: true // if you want to access Google API on behalf of the user FROM YOUR SERVER
 	    })
     	.then(()=>{

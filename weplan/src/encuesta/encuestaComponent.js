@@ -3,13 +3,13 @@ import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native'
 import {ItemStyle} from '../item/style'
 
 import axios from 'axios'
-import CrearPreguntaComponent from './crearPreguntaComponent'
+import CrearEncuestaComponent from './crearEncuestaComponent'
 import CabezeraComponent from '../ajustes/cabezera.js'
 import update from 'react-addons-update';
 
  
 
-export default class PreguntaComponent extends Component{
+export default class encuestaComponent extends Component{
 	state={
 		show:false,
 		misItems:[],
@@ -123,7 +123,7 @@ export default class PreguntaComponent extends Component{
 			  	{/*****   show the modal to create component	*****/}
 				  	{
 				  		show
-				  		?<CrearPreguntaComponent  
+				  		?<CrearEncuestaComponent  
 				  			planId={this.props.navigation.state.params}
 				  			updateItems={(id, deuda, titulo)=>this.updateItems(id, deuda, titulo)}
 				  			close={()=>this.setState({show:false})}

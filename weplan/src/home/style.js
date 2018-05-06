@@ -72,15 +72,22 @@ export const HomeStyle = StyleSheet.create({
 	},
 	btnFooter3:{
 		alignItems: 'center',
-		width:'17%', 
+		width:'14%', 
 		marginLeft:'1.5%', 
 		marginRight:'1.5%',
 		paddingTop:10, 
 		paddingBottom:10 
 	},
 	iconFooter3:{
-		width:'77%', 
-		height:45,  
+		width:'59%', 
+		height:30,  
+	},
+	btnFooter3Create:{
+		width:'21%', 
+	},
+	iconFooter3Create:{
+		width:'100%', 
+		height:55,  
 	}, 
 	iconFooter:{
 		width:35,

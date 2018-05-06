@@ -126,7 +126,7 @@ export default class editPerfilComponent2 extends Component{
 				navigate('inicio') 
 			}else{
 				Alert.alert(
-				  'Opss!! tus datos que falta algo',
+				  'Opss!! revisa tus datos que falta algo',
 				  '',
 				  [
 				    {text: 'OK', onPress: () => console.log('OK Pressed')},
