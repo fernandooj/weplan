@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground } from 'react-native'
 import axios from 'axios'
 import SocketIOClient from 'socket.io-client';
-
+import {sendRemoteNotification} from '../push/envioNotificacion.js'
 import {ChatStyle} from '../chat/style'
 import update from 'react-addons-update';
 import moment from 'moment'
@@ -29,7 +29,7 @@ export default class ChatComponent extends Component{
 		axios.get('/x/v1/pla/plan/getbyid/'+planId) 
 		.then((res)=>{
 			console.log(res.data)
-			this.setState({imagen: res.data.message[0].imagen, nombrePlan: res.data.message[0].nombre, planId})
+			this.setState({planId, imagen: res.data.message[0].imagen, nombrePlan: res.data.message[0].nombre, planId})
 		})
 		.catch((err)=>{
 			console.log(err)
@@ -64,6 +64,7 @@ export default class ChatComponent extends Component{
 						userId       : e.userId._id,
 						nombre 		 : e.userId.nombre,
 						photo 		 : e.userId.photo,
+						token 		 : e.userId.tokenPhone,
 						mensaje 	    : e.mensaje,
 						asignadoItem : e.itemId ?e.itemId.asignados.includes(this.state.id) :null,
 						itemId 		 : e.itemId ?e.itemId._id :null ,
@@ -79,7 +80,7 @@ export default class ChatComponent extends Component{
 						respuesta1   : res.data.porcentaje1,
 						respuesta2   : res.data.porcentaje2,
 						tipoEncuesta : e.encuestaId ?e.encuestaId.tipo :null,
-						tipoChat	 : e.tipo,
+						tipoChat	    : e.tipo,
 						estado       : e.estado,
 						porcentaje1  : res.data.porcentaje1,
 						porcentaje2  : res.data.porcentaje2,
@@ -188,13 +189,17 @@ export default class ChatComponent extends Component{
 					             	{'$ '+Number(e.valor).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
 					             </Text>  
 					       	</View>
-
-					       	<View style={e.userId== id ?ChatStyle.contenedorInteres :[ChatStyle.contenedorInteres, ChatStyle.contenedorInteresLeft]}>
-						       	<TouchableOpacity onPress={()=> navigate('')} style={ChatStyle.btnInteres} >
-						       		<Image source={require('./me_interesa.png')} style={ChatStyle.imagenInteres} />
-						       		<Text style={ChatStyle.textoInteres}>Me Interesa</Text>
-						       	</TouchableOpacity>
-						      </View> 	
+					       	{
+					       		e.asignadoItem  || e.userId !== id
+					       		?<View style={e.userId== id ?ChatStyle.contenedorInteres :[ChatStyle.contenedorInteres, ChatStyle.contenedorInteresLeft]}>
+							       	<TouchableOpacity onPress={()=> this.ingresarItem(e.token, e.itemId)} style={ChatStyle.btnInteres} >
+							       		<Image source={require('./me_interesa.png')} style={ChatStyle.imagenInteres} />
+							       		<Text style={ChatStyle.textoInteres}>Me Interesa</Text>
+							       	</TouchableOpacity>
+							      </View> 	
+							      :null
+					       	}
+					       	
 			      		</View>
 		     		</View>
 				)
@@ -289,7 +294,7 @@ export default class ChatComponent extends Component{
 									</TouchableOpacity>
 									<TouchableOpacity onPress={!e.asignado ?()=> this.handleSubmitPregunta(e.encuestaId, 2, e.id) :null} style={ChatStyle.btnInteres} >
 								  		{
-											e.asignado 
+											e.asignado
 											?<View style={ChatStyle.contenedorPregunta}>
 												<Image source={{uri:e.pregunta2}} style={ChatStyle.imagenRespuesta} />
 												<Text style={ChatStyle.textoPregunta}>{e.respuesta2} %</Text>
@@ -346,8 +351,27 @@ export default class ChatComponent extends Component{
 	opciones(){
 		console.log("opciones")
 	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////// SI EL USUARIO HACE CLICK EN ME INTERESA, ENVIA LA NOTIFICACION AL CREADOR DEL ITEM PARA DARLE PERMISO DE INGRESAR
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	ingresarItem(token, itemId){
+ 		console.log(itemId)
+		axios.put('x/v1/ite/item', {itemId})
+		.then(e=>{
+			if (e.data.code==1) {
+				sendRemoteNotification(3, token, "notificacion")
+			}
+		})
+		.catch(err=>{
+			console.log(err)
+		})
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	////// ENVIO LA RESPUESTA EN LAS ENCUESTAS
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	handleSubmitPregunta(idPregunta, valor, idChat){
-		console.log(idChat)
 		axios.post('/x/v1/res/respuesta', {valor, idPregunta, idChat})
 		.then(res=>{
 			console.log(res.data)
@@ -360,8 +384,11 @@ export default class ChatComponent extends Component{
 		.catch(err=>{
 			console.log(err)
 		})
- 
 	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	////// ENVIO EL MENSAJE DEL CHAT 
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	handleSubmit(){
 		const fecha = moment().format('h:mm')
 		const {planId, mensaje, id, photo} = this.state

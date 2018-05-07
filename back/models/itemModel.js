@@ -17,6 +17,7 @@ let itemSchema = mongoose.Schema({
 	planId     	  : {type: Schema.Types.ObjectId, ref:'Plan'},
 	userId     	  : {type: Schema.Types.ObjectId, ref:'User'}, 
 	asignados     : [{type: Schema.Types.ObjectId, ref:'User'}],
+	espera        : [{type: Schema.Types.ObjectId, ref:'User'}],
 	createdAt	  : { type: String, default: moment().format('YYYY-MM-DD h:mm') },
 })
 

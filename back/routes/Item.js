@@ -91,27 +91,29 @@ router.get('/id/:id', (req, res)=>{
 ///////////////////////	 		SAVE ITEM		//////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 router.post('/', function(req, res){
-	let id = req.session.usuario.user._id
-	itemServices.create(req.body, id, (err, item)=>{
-		if(err){
-			res.json({err})
-		}else{
-			createPago(req.body, res, id, item)
-			res.json({ status: 'SUCCESS', item, code:1 });			
-		}
-	})
+	if (req.session.usuario) {
+		itemServices.create(req.body, req.session.usuario.user._id, (err, item)=>{
+			if(err){
+				res.json({err, status: 'FAIL', code:0})
+			}else{
+				createPago(req.body, res, req.session.usuario.user._id, item)
+				res.json({ status: 'SUCCESS', item, code:1 });			
+			}
+		})
+	}else{
+		res.json({status: 'FAIL', mensaje:'sin login', code:0})
+	}
+	 
+	
 })
 
 
-
-
-
+//////////////////////////////////////////////////////////////////////////////////////////
+////////   CREO UN PRIMER PAGO, O DEUDA 
+//////////////////////////////////////////////////////////////////////////////////////////
 let createPago = function(req, res, id, item){
-	
 	let deudaAsignados = Math.ceil((item.valor/(item.asignados.length+1))/1000)*1000
 	let deudaCreador = req.valor - (deudaAsignados * item.asignados.length)
-	 
-	console.log(deudaCreador)
 	let data = req.asignados.map(e=>{
 		return {
 			userId:e,
@@ -128,14 +130,10 @@ let createPago = function(req, res, id, item){
 		pagoServices.create(e, null, (err, pago)=>{
 			if(err){
 				console.log(err)
-				//res.json({err, code:0})
-			}else{
-				//console.log(pago)
-				//res.json({ status: 'SUCCESS', pago, code:1 });					
+			}else{					
 			}
 		})
 	})
-	
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -197,6 +195,26 @@ let createChat = function(req, res, userId, item, ruta){
 }
 
 
+//////////////////////////////////////////////////////////////////////////////////////////
+////////   SI UN USUARIO QUIERE INGRESAR AL ITEM, LO REGISTRO Y LO DEJO EN ESPERA 
+//////////////////////////////////////////////////////////////////////////////////////////
 
+router.put('/', (req, res)=>{
+	itemServices.getById(req.body.itemId, (err, item)=>{
+	let nuevoArray = item[0].espera.concat(req.session.usuario.user._id)
+	console.log(nuevoArray)	
+	itemServices.ingresarItem(req.body.itemId, nuevoArray, (err, item)=>{
+		if (err) {
+			res.json({status: 'FAIL', err, code:0})
+		}else{
+			res.json({ status: 'SUCCESS', item, code:1 });	
+		}
+	})
+
+	})
+	
+})
 
 module.exports = router
+
+
