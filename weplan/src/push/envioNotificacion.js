@@ -3,7 +3,7 @@ import firebaseClient from  "./FirebaseClient";
 import axios from 'axios'
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////	ENVIO LA NOTIFICACION						
-//////////////	tipo 1==> quiere ser amigo, tipo 2 ==> acepta ser amigo	, tipo 3 ==> quiere acceder a un item					
+//////////////	tipo 1==> quiere ser amigo, tipo 2 ==> acepta ser amigo	, tipo 3 ==> quiere acceder a un item, tipo 4 ==> Aceptaron a un usuario dentro de un item						
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export const sendRemoteNotification = (tipo, token, targetScreen)=> {
@@ -18,8 +18,8 @@ export const sendRemoteNotification = (tipo, token, targetScreen)=> {
 	        "to": token,
 	      	"data": {
 	            "custom_notification": {
-					title: tipo==1 ?'Tienes una solicitud de amistad' :tipo==2 ?'Te aceptaron como amigo' :tipo==3 ?'Un usuario quiere acceder a un item' :null,
-					body : tipo==1 ?`${nombre}, quiere agregarte como amigo` :tipo==2 ?`${nombre}, acepto tu solicitud` :tipo==3 ?`${nombre}, quiere acceder a un item` :null,
+					title: tipo==1 ?'Tienes una solicitud de amistad' :tipo==2 ?'Te aceptaron como amigo' :tipo==3 ?'Un usuario quiere acceder a un item' :tipo==4 ?'te han aceptado en el item' :null,
+					body : tipo==1 ?`${nombre}, quiere agregarte como amigo` :tipo==2 ?`${nombre}, acepto tu solicitud` :tipo==3 ?`${nombre}, te incluyo en el item` :null,
 					priority:"high",
 					icon:"ic_notif",
 					targetScreen:targetScreen,
@@ -38,8 +38,8 @@ export const sendRemoteNotification = (tipo, token, targetScreen)=> {
 				registration_ids: tokens,
 				"data": {
 		            "custom_notification": {
-						title: tipo==1 ?'Tienes una solicitud de amistad' :tipo==2 ?'Te aceptaron como amigo' :tipo==3 ?'Un usuario quiere acceder a un item' :null,
-						body : tipo==1 ?`${nombre}, quiere agregarte como amigo` :tipo==2 ?`${nombre}, acepto tu solicitud` :tipo==3 ?`${nombre}, quiere acceder a un item` :null,
+						title: tipo==1 ?'Tienes una solicitud de amistad' :tipo==2 ?'Te aceptaron como amigo' :tipo==3 ?'Un usuario quiere acceder a un item' :tipo==4 ?'te han aceptado en el item' :null,
+					    body : tipo==1 ?`${nombre}, quiere agregarte como amigo` :tipo==2 ?`${nombre}, acepto tu solicitud` :tipo==3 ?`${nombre}, te incluyo en el item` :null,
 						priority:"high",
 						icon:"ic_notif",
 						color:"#00ACD4",

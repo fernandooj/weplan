@@ -12,7 +12,7 @@ let cliente      = redis.createClient()
 let itemServices = require('../services/itemServices.js')
 let chatServices = require('../services/chatServices.js')
 let pagoServices = require('../services/pagoServices.js')
-
+let notificacionService = require('../services/notificacionServices.js');
 ///////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////	 GET ALL 	//////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,27 +50,6 @@ router.get('/:user', (req, res)=>{
 		})
 	}
 })
-
-// let itemPlan = function(items, id, res){
-// 	let deuda=[]
-// 	let negro = items.filter(item=>{
-// 		return pagoServices.suma(item._id, id, (err, pago)=>{
-			 
-// 				//let deudaNueva = pago.length>0 ?pago[0].monto :Math.round((item.valor/(item.asignados.length+1))/1000)*1000;
-// 				deuda.push(pago)
-			 
-// 		})		
-// 	})	
-// 	res.json({ status: 'SUCCESS', negro, deuda, code:1 });
-// 	console.log({negro})
-// }
-
-
-
-
-
-
-
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -195,25 +174,51 @@ let createChat = function(req, res, userId, item, ruta){
 }
 
 
+
+
 //////////////////////////////////////////////////////////////////////////////////////////
 ////////   SI UN USUARIO QUIERE INGRESAR AL ITEM, LO REGISTRO Y LO DEJO EN ESPERA 
 //////////////////////////////////////////////////////////////////////////////////////////
-
 router.put('/', (req, res)=>{
 	itemServices.getById(req.body.itemId, (err, item)=>{
-	let nuevoArray = item[0].espera.concat(req.session.usuario.user._id)
-	console.log(nuevoArray)	
-	itemServices.ingresarItem(req.body.itemId, nuevoArray, (err, item)=>{
-		if (err) {
-			res.json({status: 'FAIL', err, code:0})
+		if(isInArray(req.session.usuario.user._id, item[0].espera)){
+			res.json({status: 'FAIL', mensaje:'ya esta en lista de espera', code:2})
 		}else{
-			res.json({ status: 'SUCCESS', item, code:1 });	
+			let nuevoArray = item[0].espera.concat(req.session.usuario.user._id)
+			itemServices.ingresarItem(req.body.itemId, nuevoArray, (err, item)=>{
+				if (err) {
+					res.json({status: 'FAIL', err, code:0})
+				}else{
+					creaNotificacion(req, res, item)	
+				}
+			})
+		}
+		
+	})
+})
+
+//////////////////////////////////////////////////////////////////////////////////////////
+////////   VERIFICO QUE EL USUARIO YA ALLA MANDADO LA SOLICITUD DE INGRESAR 
+//////////////////////////////////////////////////////////////////////////////////////////
+function isInArray(value, array) {
+	return array.indexOf(value) > -1;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///// 			cuando se crea la peticion de ingresar tambien se crea la notificacion 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const creaNotificacion = (req, res, item)=>{
+	notificacionService.create(req.session.usuario.user._id, item.userId, 2, item._id, (err, notificacion)=>{
+		if (err) {
+			res.json({status:'FAIL', err, code:0})   
+		}else{
+			res.json({status:'SUCCESS', item, notificacion, code:1})    
 		}
 	})
+}
 
-	})
-	
-})
+
 
 module.exports = router
 

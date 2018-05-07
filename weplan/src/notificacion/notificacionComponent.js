@@ -16,14 +16,17 @@ export default class notificacionComponent extends Component{
  			console.log(e.data.notificacion)
  			let notificacion = e.data.notificacion.map((item)=>{
 				return {
-					id:item._id,
-					idAmigoUser:item.idAmigoUser._id,
-					username   :item.idUsuarioAsigna.username,
-					photo: item.idUsuarioAsigna.photo,
-					nombre: item.idUsuarioAsigna.nombre,
-					token: item.idUsuarioAsigna.tokenPhone,
-					tipo: item.tipo,
-					estado: item.estado,
+					id 		    : item._id,
+					idAmigoUser : item.idAmigoUser ?item.idAmigoUser._id 				:null,
+					idUser      : item.idUsuarioAsigna ?item.idUsuarioAsigna._id        :null,
+					username    : item.idUsuarioAsigna ?item.idUsuarioAsigna.username   :null,
+					photo   	: item.idUsuarioAsigna ?item.idUsuarioAsigna.photo      :null,
+					nombre 	    : item.idUsuarioAsigna ?item.idUsuarioAsigna.nombre     :null,
+					token  	 	: item.idUsuarioAsigna ?item.idUsuarioAsigna.tokenPhone :null,
+					idItem   	: item.idItem  ?item.idItem._id    :null,
+					nombreItem  : item.idItem  ?item.idItem.titulo :null,
+					tipo 		: item.tipo,
+					estado  	: item.estado,
 				}
 			})
  			this.setState({notificacion})
@@ -35,17 +38,23 @@ export default class notificacionComponent extends Component{
  
 	renderNotificacion(){
  		return this.state.notificacion.map((e, key)=>{
- 			if (e.tipo==true) {
- 				if (e.tipo==1) {
+ 			if (e.estado==true) {
 	 				return(
 		 				<View key={key}>
 			 				<View style={NotiStyle.contenedorNoti}>
 				 				<Image source={{uri: e.photo}} style={NotiStyle.avatar} />
 			 					<View>
 					 				<Text style={NotiStyle.tituloNoti}>{e.nombre}</Text> 
-					 				<Text style={NotiStyle.textoNoti}>{e.tipo==1 ?'te quiere agregar como amigo' :null}</Text>
+					 				<Text style={NotiStyle.textoNoti}>{e.tipo==1 ?'Re quiere agregar como amigo' :e.tipo==2 ?`Quiere acceder al item: ${e.nombreItem}` :null}</Text>
 					 				<View style={NotiStyle.contenedorNoti}>
-						 				<TouchableOpacity  style={NotiStyle.btnNoti} onPress={()=>this.handleSubmit(e.id, e.idAmigoUser, 1, e.token)}>
+						 				<TouchableOpacity  style={NotiStyle.btnNoti} 
+						 					onPress={
+						 						e.tipo==1
+						 						?()=>this.handleSubmit(e.id, e.idAmigoUser, 1, e.token, e.idUser)
+						 						:e.tipo==2
+						 						?()=>this.handleSubmit(e.id, e.idItem, 2, e.token, e.idUser)
+						 						:null
+						 					}>
 						 					<Text  style={NotiStyle.textoNoti}> Agregar</Text>
 						 				</TouchableOpacity>
 						 				<TouchableOpacity  style={NotiStyle.btnNoti}>
@@ -57,14 +66,9 @@ export default class notificacionComponent extends Component{
 				 			<View style={NotiStyle.separador}></View>
 				 		</View>
 	 				)
-	 			}else{
-	 				return(null)
-	 			}
  			}else{
  				return(null)
  			}
- 			
- 			
  		})
 	}
 	render(){
@@ -78,13 +82,14 @@ export default class notificacionComponent extends Component{
 			</View>
 		)
 	}
-	handleSubmit(idNotificacion, idTipo, tipo, token){
-		axios.put('/x/v1/not/notificacion/'+idNotificacion+'/'+idTipo+'/'+tipo)
+	handleSubmit(idNotificacion, idTipo, tipo, token, idUser){
+		console.log(token)
+		axios.put('/x/v1/not/notificacion/'+idNotificacion+'/'+idTipo+'/'+tipo+'/'+idUser)
 		.then(e=>{
 			console.log(e.data)
 			if (e.data.code==1) {
 				this.updateStado(idNotificacion)
-				sendRemoteNotification(2, token, 'ajustesAmigos')
+				sendRemoteNotification(4, token, 'Home')
 			}else{
 				Alert.alert(
 				  'Opss!! revisa tus datos que falta algo',

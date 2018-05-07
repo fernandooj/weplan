@@ -40,6 +40,12 @@ class itemServices {
 	        'espera': espera,
         }}, callback);	
 	}
+	activaUsuario(_id, espera, asignados, callback){
+		itemSchema.findByIdAndUpdate(_id, {$set: {
+	        'espera': espera,
+	        'asignados': asignados,
+        }}, callback);	
+	}
  
 }
 

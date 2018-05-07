@@ -187,7 +187,7 @@ export const ChatStyle = StyleSheet.create({
 		marginTop: 5,
 		width:screenWidth/1.5,
 		backgroundColor:'#ffffff',
-		paddingBottom:40,		
+		paddingBottom:50,		
  	},
  	contenedorItemLeft:{
 		alignSelf: 'flex-start',  
@@ -298,7 +298,7 @@ export const ChatStyle = StyleSheet.create({
 	contenedorInteres:{
   		alignItems: 'flex-end',
 		width:'85%',
- 		top:-10,
+ 		marginTop:-35,
  	},
  	contenedorInteresLeft:{
  		alignItems: 'center',
@@ -310,6 +310,12 @@ export const ChatStyle = StyleSheet.create({
 	imagenInteres:{
 		width:45,
 		height:45,
+		position:'relative',
+		zIndex:5
+	},
+	imagenEspera:{
+		width:70,
+		height:70,
 		position:'relative',
 		zIndex:5
 	},

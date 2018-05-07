@@ -19,8 +19,8 @@ export default class ChatComponent extends Component{
 	}
 
 	componentWillMount(){
-		//let planId = this.props.navigation.state.params	
-		let planId = '5aefdb91423c402001dbb329'	
+		let planId = this.props.navigation.state.params	
+		//let planId = '5aefdb91423c402001dbb329'	
 		console.log(planId) 
 		this.socket = SocketIOClient(URL);
 		this.socket.on('userJoined'+planId, this.onReceivedMessage);
@@ -67,6 +67,7 @@ export default class ChatComponent extends Component{
 						token 		 : e.userId.tokenPhone,
 						mensaje 	    : e.mensaje,
 						asignadoItem : e.itemId ?e.itemId.asignados.includes(this.state.id) :null,
+						esperaItem   : e.itemId ?e.itemId.espera.includes(this.state.id) :null,
 						itemId 		 : e.itemId ?e.itemId._id :null ,
 						titulo 		 : e.itemId ?e.itemId.titulo :null,
 						descripcion  : e.itemId ?e.itemId.descripcion :null,
@@ -190,15 +191,20 @@ export default class ChatComponent extends Component{
 					             </Text>  
 					       	</View>
 					       	{
-					       		e.asignadoItem  || e.userId !== id
+					       		(!e.asignadoItem && !e.esperaItem)  && e.userId !== id
 					       		?<View style={e.userId== id ?ChatStyle.contenedorInteres :[ChatStyle.contenedorInteres, ChatStyle.contenedorInteresLeft]}>
-							       	<TouchableOpacity onPress={()=> this.ingresarItem(e.token, e.itemId)} style={ChatStyle.btnInteres} >
+							       	<TouchableOpacity onPress={()=> this.ingresarItem(e.token, e.itemId, e.id)} style={ChatStyle.btnInteres} >
 							       		<Image source={require('./me_interesa.png')} style={ChatStyle.imagenInteres} />
 							       		<Text style={ChatStyle.textoInteres}>Me Interesa</Text>
 							       	</TouchableOpacity>
 							      </View> 	
+							      :!e.asignadoItem && e.esperaItem
+							      ?<View style={e.userId== id ?ChatStyle.contenedorInteres :[ChatStyle.contenedorInteres, ChatStyle.contenedorInteresLeft]}>
+							      	<Image source={require('./espera.png')} style={ChatStyle.imagenEspera} />
+							      </View>
 							      :null
 					       	}
+					       	 
 					       	
 			      		</View>
 		     		</View>
@@ -355,12 +361,18 @@ export default class ChatComponent extends Component{
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////// SI EL USUARIO HACE CLICK EN ME INTERESA, ENVIA LA NOTIFICACION AL CREADOR DEL ITEM PARA DARLE PERMISO DE INGRESAR
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	ingresarItem(token, itemId){
- 		console.log(itemId)
+	ingresarItem(token, itemId, id){
+
+ 
 		axios.put('x/v1/ite/item', {itemId})
 		.then(e=>{
 			if (e.data.code==1) {
 				sendRemoteNotification(3, token, "notificacion")
+				let mensajes = this.state.mensajes.filter(e=>{
+					if (e.id==id) {e.esperaItem=true}
+						return e
+				})
+ 				this.setState({mensajes})
 			}
 		})
 		.catch(err=>{
