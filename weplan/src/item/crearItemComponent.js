@@ -160,7 +160,7 @@ export default class CrearItemComponent extends Component{
       .then(res=>{  
         console.log(res.data)     
         if(res.data.code==1){ 
-          //this.props.updateItems(itemId, deudaCreador, titulo)
+          this.props.updateItems(itemId, deudaCreador, titulo)
         }else{
           Alert.alert(
            'Error!, intenta nuevamente'

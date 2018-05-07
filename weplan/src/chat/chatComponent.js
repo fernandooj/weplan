@@ -19,8 +19,8 @@ export default class ChatComponent extends Component{
 	}
 
 	componentWillMount(){
-		let planId = this.props.navigation.state.params	
-		//let planId = '5aefdb91423c402001dbb329'	
+		//let planId = this.props.navigation.state.params	
+		let planId = '5aefdb91423c402001dbb329'	
 		console.log(planId) 
 		this.socket = SocketIOClient(URL);
 		this.socket.on('userJoined'+planId, this.onReceivedMessage);
@@ -64,7 +64,8 @@ export default class ChatComponent extends Component{
 						userId       : e.userId._id,
 						nombre 		 : e.userId.nombre,
 						photo 		 : e.userId.photo,
-						mensaje 	 : e.mensaje,
+						mensaje 	    : e.mensaje,
+						asignadoItem : e.itemId ?e.itemId.asignados.includes(this.state.id) :null,
 						itemId 		 : e.itemId ?e.itemId._id :null ,
 						titulo 		 : e.itemId ?e.itemId.titulo :null,
 						descripcion  : e.itemId ?e.itemId.descripcion :null,
@@ -164,23 +165,23 @@ export default class ChatComponent extends Component{
 				return (
 					<View style={ChatStyle.container} key={key} >
 			         	<View style={ChatStyle.modalIn}>
-				          	{/* imagen avatar */}
-				            <Image source={require('./item2.png')} 
-				            	style={e.userId== id ?ChatStyle.header :[ChatStyle.header, ChatStyle.headerLeft]} 
-				            	/>
-								<Image source={{uri: e.photo}}
-									style={e.userId== id ?ChatStyle.iconAvatar :[ChatStyle.iconAvatar, ChatStyle.iconAvatarLeft]} 
-								/>
+			         		<ImageBackground source={require('./item2.png')} style={e.userId== id ?ChatStyle.fondoHeaderItem :[ChatStyle.fondoHeaderItem, ChatStyle.fondoHeaderItemLeft]}>	 
+						      {/* imagen avatar */}
+						         <Text style={e.userId== id ?ChatStyle.nombreIt :[ChatStyle.nombreIt, ChatStyle.nombreItLeft]}>{e.nombre}</Text>
 
-					         {/* fotografia item */}
-					         <Image source={{uri: e.rutaImagen}}
-					         	style={e.userId== id ?ChatStyle.fotografia :[ChatStyle.fotografia, ChatStyle.fotografiaLeft]}
-					         />
-	  
+						      {/* imagen avatar */}
+									<Image source={{uri: e.photo}}
+										style={e.userId== id ?ChatStyle.iconAvatar :[ChatStyle.iconAvatar, ChatStyle.iconAvatarLeft]} 
+									/>
+									</ImageBackground>	
+							   {/* fotografia item */}
+						         <Image source={{uri: e.rutaImagen}}
+						         	style={e.userId== id ?ChatStyle.fotografia :[ChatStyle.fotografia, ChatStyle.fotografiaLeft]}
+						         />
+	  							
 					         {/* rest modal  
 					         <View style={[ChatStyle.box, ChatStyle.modal]}>*/} 
-					         <View style={e.userId== id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft,  ChatStyle.modal]}>
-					             <Text style={e.userId== id ?ChatStyle.nombre :[ChatStyle.nombre, ChatStyle.nombreLeft]}>{e.nombre}</Text>
+					         <View style={e.userId== id ?ChatStyle.contenedorItem :[ChatStyle.contenedorItem, ChatStyle.contenedorItemLeft]}>
 					             <Text style={e.userId== id ?ChatStyle.titulo :[ChatStyle.titulo, ChatStyle.tituloLeft]}>{e.titulo}</Text>
 					             <Text style={e.userId== id ?ChatStyle.descripcion :[ChatStyle.descripcion, ChatStyle.descripcionLeft]}>{e.descripcion}</Text>  
 					             <Text style={e.userId== id ?ChatStyle.valor :[ChatStyle.valor, ChatStyle.valorLeft] }>
@@ -193,17 +194,13 @@ export default class ChatComponent extends Component{
 						       		<Image source={require('./me_interesa.png')} style={ChatStyle.imagenInteres} />
 						       		<Text style={ChatStyle.textoInteres}>Me Interesa</Text>
 						       	</TouchableOpacity>
-						       	<TouchableOpacity onPress={()=> navigate('')} style={ChatStyle.btnInteres} >
-						       		<Image source={require('./no_me_interesa.png')} style={ChatStyle.imagenInteres} />
-						       		<Text style={ChatStyle.textoInteres}>no me Interesa</Text>
-						       	</TouchableOpacity>
 						      </View> 	
 			      		</View>
 		     		</View>
 				)
 			}else{
 				return(
-					<View key={key} style={e.userId== id ?ChatStyle.contenedorPreguntas :[ChatStyle.contenedorPreguntas, ChatStyle.contenedorPreguntasLeft]}>
+					<View key={key} style={e.userId== id ?ChatStyle.contenedorEncuesta :[ChatStyle.contenedorEncuesta, ChatStyle.contenedorEncuestaLeft]}>
 						<Image
 							style={e.userId== id ?ChatStyle.pPhoto : [ChatStyle.pPhoto, ChatStyle.pPhotoLeft]}
 							width={50}

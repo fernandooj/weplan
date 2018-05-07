@@ -165,37 +165,59 @@ export const ChatStyle = StyleSheet.create({
 		shadowOffset: { width: 0, height: 2 },
 	},
 	fondo:{
-	 
 		zIndex:0,
 		top:0,
 		left:0,
-		height:screenHeight-50,
+		height:screenHeight-70,
 		width:screenWidth,
 	},
 
-	////////////////// box chat item /////////////////
- 
-	header:{
+	////////////////////////////////////////////
+	////////////////// contenedor 2  ==> items
+	////////////////////////////////////////////
+ 	contenedorItem:{
+		paddingBottom:10,
+		alignSelf: 'flex-end',  
+		borderWidth: 0,
+		borderRadius: 10,
+		borderColor: '#ddd',
+		borderBottomWidth: 0,
+		marginLeft: 15,
+		marginRight: 15,
+		marginTop: 5,
+		width:screenWidth/1.5,
+		backgroundColor:'#ffffff',
+		paddingBottom:40,		
+ 	},
+ 	contenedorItemLeft:{
+		alignSelf: 'flex-start',  
+ 	},
+	fondoHeaderItem:{
+		marginLeft: 15,
+		marginRight: 15,
 		width:screenWidth/1.54,
 		height:45,
 	 	alignSelf: 'flex-end',  
 		zIndex:10, 
-		position:'absolute',
-		top: 28,
-		right:18,  
+	 	flexDirection:'row',
+		top: 10,
+	   
 		borderTopLeftRadius:10,  
 	},  
+	fondoHeaderItemLeft:{
+		alignSelf: 'flex-start',  
+	},
 	headerLeft:{
 		alignSelf: 'flex-start',
 		left:18,
 		borderTopRightRadius:10,  
 	},
 	modal:{
-	  paddingBottom:10
+	  
 	},
 	iconAvatar:{
 		position:'absolute',
-		top:17,  
+		top:-3,  
 		right:5,
 		zIndex:100,
 		width:50,
@@ -223,14 +245,17 @@ export const ChatStyle = StyleSheet.create({
 	fotografiaLeft:{
 		left:screenWidth/2,
 	},
-	nombre:{
+	nombreIt:{
+		position:'relative',
+		zIndex:100,
+		top:-10,
+		left:10,
+		zIndex:1000,
 		color:'white',
-		fontSize:23,
+		fontSize:20,
 		alignSelf: 'flex-end',  
-		marginTop:8,
-		marginRight:80
 	}, 
-	nombreLeft:{ 
+	nombreItLeft:{ 
 		position:'relative',
  		left:30 															
 	}, 
@@ -249,31 +274,35 @@ export const ChatStyle = StyleSheet.create({
 	descripcion:{
 		color:'#5664ba',
 		fontSize:21,
-		marginLeft:80
+		marginLeft:80,
+		minHeight:60
 	},
 	descripcionLeft:{
-		marginLeft:5
+		marginLeft:5,
 	},
 	valor:{
+		backgroundColor:'#dbe4f2',
+		padding:8,
+		borderRadius:20,
 		color:'#969696',
 		fontSize:18,
 		marginLeft:80,
-		marginTop:20,
+		marginTop:5,
+		width:'50%',
+		textAlign:'center'
 	},
 	valorLeft:{
 		marginLeft:5
 	},
 	///////// interes ///////////
 	contenedorInteres:{
-		flexDirection:'row',
-		alignSelf: 'flex-end', 
-		width:screenWidth/1.2,
- 		justifyContent: 'center', 
- 		position:'relative',
+  		alignItems: 'flex-end',
+		width:'85%',
  		top:-10,
  	},
  	contenedorInteresLeft:{
-		alignSelf: 'flex-start', 
+ 		alignItems: 'center',
+		width:'70%',
  	},
 	btnInteres:{
 		flexDirection:'row' ,
@@ -299,7 +328,7 @@ export const ChatStyle = StyleSheet.create({
 	},
 
 	///////////////////////////////// contenedor 3	//////////
-	contenedorPreguntas:{
+	contenedorEncuesta:{
 		alignSelf: 'flex-end',  
 		borderWidth: 0,
 		borderRadius: 10,
@@ -311,7 +340,7 @@ export const ChatStyle = StyleSheet.create({
 		marginTop: 5,
 		width:screenWidth/1.5,	
 	},
-	contenedorPreguntasLeft:{
+	contenedorEncuestaLeft:{
 		alignSelf: 'flex-start',  
 	},
 	pNombre:{

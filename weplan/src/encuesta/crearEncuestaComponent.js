@@ -161,7 +161,7 @@ export default class CrearEncuestaComponent extends Component{
       .then(res=>{  
         console.log(res.data)     
         if(res.data.code==1){ 
-          //this.props.updateItems(encuestaId, titulo)
+          this.props.updateItems(encuestaId, titulo)
           //this.props.close(false)
         }else{
           Alert.alert(
