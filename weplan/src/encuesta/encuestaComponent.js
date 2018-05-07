@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native'
-import {ItemStyle} from '../item/style'
+import {EncuestaStyle} from '../encuesta/style'
 
 import axios from 'axios'
 import CrearEncuestaComponent from './crearEncuestaComponent'
@@ -18,8 +18,8 @@ export default class encuestaComponent extends Component{
 		render:true
 	}
 	componentWillMount(){
-		//let planId = this.props.navigation.state.params	
-		let planId = '5aefdb91423c402001dbb329'
+		let planId = this.props.navigation.state.params	
+		//let planId = '5aefdb91423c402001dbb329'
 		console.log(planId)
 	 	this.setState({planId})
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -28,9 +28,9 @@ export default class encuestaComponent extends Component{
 		const {render}=this.state
 		return (
 			<View>
-			  	<View style={ItemStyle.headerCollapsable }>
+			  	<View style={EncuestaStyle.headerCollapsable }>
 			    	<TouchableOpacity onPress={()=>this.setState({render:true})}>
-			    		<Text style={ItemStyle.headerText}>Mis Preguntas</Text>
+			    		<Text style={EncuestaStyle.headerText}>Mis Encuestas</Text>
 			    	</TouchableOpacity>
 			    	{	render
 			    		?this.renderMiItems()
@@ -38,9 +38,9 @@ export default class encuestaComponent extends Component{
 			    	}
 			  	</View>
 
-			  	<View style={[ItemStyle.headerCollapsable, ItemStyle.headerCollapsableFirst]}>
+			  	<View style={[EncuestaStyle.headerCollapsable, EncuestaStyle.headerCollapsableFirst]}>
 			    	<TouchableOpacity onPress={this.joinItems.bind(this)}>
-			    		<Text style={[ItemStyle.headerText, ItemStyle.headerTextFirst]}>Preguntas</Text>
+			    		<Text style={[EncuestaStyle.headerText, EncuestaStyle.headerTextFirst]}>Encuestas Publicadas</Text>
 			    	</TouchableOpacity>
 			    	 {
 			    	 	!render
@@ -70,16 +70,16 @@ export default class encuestaComponent extends Component{
 	renderItemsPlan(){
 		return this.state.itemsPlan.map((e, key)=>{
 			return (
-			   <View style={ItemStyle.content} key={key}>
-			  		<TouchableOpacity style={!key==0 ?ItemStyle.boton: [ItemStyle.boton, ItemStyle.botonFirst]}  >
+			   <View style={EncuestaStyle.content} key={key}>
+			  		<TouchableOpacity style={!key==0 ?EncuestaStyle.boton: [EncuestaStyle.boton, EncuestaStyle.botonFirst]}  >
 			  			
-				   		<View style={ItemStyle.contentText}>
-					   		<Text style={ItemStyle.tituloItem}>
+				   		<View style={EncuestaStyle.contentText}>
+					   		<Text style={EncuestaStyle.tituloItem}>
 					   			{e.titulo}  
 					   		</Text>
-				   		 	<Text style={ItemStyle.by}>By {e.nombre}</Text> 
+				   		 	<Text style={EncuestaStyle.by}>By {e.nombre}</Text> 
 				   		</View>	
-							<Text style={ItemStyle.valueItems}>
+							<Text style={EncuestaStyle.valueItems}>
 								{'$ '+Number(e.deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
 							</Text>
 				   	</TouchableOpacity>
@@ -92,16 +92,16 @@ export default class encuestaComponent extends Component{
 	   if(this.state.items.length>0){
 	   	return this.state.items.map((e, key)=>{
 				return (
-				   <View style={ItemStyle.content} key={key}>
-				  		<TouchableOpacity style={!key==0 ?ItemStyle.boton: [ItemStyle.boton, ItemStyle.botonFirst]} 
+				   <View style={EncuestaStyle.content} key={key}>
+				  		<TouchableOpacity style={!key==0 ?EncuestaStyle.boton: [EncuestaStyle.boton, EncuestaStyle.botonFirst]} 
 				  			onPress={e.status=='noAsignado' ?()=>navigate('pago', {id:e.id, valor:e.deuda, planId:this.state.planId}) :()=>navigate('pagoDeuda', {id:e.id, planId:this.state.planId})}>
-					   		<View style={ItemStyle.contentText}>
-						   		<Text style={ItemStyle.tituloItem}>
+					   		<View style={EncuestaStyle.contentText}>
+						   		<Text style={EncuestaStyle.tituloItem}>
 						   			{e.titulo}  
 						   		</Text>
-					   		{e.status=='noAsignado' ?<Text style={ItemStyle.by}>By {e.nombre}</Text> :null}
+					   		{e.status=='noAsignado' ?<Text style={EncuestaStyle.by}>By {e.nombre}</Text> :null}
 					   		</View>	
-								<Text style={e.deuda>=0 ?ItemStyle.value :ItemStyle.valueNoAsignado}>
+								<Text style={e.deuda>=0 ?EncuestaStyle.value :EncuestaStyle.valueNoAsignado}>
 									{'$ '+Number(e.deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
 								</Text>
 					   	</TouchableOpacity>
@@ -118,8 +118,8 @@ export default class encuestaComponent extends Component{
 		const {show, items, itemsPlan} = this.state
 		const {navigate} = this.props.navigation
 		return (
-			<ScrollView  style={ItemStyle.contentItem}>
-			  	<CabezeraComponent navigate={navigate} url={'chat'} parameter={this.state.planId} />
+			<ScrollView  style={EncuestaStyle.contentItem}>
+			  	<CabezeraComponent navigate={navigate} url={'chat'} parameter={this.state.planId} texto={'Encuestas'} />
 			  	{/*****   show the modal to create component	*****/}
 				  	{
 				  		show
@@ -130,11 +130,11 @@ export default class encuestaComponent extends Component{
 				  		 />
 				  		:null 
 				  	}
-				<View style={ItemStyle.subContentItem}>
+				<View style={EncuestaStyle.subContentItem}>
 				{/*****   boton para mostrar crear item	*****/}
-				  	<TouchableOpacity onPress={()=>this.setState({show:true})} style={ItemStyle.contenedorNuevo}>
-						<Image source={require('../ajustes/nuevo.png')} style={ItemStyle.btnNuevoGrupo} />
-						<Text>Crear Pregunta</Text>
+				  	<TouchableOpacity onPress={()=>this.setState({show:true})} style={EncuestaStyle.contenedorNuevo}>
+						<Image source={require('../ajustes/nuevo.png')} style={EncuestaStyle.btnNuevoGrupo} />
+						<Text style={EncuestaStyle.CrearEncuesta}>Crear Encuesta</Text>
 				  	</TouchableOpacity>
 				  	
 				 	{this.renderAcordeon()}

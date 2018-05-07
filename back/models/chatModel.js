@@ -10,10 +10,10 @@ let chatSchema = Schema({
 	userId : 	{type: Schema.Types.ObjectId, ref:'User'},
 	planId : 	{type: Schema.Types.ObjectId, ref: 'Plan'},
 	mensaje: 	String,
-	tipo: 	 	Boolean,
+	tipo: 	 	Number,
 	estado:     Boolean,
 	itemId:     {type: Schema.Types.ObjectId, ref: 'Item'},
-	preguntaId: {type: Schema.Types.ObjectId, ref: 'Pregunta'},
+	encuestaId: {type: Schema.Types.ObjectId, ref: 'Encuesta'},
 	createdAt:  {type: String, default: moment().format('YYYY-MM-DD h:mm:ss') },
 })
 

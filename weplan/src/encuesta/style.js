@@ -80,16 +80,24 @@ export const EncuestaStyle = StyleSheet.create({
 		color: '#8796F4',
 	},
 	btnNuevoGrupo:{
- 		width:25,
- 		height:25,
+ 		width:28,
+ 		height:28,
  		marginRight:10,
  		marginLeft:14, 
+ 		marginTop:0
  	},
+ 	CrearEncuesta:{
+		fontSize:20
+	},
  	contenedorNuevo:{
 		flexDirection:'row',
 		marginTop:10
  	},
-  	//////////// crear item  //////////
+ 	
+
+ 	//////////////////////////////////////////////////////
+  	//////////////// 	crear encuesta
+  	//////////////////////////////////////////////////////
 	container:{
 		backgroundColor:'rgba(0,0,0,.6)',
 		width:screenWidth,
@@ -100,6 +108,7 @@ export const EncuestaStyle = StyleSheet.create({
 		alignItems: 'center',
 	},
 	modal:{
+
 		width:screenWidth/1.3,
  		paddingBottom:30,
  		backgroundColor:'#ffffff',
@@ -110,59 +119,72 @@ export const EncuestaStyle = StyleSheet.create({
 	header:{
 		width:'100%',
 		height:50,
+		flexDirection:'row',
 	},
 	btnBack:{
 		position:'relative',
-		top:-40,
+		top:12,
 		left:10
 	},
 	back:{
-		height:30,
-		width:20,
+		height:23,
+		width:14,
 	},
 	btnIcon:{
 		position:'absolute',
 		top:-20, 
-		right:5,
+		right:-15,
 		zIndex:100
 	},
 	icon:{
-		width:80,
-		height:80
+		width:50,
+		height:50
 	},
 	btnCamera:{
 		position:'absolute',
-		top:100, 
+		bottom:-15,
+		right:-10, 
 		zIndex:100 
 	},
 	titulo:{
-		marginLeft:100,
-		fontSize:25
+		width:'50%',
+		fontSize:25,
+		marginLeft:20,
+	},
+	contenedorDescripcion:{
+		flexDirection:'row',
+		paddingLeft:10,
+		paddingRight:10,
+		marginTop:20
 	},
 	descripcion:{ 
-		marginTop:-10,
-		marginLeft:100,
+		textAlign: 'center',
+		justifyContent: 'center',
+		width:'80%',
 		fontSize:18, 
 		color:'#5664BA'
 	},
 	valor:{
 		flexDirection:'row',
-		justifyContent: 'center',
-		marginTop:10
-	}, 
-	inputValor:{ 
 		width:'100%',
-		backgroundColor:'#DBE4F2',
-		borderRadius:20,
+		marginTop:-30,		 
+	}, 
+ 	btnPregunta:{
+ 		width:'30%',
+ 		marginLeft:'5%',
+ 		marginRight:'2%',
+ 	},
+ 	inputValor:{ 	 
+		backgroundColor:'#ffffff',
+		borderRadius:40,
 		fontSize:17,
-		padding:5,
-		paddingLeft:20
+		padding:20,
+		paddingLeft:20,
+		borderWidth:4,
+		borderColor:'#7080f7',
+		textAlign: 'center',
 	},
- 
 	decoracion:{
-		position:'absolute',
-		top:80,
-		right:10,
 		width:24,
 		height:35
 	},
@@ -215,5 +237,6 @@ export const EncuestaStyle = StyleSheet.create({
 	textSave:{
 		marginTop:5,
 		color:'#ffffff'
-	}
+	},
+
 })

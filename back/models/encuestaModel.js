@@ -6,7 +6,7 @@ let moment   = require('moment');
 
 
 
-let preguntaSchema = mongoose.Schema({
+let encuestaSchema = mongoose.Schema({
 	titulo       : { type : String },
 	descripcion  : { type : String },
 	pregunta1  	 : { type : String },
@@ -17,4 +17,4 @@ let preguntaSchema = mongoose.Schema({
 	createdAt  	 : { type: String, default: moment().format('YYYY-MM-DD h:mm') },
 }) 
 
-module.exports = mongoose.model('Pregunta', preguntaSchema)
+module.exports = mongoose.model('Encuesta', encuestaSchema)

@@ -9,7 +9,7 @@ let fechab = moment().format('YYYY-MM-DD-h-mm')
 let redis        = require('redis')
 let cliente      = redis.createClient()
 
-let preguntaServices = require('../services/preguntaServices.js')
+let encuestaServices = require('../services/encuestaServices.js')
 let chatServices = require('../services/chatServices.js')
  
 
@@ -17,7 +17,7 @@ let chatServices = require('../services/chatServices.js')
 /////////////////////////////	 GET ALL 	//////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 router.get('/', function(req, res){
-	preguntaServices.getALL((err, plan)=>{
+	encuestaServices.getALL((err, plan)=>{
 		if(err){
 			res.json({err, code:0})
 		}else{
@@ -32,7 +32,7 @@ router.get('/', function(req, res){
 router.get('/:user', (req, res)=>{
 	let id = req.session.usuario.user._id
 	if (req.params.user=='user') {
-		preguntaServices.getByidUSer(id, (err, item)=>{
+		encuestaServices.getByidUSer(id, (err, item)=>{
 			if(err){
 				res.json({err, code:0})
 			}else{
@@ -40,7 +40,7 @@ router.get('/:user', (req, res)=>{
 			}
 		})
 	}else{
-		preguntaServices.getByPlan(req.params.user, (err, item)=>{
+		encuestaServices.getByPlan(req.params.user, (err, item)=>{
 			if(err){
 				res.json({err, code:0})
 			}else{
@@ -56,7 +56,7 @@ router.get('/:user', (req, res)=>{
 /////////////////////////	 GET BY ID ITEM 	///////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 router.get('/id/:id', (req, res)=>{
-	preguntaServices.getById(req.params.id, (err, plan)=>{
+	encuestaServices.getById(req.params.id, (err, plan)=>{
 		if(err){
 			res.json({err, code:0})
 		}else{
@@ -67,15 +67,15 @@ router.get('/id/:id', (req, res)=>{
  
 
 //////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////	 		SAVE PREGUNTA		//////////////////////////////////////////
+///////////////////////	 		SAVE encuesta		//////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 router.post('/', function(req, res){
 	let id = req.session.usuario.user._id
-	preguntaServices.create(req.body, id, (err, pregunta)=>{
+	encuestaServices.create(req.body, id, (err, encuesta)=>{
 		if(err){
 			res.json({err,  code:0})
 		}else{
-			res.json({ status: 'SUCCESS', pregunta,  code:1 });	
+			res.json({ status: 'SUCCESS', encuesta,  code:1 });	
 		}
 	})
 })
@@ -96,21 +96,21 @@ router.post('/:id', (req,res)=>{
 	////////////////////////////////////////// 	RECIVO LA PRIMERA IMAGEN 	/////////////////////////////////////////
 	if (req.files.imagen) {
 		let extension = req.files.imagen.name.split('.').pop()
-		let fullUrl = '../../front/docs/public/uploads/pregunta/'+fechab+'_'+randonNumber+'.'+extension
-		ruta = req.protocol+'://'+req.get('Host') + '/public/uploads/pregunta/'+fechab+'_'+randonNumber+'.'+extension
+		let fullUrl = '../../front/docs/public/uploads/encuesta/'+fechab+'_'+randonNumber+'.'+extension
+		ruta = req.protocol+'://'+req.get('Host') + '/public/uploads/encuesta/'+fechab+'_'+randonNumber+'.'+extension
 		fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))
 	}else{
-		ruta = req.protocol+'://'+req.get('Host') + '/pregunta.png'
+		ruta = req.protocol+'://'+req.get('Host') + '/encuesta.png'
 	}
 
 	////////////////////////////////////////  RECIVO LA SEGUNDA IMAGEN 		/////////////////////////////////////////
 	if (req.files.imagen2) {
 		let extension2 = req.files.imagen2.name.split('.').pop()
-		let fullUrl2 = '../../front/docs/public/uploads/pregunta/'+fechab+'_'+randonNumber2+'.'+extension2
-		ruta2 = req.protocol+'://'+req.get('Host') + '/public/uploads/pregunta/'+fechab+'_'+randonNumber2+'.'+extension2
+		let fullUrl2 = '../../front/docs/public/uploads/encuesta/'+fechab+'_'+randonNumber2+'.'+extension2
+		ruta2 = req.protocol+'://'+req.get('Host') + '/public/uploads/encuesta/'+fechab+'_'+randonNumber2+'.'+extension2
 		fs.rename(req.files.imagen2.path, path.join(__dirname, fullUrl2))
 	}else{
-		ruta2 = req.protocol+'://'+req.get('Host') + '/pregunta.png'
+		ruta2 = req.protocol+'://'+req.get('Host') + '/encuesta.png'
 	}
 
 	///////////////////////// 	condiciono el tipo de pregunta 	///////////////////////
@@ -135,32 +135,32 @@ router.post('/:id', (req,res)=>{
 		pregunta2=ruta2
 	}
 
-	preguntaServices.uploadImage(req.params.id, tipo, pregunta1, pregunta2, (err, pregunta)=>{
+	encuestaServices.uploadImage(req.params.id, tipo, pregunta1, pregunta2, (err, encuesta)=>{
 		
 		if(err){
 			res.json({err, code:0})
 		}else{
-			createChat(req, res, id, tipo, pregunta1, pregunta2, pregunta)
+			createChat(req, res, id, tipo, pregunta1, pregunta2, encuesta)
 		}
 	})
 
 	/////////////////////////////////////////////////////////////////////////////
 	///////////////////////		FUNCTION TO CREATE CHAT 	/////////////////////
 	/////////////////////////////////////////////////////////////////////////////
-	let createChat = (req, res, id, tipo, pregunta1, pregunta2, pregunta)=>{
+	let createChat = (req, res, id, tipo, pregunta1, pregunta2, encuesta)=>{
 		chatServices.create(req.body, id,  3, (err,chat)=>{
 			let mensajeJson={
-				id :         pregunta._id,
+				id :         encuesta._id,
 				planId: 	 req.body.planId, 
-				preguntaId:  req.params.id, 
+				encuestaId:  req.params.id, 
 				userId: 	 req.session.usuario.user._id, 
 				photo:  	 req.session.usuario.user.photo, 
 				nombre: 	 req.session.usuario.user.nombre, 
-				tipoPregunta:tipo, 
+				tipoEncuesta:tipo, 
 				pregunta1,   
 				pregunta2, 
-				pTitulo: 	 pregunta.titulo,
-				pDescripcion:pregunta.descripcion, 
+				pTitulo: 	 encuesta.titulo,
+				pDescripcion:encuesta.descripcion, 
 				tipoChat    :3, 
 				estado: 	true
 			}
@@ -169,7 +169,7 @@ router.post('/:id', (req,res)=>{
 			if(err){
 				res.json({err, code:0})
 			}else{
-				res.json({ status: 'SUCCESS', pregunta, chat, code:1, other:'save chat' });	
+				res.json({ status: 'SUCCESS', encuesta, chat, code:1, other:'save chat' });	
 			}
 		})
 	}

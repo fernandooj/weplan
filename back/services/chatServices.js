@@ -5,9 +5,10 @@ let chatSchema = require('../models/chatModel.js');
 
 class chatServices{
 	getByPlan(planId, callback){
-		chatSchema.find({planId}).populate('itemId').populate('userId').populate('preguntaId').exec(callback)
+		chatSchema.find({planId}).populate('itemId').populate('userId').populate('encuestaId').exec(callback)
 	}
 	create(data, id, tipo, callback){
+		console.log(data)
 		let chat = new chatSchema();
 		chat.userId      = id
 		chat.planId      = data.planId
@@ -15,7 +16,7 @@ class chatServices{
 		chat.estado      = true
 		chat.mensaje     = data.mensaje
 		chat.itemId      = data.itemId
-		chat.preguntaId  = data.preguntaId
+		chat.encuestaId  = data.encuestaId
 		chat.save(callback)
 	}
 	// innactiva(_id, callback){

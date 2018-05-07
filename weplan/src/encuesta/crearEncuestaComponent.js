@@ -42,37 +42,46 @@ export default class CrearEncuestaComponent extends Component{
             <Image source={require('./item5.png')} style={EncuestaStyle.icon} />
           </TouchableOpacity>
 
-         
-
           {/* rest modal */}
           <View style={EncuestaStyle.modal}>
-            <Image source={require('./item2.png')} style={EncuestaStyle.header} />
+            <ImageBackground source={require('./item2.png')} style={EncuestaStyle.header}> 
+              
+            {/* ICONO REGRESAR */}
+              <TouchableOpacity style={EncuestaStyle.btnBack} onPress={()=>this.props.close(false)}>
+                <Image source={require('./item3.png')} style={EncuestaStyle.back} />
+              </TouchableOpacity>
 
-          {/* icono back */}
-            <TouchableOpacity style={EncuestaStyle.btnBack} onPress={()=>this.props.close(false)}>
-              <Image source={require('./item3.png')} style={EncuestaStyle.back} />
-            </TouchableOpacity>
-            <TextInput placeholder='Titulo' 
+            {/* INPUT TITULO */}
+              <TextInput placeholder='Titulo' 
                 underlineColorAndroid='transparent' 
-                placeholderTextColor="#8F9093" 
+                placeholderTextColor="#ffffff" 
                 style={EncuestaStyle.titulo}
                 onChangeText={(titulo) => this.setState({titulo})}
-             />
-            <TextInput 
-              placeholder='Descripcion'
-              underlineColorAndroid='transparent' 
-              placeholderTextColor="#5664BA" 
-              editable = {true}
-              multiline = {true}
-              style={EncuestaStyle.descripcion}
-              onChangeText={(descripcion) => this.setState({descripcion})}
-            />
-            <Image source={require('./item4.png')} style={EncuestaStyle.decoracion} />
+              />
+
+            </ImageBackground>
+            
+            {/* IMAGEN DECORACION TITULO */}
+            <View style={EncuestaStyle.contenedorDescripcion}>
+              <Image source={require('./item4.png')} style={EncuestaStyle.decoracion} />
+              <TextInput 
+                placeholder='Descripcion'
+                underlineColorAndroid='transparent' 
+                placeholderTextColor="#5664BA" 
+                editable = {true}
+                multiline = {true}
+                style={EncuestaStyle.descripcion}
+                onChangeText={(descripcion) => this.setState({descripcion})}
+              />
+              <Image source={require('./item4.png')} style={EncuestaStyle.decoracion} />
+            </View>
           </View> 
 
-          {/* Adjuntar Amigos */}
+        {/* PREGUNTAS */}
           <View style={EncuestaStyle.valor} >
-            <View style={EncuestaStyle.btnAdjuntar}>
+
+          {/* PREGUNTA 1 */}
+            <View style={EncuestaStyle.btnPregunta}>
               <TextInput 
                 placeholder='Opción 1'
                 underlineColorAndroid='transparent'
@@ -81,27 +90,28 @@ export default class CrearEncuestaComponent extends Component{
                 onChangeText={(pregunta1) => this.setState({pregunta1})}
               />
               <TouchableOpacity style={EncuestaStyle.btnCamera} >
-                <TakePhotoComponent fuente={'item1.png'} ancho={80} alto={80}  
+                <TakePhotoComponent fuente={'camara.png'} ancho={40} alto={40}  
                   updateImagen={(imagen) => {this.setState({imagen})}} 
                   style={EncuestaStyle.camera} />
               </TouchableOpacity>
             </View>
-               
-            {/* Enviar al Chat */}
-              <View style={EncuestaStyle.btnAdjuntar}>
-                 <TextInput 
-                  placeholder='Opción 2'
-                  underlineColorAndroid='transparent'
-                  placeholderTextColor="#8F9093" 
-                  style={EncuestaStyle.inputValor}
-                  onChangeText={(pregunta2) => this.setState({pregunta2})}
-                />
+          {/**************/}
+          {/* PREGUNTA 2 */}
+            <View style={EncuestaStyle.btnPregunta}>
+              <TextInput 
+                placeholder='Opción 2'
+                underlineColorAndroid='transparent'
+                placeholderTextColor="#8F9093" 
+                style={EncuestaStyle.inputValor}
+                onChangeText={(pregunta2) => this.setState({pregunta2})}
+              />
               <TouchableOpacity style={EncuestaStyle.btnCamera} >
-                <TakePhotoComponent fuente={'item1.png'} ancho={80} alto={80}  
+                <TakePhotoComponent fuente={'camara.png'} ancho={40} alto={40}  
                   updateImagen={(imagen2) => {this.setState({imagen2})}} 
                   style={EncuestaStyle.camera} />
-               </TouchableOpacity>
+              </TouchableOpacity>
             </View>
+          {/**************/}
           </View> 
 
           {/* Guardar */}  
@@ -122,25 +132,26 @@ export default class CrearEncuestaComponent extends Component{
   
 
     let planId = this.props.planId
-    console.log(this.props)
+    //let planId = '5aefdb91423c402001dbb329'
+    console.log(planId)
     let data = new FormData();
     
-    axios.post('/x/v1/pre/pregunta', {descripcion,  titulo, planId})
+    axios.post('/x/v1/enc/encuesta', {descripcion,  titulo, planId})
     .then(e=>{
-      let preguntaId = e.data.pregunta._id
+      let encuestaId = e.data.encuesta._id
       console.log(e.data)
      
       data.append('imagen',    imagen);
       data.append('imagen2',   imagen2);
       data.append('pregunta1', pregunta1);
       data.append('pregunta2', pregunta2);
-      data.append('preguntaId',preguntaId);
+      data.append('encuestaId',encuestaId);
       data.append('planId', planId);
 
  
       axios({
             method: 'post', //you can set what request you want to be
-            url: '/x/v1/pre/pregunta/'+preguntaId,
+            url: '/x/v1/enc/encuesta/'+encuestaId,
             data: data,
             headers: { 
               'Accept': 'application/json',
@@ -150,7 +161,7 @@ export default class CrearEncuestaComponent extends Component{
       .then(res=>{  
         console.log(res.data)     
         if(res.data.code==1){ 
-          this.props.updateItems(preguntaId, titulo)
+          //this.props.updateItems(encuestaId, titulo)
           //this.props.close(false)
         }else{
           Alert.alert(
