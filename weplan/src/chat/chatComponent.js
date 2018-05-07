@@ -19,8 +19,8 @@ export default class ChatComponent extends Component{
 	}
 
 	componentWillMount(){
-		let planId = this.props.navigation.state.params	
-		//let planId = '5ae236db9455a84f5576a175'	
+		//let planId = this.props.navigation.state.params	
+		let planId = '5aefdb91423c402001dbb329'	
 		console.log(planId) 
 		this.socket = SocketIOClient(URL);
 		this.socket.on('userJoined'+planId, this.onReceivedMessage);
@@ -28,6 +28,7 @@ export default class ChatComponent extends Component{
 		/////////////////	OBTENGO EL PLAN
 		axios.get('/x/v1/pla/plan/getbyid/'+planId) 
 		.then((res)=>{
+			console.log(res.data)
 			this.setState({imagen: res.data.message[0].imagen, nombrePlan: res.data.message[0].nombre, planId})
 		})
 		.catch((err)=>{
@@ -59,29 +60,29 @@ export default class ChatComponent extends Component{
 				.then(res=>{ 
 
 					mensajes.push({
-						id: 		    e._id,
-						userId: 	    e.userId._id,
-						nombre 		:e.userId.nombre,
-						photo 		:e.userId.photo,
-						mensaje 	   :e.mensaje,
-						itemId 		:e.itemId ?e.itemId._id :null ,
-						titulo 		:e.itemId ?e.itemId.titulo :null,
-						descripcion :e.itemId ?e.itemId.descripcion :null,
-						rutaImagen	:e.itemId ?e.itemId.rutaImagen :null,
-						valor 		:e.itemId ?e.itemId.valor :null,
-						preguntaId	:e.preguntaId ?e.preguntaId._id :null,
-						pTitulo		:e.preguntaId ?e.preguntaId.titulo :null,
-						pDescripcion:e.preguntaId ?e.preguntaId.descripcion :null,
-						pregunta1	:e.preguntaId ?e.preguntaId.pregunta1 :null,
-						pregunta2	:e.preguntaId ?e.preguntaId.pregunta2 :null,
-						respuesta1  :res.data.porcentaje1,
-						respuesta2  :res.data.porcentaje2,
-						tipoPregunta:e.preguntaId ?e.preguntaId.tipo :null,
-						tipoChat	   :e.tipo,
-						estado      :e.estado,
-						porcentaje1 :res.data.porcentaje1,
-						porcentaje2 :res.data.porcentaje2,
-						asignado    :res.data.asignado
+						id           : e._id,
+						userId       : e.userId._id,
+						nombre 		 : e.userId.nombre,
+						photo 		 : e.userId.photo,
+						mensaje 	 : e.mensaje,
+						itemId 		 : e.itemId ?e.itemId._id :null ,
+						titulo 		 : e.itemId ?e.itemId.titulo :null,
+						descripcion  : e.itemId ?e.itemId.descripcion :null,
+						rutaImagen	 : e.itemId ?e.itemId.rutaImagen :null,
+						valor 		 : e.itemId ?e.itemId.valor :null,
+						preguntaId	 : e.preguntaId ?e.preguntaId._id :null,
+						pTitulo		 : e.preguntaId ?e.preguntaId.titulo :null,
+						pDescripcion : e.preguntaId ?e.preguntaId.descripcion :null,
+						pregunta1	 : e.preguntaId ?e.preguntaId.pregunta1 :null,
+						pregunta2	 : e.preguntaId ?e.preguntaId.pregunta2 :null,
+						respuesta1   : res.data.porcentaje1,
+						respuesta2   : res.data.porcentaje2,
+						tipoPregunta : e.preguntaId ?e.preguntaId.tipo :null,
+						tipoChat	 : e.tipo,
+						estado       : e.estado,
+						porcentaje1  : res.data.porcentaje1,
+						porcentaje2  : res.data.porcentaje2,
+						asignado     : res.data.asignado
 					})
 					console.log(mensajes)
 					this.setState({mensajes})
@@ -119,7 +120,7 @@ export default class ChatComponent extends Component{
 						<Text style={ChatStyle.regresar}>&#60;</Text>		
 					</TouchableOpacity> 
 					<Text style={ChatStyle.nombrePlan}>{nombrePlan ?nombrePlan.substring(0, 60) :''}</Text>
-					<TouchableOpacity onPress={()=> navigate('pregunta', planId)}  style={ChatStyle.iconContenedor}>
+					<TouchableOpacity onPress={()=> navigate('encuesta', planId)}  style={ChatStyle.iconContenedor}>
 						<Image source={require('./preguntar.png')} style={ChatStyle.icon}  />
 					</TouchableOpacity>
 					<TouchableOpacity onPress={()=> navigate('item', planId)} style={ChatStyle.iconContenedor}>
@@ -143,10 +144,13 @@ export default class ChatComponent extends Component{
 				return (
 					<View key={key} style={ChatStyle.contenedorBox}>
 						<View style={e.userId== id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]}>
-							<Text style={e.userId== id ?ChatStyle.nombre :[ChatStyle.nombre, ChatStyle.nombreLeft]}>{e.nombre}</Text>
-							<Text style={ChatStyle.mensaje}>{e.mensaje}</Text>
-							
-						    <Text style={ChatStyle.fecha} >{e.fecha}</Text>
+							<View style={ChatStyle.tituloTipoChat}>
+								<Text style={e.userId== id ?ChatStyle.nombreTipoChat :[ChatStyle.nombreTipoChat, ChatStyle.nombreTipoChatLeft]}>{e.nombre}</Text>
+							</View>
+							<View style={ChatStyle.mensajeTipoChat}>
+								<Text style={ChatStyle.mensaje}>{e.mensaje}</Text>
+								<Text style={e.userId== id ?ChatStyle.fecha :[ChatStyle.fecha, ChatStyle.fechaLeft]}>{e.fecha}</Text>
+							</View>
 						</View>
 						<Image
 							style={e.userId== id ?ChatStyle.photo : [ChatStyle.photo, ChatStyle.photoLeft]}
@@ -245,14 +249,17 @@ export default class ChatComponent extends Component{
 	}
 
 	render(){
+		console.log(this.state.mensajes)
 		return(
 			<View style={ChatStyle.contenedorGeneral} > 
 				{this.renderCabezera()}
-				<ScrollView ref="scrollView"
-							style={ChatStyle.contenedorChat} 
-							onContentSizeChange={(width,height) => this.refs.scrollView.scrollTo({y:height})}>
-				{this.renderMensajes()}
-				</ScrollView>
+				<ImageBackground source={require('./fondo.png')} style={ChatStyle.fondo}>	
+					<ScrollView ref="scrollView"
+								style={ChatStyle.contenedorChat} 
+								onContentSizeChange={(width,height) => this.refs.scrollView.scrollTo({y:height})}>
+						{this.renderMensajes()}		
+					</ScrollView>
+				</ImageBackground>
 				<View style={ChatStyle.footer}>
 					<View style={ChatStyle.footer1}>
 						<TouchableOpacity onPress={() => this.opciones.bind(this)} style={ChatStyle.opciones}>

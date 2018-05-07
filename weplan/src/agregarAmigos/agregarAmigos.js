@@ -22,16 +22,19 @@ export default class AgregarAmigosComponent extends Component{
 		.then((e)=>{
 			axios.get('/x/v1/user/profile') 
 			.then((res)=>{
-				let allList = e.data.asignados[0].asignados.map((item)=>{
-					if (item._id !== res.data.user.user)
+				console.log(e.data.asignados)
+				let usuario = res.data.user.user
+				let allList = e.data.asignados.map((item)=>{
 					return {
-						id:item._id,
-						username:item.username,
-						photo: item.photo,
-						nombre: item.nombre,
-						estado: true
+						id      : item.estado==true && item.asignado._id==usuario._id ?item.idUsuario._id      :item.asignado._id,
+						username: item.estado==true && item.asignado._id==usuario._id ?item.idUsuario.username :item.asignado.username,
+						photo   : item.estado==true && item.asignado._id==usuario._id ?item.idUsuario.photo    :item.asignado.photo,
+						nombre  : item.estado==true && item.asignado._id==usuario._id ?item.idUsuario.nombre   :item.asignado.nombre,
+						token   : item.asignado.tokenPhone,
+						estado  : item.estado,	
 					}
 				})
+				console.log(allList)
 				this.setState({allList})
 			})
 			.catch((err)=>{

@@ -1,5 +1,6 @@
 import {StyleSheet, Dimensions} from 'react-native';
 var screenWidth = Dimensions.get('window').width;
+var screenHeight = Dimensions.get('window').height;
 
 
 export const ChatStyle = StyleSheet.create({ 
@@ -16,7 +17,9 @@ export const ChatStyle = StyleSheet.create({
 		backgroundColor:"#758BFC",
 		borderWidth: 0,
 		borderBottomWidth:2,
-		borderColor:'#4461D8'	 
+		borderColor:'#4461D8',
+		position:'relative',
+		zIndex:100	 
 	},
 	imagen:{
 		borderRadius:35,
@@ -24,7 +27,8 @@ export const ChatStyle = StyleSheet.create({
 		top:15,
 		left:screenWidth/20,
 		borderWidth: 2,
-		borderColor:'#4461D8'	
+		borderColor:'#4461D8',
+		zIndex:110	
 	},
 	iconContenedor:{	
 		width:60,
@@ -105,34 +109,56 @@ export const ChatStyle = StyleSheet.create({
 		shadowOffset: { width: 0, height: 2 },
 		shadowOpacity: 0.7,
 		shadowRadius: 2,
-		elevation: 3,
-		marginLeft: 15,
+		//elevation: 3,
+		marginLeft: 25,
 		marginRight: 15,
-		marginTop: 25,
+		marginTop: 5,
 		width:screenWidth/1.5,
-		position:'relative',
-		zIndex:10
+		//position:'relative',
+		//zIndex:10,
+		
 	},
 	boxLeft:{ 
 		alignSelf: 'flex-start',
+		marginLeft: 15,
 	},
-	nombre:{
-		backgroundColor:'rgba(198, 198, 198, .34)',
+	fecha:{
+		alignSelf: 'flex-start',
+		color:'#acacac'
+	},
+	fechaLeft:{
+		alignSelf: 'flex-end',
+		paddingRight:15
+	},
+	tituloTipoChat:{
+		backgroundColor:'rgba(196, 196, 196, 0.3)',
+		borderTopLeftRadius: 10,
+		borderTopRightRadius: 10,
+	},
+	mensajeTipoChat:{
+		borderBottomLeftRadius:10,
+		borderBottomRightRadius:10,
+		position:'relative',
+		zIndex:0,
+		backgroundColor:'rgba(255,255,255,1)',
+		shadowOffset: { width: 0, height: 2 },
+	},
+	nombreTipoChat:{
 		color:'#A8A8A8',
 		fontSize:19,
-		padding:10
+		padding:10,
+		paddingRight:4
 	},
-	nombreLeft:{
-		color:'#9CB7F5'
+	nombreTipoChatLeft:{
+		color:'#A5a5a5'
 	},
 	photo:{
 		alignSelf: 'flex-end', 
-		borderRadius:35,
-		position:'absolute',
-		bottom:-20,
+		borderRadius:35,	
 		borderColor:'#9CB7F5',
 		borderWidth:5,
-		zIndex:100
+		position:'relative',
+		top:-20
 	},
 	photoLeft:{
 		alignSelf: 'flex-start',
@@ -140,6 +166,14 @@ export const ChatStyle = StyleSheet.create({
 	mensaje:{
 		padding: 20,
 		shadowOffset: { width: 0, height: 2 },
+	},
+	fondo:{
+	 
+		zIndex:0,
+		top:0,
+		left:0,
+		height:screenHeight-50,
+		width:screenWidth,
 	},
 
 	////////////////// box chat item /////////////////

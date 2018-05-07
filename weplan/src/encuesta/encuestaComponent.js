@@ -18,8 +18,8 @@ export default class encuestaComponent extends Component{
 		render:true
 	}
 	componentWillMount(){
-		let planId = this.props.navigation.state.params	
-		//let planId = '5ae236db9455a84f5576a175'
+		//let planId = this.props.navigation.state.params	
+		let planId = '5aefdb91423c402001dbb329'
 		console.log(planId)
 	 	this.setState({planId})
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

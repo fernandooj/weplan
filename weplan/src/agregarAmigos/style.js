@@ -10,7 +10,7 @@ export const AmigosStyle = StyleSheet.create({
 		marginTop:10
 	},
 	contenedorAmigos:{
- 		width:'80%',	
+ 		width:'100%',	
  		alignItems: 'center',
  	},
 	avatar:{

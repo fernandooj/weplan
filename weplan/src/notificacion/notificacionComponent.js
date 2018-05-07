@@ -81,6 +81,7 @@ export default class notificacionComponent extends Component{
 	handleSubmit(idNotificacion, idTipo, tipo, token){
 		axios.put('/x/v1/not/notificacion/'+idNotificacion+'/'+idTipo+'/'+tipo)
 		.then(e=>{
+			console.log(e.data)
 			if (e.data.code==1) {
 				this.updateStado(idNotificacion)
 				sendRemoteNotification(2, token, 'ajustesAmigos')

@@ -10,7 +10,7 @@ let chatSchema = Schema({
 	userId : 	{type: Schema.Types.ObjectId, ref:'User'},
 	planId : 	{type: Schema.Types.ObjectId, ref: 'Plan'},
 	mensaje: 	String,
-	tipo: 	 	String,
+	tipo: 	 	Boolean,
 	estado:     Boolean,
 	itemId:     {type: Schema.Types.ObjectId, ref: 'Item'},
 	preguntaId: {type: Schema.Types.ObjectId, ref: 'Pregunta'},
