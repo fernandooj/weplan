@@ -168,54 +168,59 @@ export const CreatePlanStyle = StyleSheet.create({
 	banResActive:{
 		color:'#FF5959'
 	},
-	//////////////////////////////
-	////////// modal //////////////
-	//////////////////////////////
-	wrapper: {
-		paddingTop: 50,
-		flex: 1
-	},
-	input:{
-		marginTop:10,
-		width:240,
-		height:40,
-		backgroundColor: '#f0f2f2',
-		borderRadius: 50,
-		borderWidth: 0.5,
-		borderColor: '#cccccc',
-		borderBottomWidth:0,
-		paddingLeft:20,
-		color: '#8F9093',
-	}, 
-	text: {
-		color:'#969696',
-		fontSize: 22
-	},
-	lista:{
-		 flex:1
-	},
-	
-	btnModal:{
-		fontSize:20,
-		color:'#969696',
-		marginTop:5,
-		justifyContent: 'center',
-		alignItems: 'center',
-		marginRight:10,
-		marginLeft:10,
-	},
 	btnHecho:{
-		backgroundColor: '#8FA8F7',
-		marginTop:30,
-		borderRadius: 50,
-		paddingTop:10,
-		paddingBottom:10,
-		paddingRight:55,
-		paddingLeft:55,
+ 		width:'40%',
+ 		alignItems: 'center',
+ 		backgroundColor:'#94A5F3',
+ 		borderRadius:10,
+ 		padding:10,
+ 		marginTop:20,
+ 		marginBottom:20,
+ 	},
+ 	hecho:{
+ 		color:'white'
+ 	},
+	//////////////////////////////////////////////////
+	////////// elementos agregados
+	/////////////////////////////////////////////////
+	contentAdd:{
+		flexDirection:'row',
+		marginTop:10
 	},
-	textoHecho:{
-		color:'#ffffff',
-		fontSize:19
-	}
+ 	avatar:{
+ 		width:40,
+ 		height:40,
+ 		borderRadius:20,
+ 		borderWidth:2,
+ 		borderColor:'#cae1ec',
+ 		marginRight:10,
+ 	},
+ 	iconAgregado:{
+ 		width:20,
+ 		height:20,
+ 		position:'absolute',
+ 		top:25,
+ 		right:2
+ 	},
+ 	textoAgregado:{
+ 		width:40,
+ 		fontSize:9,
+ 		alignItems: 'center',
+ 	},
+ 	addBtn:{
+ 		width:40,
+ 		height:40,
+ 	},
+ 	add:{
+ 		width:40,
+ 		height:40,
+ 	},
+ 	banResActiveAdd:{
+ 		color:'#FF5959',
+ 		fontSize:30,
+ 		position:'absolute',
+ 		top:17,
+ 		right:4
+ 	}
 
 })

@@ -69,7 +69,6 @@ export default class editPerfilComponent2 extends Component{
 		})
 	}
 	render(){
-		console.log(this.state.restriccionArray.lenth)
 		const {activo} = this.state
 		return(
 			<ScrollView style={LoginStyle.fondoUltimo}>

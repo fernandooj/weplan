@@ -10,6 +10,7 @@ export default class RestriccionesPlanComponent extends Component{
 		this.state={
 		    restriccionArray:[],
 		    restriccion:[],
+		    restriccionesAsignadas:[],
 		    modalVisible:true
 		}
 	}
@@ -30,7 +31,7 @@ export default class RestriccionesPlanComponent extends Component{
 	 	})
 	}
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////////////////////  GENERO EL ARRAY DE LAS RESTRICCIONES //////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////  GENERO EL ARRAY DE LAS RESTRICCIONESAsignadas //////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	updateStateRestriccion(id){
 		if (id) {
@@ -40,11 +41,22 @@ export default class RestriccionesPlanComponent extends Component{
 		}
 	}
 
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////      GENERO UN ARRAY CON LOS ICONOS Y LOS NOMBRES DE LOS ASIGNADOS
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	updateRestriccion(id, icon, nombre, estado){
+		if (id) {
+		  this.setState({restriccionesAsignadas: this.state.restriccionesAsignadas.concat({id,icon,nombre})})
+		}else{
+		  this.setState({restriccionesAsignadas:this.state.restriccionesAsignadas.filter(function(val){return val.id != id}) })
+		}
+	}
+
 	renderRestricciones(){
 		return this.state.restriccion.map((e, key)=>{
 			return(
 				<TouchableOpacity key={key} style={CreatePlanStyle.touchRes} 
-					onPress={(index)=> {this.updateState(e.id, e.estado); this.updateStateRestriccion(e.id)} }>
+					onPress={(index)=> {this.updateState(e.id, e.estado); this.updateRestriccion(e.id, e.icon, e.nombre, e.estado); this.updateStateRestriccion(e.id)} }>
 					<Image source={{ uri: e.icon}} style={CreatePlanStyle.iconRes}/>
 					<Icon name='ban' allowFontScaling style={[CreatePlanStyle.banRes, e.estado ?CreatePlanStyle.banResActive :CreatePlanStyle.banResInactive]} />
 					<Text style={CreatePlanStyle.textoRes}>{e.nombre}</Text>
@@ -68,8 +80,8 @@ export default class RestriccionesPlanComponent extends Component{
 							<Text style={CreatePlanStyle.textoRes}>Restricciones</Text>
 						</View>	
 						{this.renderRestricciones()}
-						<TouchableOpacity onPress={() => { this.props.restriccion(this.state.restriccionArray)} } 
-						style={CreatePlanStyle.btnHecho}><Text style={CreatePlanStyle.textoHecho}>Hecho !</Text></TouchableOpacity>
+						<TouchableOpacity onPress={() => { this.props.restriccion(this.state.restriccionArray, this.state.restriccionesAsignadas)} } 
+						style={CreatePlanStyle.btnHecho}><Text style={CreatePlanStyle.hecho}>Hecho!</Text></TouchableOpacity>
 					</View>
 				</ScrollView>	
 			</Modal>

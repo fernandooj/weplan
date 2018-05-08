@@ -109,7 +109,7 @@ export default class homeComponent extends Component{
 					<TouchableOpacity onPress={()=> this.updatePlanes()} >
 						<Image source={require('./icon2.png')} style={HomeStyle.iconHead} />
 					</TouchableOpacity>
-					<TouchableOpacity onPress={this.closeSession.bind(this)} >
+					<TouchableOpacity>
 						<Image source={require('./icon3.png')} style={HomeStyle.iconHead} />
 					</TouchableOpacity>
 				</View>
@@ -144,9 +144,6 @@ export default class homeComponent extends Component{
 				
 		   </View>
 		)
-	}
-	closeSession(){
-		
 	}
 
 }

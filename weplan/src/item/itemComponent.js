@@ -18,52 +18,57 @@ export default class ItemComponent extends Component{
 		render:true
 	}
 	componentWillMount(){
-		let planId = this.props.navigation.state.params	
+		//let planId = this.props.navigation.state.params	
+		let planId = '5aefdb91423c402001dbb329'	
 		this.setState({planId})
 		axios.get('/x/v1/ite/item/'+planId)
 		.then(e=>{
-			console.log(e.data)
+		 	console.log(e.data)
+			
+			///////////////////////////////////////////////////////////////////////////////////////////////////////
+			////////////////////		busco los pagos asignados		//////////////////////////////////////////
 			let items=[]
-			////////////////////////////////////////////////////////////////////////
-			////////////////////		busco los pagos asignados		////////////////
 			e.data.item.filter((e)=>{
 				axios.get('/x/v1/pag/pago/suma/'+e._id)
 				.then(res=>{
-					res.data.pago.filter(item=>{
-	   				items.push({
-	   						deuda:item.monto, 
-	   						id:e._id,
-								titulo:e.titulo,
-								nombre: e.userId.nombre,
-								status: item.monto<0 ?'noAsignado' : 'asignado'
+				 	console.log(res.data)
+						items.push({
+							deuda:res.data.pago[0].monto<=0 ?res.data.pago[0].monto :res.data.deuda[0].monto, 
+							id:e._id,
+							titulo:e.titulo,
+							nombre: e.userId.nombre,
+							status: res.data.pago[0].monto<=0 ?'noAsignado' : 'asignado'
 						})
-					})
-					this.setState({items})
+				 
+					console.log(items)
+				this.setState({items})
 				})
 				.catch(err=>{
-					console.log(err)
+					return err
 				})
+				
 			})
-			////////////////////////////////////////////////////////////////////////
-			////////////////////////////////////////////////////////////////////////
-			let todosItems = e.data.item.map((e)=>{																				////
-			let monto = e.asignados.length==0 ?e.valor :Math.ceil((e.valor/(e.asignados.length+1))/1000)*1000;	////																 
-				return {																														////
-					id:e._id,																												////	
-					deuda:monto,																											////
-					titulo:e.titulo,																										////
-					nombre:e.userId.nombre,																								////
-					status:monto<0 ?'noAsignado' : 'asignado' 																	////
-				}																																////
-			})
-			this.setState({todosItems})
-			//////////////////////////////////////////////////////////////////////////////////
-			//////////////////////////////////////////////////////////////////////////////////
+
+			////////////////////////////////////////////////////////////////////////////////////////////////////////
+			////////////////////////////////////////////////////////////////////////////////////////////////////////
+			let todosItems = e.data.item.map((e)=>{																////
+			let monto = e.asignados.length==0 ?e.valor :Math.ceil((e.valor/(e.asignados.length+1))/100)*100;	////																 
+				return {																						////
+					id:e._id,																					////	
+					deuda:monto,																				////
+					titulo:e.titulo,																			////
+					nombre:e.userId.nombre,																		////
+					status:monto<0 ?'noAsignado' : 'asignado' 													////
+				}																								////
+			})																									////
+			this.setState({todosItems})																			////
+			////////////////////////////////////////////////////////////////////////////////////////////////////////
+			////////////////////////////////////////////////////////////////////////////////////////////////////////
 		})		 
 		.catch(err=>{
 			console.log(err)
 		})	
-		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	}
 	renderAcordeon() {
 		const {render}=this.state
@@ -135,7 +140,7 @@ export default class ItemComponent extends Component{
 				return (
 				   <View style={ItemStyle.content} key={key}>
 				  		<TouchableOpacity style={!key==0 ?ItemStyle.boton: [ItemStyle.boton, ItemStyle.botonFirst]} 
-				  			onPress={e.status=='noAsignado' ?()=>navigate('pago', {id:e.id, valor:e.deuda, planId:this.state.planId}) :()=>navigate('pagoDeuda', {id:e.id, planId:this.state.planId})}>
+				  			onPress={e.deuda<0 ?()=>navigate('pago', {id:e.id, valor:e.deuda, planId:this.state.planId}) :e.deuda==0 ?null :()=>navigate('pagoDeuda', {id:e.id, planId:this.state.planId})}>
 					   		<View style={ItemStyle.contentText}>
 						   		<Text style={ItemStyle.tituloItem}>
 						   			{e.titulo}  
@@ -158,7 +163,6 @@ export default class ItemComponent extends Component{
   	render() {
 		const {show, items, itemsPlan} = this.state
 		const {navigate} = this.props.navigation
-		console.log(this.state.planId)
 		return (
 			<View  style={ItemStyle.contentItem}>
 				<CabezeraComponent navigate={navigate} url={'chat'} parameter={this.state.planId} />

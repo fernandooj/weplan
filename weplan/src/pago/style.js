@@ -9,7 +9,7 @@ export const PagoStyle = StyleSheet.create({
 	},
 	contentItem:{
 		flex:1,
-		height:screenHeight,
+		height:screenHeight+110,
 		alignItems: 'center',
 		backgroundColor:'#f8f8f8'
 	},
@@ -115,7 +115,8 @@ export const PagoStyle = StyleSheet.create({
 	inputInformacion:{
 		padding:10,
 		height:90,
-		width:'100%'
+		width:'100%',
+		textAlign:'center'
 	},
 	pagarBtn:{
 		alignItems: 'center',
@@ -146,7 +147,12 @@ export const PagoStyle = StyleSheet.create({
 	},
 	pagoDeudaMonto:{
 		color:'#c5012b',
-		fontSize:20,
+		fontSize:18,
+		marginTop:7
+	},
+	pagoDeudaMontoActive:{
+		color:'#79CF40',
+		fontSize:18,
 		marginTop:7
 	}
 })

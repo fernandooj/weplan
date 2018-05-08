@@ -1,5 +1,5 @@
 import {StyleSheet, Dimensions, PixelRatio} from 'react-native';
-const win = Dimensions.get('window');
+const width = Dimensions.get('window');
 export const LoginStyle = StyleSheet.create({ 
 	 
 	fondo:{
@@ -110,7 +110,9 @@ export const LoginStyle = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 		flex: 1, 
-		backgroundColor:'#ffffff'
+		backgroundColor:'#ffffff',
+		flexDirection: 'row',
+    	flexWrap: 'wrap'
 	},
 	imagenes:{
 		marginRight:10,
@@ -170,25 +172,37 @@ export const LoginStyle = StyleSheet.create({
 		alignItems: 'center',
 	},
 	touchRes:{
-		flexDirection:'row',
-		width:'70%',
+		margin: 10,
+    	height:width / 4 - 10,
+    	width: width / 4 - 10,
+		// width:100,
+		// height:100,
 		paddingTop:15,
 		paddingBottom:15,
+		alignItems: 'center',
+
 	},
 	iconRes:{
 		width:75,
 		height:75
 	},
 	textoRes:{
-		position:'relative',
-		top:20,
-		fontSize:20,
-		color:'#969696'
+		//backgroundColor:'#f8f8f8',
+		//borderRadius:20,
+		//padding:4,
+		//paddingLeft:10,
+		//paddingRight:10,
+		fontSize:19,
+		color:'#969696',
+		width: 100,
+		height:60,
+		textAlign: 'center',
+		 
 	},
 	banRes:{
 		position:'relative', 
-		top:50,
-		left:-20, 
+		top:-10,
+		left:20, 
 		width:21,
 		height:21
 	},

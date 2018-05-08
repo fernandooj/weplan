@@ -27,7 +27,9 @@ export default class createPlanComponent extends Component{
  			textYear:'Año',
  			fechaHoy:moment().format('YYYY-MM-DD h:mm'),
  			asignados:[],
+ 			usuariosAsignados:[],
  			restricciones:[],
+ 			restriccionesAsignadas:[],
  			imagen:null,
  			adjuntarAmigos:false,
  			mapa:false,
@@ -59,6 +61,7 @@ export default class createPlanComponent extends Component{
 	render(){
 		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate} = this.state
 		const {navigate} = this.props.navigation
+		console.log(this.state.restriccionesAsignadas)
 		return (
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} > 
 				<CabezeraComponent navigate={navigate} url={'Home'} parameter={this.state.planId} />
@@ -137,12 +140,22 @@ export default class createPlanComponent extends Component{
 				{/*  restricciones  */}
 					<View style={CreatePlanStyle.cajaInpunts}>
 				    	<Image source={require('./denied.png')} style={CreatePlanStyle.iconInput} />
-					    <TouchableOpacity onPress={(restricciones)=>this.setState({restricciones, restriccion:true})}>
-					    	<Text style={restricciones.length>0 ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>{restricciones.length>0 ?'tienes: '+restricciones.length+' Restricciones' :'Restricciones'}</Text>
-					    </TouchableOpacity>
-					    {restriccion 
-					    	?<RestriccionesPlanComponent  
-						    restriccion={(restricciones)=>this.setState({restricciones, restriccion:false})} />
+					    {
+					    	restricciones.length==0
+					    	?<TouchableOpacity onPress={(restricciones)=>this.setState({restricciones, restriccion:true})}>
+						    	<Text style={restricciones.length>0 ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>{restricciones.length>0 ?'tienes: '+restricciones.length+' Restricciones' :'Restricciones'}</Text>
+						    </TouchableOpacity>
+					    	:<View style={CreatePlanStyle.contentAdd}>
+						    	{this.renderRestriccionesAsignados()} 
+						    	<TouchableOpacity onPress={() => this.setState({restriccion:true})} style={CreatePlanStyle.addBtn}>
+						    		<Image source={require('./add.png')} style={CreatePlanStyle.add} />
+						    	</TouchableOpacity>
+						    </View>
+						}
+						{
+							restriccion 
+							?<RestriccionesPlanComponent  
+						    restriccion={(restricciones, restriccionesAsignadas)=>this.setState({restricciones, restriccionesAsignadas, restriccion:false})} />
 						    :null
 						}
 					</View>
@@ -150,13 +163,23 @@ export default class createPlanComponent extends Component{
 				{/*   amigos  */}
 					<View style={CreatePlanStyle.cajaInpunts}>
 				    	<Image source={require('./friends.png')} style={CreatePlanStyle.iconInput} />
-					    <TouchableOpacity onPress={() => this.setState({adjuntarAmigos:true})}>
-					    	<Text style={asignados.length>0 ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>{asignados.length>0 ?'tienes: '+asignados.length+' Amigos' :' Invitar Amigos'}</Text>
-					    	 {adjuntarAmigos ?<AgregarAmigosComponent 
-				                titulo='Asignar Amigos'
-				                close={(asignados)=>this.setState({adjuntarAmigos:false, asignados:asignados})} 
-				                updateStateAsignados={(estado, id)=>this.updateStateAsignados(estado, id)}/> :null }
-					    </TouchableOpacity>
+				    	{	
+				    		asignados.length==0
+				    		?<TouchableOpacity onPress={() => this.setState({adjuntarAmigos:true})}>
+						    	<Text style={[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>{asignados.length>0 ?'tienes: '+asignados.length+' Amigos' :' Invitar Amigos'}</Text>
+						    </TouchableOpacity>
+						    :<View style={CreatePlanStyle.contentAdd}>
+						    	{this.renderUsuariosAsignados()} 
+						    	<TouchableOpacity onPress={() => this.setState({adjuntarAmigos:true})} style={CreatePlanStyle.addBtn}>
+						    		<Image source={require('./add.png')} style={CreatePlanStyle.add} />
+						    	</TouchableOpacity>
+						    </View>
+				    	}
+				    	 {adjuntarAmigos ?<AgregarAmigosComponent 
+					                titulo='Asignar Amigos'
+					                close={(asignados, usuariosAsignados)=>this.setState({adjuntarAmigos:false, asignados, usuariosAsignados})} 
+					                updateStateAsignados={(estado, id)=>this.updateStateAsignados(estado, id)}/> :null }
+					     
 					</View>
 
 				{/*  Crear Plan  */}
@@ -172,7 +195,31 @@ export default class createPlanComponent extends Component{
 			</ScrollView>
 		)
 	}
- 
+ 	renderUsuariosAsignados(){
+ 		return this.state.usuariosAsignados.map((e, key)=>{
+ 			if (key<4) {
+ 				return(
+	 				<View>
+	 					<Image source={{uri:e.photo}} style={CreatePlanStyle.avatar} />
+	 					<Image source={require('./agregado.png')} style={CreatePlanStyle.iconAgregado} />
+	 					<Text style={CreatePlanStyle.textoAgregado} >{e.nombre}</Text>
+	 				</View>
+	 			)
+ 			}
+ 		})
+ 	}
+ 	renderRestriccionesAsignados(){
+ 		return this.state.restriccionesAsignadas.map((e, key)=>{
+ 			if (key<4) {
+ 				return(
+	 				<View>
+	 					<Image source={{uri:e.icon}} style={CreatePlanStyle.avatar} />
+	 					<Icon name='ban' allowFontScaling style={CreatePlanStyle.banResActiveAdd} />
+	 				</View>
+	 			)
+ 			}
+ 		})
+ 	}
 	handleSubmit(){
 		const {navigate} = this.props.navigation
 		const {nombre, descripcion, fechaLugar, lat, lng, asignados, restricciones, imagen,tipo} = this.state

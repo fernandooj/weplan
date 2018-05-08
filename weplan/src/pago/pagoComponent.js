@@ -146,15 +146,17 @@ export default class pagoComponent extends Component{
   		const {navigate} = this.props.navigation
 		if (valor!==0) {
 			return (
-				<ScrollView>
-					<View style={PagoStyle.contentItem}>
-						<CabezeraComponent navigate={navigate} url={'item'} parameter={this.state.planId} />
-						<View style={PagoStyle.contenedor}>
-							{this.renderItem()}
-							{this.renderPago()}
-						</View>			  
-					</View>
-				</ScrollView>
+				<View>
+					<CabezeraComponent navigate={navigate} url={'item'} parameter={this.state.planId} texto='Pago Deuda'/>
+					<ScrollView>
+						<View style={PagoStyle.contentItem}>		
+							<View style={PagoStyle.contenedor}>
+								{this.renderItem()}
+								{this.renderPago()}
+							</View>			  
+						</View>
+					</ScrollView>
+				</View>
 			);
 		}else{
 			return (<View><Text>Cargando...</Text></View>)
@@ -163,10 +165,8 @@ export default class pagoComponent extends Component{
 	handleSubmit(e){
 		let {monto, metodo, descripcion, itemId, valor} = this.state
 		monto = parseInt(monto)
-		valor = Math.abs			(valor)
-  		const {navigate} = this.props.navigation
-		console.log(monto, metodo, descripcion, itemId, valor)
-		console.log(Math.abs(valor))		
+		valor = Math.abs(valor)
+  		const {navigate} = this.props.navigation		
 		if (monto> valor) {
 			Alert.alert(
 			  'el monto no puede ser mayor a tu deuda',
@@ -177,7 +177,7 @@ export default class pagoComponent extends Component{
 			  { cancelable: false }
 			)
 		}else{
-			axios.post('x/v1/pag/pago', {monto, metodo, descripcion, itemId})
+			axios.post('x/v1/pag/pago', {monto, metodo, descripcion, itemId, abono:true, userId:null})
 			.then(e=>{
 				Alert.alert(
 				  'tu pago fue actualizado',

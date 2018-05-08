@@ -12,15 +12,41 @@ export default class pagoDeudaComponent extends Component{
  	state={
  		item:{asignados:[], userId:{}},
  		valor:0,
- 		show:false
+ 		show:false,
+ 		usuarios:[]
  	}
 	componentWillMount(){
-	 	console.log(this.props.navigation.state)
+ 
 	 	let itemId = this.props.navigation.state.params.id
 	 	let planId = this.props.navigation.state.params.planId
-	 	//let itemId = '5add22fdef82f12d625e9db6'
+	 	// let planId = '5aefdb91423c402001dbb329'
+	 	// let itemId = '5af143b7076e9c07c4973aa8'
 	 	axios.get('x/v1/ite/item/id/'+itemId)
 	 	.then(e=>{
+			///////////////////////////////////////////////////////////////////////////////////////////////////////
+			////////////////////		busco los pagos asignados de los usuarios del item
+			///////////////////////////////////////////////////////////////////////////////////////////////////////
+			let usuarios=[]
+	 		e.data.mensaje[0].asignados.filter(e=>{
+	 			axios.get('/x/v1/pag/pago/user/'+itemId+'/'+e._id)
+				.then(res=>{
+				 		console.log(res.data)
+						usuarios.push({
+							monto  : res.data.pago[0].monto<0 ?res.data.pago[0].monto :res.data.deuda[0].monto, 
+							id     : e._id,
+							nombre : e.nombre,
+							photo  : e.photo
+						})
+				 
+					console.log(usuarios)
+					this.setState({usuarios})
+				})
+				.catch(err=>{
+					return err
+				})
+	 		}) 	
+	 		
+
 	 		this.setState({item:e.data.mensaje[0], itemId, planId})
 	 	})
 	 	.catch(err=>{
@@ -57,15 +83,20 @@ export default class pagoDeudaComponent extends Component{
 	}
 	renderAsignados(){
 		const valor = this.state.item.valor
-		const nAsignados = this.state.item.asignados.length
-		let monto = Math.ceil((valor/(nAsignados+1))/1000)*1000;
-		console.log(this.state.item.asignados)	
-		return this.state.item.asignados.map((e, key)=>{
+ 
+ 
+		return this.state.usuarios.map((e, key)=>{
 			return(
-	 			<TouchableOpacity style={PagoStyle.pagoDeudaContenedor} key={key} onPress={()=>this.setState({show:true,userId:e._id, photo:e.photo, nombre:e.nombre, monto})}>
+	 			<TouchableOpacity style={PagoStyle.pagoDeudaContenedor} key={key} 
+	 				onPress={e.monto<0 ?()=>this.setState({show:true, userId:e.id, photo:e.photo, nombre:e.nombre, monto:e.monto}) :null}>
 	 				<Image source={{uri: e.photo}} style={PagoStyle.pagoDeudaAvatar}/>
 	 				<Text style={PagoStyle.pagoDeudaNombre}>{e.nombre}</Text>
-	 				<Text style={PagoStyle.pagoDeudaMonto}>{'$ '+Number(monto).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+	 				{
+	 					e.monto<0
+	 					?<Text style={PagoStyle.pagoDeudaMonto}>{'$ '+Number(e.monto).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+	 					:<Text style={PagoStyle.pagoDeudaMontoActive}>$ 0</Text>
+	 				}
+	 				
 	 				<View style={PagoStyle.separador}></View>
 	 			</TouchableOpacity>
 			)
@@ -75,6 +106,7 @@ export default class pagoDeudaComponent extends Component{
   	render() {
   		const {navigate} = this.props.navigation
   		const {show, monto, photo, nombre, itemId, userId} = this.state
+  		console.log(userId)
 		return (
 			<ScrollView style={PagoStyle.container}>
 				<View style={PagoStyle.contentItem}>
@@ -87,7 +119,7 @@ export default class pagoDeudaComponent extends Component{
 				  			valor={monto}
 				  			itemId={itemId}
 				  			userId={userId}
-				  			updateItems={(id, deuda, titulo)=>this.updateItems(id, deuda, titulo)}
+				  			updateItems={(id, monto)=>this.updateItems(id, monto)}
 				  			close={()=>this.setState({show:false})}
 				  		 />
 				  		:null 
@@ -101,41 +133,14 @@ export default class pagoDeudaComponent extends Component{
 			</ScrollView>
 		);
 	}
-	handleSubmit(e){
-		let {monto, metodo, descripcion, itemId, valor} = this.state
-		monto = parseInt(monto)
-		valor = Math.abs			(valor)
-  		const {navigate} = this.props.navigation
-		console.log(monto, metodo, descripcion, itemId, valor)
-		console.log(Math.abs(valor))		
-		if (monto> valor) {
-			Alert.alert(
-			  'el monto no puede ser mayor a tu deuda',
-			  '',
-			  [
-			    {text: 'OK', onPress: () => console.log('OK Pressed')},
-			  ],
-			  { cancelable: false }
-			)
-		}else{
-			axios.post('x/v1/pag/pago', {monto, metodo, descripcion, itemId})
-			.then(e=>{
-				Alert.alert(
-				  'tu pago fue actualizado',
-				  '',
-				  [
-				    {text: 'OK', onPress: () => navigate('item', {itemId, monto})},
-				  ],
-				  { cancelable: false }
-				)
-				
-			})
-			.catch(err=>{
-				console.log(err)
-			})
-		}
-
-		
+	updateItems(id, monto){
+		console.log(id)
+		console.log(parseInt(monto))
+		let usuarios = this.state.usuarios.filter(e=>{
+			if(e.id==id) {e.monto=parseInt(e.monto)+parseInt(monto)}
+			return e   
+		})
+		this.setState({usuarios, show:false})
 	}
 }
 

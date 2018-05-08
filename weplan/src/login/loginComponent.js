@@ -16,11 +16,11 @@ registerKilledListener();
 export default class LoginComponent extends Component{
 	constructor(props) {
 	 super(props);
-	  this.state = {
-	  	 facebook:null,
-	  	 google:null,
-	  	  token: "",
-	  };
+		this.state = {
+			facebook:null,
+			google:null,
+			token: "",
+		};
 	}
 
 	componentWillMount() {
@@ -174,7 +174,7 @@ export default class LoginComponent extends Component{
 			      </TouchableOpacity>
 			    </View>  
 			    <Text style={LoginStyle.text}>¿Aún no haces parte de Weplan? </Text>	
-			     <TouchableOpacity onPress={()=> navigate('Registro')} style={LoginStyle.signup_btn}>
+			     <TouchableOpacity onPress={()=> navigate('Registro', {tokenPhone:this.state.token})} style={LoginStyle.signup_btn}>
  					<Text style={LoginStyle.btnRegistro}>Registrate</Text>
  				</TouchableOpacity>
 			</ImageBackground>

@@ -86,8 +86,8 @@ export const HomeStyle = StyleSheet.create({
 		width:'21%', 
 	},
 	iconFooter3Create:{
-		width:'100%', 
-		height:55,  
+		width:'90%', 
+		height:65,  
 	}, 
 	iconFooter:{
 		width:35,

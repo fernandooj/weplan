@@ -13,6 +13,7 @@ export default class AgregarAmigosComponent extends Component{
 			filteredData:[],
 		    buildArray:[],
 		    asignados:[],
+		    asignadosUsuarios:[],
 		    asignadosEmpty:[],
 		    modalVisible:true
 		}
@@ -59,7 +60,8 @@ export default class AgregarAmigosComponent extends Component{
 	getRow(filteredData){
 		if(filteredData.length>0){
 			return filteredData.map((data, key)=>{
-			return  <TouchableOpacity style={AmigosStyle.subLista} key={key} onPress={(e)=>{this.updateState(data.id, data.estado); this.updateStateAsignados(data.estado, data.id)}} > 
+			return  <TouchableOpacity style={AmigosStyle.subLista} key={key} 
+						onPress={(e)=>{this.updateState(data.id, data.estado); this.updateStateAsignados(data.estado, data.id); this.updateStateUsuarios(data.id, data.photo, data.nombre, data.estado)}} > 
 						<Image source={{ uri: data.photo}}  style={data.estado ?AmigosStyle.avatar :AmigosStyle.avatar2} /> 
 						<Text style={AmigosStyle.textoAvatar}>{data.nombre}</Text>
 						{!data.estado ?<Image source={require('../home/agregado.png')} style={AmigosStyle.agregado}/> :null} 
@@ -81,7 +83,7 @@ export default class AgregarAmigosComponent extends Component{
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////////////////  GENERO EL ARRAY DE LOS ASIGNADOS ///////////////////////////////////////////////
+	/////////////////////     GENERO EL ARRAY DE LOS ASIGNADOS  
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	updateStateAsignados(estado, id){
 		if (!estado) {
@@ -91,9 +93,21 @@ export default class AgregarAmigosComponent extends Component{
 		}
 	}
 
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////      GENERO UN ARRAY CON LOS ICONOS Y LOS NOMBRES DE LOS ASIGNADOS
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	updateStateUsuarios(id, photo, nombre, estado){
+		if (!estado) {
+		  this.setState({asignadosUsuarios: this.state.asignadosUsuarios.concat({id,photo,nombre})})
+		}else{
+		  this.setState({asignadosUsuarios:this.state.asignadosUsuarios.filter(function(val){return val.id != id}) })
+		}
+	}
+
 	render(){
 		const filteredData = this.state.filteredData
 		const rows = this.getRow(filteredData)
+
 		return(
 			<View style={AmigosStyle.contenedor}>
 				<Modal
@@ -130,7 +144,7 @@ export default class AgregarAmigosComponent extends Component{
 			{
 				this.state.asignados.length>0
 				?<View style={AmigosStyle.containerHecho}>
-					<TouchableOpacity style={AmigosStyle.btnHecho} onPress={(e)=>{this.props.close(this.state.asignados)}} > 
+					<TouchableOpacity style={AmigosStyle.btnHecho} onPress={(e)=>{this.props.close(this.state.asignados, this.state.asignadosUsuarios)}} > 
 						<Text style={AmigosStyle.hecho}>Hecho!</Text>
 					</TouchableOpacity> 
 				</View>	

@@ -122,58 +122,89 @@ export default class CrearItemComponent extends Component{
     );
   }
  
+
   handleSubmit(){
     const {titulo, descripcion, valor, imagen, enviarChat, asignados, id, nombre, photo} = this.state
     const fecha = moment().format('h:mm')
+    if (titulo.length==0) {
+      Alert.alert(
+        'El titulo es obligatorio',
+        '',
+        [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ],
+        { cancelable: false }
+      )
+    }else if(valor==0){
+      Alert.alert(
+        'El Valor es obligatorio',
+        '',
+        [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ],
+        { cancelable: false }
+      )
+    }else if(isNaN(valor)){
+      Alert.alert(
+        'El Valor solo puede ser numerico',
+        '',
+        [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ],
+        { cancelable: false }
+      )
+    }else{
+      //let planId = this.props.planId
+      let planId = '5aefdb91423c402001dbb329'
+      let data = new FormData();
+      let deudaAsignados = Math.ceil((valor/(asignados.length+1))/100)*100
+      let deudaCreador = valor - (deudaAsignados * asignados.length)
 
-    let planId = this.props.planId
-    //let planId = '5ad3e90d2e1d1c33eec1359b'
+      axios.post('/x/v1/ite/item', {descripcion, valor, titulo, planId, asignados, tipo:1})
+      .then(e=>{
+        let itemId = e.data.item._id
+        console.log(e.data.item)
+        data.append('imagen', imagen);
+        data.append('planId', planId);
+        data.append('fecha',  fecha);
+        data.append('titulo', titulo);
+        data.append('descripcion', descripcion);
+        data.append('valor', valor);
+        data.append('enviarChat', enviarChat);
+        data.append('itemId', itemId);
 
-    let data = new FormData();
-    let deudaAsignados = Math.ceil((valor/(asignados.length+1))/1000)*1000
-    let deudaCreador = valor - (deudaAsignados * asignados.length)
-
-    axios.post('/x/v1/ite/item', {descripcion, valor, titulo, planId, asignados, tipo:1})
-    .then(e=>{
-      let itemId = e.data.item._id
-      console.log(e.data.item)
-     
-
-      data.append('imagen', imagen);
-      data.append('planId', planId);
-      data.append('fecha',  fecha);
-      data.append('titulo', titulo);
-      data.append('descripcion', descripcion);
-      data.append('valor', valor);
-      data.append('enviarChat', enviarChat);
-      data.append('itemId', itemId);
-
-      axios({
-            method: 'post', //you can set what request you want to be
-            url: '/x/v1/ite/item/'+itemId,
-            data: data,
-            headers: { 
-              'Accept': 'application/json',
-              'Content-Type': 'multipart/form-data'
-            }
-          })
-      .then(res=>{  
-        console.log(res.data)     
-        if(res.data.code==1){ 
-          this.props.updateItems(itemId, deudaCreador, titulo)
-        }else{
-          Alert.alert(
-           'Error!, intenta nuevamente'
-          )
-        }
+        axios({
+              method: 'post', //you can set what request you want to be
+              url: '/x/v1/ite/item/'+itemId,
+              data: data,
+              headers: { 
+                'Accept': 'application/json',
+                'Content-Type': 'multipart/form-data'
+              }
+            })
+        .then(res=>{  
+          console.log(res.data)     
+          if(res.data.code==1){ 
+            this.props.updateItems(itemId, deudaCreador, titulo)
+          }else{
+            Alert.alert(
+              'Opss!! revisa tus datos que falta algo',
+              '',
+              [
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ],
+              { cancelable: false }
+            )
+          }
+        })
+        .catch(err=>{
+          console.log(err)
+        })
       })
       .catch(err=>{
         console.log(err)
       })
-    })
-    .catch(err=>{
-      console.log(err)
-    })
+    }
   }
 }
 

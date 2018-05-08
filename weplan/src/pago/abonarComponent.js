@@ -73,11 +73,12 @@ export default class AbonarComponent extends Component{
  
   handleSubmit(){
     const {monto} = this.state
-    const {userId, itemId, valor} = this.props
+    let {userId, itemId, valor} = this.props
+    valor = Math.abs(valor)
     console.log({userId, itemId, valor})
     if (monto> valor) {
       Alert.alert(
-        'el monto no puede ser mayor a tu deuda',
+        'El monto no puede ser mayor a tu deuda',
         '',
         [
           {text: 'OK', onPress: () => console.log('OK Pressed')},
@@ -85,15 +86,16 @@ export default class AbonarComponent extends Component{
         { cancelable: false }
       )
     }else{
-      axios.post('x/v1/pag/pago', {monto, metodo:2, estado:1, itemId, userId})
+      axios.post('x/v1/pag/pago', {monto, metodo:2, estado:1, itemId, userId, abono:true})
       .then(e=>{
         console.log(e.data)
         Alert.alert(
-          'tu pago fue actualizado',
+          'Tu pago fue actualizado',
           '',
           [
             //{text: 'OK', onPress: () => navigate('item', {itemId, monto})},
-            {text: 'OK', onPress: () => console.log('aa')},
+             
+            {text: 'OK', onPress: () => this.props.updateItems(userId, monto)},
           ],
           { cancelable: false }
         )

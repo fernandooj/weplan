@@ -4,14 +4,17 @@ import {LoginStyle} from '../login/style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
 import Icon from 'react-native-fa-icons';
+ 
 
 export default class RegistroComponent extends Component{
 	constructor(props) {
 	  super(props);
 	  this.state = {
-	  	 codigo:null
+	  	 codigo:null,
+	  	 tokenPhone: "",
 	  };
 	}
+
 	render(){
 		const {codigo} = this.state 
 		return(
@@ -52,12 +55,13 @@ export default class RegistroComponent extends Component{
 
 	handleSubmit(){
 		const {navigate} = this.props.navigation
+		const tokenPhone = this.props.navigation.state.params.tokenPhone
 		let username = this.state.text;
 		let isEmail = username.includes("@");
 		let acceso = 'suscriptor'
 		
 		if(isEmail){
-		    axios.post('/x/v1/user/sign_up', {username, tipo:1, acceso})
+		    axios.post('/x/v1/user/sign_up', {username, tipo:1, acceso, tokenPhone})
 			.then((res)=>{
 				console.log(res.data)
 				let data = res.data.code
@@ -84,7 +88,7 @@ export default class RegistroComponent extends Component{
 			})
 		// treat as email
 		} else {
-		  	axios.post('/x/v1/user/sign_up', {username, tipo:2, acceso})
+		  	axios.post('/x/v1/user/sign_up', {username, tipo:2, acceso, tokenPhone})
 			.then((res)=>{
 				console.log(res.data.code)
 				let data = res.data.code
