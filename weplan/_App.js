@@ -1,10 +1,13 @@
-import React, { Component } from 'react'
-import {
-  Animated,
-  Easing, StyleSheet, Text, View, Image, Dimensions
-} from 'react-native'
-import axios                  from 'axios' 
- 
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ * @flow
+ */
+
+import React, { Component }   from 'react';
+import { StyleSheet, Text, View, Image, Dimensions} from 'react-native';
+import {  StackNavigator }    from 'react-navigation';
+import axios                  from 'axios'
 import homeComponent          from './src/home/homeComponent';
 import LoginComponent         from './src/login/loginComponent';
 import RegistroComponent      from './src/registro/registroComponent';
@@ -24,62 +27,11 @@ import ajustesComponent       from './src/ajustes/ajustesComponent';
 import ajustesAmigosComponent from './src/ajustes/amigosComponent';
 import notificacionComponent  from './src/notificacion/notificacionComponent';
 import walletComponent        from './src/wallet/walletComponent';
-
-
-
-import { StackNavigator } from 'react-navigation'
+ 
+ 
 
 export const URL = 'http://159.89.141.0:8080/';
 axios.defaults.baseURL = URL;
-
-const transitionConfig = () => {
-return {
-  transitionSpec: {
-    duration: 750,
-    easing: Easing.out(Easing.poly(4)),
-    timing: Animated.timing,
-    useNativeDriver: true,
-  },
-  screenInterpolator: sceneProps => {
-      const { position, layout, scene, index, scenes } = sceneProps
-      const toIndex = index
-      const thisSceneIndex = scene.index
-      const height = layout.initHeight
-      const width = layout.initWidth
-
-      const translateX = position.interpolate({
-        inputRange: [thisSceneIndex - 1, thisSceneIndex, thisSceneIndex + 1],
-        outputRange: [width, 0, 0]
-      })
-
-      // Since we want the card to take the same amount of time
-      // to animate downwards no matter if it's 3rd on the stack
-      // or 53rd, we interpolate over the entire range from 0 - thisSceneIndex
-      const translateY = position.interpolate({
-        inputRange: [0, thisSceneIndex],
-        outputRange: [height, 0]
-      })
-
-      const slideFromRight = { transform: [{ translateX }] }
-      const slideFromBottom = { transform: [{ translateY }] }
-
-      const lastSceneIndex = scenes[scenes.length - 1].index
-
-      // Test whether we're skipping back more than one screen
-      if (lastSceneIndex - toIndex > 1) {
-        // Do not transoform the screen being navigated to
-        if (scene.index === toIndex) return
-        // Hide all screens in between
-        if (scene.index !== lastSceneIndex) return { opacity: 0 }
-        // Slide top screen down
-        return slideFromBottom
-      } 
-
-      return slideFromRight
-    },
-}}
-
-
 
 const win = Dimensions.get('window');
 const NavigationApp = StackNavigator({
@@ -102,7 +54,7 @@ const NavigationApp = StackNavigator({
     encuesta:      {screen: encuestaComponent },
     notificacion:  {screen: notificacionComponent },
     wallet:        {screen: walletComponent },
-},{ headerMode: 'none', transitionConfig })
+},{ headerMode: 'none' })
  
 const NavigationAppLogin = StackNavigator({  
     Home:          {screen: homeComponent},
@@ -124,8 +76,8 @@ const NavigationAppLogin = StackNavigator({
     pagoDeuda:     {screen: pagoDeudaComponent },
     notificacion:  {screen: notificacionComponent },
     wallet:        {screen: walletComponent },
-},{ headerMode: 'none', transitionConfig })
-
+ 
+},{ headerMode: 'none' })
 
 class Splash extends Component <{}>{
   render(){

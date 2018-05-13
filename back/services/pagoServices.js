@@ -30,14 +30,111 @@ class pagoServices{
 		  }
 		], callback)
  	}
-	create(data, id, callback){
+
+ 	sumaTodos(itemId, callback){
+ 		itemId = mongoose.Types.ObjectId(itemId);	
+ 		pagoSchema.aggregate(
+		 [
+	     { "$match": 
+	     	{itemId, abono:true}
+	     },
+		  {
+		    $group : {
+		       _id : null,
+		       monto: { $sum: "$monto"}, // for your case use local.user_totaldocs
+		       count: { $sum: 1 } // for no. of documents count
+		    } 
+		  }
+		], callback)
+ 	}
+ 	sumaPlan(callback){
+ 		pagoSchema.aggregate([
+	 		{
+	 			$lookup: {
+	 				from: "items",
+	 				localField: "itemId",
+	 				foreignField: "_id",
+	 				as: "ItemData"
+	 			}
+	 		},
+	 		{
+	 			$unwind: "$ItemData"
+	 		},
+	 		{
+	 			$group: {
+	 				_id: "$ItemData.planId",
+	 				total: { $sum: "$monto" }
+	 			}
+	 		},
+	 		{
+	 			$lookup: {
+	 				from: "plans",
+	 				localField: "_id",
+	 				foreignField: "_id",
+	 				as: "PlanData"
+	 			}
+	 		},
+	 		{ 
+	 			$unwind: "$PlanData"
+	 		},
+	 		{
+	 			$project: {
+	 				name: "$PlanData.nombre",
+	 				total: 1
+	 			}
+	 		}
+		], callback);
+ 	}
+ 	// sumaPlan(callback){
+ 	// 	pagoSchema.aggregate([
+	 // 		{
+	 // 			$lookup: {
+	 // 				from: "items",
+	 // 				localField: "itemId",
+	 // 				foreignField: "_id",
+	 // 				as: "ItemData"
+	 // 			}
+	 // 		},
+	 // 		{
+	 // 			$unwind: "$ItemData"
+	 // 		},
+	 // 		{
+	 // 			$group: {
+	 // 				_id: "$ItemData.planId",
+	 // 				total: { $sum: "$monto" }
+	 // 			}
+	 // 		},
+	 // 		{
+	 // 			$lookup: {
+	 // 				from: "plans",
+	 // 				localField: "_id",
+	 // 				foreignField: "_id",
+	 // 				as: "PlanData"
+	 // 			}
+	 // 		},
+	 // 		{ 
+	 // 			$unwind: "$PlanData"
+	 // 		},
+	 // 		{
+	 // 			$project: {
+	 // 				name: "$PlanData.nombre",
+	 // 				total: 1
+	 // 			}
+	 // 		}
+		// ], callback);
+ 	// }
+ 	
+
+	create(data, id, userIdAbona, callback){
 		let chat = new pagoSchema();
-		chat.monto  	 = data.monto
-		chat.metodo  	 = data.metodo
+		chat.monto  	  = data.monto
+		chat.monto  	  = data.monto
+		chat.abono  	  = data.abono
 		chat.descripcion = data.descripcion
-		chat.estado  	 = data.estado
-		chat.userId  	 = id!==null ?id :data.userId
-		chat.itemId 	 = data.itemId
+		chat.estado  	  = data.estado
+		chat.userId  	  = id!==null ?id :data.userId
+		chat.userIdAbona = userIdAbona
+		chat.itemId 	  = data.itemId
 		chat.save(callback)
 	}
 }

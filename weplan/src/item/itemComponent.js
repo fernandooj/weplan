@@ -18,8 +18,8 @@ export default class ItemComponent extends Component{
 		render:true
 	}
 	componentWillMount(){
-		//let planId = this.props.navigation.state.params	
-		let planId = '5aefdb91423c402001dbb329'	
+		let planId = this.props.navigation.state.params	
+		//let planId = '5aefdb91423c402001dbb329'	
 		this.setState({planId})
 		axios.get('/x/v1/ite/item/'+planId)
 		.then(e=>{
@@ -31,17 +31,15 @@ export default class ItemComponent extends Component{
 			e.data.item.filter((e)=>{
 				axios.get('/x/v1/pag/pago/suma/'+e._id)
 				.then(res=>{
-				 	console.log(res.data)
-						items.push({
-							deuda:res.data.pago[0].monto<=0 ?res.data.pago[0].monto :res.data.deuda[0].monto, 
-							id:e._id,
-							titulo:e.titulo,
-							nombre: e.userId.nombre,
-							status: res.data.pago[0].monto<=0 ?'noAsignado' : 'asignado'
-						})
-				 
-					console.log(items)
-				this.setState({items})
+					items.push({
+						deuda:res.data.pago[0].monto<=0 ?res.data.pago[0].monto :res.data.deuda[0].monto, 
+						id:e._id,
+						titulo:e.titulo,
+						nombre: e.userId.nombre,
+						status: res.data.pago[0].monto<=0 ?'noAsignado' : 'asignado'
+					}) 
+					 
+					this.setState({items})
 				})
 				.catch(err=>{
 					return err
@@ -71,7 +69,16 @@ export default class ItemComponent extends Component{
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	}
 	renderAcordeon() {
-		const {render}=this.state
+		const {render, items}=this.state
+		const add = (a, b)=>{
+ 			return a + b;
+		}
+		let suma=[]
+		items.filter(e=>{
+			suma.push(e.deuda)
+		})
+		var sum = suma.reduce(add, 0);
+		 
 		return (
 			<View>
 			  	<View style={ItemStyle.headerCollapsable }>
@@ -81,6 +88,14 @@ export default class ItemComponent extends Component{
 			    	{	render
 			    		?this.renderMiItems()
 			    		:null
+			    	}
+			    	{
+			    		<View style={ItemStyle.contenedorTotal}>
+			    			<Text style={ItemStyle.textoTotal}>Total</Text>
+			    			<Text style={sum>=0 ?ItemStyle.valueTotal :ItemStyle.valueNoAsignadoTotal}>
+								{'$ '+Number(sum).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
+							</Text>
+			    		</View>
 			    	}
 			  	</View>
 
@@ -181,7 +196,7 @@ export default class ItemComponent extends Component{
 					{/*****   boton para mostrar crear item	*****/}
 					  	<TouchableOpacity onPress={()=>this.setState({show:true})} style={ItemStyle.contenedorNuevo}>
 							<Image source={require('../ajustes/nuevo.png')} style={ItemStyle.btnNuevoGrupo} />
-							<Text>Crear Item</Text>
+							<Text style={ItemStyle.CrearItem}>Crear Item</Text>
 					  	</TouchableOpacity>
 					  	
 					 	{this.renderAcordeon()}

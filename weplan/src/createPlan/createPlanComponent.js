@@ -64,7 +64,7 @@ export default class createPlanComponent extends Component{
 		console.log(this.state.restriccionesAsignadas)
 		return (
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} > 
-				<CabezeraComponent navigate={navigate} url={'Home'} parameter={this.state.planId} />
+				<CabezeraComponent navigate={navigate} url={'inicio'} parameter={this.state.planId} />
 				<View style={CreatePlanStyle.encabezadoPlan}>
 					<TakePhotoComponent fuente={'cam.png'} ancho={170} alto={120} updateImagen={(imagen) => {this.setState({imagen})}} />
 					<TextInput

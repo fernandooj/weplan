@@ -137,7 +137,7 @@ export const AjustesStyle = StyleSheet.create({
  		flexDirection:'row',
  		backgroundColor:'#dadede',
  		width:screenWidth,
- 		padding:10
+ 		padding:10,
  	},
  	imgBack:{
  		width:18,

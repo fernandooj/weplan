@@ -46,6 +46,108 @@ class itemServices {
 	        'asignados': asignados,
         }}, callback);	
 	}
+
+
+	// sumaPlan(callback){
+ // 		itemSchema.aggregate([
+	//  		{
+	//  			$lookup: {
+	//  				from: "pagos",
+	//  				localField: "_id",
+	//  				foreignField: "itemId",
+	//  				as: "ItemData"
+	//  			}
+	//  		},
+	//  		{
+	//  			$unwind:{
+	//  				path: '$ItemData',
+	//  				preserveNullAndEmptyArrays:true
+	//  			}
+
+	//  		},
+	//  		{
+	//  			$project:{
+	//  				planId:1,
+	//  				monto:"$ItemData.monto"
+	//  			}
+	//  		},
+	//  		{
+	//  			$group:{
+	//  				_id:'$planId',
+	//  				total:{ $sum:"$monto" }
+	//  			}
+	//  		},
+	//  		{
+	//  			$lookup:{
+	//  				from:'plans',
+	//  				localField:"_id",
+	//  				foreignField:"_id",
+	//  				as:"PlanData",
+	//  			}
+	//  		},
+	//  		{
+	//  			$unwind:"$PlanData",
+	//  		},
+	//  		{
+	//  			$project:{
+	//  				total:1,
+	//  				nombre:"$PlanData.nombre"
+	//  			}
+	//  		},
+	// 	], callback);
+ // 	}
+
+ 	sumaPlan(callback){
+ 		itemSchema.aggregate([
+	 		{
+	 			$lookup: {
+	 				from: "pagos",
+	 				localField: "_id",
+	 				foreignField: "itemId",
+	 				as: "ItemData"
+	 			}
+	 		},
+	 		{
+	 			$unwind:{
+	 				path: '$ItemData',
+	 				preserveNullAndEmptyArrays:true
+	 			}
+
+	 		},
+	 		{
+	 			$project:{
+	 				planId:1,
+	 				montos:"$ItemData.monto"
+	 			}
+	 		},
+	 		{
+	 			$group:{
+	 				_id:'$planId',
+	 				total:{ $sum:"$montos" }
+	 			}
+	 		},
+	 		{
+	 			$lookup:{
+	 				from:'plans',
+	 				localField:"_id",
+	 				foreignField:"_id",
+	 				as:"PlanData",
+	 			}
+	 		},
+	 		{
+	 			$unwind:"$PlanData",
+	 		},
+	 		{
+	 			$project:{
+	 				nombre:"$PlanData.nombre",
+	 				total:1
+	 			}
+	 		},
+		], callback);
+ 	}
+
+
+
  
 }
 

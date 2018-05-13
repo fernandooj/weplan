@@ -108,7 +108,6 @@ export const EncuestaStyle = StyleSheet.create({
 		alignItems: 'center',
 	},
 	modal:{
-
 		width:screenWidth/1.3,
  		paddingBottom:30,
  		backgroundColor:'#ffffff',
@@ -238,5 +237,69 @@ export const EncuestaStyle = StyleSheet.create({
 		marginTop:5,
 		color:'#ffffff'
 	},
+
+	////////////////////////////////////////////////////////////////////////////////////
+	////////////////// 		abono deuda
+	////////////////////////////////////////////////////////////////////////////////////
+	modalAbono:{
+		width:screenWidth/1.3,
+ 		paddingBottom:45,
+ 		backgroundColor:'#ffffff',
+ 		borderRadius:10,
+		borderWidth: 7,
+		borderColor:'rgba(0,0,0,.1)',
+	},
+	contenedorAbono:{
+		flexDirection:'row',
+	}, 
+	btnBackAbono:{
+		backgroundColor:'#dbe4f2',
+		padding:10
+	},
+	backAbono:{
+		height:23,
+		width:14,
+	},
+	Avatar:{
+		width:50,
+		height:50,
+		borderRadius:35,
+		borderWidth: 5,
+		borderColor:'#a5a5a5',
+	},
+	textoAbono:{
+		fontSize:20,
+		marginTop:10,
+		marginLeft:10
+	},
+	descripcionAbono:{
+		width:'60%',
+		backgroundColor:'#dbe4f2',
+		borderRadius:25,
+		fontSize:20,
+		padding:5,
+		marginTop:6,
+		marginLeft:10,
+		color:'grey'
+	},
+	save:{
+		flexDirection:'column',
+		alignItems: 'center',
+	}, 
+	btnSaveAbonar:{
+		marginTop:-30,
+		backgroundColor:'#ffffff',
+		padding:10,
+		width:'60%',
+		alignItems: 'center',
+		borderRadius:20,
+		borderWidth:3,
+		borderColor:'#5664BA'
+	},
+	textSaveAbonar:{
+		width:'50%',
+		alignItems: 'center',
+		fontSize:16
+	}
 
 })

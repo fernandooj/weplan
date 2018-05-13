@@ -32,7 +32,6 @@ let UserSchema = mongoose.Schema({
 	password 	: String,
 	token		: String,
 	categorias  :[{type: Schema.Types.ObjectId, ref:'CategoriaPlan'}],
-	acceso      : String,
 });
 
  

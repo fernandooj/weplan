@@ -27,42 +27,34 @@ export default class AbonarComponent extends Component{
     return (
       <View style={EncuestaStyle.container}>
         <View style={EncuestaStyle.modalIn}>
-          {/* icono */}
-          <TouchableOpacity style={EncuestaStyle.btnIcon}>
-            <Image source={require('../item/item5.png')} style={EncuestaStyle.icon} />
-          </TouchableOpacity>
-
          
-
           {/* rest modal */}
-          <View style={EncuestaStyle.modal}>
-            <Image source={require('../item/item2.png')} style={EncuestaStyle.header} />
+          <View style={EncuestaStyle.modalAbono}>
 
-          {/* icono back */}
-            <TouchableOpacity style={EncuestaStyle.btnBack} onPress={()=>this.props.close(false)}>
-              <Image source={require('../item/item3.png')} style={EncuestaStyle.back} />
-            </TouchableOpacity>
-            
-            <Image source={{uri:this.props.photo}} />
-            <Text>{this.props.nombre}</Text>
-            <TextInput 
-              placeholder='Monto'
-              underlineColorAndroid='transparent' 
-              placeholderTextColor="#5664BA" 
-              editable = {true}
-              multiline = {true}
-              style={EncuestaStyle.descripcion}
-              onChangeText={(monto) => this.setState({monto})}
-            />
-            <Image source={require('../item/item4.png')} style={EncuestaStyle.decoracion} />
-          </View> 
-
-           
+            {/* icono back */}
+              <TouchableOpacity style={EncuestaStyle.btnBackAbono} onPress={()=>this.props.updateItems()}>
+                <Image source={require('../item/item3.png')} style={EncuestaStyle.backAbono} />
+              </TouchableOpacity>
+              <View style={EncuestaStyle.contenedorAbono}>
+                <Image source={{uri:this.props.photo}} style={EncuestaStyle.Avatar} />
+                <Text style={EncuestaStyle.textoAbono}>{this.props.nombre}</Text>
+              </View>
+              <View style={EncuestaStyle.contenedorAbono}>
+                <Text style={EncuestaStyle.textoAbono}>Monto</Text>
+                <TextInput 
+                  underlineColorAndroid='transparent' 
+                  editable = {true}
+                  multiline = {true}
+                  style={EncuestaStyle.descripcionAbono}
+                  onChangeText={(monto) => this.setState({monto})}
+                />
+              </View>
+              
+            </View> 
           {/* Guardar */}  
           <View style={EncuestaStyle.save} > 
-            <TouchableOpacity style={EncuestaStyle.btnSave} onPress={this.handleSubmit.bind(this)}>
-             <Image source={require('../item/item8.png')} style={EncuestaStyle.iconSave} />
-              <Text style={EncuestaStyle.adjuntar} style={EncuestaStyle.textSave}>Guardar</Text>
+            <TouchableOpacity style={EncuestaStyle.btnSaveAbonar} onPress={this.handleSubmit.bind(this)}>
+              <Text style={EncuestaStyle.adjuntar} style={EncuestaStyle.textSaveAbonar}>Aceptar</Text>
             </TouchableOpacity> 
           </View>
         </View>
@@ -85,7 +77,16 @@ export default class AbonarComponent extends Component{
         ],
         { cancelable: false }
       )
-    }else{
+    }else if(isNaN(monto)){
+      Alert.alert(
+        'El Monto solo puede ser numerico',
+        '',
+        [
+          {text: 'OK', onPress: () => console.log('OK Pressed')},
+        ],
+        { cancelable: false }
+      )
+    } else{
       axios.post('x/v1/pag/pago', {monto, metodo:2, estado:1, itemId, userId, abono:true})
       .then(e=>{
         console.log(e.data)

@@ -11,9 +11,14 @@ let pagoSchema = mongoose.Schema({
 	metodo		  : { type : String },
 	descripcion   : { type : String },
 	estado		  : { type : String},
-	itemId     	  : {type: Schema.Types.ObjectId, ref:'Item'},
-	userId     	  : {type: Schema.Types.ObjectId, ref:'User'}, 
+	abono		  : { type : Boolean},
+	itemId     	  : { type: Schema.Types.ObjectId, ref:'Item'},
+	userId     	  : { type: Schema.Types.ObjectId, ref:'User'}, 
+	userIdAbona   : { type: Schema.Types.ObjectId, ref:'User'}, 
 	createdAt	  : { type: String, default: moment().format('YYYY-MM-DD h:mm') },
 })
 
 module.exports = mongoose.model('Pago', pagoSchema)
+
+
+//// si el el dueño del item hace un abono a otro usuario entonces: quien asigna==userIdAbona

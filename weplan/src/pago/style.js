@@ -127,7 +127,9 @@ export const PagoStyle = StyleSheet.create({
 		marginBottom:10
 	}, 
 
-	///////////		pago deuda 		//////////////
+	////////////////////////////////////////////////////////////////////////////////////
+	////////////////// 		pago deuda
+	////////////////////////////////////////////////////////////////////////////////////
 	pagoDeudaContenedor:{
 		flexDirection:'row',
 		marginTop:10,
@@ -154,6 +156,33 @@ export const PagoStyle = StyleSheet.create({
 		color:'#79CF40',
 		fontSize:18,
 		marginTop:7
+	},
+
+
+
+	////////////////////////////////////////////////////////////////////////////////////
+	////////////////// 		contenedor total
+	////////////////////////////////////////////////////////////////////////////////////
+	contenedorTotal:{
+		flexDirection:'row',
+		marginTop:50,
+		alignSelf: 'flex-end', 
+	},
+	textoTotal:{
+		fontSize:20,
+		marginRight:15,
+	},
+	valueTotal:{
+		color:'#79CF40',
+		alignSelf: 'flex-start', 
+		width:'32%',
+		fontSize:20
+	},
+	valueNoAsignadoTotal:{
+		color:'#c5012b', 
+		alignSelf: 'flex-start', 
+		width:'31%',
+		fontSize:20
 	}
 })
 

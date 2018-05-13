@@ -91,7 +91,7 @@ router.post('/', function(req, res){
 ////////   CREO UN PRIMER PAGO, O DEUDA 
 //////////////////////////////////////////////////////////////////////////////////////////
 let createPago = function(req, res, id, item){
-	let deudaAsignados = Math.ceil((item.valor/(item.asignados.length+1))/1000)*1000
+	let deudaAsignados = Math.ceil((item.valor/(item.asignados.length+1))/100)*100
 	let deudaCreador = req.valor - (deudaAsignados * item.asignados.length)
 	let data = req.asignados.map(e=>{
 		return {
@@ -100,13 +100,14 @@ let createPago = function(req, res, id, item){
 			monto:-deudaAsignados,
 			metodo:null,
 			descripcion:null,
-			estado:1
+			estado:1,
+			abono:false
 		}
 	})
-	data.push({userId:id, itemId:item._id, monto:deudaCreador, metodo:null, descripcion:null, estado:1})
+	data.push({userId:id, itemId:item._id, monto:deudaCreador, abono:true, metodo:null, descripcion:null, estado:1})
 
 	data.map(e=>{
-		pagoServices.create(e, null, (err, pago)=>{
+		pagoServices.create(e, null, id, (err, pago)=>{
 			if(err){
 				console.log(err)
 			}else{					
@@ -174,7 +175,7 @@ let createChat = function(req, res, userId, item, ruta){
 }
 
 
-
+ 
 
 //////////////////////////////////////////////////////////////////////////////////////////
 ////////   SI UN USUARIO QUIERE INGRESAR AL ITEM, LO REGISTRO Y LO DEJO EN ESPERA 
@@ -217,6 +218,18 @@ const creaNotificacion = (req, res, item)=>{
 		}
 	})
 }
+
+
+router.get('/pariente/ente/corriente/mente', (req, res)=>{
+	itemServices.sumaPlan((err, pago)=>{
+		console.log(pago)
+		if(err){
+			res.json({status: 'FAIL', err, code:0})
+		}else{
+			res.json({pago})
+		}
+	})
+})
 
 
 

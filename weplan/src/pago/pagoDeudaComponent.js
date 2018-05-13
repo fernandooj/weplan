@@ -83,8 +83,6 @@ export default class pagoDeudaComponent extends Component{
 	}
 	renderAsignados(){
 		const valor = this.state.item.valor
- 
- 
 		return this.state.usuarios.map((e, key)=>{
 			return(
 	 			<TouchableOpacity style={PagoStyle.pagoDeudaContenedor} key={key} 
@@ -96,7 +94,6 @@ export default class pagoDeudaComponent extends Component{
 	 					?<Text style={PagoStyle.pagoDeudaMonto}>{'$ '+Number(e.monto).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
 	 					:<Text style={PagoStyle.pagoDeudaMontoActive}>$ 0</Text>
 	 				}
-	 				
 	 				<View style={PagoStyle.separador}></View>
 	 			</TouchableOpacity>
 			)
@@ -105,8 +102,16 @@ export default class pagoDeudaComponent extends Component{
  
   	render() {
   		const {navigate} = this.props.navigation
-  		const {show, monto, photo, nombre, itemId, userId} = this.state
-  		console.log(userId)
+  		const {show, monto, photo, nombre, itemId, userId, usuarios} = this.state
+ 
+		const add = (a, b)=>{
+ 			return a + b;
+		}
+		let suma=[]
+		usuarios.filter(e=>{
+			suma.push(e.monto)
+		})
+		var sum = suma.reduce(add, 0);
 		return (
 			<ScrollView style={PagoStyle.container}>
 				<View style={PagoStyle.contentItem}>
@@ -128,7 +133,15 @@ export default class pagoDeudaComponent extends Component{
 						{this.renderItem()}
 						{this.renderAsignados()}
 						
-					</View>			  
+					</View>	
+					{
+			    		<View style={PagoStyle.contenedorTotal}>
+			    			<Text style={PagoStyle.textoTotal}>Total</Text>
+			    			<Text style={sum>=0 ?PagoStyle.valueTotal :PagoStyle.valueNoAsignadoTotal}>
+								{'$ '+Number(sum).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
+							</Text>
+			    		</View>
+			    	}		  
 				</View>
 			</ScrollView>
 		);

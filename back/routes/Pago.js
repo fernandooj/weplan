@@ -46,20 +46,64 @@ router.get('/:user', function(req, res){
 	}
 })
 
-router.get('/suma/:idItem', function(req, res){
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////// 		OBTIENE LA SUMA DE LOS RESULTADOS POR ITEM
+///////////////////////////////////////////////////////////////////////////////////////////////
+router.get('/suma/:idItem', (req, res)=>{
 	pagoServices.suma(req.params.idItem, req.session.usuario.user._id, (err, pago)=>{
+		if(err){
+			res.json({status: 'FAIL', err, code:0})
+		}else{
+			sumaTodos(req, res, pago) 
+		}
+	})
+})
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////// 		OBTIENE LA SUMA DE LOS RESULTADOS POR USUARIOS
+///////////////////////////////////////////////////////////////////////////////////////////////
+router.get('/user/:idItem/:idUser', (req, res)=>{
+	pagoServices.suma(req.params.idItem, req.params.idUser, (err, pago)=>{
+		if(err){
+			res.json({status: 'FAIL', err, code:0})
+		}else{
+			sumaTodos(req, res, pago) 
+		}
+	})
+})
+
+const sumaTodos = (req, res, pago) =>{
+	pagoServices.sumaTodos(req.params.idItem, (err, deuda)=>{
 		if(err){
 			res.json({err, code:0})
 		}else{
-			res.json({ status: 'SUCCESS', pago, total:pago.length, code:1 });				
+			console.log(deuda)
+			res.json({ status: 'SUCCESS', pago, deuda, total:pago.length, code:1 });				
+		}
+	})
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////// 		OBTIENE LA SUMA DE LOS RESULTADOS POR USUARIOS
+///////////////////////////////////////////////////////////////////////////////////////////////
+router.get('/pariente/ente/corriente/mente', (req, res)=>{
+	 
+	pagoServices.sumaPlan((err, pago)=>{
+		console.log(pago)
+		if(err){
+			res.json({status: 'FAIL', err, code:0})
+		}else{
+			res.json({pago})
 		}
 	})
 })
 
 
-router.post('/', function(req, res){
-	let id = req.session.usuario.user._id
-	pagoServices.create(req.body, id, (err, pago)=>{
+router.post('/', (req, res)=>{
+	let id = req.body.userId==null ?req.session.usuario.user._id :req.body.userId
+	console.log(req.body)
+	pagoServices.create(req.body, id, req.session.usuario.user._id, (err, pago)=>{
 		if(err){
 			res.json({err})
 		}else{

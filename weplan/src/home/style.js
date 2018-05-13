@@ -75,19 +75,19 @@ export const HomeStyle = StyleSheet.create({
 		width:'14%', 
 		marginLeft:'1.5%', 
 		marginRight:'1.5%',
-		paddingTop:10, 
-		paddingBottom:10 
+		paddingTop:5, 
+		paddingBottom:5 
 	},
 	iconFooter3:{
 		width:'59%', 
 		height:30,  
 	},
 	btnFooter3Create:{
-		width:'21%', 
+		width:'20%', 
 	},
 	iconFooter3Create:{
-		width:'90%', 
-		height:65,  
+		width:'85%', 
+		height:57,  
 	}, 
 	iconFooter:{
 		width:35,

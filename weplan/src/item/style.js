@@ -89,6 +89,9 @@ export const ItemStyle = StyleSheet.create({
 		flexDirection:'row',
 		marginTop:10
  	},
+ 	CrearItem:{
+		fontSize:20
+	},
   	//////////// crear item  //////////
 	container:{
 		backgroundColor:'rgba(0,0,0,.6)',
@@ -216,5 +219,32 @@ export const ItemStyle = StyleSheet.create({
 	textSave:{
 		marginTop:5,
 		color:'#ffffff'
+	},
+
+
+	////////////////////////////////////////////////////////////////////////////////////
+	////////////////// 		contenedor total
+	////////////////////////////////////////////////////////////////////////////////////
+	contenedorTotal:{
+		flexDirection:'row',
+		marginTop:50,
+		alignSelf: 'flex-end', 
+	},
+	textoTotal:{
+		fontSize:20,
+		marginRight:15,
+	},
+	valueTotal:{
+		color:'#79CF40',
+		alignSelf: 'flex-start', 
+		width:'32%',
+		fontSize:20
+	},
+	valueNoAsignadoTotal:{
+		color:'#c5012b', 
+		alignSelf: 'flex-start', 
+		width:'31%',
+		fontSize:20
 	}
+
 })

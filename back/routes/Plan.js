@@ -81,7 +81,19 @@ router.put('/', (req, res)=>{
 			
 		}
 	})
-	
+})
+
+
+
+router.get('/pariente/ente/corriente/mente', (req, res)=>{
+	planServices.sumaPlan((err, pago)=>{
+		console.log(pago)
+		if(err){
+			res.json({status: 'FAIL', err, code:0})
+		}else{
+			res.json({pago})
+		}
+	})
 })
 
 

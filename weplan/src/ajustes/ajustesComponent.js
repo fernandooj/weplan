@@ -11,7 +11,7 @@ export default class ajustesComponent extends Component{
 		menus:[
 			{method:1, label:'Amigos', 		 	value:'ajustesAmigos', },
 			{method:1, label:'Notificaciones',  value:'notificacion'},
-			{method:1, label:'My Wallet', 	 	value:'mi_wallet'},
+			{method:1, label:'My Wallet', 	 	value:'wallet'},
 			{method:1, label:'Metodos de Pago', value:'metodos'},
 			{method:2, label:'Cerrar Sesion',   value:'closeSession'},
 		],
@@ -64,7 +64,7 @@ export default class ajustesComponent extends Component{
 		const {navigate} = this.props.navigation
 		return(
 			<View style={AjustesStyle.contenedor}>
-				<CabezeraComponent navigate={navigate} url={'Home'} />
+				<CabezeraComponent navigate={navigate} url={'inicio'} />
 				<View style={AjustesStyle.subContenedor}>
 					{this.renderPerfil()}
 					{this.renderMenu()}

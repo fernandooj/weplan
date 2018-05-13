@@ -12,7 +12,7 @@ class planServices {
 		planSchema.find({estado:'activo', _id}, null, {sort: {_id: -1}}).populate('asignados').exec(callback)
 	}
 	getById(asignados, callback){
-		planSchema.find({$or:[{'asignados':asignados},{'idUsuario':asignados}]}, callback)
+		planSchema.find({$or:[{'asignados':asignados, estado:'activo'},{'idUsuario':asignados, estado:'activo'}]}).populate('idUsuario').exec(callback)
 	}
 	getByclientes(callback){
 		planSchema.find({estado:'activo', tipo:'cliente'}, null, {sort: {_id: -1}}, callback)
@@ -37,6 +37,23 @@ class planServices {
 	        'imagen': nameFile,
         }}, callback);	
 	}
+
+	sumaPlan(callback){
+ 		planSchema.aggregate([
+	 		{
+	 			$lookup: {
+	 				from: "items",
+	 				localField: "_id",
+	 				foreignField: "planId",
+	 				as: "PlanData"
+	 			}
+	 		},
+	 		{
+	 			$unwind:'$PlanData'
+	 		} 
+		], callback);
+ 	}
+
 }
 
 

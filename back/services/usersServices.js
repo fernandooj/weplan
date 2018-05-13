@@ -24,6 +24,7 @@ class userServices {
 		let newUsuario = new User() 
 		newUsuario.username = user.username,
 		newUsuario.token    = randonNumber,
+		newUsuario.tokenPhone = user.tokenPhone
 		newUsuario.estado   = "inactivo"
 		newUsuario.tipo	    = "local"
 		newUsuario.acceso   = user.acceso

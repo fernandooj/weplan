@@ -154,8 +154,8 @@ export default class CrearItemComponent extends Component{
         { cancelable: false }
       )
     }else{
-      //let planId = this.props.planId
-      let planId = '5aefdb91423c402001dbb329'
+      let planId = this.props.planId
+      //let planId = '5aefdb91423c402001dbb329'
       let data = new FormData();
       let deudaAsignados = Math.ceil((valor/(asignados.length+1))/100)*100
       let deudaCreador = valor - (deudaAsignados * asignados.length)

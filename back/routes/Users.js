@@ -268,6 +268,7 @@ module.exports = function(app, passport){
     */
     ///////////////////////////////////////////////////////////////////////////
     app.get('/x/v1/user/profile', function(req, res){
+        console.log(req.session.usuario)
         if(req.session.usuario===undefined || req.session.usuario.user==null){
             res.json({status:'FAIL', user: 'SIN SESION', code:0 })
         }else{
