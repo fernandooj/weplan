@@ -1,7 +1,7 @@
 'use strict'
 
 let planSchema = require('../models/planModel.js')
-
+let mongoose = require('mongoose')
 
 
 class planServices {
@@ -9,13 +9,13 @@ class planServices {
 		planSchema.find({}, null, {sort: {_id: -1}}).populate('asignados').exec(callback)
 	}
 	getByIdPlan(_id,callback){
-		planSchema.find({estado:'activo', _id}, null, {sort: {_id: -1}}).populate('asignados').exec(callback)
+		planSchema.find({estado:true, _id}, null, {sort: {_id: -1}}).populate('asignados').exec(callback)
 	}
 	getById(asignados, callback){
-		planSchema.find({$or:[{'asignados':asignados, estado:'activo'},{'idUsuario':asignados, estado:'activo'}]}).populate('idUsuario').exec(callback)
+		planSchema.find({$or:[{'asignados':asignados, estado:true},{'idUsuario':asignados, estado:true}]}, null, {sort: {_id: -1}}).populate('idUsuario').exec(callback)
 	}
 	getByclientes(callback){
-		planSchema.find({estado:'activo', tipo:'cliente'}, null, {sort: {_id: -1}}, callback)
+		planSchema.find({estado:true, tipo:'cliente'}, null, {sort: {_id: -1}}, callback)
 	}
 	create(planData, id, callback){
 		let plan 			= new planSchema();
@@ -23,7 +23,7 @@ class planServices {
 		plan.nombre 		= planData.nombre	
 		plan.descripcion	= planData.descripcion	
 		plan.restricciones  = planData.restricciones	
-		plan.estado         = 'activo'	
+		plan.estado         = true	
 		plan.idUsuario 		= id	
 		plan.fechaLugar 	= planData.fechaLugar
 		plan.lat 			= planData.lat	
@@ -38,19 +38,110 @@ class planServices {
         }}, callback);	
 	}
 
-	sumaPlan(callback){
+	sumaPlan(idUsuario, callback){
+		idUsuario = mongoose.Types.ObjectId(idUsuario);	
  		planSchema.aggregate([
+ 			{
+ 			    $match:{
+ 			    	$or:[
+ 			    	    {idUsuario},
+ 			    	    {asignados:idUsuario},
+ 			    	]
+ 			    }
+ 			},
+ 			{
+	 			$lookup: {
+	 				from: "users",
+	 				localField: "idUsuario",
+	 				foreignField: "_id",
+	 				as: "UserData"
+	 			}
+	 		},
+	 		{
+	 			$unwind:
+	 			{
+	 				path:'$UserData',
+	 				preserveNullAndEmptyArrays: true
+	 			}
+	 		},
+	 		{
+	 			$project:{
+	 				_id:1,
+	 				nombreUsuario:'$UserData.nombre',
+	 				idUsuario:'$UserData._id',
+	 				imagen:1,
+	 				nombre:1
+	 			},
+	 		}
+	 		,
 	 		{
 	 			$lookup: {
 	 				from: "items",
 	 				localField: "_id",
 	 				foreignField: "planId",
-	 				as: "PlanData"
+	 				as: "ItemData"
 	 			}
 	 		},
 	 		{
-	 			$unwind:'$PlanData'
-	 		} 
+	 			$unwind:
+	 			{
+	 				path:'$ItemData',
+	 				preserveNullAndEmptyArrays: true
+	 			}
+	 		},
+	 		{
+	 			$project:{
+	 				_id:1,
+	 				nombre:1,
+	 				idUsuario:1,
+	 				imagen:1,
+	 				nombreUsuario:1,
+	 				itemId:'$ItemData._id'
+	 			},
+	 		}
+	 		, 
+			{
+			    $lookup:{
+			        from:"pagos",
+			        localField:"itemId",
+			        foreignField:"itemId",
+			        as:"PagoData"
+			    }
+			},	
+			{
+				$unwind:
+				{
+	 				path:'$PagoData',
+	 				preserveNullAndEmptyArrays: true
+	 			}
+			},
+			
+			{
+			    $project:{
+			        _id:1,
+			        nombre:1,
+			        imagen:1,
+			        idUsuario:1,
+			        nombreUsuario:1,
+			        monto: '$PagoData.monto',
+			        abono: '$PagoData.abono',
+			        userId: '$PagoData.userId',
+			    }
+			},
+			{
+				$group:
+				{
+					_id:{
+						id:     "$_id",
+						nombre: "$nombre",
+						abono:  "$abono",
+					},
+					data: {
+                          $addToSet: {info:["$idUsuario", "$nombreUsuario", '$abono', '$imagen']}
+                    },
+					total:{ $sum :'$monto'}
+				}
+			}
 		], callback);
  	}
 
@@ -58,3 +149,21 @@ class planServices {
 
 
 module.exports = new planServices();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

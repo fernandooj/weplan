@@ -22,7 +22,7 @@ export default class walletComponent extends Component{
 		axios.get('/x/v1/pla/plan/pariente/ente/corriente/mente')
 		.then(e=>{
  
-			console.log(e.data.pago)
+			console.log(e.data)
  
 		})
 		.catch(res=>{

@@ -84,14 +84,23 @@ router.put('/', (req, res)=>{
 })
 
 
-
+ 
 router.get('/pariente/ente/corriente/mente', (req, res)=>{
-	planServices.sumaPlan((err, pago)=>{
-		console.log(pago)
+	planServices.sumaPlan(req.session.usuario.user._id, (err, pago)=>{
+		//console.log(pago)
 		if(err){
 			res.json({status: 'FAIL', err, code:0})
 		}else{
-			res.json({pago})
+			
+	 
+			let suma = pago.filter(e=>{
+				//if (e.userId==req.session.usuario.user._id){suma.push(e.montos)}
+				if (e._id.abono!==false) return e
+				//console.log(e._id.abono)
+			})
+		 
+			
+			res.json({pago, suma})
 		}
 	})
 })
