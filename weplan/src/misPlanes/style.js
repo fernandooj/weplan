@@ -1,9 +1,12 @@
 import {StyleSheet, Dimensions} from 'react-native';
 const Height = Dimensions.get('window').height;
+const Width = Dimensions.get('window').width;
 
 export const MisPlanesStyle = StyleSheet.create({
-	container:{
+	contenedor:{
 		flex: 1,
+		alignItems: 'center',
+		height:Height  
 	},
 	/////////////////////////////////////////////////////////////////////////// cabezera
 	contenedorCabezera:{
@@ -43,30 +46,45 @@ export const MisPlanesStyle = StyleSheet.create({
 
 
 	/////////////////////////////////////////////////////////////////////////// filtros
-	boxPlan:{
-		height:Height/2.3, 
+	container:{
 	 	width:'100%',
+		flex: 1, 
+		backgroundColor:'#ffffff',
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		height:Height  
+	},
+	boxPlan:{
+		margin:10,
+    	width: Width / 2.6,
+		paddingTop:0,
+		paddingBottom:0,
 	},
 	background:{
- 		height:Height/3.25,
+ 		height: Height/7, 
 		width:'100%'
 	},
 	boxPlan1:{
 		backgroundColor:'#EFF9F9',
-		paddingBottom:13,
-		paddingTop:10,
+		minHeight:50
+  	},
+	nombre:{ 
+		marginTop:6,
+		fontSize:14,
+		paddingLeft:6,
+		color:'#00bf07',
 	},
-	nombre:{
-		fontSize:23,
-		paddingBottom:4,
-		paddingLeft:10,
+	debe:{
 		color:'#BF0005',
 	},
 	fechaLugar:{
-		fontSize:21,
+		fontSize:14,
 		color:'#98c2c6',
-		paddingLeft:10
-	}
+		paddingLeft:6,
+		marginBottom:6,
+	 
+	},
+	 
 
 
 

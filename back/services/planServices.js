@@ -70,7 +70,8 @@ class planServices {
 	 				nombreUsuario:'$UserData.nombre',
 	 				idUsuario:'$UserData._id',
 	 				imagen:1,
-	 				nombre:1
+	 				nombre:1,
+	 				fechaLugar:1
 	 			},
 	 		}
 	 		,
@@ -96,7 +97,11 @@ class planServices {
 	 				idUsuario:1,
 	 				imagen:1,
 	 				nombreUsuario:1,
-	 				itemId:'$ItemData._id'
+	 				fechaLugar:1,
+	 				itemId:'$ItemData._id',
+	 				userItemId:'$ItemData.userId',
+	 				itemTitulo: '$ItemData.titulo',
+	 				valorItem:'$ItemData.valor'
 	 			},
 	 		}
 	 		, 
@@ -123,24 +128,29 @@ class planServices {
 			        imagen:1,
 			        idUsuario:1,
 			        nombreUsuario:1,
+			        itemId:1,
+			        itemTitulo:1,
+			        userItemId:1,
+			        valorItem:1,
+			        fechaLugar:1,
 			        monto: '$PagoData.monto',
 			        abono: '$PagoData.abono',
 			        userId: '$PagoData.userId',
 			    }
 			},
 			{
-				$group:
-				{
-					_id:{
-						id:     "$_id",
-						nombre: "$nombre",
-						abono:  "$abono",
-					},
-					data: {
-                          $addToSet: {info:["$idUsuario", "$nombreUsuario", '$abono', '$imagen']}
+			    $group:{
+			        _id:
+				        {
+				        	id:'$_id',
+				        	idItem: '$itemId',
+				        	abono:  "$abono",
+				        },
+			        data: {
+                        $addToSet: {info:["$idUsuario", "$nombreUsuario", '$abono', '$imagen', '$nombre', '$userItemId',  '$itemTitulo', '$valorItem', '$fechaLugar']}
                     },
-					total:{ $sum :'$monto'}
-				}
+			        total:{ $sum :'$monto'}
+			    }
 			}
 		], callback);
  	}

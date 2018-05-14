@@ -19,10 +19,10 @@ export default class MisPlanesComponent extends Component{
 		}
 	}
 	componentWillMount(){
-		axios.get('/x/v1/pla/plan/idUsuario')
+		axios.get('/x/v1/pla/plan/suma/totales/plan')
 		.then(e=>{
-			let filteredData = e.data.message
-			console.log(e.data.message)
+			let filteredData = e.data.result
+			console.log(e.data.result)
 			this.setState({allList:filteredData, filteredData})
 		})
 		.catch(res=>{
@@ -32,7 +32,7 @@ export default class MisPlanesComponent extends Component{
 	filteredData(event){
 		const regex = new RegExp(event, 'i');
 		const filtered = this.state.allList.filter(function(e){
-			return (e.nombre.search(regex)> -1)	
+			return (e.nombrePlan.search(regex)> -1)	
 		})
 		//this.setState({filteredData:filtered})
 		if (event.length>0) {
@@ -44,11 +44,11 @@ export default class MisPlanesComponent extends Component{
 	getRow(filteredData){
 		if(filteredData.length>0){
 			return filteredData.map((e, key)=>{
-			return  <TouchableOpacity onPress={()=>this.handleSubmit(e._id, e.imagen, e.nombre)} key={key} style={MisPlanesStyle.boxPlan}>
+			return  <TouchableOpacity onPress={()=>this.handleSubmit(e.id)} key={key} style={MisPlanesStyle.boxPlan}>
 					<Image source={{uri: e.imagen}} style={MisPlanesStyle.background} />
 					<View style={MisPlanesStyle.boxPlan1} >
-						<Text style={MisPlanesStyle.nombre}>{e.nombre.length<27 ?e.nombre :e.nombre.substring(0, 27)+' ...'}</Text>
-						<Text style={MisPlanesStyle.fechaLugar}>{e.fechaLugar}</Text>
+						<Text style={e.total>0 ?MisPlanesStyle.nombre :[MisPlanesStyle.nombre, MisPlanesStyle.debe]}>{e.nombrePlan.length<27 ?e.nombrePlan :e.nombrePlan.substring(0, 27)+' ...'}</Text>
+						<Text style={MisPlanesStyle.fechaLugar}>{e.fecha}</Text>
 					</View>
 				</TouchableOpacity>
 				})
@@ -75,37 +75,24 @@ export default class MisPlanesComponent extends Component{
 			</View>
 		)
 	}
-	// renderPlanes(){
-	// 	console.log(this.state.planes)
-	// 	return this.state.planes.map((e, key)=>{
-	// 		return(
-	// 			<TouchableOpacity onPress={()=>this.handleSubmit(e._id, e.imagen, e.nombre)} key={key} style={MisPlanesStyle.boxPlan}>
-	// 				<Image source={{uri: e.imagen}} style={MisPlanesStyle.background} />
-	// 				<View style={MisPlanesStyle.boxPlan1} >
-	// 					<Text style={MisPlanesStyle.nombre}>{e.nombre}</Text>
-	// 					<Text style={MisPlanesStyle.fechaLugar}>{e.fechaLugar}</Text>
-	// 				</View>
-	// 			</TouchableOpacity>
-	// 		)
-	// 	})
-	// }
+ 
 	render(){
 		const filteredData = this.state.filteredData
 		const rows = this.getRow(filteredData)
 		const {navigate} = this.props.navigation
 		return(	 
-			<View style={MisPlanesStyle.container}>
+			<View style={MisPlanesStyle.contenedor}>
 					{this.cabezera()}
-				<ScrollView style={MisPlanesStyle.container}>
-					{rows}	
+				<ScrollView>
+					<View style={MisPlanesStyle.container}>
+					{rows}
+					</View>	
 				</ScrollView>	
 			</View> 
 		)
 	}
-	handleSubmit(planId, imagenPlan, nombre){
+	handleSubmit(planId){
 		const {navigate} = this.props.navigation
-		let imagen = imagenPlan ?imagenPlan : URL+'fondoPlan.png'
-		let dataPlan = {planId, imagen, nombre}
 		let id = planId
 		navigate('chat', id)
 	}

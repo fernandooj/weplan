@@ -180,7 +180,6 @@ export const LoginStyle = StyleSheet.create({
 		paddingTop:15,
 		paddingBottom:15,
 		alignItems: 'center',
-
 	},
 	iconRes:{
 		width:75,

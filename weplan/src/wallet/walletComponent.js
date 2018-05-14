@@ -19,22 +19,9 @@ export default class walletComponent extends Component{
 		}
 	}
 	componentWillMount(){
-		axios.get('/x/v1/pla/plan/pariente/ente/corriente/mente')
+		axios.get('/x/v1/pla/plan/suma/totales/plan')
 		.then(e=>{
- 
-			console.log(e.data)
- 
-		})
-		.catch(res=>{
-			console.log(res)
-		})
-
-
-		axios.get('/x/v1/pla/plan/idUsuario')
-		.then(e=>{
-			let filteredData = e.data.message
-		 
-			this.setState({allList:filteredData, filteredData})
+			this.setState({allList:e.data.result, filteredData:e.data.result})
 		})
 		.catch(res=>{
 			console.log(res)
@@ -43,7 +30,7 @@ export default class walletComponent extends Component{
 	filteredData(event){
 		const regex = new RegExp(event, 'i');
 		const filtered = this.state.allList.filter(function(e){
-			return (e.nombre.search(regex)> -1)	
+			return (e.data[0].info[5].search(regex)> -1)	
 		})
 		if (event.length>0) {
 			this.setState({filteredData:filtered})
@@ -54,15 +41,15 @@ export default class walletComponent extends Component{
 	getRow(filteredData){
 		if(filteredData.length>0){
 			return filteredData.map((e, key)=>{
-			return  <TouchableOpacity onPress={()=>this.handleSubmit(e._id, e.imagen, e.nombre)} key={key}>
+			return  <TouchableOpacity onPress={()=>this.handleSubmit(this)} key={key}>
 					<View style={walletStyle.item}>
 						<Image source={{uri: e.imagen}} style={walletStyle.imagen} />
 						<View style={walletStyle.boxPlan1} >
-							<Text style={walletStyle.nombre}>{e.nombre.length<30 ?e.nombre :e.nombre.substring(0, 30)+' ...'}</Text>
-							<Text style={walletStyle.fechaLugar}>By {e.idUsuario.nombre}</Text>
+							<Text style={walletStyle.nombre}>{e.nombrePlan.length<30 ?e.nombrePlan :e.nombrePlan.substring(0, 30)+' ...'}</Text>
+							<Text style={walletStyle.fechaLugar}>By {e.nombreUsuario} </Text>
 							<View style={walletStyle.item}>	
 								<Text style={walletStyle.textoTotal}>Total</Text>
-								<Text style={walletStyle.total}>$ 1000</Text>
+								<Text style={walletStyle.total}>$ {e.total}</Text>
 							</View>	
 						</View>
 						<Image source={require('./back_plan.png')} style={walletStyle.back} />

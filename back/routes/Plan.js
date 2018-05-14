@@ -85,22 +85,44 @@ router.put('/', (req, res)=>{
 
 
  
-router.get('/pariente/ente/corriente/mente', (req, res)=>{
+router.get('/suma/totales/plan', (req, res)=>{
 	planServices.sumaPlan(req.session.usuario.user._id, (err, pago)=>{
-		//console.log(pago)
 		if(err){
 			res.json({status: 'FAIL', err, code:0})
 		}else{
 			
 	 
-			let suma = pago.filter(e=>{
-				//if (e.userId==req.session.usuario.user._id){suma.push(e.montos)}
+			let abonoTrue = pago.filter(e=>{
 				if (e._id.abono!==false) return e
-				//console.log(e._id.abono)
 			})
-		 
-			
-			res.json({pago, suma})
+
+			let data1 = abonoTrue.filter(e=>{
+				if(e.data[0].info[5]!=req.session.usuario.user._id) {e.total=e.total-e.data[0].info[7]}
+				return e
+			})
+	 		let data = data1.map(e=>{
+				return{
+					id:e._id.id,
+					nombrePlan:e.data[0].info[4],
+					nombreUsuario:e.data[0].info[1],
+					imagen:e.data[0].info[3],
+					fecha:e.data[0].info[8],
+					total: e.total
+				}
+			})
+
+			let map = data.reduce((prev, next) =>{
+			  if (next.id in prev) {
+			    prev[next.id].total += next.total;
+			  } else {
+			     prev[next.id] = next;
+			  }
+			  return prev;
+			}, {});
+
+			let result = Object.keys(map).map(id => map[id]);
+
+			res.json({result})
 		}
 	})
 })

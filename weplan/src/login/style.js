@@ -79,6 +79,7 @@ export const LoginStyle = StyleSheet.create({
 		textAlign: 'center', 
 		fontSize:17
 	},
+
 })
 
 
