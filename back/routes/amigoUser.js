@@ -29,7 +29,6 @@ router.get('/:id', (req, res)=>{
 })
 
 
-
 router.post('/', (req, res)=>{
 	let id = req.session.usuario.user._id
 	amigoUserService.create(req.body.asignado, id, (err, amigoUser)=>{

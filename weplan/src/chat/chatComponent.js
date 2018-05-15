@@ -20,7 +20,7 @@ export default class ChatComponent extends Component{
 
 	componentWillMount(){
 		let planId = this.props.navigation.state.params	
-		//let planId = '5aefdb91423c402001dbb329'	
+		//let planId = '5af89758688e10060e126850'	
 		console.log(planId) 
 		this.socket = SocketIOClient(URL);
 		this.socket.on('userJoined'+planId, this.onReceivedMessage);
@@ -139,10 +139,23 @@ export default class ChatComponent extends Component{
 			</View>
 		)
 	}
+	dynamicSort(property) {
+	    var sortOrder = 1;
+	    if(property[0] === "-") {
+	        sortOrder = -1;
+	        property = property.substr(1);
+	    }
+	    return function (a,b) {
+	        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+	        return result * sortOrder;
+	    }
+	}
+
 	renderMensajes(){
 		const {navigate} = this.props.navigation
 		const {id, mensajes} = this.state
-		return mensajes.map((e,key)=>{
+		let   data = mensajes.sort(this.dynamicSort('id'))
+		return data.map((e,key)=>{
 			if (e.tipoChat===1) {
 				return (
 					<View key={key} style={ChatStyle.contenedorBox}>
@@ -155,12 +168,14 @@ export default class ChatComponent extends Component{
 								<Text style={e.userId== id ?ChatStyle.fecha :[ChatStyle.fecha, ChatStyle.fechaLeft]}>{e.fecha}</Text>
 							</View>
 						</View>
-						<Image
-							style={e.userId== id ?ChatStyle.photo : [ChatStyle.photo, ChatStyle.photoLeft]}
-							width={50}
-							height={50}
-							source={{uri: e.photo}}
-					    />
+						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', e.userId)} style={e.userId== id ?ChatStyle.btnAvatarC : [ChatStyle.btnAvatarC, ChatStyle.btnAvatarCLeft]}>
+							<Image
+								style={ChatStyle.photo}
+								width={50}
+								height={50}
+								source={{uri: e.photo}}
+						    />
+						</TouchableOpacity>
 					</View>	
 				)
 			}else if(e.tipoChat===2){
@@ -172,9 +187,11 @@ export default class ChatComponent extends Component{
 						         <Text style={e.userId== id ?ChatStyle.nombreIt :[ChatStyle.nombreIt, ChatStyle.nombreItLeft]}>{e.nombre}</Text>
 
 						      {/* imagen avatar */}
+						      		<TouchableOpacity  onPress={e.userId== id ?null :()=> navigate('profile', e.userId)}>
 									<Image source={{uri: e.photo}}
 										style={e.userId== id ?ChatStyle.iconAvatar :[ChatStyle.iconAvatar, ChatStyle.iconAvatarLeft]} 
 									/>
+									</TouchableOpacity>
 									</ImageBackground>	
 							   {/* fotografia item */}
 						         <Image source={{uri: e.rutaImagen}}
@@ -204,20 +221,20 @@ export default class ChatComponent extends Component{
 							      </View>
 							      :null
 					       	}
-					       	 
-					       	
 			      		</View>
 		     		</View>
 				)
 			}else{
 				return(
 					<View key={key} style={e.userId== id ?ChatStyle.contenedorEncuesta :[ChatStyle.contenedorEncuesta, ChatStyle.contenedorEncuestaLeft]}>
-						<Image
-							style={e.userId== id ?ChatStyle.pPhoto : [ChatStyle.pPhoto, ChatStyle.pPhotoLeft]}
-							width={50}
-							height={50}
-							source={{uri: e.photo}}
-					    />
+						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', e.userId)}>
+							<Image
+								style={e.userId== id ?ChatStyle.pPhoto : [ChatStyle.pPhoto, ChatStyle.pPhotoLeft]}
+								width={50}
+								height={50}
+								source={{uri: e.photo}}
+						    />
+						</TouchableOpacity>
 						<View style={ChatStyle.contenedorTitulos}>
 							<Text style={ChatStyle.pNombre}>{e.nombre}</Text>
 							<Text style={ChatStyle.pTitulo}>{e.pTitulo}</Text>

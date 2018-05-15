@@ -30,13 +30,14 @@ export default class ajustesComponent extends Component{
 	}
 	renderPerfil(){
 		const {perfil} = this.state
+		const {navigate} = this.props.navigation
 		if (perfil!==undefined) {
 			return(
-				<View style={AjustesStyle.perfil}>
+				<TouchableOpacity style={AjustesStyle.perfil} onPress={()=>navigate('perfil')}>
 					<Image source={{uri: perfil.photo}} style={AjustesStyle.avatar} />
 					<Text style={AjustesStyle.username}>{perfil.nombre}</Text>
 					<Text style={AjustesStyle.separador}></Text>
-				</View>
+				</TouchableOpacity>
 			)
 		}else{
 			return(

@@ -268,7 +268,7 @@ module.exports = function(app, passport){
     */
     ///////////////////////////////////////////////////////////////////////////
     app.get('/x/v1/user/profile', function(req, res){
-        console.log(req.session.usuario)
+         
         if(req.session.usuario===undefined || req.session.usuario.user==null){
             res.json({status:'FAIL', user: 'SIN SESION', code:0 })
         }else{
@@ -322,13 +322,33 @@ module.exports = function(app, passport){
 
     ///////////////////////////////////////////////////////////////////////////
     /*
+    lista solo un usuario
+    */
+    ///////////////////////////////////////////////////////////////////////////
+    app.get('/x/v1/users/getOneUser/:id', (req,res)=>{
+        if(req.session.usuario){
+            userServices.getOneUser(req.params.id, (err, user)=>{
+                if(!err){
+                    console.log(user)
+                    res.json({status:'SUCCESS', user})
+                }else{
+                    res.json({ status: 'FAIL', err}) 
+                }
+            })
+        }else{
+            res.json({ status: 'FAIL', message:'usuario no logueado'})  
+        }
+    })
+
+    ///////////////////////////////////////////////////////////////////////////
+    /*
     Activa / Desactiva
     */
     ///////////////////////////////////////////////////////////////////////////
-    app.post('/x/v1/users/', function(req,res){
+    app.post('/x/v1/users/', (req,res)=>{
         if(req.session.usuario){
             if (req.session.usuario.user.acceso=='superAdmin') {
-                userServices.enableDisable(req.body, function(err, usuarios){
+                userServices.enableDisable(req.body, (err, usuarios)=>{
                     if(!err){
                         res.json({status:'SUCCESS', usuarios})
                     }else{

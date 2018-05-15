@@ -9,14 +9,15 @@ class planServices {
 		planSchema.find({}, null, {sort: {_id: -1}}).populate('asignados').exec(callback)
 	}
 	getByIdPlan(_id,callback){
-		planSchema.find({estado:true, _id}, null, {sort: {_id: -1}}).populate('asignados').exec(callback)
+		planSchema.find({estado:true, _id}, null, {sort: {_id: -1}}).populate('idUsuario', 'nombre ciudad photo').exec(callback)
 	}
 	getById(asignados, callback){
-		planSchema.find({$or:[{'asignados':asignados, estado:true},{'idUsuario':asignados, estado:true}]}, null, {sort: {_id: -1}}).populate('idUsuario').exec(callback)
+		planSchema.find({$or:[{'asignados':asignados, estado:true},{'idUsuario':asignados, estado:true}]}, null, {sort: {_id: -1}}).populate('idUsuario', 'nombre ciudad photo').populate('asignados', 'nombre ciudad photo').exec(callback)
 	}
 	getByclientes(callback){
 		planSchema.find({estado:true, tipo:'cliente'}, null, {sort: {_id: -1}}, callback)
 	}
+ 
 	create(planData, id, callback){
 		let plan 			= new planSchema();
 		plan.tipo 		    = planData.tipo	

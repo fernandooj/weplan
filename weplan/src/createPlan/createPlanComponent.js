@@ -199,7 +199,7 @@ export default class createPlanComponent extends Component{
  		return this.state.usuariosAsignados.map((e, key)=>{
  			if (key<4) {
  				return(
-	 				<View>
+	 				<View  key={key}>
 	 					<Image source={{uri:e.photo}} style={CreatePlanStyle.avatar} />
 	 					<Image source={require('./agregado.png')} style={CreatePlanStyle.iconAgregado} />
 	 					<Text style={CreatePlanStyle.textoAgregado} >{e.nombre}</Text>
@@ -212,7 +212,7 @@ export default class createPlanComponent extends Component{
  		return this.state.restriccionesAsignadas.map((e, key)=>{
  			if (key<4) {
  				return(
-	 				<View>
+	 				<View key={key}>
 	 					<Image source={{uri:e.icon}} style={CreatePlanStyle.avatar} />
 	 					<Icon name='ban' allowFontScaling style={CreatePlanStyle.banResActiveAdd} />
 	 				</View>

@@ -29,7 +29,7 @@ router.get('/:clientes', (req, res)=>{
 			}
 		})	
 	}else{
-		planServices.getById(id, (err, planes)=>{
+		planServices.getById(req.params.clientes, (err, planes)=>{
 			if (err) {
 				res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
 			}else{
@@ -40,8 +40,8 @@ router.get('/:clientes', (req, res)=>{
 })
 
 
-router.get('/:getbyid/:planId', (req, res)=>{
-	planServices.getByIdPlan(req.params.planId, (err, planes)=>{
+router.get('/getbyid/:userId', (req, res)=>{
+	planServices.getByIdPlan(req.params.userId, (err, planes)=>{
 		if (err) {
 			res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
 		}else{
@@ -49,6 +49,20 @@ router.get('/:getbyid/:planId', (req, res)=>{
 		}
 	})
 })
+
+
+router.get('/getbyUserId/misPlanes', (req, res)=>{
+	console.log(req.session.usuario.user._id)
+	planServices.getById(req.session.usuario.user._id, (err, planes)=>{
+			if (err) {
+				res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
+			}else{
+				res.json({ status: 'SUCCESS', planes, code:1 });	
+			}
+		})
+})
+
+ 
 
 
 router.post('/', function(req, res){

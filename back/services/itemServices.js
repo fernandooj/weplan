@@ -47,56 +47,6 @@ class itemServices {
         }}, callback);	
 	}
 
-
-	// sumaPlan(callback){
- // 		itemSchema.aggregate([
-	//  		{
-	//  			$lookup: {
-	//  				from: "pagos",
-	//  				localField: "_id",
-	//  				foreignField: "itemId",
-	//  				as: "ItemData"
-	//  			}
-	//  		},
-	//  		{
-	//  			$unwind:{
-	//  				path: '$ItemData',
-	//  				preserveNullAndEmptyArrays:true
-	//  			}
-
-	//  		},
-	//  		{
-	//  			$project:{
-	//  				planId:1,
-	//  				monto:"$ItemData.monto"
-	//  			}
-	//  		},
-	//  		{
-	//  			$group:{
-	//  				_id:'$planId',
-	//  				total:{ $sum:"$monto" }
-	//  			}
-	//  		},
-	//  		{
-	//  			$lookup:{
-	//  				from:'plans',
-	//  				localField:"_id",
-	//  				foreignField:"_id",
-	//  				as:"PlanData",
-	//  			}
-	//  		},
-	//  		{
-	//  			$unwind:"$PlanData",
-	//  		},
-	//  		{
-	//  			$project:{
-	//  				total:1,
-	//  				nombre:"$PlanData.nombre"
-	//  			}
-	//  		},
-	// 	], callback);
- // 	}
-
  	sumaPlan(callback){
  		itemSchema.aggregate([
 	 		{

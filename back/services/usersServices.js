@@ -20,6 +20,10 @@ class userServices {
 	getActivos(callback){
 		User.find({ 'estado' :  'activo', 'acceso':'suscriptor' }, callback)
 	}
+	getOneUser(_id,callback){
+		User.findOne({_id},{nombre:1, photo:1, ciudad:1, tokenPhone:1}, callback)
+	}
+	
 	create(user, randonNumber, callback ){ 
 		let newUsuario = new User() 
 		newUsuario.username = user.username,

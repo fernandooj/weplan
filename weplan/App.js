@@ -24,6 +24,8 @@ import ajustesComponent       from './src/ajustes/ajustesComponent';
 import ajustesAmigosComponent from './src/ajustes/amigosComponent';
 import notificacionComponent  from './src/notificacion/notificacionComponent';
 import walletComponent        from './src/wallet/walletComponent';
+import perfilComponent        from './src/perfil/perfilComponent';
+import profileComponent       from './src/profile/profileComponent';
 
 
 
@@ -102,10 +104,12 @@ const NavigationApp = StackNavigator({
     encuesta:      {screen: encuestaComponent },
     notificacion:  {screen: notificacionComponent },
     wallet:        {screen: walletComponent },
+    perfil:        {screen: perfilComponent },
+    profile:       {screen: profileComponent },
 },{ headerMode: 'none', transitionConfig })
  
 const NavigationAppLogin = StackNavigator({  
-    Home:          {screen: MisPlanesComponent},
+    Home:          {screen: profileComponent}, 
     Login:         {screen: LoginComponent },
     Registro:      {screen: RegistroComponent },
     insertCode:    {screen: insertCodeComponent },
@@ -124,6 +128,8 @@ const NavigationAppLogin = StackNavigator({
     pagoDeuda:     {screen: pagoDeudaComponent },
     notificacion:  {screen: notificacionComponent },
     wallet:        {screen: walletComponent },
+    perfil:        {screen: perfilComponent },
+    profile:       {screen: profileComponent },
 },{ headerMode: 'none', transitionConfig })
 
 

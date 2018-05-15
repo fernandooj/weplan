@@ -149,16 +149,18 @@ export const ChatStyle = StyleSheet.create({
 	nombreTipoChatLeft:{
 		color:'#A5a5a5'
 	},
-	photo:{
+	btnAvatarC:{
 		alignSelf: 'flex-end', 
-		borderRadius:35,	
-		borderColor:'#9CB7F5',
-		borderWidth:5,
 		position:'relative',
 		top:-20
 	},
-	photoLeft:{
+	btnAvatarCLeft:{
 		alignSelf: 'flex-start',
+	},
+	photo:{
+		borderWidth:5,
+		borderRadius:35,	
+		borderColor:'#9CB7F5',
 	},
 	mensaje:{
 		padding: 20,

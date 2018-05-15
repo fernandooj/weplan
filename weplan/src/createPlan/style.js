@@ -74,6 +74,7 @@ export const CreatePlanStyle = StyleSheet.create({
 	cajaInpunts:{
 		flexDirection: 'row',
 		justifyContent: 'center',
+
 	},
 	iconInput:{
 		width:30,
@@ -185,7 +186,8 @@ export const CreatePlanStyle = StyleSheet.create({
 	/////////////////////////////////////////////////
 	contentAdd:{
 		flexDirection:'row',
-		marginTop:10
+		marginTop:10,
+		width:'66.5%' 
 	},
  	avatar:{
  		width:40,
