@@ -30,8 +30,8 @@ export default class profileComponent extends Component{
 	}
 	componentWillMount(){
 
-		//let userId = this.props.navigation.state.params
-		let userId = '5aec2ef4de7fa7694e1a1f3b'
+		let userId = this.props.navigation.state.params
+		//let userId = '5aec2ef4de7fa7694e1a1f3b'
 		axios.get('/x/v1/pla/plan/'+userId) 
 		.then((res)=>{
 			/////////////////	OBTENGO MIS PLANES
