@@ -5,16 +5,14 @@ import PropTypes          from 'prop-types';
 import Humburger          from './humburger/Humburger';
 import LeftNav            from './leftNav/LeftNav';
 import RightNav           from './rightNav/RightNav';
-import { Link }       from 'react-router-dom';
-
-import { slide as Menu } from 'react-burger-menu'
 
 const NavigationBar = ({
   brand,
   navModel,
   handleLeftNavItemClick,
-  handleRightNavItemClick
-}) => {
+  handleRightNavItemClick,
+  showMenu
+}) => { 
   return (
     <nav className="navbar navbar-default">
       <div className="containersCustom">
@@ -23,7 +21,11 @@ const NavigationBar = ({
             <Humburger />
           }
           <a className="navbar-brand">
-             <Humburger />
+           { 
+              showMenu
+              ?<p>Weplan</p>
+              :null
+            }
           </a>
         </div>
         <div
@@ -38,21 +40,17 @@ const NavigationBar = ({
             }
           </ul>
           <ul className="nav navbar-nav navbar-right">
-            {
-              <RightNav
+            { 
+              showMenu
+              ?<RightNav
                 rightLinks={navModel.rightLinks}
                 onRightNavButtonClick={handleRightNavItemClick}
               />
+              :null
             }
           </ul>
         </div>
       </div>
-      <Menu className="bm-menu">
-        <Link to='/user' onClick={this.handleLeftNavItemClick}>Usuarios</Link>
-        <Link to='/planes' onClick={this.handleLeftNavItemClick}>Planes</Link>
-        <Link to='/categorias' onClick={this.handleLeftNavItemClick}>Categorias</Link>
-        <a onClick={ this.showSettings } className="menu-item--small" href="">Settings</a>
-      </Menu>
     </nav>
   );
 };

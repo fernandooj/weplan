@@ -1,28 +1,26 @@
 {
-  "brand"       : "React Bootstrap Starter",
+  "brand"       : "Qhse Tools",
   "leftLinks"   : [],
   "rightLinks"  : [
     {
       "label" : "Home",
-      "link"  : "/"
+      "link"  : "/dashboard"
+    },
+ 
+    {
+      "label":   "Usuarios",
+      "link":    "/usuario",
+      "view":    "usuario"
     },
     {
-      "label":      "Protected",
-      "link":       "/protected",
-      "view":       "protected",
-      "isRouteBtn": true
+      "label":      "Planes",
+      "link":       "/plan",
+      "view":       "plan"
     },
     {
-      "label":      "About",
-      "link":       "/about",
-      "view":       "about",
-      "isRouteBtn": true
-    },
-    {
-      "label":      "Disconnect",
-      "link":       "/login",
-      "view":       "login",
-      "isRouteBtn": true
+      "label":      "Estadisticas",
+      "link":       "/estadistica",
+      "view":       "estadistica"
     }
   ]
 }

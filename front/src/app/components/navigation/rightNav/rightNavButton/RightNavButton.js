@@ -20,17 +20,13 @@ class RightNavButton extends PureComponent {
       <li>
         <Link
           to={link}
-          onClick={this.handleRightNavItemClick}>
+      >
           {label}
         </Link>
       </li>
     );
   }
 
-  handleRightNavItemClick = (event) => {
-    const { onClick, viewName } = this.props;
-    onClick(event, viewName);
-  }
 }
 
 export default RightNavButton;

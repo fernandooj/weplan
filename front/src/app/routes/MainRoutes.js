@@ -4,21 +4,24 @@ import React        from 'react';
 import {
   Route,
   Switch
-}                   from 'react-router';
-import User         from '../views/user/User';
-import Planes       from '../views/planes/Planes';
-import Dashboard    from '../views/dashboard/Dashboard';
-import Protected    from '../views/protected/Protected';
-import PrivateRoute from '../components/privateRoute/PrivateRoute';
+}                 from 'react-router';
+import Home       from '../pages/home/Home';
+import Dashboard  from '../pages/dashboard/Dashboard';
+ 
+import Usuario    from '../pages/usuario/Usuario';
+import Plan       from '../pages/plan/Plan';
+ 
+ 
 
 const MainRoutes = () => {
   return (
     <Switch>
-      <Route exact path="/user" component={User} />
+      <Route exact path="/" component={Home} />
       <Route path="/dashboard" component={Dashboard} />
-      <Route path="/planes" component={Planes} />
-      {/* private views: need user to be authenticated */}
-      <PrivateRoute path="/protected" component={Protected} />
+ 
+      <Route path="/usuario/" component={Usuario} />
+      <Route path="/plan/"    component={Plan} />
+ 
     </Switch>
   );
 };

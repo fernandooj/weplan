@@ -1,0 +1,49 @@
+/*  IPORTANT: Comment this way  and not JS way "//" */
+
+
+/*  better naming with camelCase than kebab-case */
+
+.homeInfo {
+  .mainTitle {
+    color: #222 !important;
+    font-weight: 800;
+  }
+  .lightNote {
+    font-size: 0.7em;
+  }
+}
+.redes{
+	display: flex;
+	div{
+		width: 27%;
+    	margin: auto;
+		i{
+			margin-right: 11px;
+			border-right: 1px solid #0000002b;
+			padding: 10px;
+			color:#ffffff;
+			float:left;
+			font-size:28px;
+		}
+		p{
+			margin:0;
+			color:#ffffff;
+			font-size: 18px;
+			padding: 10px;
+		}
+	}
+}
+.facebookBtn{
+	background:#3b5998;
+	margin-right: 9%;
+}
+
+.googleBtn{
+	background:#d34836;
+}
+.home{
+	margin: auto;
+    width: 100px;
+    display: flex;
+    margin-bottom: 14px;
+}

@@ -11,18 +11,57 @@ import {
 import navigationModel    from '../../config/navigation.json';
 import MainRoutes         from '../../routes/MainRoutes';
 import styles             from './app.scss';
+import {connect}      from 'react-redux'
+import { notification } from 'antd';
+import {perfil}      from '../../redux/actionCreator'
+import store from '../../redux/store.js'
+ 
+store.dispatch(perfil())
+
+const alertaLogin = (type, mensaje) => {
+  notification[type]({
+    message: 'Ops!!',
+    description: mensaje,
+  });
+};
 
 class App extends Component {
   state = { navModel: navigationModel };
 
   render() {
     const { navModel } = this.state;
+    let showMenu=false
+    const { code, usuario } = this.props.usuario
+   
 
+    if (this.props.perfil.code==1) {
+      showMenu=true
+      if (this.props.location.pathname=='/'){
+        //window.location.href = '/dashboard'
+        this.props.history.push("/dashboard");
+      }
+    }else if(this.props.perfil.code==0){
+      if (this.props.location.pathname!=='/'){
+       this.props.history.push("/");
+      }
+    }
+
+    if (code==1) {
+      //this.props.history.push("/dashboard");
+      window.location.href = '/dashboard'
+    }else if(code==0){
+      alertaLogin('error', 'Tus datos son incorrectos, verificalos!!')
+    }
+    else if(code==2){
+      alertaLogin('error', 'Este usuario no existe!!')
+    }
     return (
       <div id="appContainer">
         <NavigationBar
           brand={navModel.brand}
           navModel={navModel}
+          showMenu={showMenu}
+          infoUser={this.props.perfil.usuario}
           handleLeftNavItemClick={this.handleLeftNavItemClick}
           handleRightNavItemClick={this.handleRightNavItemClick}
         />
@@ -37,15 +76,14 @@ class App extends Component {
     );
   }
 
-  /* eslint-disable no-unused-vars*/
-  handleLeftNavItemClick = (event, viewName) => {
-    // something to do here?
-  }
-
-  handleRightNavItemClick = (event, viewName) => {
-    // something to do here?
-  }
-  /* eslint-enable no-unused-vars*/
 }
 
-export default withRouter(App);
+const mapStateToProps = state=>{
+  return{
+    usuario:state.usuario,
+    perfil: state.perfil
+  }
+}
+
+export default connect(mapStateToProps)(withRouter(App));
+ 
