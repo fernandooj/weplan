@@ -1,0 +1,66 @@
+.contenedor{
+	background:url('/public/assets/img/fondoCel.png');
+	background-size: cover;
+    position: absolute;
+    width: 310px;
+    height: 596px;
+    top: -50px;
+    left: -24px;
+}
+.imagen{
+    background-size: cover;
+    margin: auto;
+    position: relative;
+    z-index: 0;
+    width: 259px;
+    height: 534px;
+    margin-top: 62px;
+}
+.menu{
+	position: relative;
+    background: rgba(253, 253, 253, 0.85);
+    top: 50px;
+    left: 28px;
+    width: 254px;
+    border-radius: 0px 0px 31px 31px;
+	div{
+		width: 33%;
+    display: inline-block;
+    text-align: center;
+    padding: 5px;
+	}
+	img{
+		width:40px;
+	}
+}
+.footer{
+    position: absolute;
+    bottom: 20px;
+    background: rgba(12, 12, 12, 0.50196);
+    width: 265px;
+    left: 20px;
+    z-index: -1;
+	img{
+		width: 273px;
+		position: relative;
+		left: -2px;
+	}
+	h1{
+		color: white;
+		margin: 0;
+		margin-left: 21px;
+	}
+	h2{
+		color: white;
+		font-size: 16px;
+		margin: 0;
+		margin-left: 22px;
+	}
+	.iconos{
+		img{
+			width: 37px;
+			margin-left: 16px;
+			padding: 0 0 20px 0;
+		}
+	}
+}

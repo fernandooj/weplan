@@ -19,7 +19,7 @@ class PlanComponent extends React.Component {
     loading: true,
     filteredInfo: null,
     sortedInfo: null,
-    showModal:true
+    showModal:false
   };
   handleChange = (pagination, filters, sorter) => {
     console.log('Various parameters', pagination, filters, sorter);
@@ -45,7 +45,12 @@ class PlanComponent extends React.Component {
       },
     });
   }
-
+  handleOk(){
+    this.setState({
+      ModalTitle: 'Creando Plan...',
+      showModal: false,
+    });
+  }
   render() {
     let { sortedInfo, filteredInfo, showModal } = this.state;
     sortedInfo = sortedInfo || {};
@@ -70,7 +75,7 @@ class PlanComponent extends React.Component {
       key: 'tipo',
       filters: [
         { text: 'suscripcion', value: 'suscripcion' },
-        { text: 'Pago', value: 'Pago' },
+        { text: 'pago', value: 'pago' },
       ],
       filteredValue: filteredInfo.tipo || null,
       onFilter: (value, record) => record.tipo.includes(value),
@@ -86,7 +91,12 @@ class PlanComponent extends React.Component {
               <Breadcrumb.Item><a href="">Planes</a></Breadcrumb.Item>
             </Breadcrumb>
           <Button type="primary" icon="plus" size='large' style={{float:'right', 'marginBottom':30}} onClick={()=>this.setState({showModal:true})}>Nuevo</Button>
-          <CrearPlan showModal={showModal} close={(e)=>this.setState({showModal:e})} />
+          <CrearPlan 
+            showModal={showModal} 
+            close={this.handleOk.bind(this)} 
+            handleSubmit={(campos, restricciones)=>this.props.handleSubmit(campos, restricciones)} 
+            insertaImagenes={(imagen)=>this.props.insertaImagenes(imagen)} 
+          />
           </div>
           <Table dataSource={this.props.planes} columns={columns} rowSelection={rowSelection} rowKey='_id'  onChange={this.handleChange} />
         </Col>

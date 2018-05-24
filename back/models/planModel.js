@@ -12,7 +12,7 @@ let planSchema = mongoose.Schema({
 	tipo		  : { type: String},
 	estado		  : { type: String},
 	descripcion   : { type : String },
-	imagen        : { type : String },
+	imagen        : [{ type : String }],
 	restricciones : [{type:String}],
 	idUsuario     : { type: Schema.Types.ObjectId, ref:'User'},
 	fechaLugar    : {type: String}, 

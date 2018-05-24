@@ -20,7 +20,7 @@ export default class ChatComponent extends Component{
 
 	componentWillMount(){
 		let planId = this.props.navigation.state.params	
-		//let planId = '5af89758688e10060e126850'	
+		//let planId = '5b0657248310944d15d93a13'	
 		console.log(planId) 
 		this.socket = SocketIOClient(URL);
 		this.socket.on('userJoined'+planId, this.onReceivedMessage);
@@ -29,7 +29,7 @@ export default class ChatComponent extends Component{
 		axios.get('/x/v1/pla/plan/getbyid/'+planId) 
 		.then((res)=>{
 			console.log(res.data)
-			this.setState({planId, imagen: res.data.message[0].imagen, nombrePlan: res.data.message[0].nombre, planId})
+			this.setState({planId, imagen: res.data.message[0].imagen[0], nombrePlan: res.data.message[0].nombre, planId})
 		})
 		.catch((err)=>{
 			console.log(err)
@@ -65,7 +65,7 @@ export default class ChatComponent extends Component{
 						nombre 		 : e.userId.nombre,
 						photo 		 : e.userId.photo,
 						token 		 : e.userId.tokenPhone,
-						mensaje 	    : e.mensaje,
+						mensaje 	 : e.mensaje,
 						asignadoItem : e.itemId ?e.itemId.asignados.includes(this.state.id) :null,
 						esperaItem   : e.itemId ?e.itemId.espera.includes(this.state.id) :null,
 						itemId 		 : e.itemId ?e.itemId._id :null ,
@@ -119,14 +119,14 @@ export default class ChatComponent extends Component{
 		return(
 			<View>
 				<View style={ChatStyle.cabezera}>
-					<TouchableOpacity onPress={()=> navigate('misPlanes')} style={ChatStyle.iconContenedor}>
+					<TouchableOpacity onPress={() => navigate('misPlanes')} style={ChatStyle.iconContenedor}>
 						<Text style={ChatStyle.regresar}>&#60;</Text>		
 					</TouchableOpacity> 
 					<Text style={ChatStyle.nombrePlan}>{nombrePlan ?nombrePlan.substring(0, 60) :''}</Text>
-					<TouchableOpacity onPress={()=> navigate('encuesta', planId)}  style={ChatStyle.iconContenedor}>
+					<TouchableOpacity onPress={() => navigate('encuesta', planId)}  style={ChatStyle.iconContenedor}>
 						<Image source={require('./preguntar.png')} style={ChatStyle.icon}  />
 					</TouchableOpacity>
-					<TouchableOpacity onPress={()=> navigate('item', planId)} style={ChatStyle.iconContenedor}>
+					<TouchableOpacity onPress={() => navigate('item', planId)} style={ChatStyle.iconContenedor}>
 						<Image source={require('./cuentas.png')} style={ChatStyle.icon}  />
 					</TouchableOpacity>
 				</View>
@@ -326,8 +326,6 @@ export default class ChatComponent extends Component{
 										}
 									</TouchableOpacity>
 								</View> 
-
-								  
 							}	
 						</View>
 					</View>
@@ -338,7 +336,6 @@ export default class ChatComponent extends Component{
 	}
 
 	render(){
-		console.log(this.state.mensajes)
 		return(
 			<View style={ChatStyle.contenedorGeneral} > 
 				{this.renderCabezera()}
@@ -351,8 +348,8 @@ export default class ChatComponent extends Component{
 				</ImageBackground>
 				<View style={ChatStyle.footer}>
 					<View style={ChatStyle.footer1}>
-						<TouchableOpacity onPress={() => this.opciones.bind(this)} style={ChatStyle.opciones}>
-							<Image source={require('./opciones.png')} style={{width:'100%'}}  />
+						<TouchableOpacity onPress={() => this.opciones.bind(this)} style={ChatStyle.opcionesBtn}>
+							<Image source={require('./opciones.png')} style={ChatStyle.opciones}  />
 						</TouchableOpacity>
 						<TextInput
 							style={ChatStyle.textarea}
@@ -363,8 +360,8 @@ export default class ChatComponent extends Component{
 							underlineColorAndroid='transparent'
 							ref={input => { this.textInput = input }}
 						/>
-						<TouchableOpacity onPress={() => this.handleSubmit(this)}  style={ChatStyle.enviar} >
-							<Image source={require('./enviar.png')} style={{width:'100%'}}  />
+						<TouchableOpacity onPress={() => this.handleSubmit(this)}  style={ChatStyle.enviarBtn} >
+							<Image source={require('./enviar.png')} style={ChatStyle.enviar}  />
 						</TouchableOpacity>
 					</View>
 				</View>

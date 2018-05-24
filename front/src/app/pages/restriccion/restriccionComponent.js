@@ -8,9 +8,7 @@ const Option = Select.Option;
  
 
 class RestriccionComponent extends React.Component {
-  handleChange(value) {
-    console.log(`selected ${value}`);
-  }
+ 
   listadoRestricciones(){
     return this.props.restriccion.map(e=>{
       return (
@@ -26,7 +24,7 @@ class RestriccionComponent extends React.Component {
           mode="tags"
           style={{ width: '100%' }}
           placeholder="Restricciones"
-          onChange={this.handleChange}
+          onChange={this.props.restriccionesAgregadas}
         >
            {this.listadoRestricciones()}
         </Select>
@@ -42,4 +40,4 @@ class RestriccionComponent extends React.Component {
 }
 
  
-export default Form.create()(RestriccionComponent);
+export default RestriccionComponent;

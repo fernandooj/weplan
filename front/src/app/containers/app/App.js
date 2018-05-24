@@ -8,7 +8,6 @@ import {
   NavigationBar,
   BackToTop
 }                         from '../../components';
-import navigationModel    from '../../config/navigation.json';
 import MainRoutes         from '../../routes/MainRoutes';
 import styles             from './app.scss';
 import {connect}      from 'react-redux'
@@ -26,10 +25,8 @@ const alertaLogin = (type, mensaje) => {
 };
 
 class App extends Component {
-  state = { navModel: navigationModel };
 
   render() {
-    const { navModel } = this.state;
     let showMenu=false
     const { code, usuario } = this.props.usuario
    
@@ -58,8 +55,6 @@ class App extends Component {
     return (
       <div id="appContainer">
         <NavigationBar
-          brand={navModel.brand}
-          navModel={navModel}
           showMenu={showMenu}
           infoUser={this.props.perfil.usuario}
           handleLeftNavItemClick={this.handleLeftNavItemClick}

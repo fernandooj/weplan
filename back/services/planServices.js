@@ -15,7 +15,7 @@ class planServices {
 		planSchema.find({$or:[{'asignados':asignados, estado:true},{'idUsuario':asignados, estado:true}]}, null, {sort: {_id: -1}}).populate('idUsuario', 'nombre ciudad photo').populate('asignados', 'nombre ciudad photo').exec(callback)
 	}
 	getByclientes(callback){
-		planSchema.find({estado:true, tipo:'cliente'}, null, {sort: {_id: -1}}, callback)
+		planSchema.find({estado:true, tipo:'pago'}, null, {sort: {_id: -1}}, callback)
 	}
  
 	create(planData, id, callback){

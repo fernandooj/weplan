@@ -11,7 +11,7 @@ store.dispatch(obtieneRestriccion())
 class Restriccion extends Component {
 	render(){
 		return(
-			<RestriccionComponent restriccion={this.props.restriccion} lista={this.props.lista} />
+			<RestriccionComponent restriccion={this.props.restriccion} lista={this.props.lista} restriccionesAgregadas={this.props.restriccionesAgregadas} />
 		)
 	}
 }
@@ -23,20 +23,7 @@ const mapStateToProps = state=>{
     restriccion:state.restriccion
   }
 }
-const mapDispatchToProps = dispatch=>{
-  return{
-    handleSubmit(e, validateFields){
-      e.preventDefault()
-      validateFields((err, values) => {
-        console.log(values)
-        if (!err) {
-          store.dispatch(login(values))
-        }
-      });
-      
-    }
-  }
-}
+ 
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Restriccion);
+export default connect(mapStateToProps)(Restriccion);

@@ -45,7 +45,7 @@ export default class MisPlanesComponent extends Component{
 		if(filteredData.length>0){
 			return filteredData.map((e, key)=>{
 			return  <TouchableOpacity onPress={()=>this.handleSubmit(e.id)} key={key} style={MisPlanesStyle.boxPlan}>
-					<Image source={{uri: e.imagen}} style={MisPlanesStyle.background} />
+					<Image source={{uri: e.imagen[0]}} style={MisPlanesStyle.background} />
 					<View style={MisPlanesStyle.boxPlan1} >
 						<Text style={e.total>0 ?MisPlanesStyle.nombre :[MisPlanesStyle.nombre, MisPlanesStyle.debe]}>{e.nombrePlan.length<27 ?e.nombrePlan :e.nombrePlan.substring(0, 27)+' ...'}</Text>
 						<Text style={MisPlanesStyle.fechaLugar}>{e.fecha}</Text>

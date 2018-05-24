@@ -18,6 +18,16 @@
       "view":       "plan"
     },
     {
+      "label":      "Categoria",
+      "link":       "/categoria",
+      "view":       "categoria"
+    },
+    {
+      "label":      "Restriccion",
+      "link":       "/restriccion",
+      "view":       "restriccion"
+    },
+    {
       "label":      "Estadisticas",
       "link":       "/estadistica",
       "view":       "estadistica"

@@ -1,3 +1,4 @@
+
 import React, {Component} from 'react'
 import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native'
 import {ItemStyle} from '../item/style'

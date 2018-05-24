@@ -69,7 +69,12 @@ export default class TakePhotoComponent extends Component{
 						height={this.props.alto}
 						source={{uri : URL+'public/images/'+this.props.fuente }}
 					/>
-					:<Image width={this.props.ancho} height={this.props.alto} style={{flex:1,borderRadius:this.props.ancho/2}} source={this.state.avatarSource} />
+					:<Image 
+						width={!this.props.sinBorder ?this.props.ancho :this.props.ancho2} 
+						height={!this.props.sinBorder ?this.props.alto :this.props.alto2} 
+						style={!this.props.sinBorder ?{flex:1, borderRadius:this.props.ancho/2}: {flex:1}} 
+						source={this.state.avatarSource}
+					/>
 					}
 					</View>
 			</TouchableOpacity>

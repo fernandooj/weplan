@@ -25,10 +25,28 @@ const reducer = (state, action)=>{
 			planes:action.planes
 		}
 	}
+	if (action.type==='OBTENER_UN_PLAN') {
+		return{
+			...state,
+			unPlan:action.unPlan
+		}
+	}
 	if (action.type==='OBTENER_RESTRICCION') {
 		return{
 			...state,
 			restriccion:action.restriccion
+		}
+	}
+	if (action.type==='OBTENER_CATEGORIA') {
+		return{
+			...state,
+			categoria:action.categoria
+		}
+	}
+	if (action.type==='CREAR_PLAN') {
+		return{
+			...state,
+			planCreado:action.planCreado
 		}
 	}
 	return state
@@ -42,4 +60,5 @@ const logger = store => next => action => {
 }
 
 
-export default createStore(reducer, { usuario:[], perfil:[],  usuarios:[], planes:[], restriccion:[] }, applyMiddleware(logger, thunk))
+export default createStore(reducer, { usuario:[], perfil:[], usuarios:[], planes:[], restriccion:[], categoria:[], categorias:[], 
+	categoriaCreada:[], unPlan:[]}, applyMiddleware(logger, thunk))

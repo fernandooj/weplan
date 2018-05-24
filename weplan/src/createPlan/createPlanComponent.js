@@ -66,7 +66,7 @@ export default class createPlanComponent extends Component{
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} > 
 				<CabezeraComponent navigate={navigate} url={'inicio'} parameter={this.state.planId} />
 				<View style={CreatePlanStyle.encabezadoPlan}>
-					<TakePhotoComponent fuente={'cam.png'} ancho={170} alto={120} updateImagen={(imagen) => {this.setState({imagen})}} />
+					<TakePhotoComponent fuente={'cam.png'} ancho={170} alto={120} ancho2={170} alto2={120} updateImagen={(imagen) => {this.setState({imagen})}} sinBorder />
 					<TextInput
 						style={CreatePlanStyle.input}
 						onChangeText={(nombre) => this.setState({nombre,iconCreate:false})}
@@ -146,7 +146,9 @@ export default class createPlanComponent extends Component{
 						    	<Text style={restricciones.length>0 ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>{restricciones.length>0 ?'tienes: '+restricciones.length+' Restricciones' :'Restricciones'}</Text>
 						    </TouchableOpacity>
 					    	:<View style={CreatePlanStyle.contentAdd}>
-						    	{this.renderRestriccionesAsignados()} 
+					    		<View style={CreatePlanStyle.agregadosContenedor}>
+						    		{this.renderRestriccionesAsignados()} 
+						    	</View>
 						    	<TouchableOpacity onPress={() => this.setState({restriccion:true})} style={CreatePlanStyle.addBtn}>
 						    		<Image source={require('./add.png')} style={CreatePlanStyle.add} />
 						    	</TouchableOpacity>
@@ -169,7 +171,9 @@ export default class createPlanComponent extends Component{
 						    	<Text style={[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>{asignados.length>0 ?'tienes: '+asignados.length+' Amigos' :' Invitar Amigos'}</Text>
 						    </TouchableOpacity>
 						    :<View style={CreatePlanStyle.contentAdd}>
-						    	{this.renderUsuariosAsignados()} 
+						    	<View style={CreatePlanStyle.agregadosContenedor}>
+						    		{this.renderUsuariosAsignados()} 
+						    	</View>
 						    	<TouchableOpacity onPress={() => this.setState({adjuntarAmigos:true})} style={CreatePlanStyle.addBtn}>
 						    		<Image source={require('./add.png')} style={CreatePlanStyle.add} />
 						    	</TouchableOpacity>
@@ -199,7 +203,7 @@ export default class createPlanComponent extends Component{
  		return this.state.usuariosAsignados.map((e, key)=>{
  			if (key<4) {
  				return(
-	 				<View  key={key}>
+	 				<View key={key} >
 	 					<Image source={{uri:e.photo}} style={CreatePlanStyle.avatar} />
 	 					<Image source={require('./agregado.png')} style={CreatePlanStyle.iconAgregado} />
 	 					<Text style={CreatePlanStyle.textoAgregado} >{e.nombre}</Text>
@@ -212,7 +216,7 @@ export default class createPlanComponent extends Component{
  		return this.state.restriccionesAsignadas.map((e, key)=>{
  			if (key<4) {
  				return(
-	 				<View key={key}>
+	 				<View key={key} >
 	 					<Image source={{uri:e.icon}} style={CreatePlanStyle.avatar} />
 	 					<Icon name='ban' allowFontScaling style={CreatePlanStyle.banResActiveAdd} />
 	 				</View>

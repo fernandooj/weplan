@@ -7,10 +7,33 @@
 }
 
 nav{
-	background-color:#148dc9 !important;
+	background:#eee;
+	margin-bottom: 30px;
 	a{
-		color:white !important;
-		font-size:18px;
-		padding:16px 15px !important
+		color:white ;
+		font-size: 18px;
+		display: inline !important;
+		margin-left:12px !important
+	}
+	img{
+		width: 100px;
+		margin-left: 20px;
+	}
+	section{
+		display:inline-block;
+	}
+	section:last-child{
+		float: right;
+	}
+	ul{
+		margin-top: 28px !important;
+		background: #eee !important;
+	}
+	i{
+		margin:0 !important;
+		font-size: 18px;
+	}
+	span{
+		margin-right:10px !important
 	}
 }

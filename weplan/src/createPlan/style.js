@@ -209,9 +209,14 @@ export const CreatePlanStyle = StyleSheet.create({
  		fontSize:9,
  		alignItems: 'center',
  	},
+ 	agregadosContenedor:{
+ 		minWidth:'55%',
+ 		flexDirection:'row',
+ 	},
  	addBtn:{
  		width:40,
  		height:40,
+ 		alignSelf: 'flex-end', 
  	},
  	add:{
  		width:40,

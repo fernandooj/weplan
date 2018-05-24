@@ -76,18 +76,69 @@ router.post('/', function(req, res){
 	})
 })
 
+// router.put('/', (req, res)=>{
+// 	console.log(req.body)
+// 	let ruta = null 
+// 	if (req.files.imagen) {
+// 		let extension = req.files.imagen.name.split('.').pop()
+// 		let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
+// 		let fullUrl = '../../front/docs/public/uploads/plan/'+fecha+'_'+randonNumber+'.'+extension
+// 		ruta = req.protocol+'://'+req.get('Host') + '/public/uploads/plan/'+fecha+'_'+randonNumber+'.'+extension
+// 		fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))
+// 	}else{
+// 		ruta = req.protocol+'://'+req.get('Host') + '/plan.png'
+// 	}
+// 	planServices.uploadImage(req.body.id, ruta, (err, plan)=>{
+// 		if(err){
+// 			res.json({err})
+// 		}else{
+// 			res.json({ status: 'SUCCESS', message: plan, code:1 });	
+			
+// 		}
+// 	})
+// })
+
+router.put('/web', (req, res)=>{
+	console.log(req.files)
+	let id = req.body.id[0].length > 2 ?req.body.id[0] :req.body.id 
+
+	let ruta = [] 
+	if (req.files.imagen) {
+		req.files.imagen.forEach(e=>{
+			let extension = e.name.split('.').pop()
+			let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
+			let fullUrl = '../../front/docs/public/uploads/plan/'+fecha+'_'+randonNumber+'.'+extension
+			let rutas = req.protocol+'://'+req.get('Host') + '/public/uploads/plan/'+fecha+'_'+randonNumber+'.'+extension
+			fs.rename(e.path, path.join(__dirname, fullUrl))
+			ruta.push(rutas)
+		})	
+	}else{
+		ruta = req.protocol+'://'+req.get('Host') + '/plan.png'
+	}
+	planServices.uploadImage(id, ruta, (err, plan)=>{
+		if(err){
+			res.json({err})
+		}else{
+			res.json({ status: 'SUCCESS', message: plan, code:1 });	
+			
+		}
+	})
+})
+
 router.put('/', (req, res)=>{
-	let ruta = null 
+	let id = req.body.id
+	let ruta = [] 
 	if (req.files.imagen) {
 		let extension = req.files.imagen.name.split('.').pop()
 		let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
 		let fullUrl = '../../front/docs/public/uploads/plan/'+fecha+'_'+randonNumber+'.'+extension
-		ruta = req.protocol+'://'+req.get('Host') + '/public/uploads/plan/'+fecha+'_'+randonNumber+'.'+extension
+		let rutas = req.protocol+'://'+req.get('Host') + '/public/uploads/plan/'+fecha+'_'+randonNumber+'.'+extension
 		fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))
+		ruta.push(rutas)
 	}else{
 		ruta = req.protocol+'://'+req.get('Host') + '/plan.png'
 	}
-	planServices.uploadImage(req.body.id, ruta, (err, plan)=>{
+	planServices.uploadImage(id, ruta, (err, plan)=>{
 		if(err){
 			res.json({err})
 		}else{

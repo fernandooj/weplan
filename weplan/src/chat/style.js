@@ -34,7 +34,7 @@ export const ChatStyle = StyleSheet.create({
 		width:60,
 		height:60,
 		position:'relative',
-		bottom:-8
+		bottom:-5
 	},
 	icon:{
 		width:50,
@@ -71,7 +71,7 @@ export const ChatStyle = StyleSheet.create({
 		justifyContent: 'flex-start',
 	},
 	textarea:{
-		width:screenWidth/1.6,
+		width:'60%',
 		height:40,
 		color:'#969696',
 		paddingTop:0,
@@ -84,11 +84,18 @@ export const ChatStyle = StyleSheet.create({
 		fontSize:17,
 		borderRadius: 50,
 	},
+	opcionesBtn:{
+		width:'17%'
+	},
 	opciones:{
-		width:screenWidth/8,
+		width:'100%',
+	},
+	enviarBtn:{
+		width:'17%'
 	},
 	enviar:{
-		width:screenWidth/6,
+		width:'90%',
+		height:32
 	},
 	contenedorChat:{
 		flex:.4,
@@ -142,7 +149,7 @@ export const ChatStyle = StyleSheet.create({
 	},
 	nombreTipoChat:{
 		color:'#A8A8A8',
-		fontSize:19,
+		fontSize:15,
 		padding:10,
 		paddingRight:4
 	},

@@ -61,7 +61,7 @@ export default class LoginComponent extends Component{
 							if (e.data.user.categorias.length>1) {
 								navigate('inicio') 
 							}else{
-								navigate('editPerfil1') 
+								navigate('editPerfil2') 
 							}
 							
 						}
@@ -92,7 +92,7 @@ export default class LoginComponent extends Component{
 						if (e.data.user.categorias.length>1) {
 							navigate('inicio') 
 						}else{
-							navigate('editPerfil1') 
+							navigate('editPerfil2') 
 						}
 					}
 				})

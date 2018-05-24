@@ -24,6 +24,7 @@ export default class homeComponent extends Component{
 	componentWillMount(){
 		axios.get('/x/v1/pla/plan/clientes')
 		.then(e=>{
+			console.log(e.data)
 			this.setState({planes:e.data.message})
 		})
 		.catch(err=>{
@@ -49,16 +50,13 @@ export default class homeComponent extends Component{
 	      let result = await FCM.requestPermissions({badge: false, sound: true, alert: true});
 	    } catch(e){
 	      console.error(e);
-	    }
-
-	     
- 
-	  }
+	    } 
+	}
 
 	renderPlans(){
 		return this.state.planes.map((e, key)=>{
 			return(
-				<ImageBackground source={{uri : e.imagen}} style={HomeStyle.fondo} key={key}>
+				<ImageBackground source={{uri : e.imagen[0]}} style={HomeStyle.fondo} key={key}>
 					<View style={HomeStyle.footer}>
 						<View style={HomeStyle.footer1}>
 							<Text style={HomeStyle.textFooter1}>{e.nombre}</Text>
@@ -66,11 +64,11 @@ export default class homeComponent extends Component{
 						</View>
 						<Text style={HomeStyle.textFooter2}>{e.descripcion}</Text>
 						<View style={HomeStyle.footer2}>
-							<Image source={require('./icon5.png')} style={HomeStyle.iconFooter} />
+							{/*<Image source={require('./icon5.png')} style={HomeStyle.iconFooter} />*/}
 							<Image source={require('./icon6.png')} style={HomeStyle.iconFooter} />
 							<Image source={require('./icon7.png')} style={HomeStyle.iconFooter} />
-							<Image source={require('./icon8.png')} style={HomeStyle.iconFooter1} />
-							<Text style={HomeStyle.textFooter3}>10 likes</Text>
+							{/*<Image source={require('./icon8.png')} style={HomeStyle.iconFooter1} />*/}
+							{/*<Text style={HomeStyle.textFooter3}>10 likes</Text>*/}
 						</View>
 						
 					</View> 
@@ -107,7 +105,7 @@ export default class homeComponent extends Component{
 						<Image source={require('./icon1.png')} style={HomeStyle.iconHead} />
 					</TouchableOpacity>
 					<TouchableOpacity onPress={()=> this.updatePlanes()} >
-						<Image source={require('./icon2.png')} style={HomeStyle.iconHead} />
+						<Image source={require('./icon2.png')} style={HomeStyle.iconHead2} />
 					</TouchableOpacity>
 					<TouchableOpacity>
 						<Image source={require('./icon3.png')} style={HomeStyle.iconHead} />

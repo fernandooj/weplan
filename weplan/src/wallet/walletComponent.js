@@ -43,7 +43,7 @@ export default class walletComponent extends Component{
 			return filteredData.map((e, key)=>{
 			return  <TouchableOpacity onPress={()=>this.handleSubmit(this)} key={key}>
 					<View style={walletStyle.item}>
-						<Image source={{uri: e.imagen}} style={walletStyle.imagen} />
+						<Image source={{uri: e.imagen[0]}} style={walletStyle.imagen} />
 						<View style={walletStyle.boxPlan1} >
 							<Text style={walletStyle.nombre}>{e.nombrePlan.length<30 ?e.nombrePlan :e.nombrePlan.substring(0, 30)+' ...'}</Text>
 							<Text style={walletStyle.fechaLugar}>By {e.nombreUsuario} </Text>

@@ -4,6 +4,7 @@ var screenWidth = Dimensions.get('window').width;
 export const HomeStyle = StyleSheet.create({
 	contenedor:{
 		flex: 1,
+		backgroundColor:"#ffffff",
 	},
 	contenedorPlan:{
 		flex: .5,	
@@ -28,8 +29,16 @@ export const HomeStyle = StyleSheet.create({
 	 	height:40,
 	 	marginTop:10,
 	 	marginBottom:10,
-	 	marginLeft:40,
-	 	marginRight:40
+	 	marginLeft:35,
+	 	marginRight:35
+	},
+	iconHead2:{
+	 	width:50,
+	 	height:40,
+	 	marginTop:10,
+	 	marginBottom:10,
+	 	marginLeft:35,
+	 	marginRight:35
 	},
 	fondo:{
 		height:screenHeight-(screenHeight/7.3),
@@ -38,7 +47,7 @@ export const HomeStyle = StyleSheet.create({
 		position:'absolute',
 		bottom:0,
 		width:screenWidth,
-		backgroundColor:"rgba(0,0,0,0.66)",  
+		backgroundColor:"rgba(0,0,0,0.56)",  
 		paddingLeft:20,
 	 
 	},
@@ -67,27 +76,27 @@ export const HomeStyle = StyleSheet.create({
 	},
 	footer3:{
 		flexWrap: 'wrap', 
-		backgroundColor:"rgba(0,0,0,0)",
+		backgroundColor:"#ffffff",
 		alignItems: 'center',
 	},
 	btnFooter3:{
 		alignItems: 'center',
-		width:'14%', 
-		marginLeft:'1.5%', 
-		marginRight:'1.5%',
-		paddingTop:5, 
-		paddingBottom:5 
+		width:'18%', 
+		marginLeft:'1%', 
+		marginRight:'1%',
+		paddingTop:0, 
+		paddingBottom:10 
 	},
 	iconFooter3:{
-		width:'59%', 
+		width:'65%', 
 		height:30,  
 	},
 	btnFooter3Create:{
-		width:'20%', 
+		width:'18%', 
 	},
 	iconFooter3Create:{
-		width:'85%', 
-		height:57,  
+		width:'65%', 
+		height:35,  
 	}, 
 	iconFooter:{
 		width:35,

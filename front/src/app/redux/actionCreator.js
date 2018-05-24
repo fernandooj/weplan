@@ -45,15 +45,48 @@ const obtieneUsuarios = ()=>{
 	   })
 	}
 }
+const crearPlan= (data)=>{
+	return dispatch=>{
+		return axios.post('/x/v1/pla/plan', data)
+	    .then(res=>{
+	    	console.log(res.data)
+	    	dispatch({
+	   			type:'CREAR_PLAN',
+	   			planCreado: res.data.message
+	   		})
+	   	})
+	}
+}
+const insertaImagenPlan = (data) =>{
+	console.log(data)
+	return dispatch=>{
+		return axios.put('x/v1/pla/plan/web', data)
+		.then(res=>{
+			console.log(res)
+		})
+	}
+}
 const obtienePlan = ()=>{
 	return dispatch=>{
 		return axios.get('/x/v1/pla/plan')
-	   .then(res=>{
-   		dispatch({
-   			type:'OBTENER_PLANES',
-   			planes: res.data.planes
-   		})
-	   })
+	    .then(res=>{
+	   		dispatch({
+	   			type:'OBTENER_PLANES',
+	   			planes: res.data.planes
+	   		})
+	    })
+	}
+}
+const obtieneUnPlan = (idPlan)=>{
+	return dispatch=>{
+		return axios.get(`/x/v1/pla/plan/getbyid/${idPlan}`)
+	    .then(res=>{
+	    	console.log(res)
+	   		dispatch({
+	   			type:'OBTENER_UN_PLAN',
+	   			unPlan: res.data.message
+	   		})
+	    })
 	}
 }
 
@@ -68,8 +101,19 @@ const obtieneRestriccion = ()=>{
 	   })
 	}
 }
+const obtieneCategoria= ()=>{
+	return dispatch=>{
+		return axios.get('/x/v1/cat/categoriaPlan')
+	   .then(res=>{
+   		dispatch({
+   			type:'OBTENER_CATEGORIA',
+   			categoria: res.data.categoria
+   		})
+	   })
+	}
+}
  
-export {perfil, login, obtieneUsuarios, obtienePlan, obtieneRestriccion}
+export {perfil, login, obtieneUsuarios, obtienePlan, obtieneRestriccion, obtieneCategoria, crearPlan, insertaImagenPlan, obtieneUnPlan}
 
 
 
