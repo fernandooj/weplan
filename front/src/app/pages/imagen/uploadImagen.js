@@ -26,12 +26,8 @@ export default class Imagenes extends React.Component {
   }
   handleUpload = () => {
     const { fileList } = this.state;
-    // this.setState({
-    //   uploading: true,
-    // });
     this.props.imagenes(fileList)
     this.props.actualizaCurrent(2, this.state.fileListPreview)
-
   }
   render() {
     const { previewVisible, previewImage, fileList, uploading, fileListPreview } = this.state;

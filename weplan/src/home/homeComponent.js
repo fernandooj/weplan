@@ -22,7 +22,7 @@ export default class homeComponent extends Component{
 		}
 	}
 	componentWillMount(){
-		axios.get('/x/v1/pla/plan/clientes')
+		axios.get('/x/v1/pla/plan/pago')
 		.then(e=>{
 			console.log(e.data)
 			this.setState({planes:e.data.message})
@@ -54,13 +54,16 @@ export default class homeComponent extends Component{
 	}
 
 	renderPlans(){
+		const {navigate} = this.props.navigation
 		return this.state.planes.map((e, key)=>{
 			return(
 				<ImageBackground source={{uri : e.imagen[0]}} style={HomeStyle.fondo} key={key}>
 					<View style={HomeStyle.footer}>
 						<View style={HomeStyle.footer1}>
 							<Text style={HomeStyle.textFooter1}>{e.nombre}</Text>
-							<Image source={require('./icon4.png')} style={HomeStyle.iconVer} />
+							<TouchableOpacity onPress={() => navigate('createPlan', e._id )} style={HomeStyle.btnIconVer}>
+								<Image source={require('./icon4.png')} style={HomeStyle.iconVer} />
+							</TouchableOpacity>	
 						</View>
 						<Text style={HomeStyle.textFooter2}>{e.descripcion}</Text>
 						<View style={HomeStyle.footer2}>
@@ -114,7 +117,7 @@ export default class homeComponent extends Component{
 				<ScrollView style={HomeStyle.contenedorPlan} onScroll={this.handleScroll.bind(this)} scrollEventThrottle={16}>
 				{
 					this.renderPlans()
-				}
+				}	
 				</ScrollView>
  
 				<View style={HomeStyle.footer3} >

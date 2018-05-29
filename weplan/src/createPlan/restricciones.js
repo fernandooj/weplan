@@ -19,8 +19,8 @@ export default class RestriccionesPlanComponent extends Component{
 	 	.then(e=>{
 	 		let restriccion = e.data.restriccion.map(e=>{
 	 			return {
-	 				id:e._id,
-	 				icon:e.ruta,
+	 				_id:e._id,
+	 				ruta:e.ruta,
 	 				nombre:e.nombre
 	 			}
 	 		})
@@ -33,22 +33,22 @@ export default class RestriccionesPlanComponent extends Component{
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////  GENERO EL ARRAY DE LAS RESTRICCIONESAsignadas //////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	updateStateRestriccion(id){
-		if (id) {
-			this.setState({restriccionArray: this.state.restriccionArray.concat([id])})
+	updateStateRestriccion(_id){
+		if (_id) {
+			this.setState({restriccionArray: this.state.restriccionArray.concat([_id])})
 		}else{
-			this.setState({restriccionArray:this.state.restriccionArray.filter(function(val){return val.id != id}) })
+			this.setState({restriccionArray:this.state.restriccionArray.filter(function(val){return val._id != _id}) })
 		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////////////      GENERO UN ARRAY CON LOS ICONOS Y LOS NOMBRES DE LOS ASIGNADOS
+	///////////////////      GENERO UN ARRAY CON LOS rutaOS Y LOS NOMBRES DE LOS ASIGNADOS
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	updateRestriccion(id, icon, nombre, estado){
-		if (id) {
-		  this.setState({restriccionesAsignadas: this.state.restriccionesAsignadas.concat({id,icon,nombre})})
+	updateRestriccion(_id, ruta, nombre, estado){
+		if (_id) {
+		  this.setState({restriccionesAsignadas: this.state.restriccionesAsignadas.concat({_id,ruta,nombre})})
 		}else{
-		  this.setState({restriccionesAsignadas:this.state.restriccionesAsignadas.filter(function(val){return val.id != id}) })
+		  this.setState({restriccionesAsignadas:this.state.restriccionesAsignadas.filter(function(val){return val._id != _id}) })
 		}
 	}
 
@@ -56,8 +56,8 @@ export default class RestriccionesPlanComponent extends Component{
 		return this.state.restriccion.map((e, key)=>{
 			return(
 				<TouchableOpacity key={key} style={CreatePlanStyle.touchRes} 
-					onPress={(index)=> {this.updateState(e.id, e.estado); this.updateRestriccion(e.id, e.icon, e.nombre, e.estado); this.updateStateRestriccion(e.id)} }>
-					<Image source={{ uri: e.icon}} style={CreatePlanStyle.iconRes}/>
+					onPress={(index)=> {this.updateState(e._id, e.estado); this.updateRestriccion(e._id, e.ruta, e.nombre, e.estado); this.updateStateRestriccion(e._id)} }>
+					<Image source={{ uri: e.ruta}} style={CreatePlanStyle.iconRes}/>
 					<Icon name='ban' allowFontScaling style={[CreatePlanStyle.banRes, e.estado ?CreatePlanStyle.banResActive :CreatePlanStyle.banResInactive]} />
 					<Text style={CreatePlanStyle.textoRes}>{e.nombre}</Text>
 				</TouchableOpacity>
@@ -76,7 +76,7 @@ export default class RestriccionesPlanComponent extends Component{
 		        <ScrollView>
 					<View  style={CreatePlanStyle.contenedorRes}>
 						<View style={CreatePlanStyle.touchRes}>				 
-							<Image source={require('./denied.png')} style={CreatePlanStyle.iconRes} />
+							<Image source={require('./denied.png')} style={CreatePlanStyle.rutaRes} />
 							<Text style={CreatePlanStyle.textoRes}>Restricciones</Text>
 						</View>	
 						{this.renderRestricciones()}
@@ -87,9 +87,9 @@ export default class RestriccionesPlanComponent extends Component{
 			</Modal>
 		)
 	}
-	updateState(id, estado){
+	updateState(_id, estado){
 		let restriccion = this.state.restriccion.map((item, key)=>{
-			if(item.id == id) item.estado = !estado
+			if(item._id == _id) item.estado = !estado
 			return item
 		})
 		this.setState({restriccion})

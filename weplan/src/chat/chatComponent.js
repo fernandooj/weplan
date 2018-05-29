@@ -29,7 +29,7 @@ export default class ChatComponent extends Component{
 		axios.get('/x/v1/pla/plan/getbyid/'+planId) 
 		.then((res)=>{
 			console.log(res.data)
-			this.setState({planId, imagen: res.data.message[0].imagen[0], nombrePlan: res.data.message[0].nombre, planId})
+			this.setState({planId, imagen: res.data.plan[0].imagen[0], nombrePlan: res.data.plan[0].nombre, planId})
 		})
 		.catch((err)=>{
 			console.log(err)

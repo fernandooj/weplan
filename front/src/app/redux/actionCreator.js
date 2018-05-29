@@ -49,7 +49,6 @@ const crearPlan= (data)=>{
 	return dispatch=>{
 		return axios.post('/x/v1/pla/plan', data)
 	    .then(res=>{
-	    	console.log(res.data)
 	    	dispatch({
 	   			type:'CREAR_PLAN',
 	   			planCreado: res.data.message
@@ -58,11 +57,13 @@ const crearPlan= (data)=>{
 	}
 }
 const insertaImagenPlan = (data) =>{
-	console.log(data)
 	return dispatch=>{
 		return axios.put('x/v1/pla/plan/web', data)
 		.then(res=>{
-			console.log(res)
+			dispatch({
+	   			type:'CREAR_PLAN',
+	   			planCreado: res.data.message
+	   		})
 		})
 	}
 }
@@ -81,10 +82,9 @@ const obtieneUnPlan = (idPlan)=>{
 	return dispatch=>{
 		return axios.get(`/x/v1/pla/plan/getbyid/${idPlan}`)
 	    .then(res=>{
-	    	console.log(res)
 	   		dispatch({
 	   			type:'OBTENER_UN_PLAN',
-	   			unPlan: res.data.message
+	   			unPlan: res.data.plan
 	   		})
 	    })
 	}
@@ -93,27 +93,50 @@ const obtieneUnPlan = (idPlan)=>{
 const obtieneRestriccion = ()=>{
 	return dispatch=>{
 		return axios.get('/x/v1/res/restriccion')
-	   .then(res=>{
-   		dispatch({
-   			type:'OBTENER_RESTRICCION',
-   			restriccion: res.data.restriccion
-   		})
-	   })
+		.then(res=>{
+			dispatch({
+				type:'OBTENER_RESTRICCION',
+				restricciones: res.data.restriccion
+			})
+		})
 	}
 }
 const obtieneCategoria= ()=>{
 	return dispatch=>{
 		return axios.get('/x/v1/cat/categoriaPlan')
-	   .then(res=>{
-   		dispatch({
-   			type:'OBTENER_CATEGORIA',
-   			categoria: res.data.categoria
-   		})
-	   })
+		.then(res=>{
+			dispatch({
+				type:'OBTENER_CATEGORIA',
+				categorias: res.data.categoria
+			})
+		})
+	}
+}
+const creaRestriccion= (data)=>{
+	return dispatch=>{
+		return axios.post('/x/v1/res/restriccion', data)
+		.then(res=>{
+			dispatch({
+				type:'CREA_RESTRICCION',
+				restriccion: res.data.restriccion
+			})
+		})
+	}
+}
+const creaCategoria= (data)=>{
+	return dispatch=>{
+		return axios.post('/x/v1/cat/categoriaPlan', data)
+		.then(res=>{
+			console.log(res.data)
+			dispatch({
+				type:'CREA_CATEGORIA',
+				categoria: res.data.categoria
+			})
+		})
 	}
 }
  
-export {perfil, login, obtieneUsuarios, obtienePlan, obtieneRestriccion, obtieneCategoria, crearPlan, insertaImagenPlan, obtieneUnPlan}
+export {perfil, login, obtieneUsuarios, obtienePlan, obtieneRestriccion, obtieneCategoria, crearPlan, insertaImagenPlan, obtieneUnPlan, creaRestriccion, creaCategoria}
 
 
 

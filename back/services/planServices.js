@@ -6,18 +6,14 @@ let mongoose = require('mongoose')
 
 class planServices {
 	get(callback){
-		planSchema.find({}, null, {sort: {_id: -1}}).populate('asignados').exec(callback)
+		planSchema.find({}, null, {sort: {_id: -1}}).populate('asignados').populate('restricciones').exec(callback)
 	}
-	getByIdPlan(_id,callback){
-		planSchema.find({estado:true, _id}, null, {sort: {_id: -1}}).populate('idUsuario', 'nombre ciudad photo').exec(callback)
+	getByIdPlan(_id, callback){
+		planSchema.find({_id}).populate('idUsuario', 'nombre ciudad photo').populate('restricciones').exec(callback)
 	}
 	getById(asignados, callback){
 		planSchema.find({$or:[{'asignados':asignados, estado:true},{'idUsuario':asignados, estado:true}]}, null, {sort: {_id: -1}}).populate('idUsuario', 'nombre ciudad photo').populate('asignados', 'nombre ciudad photo').exec(callback)
 	}
-	getByclientes(callback){
-		planSchema.find({estado:true, tipo:'pago'}, null, {sort: {_id: -1}}, callback)
-	}
- 
 	create(planData, id, callback){
 		let plan 			= new planSchema();
 		plan.tipo 		    = planData.tipo	
@@ -31,12 +27,18 @@ class planServices {
 		plan.lng 			= planData.lng	
 		plan.lugar 			= planData.lugar	
 		plan.asignados 		= planData.asignados	
+		plan.imagen 		= planData.imagen	
+		plan.categorias     = planData.categorias	
+		plan.planPadre      = planData.planPadre	
 		plan.save(callback)
 	}
 	uploadImage(id, nameFile, callback){
 		planSchema.findByIdAndUpdate(id, {$set: {
 	        'imagen': nameFile,
         }}, callback);	
+	}
+	getByPago(callback){
+		planSchema.find({estado:true, tipo:'pago'}, null, {sort: {_id: -1}}).populate('restricciones').exec(callback)
 	}
 
 	sumaPlan(idUsuario, callback){
@@ -74,8 +76,7 @@ class planServices {
 	 				nombre:1,
 	 				fechaLugar:1
 	 			},
-	 		}
-	 		,
+	 		},
 	 		{
 	 			$lookup: {
 	 				from: "items",
@@ -104,8 +105,7 @@ class planServices {
 	 				itemTitulo: '$ItemData.titulo',
 	 				valorItem:'$ItemData.valor'
 	 			},
-	 		}
-	 		, 
+	 		}, 
 			{
 			    $lookup:{
 			        from:"pagos",
@@ -121,7 +121,6 @@ class planServices {
 	 				preserveNullAndEmptyArrays: true
 	 			}
 			},
-			
 			{
 			    $project:{
 			        _id:1,

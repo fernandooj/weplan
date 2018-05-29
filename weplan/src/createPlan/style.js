@@ -105,6 +105,20 @@ export const CreatePlanStyle = StyleSheet.create({
 		marginTop:20,
 		marginBottom:20
 	},
+	encabezadoPlan2:{
+		alignItems: 'center',
+		backgroundColor:'#F2F4F4',
+		paddingTop: 0,
+		paddingBottom: 12,
+	},
+	imagenCargada:{
+		width:'100%',
+		height:200
+	},
+	textoCargado:{
+		marginTop:10,
+		fontSize:25
+	},
 	///////////////////////////////////////
 	/////////////// mapa //////////////////
 	///////////////////////////////////////
@@ -187,7 +201,7 @@ export const CreatePlanStyle = StyleSheet.create({
 	contentAdd:{
 		flexDirection:'row',
 		marginTop:10,
-		width:'66.5%' 
+		width:'58.5%' 
 	},
  	avatar:{
  		width:40,

@@ -94,7 +94,7 @@ class PlanComponent extends React.Component {
           <CrearPlan 
             showModal={showModal} 
             close={this.handleOk.bind(this)} 
-            handleSubmit={(campos, restricciones)=>this.props.handleSubmit(campos, restricciones)} 
+            handleSubmit={(values, restriccion, categoria, ubicacion,x)=>this.props.handleSubmit(values, restriccion, categoria, ubicacion,x)} 
             insertaImagenes={(imagen)=>this.props.insertaImagenes(imagen)} 
           />
           </div>

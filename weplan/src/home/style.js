@@ -54,12 +54,14 @@ export const HomeStyle = StyleSheet.create({
 	footer1:{
 		flexDirection:'row',
 	},
+	btnIconVer:{
+		width:100
+	},
 	iconVer:{
 	 	width:40,
 	 	height:40,
 	 	marginTop:10,
 	 	marginBottom:10,
-	 	width:'10%'
 	},
 
 	textFooter1:{

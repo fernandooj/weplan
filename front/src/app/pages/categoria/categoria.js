@@ -3,7 +3,7 @@ import React, { Component
 import store          from '../../redux/store'
 import {connect}      from 'react-redux'
 import CategoriaComponent  from './categoriaComponent'
-import {obtieneCategoria}    from '../../redux/actionCreator'
+import {obtieneCategoria, creaCategoria}    from '../../redux/actionCreator'
 
 store.dispatch(obtieneCategoria())
 
@@ -11,26 +11,32 @@ store.dispatch(obtieneCategoria())
 class Categoria extends Component {
 	render(){
 		return(
-			<CategoriaComponent categoria={this.props.categoria} lista={this.props.lista} categoriasAgregadas={this.props.categoriasAgregadas} />
+			<CategoriaComponent 
+        categoria={this.props.categorias} 
+        lista={this.props.lista} 
+        categoriasAgregadas={this.props.categoriasAgregadas}
+        handleSubmit={(fileList, nombre)=>this.props.handleSubmit(fileList, nombre)}  
+      />
 		)
 	}
 } 
 
 const mapStateToProps = state=>{
   return{
-    categoria:state.categoria
+    categorias:state.categorias
   }
 }
 const mapDispatchToProps = dispatch=>{
   return{
-    handleSubmit(e, validateFields){
-      e.preventDefault()
-      validateFields((err, values) => {
-        if (!err) {
-          store.dispatch(login(values))
-        }
+    handleSubmit(fileList, nombre){
+      console.log({nombre})
+      console.log({fileList})
+      const formData = new FormData();
+      fileList.forEach((file) => {
+        formData.append('imagen', file);
+        formData.append('nombre', nombre);
       });
-      
+      store.dispatch(creaCategoria(formData))
     }
   }
 }

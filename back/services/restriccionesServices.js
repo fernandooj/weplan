@@ -13,6 +13,12 @@ class restriccionesServices{
 		amigoUsers.ruta   = ruta
 		amigoUsers.save(callback)
 	}
+	editar(user, ruta, callback){
+		let amigoUsers = new restriccionesSchema();
+		amigoUsers.nombre = user.nombre
+		amigoUsers.ruta   = ruta
+		amigoUsers.save(callback)
+	}
 }
 
 

@@ -282,7 +282,6 @@ module.exports = function(app, passport){
     */
     ///////////////////////////////////////////////////////////////////////////
     app.get('/x/v1/users/', function(req,res){
-        console.log(req.session.usuario)
         if(req.session.usuario){
             if (req.session.usuario.user.acceso=='superAdmin') {
                 userServices.get(function(err, usuarios){

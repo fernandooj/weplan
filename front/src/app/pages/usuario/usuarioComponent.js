@@ -1,6 +1,6 @@
 import React, { Component
 }     from 'react';
-import { Table, Form, Breadcrumb } from 'antd';
+import { Table, Form, Breadcrumb, Row, Col } from 'antd';
 
 
  
@@ -44,13 +44,15 @@ class UsuarioComponent extends React.Component {
   };
   render() {
     return (
-      <div>
-        <Breadcrumb>
-          <Breadcrumb.Item>Home</Breadcrumb.Item>
-          <Breadcrumb.Item><a href="">Usuarios</a></Breadcrumb.Item>
-        </Breadcrumb>
-        <Table dataSource={this.props.usuarios} columns={columns} rowSelection={rowSelection} />
-      </div>
+       <Row>
+        <Col offset={1} md={22} xxl={{ span: 20, offset: 2 }}  >
+          <Breadcrumb>
+            <Breadcrumb.Item>Home</Breadcrumb.Item>
+            <Breadcrumb.Item><a href="">Usuarios</a></Breadcrumb.Item>
+          </Breadcrumb>
+          <Table dataSource={this.props.usuarios} columns={columns} rowSelection={rowSelection} />
+        </Col>
+      </Row>
     );
   }
 }

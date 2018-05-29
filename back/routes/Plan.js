@@ -18,14 +18,15 @@ router.get('/', (req, res)=>{
 	})
 })
 
-router.get('/:clientes', (req, res)=>{
-	let id = req.session.usuario.user._id
-	if (req.params.clientes=='clientes') {
-		planServices.getByclientes((err, planes)=>{
+router.get('/:pago', (req, res)=>{
+	//console.log(req.session.usuario.categorias)
+	if (req.params.pago==='pago') {
+		planServices.getByPago((err, planes)=>{
 			if (err) {
 				res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
 			}else{
-				res.json({ status: 'SUCCESS', message: planes, code:1 });	
+				res.json({ status: 'SUCCESS', message: planes, code:1 });
+				//console.log(planes)	
 			}
 		})	
 	}else{
@@ -38,21 +39,21 @@ router.get('/:clientes', (req, res)=>{
 		})
 	}
 })
+ 
 
 
 router.get('/getbyid/:userId', (req, res)=>{
-	planServices.getByIdPlan(req.params.userId, (err, planes)=>{
+	planServices.getByIdPlan(req.params.userId, (err, plan)=>{
 		if (err) {
 			res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
 		}else{
-			res.json({ status: 'SUCCESS', message: planes, total:planes.length, code:1 });	
+			res.json({ status: 'SUCCESS', plan, code:1 });	
 		}
 	})
 })
 
 
 router.get('/getbyUserId/misPlanes', (req, res)=>{
-	console.log(req.session.usuario.user._id)
 	planServices.getById(req.session.usuario.user._id, (err, planes)=>{
 			if (err) {
 				res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
@@ -66,42 +67,22 @@ router.get('/getbyUserId/misPlanes', (req, res)=>{
 
 
 router.post('/', function(req, res){
-	let id = req.session.usuario.user._id
-	planServices.create(req.body, id, (err, plan)=>{
-		if(err){
-			res.json({err})
-		}else{
-			res.json({ status: 'SUCCESS', message: plan, code:1 });	
-		}
-	})
+	if(req.session.usuario===undefined || req.session.usuario.user==null){
+        res.json({status:'FAIL', user: 'SIN SESION', code:0 })
+    }else{
+    	planServices.create(req.body, req.session.usuario.user._id, (err, plan)=>{
+			if(err){
+				res.json({err})
+			}else{
+				res.json({ status: 'SUCCESS', message: plan, code:1 });	
+			}
+		})
+    }
 })
 
-// router.put('/', (req, res)=>{
-// 	console.log(req.body)
-// 	let ruta = null 
-// 	if (req.files.imagen) {
-// 		let extension = req.files.imagen.name.split('.').pop()
-// 		let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
-// 		let fullUrl = '../../front/docs/public/uploads/plan/'+fecha+'_'+randonNumber+'.'+extension
-// 		ruta = req.protocol+'://'+req.get('Host') + '/public/uploads/plan/'+fecha+'_'+randonNumber+'.'+extension
-// 		fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))
-// 	}else{
-// 		ruta = req.protocol+'://'+req.get('Host') + '/plan.png'
-// 	}
-// 	planServices.uploadImage(req.body.id, ruta, (err, plan)=>{
-// 		if(err){
-// 			res.json({err})
-// 		}else{
-// 			res.json({ status: 'SUCCESS', message: plan, code:1 });	
-			
-// 		}
-// 	})
-// })
 
 router.put('/web', (req, res)=>{
-	console.log(req.files)
 	let id = req.body.id[0].length > 2 ?req.body.id[0] :req.body.id 
-
 	let ruta = [] 
 	if (req.files.imagen) {
 		req.files.imagen.forEach(e=>{
@@ -119,8 +100,7 @@ router.put('/web', (req, res)=>{
 		if(err){
 			res.json({err})
 		}else{
-			res.json({ status: 'SUCCESS', message: plan, code:1 });	
-			
+			res.json({ status: 'SUCCESS', message: plan, code:1 });		
 		}
 	})
 })

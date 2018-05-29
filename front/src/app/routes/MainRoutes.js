@@ -8,8 +8,11 @@ import {
 import Home       from '../pages/home/Home';
 import Dashboard  from '../pages/dashboard/Dashboard';
  
-import Usuario    from '../pages/usuario/Usuario';
-import Plan       from '../pages/plan/Plan';
+import Usuario     from '../pages/usuario/Usuario';
+import Restriccion from '../pages/restriccion/restriccion';
+import Plan        from '../pages/plan/Plan';
+import Categoria   from '../pages/categoria/categoria';
+ 
  
  
 
@@ -21,6 +24,8 @@ const MainRoutes = () => {
  
       <Route path="/usuario/" component={Usuario} />
       <Route path="/plan/"    component={Plan} />
+      <Route path="/restriccion/"  component={Restriccion}  />
+      <Route path="/categoria/"  component={Categoria}  />
  
     </Switch>
   );

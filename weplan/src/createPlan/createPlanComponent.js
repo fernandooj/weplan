@@ -7,7 +7,7 @@ import Modal from 'react-native-modalbox';
 import Icon from 'react-native-fa-icons';
 import DatePicker from 'react-native-datepicker'
 import moment from 'moment'
- 
+import Slideshow from 'react-native-slideshow';
 
 
 import RestriccionesPlanComponent from './restricciones.js'
@@ -35,11 +35,24 @@ export default class createPlanComponent extends Component{
  			mapa:false,
  			tipo:'suscripcion',
  			restriccion:false,
- 			iconCreate:true
+ 			iconCreate:true,
+ 			cargaPlan:false
 		}
 	}
 
-
+	componentWillMount(){
+		console.log(this.props.navigation.state.params)
+		if (this.props.navigation.state.params) {
+			axios.get('/x/v1/pla/plan/getbyid/'+this.props.navigation.state.params)
+			.then((e)=>{
+				console.log(e.data.plan[0].restricciones)
+				this.setState({cargaPlan:e.data.plan[0], iconCreate:false, restriccion:false, restriccionesAsignadas:e.data.plan[0].restricciones , restricciones:e.data.plan[0].restricciones, planPadre:this.props.navigation.state.params })
+			})
+			.catch(err=>{
+				console.log(err)
+			})
+		}
+	}
 
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -52,81 +65,105 @@ export default class createPlanComponent extends Component{
 			let direccion1 = lat+','+lng 
 			this.setState({lat,lng, direccion:direccion1, mapa:false})
 		}
-		
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////  	RENDER  	/////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	render(){
-		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate} = this.state
+		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan} = this.state
 		const {navigate} = this.props.navigation
-		console.log(this.state.restriccionesAsignadas)
+ 
+ 		console.log(cargaPlan)
 		return (
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} > 
 				<CabezeraComponent navigate={navigate} url={'inicio'} parameter={this.state.planId} />
-				<View style={CreatePlanStyle.encabezadoPlan}>
+				{
+					!cargaPlan
+					?<View style={CreatePlanStyle.encabezadoPlan}>
 					<TakePhotoComponent fuente={'cam.png'} ancho={170} alto={120} ancho2={170} alto2={120} updateImagen={(imagen) => {this.setState({imagen})}} sinBorder />
-					<TextInput
-						style={CreatePlanStyle.input}
-						onChangeText={(nombre) => this.setState({nombre,iconCreate:false})}
-						value={nombre}
-						underlineColorAndroid='transparent'
-						placeholder="NOMBRE DE TU PLAN"
-						placeholderTextColor="#8F9093" 
-				    />
-				</View>	   
-			   <View style={CreatePlanStyle.contenedor} >
-					{/* Descripcion  */}	
-					<View style={CreatePlanStyle.cajaInpunts}>
-						 
 						<TextInput
-							style={CreatePlanStyle.textarea}
-							onChangeText={(descripcion) => this.setState({descripcion})}
-							value={this.state.descripcion}
+							style={CreatePlanStyle.input}
+							onChangeText={(nombre) => this.setState({nombre,iconCreate:false})}
+							value={nombre}
 							underlineColorAndroid='transparent'
-							placeholder="descripcion"
-							placeholderTextColor="#c9c9c9" 
-							multiline={true}
-						/>
-					</View>
-				{/* fecha  */}
-				    <View style={CreatePlanStyle.cajaInpunts}>
-				    	<Image source={require('./fecha.png')} style={CreatePlanStyle.iconInput} />
-					    <DatePicker
-				    		customStyles={{
-		                        dateInput: {
-		                            borderLeftWidth: 0,
-		                            borderRightWidth: 0,
-		                            borderTopWidth: 0,
-		                            borderBottomWidth: 0,
-		                            alignItems: 'flex-start',
-		                        },
-		                        dateText: { 
-		                        	color: '#969696'
-		                        },
-		                        btnTextConfirm: {
-							            color: '#969696',
-							         },
-							         btnTextCancel: {
-							            color: '#969696',
-							         } 
-		                    }}
-								date={this.state.fechaLugar}
-								style={CreatePlanStyle.inputs}
-								mode="datetime"
-								placeholder="Mes / Dia / Año / Hora"
-								format="YYYY-MM-DD h:mm"
-								showIcon={false}
-								confirmBtnText="Confirm"
-								cancelBtnText="Cancel"
-								androidMode='spinner'
-								onDateChange={(fechaLugar) => {this.setState({fechaLugar})}}
+							placeholder="NOMBRE DE TU PLAN"
+							placeholderTextColor="#8F9093" 
 					    />
 					</View>
+					:<View style={CreatePlanStyle.encabezadoPlan2}>
+						<Image source={{uri:cargaPlan.imagen[0]}} style={CreatePlanStyle.imagenCargada} />
+						<Text style={CreatePlanStyle.textoCargado}>{cargaPlan.nombre}</Text>
+					</View>
+				}
+					   
+			   <View style={CreatePlanStyle.contenedor} >
+					{/* Descripcion  */}	
+					{
+						!cargaPlan.descripcion
+						?<View style={CreatePlanStyle.cajaInpunts}>
+							<TextInput
+								style={CreatePlanStyle.textarea}
+								onChangeText={(descripcion) => this.setState({descripcion})}
+								value={this.state.descripcion}
+								underlineColorAndroid='transparent'
+								placeholder="descripcion"
+								placeholderTextColor="#c9c9c9" 
+								multiline={true}
+							/>
+						</View>
+						:<View style={CreatePlanStyle.cajaInpunts}>
+							<Text style={CreatePlanStyle.textarea}>{cargaPlan.descripcion}</Text>
+						</View>
+					}
+					
+				{/* fecha  */}
+					{
+						!cargaPlan
+						?<View style={CreatePlanStyle.cajaInpunts}>
+					    	<Image source={require('./fecha.png')} style={CreatePlanStyle.iconInput} />
+						   <DatePicker
+					    		customStyles={{
+			                        dateInput: {
+			                            borderLeftWidth: 0,
+			                            borderRightWidth: 0,
+			                            borderTopWidth: 0,
+			                            borderBottomWidth: 0,
+			                            alignItems: 'flex-start',
+			                        },
+			                        dateText: { 
+			                        	color: '#969696'
+			                        },
+			                        btnTextConfirm: {
+								            color: '#969696',
+								         },
+								         btnTextCancel: {
+								            color: '#969696',
+								         } 
+			                    }}
+									date={this.state.fechaLugar}
+									style={CreatePlanStyle.inputs}
+									mode="datetime"
+									placeholder="Mes / Dia / Año / Hora"
+									format="YYYY-MM-DD h:mm"
+									showIcon={false}
+									confirmBtnText="Confirm"
+									cancelBtnText="Cancel"
+									androidMode='spinner'
+									onDateChange={(fechaLugar) => {this.setState({fechaLugar})}}
+						   />
+						</View> 
+						:<View style={CreatePlanStyle.cajaInpunts}>
+							<Image source={require('./fecha.png')} style={CreatePlanStyle.iconInput} />
+							<Text style={CreatePlanStyle.btnInputs}>{cargaPlan.fechaLugar}</Text>
+						</View>
+					}
+				   
 
 				{/*  mapa  */}
-					<View style={CreatePlanStyle.cajaInpunts}>
+					{  
+						!cargaPlan.lugar
+						?<View style={CreatePlanStyle.cajaInpunts}>
 				    	 <Image source={require('./map.png')} style={CreatePlanStyle.iconInput} />
 					     <TouchableOpacity onPress={() => this.setState({mapa:true})}>
 					    	<Text style={direccion ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>{direccion ?direccion.substr(0,60) :'Ubicación'}</Text>
@@ -135,7 +172,13 @@ export default class createPlanComponent extends Component{
 							close={()=> this.setState({mapa:false})} 						   			/////////   cierro el modal
 							updateStateX={(lat,lng, direccion)=>this.updateStateX(lat,lng, direccion)}  /////////	me devuelve la posicion del marcador 
 						/>: null }	
-					</View>
+						</View>
+					   :<View style={CreatePlanStyle.cajaInpunts}> 
+				    		<Image source={require('./map.png')} style={CreatePlanStyle.iconInput} />
+					   	<Text style={[CreatePlanStyle.btnInputs]}>{cargaPlan.lugar}</Text>
+						</View>
+					}
+					
 
 				{/*  restricciones  */}
 					<View style={CreatePlanStyle.cajaInpunts}>
@@ -195,7 +238,6 @@ export default class createPlanComponent extends Component{
 						</TouchableOpacity>
 					}
 			    </View>	
-
 			</ScrollView>
 		)
 	}
@@ -217,7 +259,7 @@ export default class createPlanComponent extends Component{
  			if (key<4) {
  				return(
 	 				<View key={key} >
-	 					<Image source={{uri:e.icon}} style={CreatePlanStyle.avatar} />
+	 					<Image source={{uri:e.ruta}} style={CreatePlanStyle.avatar} />
 	 					<Icon name='ban' allowFontScaling style={CreatePlanStyle.banResActiveAdd} />
 	 				</View>
 	 			)
@@ -226,39 +268,63 @@ export default class createPlanComponent extends Component{
  	}
 	handleSubmit(){
 		const {navigate} = this.props.navigation
-		const {nombre, descripcion, fechaLugar, lat, lng, asignados, restricciones, imagen,tipo} = this.state
-		let data = new FormData();
-		axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, restricciones,tipo})
-		.then(e=>{
-			if(e.data.code==1){	
-				let id = e.data.message._id;
-				data.append('imagen', imagen);
-				data.append('id', e.data.message._id);
-				axios({
-					method: 'put', //you can set what request you want to be
-					url: '/x/v1/pla/plan',
-					data: data,
-					headers: {
-						'Accept': 'application/json',
-						'Content-Type': 'multipart/form-data'
-					}
-				})
-				.then((res)=>{
-					console.log(res)
-					if(res.data.status=="SUCCESS"){
-						navigate('chat', id)
-					}
-				})
-				.catch((err)=>{
-					console.log(err)
-				})
-			}
+		let {nombre, descripcion, fechaLugar, lat, lng, asignados, restricciones, imagen, tipo, cargaPlan, planPadre} = this.state
 
-		})
-		.catch(err=>{
-			alert('error intenta nuevamente')
-			console.log(err)
-		})
+		nombre 		= cargaPlan.nombre ?cargaPlan.nombre :nombre
+		descripcion = cargaPlan.descripcion ?cargaPlan.descripcion :descripcion
+		lat 			= cargaPlan.lat ?cargaPlan.lat :lat
+		lng 			= cargaPlan.lng ?cargaPlan.lng :lng
+		fechaLugar  = cargaPlan.fechaLugar ?cargaPlan.fechaLugar :fechaLugar
+		imagen 		= cargaPlan.imagen ?cargaPlan.imagen :imagen
+		console.log(nombre)
+
+		if (!cargaPlan) {
+			let data = new FormData();
+			axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, restricciones, tipo})
+			.then(e=>{
+				if(e.data.code==1){	
+					let id = e.data.message._id;
+					data.append('imagen', imagen);
+					data.append('id', e.data.message._id);
+					axios({
+						method: 'put', //you can set what request you want to be
+						url: '/x/v1/pla/plan',
+						data: data,
+						headers: {
+							'Accept': 'application/json',
+							'Content-Type': 'multipart/form-data'
+						}
+					})
+					.then((res)=>{
+						console.log(res)
+						if(res.data.status=="SUCCESS"){
+							navigate('chat', id)
+						}
+					})
+					.catch((err)=>{
+						console.log(err)
+					})
+				}
+
+			})
+			.catch(err=>{
+				alert('error intenta nuevamente')
+				console.log(err)
+			})
+		}else{
+			axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, restricciones, tipo, imagen, planPadre})
+			.then(e=>{
+				if(e.data.code==1){	
+					let id = e.data.message._id;
+					navigate('chat', id)
+				}
+
+			})
+			.catch(err=>{
+				console.log(err)
+			})
+		}
+		
 	}
 }			
 

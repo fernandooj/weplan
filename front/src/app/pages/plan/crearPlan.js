@@ -1,6 +1,6 @@
 import React, { Component
 }     from 'react';
-import { Modal, Button, Form, Input, Icon, DatePicker, Select, Steps } from 'antd';
+import { Modal, Button, Form, Input, Icon, DatePicker, Select, Steps, Alert } from 'antd';
 import CategoriaLista   from '../categoria/categoria'
 import RestriccionLista from '../restriccion/restriccion'
 import MapaContainer    from '../map/mapa'
@@ -35,7 +35,9 @@ class CrearPlan extends React.Component {
     guardarBtn: 'Finalizar',
     loading: false,
     current:0,
-    showMap:false,
+    showMap:false,                   //// Modal para mostrar el mapa
+    ubicacion:'',                  //// Valor inicial del nombre del lugar
+    showModalConfirmaNombre:false,   //// si el usuario no pone un nombre no deja continuar
     restricciones:[],
     x: {
         latitude: 4.597825,
@@ -74,38 +76,29 @@ class CrearPlan extends React.Component {
     navigator.geolocation.clearWatch(this.watchID)
   }
   
-  finalizar = () =>{
-    this.setState({
-      ModalTitle: 'Creando Plan...',
-      guardarBtn: 'Guardando...',
-      loading: true,
-    });
-    setTimeout(() => {
-       this.props.close(false)
-       location.reload();
-    }, 2000);
-  }
-  handleSubmit = (e) => {
-    e.preventDefault()
-    this.props.form.validateFields((err, values) => {
-        if (!err) {
-          this.props.handleSubmit(values, this.state.restricciones)
-          this.setState({ current:1 });
-        }
-      });
-  }
-  updateStateX(lat){  
-    console.log(lat.geometry.viewport.b.b)
-    console.log(lat.geometry.viewport.f.f)
-    let longitude = lat.geometry.viewport.b.b
-    let latitude = lat.geometry.viewport.f.f
-   this.setState({x :{latitude,longitude}})
+  /////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////    MODIFICO LAT/LNG/UBICACION SI EL USUARIO BUSCA EN AUTCOMPLATE
+  /////////////////////////////////////////////////////////////////////////////////////////////////////
+  autocomplate(ubicacion, show){
+    let longitude = ubicacion.geometry.viewport.b.b
+    let latitude  = ubicacion.geometry.viewport.f.f
+    ubicacion = `${ubicacion.name} ${ubicacion.formatted_address}`
+    this.setState({showMap:show, ubicacion, x :{latitude,longitude}})
   }
 
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////    ACTUALIZO LAT/LNG/UBICACION SI EL USUARIO HACE DRAG AND DROP DEL MARKER
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  drag(latitude, longitude){
+    this.setState({showMap:false, showModalConfirmaNombre:true, x :{latitude,longitude}})
+  }
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////    RENDERIZO EL FORMULARIO
+  //////////////////////////////////////////////////////////////////////////////////////////////////////
   renderForm(){
     const { getFieldDecorator, validateFields } = this.props.form;
-    const { showMap, loading, guardarBtn, restricciones, imagen, current } = this.state
-    console.log(imagen)
+    const { showMap, loading, guardarBtn, restricciones, imagen, current, ubicacion, x } = this.state
     return(
      <section>
       <Steps current={current} style={{marginBottom:20}}>
@@ -127,7 +120,7 @@ class CrearPlan extends React.Component {
 
               {/* DESCRIPCION */}
                 <FormItem>
-                  {getFieldDecorator('descripcion', {
+                  {getFieldDecorator('descripcion',{
                     rules: [{ required: true, message: 'Inserta alguna descripción!' }],
                   })(
                     <Input prefix={<Icon type="select" style={{ color: 'rgba(0,0,0,.25)' }} />} type="text" placeholder="Descripción" />
@@ -148,7 +141,7 @@ class CrearPlan extends React.Component {
                   {getFieldDecorator('restricciones', {
                     rules: [{ required: false, message: 'Inserta tu username!' }],
                   })(
-                    <RestriccionLista restriccionesAgregadas={(res)=>this.setState({restricciones:res})} />
+                    <RestriccionLista restriccionesAgregadas={(res)=>this.setState({restricciones:res})} lista />
                   )}
                 </FormItem>
 
@@ -157,12 +150,13 @@ class CrearPlan extends React.Component {
                   {getFieldDecorator('categoria', {
                     rules: [{ required: false, message: 'Inserta tu username!' }],
                   })(
-                    <CategoriaLista categoriasAgregadas={(cat)=>this.setState({categorias:cat})}/>
+                    <CategoriaLista categoriasAgregadas={(cat)=>this.setState({categorias:cat})} lista />
                   )}
                 </FormItem>
               {/* UBICACION */}
                 <FormItem>
-                  {getFieldDecorator('ubicacion', {
+                  {getFieldDecorator('ubicacion',{
+                    initialValue: ubicacion,
                     rules: [{ required: false, message: 'Inserta alguna descripción!' }],
                   })(
                     <Input prefix={<Icon type="environment-o" style={{ color: 'rgba(0,0,0,.25)' }} />} type="text" placeholder="Ubicacion" 
@@ -175,9 +169,10 @@ class CrearPlan extends React.Component {
                     &&<MapaContainer 
                       close={(e)=>this.setState({showMap:e})}
                       center={{lat: this.state.x.latitude, lng:this.state.x.longitude}}
-                      height='550px'
+                      height='500px'
                       zoom={17}
-                      updateStateX={(lat)=>this.updateStateX(lat)}
+                      drag={(lat, lng)=>this.drag(lat, lng)}
+                      autocomplate={(lugar, show)=>this.autocomplate(lugar, show)}
                     />
                   }
                   <div style={{textAlign:'right'}}>
@@ -198,7 +193,6 @@ class CrearPlan extends React.Component {
 
       
         <div className="steps-action">
-
           {
             current > 0
             &&
@@ -213,14 +207,15 @@ class CrearPlan extends React.Component {
               <Button type="primary" onClick={() => this.finalizar()}>{this.state.guardarBtn}</Button>
             </div>
           }
-           
         </div>
       </div>
       </section>
     )
   }
+
+
   render() {
-    const { visible, confirmLoading, ModalTitle } = this.state;
+    const { visible, confirmLoading, ModalTitle, showModalConfirmaNombre, ubicacion } = this.state;
     return (
       <div>
         <Modal title={ModalTitle}
@@ -232,10 +227,72 @@ class CrearPlan extends React.Component {
           width={800}
         >
         {this.renderForm()}
+          <Modal title={ModalTitle}
+            visible={showModalConfirmaNombre}
+            onOk={this.handleOk}
+            confirmLoading={confirmLoading}
+            footer={null}
+            closable={false}
+            destroyOnClose={false}
+            width={400}
+          >
+            <div>
+              <Alert
+                message="Warning"
+                description="Digita el nombre de lugar de tu evento."
+                type="warning"
+                showIcon
+              />
+              <Input 
+                placeholder="Cual es el nombre del lugar" 
+                onChange={(e)=>this.setState({ubicacion:e.target.value})} 
+                style={{margin:'10px 0'}}
+              />
+              <div style={{textAlign:'right'}}>
+                <Button 
+                  type="primary" 
+                  disabled={ubicacion.length==0 && true}
+                  onClick={()=>this.setState({showModalConfirmaNombre:false})}
+                >
+                Guardar</Button>
+              </div>
+              
+            </div>
+          </Modal>
         </Modal>
       </div>
     );
   }
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////    ENVIO LA INFORMACION DEL FORMULARIO
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  handleSubmit = (e) => {
+    const {restricciones, categorias, ubicacion, x} = this.state
+    e.preventDefault()
+    this.props.form.validateFields((err, values) => {
+        if (!err) {
+          this.props.handleSubmit(values, restricciones, categorias, ubicacion, x)
+          this.setState({ current:1 });
+        }
+      });
+  }
+
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////    CIERRO EL MODAL
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  finalizar = () =>{
+    this.setState({
+      ModalTitle: 'Creando Plan...',
+      guardarBtn: 'Guardando...',
+      loading: true,
+    });
+    setTimeout(() => {
+       this.props.close(false)
+       location.reload();
+    }, 2000);
+  }
+
 }
 
 export default Form.create()(CrearPlan);

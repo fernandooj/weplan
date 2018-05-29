@@ -12,6 +12,9 @@ class NavigationBar extends React.Component{
   state = {
     current: 'usuario',
   }
+  handleClick = (e) => {
+    this.setState({current:e.key})
+  }
   render(){
     return (
       <nav className="navbar navbar-default">
@@ -21,33 +24,34 @@ class NavigationBar extends React.Component{
       <section>
       { 
         this.props.showMenu
-        ?
-      <Menu
-          onClick={this.handleClick}
-          selectedKeys={[this.state.current]}
-          mode="horizontal"
-        >
-        <Menu.Item key="usuario">
-          <Icon type="usergroup-add" />
-          <Link to='usuario'>Usuarios</Link>
-        </Menu.Item>
-        <Menu.Item key="plan">
-          <Icon type="usergroup-add" />
-          <Link to='plan'>Planes</Link>
-        </Menu.Item>
-        <Menu.Item key="restriccion">
-          <Icon type="lock" />
-          <Link to='restriccion'>Restricciones</Link>
-        </Menu.Item>
-         
-        <SubMenu title={<span><Avatar size="default" icon="user" />Ferdiland</span>}>
-          <Menu.Item key="setting:1">Perfil</Menu.Item>
-          <Menu.Item key="setting:2">Notificaciones</Menu.Item>
-          <Menu.Item key="setting:3" onClick={()=>this.closeSession()}>Cerrar Sesión</Menu.Item>
-        </SubMenu>
-          
+        &&<Menu
+            onClick={this.handleClick}
+            selectedKeys={[this.state.current]}
+            mode="horizontal"
+          >
+          <Menu.Item key="usuario">
+            <Icon type="usergroup-add" />
+            <Link to='usuario'>Usuarios</Link>
+          </Menu.Item>
+          <Menu.Item key="plan">
+            <Icon type="usergroup-add" />
+            <Link to='plan'>Planes</Link>
+          </Menu.Item>
+          <Menu.Item key="restriccion">
+            <Icon type="lock" />
+            <Link to='restriccion'>Restricciones</Link>
+          </Menu.Item>
+          <Menu.Item key="categoria">
+            <Icon type="lock" />
+            <Link to='categoria'>Categorias</Link>
+          </Menu.Item>
+           
+          <SubMenu title={<span><Avatar size="default" icon="user" />Ferdiland</span>}>
+            <Menu.Item key="setting:1">Perfil</Menu.Item>
+            <Menu.Item key="setting:2">Notificaciones</Menu.Item>
+            <Menu.Item key="setting:3" onClick={()=>this.closeSession()}>Cerrar Sesión</Menu.Item>
+          </SubMenu>
         </Menu>
-        :null
       }
       </section>
       </nav>
