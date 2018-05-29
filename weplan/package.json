@@ -9,6 +9,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "moment": "^2.22.0",
+    "prop-types": "^15.6.1",
     "react": "16.2.0",
     "react-addons-update": "^15.6.2",
     "react-native": "0.53.3",
@@ -24,6 +25,7 @@
     "react-native-maps": "^0.20.1",
     "react-native-modalbox": "^1.4.2",
     "react-native-scalable-image": "^0.4.0",
+    "react-native-slideshow": "^1.0.1",
     "react-navigation": "^1.1.2",
     "react-onclickoutside": "^6.7.1",
     "socket.io-client": "^2.0.4"

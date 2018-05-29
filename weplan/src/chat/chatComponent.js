@@ -19,8 +19,8 @@ export default class ChatComponent extends Component{
 	}
 
 	componentWillMount(){
-		let planId = this.props.navigation.state.params	
-		//let planId = '5b0657248310944d15d93a13'	
+		//let planId = this.props.navigation.state.params	
+		let planId = '5b0b87577ea08b5b42740212'	
 		console.log(planId) 
 		this.socket = SocketIOClient(URL);
 		this.socket.on('userJoined'+planId, this.onReceivedMessage);
@@ -81,7 +81,7 @@ export default class ChatComponent extends Component{
 						respuesta1   : res.data.porcentaje1,
 						respuesta2   : res.data.porcentaje2,
 						tipoEncuesta : e.encuestaId ?e.encuestaId.tipo :null,
-						tipoChat	    : e.tipo,
+						tipoChat	 : e.tipo,
 						estado       : e.estado,
 						porcentaje1  : res.data.porcentaje1,
 						porcentaje2  : res.data.porcentaje2,
@@ -113,6 +113,10 @@ export default class ChatComponent extends Component{
 		})
 	 }
  
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////////// 		RENDERIZA LA CABEZERA CON EL NOMBRE DEL PLAN Y LOS ICONOS
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	renderCabezera(){
 		const {planId, imagen, nombrePlan} = this.state
 		const {navigate} = this.props.navigation

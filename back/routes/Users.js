@@ -219,10 +219,9 @@ module.exports = function(app, passport){
                 console.log(1)
                 existe(req, res)
             }else{
-                console.log(req.body)
-                
                 req.session.usuario = {user}
-                user.tokenPhone!==req.body.tokenPhone  ?modificaTokenPhone(req, res) :res.json({status: 'SUCCESS', user, code:1})
+                //user.tokenPhone!==req.body.tokenPhone  ?modificaUsuario(req, res) :res.json({status: 'SUCCESS', user, code:1})
+                modificaUsuario(req, res)
             }
         })
     })
@@ -245,11 +244,11 @@ module.exports = function(app, passport){
 
     ///////////////////////////////////////////////////////////////////////////
     /*
-    si el usuario modifico el token de su celular para notificaciones lo actualizo desde aca
+    siempre modifico sus datos basicos ==>phone, nombre, tokenphone
     */
     ///////////////////////////////////////////////////////////////////////////
-    const modificaTokenPhone = (req, res)=>{
-        userServices.modificaTokenPhone(req.session.usuario.user._id, req.body.tokenPhone, (err, user)=>{
+    const modificaUsuario = (req, res)=>{
+        userServices.modificaUsuario(req.session.usuario.user._id, req.body, (err, user)=>{
             if (err) {
                 res.json({status:'FAIL', err, code:0})    
             }else{

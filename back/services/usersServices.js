@@ -56,9 +56,11 @@ class userServices {
 			}}, callback );	
 		})
 	}
-	modificaTokenPhone(idUser, tokenPhone, callback){
+	modificaUsuario(idUser, data, callback){
 		User.findByIdAndUpdate(idUser, {$set:{
-			'tokenPhone':tokenPhone,
+			'tokenPhone':data.tokenPhone,
+			'nombre':data.nombre,
+			'photo':data.photo,
 		}}, callback );	
 	}
 	verificaToken(token, callback){

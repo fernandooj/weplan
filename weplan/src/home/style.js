@@ -86,12 +86,12 @@ export const HomeStyle = StyleSheet.create({
 		width:'18%', 
 		marginLeft:'1%', 
 		marginRight:'1%',
-		paddingTop:0, 
-		paddingBottom:10 
+		paddingTop:5, 
+		paddingBottom:5 
 	},
 	iconFooter3:{
-		width:'65%', 
-		height:30,  
+		width:'55%', 
+		height:25,  
 	},
 	btnFooter3Create:{
 		width:'18%', 

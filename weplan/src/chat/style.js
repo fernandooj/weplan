@@ -14,7 +14,7 @@ export const ChatStyle = StyleSheet.create({
 		alignItems: 'center',
 		flexDirection:'row',
 		justifyContent: 'space-between',
-		backgroundColor:"#758BFC",
+		backgroundColor:"#2a83ba",
 		borderWidth: 0,
 		borderBottomWidth:2,
 		borderColor:'#4461D8',
@@ -37,8 +37,8 @@ export const ChatStyle = StyleSheet.create({
 		bottom:-5
 	},
 	icon:{
-		width:50,
-		height:50,
+		width:40,
+		height:40,
 		position:'relative',
 		bottom: -8
 	},

@@ -36,24 +36,40 @@ export default class createPlanComponent extends Component{
  			tipo:'suscripcion',
  			restriccion:false,
  			iconCreate:true,
- 			cargaPlan:false
+ 			cargaPlan:false,
+ 			position: 1,
+      	interval: null,
+      	imagenes:[]
 		}
 	}
 
 	componentWillMount(){
-		console.log(this.props.navigation.state.params)
 		if (this.props.navigation.state.params) {
 			axios.get('/x/v1/pla/plan/getbyid/'+this.props.navigation.state.params)
 			.then((e)=>{
-				console.log(e.data.plan[0].restricciones)
-				this.setState({cargaPlan:e.data.plan[0], iconCreate:false, restriccion:false, restriccionesAsignadas:e.data.plan[0].restricciones , restricciones:e.data.plan[0].restricciones, planPadre:this.props.navigation.state.params })
+				console.log(e.data.plan[0])
+				let imagenes = []
+				e.data.plan[0].imagen.map(e=>{
+					imagenes.push({url:e})
+				}) 
+				this.setState({cargaPlan:e.data.plan[0], iconCreate:false, restriccion:false, restriccionesAsignadas:e.data.plan[0].restricciones , restricciones:e.data.plan[0].restricciones, planPadre:this.props.navigation.state.params, imagenes })
+
 			})
 			.catch(err=>{
 				console.log(err)
 			})
 		}
+		this.setState({
+	      interval: setInterval(() => {
+	        this.setState({
+	          position: this.state.position === this.state.imagenes.length ? 0 : this.state.position + 1
+	        });
+	      }, 2000)
+	    });
 	}
-
+	componentWillUnmount() {
+		clearInterval(this.state.interval);
+	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////  ACTUALIZA LA UBICACION //////////////////////////////////////////////////////////////////////////
@@ -71,10 +87,8 @@ export default class createPlanComponent extends Component{
 	///////////////////////////////////////////////////  	RENDER  	/////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	render(){
-		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan} = this.state
+		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes} = this.state
 		const {navigate} = this.props.navigation
- 
- 		console.log(cargaPlan)
 		return (
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} > 
 				<CabezeraComponent navigate={navigate} url={'inicio'} parameter={this.state.planId} />
@@ -92,7 +106,11 @@ export default class createPlanComponent extends Component{
 					    />
 					</View>
 					:<View style={CreatePlanStyle.encabezadoPlan2}>
-						<Image source={{uri:cargaPlan.imagen[0]}} style={CreatePlanStyle.imagenCargada} />
+						<Slideshow 
+					      dataSource={imagenes}
+					      position={this.state.position}
+					      onPositionChanged={position => this.setState({ position })} 
+					   />
 						<Text style={CreatePlanStyle.textoCargado}>{cargaPlan.nombre}</Text>
 					</View>
 				}
