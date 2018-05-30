@@ -39,6 +39,7 @@ class CrearPlan extends React.Component {
     ubicacion:'',                  //// Valor inicial del nombre del lugar
     showModalConfirmaNombre:false,   //// si el usuario no pone un nombre no deja continuar
     restricciones:[],
+    fileList:[],
     x: {
         latitude: 4.597825,
         longitude: -74.0755723,
@@ -183,7 +184,7 @@ class CrearPlan extends React.Component {
              </Form>
           :current===1
           ?<Imagenes 
-            imagenes={(fileList)=>this.props.insertaImagenes({fileList})}
+            imagenes={(fileList)=>this.setState({fileList})}
             actualizaCurrent={(number, imagen)=>this.setState({current:number, imagen})}  
           />
           :current===2
@@ -213,7 +214,7 @@ class CrearPlan extends React.Component {
     )
   }
 
-
+  
   render() {
     const { visible, confirmLoading, ModalTitle, showModalConfirmaNombre, ubicacion } = this.state;
     return (
@@ -288,8 +289,9 @@ class CrearPlan extends React.Component {
       loading: true,
     });
     setTimeout(() => {
+       this.props.insertaImagenes(this.state.fileList)
        this.props.close(false)
-       location.reload();
+       this.setState({ current:0, ModalTitle:'Nuevo Plan', guardarBtn:'Finalizar', loading:false,fileList:[]  });
     }, 2000);
   }
 

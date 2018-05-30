@@ -14,9 +14,9 @@ class Plan extends Component {
 		return(
 			<PlanComponent 
         planes={this.props.planes}
-        planId={this.props.planCreado}
+        planId={this.props.plan}
         handleSubmit={(values, restriccion, categoria, ubicacion,x)=>this.props.handleSubmit(values, restriccion, categoria, ubicacion,x)} 
-        insertaImagenes={(fileList)=>this.props.insertaImagenes(fileList, this.props.planCreado._id)}
+        insertaImagenes={(fileList)=>this.props.insertaImagenes(fileList, this.props.plan._id)}
       />
 		)
 	}
@@ -27,7 +27,7 @@ class Plan extends Component {
 const mapStateToProps = state=>{
   return{
     planes:state.planes,
-    planCreado:state.planCreado
+    plan:state.plan
   }
 }
 const mapDispatchToProps = dispatch=>{
@@ -43,10 +43,12 @@ const mapDispatchToProps = dispatch=>{
       store.dispatch(crearPlan(values))
     },
     insertaImagenes(fileList, id){
+      console.log(fileList)
+
       let imagen = []
       imagen = fileList
       const formData = new FormData();
-      fileList.fileList.forEach((file) => {
+      fileList.forEach((file) => {
         formData.append('imagen[]', file);
         formData.append('id', id);
        

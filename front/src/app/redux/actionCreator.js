@@ -45,28 +45,7 @@ const obtieneUsuarios = ()=>{
 	   })
 	}
 }
-const crearPlan= (data)=>{
-	return dispatch=>{
-		return axios.post('/x/v1/pla/plan', data)
-	    .then(res=>{
-	    	dispatch({
-	   			type:'CREAR_PLAN',
-	   			planCreado: res.data.message
-	   		})
-	   	})
-	}
-}
-const insertaImagenPlan = (data) =>{
-	return dispatch=>{
-		return axios.put('x/v1/pla/plan/web', data)
-		.then(res=>{
-			dispatch({
-	   			type:'CREAR_PLAN',
-	   			planCreado: res.data.message
-	   		})
-		})
-	}
-}
+
 const obtienePlan = ()=>{
 	return dispatch=>{
 		return axios.get('/x/v1/pla/plan')
@@ -132,6 +111,28 @@ const creaCategoria= (data)=>{
 				type:'CREA_CATEGORIA',
 				categoria: res.data.categoria
 			})
+		})
+	}
+}
+const crearPlan= (data)=>{
+	return dispatch=>{
+		return axios.post('/x/v1/pla/plan', data)
+	    .then(res=>{
+	    	dispatch({
+	   			type:'CREAR_PLAN',
+	   			plan: res.data.message
+	   		})
+	   	})
+	}
+}
+const insertaImagenPlan = (data) =>{
+	return dispatch=>{
+		return axios.put('x/v1/pla/plan/web', data)
+		.then(res=>{
+			dispatch({
+	   			type:'INSERTA_IMAGEN',
+	   			plan: res.data.message
+	   		})
 		})
 	}
 }

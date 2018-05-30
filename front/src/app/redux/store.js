@@ -19,12 +19,6 @@ const reducer = (state, action)=>{
 			usuarios:action.usuarios
 		}
 	}
-	if (action.type==='OBTENER_PLANES') {
-		return{
-			...state,
-			planes:action.planes
-		}
-	}
 	if (action.type==='OBTENER_UN_PLAN') {
 		return{
 			...state,
@@ -43,10 +37,22 @@ const reducer = (state, action)=>{
 			categorias:action.categorias
 		}
 	}
+	if (action.type==='OBTENER_PLANES') {
+		return{
+			...state,
+			planes:action.planes
+		}
+	}
 	if (action.type==='CREAR_PLAN') {
 		return{
 			...state,
-			planCreado:action.planCreado
+			plan:action.plan
+		}
+	}
+	if (action.type==='INSERTA_IMAGEN') {
+		return{
+			...state,
+			planes:[action.plan, ...state.planes]
 		}
 	}
 	if (action.type==='CREA_RESTRICCION') {

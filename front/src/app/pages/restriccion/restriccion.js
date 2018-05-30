@@ -31,8 +31,6 @@ const mapStateToProps = state=>{
 const mapDispatchToProps = dispatch=>{
   return{
     handleSubmit(fileList, nombre){
-      console.log(nombre)
-      console.log(fileList)
       const formData = new FormData();
       fileList.forEach((file) => {
         formData.append('imagen', file);

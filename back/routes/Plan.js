@@ -85,7 +85,6 @@ router.post('/', function(req, res){
 })
 
 const ubicacion     =  '../../front/docs/public/uploads/plan/'
-const ubicacionJimp =  '../front/docs/public/uploads/plan/'
 router.put('/web', (req, res)=>{
 	let url = `${req.protocol}://${req.get('Host')}/public/uploads/`
 	let id = req.body.id[0].length > 2 ?req.body.id[0] :req.body.id 
@@ -161,17 +160,20 @@ router.put('/', (req, res)=>{
 	})
 })
 
+const ubicacionJimp =  '../front/docs/public/uploads/plan/'
 const resizeImagenes = (ruta, randonNumber, extension) =>{
+	console.log(ruta)
 	Jimp.read(ruta, function (err, imagen) {
 	    if (err) throw err;
-	    imagen.resize(720, Jimp.AUTO)            // resize
-		.quality(90)                 // set JPEG quality                
+	    imagen.resize(720, Jimp.AUTO)             
+		.quality(90)                          
 		.write(`${ubicacionJimp}Resize_${fecha}_${randonNumber}.${extension}`);
 	});	
 
 	setTimeout(function(){
 		sizeOf(`${ubicacionJimp}Resize_${fecha}_${randonNumber}.${extension}`)
 	    .then(dimensions => { 
+	    	console.log(dimensions)
 		  	let width  = dimensions.width
 		  	let height = dimensions.height
 		  	let x; 
@@ -194,14 +196,14 @@ const resizeImagenes = (ruta, randonNumber, extension) =>{
 		  	
 			Jimp.read(ruta, function (err, imagen) {
 			    if (err) throw err;
-			    imagen.resize(800, Jimp.AUTO)            // resize
-				.quality(90)                 // set JPEG quality 
+			    imagen.resize(800, Jimp.AUTO)             
+				.quality(90)                 
 				.crop(x,y,w,h)                
 				.write(`${ubicacionJimp}Miniatura_${fecha}_${randonNumber}.${extension}`);
 			});	
 		})
 	.catch(err => console.error(err));
-	},500)
+	},2000)
 	
 
 	 
