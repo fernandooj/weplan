@@ -185,7 +185,7 @@ module.exports = function(app, passport){
                         console.log(req.body.tokenPhone)
                         req.session.usuario = {user:user}
                         //res.json({status:'SUCCESS', user: user, code:1 })
-                        user.tokenPhone!==req.body.tokenPhone  ?modificaTokenPhone(req, res) :res.json({status: 'SUCCESS', user, code:1})
+                        user.tokenPhone!==req.body.tokenPhone  ?modificaUsuario(req, res) :res.json({status: 'SUCCESS', user, code:1})
                     }else{
                         res.json({status:'FAIL', user: 'Datos incorrectos', code:0 })
                         
@@ -471,12 +471,15 @@ module.exports = function(app, passport){
     // =====================================
     // LOGOUT ==============================
     // =====================================
-    app.get('/x/v1/logout', function(req, res) {
+    app.get('/x/v1/logout', (req, res)=>{
         req.session.usuario = null;
         req.session = null;
         console.log(req.session)
         res.json({status: 'SUCCESS', message:'sesion terminada', code:1})
     });
 
-         
+    app.post('/x/v1/test/test', (req, res)=>{
+        console.log(req.body)
+        console.log(req.files)
+    })   
 }

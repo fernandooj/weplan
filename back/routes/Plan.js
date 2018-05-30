@@ -7,6 +7,10 @@ let fs = require('fs')
 let path = require('path')
 let moment   = require('moment');
 let fecha = moment().format('YYYY-MM-DD-h-mm')
+let Jimp = require("jimp");
+var { promisify } = require('util');
+var sizeOf = promisify(require('image-size'));
+
 
 router.get('/', (req, res)=>{
 	planServices.get((err, planes)=>{
@@ -80,23 +84,39 @@ router.post('/', function(req, res){
     }
 })
 
-
+const ubicacion     =  '../../front/docs/public/uploads/plan/'
+const ubicacionJimp =  '../front/docs/public/uploads/plan/'
 router.put('/web', (req, res)=>{
+	let url = `${req.protocol}://${req.get('Host')}/public/uploads/`
 	let id = req.body.id[0].length > 2 ?req.body.id[0] :req.body.id 
-	let ruta = [] 
+	let rutaImagenOriginal  = [] 
+	let rutaImagenResize    = [] 
+	let rutaImagenMiniatura = []  
 	if (req.files.imagen) {
 		req.files.imagen.forEach(e=>{
 			let extension = e.name.split('.').pop()
 			let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
-			let fullUrl = '../../front/docs/public/uploads/plan/'+fecha+'_'+randonNumber+'.'+extension
-			let rutas = req.protocol+'://'+req.get('Host') + '/public/uploads/plan/'+fecha+'_'+randonNumber+'.'+extension
+			let fullUrl = `${ubicacion}Original_${fecha}_${randonNumber}.${extension}`
+			
+
 			fs.rename(e.path, path.join(__dirname, fullUrl))
-			ruta.push(rutas)
+
+
+			let rutasImagenOriginal = `${url}plan/Original_${fecha}_${randonNumber}.${extension}`
+			let rutasImagenResize = `${url}plan/Resize_${fecha}_${randonNumber}.${extension}`
+			let rutasImagenMiniatura = `${url}plan/Miniatura_${fecha}_${randonNumber}.${extension}`
+
+			
+
+			rutaImagenOriginal.push(rutasImagenOriginal)
+			rutaImagenResize.push(rutasImagenResize)
+			rutaImagenMiniatura.push(rutasImagenMiniatura)
+			resizeImagenes(rutasImagenOriginal, randonNumber, extension)
 		})	
 	}else{
 		ruta = req.protocol+'://'+req.get('Host') + '/plan.png'
 	}
-	planServices.uploadImage(id, ruta, (err, plan)=>{
+	planServices.uploadImage(id, rutaImagenOriginal, rutaImagenResize, rutaImagenMiniatura, (err, plan)=>{
 		if(err){
 			res.json({err})
 		}else{
@@ -106,19 +126,32 @@ router.put('/web', (req, res)=>{
 })
 
 router.put('/', (req, res)=>{
-	let id = req.body.id
-	let ruta = [] 
+
+	let rutaImagenOriginal  = [] 
+	let rutaImagenResize    = [] 
+	let rutaImagenMiniatura = [] 
+	
 	if (req.files.imagen) {
 		let extension = req.files.imagen.name.split('.').pop()
 		let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
-		let fullUrl = '../../front/docs/public/uploads/plan/'+fecha+'_'+randonNumber+'.'+extension
-		let rutas = req.protocol+'://'+req.get('Host') + '/public/uploads/plan/'+fecha+'_'+randonNumber+'.'+extension
-		fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))
-		ruta.push(rutas)
+		let fullUrl = `${ubicacion}Original_${fecha}_${randonNumber}.${extension}`
+			
+		fs.rename(e.path, path.join(__dirname, fullUrl))
+
+		let rutasImagenOriginal = `${url}plan/Original_${fecha}_${randonNumber}.${extension}`
+		let rutasImagenResize = `${url}plan/Resize_${fecha}_${randonNumber}.${extension}`
+		let rutasImagenMiniatura = `${url}plan/Miniatura_${fecha}_${randonNumber}.${extension}`
+
+
+		rutaImagenOriginal.push(rutasImagenOriginal)
+		rutaImagenResize.push(rutasImagenResize)
+		rutaImagenMiniatura.push(rutasImagenMiniatura)
+		resizeImagenes(rutasImagenOriginal, randonNumber, extension)
+	
 	}else{
 		ruta = req.protocol+'://'+req.get('Host') + '/plan.png'
 	}
-	planServices.uploadImage(id, ruta, (err, plan)=>{
+	planServices.uploadImage(req.body.id, ruta, (err, plan)=>{
 		if(err){
 			res.json({err})
 		}else{
@@ -128,6 +161,52 @@ router.put('/', (req, res)=>{
 	})
 })
 
+const resizeImagenes = (ruta, randonNumber, extension) =>{
+	Jimp.read(ruta, function (err, imagen) {
+	    if (err) throw err;
+	    imagen.resize(720, Jimp.AUTO)            // resize
+		.quality(90)                 // set JPEG quality                
+		.write(`${ubicacionJimp}Resize_${fecha}_${randonNumber}.${extension}`);
+	});	
+
+	setTimeout(function(){
+		sizeOf(`${ubicacionJimp}Resize_${fecha}_${randonNumber}.${extension}`)
+	    .then(dimensions => { 
+		  	let width  = dimensions.width
+		  	let height = dimensions.height
+		  	let x; 
+		  	let y; 
+		  	let w; 
+		  	let h; 
+
+		  	if (width>height) {
+		  		console.log(1)
+		  		x = (width*10)/100
+			  	y = (width*10)/100
+			  	w = (((height*100)/100)-y)
+			  	h = (((height*100)/100)-y)
+		  	}else{
+				x = (height*10)/100
+			  	y = (height*10)/100
+			  	w = (width*90)/100
+			  	h = (width*90)/100
+		  	}
+		  	
+			Jimp.read(ruta, function (err, imagen) {
+			    if (err) throw err;
+			    imagen.resize(800, Jimp.AUTO)            // resize
+				.quality(90)                 // set JPEG quality 
+				.crop(x,y,w,h)                
+				.write(`${ubicacionJimp}Miniatura_${fecha}_${randonNumber}.${extension}`);
+			});	
+		})
+	.catch(err => console.error(err));
+	},500)
+	
+
+	 
+ 
+}
 
  
 router.get('/suma/totales/plan', (req, res)=>{

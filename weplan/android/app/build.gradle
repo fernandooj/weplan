@@ -159,7 +159,7 @@ dependencies {
     compile(project(":react-native-google-signin")){ 
         exclude group: "com.google.android.gms" 
     }
-
+    compile project(':react-native-document-picker')
     compile project(':react-native-image-picker')
     compile project(':react-native-facebook-login')
     compile fileTree(dir: "libs", include: ["*.jar"])

@@ -15,26 +15,30 @@ class planServices {
 		planSchema.find({$or:[{'asignados':asignados, estado:true},{'idUsuario':asignados, estado:true}]}, null, {sort: {_id: -1}}).populate('idUsuario', 'nombre ciudad photo').populate('asignados', 'nombre ciudad photo').exec(callback)
 	}
 	create(planData, id, callback){
-		let plan 			= new planSchema();
-		plan.tipo 		    = planData.tipo	
-		plan.nombre 		= planData.nombre	
-		plan.descripcion	= planData.descripcion	
-		plan.restricciones  = planData.restricciones	
-		plan.estado         = true	
-		plan.idUsuario 		= id	
-		plan.fechaLugar 	= planData.fechaLugar
-		plan.lat 			= planData.lat	
-		plan.lng 			= planData.lng	
-		plan.lugar 			= planData.lugar	
-		plan.asignados 		= planData.asignados	
-		plan.imagen 		= planData.imagen	
-		plan.categorias     = planData.categorias	
-		plan.planPadre      = planData.planPadre	
+		let plan 			 = new planSchema();
+		plan.tipo 		     = planData.tipo	
+		plan.nombre 		 = planData.nombre	
+		plan.descripcion	 = planData.descripcion	
+		plan.restricciones   = planData.restricciones	
+		plan.estado          = true	
+		plan.idUsuario 		 = id	
+		plan.fechaLugar 	 = planData.fechaLugar
+		plan.lat 			 = planData.lat	
+		plan.lng 			 = planData.lng	
+		plan.lugar 			 = planData.lugar	
+		plan.asignados 		 = planData.asignados	
+		plan.imagenOriginal  = planData.imagenOriginal	
+		plan.imagenResize 	 = planData.imagenResize	
+		plan.imagenMiniatura = planData.imagenMiniatura	
+		plan.categorias      = planData.categorias	
+		plan.planPadre       = planData.planPadre	
 		plan.save(callback)
 	}
-	uploadImage(id, nameFile, callback){
+	uploadImage(id, imagenOriginal, imagenResize, imagenMiniatura, callback){
 		planSchema.findByIdAndUpdate(id, {$set: {
-	        'imagen': nameFile,
+	        'imagenOriginal': imagenOriginal,
+	        'imagenResize': imagenResize,
+	        'imagenMiniatura': imagenMiniatura,
         }}, callback);	
 	}
 	getByPago(callback){

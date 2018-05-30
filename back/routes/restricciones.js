@@ -8,6 +8,8 @@ let fs = require('fs')
 let path = require('path')
 let fecha = moment().format('YYYY-MM-DD-h-mm')
 let restriccionesServices = require('./../services/restriccionesServices.js') 
+let Jimp = require("jimp");
+
 
 router.get('/', (req, res)=>{
 	restriccionesServices.get((err, restriccion)=>{
@@ -21,7 +23,10 @@ router.get('/', (req, res)=>{
 
 
 router.post('/', (req, res)=>{
-	console.log(req.body)
+	let from = 'https://definicion.de/wp-content/uploads/2009/03/socio.jpg';
+ 
+
+
 	let ruta =null
 	if (req.files.imagen) {
 		let extension = req.files.imagen.name.split('.').pop()
@@ -29,6 +34,17 @@ router.post('/', (req, res)=>{
 		let fullUrl = '../../front/docs/public/uploads/restriccion/'+fecha+'_'+randonNumber+'.'+extension
 		ruta = req.protocol+'://'+req.get('Host') + '/public/uploads/restriccion/'+fecha+'_'+randonNumber+'.'+extension
 		fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))
+		console.log(ruta)
+
+ 
+		Jimp.read(ruta, function (err, imagen) {
+	    if (err) throw err;
+	    imagen.resize(720, Jimp.AUTO)            // resize
+	         .quality(90)                 // set JPEG quality 
+	         .clone()                
+	         .write('../front/docs/public/uploads/restriccion/res'+fecha+'_'+randonNumber+'.'+extension); // save
+		});	
+
 	}else{
 		ruta = req.protocol+'://'+req.get('Host') + '/restriccion.png'
 	}

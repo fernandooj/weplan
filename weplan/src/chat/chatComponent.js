@@ -6,6 +6,9 @@ import {sendRemoteNotification} from '../push/envioNotificacion.js'
 import {ChatStyle} from '../chat/style'
 import update from 'react-addons-update';
 import moment from 'moment'
+import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
+
+
 import {URL} from '../../App.js'
 export default class ChatComponent extends Component{
 	constructor(props){
@@ -113,6 +116,7 @@ export default class ChatComponent extends Component{
 		})
 	 }
  
+
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////// 		RENDERIZA LA CABEZERA CON EL NOMBRE DEL PLAN Y LOS ICONOS
@@ -352,7 +356,7 @@ export default class ChatComponent extends Component{
 				</ImageBackground>
 				<View style={ChatStyle.footer}>
 					<View style={ChatStyle.footer1}>
-						<TouchableOpacity onPress={() => this.opciones.bind(this)} style={ChatStyle.opcionesBtn}>
+						<TouchableOpacity onPress={() => this.uploadFiles(this)} style={ChatStyle.opcionesBtn}>
 							<Image source={require('./opciones.png')} style={ChatStyle.opciones}  />
 						</TouchableOpacity>
 						<TextInput
@@ -375,13 +379,27 @@ export default class ChatComponent extends Component{
 	opciones(){
 		console.log("opciones")
 	}
-
+	uploadFiles(){
+ 		DocumentPicker.show({
+	      filetype: [DocumentPickerUtil.allFiles()],
+	    },(error,res) => {
+	      // Android
+	      console.log(
+	         res.uri,
+	         res.type, // mime type
+	         res.fileName,
+	         res.fileSize
+	      );
+	      // axios.post('/x/v1/test/test', res)
+	      // .then(e=>{
+	      // 	console.log(e.data)
+	      // })
+	    });
+ 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////// SI EL USUARIO HACE CLICK EN ME INTERESA, ENVIA LA NOTIFICACION AL CREADOR DEL ITEM PARA DARLE PERMISO DE INGRESAR
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	ingresarItem(token, itemId, id){
-
- 
 		axios.put('x/v1/ite/item', {itemId})
 		.then(e=>{
 			if (e.data.code==1) {
