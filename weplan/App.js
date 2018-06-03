@@ -31,7 +31,7 @@ import profileComponent       from './src/profile/profileComponent';
 
 import { StackNavigator } from 'react-navigation'
 
-export const URL = 'http://159.89.141.0:8080/';
+export const URL = 'https://appweplan.com/';
 axios.defaults.baseURL = URL;
 
 const transitionConfig = () => {
@@ -109,7 +109,7 @@ const NavigationApp = StackNavigator({
 },{ headerMode: 'none', transitionConfig })
  
 const NavigationAppLogin = StackNavigator({  
-    Home:          {screen: homeComponent}, 
+    Home:          {screen: ChatComponent}, 
     Login:         {screen: LoginComponent },
     Registro:      {screen: RegistroComponent },
     insertCode:    {screen: insertCodeComponent },
@@ -163,14 +163,8 @@ export default class App extends Component<{}> {
       console.log(err)
     })
   }
-  // render(){
-  //   return(
-  //     <Splash />
-  //   )
-  // }
   render() {
     const {google, local} = this.state
-    console.log(local)
     if (local==null) {
       return (
          <Splash />)

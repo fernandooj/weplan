@@ -19,7 +19,7 @@ class NavigationBar extends React.Component{
     return (
       <nav className="navbar navbar-default">
       <section >
-        <img src='http://appweplan.com/public/assets/logo.png' />
+        <img src='https://appweplan.com/public/assets/logo.png' />
       </section>
       <section>
       { 

@@ -156,7 +156,7 @@ export default class MapaPlanComponent extends Component{
 				        </MapView>
 				        <View  style={CreatePlanStyle.contenedorRes}>
 				       		<TouchableOpacity 
-				       			onPress={() => { this.props.updateStateX(this.state.x.latitude, this.state.x.latitude,this.state.direccion)} } 
+				       			onPress={() => { this.props.updateStateX(this.state.x.latitude, this.state.x.longitude,this.state.direccion)} } 
 								style={CreatePlanStyle.btnHecho}>
 								<Text style={CreatePlanStyle.textoHecho}>Hecho !</Text>
 							</TouchableOpacity>

@@ -5,7 +5,7 @@ import CrearCategoria from './createCategoria'
 const Option = Select.Option;
 
 
- const columns = [{
+const columns = [{
   title: 'nombre',
   dataIndex: 'nombre',
   key: 'nombre',
@@ -16,7 +16,7 @@ const Option = Select.Option;
     return <img src={text} style={{width:'50px'}} />
   }
  
-} ];
+}];
 const rowSelection = {
   onChange: (selectedRowKeys, selectedRows) => {
     console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);

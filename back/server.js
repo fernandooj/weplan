@@ -1,8 +1,6 @@
-'use strict';
-/////////////////////////////////////////////////////////////////////////
-/***** librerias necesarias para el funcionamiento de la app  **********/
-/////////////////////////////////////////////////////////////////////////
-let express      = require('express') 
+'use strict'
+ 
+let express      = require('express')
 let app          = express();
 let bodyParser   = require('body-parser');
 let morgan       = require('morgan');

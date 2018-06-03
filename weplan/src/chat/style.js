@@ -30,11 +30,16 @@ export const ChatStyle = StyleSheet.create({
 		borderColor:'#4461D8',
 		zIndex:110	
 	},
+	iconRegresar:{
+		width:60,
+		height:60,
+		bottom:-10
+	},
 	iconContenedor:{	
 		width:60,
 		height:60,
-		position:'relative',
-		bottom:-5
+		bottom:-5,
+		marginRight:-10
 	},
 	icon:{
 		width:40,
@@ -45,8 +50,8 @@ export const ChatStyle = StyleSheet.create({
 	nombrePlan:{
 		color:'#ffffff',
 		fontSize:15,
-		marginLeft:25,
-		width:screenWidth/2.5,
+		marginLeft:30, 
+		width:150,
 		lineHeight: 17,
 	},
 	regresar:{
@@ -54,25 +59,75 @@ export const ChatStyle = StyleSheet.create({
 		color:'#ffffff',
 		fontSize:30,
 	},
-
+	iconosHeaderContenedor:{
+		flexDirection:'row',
+	},
+	///////////////////////////////////////////////////////////////
+	//////////////		OPCIONES
+	///////////////////////////////////////////////////////////////
+	opcionesBtn:{
+		width:60
+	},
+	opciones:{
+		width:45,
+		height:32,
+		marginLeft:13,
+		marginTop:3,
+	},
+	enviarBtn:{
+		width:70,
+	},
+	enviar:{
+		width:45,
+		height:26
+	},
+	contenedorChat:{
+		// flex:.4,
+		// marginBottom:100
+	},
+	contenedorOpciones:{
+ 		flexDirection:'row',
+		backgroundColor:'#ffffff',
+		padding:8,
+		left:5,
+		marginTop:-75,
+		width:230,
+		borderRadius:35
+	},
+	// contenedorOpciones:{
+	// 	flexDirection:'row',
+	// 	marginTop:-55,
+	// 	justifyContent: 'center',
+ //        alignItems: 'center',
+	// },
+	btnIconoOpciones:{
+		backgroundColor:'#ebebeb',
+		padding:3,
+		width:35,
+		borderRadius:20,
+		marginRight:10,
+	},
+	opcionesIconos:{
+		width:30,
+		height:30,
+	},
  	////////////////// footer
 	footer:{
 		position:'absolute',
 		bottom:0,
 		width:screenWidth,
 		backgroundColor:'#EDEDED',
-		paddingTop:20,
-		paddingBottom:20,
+		paddingTop:10,
+		paddingBottom:10,
 	},
 	footer1:{
-		flexWrap: 'wrap', 
 		alignItems: 'flex-start',
 		flexDirection:'row',
 		justifyContent: 'flex-start',
 	},
 	textarea:{
 		width:'60%',
-		height:40,
+		height:35,
 		color:'#969696',
 		paddingTop:0,
 		paddingLeft:20,
@@ -84,28 +139,7 @@ export const ChatStyle = StyleSheet.create({
 		fontSize:17,
 		borderRadius: 50,
 	},
-	opcionesBtn:{
-		width:'17%'
-	},
-	opciones:{
-		width:'100%',
-	},
-	enviarBtn:{
-		width:'17%'
-	},
-	enviar:{
-		width:'90%',
-		height:32
-	},
-	contenedorChat:{
-		flex:.4,
-		marginBottom:100
-	},
-
 	////////////////// box chat /////////////////
-	contenedorBox:{
-
-	},
 	box:{
 		alignSelf: 'flex-end',  
 		borderWidth: 0,
@@ -177,7 +211,7 @@ export const ChatStyle = StyleSheet.create({
 		zIndex:0,
 		top:0,
 		left:0,
-		height:screenHeight-70,
+		height:screenHeight-125,
 		width:screenWidth,
 	},
 
@@ -210,7 +244,6 @@ export const ChatStyle = StyleSheet.create({
 		zIndex:10, 
 	 	flexDirection:'row',
 		top: 10,
-	   
 		borderTopLeftRadius:10,  
 	},  
 	fondoHeaderItemLeft:{
@@ -220,9 +253,6 @@ export const ChatStyle = StyleSheet.create({
 		alignSelf: 'flex-start',
 		left:18,
 		borderTopRightRadius:10,  
-	},
-	modal:{
-	  
 	},
 	iconAvatar:{
 		position:'absolute',
@@ -395,12 +425,7 @@ export const ChatStyle = StyleSheet.create({
 		height:35
 	},
 
-	contenedorOpciones:{
-		flexDirection:'row',
-		marginTop:-55,
-		justifyContent: 'center',
-        alignItems: 'center',
-	},
+	
 	imagenPregunta:{
 		width:100,
 		height:100,

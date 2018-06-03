@@ -1,24 +1,39 @@
 import React, {Component} from 'react'
-import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground } from 'react-native'
+import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground, Alert } from 'react-native'
 import axios from 'axios'
 import SocketIOClient from 'socket.io-client';
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
 import {ChatStyle} from '../chat/style'
 import update from 'react-addons-update';
 import moment from 'moment'
+import ImagePicker from 'react-native-image-picker';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
-
-
+import AgregarAmigosComponent    from '../agregarAmigos/agregarAmigos.js'
+import MapaPlanComponent 		    from '../createPlan/mapa.js'
 import {URL} from '../../App.js'
 export default class ChatComponent extends Component{
 	constructor(props){
 		super(props)
 		this.state={
 			mensajes: [],
-			nombrePlan:''
+			mensaje:'',
+			nombrePlan:'',
+			lat:'',
+			lng:'',
+			showOpciones:false,
+			adjuntarAmigos:false,
+			mapa:false,
+			usuariosAsignados:[],
+			asignados:[],
+			opciones:[
+				{url:`${URL}public/img/opcion_1.png`, click:this.uploadPhoto.bind(this)},
+				{url:`${URL}public/img/opcion_2.png`, click:()=>this.uploadMapa({}, {}, true)},
+				{url:`${URL}public/img/opcion_3.png`, click:()=>this.uploadContact(0, 0, true)},
+				{url:`${URL}public/img/opcion_4.png`, click:this.uploadFiles.bind(this)},
+				{url:`${URL}public/img/opcion_5.png`, click:null},
+			]
 		}
 		this.onReceivedMessage = this.onReceivedMessage.bind(this);
-
 	}
 
 	componentWillMount(){
@@ -98,8 +113,6 @@ export default class ChatComponent extends Component{
 				})
 			})
 			/////////////////////////////////////////////////////////////////////////////////
-			
-			 
 		})
 		.catch(res=>{
 			console.log(res)
@@ -116,7 +129,7 @@ export default class ChatComponent extends Component{
 		})
 	 }
  
-
+ 
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////// 		RENDERIZA LA CABEZERA CON EL NOMBRE DEL PLAN Y LOS ICONOS
@@ -127,16 +140,18 @@ export default class ChatComponent extends Component{
 		return(
 			<View>
 				<View style={ChatStyle.cabezera}>
-					<TouchableOpacity onPress={() => navigate('misPlanes')} style={ChatStyle.iconContenedor}>
+					<TouchableOpacity onPress={() => navigate('misPlanes')} style={ChatStyle.iconRegresar}>
 						<Text style={ChatStyle.regresar}>&#60;</Text>		
 					</TouchableOpacity> 
 					<Text style={ChatStyle.nombrePlan}>{nombrePlan ?nombrePlan.substring(0, 60) :''}</Text>
-					<TouchableOpacity onPress={() => navigate('encuesta', planId)}  style={ChatStyle.iconContenedor}>
-						<Image source={require('./preguntar.png')} style={ChatStyle.icon}  />
-					</TouchableOpacity>
-					<TouchableOpacity onPress={() => navigate('item', planId)} style={ChatStyle.iconContenedor}>
-						<Image source={require('./cuentas.png')} style={ChatStyle.icon}  />
-					</TouchableOpacity>
+					<View style={ChatStyle.iconosHeaderContenedor}>
+						<TouchableOpacity onPress={() => navigate('encuesta', planId)}  style={ChatStyle.iconContenedor}>
+							<Image source={require('./preguntar.png')} style={ChatStyle.icon}  />
+						</TouchableOpacity>
+						<TouchableOpacity onPress={() => navigate('item', planId)} style={ChatStyle.iconContenedor}>
+							<Image source={require('./cuentas.png')} style={ChatStyle.icon}  />
+						</TouchableOpacity>
+					</View>
 				</View>
 				<Image
 					style={ChatStyle.imagen}
@@ -344,9 +359,12 @@ export default class ChatComponent extends Component{
 	}
 
 	render(){
+		const {adjuntarAmigos, asignados, usuariosAsignados, mapa} = this.state
 		return(
 			<View style={ChatStyle.contenedorGeneral} > 
 				{this.renderCabezera()}
+
+			{/* AGREGAR IMAGENES */}
 				<ImageBackground source={require('./fondo.png')} style={ChatStyle.fondo}>	
 					<ScrollView ref="scrollView"
 								style={ChatStyle.contenedorChat} 
@@ -354,9 +372,30 @@ export default class ChatComponent extends Component{
 						{this.renderMensajes()}		
 					</ScrollView>
 				</ImageBackground>
+
+			{/* BOTONES OPCIONES */}
+				{
+					this.state.showOpciones
+					&&<View style={ChatStyle.contenedorOpciones}>
+						{this.opciones()}
+					</View>
+				}
+
+			{/* MODUlO AGREGAR CONTACTOS */}
+				{adjuntarAmigos &&<AgregarAmigosComponent 
+					                titulo='Asignar Amigos'
+					                close={(asignados, usuariosAsignados)=>this.uploadContact(asignados, usuariosAsignados, false)} 
+					                updateStateAsignados={(estado, id)=>this.updateStateAsignados(estado, id)}/> }
+
+			{mapa &&<MapaPlanComponent 
+							close={()=> this.setState({mapa:false})} 						   			/////////   cierro el modal
+							updateStateX={(lat,lng, direccion)=>this.uploadMapa(lat,lng, false)}  /////////	me devuelve la posicion del marcador 
+						/> }	
+
+			{/* FOOTER INPUT / ENVIAR */}
 				<View style={ChatStyle.footer}>
 					<View style={ChatStyle.footer1}>
-						<TouchableOpacity onPress={() => this.uploadFiles(this)} style={ChatStyle.opcionesBtn}>
+						<TouchableOpacity onPress={()=>this.setState({showOpciones:!this.state.showOpciones})} style={ChatStyle.opcionesBtn}>
 							<Image source={require('./opciones.png')} style={ChatStyle.opciones}  />
 						</TouchableOpacity>
 						<TextInput
@@ -368,7 +407,7 @@ export default class ChatComponent extends Component{
 							underlineColorAndroid='transparent'
 							ref={input => { this.textInput = input }}
 						/>
-						<TouchableOpacity onPress={() => this.handleSubmit(this)}  style={ChatStyle.enviarBtn} >
+						<TouchableOpacity onPress={this.state.mensaje.length>0 ?() => this.handleSubmit(this) :null}  style={ChatStyle.enviarBtn} >
 							<Image source={require('./enviar.png')} style={ChatStyle.enviar}  />
 						</TouchableOpacity>
 					</View>
@@ -377,24 +416,218 @@ export default class ChatComponent extends Component{
 		)
 	}
 	opciones(){
-		console.log("opciones")
+		return this.state.opciones.map((e, key)=>{
+			return (
+					<TouchableOpacity key={key} style={ChatStyle.btnIconoOpciones} onPress={e.click}>
+							<Image source={{uri:e.url}} style={ChatStyle.opcionesIconos} /> 	
+					</TouchableOpacity>
+				)
+		})
 	}
 	uploadFiles(){
+		let imagen = null;
  		DocumentPicker.show({
-	      filetype: [DocumentPickerUtil.allFiles()],
+	      filetype: [DocumentPickerUtil.pdf()],
 	    },(error,res) => {
-	      // Android
-	      console.log(
-	         res.uri,
-	         res.type, // mime type
-	         res.fileName,
-	         res.fileSize
-	      );
-	      // axios.post('/x/v1/test/test', res)
-	      // .then(e=>{
-	      // 	console.log(e.data)
-	      // })
-	    });
+	    	if (error) {
+	    		console.log(error)
+	    	}else{
+	    		let imagen = {
+				    uri: res.uri,
+				    type: res.type,
+				    name: res.fileName,
+				    path: res.uri
+				};
+				if (imagen!=null){
+					console.log(imagen)
+					this.test(imagen, res.fileName)
+				}
+	    	}
+	   });
+ 	}
+ 	test(imagen, fileName){
+ 		Alert.alert(
+		  'Seguro deseas enviar',
+		  fileName,
+		  [
+		    {text: 'Mejor despues', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+		    {text: 'Enviar', onPress: () => this.handleSubmitDocument(imagen, 7)},
+		  ],
+		  { cancelable: false }
+		);
+ 	}
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////// SUBIR CONTACTO
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 	uploadContact(asignados, usuariosAsignados, estado){	
+ 		this.setState({adjuntarAmigos:estado, asignados})
+ 		if (asignados.length>0) {
+ 			Alert.alert(
+			  'Seguro deseas enviar a:',
+			   '',
+			   [
+			    {text: 'Mejor despues', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+			    {text: 'Enviar', onPress: () => this.handleSubmitContact()},
+			   ],
+			   { cancelable: false }
+			);
+ 		}
+ 	}
+
+ 	uploadMapa(lat, lng, estado){
+ 		this.setState({mapa:estado, lat, lng})
+ 		if (lat>0) {
+ 			Alert.alert(
+			  'Seguro deseas enviar este mapa',
+			   '',
+			   [
+			    {text: 'Mejor despues', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+			    {text: 'Enviar', onPress: () => this.handleSubmitMap(lat, lng, 5)},
+			   ],
+			   { cancelable: false }
+			);
+ 		}
+ 	}
+ 	uploadPhoto(){
+		const options = {
+			quality: 1.0,
+			storageOptions: {
+				skipBackup: true
+			}
+		};
+
+		ImagePicker.showImagePicker(options, (response) => {
+		  console.log('Response = ', response);
+
+		  if (response.uri) {
+		    let source = { uri: response.uri };
+		    let imagen = {
+			    uri: response.uri,
+			    type: response.type,
+			    name: response.fileName,
+			    path: response.path
+			};
+			Alert.alert(
+			   'Seguro deseas enviar',
+			   response.fileName,
+			  [
+			    {text: 'Mejor despues', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+			    {text: 'Enviar', onPress: () => this.handleSubmitImagen(imagen, 6)},
+			  ],
+			  { cancelable: false }
+			);
+		  }
+		});
+ 	}
+ 	handleSubmitImagen(imagen, tipo){
+		let data = new FormData();
+		data.append('imagen', imagen);
+		data.append('tipo', tipo);
+		data.append('planId', this.state.planId);
+      axios({
+			method: 'post', //you can set what request you want to be
+			url: '/x/v1/cha/chat/documento',
+			data: data,
+			headers: { 
+				'Accept': 'application/json',
+				'Content-Type': 'multipart/form-data'
+			}
+      })
+		.then(res=>{  
+			console.log(res.data)     
+			if(res.data.code==1){ 
+			this.setState({showOpciones:false})
+			}else{
+				Alert.alert(
+					'Opss!! revisa tus datos que falta algo',
+					'',
+					[
+					{text: 'OK', onPress: () => console.log('OK Pressed')},
+					],
+					{ cancelable: false }
+				)
+			}
+		})
+		.catch(err=>{
+			console.log(err)
+		})
+ 	}
+ 	handleSubmitDocument(imagen, tipo){
+		let data = new FormData();
+		data.append('imagen', imagen);
+		data.append('tipo', tipo);
+		data.append('planId', this.state.planId);
+         axios({
+              method: 'post', //you can set what request you want to be
+              url: '/x/v1/cha/chat/documento',
+              data: data,
+              headers: { 
+                'Accept': 'application/json',
+                'Content-Type': 'multipart/form-data'
+              }
+            })
+        .then(res=>{  
+          console.log(res.data)     
+          if(res.data.code==1){ 
+         	this.setState({showOpciones:false})
+          }else{
+            Alert.alert(
+              'Opss!! revisa tus datos que falta algo',
+              '',
+              [
+                {text: 'OK', onPress: () => console.log('OK Pressed')},
+              ],
+              { cancelable: false }
+            )
+          }
+        })
+        .catch(err=>{
+          console.log(err)
+        })
+ 	}
+ 	handleSubmitContact(tipo){
+		this.state.asignados.map(e=>{
+			axios.post('/x/v1/cha/chat/', {contactoId:e, tipo:4})
+         .then(res=>{  
+         	console.log(res.data)     
+         	if(res.data.code==1){ 
+					this.setState({showOpciones:false})
+				}else{
+				Alert.alert(
+					'Opss!! revisa tus datos que falta algo',
+					'',
+				[
+					{text: 'OK', onPress: () => console.log('OK Pressed')},
+				],
+					{ cancelable: false }
+				)
+			}
+        })
+        .catch(err=>{
+          console.log(err)
+        })
+		}) 
+ 	}
+ 	handleSubmitMap(lat, lng, tipo){
+		axios.post('/x/v1/cha/chat/', {lat, lng, tipo})
+      .then(res=>{  
+      	console.log(res.data)     
+      	if(res.data.code==1){ 
+				this.setState({showOpciones:false})
+			}else{
+				Alert.alert(
+					'Opss!! revisa tus datos que falta algo',
+					'',
+				[
+					{text: 'OK', onPress: () => console.log('OK Pressed')},
+				],
+					{ cancelable: false }
+				)
+			}
+      })
+      .catch(err=>{
+      	console.log(err)
+      })
  	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////// SI EL USUARIO HACE CLICK EN ME INTERESA, ENVIA LA NOTIFICACION AL CREADOR DEL ITEM PARA DARLE PERMISO DE INGRESAR
@@ -441,7 +674,7 @@ export default class ChatComponent extends Component{
 		const fecha = moment().format('h:mm')
 		const {planId, mensaje, id, photo} = this.state
 		this.textInput.clear()
-		axios.post('/x/v1/cha/chat', {planId, mensaje, fecha})
+		axios.post('/x/v1/cha/chat', {planId, mensaje, fecha, tipo:1})
 		.then((res)=>{
 			console.log(res.data)
 		})

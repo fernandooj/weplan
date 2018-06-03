@@ -240,7 +240,7 @@ export default class createPlanComponent extends Component{
 						    	</TouchableOpacity>
 						    </View>
 				    	}
-				    	 {adjuntarAmigos ?<AgregarAmigosComponent 
+				    	{adjuntarAmigos ?<AgregarAmigosComponent 
 					                titulo='Asignar Amigos'
 					                close={(asignados, usuariosAsignados)=>this.setState({adjuntarAmigos:false, asignados, usuariosAsignados})} 
 					                updateStateAsignados={(estado, id)=>this.updateStateAsignados(estado, id)}/> :null }

@@ -59,12 +59,12 @@ router.get('/getbyid/:userId', (req, res)=>{
 
 router.get('/getbyUserId/misPlanes', (req, res)=>{
 	planServices.getById(req.session.usuario.user._id, (err, planes)=>{
-			if (err) {
-				res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
-			}else{
-				res.json({ status: 'SUCCESS', planes, code:1 });	
-			}
-		})
+		if (err) {
+			res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
+		}else{
+			res.json({ status: 'SUCCESS', planes, code:1 });	
+		}
+	})
 })
 
  
@@ -135,7 +135,7 @@ router.put('/', (req, res)=>{
 		let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
 		let fullUrl = `${ubicacion}Original_${fecha}_${randonNumber}.${extension}`
 			
-		fs.rename(e.path, path.join(__dirname, fullUrl))
+		fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))
 
 		let rutasImagenOriginal = `${url}plan/Original_${fecha}_${randonNumber}.${extension}`
 		let rutasImagenResize = `${url}plan/Resize_${fecha}_${randonNumber}.${extension}`
@@ -162,7 +162,6 @@ router.put('/', (req, res)=>{
 
 const ubicacionJimp =  '../front/docs/public/uploads/plan/'
 const resizeImagenes = (ruta, randonNumber, extension) =>{
-	console.log(ruta)
 	Jimp.read(ruta, function (err, imagen) {
 	    if (err) throw err;
 	    imagen.resize(720, Jimp.AUTO)             
@@ -204,10 +203,6 @@ const resizeImagenes = (ruta, randonNumber, extension) =>{
 		})
 	.catch(err => console.error(err));
 	},2000)
-	
-
-	 
- 
 }
 
  
