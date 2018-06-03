@@ -18,7 +18,38 @@ router.get('/:id', (req, res)=>{
 		if (err) {
 			res.json({status:'FAIL', err, code:0})   
 		}else{
-			res.json({status:'SUCCESS', mensaje:chat, total:chat.length, code:1}) 
+			chat = chat.map(e=>{
+				return{
+					id           : e._id,
+					userId       : e.userId._id,
+					nombre 		 : e.userId.nombre,
+					photo 		 : e.userId.photo,
+					token 		 : e.userId.tokenPhone,
+					mensaje 	 : e.mensaje,
+					asignadoItem : e.itemId ?e.itemId.asignados.includes(this.state.id) :null,
+					esperaItem   : e.itemId ?e.itemId.espera.includes(this.state.id) :null,
+					itemId 		 : e.itemId ?e.itemId._id :null ,
+					titulo 		 : e.itemId ?e.itemId.titulo :null,
+					descripcion  : e.itemId ?e.itemId.descripcion :null,
+					rutaImagen	 : e.itemId ?e.itemId.rutaImagen :null,
+					valor 		 : e.itemId ?e.itemId.valor :null,
+					encuestaId	 : e.encuestaId ?e.encuestaId._id :null,
+					pTitulo		 : e.encuestaId ?e.encuestaId.titulo :null,
+					pDescripcion : e.encuestaId ?e.encuestaId.descripcion :null,
+					pregunta1	 : e.encuestaId ?e.encuestaId.pregunta1 :null,
+					pregunta2	 : e.encuestaId ?e.encuestaId.pregunta2 :null,
+					//respuesta1   : res.data.porcentaje1,
+					//respuesta2   : res.data.porcentaje2,
+					tipoEncuesta : e.encuestaId ?e.encuestaId.tipo :null,
+					tipoChat	 : e.tipo,
+					estado       : e.estado,
+					//porcentaje1  : res.data.porcentaje1,
+					//porcentaje2  : res.data.porcentaje2,
+					//asignado     : res.data.asignado
+				}
+			})
+
+			res.json({status:'SUCCESS', chat, total:chat.length, code:1}) 
 		}
 	})
 }) 

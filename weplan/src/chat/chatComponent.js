@@ -69,50 +69,8 @@ export default class ChatComponent extends Component{
 		/////////////////	OBTENGO TODOS LOS MENSAJE
 		axios.get('/x/v1/cha/chat/'+planId)
 		.then(e=>{
-			console.log(e.data.mensaje)
-			let mensajes=[]
-			/////////////////////////////   filtro mensajes con porcentajes  /////////////////
-			e.data.mensaje.map((e)=>{
-				let idPregunta= e.encuestaId ?e.encuestaId._id :1
-				axios.get('/x/v1/res/respuesta/'+idPregunta)
-				.then(res=>{ 
-
-					mensajes.push({
-						id           : e._id,
-						userId       : e.userId._id,
-						nombre 		 : e.userId.nombre,
-						photo 		 : e.userId.photo,
-						token 		 : e.userId.tokenPhone,
-						mensaje 	 : e.mensaje,
-						asignadoItem : e.itemId ?e.itemId.asignados.includes(this.state.id) :null,
-						esperaItem   : e.itemId ?e.itemId.espera.includes(this.state.id) :null,
-						itemId 		 : e.itemId ?e.itemId._id :null ,
-						titulo 		 : e.itemId ?e.itemId.titulo :null,
-						descripcion  : e.itemId ?e.itemId.descripcion :null,
-						rutaImagen	 : e.itemId ?e.itemId.rutaImagen :null,
-						valor 		 : e.itemId ?e.itemId.valor :null,
-						encuestaId	 : e.encuestaId ?e.encuestaId._id :null,
-						pTitulo		 : e.encuestaId ?e.encuestaId.titulo :null,
-						pDescripcion : e.encuestaId ?e.encuestaId.descripcion :null,
-						pregunta1	 : e.encuestaId ?e.encuestaId.pregunta1 :null,
-						pregunta2	 : e.encuestaId ?e.encuestaId.pregunta2 :null,
-						respuesta1   : res.data.porcentaje1,
-						respuesta2   : res.data.porcentaje2,
-						tipoEncuesta : e.encuestaId ?e.encuestaId.tipo :null,
-						tipoChat	 : e.tipo,
-						estado       : e.estado,
-						porcentaje1  : res.data.porcentaje1,
-						porcentaje2  : res.data.porcentaje2,
-						asignado     : res.data.asignado
-					})
-					console.log(mensajes)
-					this.setState({mensajes})
-				})
-				.catch(err=>{
-					console.log(err)
-				})
-			})
-			/////////////////////////////////////////////////////////////////////////////////
+			console.log(e.data)	
+			this.setState({mensajes:e.data.chat})		 
 		})
 		.catch(res=>{
 			console.log(res)
@@ -177,8 +135,8 @@ export default class ChatComponent extends Component{
 	renderMensajes(){
 		const {navigate} = this.props.navigation
 		const {id, mensajes} = this.state
-		let   data = mensajes.sort(this.dynamicSort('id'))
-		return data.map((e,key)=>{
+		//let   data = mensajes.sort(this.dynamicSort('id'))
+		return mensajes.map((e,key)=>{
 			if (e.tipoChat===1) {
 				return (
 					<View key={key} style={ChatStyle.contenedorBox}>
