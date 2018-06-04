@@ -2,6 +2,8 @@ package com.weplan;
 
 import android.app.Application;
 import com.facebook.react.ReactApplication;
+import org.wonday.pdf.RCTPdfView;
+import com.RNFetchBlob.RNFetchBlobPackage;
 import com.evollu.react.fcm.FIRMessagingPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.magus.fblogin.FacebookLoginPackage;
@@ -27,6 +29,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new RCTPdfView(),
+            new RNFetchBlobPackage(),
             new FIRMessagingPackage(),
             new ImagePickerPackage(),
             new RNGoogleSigninPackage(),
