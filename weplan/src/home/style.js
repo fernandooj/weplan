@@ -41,7 +41,7 @@ export const HomeStyle = StyleSheet.create({
 	 	marginRight:35
 	},
 	fondo:{
-		height:screenHeight-(screenHeight/7.3),
+		height:screenHeight-(screenHeight/9.7),
 	},
 	footer:{
 		position:'absolute',

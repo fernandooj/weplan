@@ -44,7 +44,11 @@ class planServices {
 	getByPago(callback){
 		planSchema.find({estado:true, tipo:'pago'}, null, {sort: {_id: -1}}).populate('restricciones').exec(callback)
 	}
-
+	insertaUsuarioPlan(id, asignados, callback){
+		planSchema.findByIdAndUpdate(id, {$set: {
+	        'asignados': asignados,
+        }}, callback);
+	}
 	sumaPlan(idUsuario, callback){
 		idUsuario = mongoose.Types.ObjectId(idUsuario);	
  		planSchema.aggregate([

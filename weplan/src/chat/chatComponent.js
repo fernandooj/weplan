@@ -24,7 +24,7 @@ export default class ChatComponent extends Component{
 			adjuntarAmigos:false,
 			mapa:false,
 			usuariosAsignados:[],
-			asignados:[],
+			planAsignados:[],
 			opciones:[
 				{url:`${URL}public/img/opcion_1.png`, click:this.uploadPhoto.bind(this)},
 				{url:`${URL}public/img/opcion_2.png`, click:()=>this.uploadMapa({}, {}, true)},
@@ -43,16 +43,6 @@ export default class ChatComponent extends Component{
 		this.socket = SocketIOClient(URL);
 		this.socket.on('userJoined'+planId, this.onReceivedMessage);
 
-		/////////////////	OBTENGO EL PLAN
-		axios.get('/x/v1/pla/plan/getbyid/'+planId) 
-		.then((res)=>{
-			console.log(res.data)
-			this.setState({planId, imagen: res.data.plan[0].imagen[0], nombrePlan: res.data.plan[0].nombre, planId})
-		})
-		.catch((err)=>{
-			console.log(err)
-		})
-
 
 		/////////////////	OBTENGO EL PERFIL
 		axios.get('/x/v1/user/profile') 
@@ -66,14 +56,14 @@ export default class ChatComponent extends Component{
 			console.log(err)
 		})
 
-		/////////////////	OBTENGO TODOS LOS MENSAJE
-		axios.get('/x/v1/cha/chat/'+planId)
+		/////////////////	OBTENGO TODOS LOS MENSAJES Y EL PLAN
+		axios.get(`/x/v1/cha/chat/chatPlan/${planId}`)
 		.then(e=>{
 			console.log(e.data)	
-			this.setState({mensajes:e.data.chat})		 
+			this.setState({mensajes:e.data.chat, planId, imagen: e.data.plan.imagen[0], nombrePlan: e.data.plan.nombre, planId, planAsignados:e.data.plan.asignados, plan:e.data.plan})		 
 		})
-		.catch(res=>{
-			console.log(res)
+		.catch(err=>{
+			console.log(err)
 		})
 	}
 	componentWillReceiveProps(NextProps){
@@ -134,7 +124,7 @@ export default class ChatComponent extends Component{
 
 	renderMensajes(){
 		const {navigate} = this.props.navigation
-		const {id, mensajes} = this.state
+		const {id, mensajes, planAsignados, plan} = this.state
 		//let   data = mensajes.sort(this.dynamicSort('id'))
 		return mensajes.map((e,key)=>{
 			if (e.tipoChat===1) {
@@ -152,14 +142,15 @@ export default class ChatComponent extends Component{
 						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', e.userId)} style={e.userId== id ?ChatStyle.btnAvatarC : [ChatStyle.btnAvatarC, ChatStyle.btnAvatarCLeft]}>
 							<Image
 								style={ChatStyle.photo}
-								width={50}
-								height={50}
+								width={45}
+								height={45}
 								source={{uri: e.photo}}
 						    />
 						</TouchableOpacity>
 					</View>	
 				)
-			}else if(e.tipoChat===2){
+			}
+			else if(e.tipoChat===2){
 				return (
 					<View style={ChatStyle.container} key={key} >
 			         	<View style={ChatStyle.modalIn}>
@@ -205,23 +196,23 @@ export default class ChatComponent extends Component{
 			      		</View>
 		     		</View>
 				)
-			}else{
+			}else if(e.tipoChat==3){
 				return(
 					<View key={key} style={e.userId== id ?ChatStyle.contenedorEncuesta :[ChatStyle.contenedorEncuesta, ChatStyle.contenedorEncuestaLeft]}>
 						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', e.userId)}>
 							<Image
 								style={e.userId== id ?ChatStyle.pPhoto : [ChatStyle.pPhoto, ChatStyle.pPhotoLeft]}
-								width={50}
-								height={50}
+								width={45}
+								height={45}
 								source={{uri: e.photo}}
 						    />
 						</TouchableOpacity>
 						<View style={ChatStyle.contenedorTitulos}>
 							<Text style={ChatStyle.pNombre}>{e.nombre}</Text>
-							<Text style={ChatStyle.pTitulo}>{e.pTitulo}</Text>
+							<Text style={ChatStyle.pTitulo}>{e.eTitulo}</Text>
 							<View style={ChatStyle.contenedorDescripcion}>
 								<Image source={require('../encuesta/item4.png')} style={ChatStyle.decoracion} />
-								<Text style={ChatStyle.pDescripcion}>{e.pDescripcion}</Text>
+								<Text style={ChatStyle.pDescripcion}>{e.eDescripcion}</Text>
 								<Image source={require('../encuesta/item4.png')} style={ChatStyle.decoracion} />
 							</View>
 						</View>
@@ -311,11 +302,78 @@ export default class ChatComponent extends Component{
 						</View>
 					</View>
 				)
-			}
-			
+				}else if (e.tipoChat===4) {
+					return (
+						<View key={key} style={ChatStyle.contenedorBox}>
+							<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', e.userId)} style={e.userId== id ?ChatStyle.cBtnAvatarC : [ChatStyle.cBtnAvatarC, ChatStyle.cBtnAvatarCLeft]}>
+								<Image
+									style={ChatStyle.photo}
+									width={45}
+									height={45}
+									source={{uri: e.photo}}
+							    />
+							</TouchableOpacity>
+							<Image
+								style={e.userId==id ?ChatStyle.cPhoto :[ChatStyle.cPhoto, ChatStyle.cPhotoLeft]} 
+								width={60}
+								height={60}
+								source={{uri: e.cPhoto}}
+						   />
+							<TouchableOpacity style={e.userId== id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]}>
+								<View style={ChatStyle.tituloTipoChat}>
+									<Text style={e.userId== id ?ChatStyle.cNombreTipoChat :[ChatStyle.cNombreTipoChat, ChatStyle.cNombreTipoChatLeft]}>{e.nombre}</Text>
+								</View>
+								<View style={ChatStyle.mensajeCChat}>
+									<Text style={e.userId== id ?ChatStyle.cMensaje :[ChatStyle.cMensaje, ChatStyle.cMensajeLeft]}>{e.cNombre}</Text>
+									<Text style={e.userId== id ?ChatStyle.cFecha   :[ChatStyle.cFecha,   ChatStyle.cFechaLeft]}>{e.fecha}</Text>
+								</View>
+								
+								<View style={ChatStyle.botonesContacto}>
+									<TouchableOpacity>
+										<Text style={ChatStyle.cTextBotones}>Agregar Contacto</Text>
+									</TouchableOpacity>
+									{
+										plan.idUsuario._id === id && !e.estaPlan && e.contactoId !=id
+										&&<TouchableOpacity onPress={()=>this.agregarUsuarioPlan(e.contactoId, e.id)}>
+											<Text style={ChatStyle.cTextBotones}>Agregar al plan</Text>
+										</TouchableOpacity>
+									}
+								</View>
+							</TouchableOpacity>
+						</View>	
+					)
+				}
 		})
 	}
 
+
+	agregarUsuarioPlan(id, idChat){
+		console.log(idChat)
+		let mensajes = this.state.mensajes.filter(e=>{
+			if(e.id=idChat) e.estaPlan=true
+			return e.id
+		})
+		console.log(mensajes)
+		this.setState({mensajes})
+		axios.put(`/x/v1/pla/plan/insertar/${this.state.planId}`, {id})
+      .then(res=>{      
+      	if(res.data.code==1){ 
+      		this.setState({mensajes})
+			}else{
+			Alert.alert(
+				'Opss!! revisa tus datos que falta algo',
+				'',
+			[
+				{text: 'OK', onPress: () => console.log('OK Pressed')},
+			],
+				{ cancelable: false }
+			)
+		}
+     	})
+      .catch(err=>{
+      	console.log(err)
+     	})
+	}
 	render(){
 		const {adjuntarAmigos, asignados, usuariosAsignados, mapa} = this.state
 		return(
@@ -373,6 +431,9 @@ export default class ChatComponent extends Component{
 			</View>	
 		)
 	}
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////// SUBIR CONTACTO
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	opciones(){
 		return this.state.opciones.map((e, key)=>{
 			return (
@@ -382,6 +443,10 @@ export default class ChatComponent extends Component{
 				)
 		})
 	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////// BUSCO LOS DOCUMENTOS
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	uploadFiles(){
 		let imagen = null;
  		DocumentPicker.show({
@@ -398,24 +463,32 @@ export default class ChatComponent extends Component{
 				};
 				if (imagen!=null){
 					console.log(imagen)
-					this.test(imagen, res.fileName)
+					Alert.alert(
+					  'Seguro deseas enviar',
+					  res.fileName,
+					  [
+					    {text: 'Mejor despues', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+					    {text: 'Enviar', onPress: () => this.handleSubmitDocument(imagen, 7)},
+					  ],
+					  { cancelable: false }
+					);
 				}
 	    	}
 	   });
  	}
- 	test(imagen, fileName){
- 		Alert.alert(
-		  'Seguro deseas enviar',
-		  fileName,
-		  [
-		    {text: 'Mejor despues', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-		    {text: 'Enviar', onPress: () => this.handleSubmitDocument(imagen, 7)},
-		  ],
-		  { cancelable: false }
-		);
- 	}
+ 	// test(imagen, fileName){
+ 	// 	Alert.alert(
+		//   'Seguro deseas enviar',
+		//   fileName,
+		//   [
+		//     {text: 'Mejor despues', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+		//     {text: 'Enviar', onPress: () => this.handleSubmitDocument(imagen, 7)},
+		//   ],
+		//   { cancelable: false }
+		// );
+ 	// }
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////// SUBIR CONTACTO
+	/////// BUSCO CONTACTO
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  	uploadContact(asignados, usuariosAsignados, estado){	
  		this.setState({adjuntarAmigos:estado, asignados})
@@ -545,7 +618,7 @@ export default class ChatComponent extends Component{
  	}
  	handleSubmitContact(tipo){
 		this.state.asignados.map(e=>{
-			axios.post('/x/v1/cha/chat/', {contactoId:e, tipo:4})
+			axios.post('/x/v1/cha/chat/', {contactoId:e, tipo:4, planId:this.state.planId})
          .then(res=>{  
          	console.log(res.data)     
          	if(res.data.code==1){ 

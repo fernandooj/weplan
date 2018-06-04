@@ -12,47 +12,72 @@ var { promisify } = require('util');
 var sizeOf = promisify(require('image-size'));
 
 let chatServices = require('../services/chatServices.js')
+let planServices = require('../services/planServices.js')
 
-router.get('/:id', (req, res)=>{
-	chatServices.getByPlan(req.params.id, (err, chat)=>{
+router.get('/chatPlan/:id', (req, res)=>{
+	planServices.getByIdPlan(req.params.id, (err, plan)=>{
 		if (err) {
-			res.json({status:'FAIL', err, code:0})   
+			console.log(err)
 		}else{
-			chat = chat.map(e=>{
-				return{
-					id           : e._id,
-					userId       : e.userId._id,
-					nombre 		 : e.userId.nombre,
-					photo 		 : e.userId.photo,
-					token 		 : e.userId.tokenPhone,
-					mensaje 	 : e.mensaje,
-					asignadoItem : e.itemId ?e.itemId.asignados.includes(this.state.id) :null,
-					esperaItem   : e.itemId ?e.itemId.espera.includes(this.state.id) :null,
-					itemId 		 : e.itemId ?e.itemId._id :null ,
-					titulo 		 : e.itemId ?e.itemId.titulo :null,
-					descripcion  : e.itemId ?e.itemId.descripcion :null,
-					rutaImagen	 : e.itemId ?e.itemId.rutaImagen :null,
-					valor 		 : e.itemId ?e.itemId.valor :null,
-					encuestaId	 : e.encuestaId ?e.encuestaId._id :null,
-					pTitulo		 : e.encuestaId ?e.encuestaId.titulo :null,
-					pDescripcion : e.encuestaId ?e.encuestaId.descripcion :null,
-					pregunta1	 : e.encuestaId ?e.encuestaId.pregunta1 :null,
-					pregunta2	 : e.encuestaId ?e.encuestaId.pregunta2 :null,
-					//respuesta1   : res.data.porcentaje1,
-					//respuesta2   : res.data.porcentaje2,
-					tipoEncuesta : e.encuestaId ?e.encuestaId.tipo :null,
-					tipoChat	 : e.tipo,
-					estado       : e.estado,
-					//porcentaje1  : res.data.porcentaje1,
-					//porcentaje2  : res.data.porcentaje2,
-					//asignado     : res.data.asignado
+			chatServices.getByPlan(req.params.id, (err2, chat)=>{
+				if (err2) {
+					res.json({status:'FAIL', err, code:0})   
+				}else{
+					chat = chat.map(e=>{
+						return{
+							id           : e._id,
+							userId       : e.userId._id,
+							nombre 		 : e.userId.nombre,
+							photo 		 : e.userId.photo,
+							token 		 : e.userId.tokenPhone,
+							mensaje 	 : e.mensaje,
+							fecha 	     : e.createdAt,
+
+							//////////////////////////// ITEM //////////////////////////////////////////
+							asignadoItem : e.itemId ?e.itemId.asignados.includes(req.session.usuario.user._id) :null,
+							esperaItem   : e.itemId ?e.itemId.espera.includes(req.session.usuario.user._id) :null,
+							itemId 		 : e.itemId ?e.itemId._id :null ,
+							titulo 		 : e.itemId ?e.itemId.titulo :null,
+							descripcion  : e.itemId ?e.itemId.descripcion :null,
+							rutaImagen	 : e.itemId ?e.itemId.rutaImagen :null,
+							valor 		 : e.itemId ?e.itemId.valor :null,
+							////////////////////////////////////////////////////////////////////////////
+							////////////////////////////// ENCUESTAS ///////////////////////////////////
+							encuestaId	 : e.encuestaId ?e.encuestaId._id :null,
+							eTitulo		 : e.encuestaId ?e.encuestaId.titulo :null,
+							eDescripcion : e.encuestaId ?e.encuestaId.descripcion :null,
+							pregunta1	 : e.encuestaId ?e.encuestaId.pregunta1 :null,
+							pregunta2	 : e.encuestaId ?e.encuestaId.pregunta2 :null,
+							////////////////////////////////////////////////////////////////////////////
+							//respuesta1   : res.data.porcentaje1,
+							//respuesta2   : res.data.porcentaje2,
+							tipoEncuesta : e.encuestaId ?e.encuestaId.tipo :null,
+							tipoChat	 : e.tipo,
+							estado       : e.estado,
+							//porcentaje1  : res.data.porcentaje1,
+							//porcentaje2  : res.data.porcentaje2,
+							//asignado     : res.data.asignado
+							////////////////////////////////////////////////////////////////////////////
+							////////////////////////////// contacto   //////////////////////////////////
+							contactoId : e.contactoId ?e.contactoId._id    :null,
+							cNombre	   : e.contactoId ?e.contactoId.nombre :null,
+							cPhoto 	   : e.contactoId ?e.contactoId.photo  :null,	
+							////////////////////////////////////////////////////////////////////////////////////
+							////////////////////////////// esta en el plan   //////////////////////////////////	
+							estaPlan: isInArray(e.contactoId &&e.contactoId._id, plan[0].asignados)
+							//estaPlan: plan[0].asignados.includes(e.contactoId &&e.contactoId._id)
+						}
+					})
+					res.json({status:'SUCCESS', chat, plan:plan[0], total:chat.length, code:1}) 
 				}
 			})
-
-			res.json({status:'SUCCESS', chat, total:chat.length, code:1}) 
 		}
 	})
 }) 
+
+function isInArray(value, array) {
+  return array.indexOf(value) > -1;
+}
 
 router.post('/', (req, res)=>{
  	let photo = req.session.usuario.user.photo 

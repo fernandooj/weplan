@@ -14,7 +14,7 @@ export const ChatStyle = StyleSheet.create({
 		alignItems: 'center',
 		flexDirection:'row',
 		justifyContent: 'space-between',
-		backgroundColor:"#2a83ba",
+		backgroundColor:"#148dc9",
 		borderWidth: 0,
 		borderBottomWidth:2,
 		borderColor:'#4461D8',
@@ -62,6 +62,9 @@ export const ChatStyle = StyleSheet.create({
 	iconosHeaderContenedor:{
 		flexDirection:'row',
 	},
+	contenedorBox:{
+		marginBottom:0,
+	},
 	///////////////////////////////////////////////////////////////
 	//////////////		OPCIONES
 	///////////////////////////////////////////////////////////////
@@ -83,7 +86,7 @@ export const ChatStyle = StyleSheet.create({
 	},
 	contenedorChat:{
 		// flex:.4,
-		// marginBottom:100
+		// marginBottom:15
 	},
 	contenedorOpciones:{
  		flexDirection:'row',
@@ -199,7 +202,7 @@ export const ChatStyle = StyleSheet.create({
 		alignSelf: 'flex-start',
 	},
 	photo:{
-		borderWidth:5,
+		borderWidth:4,
 		borderRadius:35,	
 		borderColor:'#9CB7F5',
 	},
@@ -372,7 +375,9 @@ export const ChatStyle = StyleSheet.create({
 		zIndex:0
 	},
 
-	///////////////////////////////// contenedor 3	//////////
+	////////////////////////////////////////////
+	////////////////// contenedor 3  ==> items
+	////////////////////////////////////////////
 	contenedorEncuesta:{
 		alignSelf: 'flex-end',  
 		borderWidth: 0,
@@ -485,7 +490,88 @@ export const ChatStyle = StyleSheet.create({
 		borderWidth:5,
 		position:'relative',
 		top:45,
-	}
+	},
+
+	////////////////////////////////////////////
+	////////////////// contenedor 4  ==> items
+	////////////////////////////////////////////
+ 
+	mensajeCChat:{
+		backgroundColor:'#afc4f0',
+		borderTopLeftRadius:10,
+		borderTopRightRadius:10, 
+	},
+	cPhoto:{
+		position:'absolute',
+		borderWidth:4,
+		borderRadius:35,	
+		borderColor:'#9CB7F5',
+		left:'22%', 
+		top:60,
+		zIndex:100
+	},
+	cPhotoLeft:{
+		left:'56%',
+	},
+	cMensaje:{
+		alignSelf: 'flex-end',
+		color:'#ffffff',
+		fontSize:20,
+		paddingTop:8,
+		paddingBottom:32,
+		marginRight:18,
+	},
+	cMensajeLeft:{
+		alignSelf: 'flex-start',
+		marginLeft:18,
+	},
+	cFecha:{
+		alignSelf: 'flex-end',
+		color:'#636363',
+		marginTop:-30,
+		marginRight:18,
+	},
+	cFechaLeft:{
+		alignSelf: 'flex-start',
+		paddingRight:15,
+		marginLeft:18,
+	},
+	botonesContacto:{
+		flexDirection : 'row',
+		justifyContent: 'space-between',
+		backgroundColor:'#ffffff',
+		padding:10,
+		borderBottomLeftRadius: 20,
+		borderBottomRightRadius:20,
+	},
+	cTextBotones:{
+		backgroundColor:'#ebebeb',
+		padding:7,
+		borderRadius:14,
+		fontSize:12,
+		zIndex:100
+	},
+	cBtnAvatarC:{
+		alignSelf: 'flex-end', 
+		position:'relative',
+		top:30,
+		zIndex:100
+	},
+	cBtnAvatarCLeft:{
+		alignSelf: 'flex-start',
+	},
+	cNombreTipoChat:{
+		alignSelf: 'flex-end', 
+		color:'#A8A8A8',
+		fontSize:15,
+		padding:5,
+		paddingRight:14,
+		marginRight:20
+	},
+	cNombreTipoChatLeft:{
+		alignSelf: 'flex-start', 
+		marginLeft:25
+	},
 })
 
 
