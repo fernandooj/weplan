@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground, Alert, StyleSheet, Dimensions } from 'react-native'
+import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground, Alert } from 'react-native'
 import axios from 'axios'
 import SocketIOClient from 'socket.io-client';
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
@@ -8,10 +8,12 @@ import update from 'react-addons-update';
 import moment from 'moment'
 import ImagePicker from 'react-native-image-picker';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
-import Pdf from 'react-native-pdf';
 
-import AgregarAmigosComponent    from '../agregarAmigos/agregarAmigos.js'
-import MapaPlanComponent 		    from '../createPlan/mapa.js'
+
+import AgregarAmigosComponent from '../agregarAmigos/agregarAmigos.js'
+import MapaPlanComponent 		from '../createPlan/mapa.js'
+import PdfComponent           from '../pdf/pdfComponent.js'
+import MapComponent           from '../mapa/mapComponent.js'
 import {URL} from '../../App.js'
 export default class ChatComponent extends Component{
 	constructor(props){
@@ -25,6 +27,7 @@ export default class ChatComponent extends Component{
 			showOpciones:false,
 			adjuntarAmigos:false,
 			mapa:false,
+			showPdf:false,
 			usuariosAsignados:[],
 			planAsignados:[],
 			opciones:[
@@ -112,21 +115,21 @@ export default class ChatComponent extends Component{
 			</View>
 		)
 	}
-	dynamicSort(property) {
-	    var sortOrder = 1;
-	    if(property[0] === "-") {
-	        sortOrder = -1;
-	        property = property.substr(1);
-	    }
-	    return function (a,b) {
-	        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
-	        return result * sortOrder;
-	    }
-	}
+	// dynamicSort(property) {
+	//     var sortOrder = 1;
+	//     if(property[0] === "-") {
+	//         sortOrder = -1;
+	//         property = property.substr(1);
+	//     }
+	//     return function (a,b) {
+	//         var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+	//         return result * sortOrder;
+	//     }
+	// }
 
 	renderMensajes(){
 		const {navigate} = this.props.navigation
-		const {id, mensajes, planAsignados, plan} = this.state
+		const {id, mensajes, planAsignados, plan, showPdf} = this.state
 		const source = {uri:'http://samples.leanpub.com/thereactnativebook-sample.pdf',cache:true};
 		//let   data = mensajes.sort(this.dynamicSort('id'))
 		return mensajes.map((e,key)=>{
@@ -345,7 +348,51 @@ export default class ChatComponent extends Component{
 							</TouchableOpacity>
 						</View>	
 					)
-			}else if (e.tipoChat===7) {
+				}else if (e.tipoChat===5) {
+					return (
+						<View key={key} style={ChatStyle.contenedorBox}>
+							<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', e.userId)} style={e.userId== id ?ChatStyle.cBtnAvatarC : [ChatStyle.cBtnAvatarC, ChatStyle.cBtnAvatarCLeft]}>
+								<Image
+									style={ChatStyle.photo}
+									width={45}
+									height={45}
+									source={{uri: e.photo}}
+							    />
+							</TouchableOpacity>
+							<TouchableOpacity style={e.userId== id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]}  >
+								<View style={ChatStyle.tituloTipoChat}>
+									<Text style={e.userId== id ?ChatStyle.cNombreTipoChat :[ChatStyle.cNombreTipoChat, ChatStyle.cNombreTipoChatLeft]}>{e.nombre}</Text>
+								</View>
+								<View style={ChatStyle.mensajeCChat}>
+			                  <MapComponent lat={parseFloat(e.lat)} lng={parseFloat(e.lng)} />
+									<Text style={e.userId== id ?ChatStyle.cFecha   :[ChatStyle.cFecha,   ChatStyle.cFechaLeft]}>{e.fecha}</Text>
+								</View>
+							</TouchableOpacity>
+						</View>	
+					)	
+				}else if (e.tipoChat===6) {
+					return (
+						<View key={key} style={ChatStyle.contenedorBox}>
+							<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', e.userId)} style={e.userId== id ?ChatStyle.cBtnAvatarC : [ChatStyle.cBtnAvatarC, ChatStyle.cBtnAvatarCLeft]}>
+								<Image
+									style={ChatStyle.photo}
+									width={45}
+									height={45}
+									source={{uri: e.photo}}
+							    />
+							</TouchableOpacity>
+							<TouchableOpacity style={e.userId== id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]}  >
+								<View style={ChatStyle.tituloTipoChat}>
+									<Text style={e.userId== id ?ChatStyle.cNombreTipoChat :[ChatStyle.cNombreTipoChat, ChatStyle.cNombreTipoChatLeft]}>{e.nombre}</Text>
+								</View>
+								<View style={ChatStyle.mensajeCChat}>
+			                  <Image source={{uri:e.documento}} width={500} height={200} />
+									<Text style={e.userId== id ?ChatStyle.cFecha   :[ChatStyle.cFecha,   ChatStyle.cFechaLeft]}>{e.fecha}</Text>
+								</View>
+							</TouchableOpacity>
+						</View>	
+					)	
+				}else if (e.tipoChat===7) {
 					return (
 						<View key={key} style={ChatStyle.contenedorBox}>
 							<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', e.userId)} style={e.userId== id ?ChatStyle.cBtnAvatarC : [ChatStyle.cBtnAvatarC, ChatStyle.cBtnAvatarCLeft]}>
@@ -362,29 +409,21 @@ export default class ChatComponent extends Component{
 								height={60}
 								source={{uri: e.cPhoto}}
 						   />
-							<View style={e.userId== id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]}>
+							<TouchableOpacity style={e.userId== id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]} 
+								onPress={()=> this.setState({showPdf:true})} >
 								<View style={ChatStyle.tituloTipoChat}>
 									<Text style={e.userId== id ?ChatStyle.cNombreTipoChat :[ChatStyle.cNombreTipoChat, ChatStyle.cNombreTipoChatLeft]}>{e.nombre}</Text>
 								</View>
 								<View style={ChatStyle.mensajeCChat}>
-									<Pdf
-			                    source={{uri: e.documento}}
-			                    onLoadComplete={(numberOfPages,filePath)=>{
-			                        console.log(`number of pages: ${numberOfPages}`);
-			                    }}
-			                    onPageChanged={(page,numberOfPages)=>{
-			                        console.log(`current page: ${page}`);
-			                    }}
-			                    onError={(error)=>{
-			                        console.log(error);
-			                    }}
-			                    style={styles.pdf}/>
-			                  <Text>ff</Text> 
+			                  <Text style={e.userId== id ?ChatStyle.cDocumento :[ChatStyle.cDocumento, ChatStyle.cDocumentoLeft]}>{e.documento.slice(70, 100)}</Text>
 									<Text style={e.userId== id ?ChatStyle.cFecha   :[ChatStyle.cFecha,   ChatStyle.cFechaLeft]}>{e.fecha}</Text>
 								</View>
-								
-								 
-							</View>
+							</TouchableOpacity>
+							{
+								showPdf
+								&&<PdfComponent documento={e.documento} close={()=>this.setState({showPdf:false})} />
+							}
+							
 						</View>	
 					)
 				}
@@ -596,6 +635,7 @@ export default class ChatComponent extends Component{
 		});
  	}
  	handleSubmitImagen(imagen, tipo){
+ 		console.log('--------')
 		let data = new FormData();
 		data.append('imagen', imagen);
 		data.append('tipo', tipo);
@@ -685,7 +725,7 @@ export default class ChatComponent extends Component{
 		}) 
  	}
  	handleSubmitMap(lat, lng, tipo){
-		axios.post('/x/v1/cha/chat/', {lat, lng, tipo})
+		axios.post('/x/v1/cha/chat/', {lat, lng, tipo, planId:this.state.planId})
       .then(res=>{  
       	console.log(res.data)     
       	if(res.data.code==1){ 
@@ -760,15 +800,4 @@ export default class ChatComponent extends Component{
 	}
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        marginTop: 25,
-    },
-    pdf: {
-       	height:100,
-        width:Dimensions.get('window').width,
-    }
-});
+

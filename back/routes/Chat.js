@@ -32,7 +32,9 @@ router.get('/chatPlan/:id', (req, res)=>{
 							token 		 : e.userId.tokenPhone,
 							mensaje 	 : e.mensaje,
 							fecha 	     : e.createdAt,
-
+							documento 	 : e.documento,
+							lat 	 	 : e.lat,
+							lng 	 	 : e.lng,
 							//////////////////////////// ITEM //////////////////////////////////////////
 							asignadoItem : e.itemId ?e.itemId.asignados.includes(req.session.usuario.user._id) :null,
 							esperaItem   : e.itemId ?e.itemId.espera.includes(req.session.usuario.user._id) :null,
@@ -121,8 +123,8 @@ router.post('/documento', (req, res)=>{
 	if (req.files.imagen) {																								////
 		extension    = req.files.imagen.name.split('.').pop()															////
 		randonNumber = Math.floor(90000000 + Math.random() * 1000000)													////
-		fullUrl      = `../../front/docs/public/uploads/chat/Original_${fecha}_${randonNumber}.${extension}`			////
-		ruta 		 = `${url}chat/Original_${fecha}_${randonNumber}.${extension}`										////
+		fullUrl      = `../../front/docs/public/uploads/chat/Original_${fecha}_${randonNumber}.${req.files.imagen.name}`			////
+		ruta 		 = `${url}chat/Original_${fecha}_${randonNumber}.${req.files.imagen.name}`										////
 		fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))													////
 	}else{																												////
 		ruta = req.protocol+'://'+req.get('Host') + '/chat.png'															////

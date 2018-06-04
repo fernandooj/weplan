@@ -572,6 +572,24 @@ export const ChatStyle = StyleSheet.create({
 		alignSelf: 'flex-start', 
 		marginLeft:25
 	},
+
+
+	////////////////////////////////////////////
+	////////////////// contenedor 5  ==> items
+	////////////////////////////////////////////
+	cDocumento:{
+		alignSelf: 'flex-end',
+		color:'#ffffff',
+		fontSize:17,
+		paddingTop:8,
+		paddingBottom:32,
+		marginRight:18,
+	},
+	cDocumentoLeft:{
+		alignSelf: 'flex-start',
+		marginLeft:18,
+	}
+
 })
 
 
