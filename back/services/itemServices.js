@@ -30,9 +30,11 @@ class itemServices {
 		item.espera 	 = []	
 		item.save(callback)
 	}
-	uploadImage(id, nameFile, callback){
+	uploadImage(id, imagenOriginal, imagenResize, imagenMiniatura, callback){
 		itemSchema.findByIdAndUpdate(id, {$set: {
-	        'rutaImagen': nameFile,
+	        'imagenOriginal': imagenOriginal,
+	        'imagenResize': imagenResize,
+	        'imagenMiniatura': imagenMiniatura,
         }}, callback);	
 	}
 	ingresarItem(_id, espera, callback){

@@ -8,7 +8,7 @@ class amigoUserService{
 		amigoUser.find({}).populate('asignado').exec(callback)
 	}
 	getById(idUsuario, callback){
-		amigoUser.find().or([{idUsuario},{asignado:idUsuario}]).populate('asignado').populate('idUsuario').exec(callback)
+		amigoUser.find().or([{idUsuario,estado:true},{asignado:idUsuario,estado:true}]).populate('asignado').populate('idUsuario').exec(callback)
 	}
 	buscarUsuario(idUsuario, callback){
 		amigoUser.find({idUsuario}, callback)

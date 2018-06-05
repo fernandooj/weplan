@@ -41,7 +41,7 @@ router.get('/chatPlan/:id', (req, res)=>{
 							itemId 		 : e.itemId ?e.itemId._id :null ,
 							titulo 		 : e.itemId ?e.itemId.titulo :null,
 							descripcion  : e.itemId ?e.itemId.descripcion :null,
-							rutaImagen	 : e.itemId ?e.itemId.rutaImagen :null,
+							rutaImagen	 : e.itemId ?e.itemId.imagenResize :null,
 							valor 		 : e.itemId ?e.itemId.valor :null,
 							////////////////////////////////////////////////////////////////////////////
 							////////////////////////////// ENCUESTAS ///////////////////////////////////

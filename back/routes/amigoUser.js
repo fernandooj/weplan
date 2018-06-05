@@ -18,11 +18,23 @@ router.get('/', (req, res)=>{
 	})
 })
 
-router.get('/:id', (req, res)=>{ 
+router.get('/asignados', (req, res)=>{ 
 	amigoUserService.getById(req.session.usuario.user._id, (err, asignados)=>{
 		if (err) {
 			res.json({status:'FAIL', err, code:0})    
 		}else{
+			let idUsuario = req.session.usuario.user._id
+			asignados=asignados.map((e)=>{
+					return {
+						id      : e.asignado._id==idUsuario ?e.idUsuario._id      :e.asignado._id,
+						username: e.asignado._id==idUsuario ?e.idUsuario.username :e.asignado.username,
+						photo   : e.asignado._id==idUsuario ?e.idUsuario.photo    :e.asignado.photo,
+						nombre  : e.asignado._id==idUsuario ?e.idUsuario.nombre   :e.asignado.nombre,
+						token   : e.asignado.tokenPhone,
+						estado  : e.estado,	
+					}
+				})
+			console.log(asignados)
 			res.json({status:'SUCCESS', asignados, code:1})    
 		}
 	})

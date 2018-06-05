@@ -1,12 +1,13 @@
 import React, {Component} from 'react'
 import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Alert} from 'react-native'
+import SearchInput, { createFilter } from 'react-native-search-filter';
 import axios from 'axios'
 
 import {AjustesStyle} from '../ajustes/style'
 import CabezeraComponent 	  from './cabezera.js'
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
 
-
+const KEYS_TO_FILTERS = ['nombre', 'username']
 export default class ajustesAmigosComponent extends Component{
 	state={
  		allList:[],
@@ -31,47 +32,22 @@ export default class ajustesAmigosComponent extends Component{
 			})
 			////////////////////////////////////////////////////////////////////////////////////
 			//////////////////	 OBTENGO LOS USUARIOS ASIGNADOS  ///////////////////////////////
-			axios.get('/x/v1/ami/amigoUser/id')
+			axios.get('/x/v1/ami/amigoUser/asignados')
 			.then((res2)=>{
-				axios.get('/x/v1/user/profile') 
-				.then((res)=>{
-					let usuario = res.data.user.user
-					let miPerfil = []
-					miPerfil.push({id:usuario._id, username:usuario.username, photo: usuario.photo, nombre: usuario.nombre, estado: true})
-
-					////////////////////////////////////////////////////////////////////////////////////////
-					////////////////////	FILTRO MIS AMIGOS ASIGNADOS   //////////////////////////////////
-					let amigosAsignados = res2.data.asignados.map((item)=>{
-						return {
-							id      : item.estado==true && item.asignado._id==usuario._id ?item.idUsuario._id      :item.asignado._id,
-							username: item.estado==true && item.asignado._id==usuario._id ?item.idUsuario.username :item.asignado.username,
-							photo   : item.estado==true && item.asignado._id==usuario._id ?item.idUsuario.photo    :item.asignado.photo,
-							nombre  : item.estado==true && item.asignado._id==usuario._id ?item.idUsuario.nombre   :item.asignado.nombre,
-							token   : item.asignado.tokenPhone,
-							estado  : item.estado,	
-						}
-					})
-					///////////////////////////////////////////////////////////////////////////////////
-					////////////////////	CONCATENO LOS DOS ARRAYS //////////////////////////////////
-					const diffBy = (pred) => (a, b) => a.filter(x => !b.some(y => pred(x, y)))
-					const makeSymmDiffFunc = (pred) => (a, b) => diffBy(pred)(a, b).concat(diffBy(pred)(b, a))
-					const myDiff = makeSymmDiffFunc((x, y) => x.id === y.id)
-					const allList1 = myDiff(todosUsuarios, amigosAsignados)
+				 	console.log(res2.data.asignados)
+					 
 					/////////////////////////////////////////////////////////////////////////////////
 					/////////////////////////////////////////////////////////////////////////////////
 					////////////////////	CONCATENO LOS DOS ARRAYS  ////////////////////////////////
 					const diffBy1 = (pred) => (a, b) => a.filter(x => !b.some(y => pred(x, y)))
 					const makeSymmDiffFunc1 = (pred) => (a, b) => diffBy1(pred)(a, b).concat(diffBy1(pred)(b, a))
 					const myDiff1 = makeSymmDiffFunc1((x, y) => x.id === y.id)
-					const allList = myDiff1(allList1, miPerfil)
+					const filteredData = myDiff1(res2.data.asignados, todosUsuarios)
 					/////////////////////////////////////////////////////////////////////////////////
-				 	console.log(amigosAsignados)
-					this.setState({allList, amigosAsignados})
+				 	console.log(filteredData)
+					this.setState({filteredData, amigosAsignados:res2.data.asignados})
 
-				})
-				.catch((err)=>{
-					console.log(err)
-				})
+				 
 			})	
 			.catch((err)=>{
 				console.log(err)
@@ -104,8 +80,9 @@ export default class ajustesAmigosComponent extends Component{
  	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////					OBTENGO CADA UNO DE LOS REGISTROS						/////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- 	getRow(filteredData){
-		return filteredData.map((data, key)=>{
+ 	getRow(){
+ 		const filteredEmails = this.state.filteredData.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
+		return filteredEmails.map((data, key)=>{
 			return  <TouchableOpacity style={AjustesStyle.registro} key={key} onPress={()=>this.updateState(data.id, data.estado, data.token)} > 
 					<Image source={{ uri: data.photo}}  style={data.estado ?AjustesStyle.avatarA :AjustesStyle.avatarA2} /> 
 					<Text style={AjustesStyle.textoAvatar}>{data.nombre}</Text>
@@ -134,16 +111,21 @@ export default class ajustesAmigosComponent extends Component{
 	////////////////////////////////					RENDER LISTADO AMIGOS						/////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  	renderAmigos(){
- 		const filteredData = this.state.filteredData
-		const rows = this.getRow(filteredData)
  		return(
- 			<View style={AjustesStyle.lista}>
-				{rows}
-			</View>
+ 			<ScrollView style={AjustesStyle.contenedorLista}>
+				{this.getRow()}
+			</ScrollView>
  		)	
  	}
 
-
+ 	searchUpdated (term) {
+ 		if (term.length>0){
+			this.setState({show:true})
+		}else{
+			this.setState({show:false})
+		}
+		this.setState({searchTerm: term})
+	}
  	renderAmigosAsignados(){
  		return this.state.amigosAsignados.map((e, key)=>{
  			if (e.estado) {
@@ -154,7 +136,6 @@ export default class ajustesAmigosComponent extends Component{
 		 			</View>
 		 		)
  			}
- 			
  		})
  		
  	}
@@ -183,7 +164,6 @@ export default class ajustesAmigosComponent extends Component{
 	render(){
 		const {show, token} = this.state
 		const {navigate} = this.props.navigation
-		console.log(token)
 		return(
 			<View style={AjustesStyle.contenedorA}>
 				<CabezeraComponent navigate={navigate} url={'ajustes'} />
@@ -193,26 +173,25 @@ export default class ajustesAmigosComponent extends Component{
 						<View style={AjustesStyle.subContenedorA}>
 							{/* buscador  */}
 							<View style={AjustesStyle.contenedorBuscar}>
-				 				<TextInput
-									style={AjustesStyle.input}
-									onChangeText={this.filteredData.bind(this)}
-									value={this.state.username}
-									underlineColorAndroid='transparent'
-									placeholder="buscar amigos"
-									placeholderTextColor="#8F9093" 
-							   />
+				 				<SearchInput
+			          				style={AjustesStyle.input}
+							        onChangeText={(term) => { this.searchUpdated(term) }} 
+							        value={this.state.username}
+							        underlineColorAndroid='transparent'
+				           			placeholder="Buscar"
+				           			placeholderTextColor="#8F9093" 
+				           			 
+							    />
 							   <Image source={require('../agregarAmigos/search.png')} style={AjustesStyle.btnSearch} />
 							   <TouchableOpacity style={AjustesStyle.btnBuscar} onPress={this.handleSubmit.bind(this)}>
 							   	<Image source={require('./agregar.png')} style={AjustesStyle.btnAgregar} />
 							   </TouchableOpacity>
 							</View>
-							
-								{
-									show
-									?this.renderAmigos()
-									:this.renderAmigosGrupos()
-								}
-							
+							{
+								show
+								?this.renderAmigos()
+								:this.renderAmigosGrupos()
+							}
 						</View>	
 					</View>
 				</ScrollView>	
@@ -237,13 +216,14 @@ export default class ajustesAmigosComponent extends Component{
 
 	
 	handleSubmit(){
+		 
 		const {idAsignado, token} = this.state
 		axios.post('/x/v1/ami/amigoUser', {asignado: idAsignado} )
 		.then((e)=>{
 			console.log(e.data)
 			if (e.data.code==1) {
-				this.setState({show:false})
-				sendRemoteNotification(1, token, "notificacion")
+				this.setState({show:false, username:''})
+				sendRemoteNotification(1, token, "notificacion", 'Tienes una solicitud de amistad', ', Quiere agregarte como amigo', null)
 			}else{
 				Alert.alert(
 				  'Opss!! revisa tus datos que falta algo',

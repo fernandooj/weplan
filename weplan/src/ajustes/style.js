@@ -40,6 +40,9 @@ export const AjustesStyle = StyleSheet.create({
  	//////////////////////////////////////////////////////////////////////////////////////
  	///////////////////////			AMIGOS 			//////////////////////////////////////
  	/////////////////////////////////////////////////////////////////////////////////////
+ 	contenedorLista:{
+ 		width:'80%',
+ 	},
  	contenedorA:{
  		paddingBottom:40
  	},
@@ -68,7 +71,8 @@ export const AjustesStyle = StyleSheet.create({
  		width:'90%',	
  	},
  	input:{
- 		width:'85%',
+ 		width:200,
+ 		height:40,
  		marginRight:'3%',
  		backgroundColor:'#EFF1F1',
  		borderWidth:2,

@@ -4,6 +4,8 @@ import {ItemStyle}        from '../item/style'
 import axios              from 'axios'
 import TakePhotoComponent from '../takePhoto/takePhotoComponent.js'
 import AgregarAmigosComponent    from '../agregarAmigos/agregarAmigos.js'
+import {sendRemoteNotification} from '../push/envioNotificacion.js'
+
 import socket from '../../socket.js'
 import moment from 'moment'
 
@@ -16,7 +18,8 @@ export default class CrearItemComponent extends Component{
       valor:0,
       enviarChat:false,
       adjuntarAmigos:false,
-      asignados:[]
+      asignados:[],
+      usuariosAsignados:[]
     }  
   }
   componentWillMount(){
@@ -91,10 +94,15 @@ export default class CrearItemComponent extends Component{
             <TouchableOpacity style={ItemStyle.btnAdjuntar} onPress={()=>this.setState({adjuntarAmigos:true})}>
               <Text style={ItemStyle.adjuntar}>Asignar Amigos</Text>
             </TouchableOpacity> 
-            {adjuntarAmigos ?<AgregarAmigosComponent 
+            {
+              adjuntarAmigos 
+              ?<AgregarAmigosComponent 
                 titulo='Asignar Amigos'
-                close={(asignados)=>this.setState({adjuntarAmigos:false, asignados:asignados})} 
-                updateStateAsignados={(estado, id)=>this.updateStateAsignados(estado, id)}/> :null }
+                close={(e)=>this.setState({asignados:[], usuariosAsignados:[], adjuntarAmigos:false})} 
+                updateStateAsignados={(asignados, usuariosAsignados)=>this.setState({asignados, usuariosAsignados, adjuntarAmigos:false})}
+              /> 
+              :null
+            }
             
             {/* Enviar al Chat */}
             <TouchableOpacity 
@@ -124,7 +132,8 @@ export default class CrearItemComponent extends Component{
  
 
   handleSubmit(){
-    const {titulo, descripcion, valor, imagen, enviarChat, asignados, id, nombre, photo} = this.state
+    const {titulo, descripcion, valor, imagen, enviarChat, asignados, id, nombre, photo, usuariosAsignados} = this.state
+    console.log(usuariosAsignados)
     const fecha = moment().format('h:mm')
     if (titulo.length==0) {
       Alert.alert(
@@ -155,7 +164,7 @@ export default class CrearItemComponent extends Component{
       )
     }else{
       let planId = this.props.planId
-      //let planId = '5aefdb91423c402001dbb329'
+      //let planId = '5b165754d36e2f0aad8857e6'
       let data = new FormData();
       let deudaAsignados = Math.ceil((valor/(asignados.length+1))/100)*100
       let deudaCreador = valor - (deudaAsignados * asignados.length)
@@ -186,6 +195,9 @@ export default class CrearItemComponent extends Component{
           console.log(res.data)     
           if(res.data.code==1){ 
             this.props.updateItems(itemId, deudaCreador, titulo)
+            usuariosAsignados.map(e=>{
+              sendRemoteNotification(3, e.token, 'misPlanes', 'Te han agregado a un Item', `, Te agrego a ${titulo}`, res.data.imagen)
+            })
           }else{
             Alert.alert(
               'Opss!! revisa tus datos que falta algo',

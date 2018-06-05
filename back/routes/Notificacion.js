@@ -18,13 +18,42 @@ router.get('/:id', (req, res)=>{
 	})
 })
 
+
+///////////////////////////////////////////////////////////////////////////
+/*
+OBTENGO LAS NOTIFICACIONES DEL USUARIO LOGUEADO
+*/
+///////////////////////////////////////////////////////////////////////////
 router.get('/user/get/', (req, res)=>{ 
 	notificacionService.getByUser(req.session.usuario.user._id, (err, notificacion)=>{
 		if (err) {
 			res.json({status:'FAILAS', err, code:0})    
 		}else{
-			res.json({status:'SUCCESS', notificacion, code:1})    
+			notificacion = notificacion.map((e)=>{
+				return {
+					id 		    : e._id,
+					tipo 		: e.tipo,
+					estado  	: e.estado,
+					////////////////////////////  AMIGOS  ////////////////////////////////////
+					idAmigoUser : e.idAmigoUser ?e.idAmigoUser._id 				:null,
+					idUser      : e.idUsuarioAsigna ?e.idUsuarioAsigna._id        :null,
+					username    : e.idUsuarioAsigna ?e.idUsuarioAsigna.username   :null,
+					photo   	: e.idUsuarioAsigna ?e.idUsuarioAsigna.photo      :null,
+					nombre 	    : e.idUsuarioAsigna ?e.idUsuarioAsigna.nombre     :null,
+					token  	 	: e.idUsuarioAsigna ?e.idUsuarioAsigna.tokenPhone :null,
+					////////////////////////////  ITEM  //////////////////////////////////////
+					idItem   	: e.idItem  ?e.idItem._id    :null,
+					nombreItem  : e.idItem  ?e.idItem.titulo :null,
+					imagenItem  : e.idItem  ?e.idItem.imagenMiniatura :null,
+
+					//////////////////////////// PLAN /////////////////////////////////////
+					idPlan   	: e.idPlan  ?e.idPlan._id    :null,
+					nombrePlan  : e.idPlan  ?e.idPlan.nombre :null,
+					imagenPlan  : e.idPlan  ?e.idPlan.imagenMiniatura[0] :null,
+				}
+			})
 		}
+		res.json({status:'SUCCESS', notificacion, code:1})    
 	})
 })
 
@@ -50,7 +79,11 @@ router.put('/:idNotificacion/:idTipo/:tipo/:idUser', (req,res)=>{
 		if (err) {
 			res.json({status:'FAIL', err, code:0})    
 		}else{
-			req.params.tipo==1 ?activaAmigoUser(req.params.idTipo, res) :req.params.tipo==2 ?activaItem(req.session.usuario, req.params.idTipo, req.params.idUser, res) :null
+			req.params.tipo==1 
+			?activaAmigoUser(req.params.idTipo, res) 
+			:req.params.tipo==3 
+			?activaItem(req.session.usuario, req.params.idTipo, req.params.idUser, res) 
+			:res.json({status:'SUCCESS', notificacion, code:1}) 
 		}
 	})
 })

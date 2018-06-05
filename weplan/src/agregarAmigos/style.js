@@ -4,7 +4,7 @@ export const AmigosStyle = StyleSheet.create({
 		alignItems: 'center',
 	},
  	subLista:{
-		width:'80%',
+	 
 		flexDirection:'row',
 		alignItems: 'flex-start',
 		marginTop:10
@@ -65,7 +65,7 @@ export const AmigosStyle = StyleSheet.create({
 	},
 	input:{
 		marginTop:10,
-		width:'80%',
+		width:290,
 		height:40,
 		backgroundColor: '#f0f2f2',
 		borderRadius: 50,
@@ -93,12 +93,14 @@ export const AmigosStyle = StyleSheet.create({
 	}, 
 	btnBuscar:{
 		position:'absolute',
-		top: 16,  
+		top: 18,  
 		right:49, 
 		width:25,
 		height:25
  	}, 
- 
+ 	contenedorLista:{
+ 		width:'80%',
+ 	},
  	/////////// btn hecho /////////////
  	containerHecho:{
 

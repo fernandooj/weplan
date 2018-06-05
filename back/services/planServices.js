@@ -80,7 +80,7 @@ class planServices {
 	 				_id:1,
 	 				nombreUsuario:'$UserData.nombre',
 	 				idUsuario:'$UserData._id',
-	 				imagen:1,
+	 				imagenResize:1,
 	 				nombre:1,
 	 				fechaLugar:1
 	 			},
@@ -105,7 +105,7 @@ class planServices {
 	 				_id:1,
 	 				nombre:1,
 	 				idUsuario:1,
-	 				imagen:1,
+	 				imagenResize:1,
 	 				nombreUsuario:1,
 	 				fechaLugar:1,
 	 				itemId:'$ItemData._id',
@@ -133,7 +133,7 @@ class planServices {
 			    $project:{
 			        _id:1,
 			        nombre:1,
-			        imagen:1,
+			        imagenResize:1,
 			        idUsuario:1,
 			        nombreUsuario:1,
 			        itemId:1,
@@ -155,7 +155,7 @@ class planServices {
 				        	abono:  "$abono",
 				        },
 			        data: {
-                        $addToSet: {info:["$idUsuario", "$nombreUsuario", '$abono', '$imagen', '$nombre', '$userItemId',  '$itemTitulo', '$valorItem', '$fechaLugar']}
+                        $addToSet: {info:["$idUsuario", "$nombreUsuario", '$abono', '$imagenResize', '$nombre', '$userItemId',  '$itemTitulo', '$valorItem', '$fechaLugar']}
                     },
 			        total:{ $sum :'$monto'}
 			    }

@@ -19,6 +19,7 @@ let notificacionSchema = mongoose.Schema({
 	idUsuarioAsigna 	: { type: Schema.Types.ObjectId, ref:'User'},
 	idAmigoUser 		: { type: Schema.Types.ObjectId, ref:'amigoUser'},
 	idItem 				: { type: Schema.Types.ObjectId, ref:'Item'},
+	idPlan 				: { type: Schema.Types.ObjectId, ref:'Plan'},
 	tipo      			: Number,
 	estado    			: Boolean,
 	createdAt 			: { type: String, default: moment().format('YYYY-MM-DD h:mm:ss')},
@@ -30,5 +31,5 @@ module.exports = mongoose.model('Notificacion', notificacionSchema)
 
 /// idUsuario 		==> El usuario que se tiene asignado la notificacion
 /// idUsuarioAsigna ==> El usuario quien crea la notificacion
-/// number tipo 1   ==> notificacion cuando se agregar un amigo
-/// number tipo 2   ==> notificacion cuando se quiere ser parte de un item
+/// tipo 1   ==> notificacion cuando se agregar un amigo
+/// tipo 2   ==> notificacion cuando se quiere ser parte de un item

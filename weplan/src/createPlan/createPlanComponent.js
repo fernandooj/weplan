@@ -15,7 +15,7 @@ import MapaPlanComponent 		    from './mapa.js'
 import AgregarAmigosComponent    from '../agregarAmigos/agregarAmigos.js'
 import TakePhotoComponent 	  		 from '../takePhoto/takePhotoComponent.js'
 import CabezeraComponent from '../ajustes/cabezera.js'
-
+import {sendRemoteNotification} from '../push/envioNotificacion.js'
 
 
 export default class createPlanComponent extends Component{
@@ -38,18 +38,19 @@ export default class createPlanComponent extends Component{
  			iconCreate:true,
  			cargaPlan:false,
  			position: 1,
-      	interval: null,
-      	imagenes:[]
+	      	interval: null,
+	      	imagenes:[]
 		}
 	}
 
 	componentWillMount(){
+		console.log(this.props.navigation.state.params)
 		if (this.props.navigation.state.params) {
 			axios.get('/x/v1/pla/plan/getbyid/'+this.props.navigation.state.params)
 			.then((e)=>{
 				console.log(e.data.plan[0])
 				let imagenes = []
-				e.data.plan[0].imagen.map(e=>{
+				e.data.plan[0].imagenResize.map(e=>{
 					imagenes.push({url:e})
 				}) 
 				this.setState({cargaPlan:e.data.plan[0], iconCreate:false, restriccion:false, restriccionesAsignadas:e.data.plan[0].restricciones , restricciones:e.data.plan[0].restricciones, planPadre:this.props.navigation.state.params, imagenes })
@@ -240,11 +241,15 @@ export default class createPlanComponent extends Component{
 						    	</TouchableOpacity>
 						    </View>
 				    	}
-				    	{adjuntarAmigos ?<AgregarAmigosComponent 
-					                titulo='Asignar Amigos'
-					                close={(asignados, usuariosAsignados)=>this.setState({adjuntarAmigos:false, asignados, usuariosAsignados})} 
-					                updateStateAsignados={(estado, id)=>this.updateStateAsignados(estado, id)}/> :null }
-					     
+				    	{
+				    		adjuntarAmigos 
+				    		?<AgregarAmigosComponent 
+				                titulo='Asignar Amigos'
+				                close={(e)=>this.setState({asignados:[], usuariosAsignados:[], adjuntarAmigos:false})} 
+				                updateStateAsignados={(asignados, usuariosAsignados)=>this.setState({asignados, usuariosAsignados, adjuntarAmigos:false})}
+				            /> 
+				            :null 
+				        } 
 					</View>
 
 				{/*  Crear Plan  */}
@@ -286,15 +291,15 @@ export default class createPlanComponent extends Component{
  	}
 	handleSubmit(){
 		const {navigate} = this.props.navigation
-		let {nombre, descripcion, fechaLugar, lat, lng, asignados, restricciones, imagen, tipo, cargaPlan, planPadre} = this.state
+		let {nombre, descripcion, fechaLugar, lat, lng, asignados, usuariosAsignados, restricciones, imagen, tipo, cargaPlan, planPadre} = this.state
 
 		nombre 		= cargaPlan.nombre ?cargaPlan.nombre :nombre
 		descripcion = cargaPlan.descripcion ?cargaPlan.descripcion :descripcion
-		lat 			= cargaPlan.lat ?cargaPlan.lat :lat
-		lng 			= cargaPlan.lng ?cargaPlan.lng :lng
+		lat 		= cargaPlan.lat ?cargaPlan.lat :lat
+		lng 		= cargaPlan.lng ?cargaPlan.lng :lng
 		fechaLugar  = cargaPlan.fechaLugar ?cargaPlan.fechaLugar :fechaLugar
-		imagen 		= cargaPlan.imagen ?cargaPlan.imagen :imagen
-		console.log(nombre)
+		imagen 		= cargaPlan.ImagenResize[0] ?cargaPlan.ImagenResize[0] :imagen
+		console.log(usuariosAsignados)
 
 		if (!cargaPlan) {
 			let data = new FormData();
@@ -314,8 +319,11 @@ export default class createPlanComponent extends Component{
 						}
 					})
 					.then((res)=>{
-						console.log(res)
+						console.log(res.data.imagen[0])
 						if(res.data.status=="SUCCESS"){
+						usuariosAsignados.map(e=>{
+							sendRemoteNotification(2, e.token, 'misPlanes', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, res.data.imagen[0])
+						})
 							navigate('chat', id)
 						}
 					})
@@ -334,6 +342,9 @@ export default class createPlanComponent extends Component{
 			.then(e=>{
 				if(e.data.code==1){	
 					let id = e.data.message._id;
+					usuariosAsignados.map(e=>{
+						sendRemoteNotification(2, e.token, 'misPlanes', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, imagen)
+					})
 					navigate('chat', id)
 				}
 
@@ -345,20 +356,3 @@ export default class createPlanComponent extends Component{
 		
 	}
 }			
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

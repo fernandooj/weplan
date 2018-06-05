@@ -43,7 +43,7 @@ export default class ChatComponent extends Component{
 
 	componentWillMount(){
 		let planId = this.props.navigation.state.params	
-		//let planId = '5b0b87577ea08b5b42740212'	
+		//let planId = '5b165754d36e2f0aad8857e6'	
 		console.log(planId) 
 		this.socket = SocketIOClient(URL);
 		this.socket.on('userJoined'+planId, this.onReceivedMessage);
@@ -65,7 +65,7 @@ export default class ChatComponent extends Component{
 		axios.get(`/x/v1/cha/chat/chatPlan/${planId}`)
 		.then(e=>{
 			console.log(e.data)	
-			this.setState({mensajes:e.data.chat, planId, imagen: e.data.plan.imagen[0], nombrePlan: e.data.plan.nombre, planId, planAsignados:e.data.plan.asignados, plan:e.data.plan})		 
+			this.setState({mensajes:e.data.chat, planId, imagen: e.data.plan.imagenMiniatura[0], nombrePlan: e.data.plan.nombre, planId, planAsignados:e.data.plan.asignados, plan:e.data.plan})		 
 		})
 		.catch(err=>{
 			console.log(err)

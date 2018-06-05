@@ -23,10 +23,13 @@ export default class TakePhotoComponent extends Component{
 	selectPhotoTapped() {
 		const options = {
 		  quality: 1.0,
+		  maxWidth: 500,
+		  maxHeight: 500,
 		  storageOptions: {
 		    skipBackup: true
 		  }
 		};
+
 
 		ImagePicker.showImagePicker(options, (response) => {
 		  console.log('Response = ', response);

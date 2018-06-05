@@ -5,6 +5,7 @@ import styles  from './previsualizacion.scss';
 
  const PrevisualizacionComponent = (props)=>{
  	let data = props.plan[0]
+ 	console.log(props)
  	if (data!==undefined) {
  		return(
  			<div style={{backgroundImage: `url(${props.imagen[0].thumbUrl})`}}  className={styles.imagen}>

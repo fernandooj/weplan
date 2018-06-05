@@ -13,6 +13,8 @@ let mongoose = require('mongoose')
 let planServices = require('../services/planServices.js')
 const ubicacion     =  '../../front/docs/public/uploads/plan/'
 const ubicacionJimp =  '../front/docs/public/uploads/plan/'
+let notificacionService = require('../services/notificacionServices.js');
+
 
 router.get('/', (req, res)=>{
 	planServices.get((err, planes)=>{
@@ -88,10 +90,14 @@ router.post('/', function(req, res){
 				res.json({err})
 			}else{
 				res.json({ status: 'SUCCESS', message: plan, code:1 });	
+				
 			}
 		})
     }
 })
+
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////// MODIFICO LAS IMAGENES SI SE ENVIAN DESDE LA WEB / ACEPTAN VARIAS IMAGENES
@@ -120,13 +126,15 @@ router.put('/web', (req, res)=>{
 			resizeImagenes(rutasImagenOriginal, randonNumber, extension)
 		})	
 	}else{
-		ruta = req.protocol+'://'+req.get('Host') + '/plan.png'
+		rutaImagenOriginal = req.protocol+'://'+req.get('Host') + '/plan.png'
+		rutaImagenResize = req.protocol+'://'+req.get('Host') + '/plan.png'
+		rutaImagenMiniatura = req.protocol+'://'+req.get('Host') + '/plan.png'
 	}
 	planServices.uploadImage(id, rutaImagenOriginal, rutaImagenResize, rutaImagenMiniatura, (err, plan)=>{
 		if(err){
 			res.json({err})
 		}else{
-			res.json({ status: 'SUCCESS', message: plan, code:1 });		
+			res.json({ status: 'SUCCESS', message: plan, code:1, imagen: rutaImagenOriginal });		
 		}
 	})
 })
@@ -135,6 +143,7 @@ router.put('/web', (req, res)=>{
 /////// MODIFICO LAS IMAGENES SI SE ENVIAN DESDE LA APP / SOLO ACEPTA UNA IMAGEN
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.put('/', (req, res)=>{
+	let url = `${req.protocol}s://${req.get('Host')}/public/uploads/`
 	let rutaImagenOriginal  = [] 
 	let rutaImagenResize    = [] 
 	let rutaImagenMiniatura = [] 
@@ -156,17 +165,36 @@ router.put('/', (req, res)=>{
 		resizeImagenes(rutasImagenOriginal, randonNumber, extension)
 	
 	}else{
-		ruta = req.protocol+'://'+req.get('Host') + '/plan.png'
+		rutaImagenOriginal = req.protocol+'s://'+req.get('Host') + '/plan.png'
+		rutaImagenResize = req.protocol+'s://'+req.get('Host') + '/plan.png'
+		rutaImagenMiniatura = req.protocol+'s://'+req.get('Host') + '/plan.png'
 	}
-	planServices.uploadImage(req.body.id, ruta, (err, plan)=>{
+	planServices.uploadImage(req.body.id, rutaImagenOriginal, rutaImagenResize, rutaImagenMiniatura, (err, plan)=>{
 		if(err){
 			res.json({err})
 		}else{
-			res.json({ status: 'SUCCESS', message: plan, code:1 });	
-			
+			//res.json({ status: 'SUCCESS', message: plan, code:1 });	
+			creaNotificacion(req, res, plan, rutaImagenResize )
 		}
 	})
 })
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///// 			cuando se crea el plan tambien se crea la notificacion 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const creaNotificacion = (req, res, plan, rutaImagenResize)=>{
+	plan.asignados.map(e=>{
+		notificacionService.create(req.session.usuario.user._id, e, 2, plan._id, (err, notificacion)=>{
+			// if (err) {
+			// 	res.json({status:'FAIL', err, code:0})   
+			// }else{
+			// 	res.json({status:'SUCCESS', plan, notificacion, code:1})    
+			// }
+			console.log(notificacion)
+		})
+	})
+	res.json({status:'SUCCESS', message: plan, imagen:rutaImagenResize, code:1})    
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////// MODIFICO LAS IMAGENES SI SE ENVIAN DESDE LA WEB / ACEPTAN VARIAS IMAGENES

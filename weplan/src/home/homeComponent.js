@@ -57,7 +57,7 @@ export default class homeComponent extends Component{
 		const {navigate} = this.props.navigation
 		return this.state.planes.map((e, key)=>{
 			return(
-				<ImageBackground source={{uri : e.imagen[0]}} style={HomeStyle.fondo} key={key}>
+				<ImageBackground source={{uri : e.imagenResize[0]}} style={HomeStyle.fondo} key={key}>
 					<View style={HomeStyle.footer}>
 						<View style={HomeStyle.footer1}>
 							<Text style={HomeStyle.textFooter1}>{e.nombre}</Text>

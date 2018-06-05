@@ -21,8 +21,8 @@ export default class MisPlanesComponent extends Component{
 	componentWillMount(){
 		axios.get('/x/v1/pla/plan/suma/totales/plan')
 		.then(e=>{
-			let filteredData = e.data.result
 			console.log(e.data.result)
+			let filteredData = e.data.result
 			this.setState({allList:filteredData, filteredData})
 		})
 		.catch(res=>{

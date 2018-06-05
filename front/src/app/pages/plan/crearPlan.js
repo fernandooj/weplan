@@ -131,7 +131,7 @@ class CrearPlan extends React.Component {
               {/* FECHA HORA */}
                 <FormItem>
                   {getFieldDecorator('fechaLugar', {
-                    rules: [{ required: true, message: 'Inserta una fecha y hora' }],
+                    rules: [{ required: false, message: 'Inserta una fecha y hora' }],
                   })(
                    <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" className='ant-input' placeholder='Fecha y hora' />
                   )}

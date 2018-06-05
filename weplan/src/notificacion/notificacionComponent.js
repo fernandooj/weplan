@@ -14,21 +14,7 @@ export default class notificacionComponent extends Component{
  		axios.get('/x/v1/not/notificacion/user/get/')
  		.then(e=>{ 
  			console.log(e.data.notificacion)
- 			let notificacion = e.data.notificacion.map((item)=>{
-				return {
-					id 		    : item._id,
-					idAmigoUser : item.idAmigoUser ?item.idAmigoUser._id 				:null,
-					idUser      : item.idUsuarioAsigna ?item.idUsuarioAsigna._id        :null,
-					username    : item.idUsuarioAsigna ?item.idUsuarioAsigna.username   :null,
-					photo   	: item.idUsuarioAsigna ?item.idUsuarioAsigna.photo      :null,
-					nombre 	    : item.idUsuarioAsigna ?item.idUsuarioAsigna.nombre     :null,
-					token  	 	: item.idUsuarioAsigna ?item.idUsuarioAsigna.tokenPhone :null,
-					idItem   	: item.idItem  ?item.idItem._id    :null,
-					nombreItem  : item.idItem  ?item.idItem.titulo :null,
-					tipo 		: item.tipo,
-					estado  	: item.estado,
-				}
-			})
+ 			let notificacion = e.data.notificacion 
  			this.setState({notificacion})
  		}) 
  		.catch(err=>{
@@ -42,23 +28,32 @@ export default class notificacionComponent extends Component{
 	 				return(
 		 				<View key={key}>
 			 				<View style={NotiStyle.contenedorNoti}>
-				 				<Image source={{uri: e.photo}} style={NotiStyle.avatar} />
+				 				<Image source={{uri: e.tipo==1 ?e.photo :e.tipo==2 ?e.imagenPlan :e.tipo==3 ?e.imagenItem :null}} style={NotiStyle.avatar} />
 			 					<View>
 					 				<Text style={NotiStyle.tituloNoti}>{e.nombre}</Text> 
-					 				<Text style={NotiStyle.textoNoti}>{e.tipo==1 ?'Re quiere agregar como amigo' :e.tipo==2 ?`Quiere acceder al item: ${e.nombreItem}` :null}</Text>
+					 				<Text style={NotiStyle.textoNoti}>
+					 					{
+					 						e.tipo==1 
+					 						?'Te quiere agregar como amigo' 
+					 						:e.tipo==2 ?`Te agrego al plan: ${e.nombrePlan}`  
+					 						:e.tipo==3 ?`Te agrego al item: ${e.nombreItem}` :null}
+					 				</Text>
 					 				<View style={NotiStyle.contenedorNoti}>
 						 				<TouchableOpacity  style={NotiStyle.btnNoti} 
 						 					onPress={
 						 						e.tipo==1
-						 						?()=>this.handleSubmit(e.id, e.idAmigoUser, 1, e.token, e.idUser)
+						 						?()=>this.handleSubmit(e.id, e.idAmigoUser, 1, e.token, e.idUser, 'Home', 'Te aceptaron como amigo',  'Acepto tu solicitud', e.photo)
 						 						:e.tipo==2
-						 						?()=>this.handleSubmit(e.id, e.idItem, 2, e.token, e.idUser)
+						 						?()=>this.handleSubmit(e.id, e.idPlan, 2, e.token, e.idUser, 'Home', 'Aceptaron ser parte del plan',  `Acepto tu solicitud para pertener al plan: ${e.nombrePlan}`, e.imagenPlan)
+						 						:e.tipo==3
+						 						?()=>this.handleSubmit(e.id, e.idItem, 3, e.token, e.idUser, 'Home', 'Aceptaron ser parte del item',  `Acepto tu solicitud para pertener al item: ${e.nombreItem}`, e.imagenItem)
+
 						 						:null
 						 					}>
 						 					<Text  style={NotiStyle.textoNoti}> Agregar</Text>
 						 				</TouchableOpacity>
 						 				<TouchableOpacity  style={NotiStyle.btnNoti}>
-						 					<Text style={NotiStyle.textoNoti}> Declinar</Text>
+						 					<Text style={NotiStyle.textoNoti} onPress={this.declinar}> Declinar</Text>
 						 				</TouchableOpacity>
 						 			</View>
 					 			</View>
@@ -67,8 +62,7 @@ export default class notificacionComponent extends Component{
 				 		</View>
 	 				)
  			}else{
- 				return(null)
- 			}
+ 				return(null) }
  		})
 	}
 	render(){
@@ -82,14 +76,17 @@ export default class notificacionComponent extends Component{
 			</View>
 		)
 	}
-	handleSubmit(idNotificacion, idTipo, tipo, token, idUser){
-		console.log(token)
+	declinar(){
+
+	}
+	handleSubmit(idNotificacion, idTipo, tipo, token, idUser, pagina, titulo, mensaje, imagen){
+ 
 		axios.put('/x/v1/not/notificacion/'+idNotificacion+'/'+idTipo+'/'+tipo+'/'+idUser)
 		.then(e=>{
 			console.log(e.data)
 			if (e.data.code==1) {
 				this.updateStado(idNotificacion)
-				sendRemoteNotification(4, token, 'Home')
+				sendRemoteNotification(tipo, token, pagina, titulo, mensaje, imagen)
 			}else{
 				Alert.alert(
 				  'Opss!! revisa tus datos que falta algo',

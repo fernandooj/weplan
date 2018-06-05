@@ -7,18 +7,20 @@ let moment   = require('moment');
 
 
 let itemSchema = mongoose.Schema({
-	titulo        : { type : String },
-	tipo		  : { type : String },
-	descripcion   : { type : String },
-	estado		  : { type : String},
-	rutaImagen    : { type : String}, 
-	enviarChat	  : {type: String},
-	valor         : {type: String},
-	planId     	  : {type: Schema.Types.ObjectId, ref:'Plan'},
-	userId     	  : {type: Schema.Types.ObjectId, ref:'User'}, 
-	asignados     : [{type: Schema.Types.ObjectId, ref:'User'}],
-	espera        : [{type: Schema.Types.ObjectId, ref:'User'}],
-	createdAt	  : { type: String, default: moment().format('YYYY-MM-DD h:mm') },
+	titulo        	: { type : String },
+	tipo		  	: { type : String },
+	descripcion   	: { type : String },
+	estado		  	: { type : String},
+	imagenOriginal  : { type : String },
+	imagenResize    : { type : String },
+	imagenMiniatura : { type : String }, 
+	enviarChat	  	: {type: String},
+	valor         	: {type: String},
+	planId     	  	: {type: Schema.Types.ObjectId, ref:'Plan'},
+	userId     	  	: {type: Schema.Types.ObjectId, ref:'User'}, 
+	asignados     	: [{type: Schema.Types.ObjectId, ref:'User'}],
+	espera        	: [{type: Schema.Types.ObjectId, ref:'User'}],
+	createdAt	  	: { type: String, default: moment().format('YYYY-MM-DD h:mm') },
 })
 
 module.exports = mongoose.model('Item', itemSchema)

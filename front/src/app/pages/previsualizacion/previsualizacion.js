@@ -17,18 +17,6 @@ const mapStateToProps = state=>{
     unPlan:state.unPlan
   }
 }
-const mapDispatchToProps = dispatch=>{
-  return{
-    handleSubmit(e, validateFields){
-      e.preventDefault()
-      validateFields((err, values) => {
-        if (!err) {
-          store.dispatch(login(values))
-        }
-      });
-      
-    }
-  }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Previsualizacion);
+
+export default connect(mapStateToProps)(Previsualizacion);

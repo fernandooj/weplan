@@ -2,7 +2,8 @@
 import React, {Component} from 'react'
 import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native'
 import {ItemStyle} from '../item/style'
- 
+
+
 import axios from 'axios'
 import CrearItemComponent from './crearItemComponent'
 import CabezeraComponent from '../ajustes/cabezera.js'
@@ -20,7 +21,7 @@ export default class ItemComponent extends Component{
 	}
 	componentWillMount(){
 		let planId = this.props.navigation.state.params	
-		//let planId = '5aefdb91423c402001dbb329'	
+		//let planId = '5b165754d36e2f0aad8857e6'	
 		this.setState({planId})
 		axios.get('/x/v1/ite/item/'+planId)
 		.then(e=>{
