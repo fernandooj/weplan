@@ -31,7 +31,7 @@ export default class ChatComponent extends Component{
 			usuariosAsignados:[],
 			planAsignados:[],
 			opciones:[
-				{url:`${URL}public/img/opcion_1.png`, click:this.uploadPhoto.bind(this)},
+				{url:`${URL}public/img/opcion_1.png`, click:()=>this.uploadPhoto()},
 				{url:`${URL}public/img/opcion_2.png`, click:()=>this.uploadMapa({}, {}, true)},
 				{url:`${URL}public/img/opcion_3.png`, click:()=>this.uploadContact(0, 0, true)},
 				{url:`${URL}public/img/opcion_4.png`, click:this.uploadFiles.bind(this)},
@@ -42,8 +42,8 @@ export default class ChatComponent extends Component{
 	}
 
 	componentWillMount(){
-		//let planId = this.props.navigation.state.params	
-		let planId = '5b0b87577ea08b5b42740212'	
+		let planId = this.props.navigation.state.params	
+		//let planId = '5b0b87577ea08b5b42740212'	
 		console.log(planId) 
 		this.socket = SocketIOClient(URL);
 		this.socket.on('userJoined'+planId, this.onReceivedMessage);
@@ -115,23 +115,11 @@ export default class ChatComponent extends Component{
 			</View>
 		)
 	}
-	// dynamicSort(property) {
-	//     var sortOrder = 1;
-	//     if(property[0] === "-") {
-	//         sortOrder = -1;
-	//         property = property.substr(1);
-	//     }
-	//     return function (a,b) {
-	//         var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
-	//         return result * sortOrder;
-	//     }
-	// }
 
 	renderMensajes(){
 		const {navigate} = this.props.navigation
 		const {id, mensajes, planAsignados, plan, showPdf} = this.state
 		const source = {uri:'http://samples.leanpub.com/thereactnativebook-sample.pdf',cache:true};
-		//let   data = mensajes.sort(this.dynamicSort('id'))
 		return mensajes.map((e,key)=>{
 			if (e.tipoChat===1) {
 				return (
@@ -380,15 +368,20 @@ export default class ChatComponent extends Component{
 									height={45}
 									source={{uri: e.photo}}
 							    />
+
 							</TouchableOpacity>
 							<TouchableOpacity style={e.userId== id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]}  >
 								<View style={ChatStyle.tituloTipoChat}>
 									<Text style={e.userId== id ?ChatStyle.cNombreTipoChat :[ChatStyle.cNombreTipoChat, ChatStyle.cNombreTipoChatLeft]}>{e.nombre}</Text>
 								</View>
-								<View style={ChatStyle.mensajeCChat}>
-			                  <Image source={{uri:e.documento}} width={500} height={200} />
-									<Text style={e.userId== id ?ChatStyle.cFecha   :[ChatStyle.cFecha,   ChatStyle.cFechaLeft]}>{e.fecha}</Text>
-								</View>
+								 
+									<Image
+										style={ChatStyle.Iphoto}
+										width='100%'
+										height={150}
+										source={{uri: e.documento}}
+								    />
+ 
 							</TouchableOpacity>
 						</View>	
 					)	
@@ -460,6 +453,7 @@ export default class ChatComponent extends Component{
 	}
 	render(){
 		const {adjuntarAmigos, asignados, usuariosAsignados, mapa} = this.state
+		console.log(usuariosAsignados)
 		return(
 			<View style={ChatStyle.contenedorGeneral} > 
 				{this.renderCabezera()}
@@ -516,7 +510,7 @@ export default class ChatComponent extends Component{
 		)
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////// SUBIR CONTACTO
+	/////// RENDER LAS OPCIONES
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	opciones(){
 		return this.state.opciones.map((e, key)=>{
@@ -560,17 +554,7 @@ export default class ChatComponent extends Component{
 	    	}
 	   });
  	}
- 	// test(imagen, fileName){
- 	// 	Alert.alert(
-		//   'Seguro deseas enviar',
-		//   fileName,
-		//   [
-		//     {text: 'Mejor despues', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-		//     {text: 'Enviar', onPress: () => this.handleSubmitDocument(imagen, 7)},
-		//   ],
-		//   { cancelable: false }
-		// );
- 	// }
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////// BUSCO CONTACTO
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -582,7 +566,7 @@ export default class ChatComponent extends Component{
 			   '',
 			   [
 			    {text: 'Mejor despues', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-			    {text: 'Enviar', onPress: () => this.handleSubmitContact()},
+			    {text: 'Enviar', onPress: () => this.handleSubmitContact(usuariosAsignados)},
 			   ],
 			   { cancelable: false }
 			);
@@ -635,24 +619,22 @@ export default class ChatComponent extends Component{
 		});
  	}
  	handleSubmitImagen(imagen, tipo){
- 		console.log('--------')
-		let data = new FormData();
-		data.append('imagen', imagen);
-		data.append('tipo', tipo);
-		data.append('planId', this.state.planId);
+		let dataImg = new FormData();
+		dataImg.append('imagen', imagen);
+		dataImg.append('tipo', tipo);
+		dataImg.append('planId', this.state.planId);
       axios({
 			method: 'post', //you can set what request you want to be
 			url: '/x/v1/cha/chat/documento',
-			data: data,
+			data: dataImg,
 			headers: { 
 				'Accept': 'application/json',
 				'Content-Type': 'multipart/form-data'
 			}
       })
 		.then(res=>{  
-			console.log(res.data)     
 			if(res.data.code==1){ 
-			this.setState({showOpciones:false})
+				this.setState({showOpciones:false})
 			}else{
 				Alert.alert(
 					'Opss!! revisa tus datos que falta algo',
@@ -701,13 +683,15 @@ export default class ChatComponent extends Component{
           console.log(err)
         })
  	}
- 	handleSubmitContact(tipo){
-		this.state.asignados.map(e=>{
-			axios.post('/x/v1/cha/chat/', {contactoId:e, tipo:4, planId:this.state.planId})
+ 	handleSubmitContact(usuariosAsignados){
+ 		console.log('-----')
+ 		console.log(usuariosAsignados)
+		usuariosAsignados.map(e=>{
+			axios.post('/x/v1/cha/chat/', {contactoId:e.id, cNombre:e.nombre, cPhoto:e.photo, tipo:4, planId:this.state.planId})
          .then(res=>{  
          	console.log(res.data)     
          	if(res.data.code==1){ 
-					this.setState({showOpciones:false})
+					//this.setState({showOpciones:false})
 				}else{
 				Alert.alert(
 					'Opss!! revisa tus datos que falta algo',

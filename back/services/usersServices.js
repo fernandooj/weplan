@@ -63,6 +63,8 @@ class userServices {
 			'photo':data.photo,
 		}}, callback );	
 	}
+
+
 	verificaToken(token, callback){
 		User.findOne({'username':token.username, 'token': token.token}, callback)
 	}
@@ -72,6 +74,11 @@ class userServices {
 				'estado':'activo'
 			}}, callback );	
 		})
+	}
+	modificaTokenPhone(idUser, tokenPhone, callback){
+		User.findByIdAndUpdate(idUser, {$set:{
+			'tokenPhone':tokenPhone,
+		}}, callback );	
 	}
 	enableDisable(user,callback){
 		User.findByIdAndUpdate(user.id, {$set: {

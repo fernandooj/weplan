@@ -185,7 +185,7 @@ module.exports = function(app, passport){
                         console.log(req.body.tokenPhone)
                         req.session.usuario = {user:user}
                         //res.json({status:'SUCCESS', user: user, code:1 })
-                        user.tokenPhone!==req.body.tokenPhone  ?modificaUsuario(req, res) :res.json({status: 'SUCCESS', user, code:1})
+                        user.tokenPhone!==req.body.tokenPhone  ?modificaTokenPhone(req, res) :res.json({status: 'SUCCESS', user, code:1})
                     }else{
                         res.json({status:'FAIL', user: 'Datos incorrectos', code:0 })
                         
@@ -241,6 +241,22 @@ module.exports = function(app, passport){
             }
         })
     }
+
+    ///////////////////////////////////////////////////////////////////////////
+    /*
+    despues del login siempre modifico ==> tokenphone
+    */
+    ///////////////////////////////////////////////////////////////////////////
+    const modificaTokenPhone = (req, res)=>{
+        userServices.modificaTokenPhone(req.session.usuario.user._id, req.body.tokenPhone, (err, user)=>{
+            if (err) {
+                res.json({status:'FAIL', err, code:0})    
+            }else{
+                res.json({status: 'SUCCESS_MODIFICA', user, code:1})
+            }
+        })
+    }
+
 
     ///////////////////////////////////////////////////////////////////////////
     /*
@@ -478,8 +494,5 @@ module.exports = function(app, passport){
         res.json({status: 'SUCCESS', message:'sesion terminada', code:1})
     });
 
-    app.post('/x/v1/test/test', (req, res)=>{
-        console.log(req.body)
-        console.log(req.files)
-    })   
+   
 }

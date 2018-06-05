@@ -62,9 +62,7 @@ export const ChatStyle = StyleSheet.create({
 	iconosHeaderContenedor:{
 		flexDirection:'row',
 	},
-	contenedorBox:{
-		marginBottom:0,
-	},
+ 
 	///////////////////////////////////////////////////////////////
 	//////////////		OPCIONES
 	///////////////////////////////////////////////////////////////
@@ -588,8 +586,16 @@ export const ChatStyle = StyleSheet.create({
 	cDocumentoLeft:{
 		alignSelf: 'flex-start',
 		marginLeft:18,
-	}
+	},
 
+	////////////////////////////////////////////
+	////////////////// contenedor 6  ==> imagenes
+	////////////////////////////////////////////
+	Iphoto:{
+		borderWidth:4,
+		borderRadius:0,	
+		borderColor:'#9CB7F5',
+	}
 })
 
 

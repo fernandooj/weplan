@@ -148,6 +148,7 @@ export default class LoginComponent extends Component{
 			        underlineColorAndroid='transparent'
            			placeholder="Email / Telefono"
            			placeholderTextColor="#8F9093" 
+           			autoCapitalize = 'none'
 			    />
 				<TextInput
 			        style={LoginStyle.input}
@@ -157,6 +158,7 @@ export default class LoginComponent extends Component{
            			placeholder="Contraseña"
            			placeholderTextColor="#8F9093" 
            			secureTextEntry
+           			autoCapitalize = 'none'
 			    />
 			    <TouchableOpacity style={LoginStyle.submit} onPress={this.handleSubmit.bind(this)}>
 			    	<Text style={LoginStyle.textSubmit}>Sign In</Text>
