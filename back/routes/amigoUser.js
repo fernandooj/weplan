@@ -18,8 +18,8 @@ router.get('/', (req, res)=>{
 	})
 })
 
-router.get('/asignados', (req, res)=>{ 
-	amigoUserService.getById(req.session.usuario.user._id, (err, asignados)=>{
+router.get('/asignados/:estado', (req, res)=>{ 
+	amigoUserService.getById(req.session.usuario.user._id, req.params.estado, (err, asignados)=>{
 		if (err) {
 			res.json({status:'FAIL', err, code:0})    
 		}else{
@@ -34,7 +34,6 @@ router.get('/asignados', (req, res)=>{
 						estado  : e.estado,	
 					}
 				})
-			console.log(asignados)
 			res.json({status:'SUCCESS', asignados, code:1})    
 		}
 	})

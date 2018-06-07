@@ -15,7 +15,7 @@ export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaj
 	    let photo  = res.data.user.user.photo
 	    imagen = imagen==null ? photo :imagen
 	    if(Platform.OS === 'android'){
-	    	console.log(mensaje)
+	    	console.log({tipo, token, targetScreen, titulo, mensaje, imagen})
 	        body = {
 	        "to": token,
 	      	"data": {
@@ -40,7 +40,7 @@ export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaj
 	    } else {
 	    	 console.log('ios')
 			body = {
-				registration_ids: tokens,
+				registration_ids: token,
 				"data": {
 		            "custom_notification": {
 						title: titulo,

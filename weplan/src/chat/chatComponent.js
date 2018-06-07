@@ -65,7 +65,7 @@ export default class ChatComponent extends Component{
 		axios.get(`/x/v1/cha/chat/chatPlan/${planId}`)
 		.then(e=>{
 			console.log(e.data)	
-			this.setState({mensajes:e.data.chat, planId, imagen: e.data.plan.imagenMiniatura[0], nombrePlan: e.data.plan.nombre, planId, planAsignados:e.data.plan.asignados, plan:e.data.plan})		 
+			this.setState({mensajes:e.data.chat, planId, imagen: e.data.plan.imagenResize[0], nombrePlan: e.data.plan.nombre, planId, planAsignados:e.data.plan.asignados, plan:e.data.plan})		 
 		})
 		.catch(err=>{
 			console.log(err)
@@ -477,9 +477,10 @@ export default class ChatComponent extends Component{
 
 			{/* MODUlO AGREGAR CONTACTOS */}
 				{adjuntarAmigos &&<AgregarAmigosComponent 
-					                titulo='Asignar Amigos'
-					                close={(asignados, usuariosAsignados)=>this.uploadContact(asignados, usuariosAsignados, false)} 
-					                updateStateAsignados={(estado, id)=>this.updateStateAsignados(estado, id)}/> }
+					                titulo='Enviar Contacto'
+					                close={(e)=>this.setState({asignados:[], usuariosAsignados:[], adjuntarAmigos:false})} 
+					                updateStateAsignados={(asignados, usuariosAsignados)=>this.setState({asignados, usuariosAsignados, adjuntarAmigos:false})}
+				                /> }
 
 			{mapa &&<MapaPlanComponent 
 							close={()=> this.setState({mapa:false})} 						   			/////////   cierro el modal

@@ -69,7 +69,7 @@ export default class notificacionComponent extends Component{
 		const {navigate} = this.props.navigation
 		return(
 			<View style={NotiStyle.contenedor}>
-				<CabezeraComponent navigate={navigate} url={'Home'} texto={'Notificaciones'} />
+				<CabezeraComponent navigate={navigate} url={'inicio'} texto={'Notificaciones'} />
 				<View style={NotiStyle.subContenedor}>
 					{this.renderNotificacion()}
 				</View>	

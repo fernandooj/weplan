@@ -60,13 +60,13 @@ export default class createPlanComponent extends Component{
 				console.log(err)
 			})
 		}
-		this.setState({
-	      interval: setInterval(() => {
-	        this.setState({
-	          position: this.state.position === this.state.imagenes.length ? 0 : this.state.position + 1
-	        });
-	      }, 2000)
-	    });
+		// this.setState({
+	 //      interval: setInterval(() => {
+	 //        this.setState({
+	 //          position: this.state.position === this.state.imagenes.length ? 0 : this.state.position + 1
+	 //        });
+	 //      }, 2000)
+	 //    });
 	}
 	componentWillUnmount() {
 		clearInterval(this.state.interval);
@@ -88,8 +88,9 @@ export default class createPlanComponent extends Component{
 	///////////////////////////////////////////////////  	RENDER  	/////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	render(){
-		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes} = this.state
+		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados} = this.state
 		const {navigate} = this.props.navigation
+		console.log(usuariosAsignados)
 		return (
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} > 
 				<CabezeraComponent navigate={navigate} url={'inicio'} parameter={this.state.planId} />
@@ -298,7 +299,7 @@ export default class createPlanComponent extends Component{
 		lat 		= cargaPlan.lat ?cargaPlan.lat :lat
 		lng 		= cargaPlan.lng ?cargaPlan.lng :lng
 		fechaLugar  = cargaPlan.fechaLugar ?cargaPlan.fechaLugar :fechaLugar
-		imagen 		= cargaPlan.ImagenResize[0] ?cargaPlan.ImagenResize[0] :imagen
+		imagen 		= cargaPlan.ImagenResize ?cargaPlan.ImagenResize[0] :imagen
 		console.log(usuariosAsignados)
 
 		if (!cargaPlan) {
@@ -319,7 +320,7 @@ export default class createPlanComponent extends Component{
 						}
 					})
 					.then((res)=>{
-						console.log(res.data.imagen[0])
+						console.log(res.data)
 						if(res.data.status=="SUCCESS"){
 						usuariosAsignados.map(e=>{
 							sendRemoteNotification(2, e.token, 'misPlanes', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, res.data.imagen[0])

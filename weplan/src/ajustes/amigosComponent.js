@@ -10,16 +10,16 @@ import {sendRemoteNotification} from '../push/envioNotificacion.js'
 const KEYS_TO_FILTERS = ['nombre', 'username']
 export default class ajustesAmigosComponent extends Component{
 	state={
- 		allList:[],
  		filteredData:[],
  		asignados:[],
  		amigosAsignados:[],
- 		show:false
+ 		show:false,
 	}
 	componentWillMount(){
 		/////////////////	OBTENGO LOS USUARIOS ACTIVOS 	/////////////////////
-		axios.get('/x/v1/users/activos')
+		axios.get('/x/v1/users/activos/sinPerfil')
 		.then((res)=>{
+			console.log(res.data)
 			let todosUsuarios = res.data.usuarios.map((item)=>{
 				return {
 					id:item._id,
@@ -32,7 +32,7 @@ export default class ajustesAmigosComponent extends Component{
 			})
 			////////////////////////////////////////////////////////////////////////////////////
 			//////////////////	 OBTENGO LOS USUARIOS ASIGNADOS  ///////////////////////////////
-			axios.get('/x/v1/ami/amigoUser/asignados')
+			axios.get('/x/v1/ami/amigoUser/asignados/null')
 			.then((res2)=>{
 				 	console.log(res2.data.asignados)
 					 
@@ -62,7 +62,7 @@ export default class ajustesAmigosComponent extends Component{
 
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////					RENDERIZO LA CABEZERA						/////////////////////////////////////////
+	////////////////////////////////			RENDERIZO LA CABEZERA						 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  	renderCabezera(){
  		return(
@@ -78,21 +78,33 @@ export default class ajustesAmigosComponent extends Component{
  	}
 
  	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////					OBTENGO CADA UNO DE LOS REGISTROS						/////////////////////////////////////////
+	////////////////////			OBTENGO CADA UNO DE LOS REGISTROS						 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ // 	getRow(){
+ // 		const filteredEmails = this.state.filteredData.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
+	// 	return filteredEmails.map((data, key)=>{
+	// 		return  <TouchableOpacity style={AjustesStyle.registro} key={key} onPress={()=>this.updateState(data.id, data.estado, data.token)} > 
+	// 				<Image source={{ uri: data.photo}}  style={data.estado ?AjustesStyle.avatarA :AjustesStyle.avatarA2} /> 
+	// 				<Text style={AjustesStyle.textoAvatar}>{data.nombre}</Text>
+	// 				{!data.estado ?<Image source={require('./agregado.png')} style={AjustesStyle.agregado}/> :null} 
+	// 		    </TouchableOpacity>
+	// 	})
+	// }
  	getRow(){
  		const filteredEmails = this.state.filteredData.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
 		return filteredEmails.map((data, key)=>{
-			return  <TouchableOpacity style={AjustesStyle.registro} key={key} onPress={()=>this.updateState(data.id, data.estado, data.token)} > 
-					<Image source={{ uri: data.photo}}  style={data.estado ?AjustesStyle.avatarA :AjustesStyle.avatarA2} /> 
-					<Text style={AjustesStyle.textoAvatar}>{data.nombre}</Text>
-					{!data.estado ?<Image source={require('./agregado.png')} style={AjustesStyle.agregado}/> :null} 
-			    </TouchableOpacity>
+			return  <View style={AjustesStyle.registro} key={key} onPress={()=>this.updateState(data.id, data.estado, data.token)} > 
+						<Image source={{ uri: data.photo}}  style={data.estado ?AjustesStyle.avatarA :AjustesStyle.avatarA2} /> 
+						<Text style={AjustesStyle.textoAvatar}>{data.nombre}</Text>
+						
+						<TouchableOpacity style={AjustesStyle.btnHecho} onPress={(e)=>{this.handleSubmit(data.id, data.token)}} > 
+							<Text style={AjustesStyle.hecho}>Agregar</Text>
+						</TouchableOpacity> 
+				    </View>
 		})
 	}
-
  	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////////////					FILTRO LOS AMIGOS DEL INPUT						/////////////////////////////////////////
+	/////////////////////////		FILTRO LOS AMIGOS DEL INPUT					 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	filteredData(event){
 		const regex = new RegExp(event, 'i');
@@ -108,7 +120,7 @@ export default class ajustesAmigosComponent extends Component{
 	}
  
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////					RENDER LISTADO AMIGOS						/////////////////////////////////////////
+	////////////////////////////////	RENDER LISTADO AMIGOS						 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  	renderAmigos(){
  		return(
@@ -215,9 +227,7 @@ export default class ajustesAmigosComponent extends Component{
 	}
 
 	
-	handleSubmit(){
-		 
-		const {idAsignado, token} = this.state
+	handleSubmit(idAsignado, token){
 		axios.post('/x/v1/ami/amigoUser', {asignado: idAsignado} )
 		.then((e)=>{
 			console.log(e.data)
@@ -238,5 +248,9 @@ export default class ajustesAmigosComponent extends Component{
 		.catch((err)=>{
 			console.log(err)
 		})
+		let filteredData = this.state.filteredData.filter(e=>{
+			return e.id!==idAsignado
+		})
+		this.setState({filteredData})
 	}
 }

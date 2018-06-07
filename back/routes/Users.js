@@ -336,6 +336,28 @@ module.exports = function(app, passport){
 
     ///////////////////////////////////////////////////////////////////////////
     /*
+    lista usuarios solo activos y suscriptores / menos mi perfil
+    */
+    ///////////////////////////////////////////////////////////////////////////
+    app.get('/x/v1/users/activos/sinPerfil', function(req,res){
+        if(req.session.usuario){
+            userServices.getActivos(function(err, usuarios){
+                if(!err){
+                    usuarios = usuarios.filter(e=>{
+                        return e._id != req.session.usuario.user._id
+                    })
+                    res.json({status:'SUCCESS', usuarios})
+                }else{
+                    res.json({ status: 'FAIL', err}) 
+                }
+            })
+        }else{
+            res.json({ status: 'FAIL', message:'usuario no logueado'})  
+        }
+    })
+
+    ///////////////////////////////////////////////////////////////////////////
+    /*
     lista solo un usuario
     */
     ///////////////////////////////////////////////////////////////////////////

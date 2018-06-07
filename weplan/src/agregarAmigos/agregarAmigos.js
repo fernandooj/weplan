@@ -20,7 +20,7 @@ export default class AgregarAmigosComponent extends Component{
 		this.searchUpdated = this.searchUpdated.bind(this)
 	}
 	componentWillMount(){
-		axios.get('/x/v1/ami/amigoUser/asignados')
+		axios.get('/x/v1/ami/amigoUser/asignados/true')
 		.then((e)=>{
 			console.log(e.data.asignados)
 			this.setState({filteredData:e.data.asignados, allList:e.data.asignados})

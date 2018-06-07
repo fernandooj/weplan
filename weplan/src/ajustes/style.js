@@ -41,7 +41,7 @@ export const AjustesStyle = StyleSheet.create({
  	///////////////////////			AMIGOS 			//////////////////////////////////////
  	/////////////////////////////////////////////////////////////////////////////////////
  	contenedorLista:{
- 		width:'80%',
+ 		width:'100%',  
  	},
  	contenedorA:{
  		paddingBottom:40
@@ -49,6 +49,7 @@ export const AjustesStyle = StyleSheet.create({
  	registro:{
  		flexDirection:'row',
  		alignItems: 'center',
+ 		width:'100%' 
  	},
  	btnCabezera:{
  		padding:15,
@@ -71,7 +72,7 @@ export const AjustesStyle = StyleSheet.create({
  		width:'90%',	
  	},
  	input:{
- 		width:200,
+ 		width:260,
  		height:40,
  		marginRight:'3%',
  		backgroundColor:'#EFF1F1',
@@ -118,9 +119,10 @@ export const AjustesStyle = StyleSheet.create({
 		borderWidth:6,
  	},
  	textoAvatar:{
-		fontSize:22,
+		fontSize:21,
 		marginLeft:20,
-		marginTop:20
+		marginTop:20,
+		width:'55%'
 	},
 	agregado:{
 		position:'absolute',
@@ -135,6 +137,22 @@ export const AjustesStyle = StyleSheet.create({
 		marginTop:10,
 		marginBottom:10,
 	},
+
+	btnHecho:{
+ 		 
+ 		alignItems: 'center',
+ 		backgroundColor:'#94A5F3',
+ 		borderRadius:10,
+ 		padding:5,
+ 		paddingTop:8,
+ 		paddingBottom:8,
+ 		marginTop:22
+ 	},
+ 	hecho:{
+ 		color:'white',
+
+ 	},
+ 		
  	//////////////////////////////////////////////////////////////////////////////////
  	////////////////////////////	CABEZERA   //////////////////////////////////////
  	contenedorBack:{
