@@ -4,8 +4,6 @@ import {ItemStyle}        from '../item/style'
 import axios              from 'axios'
 import TakePhotoComponent from '../takePhoto/takePhotoComponent.js'
 import AgregarAmigosComponent    from '../agregarAmigos/agregarAmigos.js'
-import {sendRemoteNotification} from '../push/envioNotificacion.js'
-
 import socket from '../../socket.js'
 import moment from 'moment'
 
@@ -18,8 +16,7 @@ export default class CrearItemComponent extends Component{
       valor:0,
       enviarChat:false,
       adjuntarAmigos:false,
-      asignados:[],
-      usuariosAsignados:[]
+      asignados:[]
     }  
   }
   componentWillMount(){
@@ -38,6 +35,7 @@ export default class CrearItemComponent extends Component{
 
   render() {
     const {enviarChat, valor, adjuntarAmigos, asignados} = this.state
+    console.log(asignados)
     return (
       <View style={ItemStyle.container}>
         <View style={ItemStyle.modalIn}>
@@ -81,6 +79,7 @@ export default class CrearItemComponent extends Component{
               <Text style={ItemStyle.textoValor}>Valor</Text>
               <TextInput 
                 placeholder='Valor'
+                keyboardType='numeric'
                 underlineColorAndroid='transparent'
                 placeholderTextColor="#8F9093" 
                 style={ItemStyle.inputValor}
@@ -94,15 +93,11 @@ export default class CrearItemComponent extends Component{
             <TouchableOpacity style={ItemStyle.btnAdjuntar} onPress={()=>this.setState({adjuntarAmigos:true})}>
               <Text style={ItemStyle.adjuntar}>Asignar Amigos</Text>
             </TouchableOpacity> 
-            {
-              adjuntarAmigos 
-              ?<AgregarAmigosComponent 
-                titulo='Asignar Amigos'
-                close={(e)=>this.setState({asignados:[], usuariosAsignados:[], adjuntarAmigos:false})} 
-                updateStateAsignados={(asignados, usuariosAsignados)=>this.setState({asignados, usuariosAsignados, adjuntarAmigos:false})}
-              /> 
-              :null
-            }
+            {adjuntarAmigos ?<AgregarAmigosComponent 
+              titulo='Asignar Amigos'
+              close={(e)=>this.setState({asignados:[], usuariosAsignados:[], adjuntarAmigos:false})} 
+              updateStateAsignados={(asignados, usuariosAsignados)=>this.setState({asignados, usuariosAsignados, adjuntarAmigos:false})}
+              /> :null }
             
             {/* Enviar al Chat */}
             <TouchableOpacity 
@@ -132,8 +127,8 @@ export default class CrearItemComponent extends Component{
  
 
   handleSubmit(){
-    const {titulo, descripcion, valor, imagen, enviarChat, asignados, id, nombre, photo, usuariosAsignados} = this.state
-    console.log(usuariosAsignados)
+    const {titulo, descripcion, valor, imagen, enviarChat, asignados, id, nombre, photo} = this.state
+
     const fecha = moment().format('h:mm')
     if (titulo.length==0) {
       Alert.alert(
@@ -164,7 +159,7 @@ export default class CrearItemComponent extends Component{
       )
     }else{
       let planId = this.props.planId
-      //let planId = '5b165754d36e2f0aad8857e6'
+      //let planId = '5b17c91923cba556bc6320c5'
       let data = new FormData();
       let deudaAsignados = Math.ceil((valor/(asignados.length+1))/100)*100
       let deudaCreador = valor - (deudaAsignados * asignados.length)
@@ -183,25 +178,22 @@ export default class CrearItemComponent extends Component{
         data.append('itemId', itemId);
 
         axios({
-              method: 'post', //you can set what request you want to be
-              url: '/x/v1/ite/item/'+itemId,
-              data: data,
-              headers: { 
-                'Accept': 'application/json',
-                'Content-Type': 'multipart/form-data'
-              }
-            })
+          method: 'post', //you can set what request you want to be
+          url: '/x/v1/ite/item/'+itemId,
+          data: data,
+          headers: { 
+            'Accept': 'application/json',
+            'Content-Type': 'multipart/form-data'
+          }
+        })
         .then(res=>{  
           console.log(res.data)     
           if(res.data.code==1){ 
             this.props.updateItems(itemId, deudaCreador, titulo)
-            usuariosAsignados.map(e=>{
-              sendRemoteNotification(3, e.token, 'misPlanes', 'Te han agregado a un Item', `, Te agrego a ${titulo}`, res.data.imagen)
-            })
           }else{
             Alert.alert(
               'Opss!! revisa tus datos que falta algo',
-              '',
+              res.data,
               [
                 {text: 'OK', onPress: () => console.log('OK Pressed')},
               ],

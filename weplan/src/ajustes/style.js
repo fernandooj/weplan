@@ -77,7 +77,7 @@ export const AjustesStyle = StyleSheet.create({
  		marginRight:'3%',
  		backgroundColor:'#EFF1F1',
  		borderWidth:2,
- 		borderColor:'#D4D4D4', 
+ 		borderColor:'#D4D4D4', 
  		borderRadius:20,
  		padding:0,
  		paddingLeft:15

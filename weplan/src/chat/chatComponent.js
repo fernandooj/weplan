@@ -14,6 +14,7 @@ import AgregarAmigosComponent from '../agregarAmigos/agregarAmigos.js'
 import MapaPlanComponent 		from '../createPlan/mapa.js'
 import PdfComponent           from '../pdf/pdfComponent.js'
 import MapComponent           from '../mapa/mapComponent.js'
+import {pedirImagen, pedirPdf, subirContacto} from './peticiones.js'		
 import {URL} from '../../App.js'
 export default class ChatComponent extends Component{
 	constructor(props){
@@ -31,10 +32,10 @@ export default class ChatComponent extends Component{
 			usuariosAsignados:[],
 			planAsignados:[],
 			opciones:[
-				{url:`${URL}public/img/opcion_1.png`, click:()=>this.uploadPhoto()},
+				{url:`${URL}public/img/opcion_1.png`, click:()=>pedirImagen('5b17c91923cba556bc6320c5')},
 				{url:`${URL}public/img/opcion_2.png`, click:()=>this.uploadMapa({}, {}, true)},
-				{url:`${URL}public/img/opcion_3.png`, click:()=>this.uploadContact(0, 0, true)},
-				{url:`${URL}public/img/opcion_4.png`, click:this.uploadFiles.bind(this)},
+				{url:`${URL}public/img/opcion_3.png`, click:()=>this.buscarContact(0, 0, true)},
+				{url:`${URL}public/img/opcion_4.png`, click:()=>pedirPdf('5b17c91923cba556bc6320c5')},
 				{url:`${URL}public/img/opcion_5.png`, click:null},
 			]
 		}
@@ -42,8 +43,8 @@ export default class ChatComponent extends Component{
 	}
 
 	componentWillMount(){
-		let planId = this.props.navigation.state.params	
-		//let planId = '5b165754d36e2f0aad8857e6'	
+		//let planId = this.props.navigation.state.params	
+		let planId = '5b17c91923cba556bc6320c5'	
 		console.log(planId) 
 		this.socket = SocketIOClient(URL);
 		this.socket.on('userJoined'+planId, this.onReceivedMessage);
@@ -523,51 +524,22 @@ export default class ChatComponent extends Component{
 		})
 	}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////// BUSCO LOS DOCUMENTOS
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	uploadFiles(){
-		let imagen = null;
- 		DocumentPicker.show({
-	      filetype: [DocumentPickerUtil.pdf()],
-	    },(error,res) => {
-	    	if (error) {
-	    		console.log(error)
-	    	}else{
-	    		let imagen = {
-				    uri: res.uri,
-				    type: res.type,
-				    name: res.fileName,
-				    path: res.uri
-				};
-				if (imagen!=null){
-					console.log(imagen)
-					Alert.alert(
-					  'Seguro deseas enviar',
-					  res.fileName,
-					  [
-					    {text: 'Mejor despues', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-					    {text: 'Enviar', onPress: () => this.handleSubmitDocument(imagen, 7)},
-					  ],
-					  { cancelable: false }
-					);
-				}
-	    	}
-	   });
- 	}
+ 
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////// BUSCO CONTACTO
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- 	uploadContact(asignados, usuariosAsignados, estado){	
+ 	buscarContact(asignados, usuariosAsignados, estado){	
+ 		console.log(asignados)
  		this.setState({adjuntarAmigos:estado, asignados})
- 		if (asignados.length>0) {
+
+ 		if (asignados===0) {
  			Alert.alert(
 			  'Seguro deseas enviar a:',
 			   '',
 			   [
 			    {text: 'Mejor despues', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-			    {text: 'Enviar', onPress: () => this.handleSubmitContact(usuariosAsignados)},
+			    {text: 'Enviar', onPress: () => subirContacto(this.state.usuariosAsignados, this.state.planId)},
 			   ],
 			   { cancelable: false }
 			);
@@ -588,127 +560,7 @@ export default class ChatComponent extends Component{
 			);
  		}
  	}
- 	uploadPhoto(){
-		const options = {
-			quality: 1.0,
-			storageOptions: {
-				skipBackup: true
-			}
-		};
-
-		ImagePicker.showImagePicker(options, (response) => {
-		  console.log('Response = ', response);
-
-		  if (response.uri) {
-		    let source = { uri: response.uri };
-		    let imagen = {
-			    uri: response.uri,
-			    type: response.type,
-			    name: response.fileName,
-			    path: response.path
-			};
-			Alert.alert(
-			   'Seguro deseas enviar',
-			   response.fileName,
-			  [
-			    {text: 'Mejor despues', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-			    {text: 'Enviar', onPress: () => this.handleSubmitImagen(imagen, 6)},
-			  ],
-			  { cancelable: false }
-			);
-		  }
-		});
- 	}
- 	handleSubmitImagen(imagen, tipo){
-		let dataImg = new FormData();
-		dataImg.append('imagen', imagen);
-		dataImg.append('tipo', tipo);
-		dataImg.append('planId', this.state.planId);
-      axios({
-			method: 'post', //you can set what request you want to be
-			url: '/x/v1/cha/chat/documento',
-			data: dataImg,
-			headers: { 
-				'Accept': 'application/json',
-				'Content-Type': 'multipart/form-data'
-			}
-      })
-		.then(res=>{  
-			if(res.data.code==1){ 
-				this.setState({showOpciones:false})
-			}else{
-				Alert.alert(
-					'Opss!! revisa tus datos que falta algo',
-					'',
-					[
-					{text: 'OK', onPress: () => console.log('OK Pressed')},
-					],
-					{ cancelable: false }
-				)
-			}
-		})
-		.catch(err=>{
-			console.log(err)
-		})
- 	}
- 	handleSubmitDocument(imagen, tipo){
-		let data = new FormData();
-		data.append('imagen', imagen);
-		data.append('tipo', tipo);
-		data.append('planId', this.state.planId);
-         axios({
-              method: 'post', //you can set what request you want to be
-              url: '/x/v1/cha/chat/documento',
-              data: data,
-              headers: { 
-                'Accept': 'application/json',
-                'Content-Type': 'multipart/form-data'
-              }
-            })
-        .then(res=>{  
-          console.log(res.data)     
-          if(res.data.code==1){ 
-         	this.setState({showOpciones:false})
-          }else{
-            Alert.alert(
-              'Opss!! revisa tus datos que falta algo',
-              '',
-              [
-                {text: 'OK', onPress: () => console.log('OK Pressed')},
-              ],
-              { cancelable: false }
-            )
-          }
-        })
-        .catch(err=>{
-          console.log(err)
-        })
- 	}
- 	handleSubmitContact(usuariosAsignados){
- 		console.log('-----')
- 		console.log(usuariosAsignados)
-		usuariosAsignados.map(e=>{
-			axios.post('/x/v1/cha/chat/', {contactoId:e.id, cNombre:e.nombre, cPhoto:e.photo, tipo:4, planId:this.state.planId})
-         .then(res=>{  
-         	console.log(res.data)     
-         	if(res.data.code==1){ 
-					//this.setState({showOpciones:false})
-				}else{
-				Alert.alert(
-					'Opss!! revisa tus datos que falta algo',
-					'',
-				[
-					{text: 'OK', onPress: () => console.log('OK Pressed')},
-				],
-					{ cancelable: false }
-				)
-			}
-        })
-        .catch(err=>{
-          console.log(err)
-        })
-		}) 
- 	}
+ 	    
  	handleSubmitMap(lat, lng, tipo){
 		axios.post('/x/v1/cha/chat/', {lat, lng, tipo, planId:this.state.planId})
       .then(res=>{  
@@ -784,5 +636,4 @@ export default class ChatComponent extends Component{
 		})
 	}
 }
-
 

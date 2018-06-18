@@ -75,6 +75,7 @@ export default class pagoComponent extends Component{
 		                placeholder='Valor a Pagar'
 		                underlineColorAndroid='transparent'
 		                placeholderTextColor="#8F9093" 
+		                keyboardType='numeric'
 		                style={PagoStyle.inputValor}
 		                onChangeText={(monto) => this.setState({monto})}
 		            />

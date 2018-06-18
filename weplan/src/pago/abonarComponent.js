@@ -42,6 +42,7 @@ export default class AbonarComponent extends Component{
               <View style={EncuestaStyle.contenedorAbono}>
                 <Text style={EncuestaStyle.textoAbono}>Monto</Text>
                 <TextInput 
+                  keyboardType='numeric'
                   underlineColorAndroid='transparent' 
                   editable = {true}
                   multiline = {true}
