@@ -21,8 +21,8 @@ export default class ItemComponent extends Component{
 		total:0
 	}
 	componentWillMount(){
-		//let planId = this.props.navigation.state.params	
-		let planId = '5b17c91923cba556bc6320c5'	
+		let planId = this.props.navigation.state.params	
+		//let planId = '5b17c91923cba556bc6320c5'	
 		this.setState({planId})
 		axios.get('/x/v1/ite/item/'+planId)
 		.then(e=>{
@@ -35,8 +35,6 @@ export default class ItemComponent extends Component{
 	}
 	renderAcordeon() {
 		const {render, total}=this.state
- 
-		 
 		return (
 			<View>
 			  	<View style={ItemStyle.headerCollapsable }>
@@ -71,10 +69,10 @@ export default class ItemComponent extends Component{
 		);
 	}
 	updateItems(id, deuda, titulo){
-		let status = 'asignado'
-		const tomatela = {id, deuda, titulo, status}
+		console.log(deuda)
+		const pago = {id, deuda, titulo}
 		this.setState({
-		  items: update(this.state.items, {$unshift: [tomatela]}),
+		  pago: update(this.state.pago, {$unshift: [pago]}),
 		  show:false
 		}) 
 	}
@@ -155,6 +153,7 @@ export default class ItemComponent extends Component{
   	render() {
 		const {show, items, itemsPlan} = this.state
 		const {navigate} = this.props.navigation
+		console.log(this.state.pago)
 		return (
 			<View  style={ItemStyle.contentItem}>
 				<CabezeraComponent navigate={navigate} url={'chat'} parameter={this.state.planId} />

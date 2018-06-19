@@ -45,7 +45,8 @@ export const pedirPdf = (planId) =>{
 			    path: res.uri
 			};
 			if (imagen!==null){
-				alerta(res.fileName, imagen, subirPhoto, 7, planId )
+				console.log(res.fileName)
+				alerta(res.fileName, imagen, subirDocumento, 7, planId )
 			}
     	}
    });	
@@ -91,11 +92,9 @@ const subirContacto=(usuariosAsignados, tipo, planId)=>{
 		axios.post('/x/v1/cha/chat/', {contactoId:e.id, cNombre:e.nombre, cPhoto:e.photo, tipo, fecha, planId})
 	    .then(res=>{  
 	     	console.log(res.data)     
-	     	if(res.data.code==1){ 
-					//this.setState({showOpciones:false})
-			}else{
-				alertaError()
-			}
+	     	if(res.data.code!==1){ 
+		        alertaError()
+		    }
 	    })
 	    .catch(err=>{
 	      console.log(err)
@@ -107,11 +106,9 @@ const handleSubmitMap = (lat, lng, tipo, planId) =>{
 	axios.post('/x/v1/cha/chat/', {lat, lng, tipo, planId})
     .then(res=>{  
       	console.log(res.data)     
-      	if(res.data.code==1){ 
-			//this.setState({showOpciones:false})
-		}else{
-			alertaError()
-		}
+      	if(res.data.code!==1){ 
+        alertaError()
+      }
     })
 	.catch(err=>{
 		console.log(err)
@@ -136,9 +133,7 @@ const subirImagen = (imagen, tipo, planId)=>{
         })
     .then(res=>{  
       console.log(res.data)     
-      if(res.data.code==1){ 
-     	//this.setState({showOpciones:false})
-      }else{
+      if(res.data.code!==1){ 
         alertaError()
       }
     })
@@ -147,11 +142,12 @@ const subirImagen = (imagen, tipo, planId)=>{
     })
 }
 
-const subirPhoto=()=>{
+const subirDocumento=(imagen, tipo, planId)=>{
+	console.log(imagen)
 	let data = new FormData();
 	data.append('imagen', imagen);
 	data.append('tipo', tipo);
-	data.append('planId', this.state.planId);
+	data.append('planId', planId);
      axios({
           method: 'post', //you can set what request you want to be
           url: '/x/v1/cha/chat/documento',
@@ -163,9 +159,7 @@ const subirPhoto=()=>{
         })
     .then(res=>{  
       console.log(res.data)     
-      if(res.data.code==1){ 
-     	this.setState({showOpciones:false})
-      }else{
+      if(res.data.code!==1){ 
         alertaError()
       }
     })

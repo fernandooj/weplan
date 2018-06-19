@@ -82,7 +82,6 @@ function isInArray(value, array) {
 }
 
 router.post('/', (req, res)=>{
-	console.log(req.body)
  	let photo = req.session.usuario.user.photo 
 	if (!photo) {
 		photo = req.protocol+'s://'+req.get('Host') + '/avatar.png'
@@ -146,16 +145,18 @@ router.post('/documento', (req, res)=>{
 			planId:req.body.planId, 
 			fecha:req.body.fecha, 
 			nombre:req.session.usuario.user.nombre,
-			tipoChat:req.body.tipo,
+			tipoChat:parseInt(req.body.tipo),
 			documento:ruta,
 		}
 		cliente.publish('chat', JSON.stringify(mensajeJson))
+		console.log(extension)
     	chatServices.create(req.body, req.session.usuario.user._id, req.body.tipo, ruta, (err, chat)=>{
 			if (err) {
 				res.json({status:'FAIL', err, code:0})   
 			}else{
 				res.json({status:'SUCCESS', chat, code:1}) 
-				extension==='jpg' || 'png' || 'jpeg'  ?resizeImagenes(ruta, randonNumber, extension) :null
+				
+				extension==='pdf' ?null :resizeImagenes(ruta, randonNumber, extension)
 			}
 		})	
     }
