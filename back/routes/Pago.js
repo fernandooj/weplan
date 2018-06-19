@@ -84,21 +84,7 @@ const sumaTodos = (req, res, pago) =>{
 }
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////
-///////////// 		OBTIENE LA SUMA DE LOS RESULTADOS POR USUARIOS
-///////////////////////////////////////////////////////////////////////////////////////////////
-router.get('/pariente/ente/corriente/mente', (req, res)=>{
-	 
-	pagoServices.sumaPlan((err, pago)=>{
-		console.log(pago)
-		if(err){
-			res.json({status: 'FAIL', err, code:0})
-		}else{
-			res.json({pago})
-		}
-	})
-})
-
+ 
 
 router.post('/', (req, res)=>{
 	let id = req.body.userId==null ?req.session.usuario.user._id :req.body.userId

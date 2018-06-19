@@ -14,7 +14,7 @@ import AgregarAmigosComponent from '../agregarAmigos/agregarAmigos.js'
 import MapaPlanComponent 		from '../createPlan/mapa.js'
 import PdfComponent           from '../pdf/pdfComponent.js'
 import MapComponent           from '../mapa/mapComponent.js'
-import {pedirImagen, pedirPdf, subirContacto} from './peticiones.js'		
+import {pedirImagen, pedirPdf, pedirContacto, pedirMapa} from './peticiones.js'		
 import {URL} from '../../App.js'
 export default class ChatComponent extends Component{
 	constructor(props){
@@ -31,13 +31,7 @@ export default class ChatComponent extends Component{
 			showPdf:false,
 			usuariosAsignados:[],
 			planAsignados:[],
-			opciones:[
-				{url:`${URL}public/img/opcion_1.png`, click:()=>pedirImagen('5b17c91923cba556bc6320c5')},
-				{url:`${URL}public/img/opcion_2.png`, click:()=>this.uploadMapa({}, {}, true)},
-				{url:`${URL}public/img/opcion_3.png`, click:()=>this.buscarContact(0, 0, true)},
-				{url:`${URL}public/img/opcion_4.png`, click:()=>pedirPdf('5b17c91923cba556bc6320c5')},
-				{url:`${URL}public/img/opcion_5.png`, click:null},
-			]
+			
 		}
 		this.onReceivedMessage = this.onReceivedMessage.bind(this);
 	}
@@ -120,7 +114,7 @@ export default class ChatComponent extends Component{
 	renderMensajes(){
 		const {navigate} = this.props.navigation
 		const {id, mensajes, planAsignados, plan, showPdf} = this.state
-		const source = {uri:'http://samples.leanpub.com/thereactnativebook-sample.pdf',cache:true};
+ 
 		return mensajes.map((e,key)=>{
 			if (e.tipoChat===1) {
 				return (
@@ -380,7 +374,7 @@ export default class ChatComponent extends Component{
 										style={ChatStyle.Iphoto}
 										width='100%'
 										height={150}
-										source={{uri: e.documento}}
+										source={{uri: e.documento,cache:true}}
 								    />
  
 							</TouchableOpacity>
@@ -452,9 +446,9 @@ export default class ChatComponent extends Component{
       	console.log(err)
      	})
 	}
+	 
 	render(){
 		const {adjuntarAmigos, asignados, usuariosAsignados, mapa} = this.state
-		console.log(usuariosAsignados)
 		return(
 			<View style={ChatStyle.contenedorGeneral} > 
 				{this.renderCabezera()}
@@ -480,12 +474,12 @@ export default class ChatComponent extends Component{
 				{adjuntarAmigos &&<AgregarAmigosComponent 
 					                titulo='Enviar Contacto'
 					                close={(e)=>this.setState({asignados:[], usuariosAsignados:[], adjuntarAmigos:false})} 
-					                updateStateAsignados={(asignados, usuariosAsignados)=>this.setState({asignados, usuariosAsignados, adjuntarAmigos:false})}
+					                updateStateAsignados={(asignados, usuariosAsignados)=>{this.setState({adjuntarAmigos:false, showOpciones:false});pedirContacto(asignados, usuariosAsignados, this.state.planId)}}
 				                /> }
 
 			{mapa &&<MapaPlanComponent 
 							close={()=> this.setState({mapa:false})} 						   			/////////   cierro el modal
-							updateStateX={(lat,lng, direccion)=>this.uploadMapa(lat,lng, false)}  /////////	me devuelve la posicion del marcador 
+							updateStateX={(lat,lng, direccion)=>{this.setState({mapa:false, showOpciones:false});pedirMapa(lat,lng, this.state.planId) }}// devuelve la posicion del marcador 
 						/> }	
 
 			{/* FOOTER INPUT / ENVIAR */}
@@ -515,7 +509,15 @@ export default class ChatComponent extends Component{
 	/////// RENDER LAS OPCIONES
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	opciones(){
-		return this.state.opciones.map((e, key)=>{
+		const {planId, asignados, usuariosAsignados} = this.state
+		let opciones=[
+			{url:`${URL}public/img/opcion_1.png`, click:()=>{pedirImagen(planId); this.setState({showOpciones:false})}},
+			{url:`${URL}public/img/opcion_2.png`, click:()=>this.setState({mapa:true})},
+			{url:`${URL}public/img/opcion_3.png`, click:()=>this.setState({adjuntarAmigos:true})},
+			{url:`${URL}public/img/opcion_4.png`, click:()=>{pedirPdf(planId); this.setState({showOpciones:false})}},
+			{url:`${URL}public/img/opcion_5.png`, click:null}
+		]
+		return opciones.map((e, key)=>{
 			return (
 					<TouchableOpacity key={key} style={ChatStyle.btnIconoOpciones} onPress={e.click}>
 							<Image source={{uri:e.url}} style={ChatStyle.opcionesIconos} /> 	
@@ -523,65 +525,8 @@ export default class ChatComponent extends Component{
 				)
 		})
 	}
-
  
 
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////// BUSCO CONTACTO
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- 	buscarContact(asignados, usuariosAsignados, estado){	
- 		console.log(asignados)
- 		this.setState({adjuntarAmigos:estado, asignados})
-
- 		if (asignados===0) {
- 			Alert.alert(
-			  'Seguro deseas enviar a:',
-			   '',
-			   [
-			    {text: 'Mejor despues', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-			    {text: 'Enviar', onPress: () => subirContacto(this.state.usuariosAsignados, this.state.planId)},
-			   ],
-			   { cancelable: false }
-			);
- 		}
- 	}
-
- 	uploadMapa(lat, lng, estado){
- 		this.setState({mapa:estado, lat, lng})
- 		if (lat>0) {
- 			Alert.alert(
-			  'Seguro deseas enviar este mapa',
-			   '',
-			   [
-			    {text: 'Mejor despues', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-			    {text: 'Enviar', onPress: () => this.handleSubmitMap(lat, lng, 5)},
-			   ],
-			   { cancelable: false }
-			);
- 		}
- 	}
- 	    
- 	handleSubmitMap(lat, lng, tipo){
-		axios.post('/x/v1/cha/chat/', {lat, lng, tipo, planId:this.state.planId})
-      .then(res=>{  
-      	console.log(res.data)     
-      	if(res.data.code==1){ 
-				this.setState({showOpciones:false})
-			}else{
-				Alert.alert(
-					'Opss!! revisa tus datos que falta algo',
-					'',
-				[
-					{text: 'OK', onPress: () => console.log('OK Pressed')},
-				],
-					{ cancelable: false }
-				)
-			}
-      })
-      .catch(err=>{
-      	console.log(err)
-      })
- 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////// SI EL USUARIO HACE CLICK EN ME INTERESA, ENVIA LA NOTIFICACION AL CREADOR DEL ITEM PARA DARLE PERMISO DE INGRESAR
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

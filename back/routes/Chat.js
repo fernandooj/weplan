@@ -139,6 +139,17 @@ router.post('/documento', (req, res)=>{
 	if(req.session.usuario===undefined || req.session.usuario.user==null){
         res.json({status:'FAIL', user: 'SIN SESION', code:0 })
     }else{
+    	////////////////  esta informacion se envia al chat	
+		let mensajeJson={
+			userId:req.session.usuario.user._id, 
+			photo:req.session.usuario.user.photo, 
+			planId:req.body.planId, 
+			fecha:req.body.fecha, 
+			nombre:req.session.usuario.user.nombre,
+			tipoChat:req.body.tipo,
+			documento:ruta,
+		}
+		cliente.publish('chat', JSON.stringify(mensajeJson))
     	chatServices.create(req.body, req.session.usuario.user._id, req.body.tipo, ruta, (err, chat)=>{
 			if (err) {
 				res.json({status:'FAIL', err, code:0})   

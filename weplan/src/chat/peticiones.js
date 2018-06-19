@@ -30,48 +30,49 @@ export const pedirImagen = (planId) =>{
 	});
 }
 
-export const  pedirPdf= (planId) =>{
-	
+export const pedirPdf = (planId) =>{
 	let imagen = null;
- 		DocumentPicker.show({
-	      filetype: [DocumentPickerUtil.pdf()],
-	    },(error,res) => {
-	    	if (error) {
-	    		console.log(error)
-	    	}else{
-	    		let imagen = {
-				    uri: res.uri,
-				    type: res.type,
-				    name: res.fileName,
-				    path: res.uri
-				};
-				if (imagen!==null){
-					alerta(res.fileName, imagen, subirPhoto, 7, planId )
-				}
-	    	}
-	   });	
+	DocumentPicker.show({
+      	filetype: [DocumentPickerUtil.pdf()],
+   		},(error,res) => {
+    	if (error) {
+    		console.log(error)
+    	}else{
+    		let imagen = {
+			    uri: res.uri,
+			    type: res.type,
+			    name: res.fileName,
+			    path: res.uri
+			};
+			if (imagen!==null){
+				alerta(res.fileName, imagen, subirPhoto, 7, planId )
+			}
+    	}
+   });	
+}
+ 
+export const pedirContacto = (asignados, usuariosAsignados, planId)=>{	
+	let data = []
+	usuariosAsignados.filter(e=>{
+		data.push(e.nombre)
+	})
+	alerta(data.join(), usuariosAsignados, subirContacto, 4, planId )
 }
 
-export const subirContacto=(usuariosAsignados, planId)=>{
-	const fecha = moment().format('h:mm')
-	console.log(usuariosAsignados)
-	usuariosAsignados.map(e=>{
-		axios.post('/x/v1/cha/chat/', {contactoId:e.id, cNombre:e.nombre, cPhoto:e.photo, tipo:4, fecha, planId:planId})
-	     .then(res=>{  
-	     	console.log(res.data)     
-	     	if(res.data.code==1){ 
-					//this.setState({showOpciones:false})
-				}else{
-				alertaError()
-			}
-	    })
-	    .catch(err=>{
-	      console.log(err)
-	    })
-	}) 
-}
+export const pedirMapa = (lat, lng, planId)=>{
+	Alert.alert(
+		'Seguro deseas enviar este mapa',
+		'',
+	[
+	    {text: 'Mejor despues', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+	    {text: 'Enviar', onPress: () => handleSubmitMap(lat, lng, 5, planId)},
+	],
+		{ cancelable: false }
+	)
+ }
+
 const alerta = (info, data, funcion, tipo, planId) =>{
-	console.log(info)
+	console.log(tipo)
 	Alert.alert(
 	  'Seguro deseas enviar',
 	  info,
@@ -82,6 +83,42 @@ const alerta = (info, data, funcion, tipo, planId) =>{
 	  { cancelable: false }
 	);
 }
+
+const subirContacto=(usuariosAsignados, tipo, planId)=>{
+	const fecha = moment().format('h:mm')
+	console.log(planId)
+	usuariosAsignados.map(e=>{
+		axios.post('/x/v1/cha/chat/', {contactoId:e.id, cNombre:e.nombre, cPhoto:e.photo, tipo, fecha, planId})
+	    .then(res=>{  
+	     	console.log(res.data)     
+	     	if(res.data.code==1){ 
+					//this.setState({showOpciones:false})
+			}else{
+				alertaError()
+			}
+	    })
+	    .catch(err=>{
+	      console.log(err)
+	    })
+	}) 
+}
+
+const handleSubmitMap = (lat, lng, tipo, planId) =>{
+	axios.post('/x/v1/cha/chat/', {lat, lng, tipo, planId})
+    .then(res=>{  
+      	console.log(res.data)     
+      	if(res.data.code==1){ 
+			//this.setState({showOpciones:false})
+		}else{
+			alertaError()
+		}
+    })
+	.catch(err=>{
+		console.log(err)
+	})
+}
+
+
 
 const subirImagen = (imagen, tipo, planId)=>{
 	let data = new FormData();
@@ -102,7 +139,7 @@ const subirImagen = (imagen, tipo, planId)=>{
       if(res.data.code==1){ 
      	//this.setState({showOpciones:false})
       }else{
-        
+        alertaError()
       }
     })
     .catch(err=>{
@@ -129,21 +166,13 @@ const subirPhoto=()=>{
       if(res.data.code==1){ 
      	this.setState({showOpciones:false})
       }else{
-        Alert.alert(
-          'Opss!! revisa tus datos que falta algo',
-          '',
-          [
-            {text: 'OK', onPress: () => console.log('OK Pressed')},
-          ],
-          { cancelable: false }
-        )
+        alertaError()
       }
     })
     .catch(err=>{
       console.log(err)
     })
 }
-
 
 
 const alertaError = () =>{
@@ -157,4 +186,4 @@ const alertaError = () =>{
     )
 }
 
-export default {pedirImagen, pedirPdf, subirContacto}
+export default {pedirImagen, pedirPdf, subirContacto, pedirMapa}

@@ -16,35 +16,33 @@ class pagoServices{
  	suma(itemId, userId, callback){
  		itemId = mongoose.Types.ObjectId(itemId);	
  		userId = mongoose.Types.ObjectId(userId);	
- 		pagoSchema.aggregate(
-		 [
-	     { "$match": 
-	     	{itemId, userId}
-	     },
-		  {
-		    $group : {
-		       _id : null,
-		       monto: { $sum: "$monto"}, // for your case use local.user_totaldocs
-		       count: { $sum: 1 } // for no. of documents count
-		    } 
-		  }
+ 		pagoSchema.aggregate([
+		    { "$match": 
+		     	{itemId, userId}
+		    },
+			{
+			    $group : {
+			       _id : null,
+			       monto: { $sum: "$monto"}, // for your case use local.user_totaldocs
+			       count: { $sum: 1 } // for no. of documents count
+			    } 
+			}
 		], callback)
  	}
 
  	sumaTodos(itemId, callback){
  		itemId = mongoose.Types.ObjectId(itemId);	
- 		pagoSchema.aggregate(
-		 [
-	     { "$match": 
-	     	{itemId, abono:true}
-	     },
-		  {
-		    $group : {
-		       _id : null,
-		       monto: { $sum: "$monto"}, // for your case use local.user_totaldocs
-		       count: { $sum: 1 } // for no. of documents count
-		    } 
-		  }
+ 		pagoSchema.aggregate([
+		    {"$match": 
+		     	{itemId, abono:true}
+		    },
+			{
+			    $group : {
+			       _id : null,
+			       monto: { $sum: "$monto"}, // for your case use local.user_totaldocs
+			       count: { $sum: 1 } // for no. of documents count
+			    } 
+			}
 		], callback)
  	}
  	sumaPlan(callback){
