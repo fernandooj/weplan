@@ -131,40 +131,19 @@ export default class CrearItemComponent extends Component{
 
     const fecha = moment().format('h:mm')
     if (titulo.length==0) {
-      Alert.alert(
-        'El titulo es obligatorio',
-        '',
-        [
-          {text: 'OK', onPress: () => console.log('OK Pressed')},
-        ],
-        { cancelable: false }
-      )
+      alerta('El titulo es obligatorio')
     }else if(valor==0){
-      Alert.alert(
-        'El Valor es obligatorio',
-        '',
-        [
-          {text: 'OK', onPress: () => console.log('OK Pressed')},
-        ],
-        { cancelable: false }
-      )
+      alerta('El Valor es obligatorio')
     }else if(isNaN(valor)){
-      Alert.alert(
-        'El Valor solo puede ser numerico',
-        '',
-        [
-          {text: 'OK', onPress: () => console.log('OK Pressed')},
-        ],
-        { cancelable: false }
-      )
+      alerta('El Valor solo puede ser numerico')
     }else{
       let planId = this.props.planId
-      //let planId = '5b17c91923cba556bc6320c5'
+      // let planId = '5b287e0394d7f72f1988c011'
       let data = new FormData();
       let deudaAsignados = Math.ceil((valor/(asignados.length+1))/100)*100
       let deudaCreador = valor - (deudaAsignados * asignados.length)
 
-      axios.post('/x/v1/ite/item', {descripcion, valor, titulo, planId, asignados, tipo:1})
+      axios.post('/x/v1/ite/item', {descripcion, valor, titulo, planId, espera:asignados, tipo:1})
       .then(e=>{
         let itemId = e.data.item._id
         console.log(e.data.item)
@@ -189,7 +168,7 @@ export default class CrearItemComponent extends Component{
         .then(res=>{  
           console.log(res.data)     
           if(res.data.code==1){ 
-            this.props.updateItems(itemId, deudaCreador, titulo)
+            this.props.updateItems(itemId, valor, titulo)
           }else{
             Alert.alert(
               'Opss!! revisa tus datos que falta algo',
@@ -211,5 +190,13 @@ export default class CrearItemComponent extends Component{
     }
   }
 }
-
- 
+const alerta = (info)=>{
+    Alert.alert(
+    info,
+    '',
+    [
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ],
+    { cancelable: false }
+  )
+}

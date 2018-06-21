@@ -21,7 +21,7 @@ let notificacionSchema = mongoose.Schema({
 	idItem 				: { type: Schema.Types.ObjectId, ref:'Item'},
 	idPlan 				: { type: Schema.Types.ObjectId, ref:'Plan'},
 	tipo      			: Number,
-	estado    			: Boolean,
+	activo    			: Boolean,
 	createdAt 			: { type: String, default: moment().format('YYYY-MM-DD h:mm:ss')},
 	updatedAt 			: { type: String, default: moment().format('YYYY-MM-DD h:mm:ss')},
 })

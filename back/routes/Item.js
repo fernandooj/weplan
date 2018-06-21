@@ -119,53 +119,22 @@ router.post('/', function(req, res){
 			if(err){
 				res.json({err, status: 'FAIL', code:0})
 			}else{
-				createPago(req.body, res, req.session.usuario.user._id, item)
-				res.json({ status: 'SUCCESS', item, code:1 });			
+				createPago(req.body, res, req.session.usuario.user._id, item)		
 			}
 		})
 	}else{
 		res.json({status: 'FAIL', mensaje:'sin login', code:0})
 	}
-	 
-	
 })
 
 
-//////////////////////////////////////////////////////////////////////////////////////////
-////////   CREO UN PRIMER PAGO, O DEUDA 
-//////////////////////////////////////////////////////////////////////////////////////////
-let createPago = function(req, res, id, item){
-	let deudaAsignados = Math.ceil((item.valor/(item.asignados.length+1))/100)*100
-	let deudaCreador = req.valor - (deudaAsignados * item.asignados.length)
-	let data = req.asignados.map(e=>{
-		return {
-			userId:e,
-			itemId:item._id,
-			monto:-deudaAsignados,
-			metodo:null,
-			descripcion:null,
-			estado:1,
-			abono:false
-		}
-	})
-	data.push({userId:id, itemId:item._id, monto:deudaCreador, abono:true, metodo:null, descripcion:null, estado:1})
 
-	data.map(e=>{
-		pagoServices.create(e, null, id, (err, pago)=>{
-			if(err){
-				console.log(err)
-			}else{					
-			}
-		})
-	})
-}
 
 //////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////	 		SAVE IMAGEN		//////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 
 router.post('/:id', (req,res)=>{	
-	console.log('tomatela te digo')
 	let url = `${req.protocol}s://${req.get('Host')}/public/uploads/`
 	let rutaImagenOriginal ;
 	let rutaImagenResize   ; 
@@ -195,6 +164,7 @@ router.post('/:id', (req,res)=>{
 		if(err){
 			res.json({err, code:0})
 		}else{
+			creaNotificacionVarios(req, res, item, rutaImagenResize)	
 			if (req.body.enviarChat=="true"){
 				createChat(req, res, id, item, rutaImagenResize)
 			}else{
@@ -204,6 +174,32 @@ router.post('/:id', (req,res)=>{
 		}
 	})
 })
+
+//////////////////////////////////////////////////////////////////////////////////////////
+////////   CREO UN PRIMER PAGO, O DEUDA 
+//////////////////////////////////////////////////////////////////////////////////////////
+let createPago = function(req, res, id, item){	 
+	let data = {userId:id, itemId:item._id, monto:req.valor, abono:true, metodo:null, descripcion:'pago inicial por inscribirse', activo:true}
+	pagoServices.create(data, null, id, (err, pago)=>{
+		if(err){
+			console.log(err)
+		}else{		
+			res.json({ status: 'SUCCESS', item, code:1 });				
+		}
+	})
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///// 		CREO LA NATIFICION AL CREAR EL ITEM
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const creaNotificacionVarios = (req, res, item, imagen)=>{
+	console.log(item.espera)
+	item.espera.map(e=>{
+		notificacionService.create(req.session.usuario.user._id, e, 3, item._id, (err, notificacion)=>{
+			console.log(notificacion)
+		})
+	})  
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -276,8 +272,7 @@ let createChat = function(req, res, userId, item, imagen){
 		if(err){
 			res.json({err, code:0})
 		}else{
-			//res.json({ status: 'SUCCESS', item, chat, code:1, imagen,  other:'save chat' });
-			creaNotificacionVarios(req, res, item, imagen)	
+			res.json({ status: 'SUCCESS', item, chat, code:1, imagen,  other:'save chat' });
 		}
 	})
 }
@@ -308,20 +303,6 @@ router.put('/', (req, res)=>{
 //////////////////////////////////////////////////////////////////////////////////////////
 function isInArray(value, array) {
 	return array.indexOf(value) > -1;
-}
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///// 			cuando se crea el item tambien se crea la notificacion 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const creaNotificacionVarios = (req, res, item, imagen)=>{
-	console.log(item.asignados)
-	item.asignados.map(e=>{
-		notificacionService.create(req.session.usuario.user._id, e, 3, item._id, (err, notificacion)=>{
-			console.log(notificacion)
-		})
-	})
-	res.json({status:'SUCCESS', item, imagen, code:1})    
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

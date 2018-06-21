@@ -16,6 +16,7 @@ let itemSchema = mongoose.Schema({
 	imagenMiniatura : { type : String }, 
 	enviarChat	  	: {type: String},
 	valor         	: {type: String},
+	abierto         : {type: Boolean},
 	planId     	  	: {type: Schema.Types.ObjectId, ref:'Plan'},
 	userId     	  	: {type: Schema.Types.ObjectId, ref:'User'}, 
 	asignados     	: [{type: Schema.Types.ObjectId, ref:'User'}],

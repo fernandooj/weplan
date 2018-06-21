@@ -85,7 +85,10 @@ const sumaTodos = (req, res, pago) =>{
 
 
  
-
+//////////////////////////////////////////////////////////////////////////////////////////
+////////   GUARDO EL PAGO
+////////   userId: es el id del usuario quien hace el pago, lo puede hacer el mismo usuario, o el dueño del item puede generar el abono  
+//////////////////////////////////////////////////////////////////////////////////////////
 router.post('/', (req, res)=>{
 	let id = req.body.userId==null ?req.session.usuario.user._id :req.body.userId
 	console.log(req.body)

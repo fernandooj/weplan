@@ -25,8 +25,8 @@ class itemServices {
 		item.enviarChat  = itemData.enviarChat
 		item.valor 		 = itemData.valor		
 		item.planId 	 = itemData.planId			
-		item.asignados 	 = itemData.asignados	
-		item.espera 	 = []	
+		item.asignados 	 = []	
+		item.espera 	 = itemData.espera	
 		item.save(callback)
 	}
 	uploadImage(id, imagenOriginal, imagenResize, imagenMiniatura, callback){

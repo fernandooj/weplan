@@ -10,12 +10,13 @@ let pagoSchema = mongoose.Schema({
 	monto         : { type : Number },
 	metodo		  : { type : String },
 	descripcion   : { type : String },
-	estado		  : { type : String},
+	activo		  : { type : Boolean},
 	abono		  : { type : Boolean},
 	itemId     	  : { type: Schema.Types.ObjectId, ref:'Item'},
 	userId     	  : { type: Schema.Types.ObjectId, ref:'User'}, 
 	userIdAbona   : { type: Schema.Types.ObjectId, ref:'User'}, 
 	createdAt	  : { type: String, default: moment().format('YYYY-MM-DD h:mm') },
+	updatedAt	  : { type: String, default: moment().format('YYYY-MM-DD h:mm') },
 })
 
 module.exports = mongoose.model('Pago', pagoSchema)
