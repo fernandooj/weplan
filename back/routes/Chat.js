@@ -36,13 +36,13 @@ router.get('/chatPlan/:id', (req, res)=>{
 							lat 	 	 : e.lat,
 							lng 	 	 : e.lng,
 							//////////////////////////// ITEM //////////////////////////////////////////
-							asignadoItem : e.itemId ?e.itemId.asignados.includes(req.session.usuario.user._id) :null,
-							esperaItem   : e.itemId ?e.itemId.espera.includes(req.session.usuario.user._id) :null,
-							itemId 		 : e.itemId ?e.itemId._id :null ,
-							titulo 		 : e.itemId ?e.itemId.titulo :null,
-							descripcion  : e.itemId ?e.itemId.descripcion :null,
-							rutaImagen	 : e.itemId ?e.itemId.imagenResize :null,
-							valor 		 : e.itemId ?e.itemId.valor :null,
+							asignadoItem : e.itemId &&e.itemId.asignados.includes(req.session.usuario.user._id) ,
+							esperaItem   : e.itemId &&e.itemId.espera.includes(req.session.usuario.user._id) ,
+							itemId 		 : e.itemId &&e.itemId._id  ,
+							titulo 		 : e.itemId &&e.itemId.titulo ,
+							descripcion  : e.itemId &&e.itemId.descripcion ,
+							rutaImagen	 : e.itemId &&e.itemId.imagenResize ,
+							valor 		 : e.itemId &&Math.ceil((e.itemId.valor/(e.itemId.asignados.length+2))/100)*100 ,
 							////////////////////////////////////////////////////////////////////////////
 							////////////////////////////// ENCUESTAS ///////////////////////////////////
 							encuestaId	 : e.encuestaId ?e.encuestaId._id :null,

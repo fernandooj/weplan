@@ -60,7 +60,8 @@ router.get('/:user', (req, res)=>{
 								titulo:e.data[0].info[0].titulo,
 								idUsuario:e.data[0].info[0].userId,
 								valor:e.data[0].info[0].valor,
-		 						deuda:e.deuda
+		 						deuda:e.deuda,
+		 						abierto:e.data[0].info[0].abierto
 							}
 						})
 						deuda = deuda.map(e=>{
@@ -109,6 +110,19 @@ router.get('/id/:id', (req, res)=>{
 	})
 })
  
+///////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////	 GET BY ID ITEM 	///////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+router.post('/cerrarItem', (req, res)=>{
+	itemServices.closeItem(req.body.id, (err, item)=>{
+		if(err){
+			res.json({err, code:0})
+		}else{
+			res.json({ status: 'SUCCESS', item, code:1 });				
+		}
+	})
+})
+
 
 //////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////	 		SAVE ITEM		//////////////////////////////////////////
@@ -190,7 +204,7 @@ let createPago = function(req, res, id, item){
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///// 		CREO LA NATIFICION AL CREAR EL ITEM
+///// 		CREO LA NOTIFICACIÓN AL CREAR EL ITEM
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const creaNotificacionVarios = (req, res, item, imagen)=>{
 	console.log(item.espera)
@@ -281,6 +295,7 @@ let createChat = function(req, res, userId, item, imagen){
 ////////   SI UN USUARIO QUIERE INGRESAR AL ITEM, LO REGISTRO Y LO DEJO EN ESPERA 
 //////////////////////////////////////////////////////////////////////////////////////////
 router.put('/', (req, res)=>{
+
 	itemServices.getById(req.body.itemId, (err, item)=>{
 		if(isInArray(req.session.usuario.user._id, item[0].espera)){
 			res.json({status: 'FAIL', mensaje:'ya esta en lista de espera', code:2})
@@ -309,6 +324,7 @@ function isInArray(value, array) {
 ///// 			cuando se crea la peticion de ingresar tambien se crea la notificacion 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const creaNotificacion = (req, res, item, imagen)=>{
+
 	notificacionService.create(req.session.usuario.user._id, item.userId, 3, item._id, (err, notificacion)=>{
 		if (err) {
 			res.json({status:'FAIL', err, code:0})   

@@ -207,7 +207,6 @@ router.put('/insertar/:planId', (req,res)=>{
 			agregarUsuarioPlan(req, res, plan[0].asignados)
 		}
 	})
-
 })
 const agregarUsuarioPlan =(req, res, planes)=>{
 	planes = [req.body.id, ...planes]

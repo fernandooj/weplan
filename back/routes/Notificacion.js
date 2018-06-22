@@ -27,6 +27,7 @@ OBTENGO LAS NOTIFICACIONES DEL USUARIO LOGUEADO
 ///////////////////////////////////////////////////////////////////////////
 router.get('/', (req, res)=>{ 
 	notificacionService.getByUser(req.session.usuario.user._id, (err, notificacion)=>{
+		
 		if (err) {
 			res.json({status:'FAILAS', err, code:0})    
 		}else{
@@ -35,26 +36,29 @@ router.get('/', (req, res)=>{
 					id 		    : e._id,
 					tipo 		: e.tipo,
 					activo  	: e.activo,
-					idUser      : e.idUsuarioAsigna._id       ,
-					username    : e.idUsuarioAsigna.username  ,
-					photo   	: e.idUsuarioAsigna.photo     ,
-					nombre 	    : e.idUsuarioAsigna.nombre    ,
+					idUser      : e.idUsuarioAsigna._id,
+					username    : e.idUsuarioAsigna.username,
+					photo   	: e.tipo===1 ?e.idUsuarioAsigna.photo :e.tipo===2 ?e.idPlan.imagenMiniatura[0] :e.tipo===3 ?e.idItem.imagenMiniatura :null,
+					nombre 	    : e.idUsuarioAsigna.nombre,
 					token  	 	: e.idUsuarioAsigna.tokenPhone,
 					////////////////////////////  AMIGOS  ////////////////////////////////////
 					idAmigoUser : e.idAmigoUser ?e.idAmigoUser._id 				:null,
+
+					//////////////////////////// PLAN /////////////////////////////////////
+					idPlan   	: e.idPlan  ?e.idPlan._id    :null,
+					nombrePlan  : e.idPlan  ?e.idPlan.nombre :null,
+					imagenPlan  : e.idPlan  ?e.idPlan.imagenMiniatura[0] :null,
+
 					////////////////////////////  ITEM  //////////////////////////////////////
 					idItem   	: e.idItem  &&e.idItem._id    ,
 					nombreItem  : e.idItem  &&e.idItem.titulo ,
 					imagenItem  : e.idItem  &&e.idItem.imagenMiniatura ,
 					valorItem   : e.idItem  &&Math.ceil((e.idItem.valor/(e.idItem.asignados.length+2))/100)*100,
 
-					//////////////////////////// PLAN /////////////////////////////////////
-					idPlan   	: e.idPlan  ?e.idPlan._id    :null,
-					nombrePlan  : e.idPlan  ?e.idPlan.nombre :null,
-					imagenPlan  : e.idPlan  ?e.idPlan.imagenMiniatura[0] :null,
 				}
 			})
 		}
+		console.log(notificacion)
 		res.json({status:'SUCCESS', notificacion, code:1})    
 	})
 })
@@ -83,13 +87,28 @@ router.put('/:idNotificacion/:idTipo/:tipo/:idUser', (req,res)=>{
 			req.params.tipo==1 
 			?activaAmigoUser(req.params.idTipo, res) 
 			:req.params.tipo==3 
-			?activaItem(req.session.usuario, req.params.idTipo, req.params.idUser, res, req) 
+			?verificaItemAbierto(req.session.usuario, req.params.idTipo, req.params.idUser, res, req) 
 			:res.json({status:'SUCCESS', notificacion, code:1}) 
 		}
 	})
 })
 
 
+const verificaItemAbierto=(usuario, idTipo, id, res, req)=>{
+	itemServices.getById(idTipo, (err, item)=>{
+		if (err) {
+			console.log(err)
+		}else{
+			console.log(item[0].abierto)
+			if (item[0].abierto) {
+				activaItem(usuario, idTipo, id, res, req)
+			}else{
+				res.json({status:'FAIL', mensaje:'EL ITEM ESTA CERRADO', code:2})
+			}
+			
+		}
+	})
+}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///// 			activo el usuario si es true es que ya son amigos
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -117,6 +136,7 @@ const activaItem =(usuario, idTipo, id, res, req)=>{
 			let espera = item[0].espera.filter(e=>{
 				return e!=id
 			})
+			console.log(id)
 			let asignados = item[0].asignados.concat(id)
 			itemServices.activaUsuario(idTipo, espera, asignados, (err, item)=>{
 				if (err) {
@@ -168,8 +188,7 @@ const editaPagoCreador = (itemId, userId, montoCreador, montoAsignado, res)=>{
 						}else{
 							editaPagoAsignados(itemId, item[0].userId._id, montoAsignado, res )
 						}
-					})
-										
+					})					
 				}
 			})
 		}
@@ -181,13 +200,12 @@ const editaPagoCreador = (itemId, userId, montoCreador, montoAsignado, res)=>{
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const editaPagoAsignados = (itemId, userId, monto, res)=>{
 	pagoServices.betyByItemAndUserNotEqual(itemId, userId, (err, pago)=>{
-		console.log(monto)
 		if(err){
 			res.json({err})
 		}else{
 			pago.map(e=>{
 				pagoServices.edit(e._id, monto, (err, pago2)=>{
-					console.log(pago2)
+					//console.log(pago2)
 				})
 			})
 			res.json({ status: 'SUCCESS', pago, code:1 });				

@@ -134,7 +134,7 @@ router.post('/:id', (req,res)=>{
 		pregunta1=req.body.pregunta1
 		pregunta2=ruta2
 	}
-
+	
 	encuestaServices.uploadImage(req.params.id, tipo, pregunta1, pregunta2, (err, encuesta)=>{
 		
 		if(err){
@@ -148,7 +148,7 @@ router.post('/:id', (req,res)=>{
 	///////////////////////		FUNCTION TO CREATE CHAT 	/////////////////////
 	/////////////////////////////////////////////////////////////////////////////
 	let createChat = (req, res, id, tipo, pregunta1, pregunta2, encuesta)=>{
-		chatServices.create(req.body, id,  3, (err,chat)=>{
+		chatServices.create(req.body, id,  3, null, (err,chat)=>{
 			let mensajeJson={
 				id :         encuesta._id,
 				planId: 	 req.body.planId, 
@@ -164,8 +164,12 @@ router.post('/:id', (req,res)=>{
 				tipoChat    :3, 
 				estado: 	true
 			}
+
 			cliente.publish('chat', JSON.stringify(mensajeJson))
-			
+			console.log('---------')
+		console.log('mensajeJson')
+		console.log('---------')
+
 			if(err){
 				res.json({err, code:0})
 			}else{

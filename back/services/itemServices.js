@@ -20,7 +20,8 @@ class itemServices {
 		item.titulo 	 = itemData.titulo	
 		item.tipo 		 = itemData.tipo	
 		item.descripcion = itemData.descripcion
-		item.estado      = 'activo'		
+		item.activo      = true	
+		item.abierto     = true	
 		item.userId 	 = id	
 		item.enviarChat  = itemData.enviarChat
 		item.valor 		 = itemData.valor		
@@ -45,6 +46,11 @@ class itemServices {
 		itemSchema.findByIdAndUpdate(_id, {$set: {
 	        'espera': espera,
 	        'asignados': asignados,
+        }}, callback);	
+	}
+	closeItem(_id, callback){
+		itemSchema.findByIdAndUpdate(_id, {$set: {
+	        'abierto': false,
         }}, callback);	
 	}
 	sumaItemPropios(planId, userId, callback){
@@ -76,6 +82,7 @@ class itemServices {
 	 				pagoId:"$PlanData._id",
 			        abono:"$PlanData.abono",
 			        titulo:1,
+			        abierto:1
 			    }
 			},
 			{
@@ -90,7 +97,7 @@ class itemServices {
 			       deuda: { $sum: "$montos"}, 
 			       count: { $sum: 1 }, // for no. of documents count
 			       data: {
-			       	$addToSet: {info:[{titulo:'$titulo', userId:'$userId'}]},
+			       	$addToSet: {info:[{titulo:'$titulo', userId:'$userId', abierto:'$abierto'}]},
 			       }
 			    } 
 			},
