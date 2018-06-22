@@ -55,7 +55,12 @@ export const NotiStyle = StyleSheet.create({
  	},
  	textoNoti:{
  		color:'#5664ba',
- 		fontSize:16
+ 		fontSize:16,
+ 	},
+ 	textoNotifica:{
+ 		color:'#5664ba',
+ 		fontSize:16,
+ 		width:'60%'
  	},
  	tituloNoti:{
  		marginTop:15,

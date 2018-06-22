@@ -30,9 +30,9 @@ export default class notificacionComponent extends Component{
 				 				<Image source={{uri: e.photo}} style={NotiStyle.avatar} />
 			 					<View>
 					 				<Text style={NotiStyle.tituloNoti}>{e.nombre}</Text> 
-					 				<Text style={NotiStyle.textoNoti}>
+					 				<Text style={NotiStyle.textoNotifica}>
 					 					{
-					 						e.tipo==1 ?'Re quiere agregar como amigo' 
+					 						e.tipo==1 ?'Te quiere agregar como amigo' 
 					 						:e.tipo==2 ?`Quiere acceder al item: ${e.nombreItem}` 
 					 						:e.tipo==3 &&`Te agrego al item: ${e.nombreItem}. El valor para entrar es: ${e.valorItem}`
 					 					}
@@ -86,8 +86,17 @@ export default class notificacionComponent extends Component{
 		.then(e=>{
 			console.log(e.data)
 			if (e.data.code==1) {
-				//this.updateStado(idNotificacion)
+				this.updateStado(idNotificacion)
 				sendRemoteNotification(4, token, 'Home')
+			}else if(e.data.code==2){
+				Alert.alert(
+				  'Opss!! Articulo Cerrado',
+				  'El dueño del articulo ya lo ha terminado, y ya no puedes ingresar',
+				  [
+				    {text: 'OK', onPress: () => console.log('OK Pressed')},
+				  ],
+				  { cancelable: false }
+				)
 			}else{
 				Alert.alert(
 				  'Opss!! revisa tus datos que falta algo',

@@ -1,6 +1,6 @@
 
 import React, {Component} from 'react'
-import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native'
+import {View, Text, TouchableOpacity, ScrollView, Image, Alert} from 'react-native'
 import {ItemStyle} from '../item/style'
  
 import axios from 'axios'
@@ -21,12 +21,12 @@ export default class ItemComponent extends Component{
 		total:0
 	}
 	componentWillMount(){
-		let planId = this.props.navigation.state.params	
-		// let planId = '5b287e0394d7f72f1988c011'	
+		// let planId = this.props.navigation.state.params	
+		let planId = '5b2b32449084f2675a5337cf'	
 		this.setState({planId})
 		axios.get('/x/v1/ite/item/'+planId)
 		.then(e=>{
-		 	console.log(e.data.deuda)
+		 	console.log(e.data)
 			this.setState({pago:e.data.pago, deuda:e.data.deuda, total:e.data.total})
 		})		 
 		.catch(err=>{
@@ -110,18 +110,25 @@ export default class ItemComponent extends Component{
 	   	return this.state.pago.map((e, key)=>{
 			return (
 			   <View style={ItemStyle.content} key={key}>
-			  		<TouchableOpacity style={!key==0 ?ItemStyle.boton: [ItemStyle.boton, ItemStyle.botonFirst]} 
-			  			onPress={e.deuda<0 ?()=>navigate('pago', {id:e.id, valor:e.deuda, planId:this.state.planId}) :e.deuda==0 ?null :()=>navigate('pagoDeuda', {id:e.id, planId:this.state.planId})}>
-				   		<View style={ItemStyle.contentText}>
-					   		<Text style={ItemStyle.tituloItem}>
-					   			{e.titulo}  
-					   		</Text>
-				   		{e.status=='noAsignado' ?<Text style={ItemStyle.by}>By {e.nombre}</Text> :null}
-				   		</View>	
+			   		<View style={!key==0 ?ItemStyle.boton: [ItemStyle.boton, ItemStyle.botonFirst]}>
+				  		<TouchableOpacity style={ItemStyle.infoItem} onPress={e.deuda<0 ?()=>navigate('pago', {id:e.id, valor:e.deuda, planId:this.state.planId}) :e.deuda==0 ?null :()=>navigate('pagoDeuda', {id:e.id, planId:this.state.planId})}>
+					   		<View style={ItemStyle.contentText}>
+						   		<Text style={ItemStyle.tituloItem}>
+						   			{e.titulo}  
+						   		</Text>
+					   		 
+					   		</View>	
 							<Text style={e.deuda>=0 ?ItemStyle.value :ItemStyle.valueNoAsignado}>
 								{'$ '+Number(e.deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
 							</Text>
-				   	</TouchableOpacity>
+					   	</TouchableOpacity>
+					   	{
+					   		e.abierto
+					   		&&<TouchableOpacity style={ItemStyle.closeItem} onPress={()=>this.cerrarItem(e.id, e.titulo)}>
+						   		<Text style={ItemStyle.textCloseItem}>Cerrar Item</Text>
+						   	</TouchableOpacity>
+					   	}
+					</View>
 			  	</View> 
 			)
 		})
@@ -138,7 +145,7 @@ export default class ItemComponent extends Component{
 					   		<Text style={ItemStyle.tituloItem}>
 					   			{e.titulo}  
 					   		</Text>
-				   		{e.status=='noAsignado' ?<Text style={ItemStyle.by}>By {e.nombre}</Text> :null}
+				   		 <Text style={ItemStyle.by}>By {e.nombre}</Text>  
 				   		</View>	
 							<Text style={e.deuda>=0 ?ItemStyle.value :ItemStyle.valueNoAsignado}>
 								{'$ '+Number(e.deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
@@ -180,6 +187,31 @@ export default class ItemComponent extends Component{
 				</ScrollView>
 			</View>
 		);
+	}
+	cerrarItem(id, titulo){
+		Alert.alert(
+				`Estas seguro de cerrar ${titulo}, luego no podras abrirlo`,
+				'los usuarios que quedaran asignados son:',
+			[
+				{text: 'Mejor Luego', onPress: () => console.log('OK Pressed')},
+				{text: 'Si Cerrar', onPress: () => this.confirmaCerrarItem(id)},
+			],
+				{ cancelable: false }
+			)
+	}
+	confirmaCerrarItem(id){
+		axios.post('x/v1/ite/item/cerrarItem', {id})
+		.then(e=>{
+			let pago = this.state.pago.filter(e=>{
+				if (e.id==id) e.abierto=false
+				return e
+			})
+			this.setState({pago})
+		})
+		.catch(err=>{
+			console.log(err)
+		})
+		
 	}
 }
  

@@ -65,7 +65,7 @@ export default class walletComponent extends Component{
 		const {navigate} = this.props.navigation
 		return(
 			<View style={walletStyle.contenedorCabezera}> 
-				<TouchableOpacity onPress={()=>navigate('Home')} style={walletStyle.btnClose} >
+				<TouchableOpacity onPress={()=>navigate('inicio')} style={walletStyle.btnClose} >
 					<Image source={require('../agregarAmigos/back.png')} style={walletStyle.imagenClose} />
 				</TouchableOpacity>
 				<TextInput

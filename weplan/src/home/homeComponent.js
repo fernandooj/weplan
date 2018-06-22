@@ -121,7 +121,7 @@ export default class homeComponent extends Component{
 				</ScrollView>
  
 				<View style={HomeStyle.footer3} >
-					<TouchableOpacity onPress={()=> navigate('Home')} style={HomeStyle.btnFooter3}>
+					<TouchableOpacity onPress={()=> navigate('inicio')} style={HomeStyle.btnFooter3}>
 						<Image source={require('./home.png')} style={HomeStyle.iconFooter3} />
 						{/*<Text style={HomeStyle.textoFooter3}>Home</Text>*/}
 					</TouchableOpacity>

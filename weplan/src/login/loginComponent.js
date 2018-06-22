@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, TouchableOpacity, TextInput, Alert,   Platform, ImageBackground} from 'react-native'
+import {View, Text, TouchableOpacity, TextInput, Alert, Platform, ImageBackground} from 'react-native'
 import {LoginStyle} from '../login/style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
@@ -161,7 +161,7 @@ export default class LoginComponent extends Component{
            			autoCapitalize = 'none'
 			    />
 			    <TouchableOpacity style={LoginStyle.submit} onPress={this.handleSubmit.bind(this)}>
-			    	<Text style={LoginStyle.textSubmit}>Sign In</Text>
+			    	<Text style={LoginStyle.textSubmit}>Iniciar Sesión</Text>
 			    </TouchableOpacity>
 			    <View style={LoginStyle.logos}>
 			    	<Text style={LoginStyle.text}>Recuérdame</Text>
@@ -194,7 +194,14 @@ export default class LoginComponent extends Component{
 			}else if (res.data.code==1){
 				navigate('inicio')
 			}else{
-				alert('error en los datos')
+				Alert.alert(
+	            'Opss!! Error',
+	            'revisa tus datos que falta algo',
+	              [
+	                {text: 'OK', onPress: () => console.log('OK Pressed')},
+	              ],
+	              { cancelable: false }
+	            )
 			}
 		})
 		.catch((err)=>{

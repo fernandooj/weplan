@@ -45,13 +45,28 @@ export const ItemStyle = StyleSheet.create({
 		borderBottomWidth:1,
 	},
 	boton:{
-		flexDirection:'row',
+	 
 		width:'100%',
 		padding: 10,  
 		borderBottomWidth:1,
 		borderBottomColor:'#ffffff',
 		borderTopWidth:1,
 		borderTopColor:'#cacaca',
+	},
+	infoItem:{
+		width:'100%',
+		flexDirection:'row'
+	},
+	closeItem:{
+		backgroundColor:'#94a5f3',
+		padding:5,
+		marginTop:10,
+		width:110,
+		borderRadius:20,
+		alignItems: 'center',
+	},
+	textCloseItem:{
+		color:'#ffffff',
 	},
 	botonFirst:{
 		borderTopWidth:0

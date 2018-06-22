@@ -6,7 +6,8 @@ export const LoginStyle = StyleSheet.create({
 		justifyContent: 'center', 
 	},
 	image:{
-		marginTop:10,
+		marginTop:20,
+		marginBottom:40,
 	},
 	input:{
 		marginTop:10,

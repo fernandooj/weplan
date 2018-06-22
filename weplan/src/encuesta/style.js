@@ -179,7 +179,7 @@ export const EncuestaStyle = StyleSheet.create({
 		fontSize:17,
 		padding:20,
 		paddingLeft:20,
-		borderWidth:4,
+		borderWidth:2,
 		borderColor:'#7080f7',
 		textAlign: 'center',
 	},

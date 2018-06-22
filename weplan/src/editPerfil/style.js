@@ -9,13 +9,17 @@ export const LoginStyle = StyleSheet.create({
 		/*justifyContent: 'center', justifica contenido verticalmente */
 	},
 	image:{
+		marginTop:15,
+        marginBottom:40,
+	},
+	image2:{
 		marginTop:10,
         width:'70%',
         height:60
 	},
 	input:{
 		marginTop:10,
-		width:240,
+		width:270,
 		height:40,
 		backgroundColor: '#F2F4F4',
 		borderRadius: 50,
@@ -101,8 +105,20 @@ export const LoginStyle = StyleSheet.create({
 		padding:10,
 		width:240,
 	},
+	signup_btn_disabled:{
+		backgroundColor:'#c9c8c8',
+		marginTop:20,
+		borderRadius: 50,
+		padding:10,
+		width:240,
+	},
 	btnRegistro:{
 		color:'#ffffff',
+		textAlign: 'center', 
+		fontSize:17
+	},
+	btnRegistroDisabled:{
+		color:'#959595',
 		textAlign: 'center', 
 		fontSize:17
 	},
@@ -164,7 +180,10 @@ export const LoginStyle = StyleSheet.create({
 		backgroundColor:'#ffffff'
 		/*justifyContent: 'center', justifica contenido verticalmente */
 	},
-
+	textoAcepto:{
+		marginTop:6,
+ 		color:'rgba(117, 139, 252, 0.6)'
+	}, 
 	///////////////////////////////////////
 	////////// LISTADO PLANES //////////////
 	///////////////////////////////////////

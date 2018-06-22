@@ -11,6 +11,10 @@ export default class CrearEncuestaComponent extends Component{
     super(props);
     this.state = {
       titulo:'',
+      pregunta1:'',
+      pregunta2:'',
+      imagen:'',
+      imagen2:'',
       descripcion:'',
       valor:0,
       enviarChat:false,
@@ -52,12 +56,7 @@ export default class CrearEncuestaComponent extends Component{
               </TouchableOpacity>
 
             {/* INPUT TITULO */}
-              <TextInput placeholder='Titulo' 
-                underlineColorAndroid='transparent' 
-                placeholderTextColor="#ffffff" 
-                style={EncuestaStyle.titulo}
-                onChangeText={(titulo) => this.setState({titulo})}
-              />
+              
 
             </ImageBackground>
             
@@ -65,13 +64,13 @@ export default class CrearEncuestaComponent extends Component{
             <View style={EncuestaStyle.contenedorDescripcion}>
               <Image source={require('./item4.png')} style={EncuestaStyle.decoracion} />
               <TextInput 
-                placeholder='Descripcion'
+                placeholder='Titulo'
                 underlineColorAndroid='transparent' 
                 placeholderTextColor="#5664BA" 
                 editable = {true}
                 multiline = {true}
                 style={EncuestaStyle.descripcion}
-                onChangeText={(descripcion) => this.setState({descripcion})}
+                onChangeText={(titulo) => this.setState({titulo})}
               />
               <Image source={require('./item4.png')} style={EncuestaStyle.decoracion} />
             </View>
@@ -129,54 +128,68 @@ export default class CrearEncuestaComponent extends Component{
  
   handleSubmit(){
     const {titulo, descripcion, imagen, imagen2, id, pregunta1, pregunta2} = this.state
-  
-
     let planId = this.props.planId
     //let planId = '5aefdb91423c402001dbb329'
-    console.log(planId)
+    console.log(pregunta1)
     let data = new FormData();
-    
-    axios.post('/x/v1/enc/encuesta', {descripcion,  titulo, planId})
-    .then(e=>{
-      let encuestaId = e.data.encuesta._id
-      console.log(e.data)
-     
-      data.append('imagen',    imagen);
-      data.append('imagen2',   imagen2);
-      data.append('pregunta1', pregunta1);
-      data.append('pregunta2', pregunta2);
-      data.append('encuestaId',encuestaId);
-      data.append('planId', planId);
+     if (titulo.length==0) {
+      alerta('El titulo es obligatorio')
+    }else if(pregunta1==0 && imagen==0){
+      alerta('La primera opción es obligatoria')
+    }else if(pregunta2==0 && imagen2==0){
+      alerta('La segunda opción es obligatoria')
+    }else{
+      axios.post('/x/v1/enc/encuesta', {descripcion,  titulo, planId})
+      .then(e=>{
+        let encuestaId = e.data.encuesta._id
+        console.log(e.data)
+       
+        data.append('imagen',    imagen);
+        data.append('imagen2',   imagen2);
+        data.append('pregunta1', pregunta1);
+        data.append('pregunta2', pregunta2);
+        data.append('encuestaId',encuestaId);
+        data.append('planId', planId);
 
- 
-      axios({
-            method: 'post', //you can set what request you want to be
-            url: '/x/v1/enc/encuesta/'+encuestaId,
-            data: data,
-            headers: { 
-              'Accept': 'application/json',
-              'Content-Type': 'multipart/form-data'
-            }
-          })
-      .then(res=>{  
-        console.log(res.data)     
-        if(res.data.code==1){ 
-          this.props.updateItems(encuestaId, titulo)
-          //this.props.close(false)
-        }else{
-          Alert.alert(
-           'Error!, intenta nuevamente'
-          )
-        }
+   
+        axios({
+              method: 'post', //you can set what request you want to be
+              url: '/x/v1/enc/encuesta/'+encuestaId,
+              data: data,
+              headers: { 
+                'Accept': 'application/json',
+                'Content-Type': 'multipart/form-data'
+              }
+            })
+        .then(res=>{  
+          console.log(res.data)     
+          if(res.data.code==1){ 
+            this.props.updateItems(encuestaId, titulo)
+          }else{
+            Alert.alert(
+             'Error!, intenta nuevamente'
+            )
+          }
+        })
+        .catch(err=>{
+          console.log(err)
+        })
       })
       .catch(err=>{
         console.log(err)
       })
-    })
-    .catch(err=>{
-      console.log(err)
-    })
+    }
   }
 }
 
+const alerta = (info)=>{
+    Alert.alert(
+    info,
+    '',
+    [
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ],
+    { cancelable: false }
+  )
+}
  

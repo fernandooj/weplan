@@ -74,7 +74,7 @@ export default class editPerfilComponent2 extends Component{
 			<ScrollView style={LoginStyle.fondoUltimo}>
 				<View style={LoginStyle.contenedorRes}>
 						<Image
-							style={LoginStyle.image}
+							style={LoginStyle.image2}
 							source={require('./eligePlanTitulo.png')}
 					    />
 			    </View>
@@ -89,7 +89,7 @@ export default class editPerfilComponent2 extends Component{
 					    	<Text  style={LoginStyle.btnEstasListo}>!Estas Listo!</Text>
 					    </TouchableOpacity>
 					    :<TouchableOpacity  style={[LoginStyle.estasListoBtn, LoginStyle.estasListoBtnActivo]} onPress={this.handleSubmit.bind(this)}>
-					    	<Text  style={[LoginStyle.btnEstasListo, LoginStyle.btnEstasListoActivo]}>!Estas Listo!</Text>
+					    	<Text  style={[LoginStyle.btnEstasListo, LoginStyle.btnEstasListoActivo]}>!Hecho!</Text>
 					    </TouchableOpacity>
 			    	}
 				    

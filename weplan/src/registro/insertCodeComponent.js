@@ -16,11 +16,11 @@ export default class insertCodeComponent extends Component{
 		const {navigate} = this.props.navigation
 		const {codigo} = this.state 
 		return(
-			<ImageBackground style={LoginStyle.fondo}	source={require('../login/fondo.png')} >
+			<ImageBackground style={LoginStyle.fondo} >
 				<View>
 					<Image
 						style={LoginStyle.image}
-						width={220} // height will be calculated automatically
+						width={140} // height will be calculated automatically
 						source={require('../login/logo.png')}
 				   />
 				</View>

@@ -22,8 +22,8 @@ export default class editPerfilComponent extends Component{
 				<View>
 					<Image
 						style={LoginStyle.image}
-						width={410}
-						source={require('./encabezado.png')}
+						width={140}
+						source={require('../login/logo.png')}
 				    />
 				</View>
 				<TextInput
@@ -57,6 +57,8 @@ export default class editPerfilComponent extends Component{
 			        underlineColorAndroid='transparent'
            			placeholder="Telefono"
            			placeholderTextColor="#8F9093" 
+           			keyboardType='numeric'
+           			maxLength={10} 
 			    />	
 			    <View style={LoginStyle.date}>
 				    <View style={LoginStyle.containDatePicker}>
@@ -115,6 +117,7 @@ export default class editPerfilComponent extends Component{
 			              <Picker.Item label='28' value='28' />
 			              <Picker.Item label='29' value='29' />
 			              <Picker.Item label='30' value='30' />
+			              <Picker.Item label='31' value='31' />
 			            </Picker>
 			        </View>    
 			        <View style={LoginStyle.containDatePickerYear}>    
@@ -123,6 +126,36 @@ export default class editPerfilComponent extends Component{
 			                onValueChange={(textYear) => this.setState({textYear})}
 			                style={LoginStyle.datePicker}
 			            >
+			            <Picker.Item label='1950' value='1950' />
+			            <Picker.Item label='1951' value='1951' />
+			            <Picker.Item label='1952' value='1952' />
+			            <Picker.Item label='1953' value='1953' />
+			            <Picker.Item label='1954' value='1954' />
+			            <Picker.Item label='1955' value='1955' />
+			            <Picker.Item label='1956' value='1956' />
+			            <Picker.Item label='1957' value='1957' />
+			            <Picker.Item label='1958' value='1958' />
+			            <Picker.Item label='1959' value='1959' />
+			            <Picker.Item label='1960' value='1960' />
+			            <Picker.Item label='1961' value='1961' />
+			            <Picker.Item label='1962' value='1962' />
+			            <Picker.Item label='1963' value='1963' />
+			            <Picker.Item label='1964' value='1964' />
+			            <Picker.Item label='1965' value='1965' />
+			            <Picker.Item label='1966' value='1966' />
+			            <Picker.Item label='1967' value='1967' />
+			            <Picker.Item label='1968' value='1968' />
+			            <Picker.Item label='1969' value='1969' />
+			            <Picker.Item label='1970' value='1970' />
+			            <Picker.Item label='1971' value='1971' />
+			            <Picker.Item label='1972' value='1972' />
+			            <Picker.Item label='1973' value='1973' />
+			            <Picker.Item label='1974' value='1974' />
+			            <Picker.Item label='1975' value='1975' />
+			            <Picker.Item label='1976' value='1976' />
+			            <Picker.Item label='1977' value='1977' />
+			            <Picker.Item label='1978' value='1978' />
+			            <Picker.Item label='1979' value='1979' />
 			            <Picker.Item label='1980' value='1980' />
 			            <Picker.Item label='1981' value='1981' />
 			            <Picker.Item label='1982' value='1982' />
@@ -144,6 +177,7 @@ export default class editPerfilComponent extends Component{
 			            <Picker.Item label='1998' value='1998' />
 			            <Picker.Item label='1999' value='1999' />
 			            <Picker.Item label='2000' value='2000' />
+			            <Picker.Item label='2001' value='2001' />
 			            </Picker>
 			        </View>    
 	            </View>	
@@ -159,7 +193,7 @@ export default class editPerfilComponent extends Component{
 		            </Picker>	
 		        </View>  
 			    <TouchableOpacity  style={LoginStyle.signup_btn} onPress={this.handleSubmit.bind(this)}>
-			    	<Text  style={LoginStyle.btnRegistro}>Editar</Text>
+			    	<Text  style={LoginStyle.btnRegistro}>Guardar</Text>
 			    </TouchableOpacity>
 		    </View>
 		)

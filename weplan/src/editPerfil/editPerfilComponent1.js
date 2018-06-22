@@ -1,5 +1,5 @@
 import React, {Component} 						 from 'react'
-import {View, Text, TouchableOpacity, TextInput} from 'react-native'
+import {View, Text, TouchableOpacity, TextInput, CheckBox, Linking} from 'react-native'
 import {LoginStyle} 							 from '../editPerfil/style'
 import Image 									 from 'react-native-scalable-image';
 import axios 									 from 'axios';
@@ -18,6 +18,7 @@ export default class editPerfilComponent1 extends Component{
 	  this.state = {
 		avatarSource: null,
 		videoSource: null,
+		condiciones:false,
 		photo:{}
 	  };
 	}
@@ -34,45 +35,48 @@ export default class editPerfilComponent1 extends Component{
 	}
 	 
 	render(){
+		console.log(this.state.condiciones)
 		return(
-				<View style={LoginStyle.fondo}>
-					<View>
-						<Image
-							style={LoginStyle.image}
-							width={400}
-							source={require('./encabezado1.png')}
-					    />
-					</View> 
-		           {/* <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
-		           			          <View style={[LoginStyle.avatarContainer, LoginStyle.avatar]}>
-		           			          { this.state.avatarSource === null ?<TakePhotoComponent fuente={'./foto.png'} ancho={120} alto={120} style={LoginStyle.image} />
-		           			            :<Image width={120} style={LoginStyle.avatar} source={this.state.avatarSource} />
-		           			          }
-		           			          </View>
-		           			        </TouchableOpacity> */ }
-		           	<TakePhotoComponent fuente={'foto.png'} ancho={170} alto={80} updateImagen={(photo) => {this.setState({photo})}} />
-			        <TextInput
-				        style={LoginStyle.input}
-				        onChangeText={(textPassword) => this.setState({textPassword})}
-				        value={this.state.textPassword}
-				        underlineColorAndroid='transparent'
-	           			placeholder="Contraseña"
-	           			placeholderTextColor="#8F9093" 
-	           			secureTextEntry
-				    />	
-				    <TextInput
-				        style={LoginStyle.input}
-				        onChangeText={(textPassword1) => this.setState({textPassword1})}
-				        value={this.state.textPassword1}
-				        underlineColorAndroid='transparent'
-	           			placeholder="Repetir Contraseña"
-	           			placeholderTextColor="#8F9093" 
-	           			secureTextEntry
-				    />	
-				    <TouchableOpacity  style={LoginStyle.signup_btn} onPress={this.handleSubmit.bind(this)}>
-				    	<Text  style={LoginStyle.btnRegistro}>Editar</Text>
-				    </TouchableOpacity>
+			<View style={LoginStyle.fondo}>
+	           	<TakePhotoComponent fuente={'foto.png'} ancho={150} alto={10} updateImagen={(photo) => {this.setState({photo})}} />
+		        <TextInput
+			        style={LoginStyle.input}
+			        onChangeText={(textPassword) => this.setState({textPassword})}
+			        value={this.state.textPassword}
+			        underlineColorAndroid='transparent'
+           			placeholder="Contraseña"
+           			placeholderTextColor="#8F9093" 
+           			secureTextEntry
+			    />	
+			    <TextInput
+			        style={LoginStyle.input}
+			        onChangeText={(textPassword1) => this.setState({textPassword1})}
+			        value={this.state.textPassword1}
+			        underlineColorAndroid='transparent'
+           			placeholder="Repetir Contraseña"
+           			placeholderTextColor="#8F9093" 
+           			secureTextEntry
+			    />	
+			    <View style={LoginStyle.logos}>
+			    	<CheckBox 
+				    	onValueChange={(condiciones) => this.setState({condiciones})}
+				    	value={this.state.condiciones}
+			    	/>
+			    	<TouchableOpacity onPress={()=>{ Linking.openURL('https://appweplan.com')}}>
+			    		<Text style={LoginStyle.textoAcepto}>Acepto los terminos y condiciones</Text>
+			    	</TouchableOpacity>
 			    </View>
+			    {
+			    	this.state.condiciones
+			    	?<TouchableOpacity  style={LoginStyle.signup_btn} onPress={this.handleSubmit.bind(this)}>
+				    	<Text  style={LoginStyle.btnRegistro}>Guardar</Text>
+				    </TouchableOpacity>
+				    :<TouchableOpacity  style={LoginStyle.signup_btn_disabled}>
+				    	<Text  style={LoginStyle.btnRegistroDisabled}>Guardar</Text>
+				    </TouchableOpacity>
+			    }
+			    
+		    </View>
 		)
 	}
  

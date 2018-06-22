@@ -60,13 +60,13 @@ export default class createPlanComponent extends Component{
 				console.log(err)
 			})
 		}
-		// this.setState({
-	 //      interval: setInterval(() => {
-	 //        this.setState({
-	 //          position: this.state.position === this.state.imagenes.length ? 0 : this.state.position + 1
-	 //        });
-	 //      }, 2000)
-	 //    });
+		this.setState({
+	      interval: setInterval(() => {
+	        this.setState({
+	          position: this.state.position === this.state.imagenes.length ? 0 : this.state.position + 1
+	        });
+	      }, 2000)
+	    });
 	}
 	componentWillUnmount() {
 		clearInterval(this.state.interval);
@@ -105,6 +105,7 @@ export default class createPlanComponent extends Component{
 							underlineColorAndroid='transparent'
 							placeholder="NOMBRE DE TU PLAN"
 							placeholderTextColor="#8F9093" 
+							maxLength={20}
 					    />
 					</View>
 					:<View style={CreatePlanStyle.encabezadoPlan2}>
@@ -130,6 +131,7 @@ export default class createPlanComponent extends Component{
 								placeholder="descripcion"
 								placeholderTextColor="#c9c9c9" 
 								multiline={true}
+								maxLength={30}
 							/>
 						</View>
 						:<View style={CreatePlanStyle.cajaInpunts}>
@@ -212,9 +214,14 @@ export default class createPlanComponent extends Component{
 					    		<View style={CreatePlanStyle.agregadosContenedor}>
 						    		{this.renderRestriccionesAsignados()} 
 						    	</View>
-						    	<TouchableOpacity onPress={() => this.setState({restriccion:true})} style={CreatePlanStyle.addBtn}>
-						    		<Image source={require('./add.png')} style={CreatePlanStyle.add} />
-						    	</TouchableOpacity>
+						    	{
+						    		!this.props.navigation.state.params
+						    		&&<TouchableOpacity onPress={() => this.setState({restriccion:true})} style={CreatePlanStyle.addBtn}>
+							    		<Image source={require('./add.png')} style={CreatePlanStyle.add} />
+							    	</TouchableOpacity>
+						    	}
+
+						    	
 						    </View>
 						}
 						{

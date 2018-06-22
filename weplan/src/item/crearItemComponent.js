@@ -4,6 +4,7 @@ import {ItemStyle}        from '../item/style'
 import axios              from 'axios'
 import TakePhotoComponent from '../takePhoto/takePhotoComponent.js'
 import AgregarAmigosComponent    from '../agregarAmigos/agregarAmigos.js'
+import {sendRemoteNotification} from '../push/envioNotificacion.js'
 import socket from '../../socket.js'
 import moment from 'moment'
 
@@ -16,7 +17,8 @@ export default class CrearItemComponent extends Component{
       valor:0,
       enviarChat:false,
       adjuntarAmigos:false,
-      asignados:[]
+      asignados:[],
+      usuariosAsignados:[]
     }  
   }
   componentWillMount(){
@@ -34,8 +36,8 @@ export default class CrearItemComponent extends Component{
   }
 
   render() {
-    const {enviarChat, valor, adjuntarAmigos, asignados} = this.state
-    console.log(asignados)
+    const {enviarChat, valor, adjuntarAmigos, asignados, usuariosAsignados} = this.state
+    console.log(usuariosAsignados)
     return (
       <View style={ItemStyle.container}>
         <View style={ItemStyle.modalIn}>
@@ -64,6 +66,7 @@ export default class CrearItemComponent extends Component{
                 placeholderTextColor="#8F9093" 
                 style={ItemStyle.titulo}
                 onChangeText={(titulo) => this.setState({titulo})}
+                maxLength={20}
              />
             <TextInput 
               placeholder='Descripcion'
@@ -73,6 +76,7 @@ export default class CrearItemComponent extends Component{
               multiline = {true}
               style={ItemStyle.descripcion}
               onChangeText={(descripcion) => this.setState({descripcion})}
+              maxLength={30}
             />
             <Image source={require('./item4.png')} style={ItemStyle.decoracion} />
             <View style={ItemStyle.valor}>
@@ -127,7 +131,7 @@ export default class CrearItemComponent extends Component{
  
 
   handleSubmit(){
-    const {titulo, descripcion, valor, imagen, enviarChat, asignados, id, nombre, photo} = this.state
+    const {titulo, descripcion, valor, imagen, enviarChat, asignados, id, nombre, photo, usuariosAsignados} = this.state
 
     const fecha = moment().format('h:mm')
     if (titulo.length==0) {
@@ -166,8 +170,13 @@ export default class CrearItemComponent extends Component{
           }
         })
         .then(res=>{  
-          console.log(res.data)     
+          //console.log(res.data)     
+          console.log(usuariosAsignados)
           if(res.data.code==1){ 
+            usuariosAsignados.map(e=>{
+              sendRemoteNotification(3, e.token, 'notificacion', 'Te han agregado a un Item', `, Te agrego a ${titulo}`, res.data.imagen)
+            })
+            
             this.props.updateItems(itemId, valor, titulo)
           }else{
             Alert.alert(
