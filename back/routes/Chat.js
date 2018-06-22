@@ -23,6 +23,7 @@ router.get('/chatPlan/:id', (req, res)=>{
 				if (err2) {
 					res.json({status:'FAIL', err, code:0})   
 				}else{
+					
 					chat = chat.map(e=>{
 						return{
 							id           : e._id,
@@ -36,8 +37,10 @@ router.get('/chatPlan/:id', (req, res)=>{
 							lat 	 	 : e.lat,
 							lng 	 	 : e.lng,
 							//////////////////////////// ITEM //////////////////////////////////////////
-							asignadoItem : e.itemId &&e.itemId.asignados.includes(req.session.usuario.user._id) ,
-							esperaItem   : e.itemId &&e.itemId.espera.includes(req.session.usuario.user._id) ,
+							// asignadoItem : e.itemId &&e.itemId.asignados.includes(req.session.usuario.user._id) ,
+							// esperaItem   : e.itemId &&e.itemId.espera.includes(req.session.usuario.user._id) ,
+							asignadoItem : e.itemId &&isInArray(req.session.usuario.user._id, e.itemId.asignados),
+							esperaItem   : e.itemId &&isInArray(req.session.usuario.user._id, e.itemId.espera),
 							itemId 		 : e.itemId &&e.itemId._id  ,
 							titulo 		 : e.itemId &&e.itemId.titulo ,
 							descripcion  : e.itemId &&e.itemId.descripcion ,
@@ -70,6 +73,7 @@ router.get('/chatPlan/:id', (req, res)=>{
 							//estaPlan: plan[0].asignados.includes(e.contactoId &&e.contactoId._id)
 						}
 					})
+					console.log(chat.espera)
 					res.json({status:'SUCCESS', chat, plan:plan[0], total:chat.length, code:1}) 
 				}
 			})

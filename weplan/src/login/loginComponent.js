@@ -92,7 +92,7 @@ export default class LoginComponent extends Component{
 						if (e.data.user.categorias.length>1) {
 							navigate('inicio') 
 						}else{
-							navigate('editPerfil2	') 
+							navigate('editPerfil2') 
 						}
 					}
 				})
@@ -137,7 +137,7 @@ export default class LoginComponent extends Component{
 				<View>
 					<Image
 						style={LoginStyle.image}
-						width={220} // height will be calculated automatically
+						width={140} // height will be calculated automatically
 						source={require('./logo.png')}
 				   />
 				</View>
@@ -164,8 +164,10 @@ export default class LoginComponent extends Component{
 			    	<Text style={LoginStyle.textSubmit}>Iniciar Sesión</Text>
 			    </TouchableOpacity>
 			    <View style={LoginStyle.logos}>
-			    	<Text style={LoginStyle.text}>Recuérdame</Text>
-			    	<Text style={LoginStyle.text}>¿Olvidaste tu contraseña?</Text>
+			    	{/*<Text style={LoginStyle.text}>Recuérdame</Text>*/}
+			    	<TouchableOpacity onPress={()=>navigate('editPassword')}>
+			    		<Text style={LoginStyle.text}>¿Olvidaste tu contraseña?</Text>
+			    	</TouchableOpacity>
 			    </View>
 			    <View style={LoginStyle.logos}>
 			      <TouchableOpacity onPress={()=>this._signInRedes(1)} >
@@ -190,7 +192,14 @@ export default class LoginComponent extends Component{
 		.then((res)=>{
 			console.log(res.data.code)
 			if(res.data.code==0){
-				alert('error en los datos')
+				Alert.alert(
+	            'Opss!! Error',
+	            'revisa tus datos que falta algo',
+	              [
+	                {text: 'OK', onPress: () => console.log('OK Pressed')},
+	              ],
+	              { cancelable: false }
+	            )
 			}else if (res.data.code==1){
 				navigate('inicio')
 			}else{

@@ -506,6 +506,64 @@ module.exports = function(app, passport){
         })
     })
 
+    ///////////////////////////////////////////////////////////////////////////
+    /*
+    Edita Password 
+    */
+    ///////////////////////////////////////////////////////////////////////////
+    app.post('/x/v1/user/recupera_contrasena', function(req, res){
+        userServices.getEmail(req.body, function(err, users){
+            randonNumber = Math.floor(1000 + Math.random() * 9000);
+            if (users) {
+                if(users["estado"]=='activo'){
+                    userServices.modificaCodigo(req.body, randonNumber, function(err, user){
+                        if(req.body.tipo==1){
+                            let mailOptions = {
+                                from: '<weplanapp@weplanapp.com>',                              // email del que se envia
+                                to:   req.body.username,                                        // al usuario que se la va enviar
+                                subject: 'Registro',                                            // mensaje en el sujeto
+                                html:  `Tu codigo de verificacion es:<b> ${randonNumber} </b>`  // texto
+                            };
+                            transporter.sendMail(mailOptions, (error, info) => {
+                                if (error) {
+                                    return console.log(error);
+                                }
+                            });
+                            res.json({ status: 'SUCCESS', message: 'Reenvieando mensaje', code:1 });
+                        }else{
+                            client.api.messages
+                                .create({
+                                  body: `Tu codigo es: ${randonNumber}` ,
+                                  to:  `+57${req.body.username}`,
+                                  from: '+17328750948',
+                                }).then(function(data) { 
+                                    res.json({ status: 'SUCCESS', message: 'Reenvieando el mensaje', code:1 });
+                                }).catch(function(err) { 
+                                    res.json({ status: 'SUCCESS', message: 'no se pudo enviar el msn', code:0 });
+                            });      
+                        } 
+                    })     
+                }else{
+                    res.json({ status: 'FAIL', message: 'este usuario esta innactivo', code:3 });    
+                }
+            }else{
+                  res.json({ status: 'FAIL', message: 'este usuario no existe', code:2 });    
+            }             
+        }) 
+    })
+ 
+ 
+
+    app.post('/x/v1/user/password', function(req, res){
+        userServices.editaPassword(req.session.usuario.user._id, req.body.password, req.body.token, (err, user)=>{
+            if (!err) {
+                res.json({ status: 'SUCCESS', message: 'Password Actualizado', user, code:1 });
+            }else{
+                res.json({ status: 'FAIL', message: err, code:0 }); 
+            }
+        })
+    })
+
     // =====================================
     // LOGOUT ==============================
     // =====================================

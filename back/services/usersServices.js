@@ -75,6 +75,14 @@ class userServices {
 			}}, callback );	
 		})
 	}
+	editaPassword(id, password, tokenPhone, callback){
+		console.log(tokenPhone)
+		let newUsuario = new User();
+		User.findByIdAndUpdate(id, {$set:{
+			'password': newUsuario.generateHash(password),
+			'tokenPhone':tokenPhone,
+		}}, callback );	
+	}
 	modificaTokenPhone(idUser, tokenPhone, callback){
 		User.findByIdAndUpdate(idUser, {$set:{
 			'tokenPhone':tokenPhone,

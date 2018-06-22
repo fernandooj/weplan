@@ -59,7 +59,7 @@ export default class ChatComponent extends Component{
 		/////////////////	OBTENGO TODOS LOS MENSAJES Y EL PLAN
 		axios.get(`/x/v1/cha/chat/chatPlan/${planId}`)
 		.then(e=>{
-			console.log(e.data)	
+			console.log(e.data.chat)	
 			this.setState({mensajes:e.data.chat, planId, imagen: e.data.plan.imagenResize[0], nombrePlan: e.data.plan.nombre, planId, planAsignados:e.data.plan.asignados, plan:e.data.plan})		 
 		})
 		.catch(err=>{
