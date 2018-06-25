@@ -26,6 +26,7 @@ let restriccionRutas= require('./routes/restricciones.js');
 let categoriaPlanRutas= require('./routes/categoriaPlan.js');
 let abonoRutas= require('./routes/Abono.js');
 let notificacionRutas= require('./routes/Notificacion.js');
+let ciudadRutas= require('./routes/Ciudad.js');
 
 const path          = require('path');
 
@@ -123,6 +124,7 @@ app.use('/x/v1/res/restriccion', restriccionRutas)
 app.use('/x/v1/enc/encuesta', encuestaRutas)
 app.use('/x/v1/res/respuesta', respuestaRutas)
 app.use('/x/v1/not/notificacion', notificacionRutas)
+app.use('/x/v1/ciu/ciudad', ciudadRutas)
 
 require('./routes/Users.js')(app, passport);
 

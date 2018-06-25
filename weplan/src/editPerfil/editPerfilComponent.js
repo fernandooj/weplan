@@ -13,8 +13,20 @@ export default class editPerfilComponent extends Component{
 		avatarSource: null,
 		videoSource: null,
 		selectedValue:'YY',
-		textNombre:null
+		textNombre:null,
+		ciudad:[]
 	  };
+	}
+	componentWillMount(){
+		axios.get('/x/v1/ciu/ciudad')
+		.then(e=>{
+			this.setState({ciudad:e.data.ciudad})
+		})
+	}
+	ciudad(){
+		return this.state.ciudad.map((e, key)=>{
+			return (<Picker.Item key={key} label={e.label} value={e.label}  />)
+		})
 	}
 	render(){
 		return(
@@ -42,14 +54,16 @@ export default class editPerfilComponent extends Component{
            			placeholder="Apellido"
            			placeholderTextColor="#8F9093" 
 			    />	
-			    <TextInput
-			        style={LoginStyle.input}
-			        onChangeText={(textCiudad) => this.setState({textCiudad})}
-			        value={this.state.textCiudad}
-			        underlineColorAndroid='transparent'
-           			placeholder="Ciudad"
-           			placeholderTextColor="#8F9093" 
-			    />	
+			    <View style={LoginStyle.containCiudad}>	
+			     <Picker
+	                style={LoginStyle.inputCiudad}
+			        onValueChange={(textCiudad) => this.setState({textCiudad})}
+			        selectedValue={this.state.textCiudad}
+	              >
+		              <Picker.Item label='Ciudad' value='Ciudad'  />
+		              {this.ciudad()}
+	             </Picker>
+	            </View>
 			    <TextInput
 			        style={LoginStyle.input}
 			        onChangeText={(textTelefono) => this.setState({textTelefono})}

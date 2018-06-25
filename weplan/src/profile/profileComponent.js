@@ -119,7 +119,6 @@ export default class profileComponent extends Component{
 					</View>	
 				</ScrollView>	
 			</View> 
-
 		)
 	}
 	handleSubmit(){

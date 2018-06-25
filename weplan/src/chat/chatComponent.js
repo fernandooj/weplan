@@ -11,7 +11,7 @@ import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker
 
 
 import AgregarAmigosComponent from '../agregarAmigos/agregarAmigos.js'
-import MapaPlanComponent 		from '../createPlan/mapa.js'
+import MapaPlanComponent 	  from '../createPlan/mapa.js'
 import PdfComponent           from '../pdf/pdfComponent.js'
 import MapComponent           from '../mapa/mapComponent.js'
 import {pedirImagen, pedirPdf, pedirContacto, pedirMapa} from './peticiones.js'		
@@ -37,8 +37,8 @@ export default class ChatComponent extends Component{
 	}
 
 	componentWillMount(){
-		//let planId = this.props.navigation.state.params	
-		let planId = '5b2b32449084f2675a5337cf'	 
+		let planId = this.props.navigation.state.params	
+		// let planId = '5b2b32449084f2675a5337cf'	 
 		console.log(planId) 
 		this.socket = SocketIOClient(URL);
 		this.socket.on('userJoined'+planId, this.onReceivedMessage);
@@ -83,7 +83,7 @@ export default class ChatComponent extends Component{
 	/////////////// 		RENDERIZA LA CABEZERA CON EL NOMBRE DEL PLAN Y LOS ICONOS
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	renderCabezera(){
-		const {planId, imagen, nombrePlan} = this.state
+		const {planId, imagen, nombrePlan, plan, id} = this.state
 		const {navigate} = this.props.navigation
 		return(
 			<View>
@@ -91,7 +91,9 @@ export default class ChatComponent extends Component{
 					<TouchableOpacity onPress={() => navigate('misPlanes')} style={ChatStyle.iconRegresar}>
 						<Text style={ChatStyle.regresar}>&#60;</Text>		
 					</TouchableOpacity> 
-					<Text style={ChatStyle.nombrePlan}>{nombrePlan ?nombrePlan.substring(0, 60) :''}</Text>
+					<TouchableOpacity onPress={() => navigate('infoPlan', {plan,id})}>
+						<Text style={ChatStyle.nombrePlan}>{nombrePlan ?nombrePlan.substring(0, 60) :''}</Text>
+					</TouchableOpacity>
 					<View style={ChatStyle.iconosHeaderContenedor}>
 						<TouchableOpacity onPress={() => navigate('encuesta', planId)}  style={ChatStyle.iconContenedor}>
 							<Image source={require('./preguntar.png')} style={ChatStyle.icon}  />
@@ -101,12 +103,14 @@ export default class ChatComponent extends Component{
 						</TouchableOpacity>
 					</View>
 				</View>
-				<Image
-					style={ChatStyle.imagen}
-					width={70}
-					height={70}
-					source={{uri: imagen}}
-			    />	
+				<TouchableOpacity onPress={() => navigate('infoPlan', {plan,id})} style={ChatStyle.btnImagenPlan}>
+					<Image
+						style={ChatStyle.imagen}
+						width={70}
+						height={70}
+						source={{uri: imagen}}
+				    />	
+				</TouchableOpacity>
 			</View>
 		)
 	}

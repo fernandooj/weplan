@@ -1,7 +1,6 @@
 ///////////////////////////////////////////////////////////////////////
 ///////////***********     llamo al esquema        ****///////////////
 //////////////////////////////////////////////////////////////////////
-let Pais = require('./../models/paisModel.js');
 let Ciudad = require('./../models/ciudadModel.js');
 
 
@@ -9,16 +8,14 @@ let Ciudad = require('./../models/ciudadModel.js');
 ////////******     creo la clase que hace los servicios        ****//////////
 /////////////////////////////////////////////////////////////////////////////
 
-class paisServices{
+class ciudadServices{
 	constructor(){
 
 	}
 	get(callback){
-		Pais.find({}, callback)
-	}
-	getCiudad(code, callback){
-		Ciudad.find({country:code}, callback)
+		//Ciudad.find({country:'CO'}, callback)
+		Ciudad.find({country:'CO'}, null, {sort: {name: 1}}, callback)
 	}
 }
 
-module.exports = new paisServices();
+module.exports = new ciudadServices();

@@ -114,7 +114,14 @@ export default class createPlanComponent extends Component{
 					      position={this.state.position}
 					      onPositionChanged={position => this.setState({ position })} 
 					   />
-						<Text style={CreatePlanStyle.textoCargado}>{cargaPlan.nombre}</Text>
+					   	<View style={CreatePlanStyle.textoCargado}>
+							<Text style={CreatePlanStyle.nombreCargado}>
+								{cargaPlan.nombre} 
+							</Text>
+							<Text  style={CreatePlanStyle.ByCargado}>
+								Por {cargaPlan.idUsuario.nombre}
+							</Text>
+						</View>
 					</View>
 				}
 					   

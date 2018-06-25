@@ -27,14 +27,12 @@ router.get('/', (req, res)=>{
 })
 
 router.get('/:pago', (req, res)=>{
-	//console.log(req.session.usuario.categorias)
 	if (req.params.pago==='pago') {
 		planServices.getByPago((err, planes)=>{
 			if (err) {
 				res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
 			}else{
-				res.json({ status: 'SUCCESS', message: planes, code:1 });
-				//console.log(planes)	
+				res.json({ status: 'SUCCESS', planes, code:1 });	
 			}
 		})	
 	}else{
@@ -96,7 +94,25 @@ router.post('/', function(req, res){
     }
 })
 
-
+router.put('/salir', (req, res)=>{
+	planServices.getByIdPlan(req.body.id, (err, plan)=>{
+		if (err) {
+			res.json({status: 'FAIL', err, code:0})
+		}else{
+			
+			let asignados = plan[0].asignados.filter(e=>{
+				if(e._id != req.session.usuario.user._id) return e 
+			})
+			planServices.salir(req.body.id, asignados, (err, plan2)=>{
+				if (err) {
+					res.json({status: 'FAIL', err, code:0})
+				}else{
+					res.json({status: 'SUCCESS', plan2, code:1})
+				}
+			})
+		}
+	})
+})
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -185,11 +201,6 @@ router.put('/', (req, res)=>{
 const creaNotificacion = (req, res, plan, rutaImagenResize)=>{
 	plan.asignados.map(e=>{
 		notificacionService.create(req.session.usuario.user._id, e, 2, plan._id, (err, notificacion)=>{
-			// if (err) {
-			// 	res.json({status:'FAIL', err, code:0})   
-			// }else{
-			// 	res.json({status:'SUCCESS', plan, notificacion, code:1})    
-			// }
 			console.log(notificacion)
 		})
 	})
@@ -204,7 +215,7 @@ router.put('/insertar/:planId', (req,res)=>{
 		if(err) {
 			console.log(err)
 		}else{
-			agregarUsuarioPlan(req, res, plan[0].asignados)
+			//agregarUsuarioPlan(req, res, plan[0].asignados)
 		}
 	})
 })
@@ -219,6 +230,16 @@ const agregarUsuarioPlan =(req, res, planes)=>{
 	})
 }
 
+
+router.put('/finalizar', (req, res)=>
+	planServices.finalizar(req.body.id, (err, plan)=>{
+		if (err) {
+			res.json({status: 'FAIL', err, code:0})
+		}else{
+			res.json({ status: 'SUCCESS', plan, code:1 });	
+		}
+	})
+)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////// OBTENGO LOS TOTALES DE CADA PLAN
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -230,7 +251,7 @@ router.get('/suma/totales/plan', (req, res)=>{
 			
 	 
 			let abonoTrue = pago.filter(e=>{
-				if (e._id.abono!==false) return e
+				if (e._id.abono!==false && e.data[0].info[9]==true) return e
 			})
 
 			let data1 = abonoTrue.filter(e=>{

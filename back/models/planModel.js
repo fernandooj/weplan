@@ -10,7 +10,7 @@ let planSchema = mongoose.Schema({
 	createdAt	  :  { type: String, default: moment().format('YYYY-MM-DD h:mm') },
 	nombre        :  { type : String },
 	tipo		  :  { type: String},
-	estado		  :  { type: String},
+	activo		  :  { type: Boolean},
 	descripcion   :  { type : String },
 	imagenOriginal  : [{ type : String }],
 	imagenResize    : [{ type : String }],

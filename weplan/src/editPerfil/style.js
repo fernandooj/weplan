@@ -55,6 +55,18 @@ export const LoginStyle = StyleSheet.create({
 		width:265,
 		flexDirection: 'row',
 	},
+	containCiudad:{
+		backgroundColor:'#F2F4F4',
+		borderRadius:50,
+		width:270,
+		marginTop:10,
+		height:40,
+		paddingLeft:10,
+	},
+	inputCiudad:{
+		color: '#8F9093',
+		height:40,
+	},
 	containDatePicker:{
 		backgroundColor:'#8FA8F7',
 		borderRadius:50,

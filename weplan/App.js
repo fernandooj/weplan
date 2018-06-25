@@ -28,7 +28,8 @@ import perfilComponent        from './src/perfil/perfilComponent';
 import profileComponent       from './src/profile/profileComponent';
 import EditPasswordComponent  from './src/editPassword/EditPasswordComponent';
 import insertCodeComponent2   from './src/editPassword/insertCodeComponent2';
-import nuevoPasswordComponent   from './src/editPassword/nuevoPasswordComponent';
+import nuevoPasswordComponent from './src/editPassword/nuevoPasswordComponent';
+import infoPlanComponent      from './src/infoPlan/infoPlanComponent';
 
 
 
@@ -110,8 +111,9 @@ const NavigationApp = StackNavigator({
     perfil:        {screen: perfilComponent },
     profile:       {screen: profileComponent },
     editPassword:  {screen: EditPasswordComponent },
-    insertCode2:  {screen: insertCodeComponent2 },
-    nuevoPassword:  {screen: nuevoPasswordComponent },
+    insertCode2:   {screen: insertCodeComponent2 },
+    nuevoPassword: {screen: nuevoPasswordComponent },
+    infoPlan:      {screen: infoPlanComponent },
 },{ headerMode: 'none', transitionConfig })
  
 const NavigationAppLogin = StackNavigator({  
@@ -137,8 +139,9 @@ const NavigationAppLogin = StackNavigator({
     perfil:        {screen: perfilComponent },
     profile:       {screen: profileComponent },
     editPassword:  {screen: EditPasswordComponent },
-    insertCode2:  {screen: insertCodeComponent2 },
-    nuevoPassword:  {screen: nuevoPasswordComponent },
+    insertCode2:   {screen: insertCodeComponent2 },
+    nuevoPassword: {screen: nuevoPasswordComponent },
+    infoPlan:      {screen: infoPlanComponent },
 },{ headerMode: 'none', transitionConfig })
 
 

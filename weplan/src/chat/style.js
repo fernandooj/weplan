@@ -21,14 +21,16 @@ export const ChatStyle = StyleSheet.create({
 		position:'relative',
 		zIndex:100	 
 	},
-	imagen:{
-		borderRadius:35,
+	btnImagenPlan:{
 		position:'absolute',
 		top:15,
 		left:screenWidth/20,
+		zIndex:110	
+	},
+	imagen:{
+		borderRadius:35,
 		borderWidth: 2,
 		borderColor:'#4461D8',
-		zIndex:110	
 	},
 	iconRegresar:{
 		width:60,

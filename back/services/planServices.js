@@ -9,10 +9,10 @@ class planServices {
 		planSchema.find({}, null, {sort: {_id: -1}}).populate('asignados').populate('restricciones').exec(callback)
 	}
 	getByIdPlan(_id, callback){
-		planSchema.find({_id}).populate('idUsuario', 'nombre ciudad photo').populate('restricciones').exec(callback)
+		planSchema.find({_id}).populate('idUsuario', 'nombre ciudad photo').populate('restricciones').populate('asignados').exec(callback)
 	}
 	getById(asignados, callback){
-		planSchema.find({$or:[{'asignados':asignados, estado:true},{'idUsuario':asignados, estado:true}]}, null, {sort: {_id: -1}}).populate('idUsuario', 'nombre ciudad photo').populate('asignados', 'nombre ciudad photo').exec(callback)
+		planSchema.find({$or:[{'asignados':asignados, activo:true},{'idUsuario':asignados, activo:true}]}, null, {sort: {_id: -1}}).populate('idUsuario', 'nombre ciudad photo').populate('asignados', 'nombre ciudad photo').exec(callback)
 	}
 	create(planData, id, callback){
 		let plan 			 = new planSchema();
@@ -20,7 +20,7 @@ class planServices {
 		plan.nombre 		 = planData.nombre	
 		plan.descripcion	 = planData.descripcion	
 		plan.restricciones   = planData.restricciones	
-		plan.estado          = true	
+		plan.activo          = true	
 		plan.idUsuario 		 = id	
 		plan.fechaLugar 	 = planData.fechaLugar
 		plan.lat 			 = planData.lat	
@@ -42,9 +42,19 @@ class planServices {
         }}, callback);	
 	}
 	getByPago(callback){
-		planSchema.find({estado:true, tipo:'pago'}, null, {sort: {_id: -1}}).populate('restricciones').exec(callback)
+		planSchema.find({activo:true, tipo:'pago'}, null, {sort: {_id: -1}}).populate('restricciones').exec(callback)
 	}
 	insertaUsuarioPlan(id, asignados, callback){
+		planSchema.findByIdAndUpdate(id, {$set: {
+	        'asignados': asignados,
+        }}, callback);
+	}
+	finalizar(id, callback){
+		planSchema.findByIdAndUpdate(id, {$set: {
+	        'activo': false,
+        }}, callback);
+	}
+	salir(id, asignados, callback){
 		planSchema.findByIdAndUpdate(id, {$set: {
 	        'asignados': asignados,
         }}, callback);
@@ -82,7 +92,8 @@ class planServices {
 	 				idUsuario:'$UserData._id',
 	 				imagenResize:1,
 	 				nombre:1,
-	 				fechaLugar:1
+	 				fechaLugar:1,
+	 				activo:1
 	 			},
 	 		},
 	 		{
@@ -108,6 +119,7 @@ class planServices {
 	 				imagenResize:1,
 	 				nombreUsuario:1,
 	 				fechaLugar:1,
+	 				activo:1,
 	 				itemId:'$ItemData._id',
 	 				userItemId:'$ItemData.userId',
 	 				itemTitulo: '$ItemData.titulo',
@@ -141,6 +153,7 @@ class planServices {
 			        userItemId:1,
 			        valorItem:1,
 			        fechaLugar:1,
+			        activo:1,
 			        monto: '$PagoData.monto',
 			        abono: '$PagoData.abono',
 			        userId: '$PagoData.userId',
@@ -155,7 +168,7 @@ class planServices {
 				        	abono:  "$abono",
 				        },
 			        data: {
-                        $addToSet: {info:["$idUsuario", "$nombreUsuario", '$abono', '$imagenResize', '$nombre', '$userItemId',  '$itemTitulo', '$valorItem', '$fechaLugar']}
+                        $addToSet: {info:["$idUsuario", "$nombreUsuario", '$abono', '$imagenResize', '$nombre', '$userItemId',  '$itemTitulo', '$valorItem', '$fechaLugar', '$activo']}
                     },
 			        total:{ $sum :'$monto'}
 			    }

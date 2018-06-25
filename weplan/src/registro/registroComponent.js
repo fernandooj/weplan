@@ -32,7 +32,8 @@ export default class RegistroComponent extends Component{
 			        value={this.state.text}
 			        underlineColorAndroid='transparent'
            			placeholder="Email / Telefono"
-           			placeholderTextColor="#8F9093" 
+           			placeholderTextColor="#8F9093"
+           			autoCapitalize = 'none' 
 			    />		
 
 			    <TouchableHighlight  style={LoginStyle.signup_btn} onPress={this.handleSubmit.bind(this)}>

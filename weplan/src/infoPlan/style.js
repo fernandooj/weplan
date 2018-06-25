@@ -1,17 +1,50 @@
 import {StyleSheet, Dimensions} from 'react-native';
 var screenHeight = Dimensions.get('window').height;
-export const CreatePlanStyle = StyleSheet.create({ 
-	contenedor:{
-		alignItems: 'center',
-		marginTop:20
-	},
+export const InfoPlanStyle = StyleSheet.create({ 
 	contenedorGeneral:{
 		backgroundColor:'#ffffff'
 	},
-	encabezado:{
-		backgroundColor:'#DAE0E0',
-		padding: 10
+	contenedor:{
+		alignItems: 'center',
+		marginBottom :20
 	},
+	encabezadoPlan:{
+		alignItems: 'center',
+		backgroundColor:'#f8f8f8',
+		paddingTop: 30,
+		paddingBottom: 30,
+		flexDirection: 'row',
+		width:'100%',
+		paddingRight:10,
+		paddingLeft:10,
+		borderBottomLeftRadius:40,
+		borderBottomRightRadius:40
+	},
+	imagenPlan:{
+ 		width:100,
+ 		height:100,
+ 		borderRadius:50,
+ 		borderWidth:5,
+ 		borderColor:'#699be4',
+ 		marginRight:10,
+ 	},
+ 	avatar:{
+ 		width:40,
+ 		height:40,
+ 		borderRadius:20,
+ 		borderWidth:2,
+ 		borderColor:'#cae1ec',
+ 		marginRight:10,
+ 	},
+ 	titulo:{
+ 		fontSize:30,
+ 		color:'#4a4a4a'
+ 	},
+ 	descripcion:{
+ 		color:'#5664ba',
+ 		fontSize:17,
+ 		width:'70%'
+ 	},
 	input:{
 		marginTop:10,
 		width:240,
@@ -36,12 +69,8 @@ export const CreatePlanStyle = StyleSheet.create({
 		height:60,
 		color:'#969696'
 	},
-	encabezadoPlan:{
-		alignItems: 'center',
-		backgroundColor:'#F2F4F4',
-		paddingTop: 30,
-		paddingBottom: 30,
-	},
+	
+
 	iconCamera:{
 		fontSize:100
 	},
@@ -90,45 +119,10 @@ export const CreatePlanStyle = StyleSheet.create({
 		top:15,
 		marginRight:10
 	},
-	create:{
-		marginTop:10,
-		width:180,
-		height:90
-	},
-	createIcon:{
-		width:180,
-		height:90
-	},
-	createIconDisable:{
-		width:180,
-		height:63,
-		marginTop:20,
-		marginBottom:20
-	},
-	encabezadoPlan2:{
-		alignItems: 'center',
- 
-		paddingTop: 0,
-		paddingBottom: 12,
-	},
-	imagenCargada:{
-		width:'100%',
-		height:200
-	},
-	textoCargado:{
-		marginTop:-69,
-		backgroundColor:'#rgba(0,0,0,.5)',
-		width:'100%',
-		padding:5,
-	},
-	nombreCargado:{
-		color:"white",
-		fontSize:25,
-	},
-	ByCargado:{
-		color:"white",
-		fontSize:20,
-	},
+	 
+	 
+	 
+	
 	///////////////////////////////////////
 	/////////////// mapa //////////////////
 	///////////////////////////////////////
@@ -213,14 +207,7 @@ export const CreatePlanStyle = StyleSheet.create({
 		marginTop:10,
 		width:'58.5%' 
 	},
- 	avatar:{
- 		width:40,
- 		height:40,
- 		borderRadius:20,
- 		borderWidth:2,
- 		borderColor:'#cae1ec',
- 		marginRight:10,
- 	},
+ 	
  	iconAgregado:{
  		width:20,
  		height:20,
@@ -252,6 +239,24 @@ export const CreatePlanStyle = StyleSheet.create({
  		position:'absolute',
  		top:17,
  		right:4
- 	}
+ 	},
+	//////////////////////////////////////////////////
+	////////// elementos agregados
+	/////////////////////////////////////////////////
+	botones:{
+		width:'100%',
+		padding:10,
+		backgroundColor:'#f8f8f8'
+	},
+	textoBotones:{
+		color:'#828282',
+		borderColor: 'rgba(130,130,130, .13)',
+		padding:5,
+		borderBottomWidth:1,
+		fontSize:20
+	},
+	textoBotonesLast:{
+		borderBottomWidth:0,
+	}
 
 })
