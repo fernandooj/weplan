@@ -144,13 +144,36 @@ class itemServices {
 					userIds:idUser
 				}
 		    },
+		    {
+	 			$lookup: {
+	 				from: "users",
+	 				localField: "userId",
+	 				foreignField: "_id",
+	 				as: "UserData"
+	 			}
+	 		},
+	 		{
+	 			$unwind:
+	 			{
+	 				path:'$UserData',
+	 				preserveNullAndEmptyArrays: true
+	 			}
+	 		},
+	 		{
+	 			$project:{
+	 				_id:1,
+	 				nombreUsuario:'$UserData.nombre',
+	 				titulo:1,
+	 				montos:1
+	 			},
+	 		},
 			{
 			    $group : {
 			       _id : "$_id",
 			       deuda: { $sum: "$montos"}, 
 			       count: { $sum: 1 }, // for no. of documents count
 			       data: {
-			       	$addToSet: {info:[{titulo:'$titulo', userId:'$userIds'}]},
+			       	$addToSet: {info:[{titulo:'$titulo', userId:'$userIds', nombre:'$nombreUsuario'}]},
 			       }
 			    } 
 			},

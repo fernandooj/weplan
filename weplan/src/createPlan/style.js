@@ -1,6 +1,7 @@
 import {StyleSheet, Dimensions} from 'react-native';
 var screenHeight = Dimensions.get('window').height;
-export const CreatePlanStyle = StyleSheet.create({ 
+import { MediaQueryStyleSheet } from "react-native-responsive";
+export const CreatePlanStyle = MediaQueryStyleSheet.create({ 
 	contenedor:{
 		alignItems: 'center',
 		marginTop:20
@@ -167,7 +168,7 @@ export const CreatePlanStyle = StyleSheet.create({
 		alignItems: 'flex-start',
 		borderColor: '#d6d7da',
 		borderBottomWidth:.6,
-		width:'70%',
+		width:'80%',
 		paddingTop:15,
 		paddingBottom:15,
 	},
@@ -202,6 +203,11 @@ export const CreatePlanStyle = StyleSheet.create({
  		marginTop:20,
  		marginBottom:20,
  	},
+ 	rutaRes:{
+		width:50,
+		height:50,
+		marginRight:10
+	},
  	hecho:{
  		color:'white'
  	},
@@ -254,4 +260,30 @@ export const CreatePlanStyle = StyleSheet.create({
  		right:4
  	}
 
+},{
+	"@media (min-device-width: 320) and (max-device-height: 550)": {
+		textarea:{
+			width:'90%'
+		},
+		touchRes:{
+			width:'80%'
+		},
+		rutaRes:{
+			width:40,
+			height:40,
+			marginRight:10
+		},
+		iconRes:{
+			width:35,
+			height:35
+		},
+		textoRes:{
+			fontSize:15
+		},
+		banRes:{
+			top:20,
+			left:-10,
+			fontSize:15,
+		},
+	}
 })

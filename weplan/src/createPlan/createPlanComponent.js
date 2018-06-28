@@ -30,6 +30,7 @@ export default class createPlanComponent extends Component{
  			usuariosAsignados:[],
  			restricciones:[],
  			restriccionesAsignadas:[],
+ 			misRestricciones:[],
  			imagen:null,
  			adjuntarAmigos:false,
  			mapa:false,
@@ -60,13 +61,13 @@ export default class createPlanComponent extends Component{
 				console.log(err)
 			})
 		}
-		this.setState({
-	      interval: setInterval(() => {
-	        this.setState({
-	          position: this.state.position === this.state.imagenes.length ? 0 : this.state.position + 1
-	        });
-	      }, 2000)
-	    });
+		// this.setState({
+	 //      interval: setInterval(() => {
+	 //        this.setState({
+	 //          position: this.state.position === this.state.imagenes.length ? 0 : this.state.position + 1
+	 //        });
+	 //      }, 2000)
+	 //    });
 	}
 	componentWillUnmount() {
 		clearInterval(this.state.interval);
@@ -88,9 +89,9 @@ export default class createPlanComponent extends Component{
 	///////////////////////////////////////////////////  	RENDER  	/////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	render(){
-		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados} = this.state
+		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy} = this.state
 		const {navigate} = this.props.navigation
-		console.log(usuariosAsignados)
+		console.log(fechaHoy)
 		return (
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} > 
 				<CabezeraComponent navigate={navigate} url={'inicio'} parameter={this.state.planId} />
@@ -152,6 +153,7 @@ export default class createPlanComponent extends Component{
 						?<View style={CreatePlanStyle.cajaInpunts}>
 					    	<Image source={require('./fecha.png')} style={CreatePlanStyle.iconInput} />
 						   <DatePicker
+						   		minDate={this.state.fechaHoy}
 					    		customStyles={{
 			                        dateInput: {
 			                            borderLeftWidth: 0,
@@ -214,7 +216,7 @@ export default class createPlanComponent extends Component{
 				    	<Image source={require('./denied.png')} style={CreatePlanStyle.iconInput} />
 					    {
 					    	restricciones.length==0
-					    	?<TouchableOpacity onPress={(restricciones)=>this.setState({restricciones, restriccion:true})}>
+					    	?<TouchableOpacity onPress={()=>this.setState({ restriccion:true})}>
 						    	<Text style={restricciones.length>0 ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>{restricciones.length>0 ?'tienes: '+restricciones.length+' Restricciones' :'Restricciones'}</Text>
 						    </TouchableOpacity>
 					    	:<View style={CreatePlanStyle.contentAdd}>
@@ -234,7 +236,12 @@ export default class createPlanComponent extends Component{
 						{
 							restriccion 
 							?<RestriccionesPlanComponent  
-						    restriccion={(restricciones, restriccionesAsignadas)=>this.setState({restricciones, restriccionesAsignadas, restriccion:false})} />
+						    restriccion={(restricciones, restriccionesAsignadas, misRestricciones)=>this.setState({restricciones, restriccionesAsignadas, misRestricciones, restriccion:false})}
+						    restricciones={this.state.restricciones}
+						    restriccionesAsignadas={this.state.restriccionesAsignadas}
+						    misRestricciones={this.state.misRestricciones}
+						     />
+						     
 						    :null
 						}
 					</View>

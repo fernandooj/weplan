@@ -30,8 +30,8 @@ export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaj
 					color:"#00ACD4",
 					big_picture:imagen,
 					picture:imagen,
-					image:photo,
-					large_icon: photo,
+					image:imagen,
+					large_icon: imagen,
 					show_in_foreground: true
 	            }
 	        },

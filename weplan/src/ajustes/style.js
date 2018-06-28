@@ -1,8 +1,8 @@
 import {StyleSheet, Dimensions} from 'react-native';
 var screenWidth = Dimensions.get('window').width;
+import { MediaQueryStyleSheet } from "react-native-responsive";
 
-
-export const AjustesStyle = StyleSheet.create({ 
+export const AjustesStyle = MediaQueryStyleSheet.create({ 
 	contenedor:{
 		alignItems: 'center',
 	},
@@ -185,4 +185,26 @@ export const AjustesStyle = StyleSheet.create({
 		marginBottom:5
 	},
 
+},{
+	"@media (min-device-width: 320) and (max-device-height: 550)": {
+		input:{
+			width:230
+		},
+		btnSearch:{
+	 		top:9
+	 	}, 
+	 	avatarA:{
+	 		marginTop:10,
+			borderRadius: 75,
+			width: 43,
+			height: 43,
+			borderWidth:4,
+	 	}, 
+	 	textoAvatar:{
+			fontSize:16,
+			marginLeft:20,
+			marginTop:15,
+			width:'55%'
+		},
+	}
 })

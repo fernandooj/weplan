@@ -23,6 +23,7 @@ export default class pagoDeudaComponent extends Component{
 	 	// let itemId = '5af143b7076e9c07c4973aa8'
 	 	axios.get('x/v1/ite/item/id/'+itemId)
 	 	.then(e=>{
+	 		console.log(e.data)
 			///////////////////////////////////////////////////////////////////////////////////////////////////////
 			////////////////////		busco los pagos asignados de los usuarios del item
 			///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -30,7 +31,7 @@ export default class pagoDeudaComponent extends Component{
 	 		e.data.mensaje[0].asignados.filter(e=>{
 	 			axios.get('/x/v1/pag/pago/user/'+itemId+'/'+e._id)
 				.then(res=>{
-				 		console.log(res.data)
+				 		
 						usuarios.push({
 							monto  : res.data.pago[0].monto<0 ?res.data.pago[0].monto :res.data.deuda[0].monto, 
 							id     : e._id,
@@ -62,7 +63,7 @@ export default class pagoDeudaComponent extends Component{
 			{/* ITEM INFORMACION */}
 				<View style={PagoStyle.contenedorItem}>
 					<View >
-						<Image source={{uri:item.rutaImagen}} style={PagoStyle.image}/>
+						<Image source={{uri:item.imagenResize}} style={PagoStyle.image}/>
 					</View>
 					<View>	
 						<Text style={PagoStyle.titulo}>{item.titulo}</Text>

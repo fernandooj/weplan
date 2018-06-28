@@ -55,8 +55,8 @@ export default class CrearItemComponent extends Component{
 
           {/* rest modal */}
           <View style={ItemStyle.modal}>
-            <Image source={require('./item2.png')} style={ItemStyle.header} />
-
+            {/*<Image source={require('./item2.png')} style={ItemStyle.header} />*/}
+            <View style={ItemStyle.header}></View>
           {/* icono back */}
             <TouchableOpacity style={ItemStyle.btnBack} onPress={()=>this.props.close(false)}>
               <Image source={require('./item3.png')} style={ItemStyle.back} />
@@ -66,7 +66,7 @@ export default class CrearItemComponent extends Component{
                 placeholderTextColor="#8F9093" 
                 style={ItemStyle.titulo}
                 onChangeText={(titulo) => this.setState({titulo})}
-                maxLength={20}
+                maxLength={15}
              />
             <TextInput 
               placeholder='Descripcion'
@@ -141,8 +141,8 @@ export default class CrearItemComponent extends Component{
     }else if(isNaN(valor)){
       alerta('El Valor solo puede ser numerico')
     }else{
-      let planId = this.props.planId
-      // let planId = '5b287e0394d7f72f1988c011'
+      // let planId = this.props.planId
+      let planId = '5b32a782922f9a3108fcc507'
       let data = new FormData();
       let deudaAsignados = Math.ceil((valor/(asignados.length+1))/100)*100
       let deudaCreador = valor - (deudaAsignados * asignados.length)

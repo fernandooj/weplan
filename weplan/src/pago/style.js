@@ -1,8 +1,8 @@
 import {StyleSheet, Dimensions} from 'react-native';
 var screenWidth = Dimensions.get('window').width;
 var screenHeight = Dimensions.get('window').height;
-
-export const PagoStyle = StyleSheet.create({ 
+import { MediaQueryStyleSheet } from "react-native-responsive";
+export const PagoStyle = MediaQueryStyleSheet.create({ 
 	container:{
 		flex:1,
 		height:screenHeight,
@@ -183,6 +183,51 @@ export const PagoStyle = StyleSheet.create({
 		alignSelf: 'flex-start', 
 		width:'31%',
 		fontSize:20
+	}
+},{
+	"@media (min-device-width: 320) and (max-device-height: 550)": {
+		image:{
+			width:70,
+			height:70,
+			borderRadius:35,
+			borderWidth: 3,
+			margin:20,
+			marginBottom:0,
+			borderColor:'#8796F4',
+		}, 
+		titulo:{
+			fontSize:20,
+			marginTop:20
+		},
+		pagoDeudaAvatar:{
+			width:43,
+			height:43,
+			borderRadius:22,
+			borderWidth: 4,
+			borderColor:'#a5a5a5',
+		},
+		pagoDeudaNombre:{
+			width:'50%',
+			fontSize:15,
+			marginLeft:12,
+			marginTop:10
+		},
+		pagoDeudaMonto:{
+			fontSize:17,
+			marginTop:9
+		},
+		pagoDeudaMontoActive:{
+			fontSize:17,
+			marginTop:9
+		},
+		valor:{
+			borderRadius:20,
+			padding:4,
+			paddingLeft:20,
+			width:'60%',
+			marginLeft:15,
+			marginTop:6
+		},
 	}
 })
 

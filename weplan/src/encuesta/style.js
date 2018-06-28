@@ -117,7 +117,7 @@ export const EncuestaStyle = StyleSheet.create({
 	},
 	header:{
 		width:'100%',
-		height:50,
+		height:40,
 		flexDirection:'row',
 	},
 	btnBack:{
@@ -126,18 +126,18 @@ export const EncuestaStyle = StyleSheet.create({
 		left:10
 	},
 	back:{
-		height:23,
+		height:20,
 		width:14,
 	},
 	btnIcon:{
 		position:'absolute',
-		top:-20, 
-		right:-15,
+		top:-2, 
+		right:-10,
 		zIndex:100
 	},
 	icon:{
-		width:50,
-		height:50
+		width:45,
+		height:45
 	},
 	btnCamera:{
 		position:'absolute',

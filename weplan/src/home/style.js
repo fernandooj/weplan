@@ -1,7 +1,8 @@
 import {StyleSheet, Dimensions} from 'react-native';
 var screenHeight = Dimensions.get('window').height;
 var screenWidth = Dimensions.get('window').width;
-export const HomeStyle = StyleSheet.create({
+import { MediaQueryStyleSheet } from "react-native-responsive";
+export const HomeStyle = MediaQueryStyleSheet.create({
 	contenedor:{
 		flex: 1,
 		backgroundColor:"#ffffff",
@@ -137,9 +138,50 @@ export const HomeStyle = StyleSheet.create({
 		alignItems: 'center',
 		flexDirection:'row',
 		justifyContent: 'center',
-	},
-
-	 
+	},	 
+},{
+	"@media (min-device-width: 320) and (max-device-height: 550)": {
+		iconHead:{
+		 	width:35,
+		 	height:35,
+		 	marginTop:6,
+		 	marginBottom:6,
+		 	marginLeft:30,
+		 	marginRight:30
+		},
+		iconHead2:{
+		 	width:45,
+		 	height:35,
+		 	marginTop:6,
+		 	marginBottom:6,
+		 	marginLeft:30,
+		 	marginRight:30
+		},
+		btnFooter3Create:{
+			width:'18%', 
+		},
+		iconFooter3Create:{
+			width:'64%', 
+			height:33,  
+		}, 
+		btnIconVer:{
+			width:100
+		},
+		iconVer:{
+		 	width:30,
+		 	height:30,
+		 	marginTop:20,
+		 	marginBottom:0,
+		},
+		iconFooter:{
+			width:35,
+		 	height:35,
+		 	marginTop:0,
+		 	marginBottom:15, 
+		 	marginLeft:2,
+		 	marginRight:2
+		},
+	}
 })
 
 

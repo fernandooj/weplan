@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, TouchableOpacity, TextInput, Alert, Platform, ImageBackground} from 'react-native'
+import {View, Text, TouchableOpacity, TextInput, Alert, Platform, ImageBackground, ScrollView} from 'react-native'
 import {LoginStyle} from '../login/style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
@@ -133,55 +133,55 @@ export default class LoginComponent extends Component{
 	render(){
 		const {navigate} = this.props.navigation
 		return(
-			<ImageBackground style={LoginStyle.fondo} source={require('./fondo.png')} >
-				<View>
-					<Image
-						style={LoginStyle.image}
-						width={140} // height will be calculated automatically
-						source={require('./logo.png')}
-				   />
-				</View>
-				<TextInput
-			        style={LoginStyle.input}
-			        onChangeText={(username) => this.setState({username})}
-			        value={this.state.username}
-			        underlineColorAndroid='transparent'
-           			placeholder="Email / Telefono"
-           			placeholderTextColor="#8F9093" 
-           			autoCapitalize = 'none'
-			    />
-				<TextInput
-			        style={LoginStyle.input}
-			        onChangeText={(password) => this.setState({password})}
-			        value={this.state.password}
-			        underlineColorAndroid='transparent'
-           			placeholder="Contraseña"
-           			placeholderTextColor="#8F9093" 
-           			secureTextEntry
-           			autoCapitalize = 'none'
-			    />
-			    <TouchableOpacity style={LoginStyle.submit} onPress={this.handleSubmit.bind(this)}>
-			    	<Text style={LoginStyle.textSubmit}>Iniciar Sesión</Text>
-			    </TouchableOpacity>
-			    <View style={LoginStyle.logos}>
-			    	{/*<Text style={LoginStyle.text}>Recuérdame</Text>*/}
-			    	<TouchableOpacity onPress={()=>navigate('editPassword')}>
-			    		<Text style={LoginStyle.text}>¿Olvidaste tu contraseña?</Text>
-			    	</TouchableOpacity>
-			    </View>
-			    <View style={LoginStyle.logos}>
-			      <TouchableOpacity onPress={()=>this._signInRedes(1)} >
-			        <Icon name='facebook' style={LoginStyle.facebook} />
-			      </TouchableOpacity>
-			      <TouchableOpacity onPress={()=>this._signInRedes(2)} >
-			        <Icon name='google' style={LoginStyle.google} />
-			      </TouchableOpacity>
-			    </View>  
-			    <Text style={LoginStyle.text}>¿Aún no haces parte de Weplan? </Text>	
-			     <TouchableOpacity onPress={()=> navigate('Registro', {tokenPhone:this.state.token})} style={LoginStyle.signup_btn}>
- 					<Text style={LoginStyle.btnRegistro}>Registrate</Text>
- 				</TouchableOpacity>
-			</ImageBackground>
+				<ImageBackground style={LoginStyle.fondo} source={require('./fondo.png')} >
+					<View>
+						<Image
+							style={LoginStyle.image}
+							width={140} // height will be calculated automatically
+							source={require('./logo.png')}
+					   />
+					</View>
+					<TextInput
+				        style={LoginStyle.input}
+				        onChangeText={(username) => this.setState({username})}
+				        value={this.state.username}
+				        underlineColorAndroid='transparent'
+	           			placeholder="Email / Telefono"
+	           			placeholderTextColor="#8F9093" 
+	           			autoCapitalize = 'none'
+				    />
+					<TextInput
+				        style={LoginStyle.input}
+				        onChangeText={(password) => this.setState({password})}
+				        value={this.state.password}
+				        underlineColorAndroid='transparent'
+	           			placeholder="Contraseña"
+	           			placeholderTextColor="#8F9093" 
+	           			secureTextEntry
+	           			autoCapitalize = 'none'
+				    />
+				    <TouchableOpacity style={LoginStyle.submit} onPress={this.handleSubmit.bind(this)}>
+				    	<Text style={LoginStyle.textSubmit}>Iniciar Sesión</Text>
+				    </TouchableOpacity>
+				    <View style={LoginStyle.logos}>
+				    	{/*<Text style={LoginStyle.text}>Recuérdame</Text>*/}
+				    	<TouchableOpacity onPress={()=>navigate('editPassword')}>
+				    		<Text style={LoginStyle.text}>¿Olvidaste tu contraseña?</Text>
+				    	</TouchableOpacity>
+				    </View>
+				    <View style={LoginStyle.logos}>
+				      <TouchableOpacity onPress={()=>this._signInRedes(1)} >
+				        <Icon name='facebook' style={LoginStyle.facebook} />
+				      </TouchableOpacity>
+				      <TouchableOpacity onPress={()=>this._signInRedes(2)} >
+				        <Icon name='google' style={LoginStyle.google} />
+				      </TouchableOpacity>
+				    </View>  
+				    <Text style={LoginStyle.text}>¿Aún no haces parte de Weplan? </Text>	
+				     <TouchableOpacity onPress={()=> navigate('Registro', {tokenPhone:this.state.token})} style={LoginStyle.signup_btn}>
+	 					<Text style={LoginStyle.btnRegistro}>Registrate</Text>
+	 				</TouchableOpacity>
+				</ImageBackground>
 		)
 	}
  

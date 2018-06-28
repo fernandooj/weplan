@@ -38,7 +38,7 @@ export default class ChatComponent extends Component{
 
 	componentWillMount(){
 		let planId = this.props.navigation.state.params	
-		// let planId = '5b2b32449084f2675a5337cf'	 
+		// let planId = '5b32a782922f9a3108fcc507'	 
 		console.log(planId) 
 		this.socket = SocketIOClient(URL);
 		this.socket.on('userJoined'+planId, this.onReceivedMessage);
@@ -106,8 +106,7 @@ export default class ChatComponent extends Component{
 				<TouchableOpacity onPress={() => navigate('infoPlan', {plan,id})} style={ChatStyle.btnImagenPlan}>
 					<Image
 						style={ChatStyle.imagen}
-						width={70}
-						height={70}
+						 
 						source={{uri: imagen}}
 				    />	
 				</TouchableOpacity>
@@ -132,14 +131,14 @@ export default class ChatComponent extends Component{
 								<Text style={e.userId== id ?ChatStyle.fecha :[ChatStyle.fecha, ChatStyle.fechaLeft]}>{e.fecha}</Text>
 							</View>
 						</View>
-						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', e.userId)} style={e.userId== id ?ChatStyle.btnAvatarC : [ChatStyle.btnAvatarC, ChatStyle.btnAvatarCLeft]}>
+						{/*<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', e.userId)} style={e.userId== id ?ChatStyle.btnAvatarC : [ChatStyle.btnAvatarC, ChatStyle.btnAvatarCLeft]}>
 							<Image
 								style={ChatStyle.photo}
 								width={45}
 								height={45}
 								source={{uri: e.photo}}
 						    />
-						</TouchableOpacity>
+						</TouchableOpacity>*/}
 					</View>	
 				)
 			}
@@ -175,7 +174,7 @@ export default class ChatComponent extends Component{
 					       	{
 					       		(!e.asignadoItem && !e.esperaItem)  && e.userId !== id
 					       		?<View style={e.userId== id ?ChatStyle.contenedorInteres :[ChatStyle.contenedorInteres, ChatStyle.contenedorInteresLeft]}>
-							       	<TouchableOpacity onPress={()=> this.ingresarItem(e.token, e.itemId, e.id)} style={ChatStyle.btnInteres} >
+							       	<TouchableOpacity onPress={()=> this.ingresarItem(e.token, e.itemId, e.id, e.titulo, e.rutaImagen)} style={ChatStyle.btnInteres} >
 							       		<Image source={require('./me_interesa.png')} style={ChatStyle.imagenInteres} />
 							       		<Text style={ChatStyle.textoInteres}>Me Interesa</Text>
 							       	</TouchableOpacity>
@@ -534,11 +533,12 @@ export default class ChatComponent extends Component{
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////// SI EL USUARIO HACE CLICK EN ME INTERESA, ENVIA LA NOTIFICACION AL CREADOR DEL ITEM PARA DARLE PERMISO DE INGRESAR
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	ingresarItem(token, itemId, id){
-		axios.put('x/v1/ite/item', {itemId})
+	ingresarItem(token, idItem, id, titulo, imagen){
+		console.log(idItem)
+		axios.put('x/v1/ite/item', {idItem})
 		.then(e=>{
 			if (e.data.code==1) {
-				sendRemoteNotification(3, token, "notificacion")
+				sendRemoteNotification(4, token, "notificacion", 'Quieren acceder a un item', `, quiere acceder a ${titulo}`, imagen)
 				let mensajes = this.state.mensajes.filter(e=>{
 					if (e.id==id) {e.esperaItem=true}
 						return e

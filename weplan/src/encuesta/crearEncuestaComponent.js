@@ -71,6 +71,7 @@ export default class CrearEncuestaComponent extends Component{
                 multiline = {true}
                 style={EncuestaStyle.descripcion}
                 onChangeText={(titulo) => this.setState({titulo})}
+                maxLength={15}
               />
               <Image source={require('./item4.png')} style={EncuestaStyle.decoracion} />
             </View>
@@ -87,6 +88,7 @@ export default class CrearEncuestaComponent extends Component{
                 placeholderTextColor="#8F9093" 
                 style={EncuestaStyle.inputValor}
                 onChangeText={(pregunta1) => this.setState({pregunta1})}
+                maxLength={12}
               />
               <TouchableOpacity style={EncuestaStyle.btnCamera} >
                 <TakePhotoComponent fuente={'camara.png'} ancho={40} alto={40}  
@@ -103,6 +105,7 @@ export default class CrearEncuestaComponent extends Component{
                 placeholderTextColor="#8F9093" 
                 style={EncuestaStyle.inputValor}
                 onChangeText={(pregunta2) => this.setState({pregunta2})}
+                maxLength={12}
               />
               <TouchableOpacity style={EncuestaStyle.btnCamera} >
                 <TakePhotoComponent fuente={'camara.png'} ancho={40} alto={40}  

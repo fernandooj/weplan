@@ -1,5 +1,6 @@
 import {StyleSheet, Dimensions} from 'react-native';
-export const AmigosStyle = StyleSheet.create({  
+import { MediaQueryStyleSheet } from "react-native-responsive";
+export const AmigosStyle = MediaQueryStyleSheet.create({  
 	contenedor:{
 		alignItems: 'center',
 	},
@@ -52,7 +53,7 @@ export const AmigosStyle = StyleSheet.create({
 	},
 	btnClose:{
 		marginLeft:30,
-		width:'20%'
+		width:'15%'
 	},
 	imagenClose:{
 		width:10,
@@ -116,5 +117,17 @@ export const AmigosStyle = StyleSheet.create({
  	hecho:{
  		color:'white'
  	}
-
+},{
+	"@media (min-device-width: 320) and (max-device-height: 550)": {
+		imagenTitulo:{
+			width:35,
+			height:35,
+			marginTop:5
+		},
+		text: {
+			color:'#969696',
+			fontSize: 18,
+			 
+		},
+	}
 })

@@ -2,8 +2,8 @@ import {StyleSheet, Dimensions} from 'react-native';
 var screenWidth = Dimensions.get('window').width;
 var screenHeight = Dimensions.get('window').height;
 
-
-export const ChatStyle = StyleSheet.create({ 
+import { MediaQueryStyleSheet } from "react-native-responsive";
+export const ChatStyle = MediaQueryStyleSheet.create({ 
  	contenedorGeneral:{
  		flex:1,
  	},
@@ -31,6 +31,8 @@ export const ChatStyle = StyleSheet.create({
 		borderRadius:35,
 		borderWidth: 2,
 		borderColor:'#4461D8',
+		width:70,
+		height:70
 	},
 	iconRegresar:{
 		width:60,
@@ -275,17 +277,17 @@ export const ChatStyle = StyleSheet.create({
 	fotografia:{
 		position:'absolute',
 		top:80, 
-		right:screenWidth/2,
+		right:screenWidth/1.7,
 		zIndex:100,
-		width:100,
-		height:100,
+		width:85,
+		height:85,
 		borderRadius:50, 
 		zIndex:1000,
 		borderColor:'#9CB7F5',
 		borderWidth:3,
 	},
 	fotografiaLeft:{
-		left:screenWidth/2,
+		left:screenWidth/1.7,
 	},
 	nombreIt:{
 		position:'relative',
@@ -597,6 +599,72 @@ export const ChatStyle = StyleSheet.create({
 		borderWidth:4,
 		borderRadius:0,	
 		borderColor:'#9CB7F5',
+	}
+},{
+	"@media (min-device-width: 320) and (max-device-height: 550)": {
+		btnImagenPlan:{
+			position:'absolute',
+			top:10,
+			left:screenWidth/20,
+			zIndex:110	
+		},
+		imagen:{
+			borderRadius:30,
+			borderWidth: 2,
+			borderColor:'#4461D8',
+			width:60,
+			height:60
+		},
+		nombrePlan:{
+			marginLeft:25, 
+			width:130,
+			lineHeight: 17,
+		},
+		iconContenedor:{	
+			width:60,
+			height:60,
+			bottom:-5,
+			marginRight:-10
+		},
+		icon:{
+			width:35,
+			height:35,
+			position:'relative',
+			bottom: -8
+		},
+		enviarBtn:{
+			width:60,
+			marginTop:6
+		},
+		enviar:{
+			width:35,
+			height:20
+		},
+		opcionesBtn:{
+			width:60
+		},
+		opciones:{
+			width:35,
+			height:25,
+			marginLeft:16,
+			marginTop:5,
+		},
+		imagenPregunta:{
+			width:80,
+			height:80,
+		},
+		imagenRespuesta:{
+			width:80,
+			height:80,
+		},
+		contenedorPregunta:{
+			width:80,
+			height:80,
+			marginLeft:10
+		},
+		textoPregunta:{
+			fontSize:15
+		}
 	}
 })
 

@@ -21,8 +21,8 @@ export default class ItemComponent extends Component{
 		total:0
 	}
 	componentWillMount(){
-		let planId = this.props.navigation.state.params	
-		// let planId = '5b2b32449084f2675a5337cf'	
+		// let planId = this.props.navigation.state.params	
+		let planId = '5b32a782922f9a3108fcc507'	
 		this.setState({planId})
 		axios.get('/x/v1/ite/item/'+planId)
 		.then(e=>{
@@ -116,9 +116,8 @@ export default class ItemComponent extends Component{
 						   		<Text style={ItemStyle.tituloItem}>
 						   			{e.titulo}  
 						   		</Text>
-					   		 
 					   		</View>	
-							<Text style={e.deuda>=0 ?ItemStyle.value :ItemStyle.valueNoAsignado}>
+							<Text style={ItemStyle.valorPositivo}>
 								{'$ '+Number(e.deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
 							</Text>
 					   	</TouchableOpacity>
@@ -139,17 +138,17 @@ export default class ItemComponent extends Component{
 	   	return this.state.deuda.map((e, key)=>{
 			return (
 			   <View style={ItemStyle.content} key={key}>
-			  		<TouchableOpacity style={!key==0 ?ItemStyle.boton: [ItemStyle.boton, ItemStyle.botonFirst]} 
+			  		<TouchableOpacity style={!key==0 ?ItemStyle.filaDeuda: [ItemStyle.filaDeuda, ItemStyle.filaDeuda]} 
 			  			onPress={e.deuda<0 ?()=>navigate('pago', {id:e.id, valor:e.deuda, planId:this.state.planId}) :e.deuda==0 ?null :()=>navigate('pagoDeuda', {id:e.id, planId:this.state.planId})}>
 				   		<View style={ItemStyle.contentText}>
 					   		<Text style={ItemStyle.tituloItem}>
 					   			{e.titulo}  
 					   		</Text>
-				   		 <Text style={ItemStyle.by}>By {e.nombre}</Text>  
+				   		 	<Text style={ItemStyle.by}>By {e.nombre}</Text>  
 				   		</View>	
-							<Text style={e.deuda>=0 ?ItemStyle.value :ItemStyle.valueNoAsignado}>
-								{'$ '+Number(e.deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
-							</Text>
+						<Text style={ItemStyle.valorNegativo}>
+							{'$ '+Number(e.deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
+						</Text>
 				   	</TouchableOpacity>
 			  	</View> 
 			)

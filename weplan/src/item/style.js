@@ -23,7 +23,7 @@ export const ItemStyle = StyleSheet.create({
 		padding: 0 ,
 		backgroundColor: '#F8F8F8',		
 		width:'100%',
-		borderBottomWidth:0
+		borderBottomWidth:0,
 	},
 	headerCollapsable: {
 		padding: 10,
@@ -45,7 +45,6 @@ export const ItemStyle = StyleSheet.create({
 		borderBottomWidth:1,
 	},
 	boton:{
-	 
 		width:'100%',
 		padding: 10,  
 		borderBottomWidth:1,
@@ -71,15 +70,25 @@ export const ItemStyle = StyleSheet.create({
 	botonFirst:{
 		borderTopWidth:0
 	},
+	filaDeuda:{
+		width:'100%',
+		flexDirection:'row',
+		width:'100%',
+		padding: 10,  
+		borderBottomWidth:1,
+		borderBottomColor:'#ffffff',
+		borderTopWidth:1,
+		borderTopColor:'#cacaca',
+	},
 	contentText: {
 		width:'74%',
 	},
-	value:{
+	valorPositivo:{
 		color:'#79CF40',
 		alignSelf: 'flex-start', 
 		width:'40%',
 	},
-	valueNoAsignado:{
+	valorNegativo:{
 		color:'#c5012b',
 		alignSelf: 'flex-start', 
 		width:'40%',
@@ -127,26 +136,27 @@ export const ItemStyle = StyleSheet.create({
 	},
 	header:{
 		width:'100%',
-		height:50,
+		height:40,
+		backgroundColor:'#d9e4f2'
 	},
 	btnBack:{
 		position:'relative',
-		top:-40,
+		top:-30,
 		left:10
 	},
 	back:{
-		height:30,
-		width:20,
+		height:20,
+		width:14,
 	},
 	btnIcon:{
 		position:'absolute',
-		top:-20, 
+		top:-8, 
 		right:5,
 		zIndex:100
 	},
 	icon:{
-		width:80,
-		height:80
+		width:50,
+		height:50
 	},
 	btnCamera:{
 		position:'absolute',

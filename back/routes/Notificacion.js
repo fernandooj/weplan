@@ -7,6 +7,7 @@ let notificacionService = require('../services/notificacionServices.js');
 let amigoUserService    = require('../services/amigoUserServices.js');
 let itemServices 		= require('../services/itemServices.js')
 let pagoServices 		= require('../services/pagoServices.js')
+let planServices 		= require('../services/planServices.js')
 
 
 router.get('/:id', (req, res)=>{ 
@@ -34,25 +35,26 @@ router.get('/', (req, res)=>{
 			notificacion = notificacion.map((e)=>{
 				return {
 					id 		    : e._id,
-					tipo 		: e.tipo,
+					tipo 		: e.tipo, 
 					activo  	: e.activo,
 					idUser      : e.idUsuarioAsigna._id,
-					username    : e.idUsuarioAsigna.username,
-					photo   	: e.tipo===1 ?e.idUsuarioAsigna.photo :e.tipo===2 ?e.idPlan.imagenMiniatura[0] :e.tipo===3 ?e.idItem.imagenMiniatura :null,
-					nombre 	    : e.idUsuarioAsigna.nombre,
+					nombre    : e.idUsuarioAsigna.nombre,
+					idTipo : e.tipo===1 ?e.idAmigoUser._id 	   :e.tipo===2 ?e.idPlan._id :e.tipo===3 ?e.idItem._id :e.tipo===4 &&e.idItem._id,
+					photo  : e.tipo===1 ?e.idUsuarioAsigna.photo  :e.tipo===2 ?e.idPlan.imagenMiniatura[0] :e.tipo===3 ?e.idItem.imagenMiniatura :e.tipo===4 &&e.idItem.imagenMiniatura,
+					titulo 	    : e.tipo===1 ?e.idUsuarioAsigna.nombre :e.tipo===2 ?e.idPlan.nombre :e.tipo===3 ?e.idItem.titulo :e.tipo===4 &&e.idItem.titulo,
 					token  	 	: e.idUsuarioAsigna.tokenPhone,
 					////////////////////////////  AMIGOS  ////////////////////////////////////
-					idAmigoUser : e.idAmigoUser ?e.idAmigoUser._id 				:null,
+					//idAmigoUser : e.idAmigoUser ?e.idAmigoUser._id 				:null,
 
 					//////////////////////////// PLAN /////////////////////////////////////
-					idPlan   	: e.idPlan  ?e.idPlan._id    :null,
-					nombrePlan  : e.idPlan  ?e.idPlan.nombre :null,
-					imagenPlan  : e.idPlan  ?e.idPlan.imagenMiniatura[0] :null,
+					//idPlan   	: e.idPlan  ?e.idPlan._id    :null,
+					//nombrePlan  : e.idPlan  ?e.idPlan.nombre :null,
+					//imagenPlan  : e.idPlan  ?e.idPlan.imagenMiniatura[0] :null,
 
 					////////////////////////////  ITEM  //////////////////////////////////////
-					idItem   	: e.idItem  &&e.idItem._id    ,
-					nombreItem  : e.idItem  &&e.idItem.titulo ,
-					imagenItem  : e.idItem  &&e.idItem.imagenMiniatura ,
+					//idItem   	: e.idItem  &&e.idItem._id    ,
+					//nombreItem  : e.idItem  &&e.idItem.titulo ,
+					//imagenItem  : e.idItem  &&e.idItem.imagenMiniatura ,
 					valorItem   : e.idItem  &&Math.ceil((e.idItem.valor/(e.idItem.asignados.length+2))/100)*100,
 
 				}
@@ -80,14 +82,16 @@ router.post('/', (req, res)=>{
 ///// 			modifico y desactivo la notificacion y modifico el tipo de la notificacion
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.put('/:idNotificacion/:idTipo/:tipo/:idUser', (req,res)=>{
+	let id = req.params.tipo==4 ?req.params.idUser :req.session.usuario.user._id 
+	console.log(id)
 	notificacionService.desactiva(req.params.idNotificacion, (err, notificacion)=>{
 		if (err) {
 			res.json({status:'FAIL', err, code:0})    
 		}else{
 			req.params.tipo==1 
 			?activaAmigoUser(req.params.idTipo, res) 
-			:req.params.tipo==3 
-			?verificaItemAbierto(req.session.usuario, req.params.idTipo, req.params.idUser, res, req) 
+			:req.params.tipo==3 || req.params.tipo==4
+			?verificaItemAbierto(req.session.usuario, req.params.idTipo, id, res, req) 
 			:res.json({status:'SUCCESS', notificacion, code:1}) 
 		}
 	})
@@ -95,11 +99,12 @@ router.put('/:idNotificacion/:idTipo/:tipo/:idUser', (req,res)=>{
 
 
 const verificaItemAbierto=(usuario, idTipo, id, res, req)=>{
+	 
 	itemServices.getById(idTipo, (err, item)=>{
 		if (err) {
 			console.log(err)
 		}else{
-			console.log(item[0].abierto)
+		 
 			if (item[0].abierto) {
 				activaItem(usuario, idTipo, id, res, req)
 			}else{
@@ -113,7 +118,6 @@ const verificaItemAbierto=(usuario, idTipo, id, res, req)=>{
 ///// 			activo el usuario si es true es que ya son amigos
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const activaAmigoUser =(idTipo, res)=>{
-	console.log(idTipo)
 	amigoUserService.activa(idTipo, (err, asignados)=>{
 		if (err) {
 			res.json({status:'FAIL', err, code:0})    
@@ -136,7 +140,7 @@ const activaItem =(usuario, idTipo, id, res, req)=>{
 			let espera = item[0].espera.filter(e=>{
 				return e!=id
 			})
-			console.log(id)
+	 
 			let asignados = item[0].asignados.concat(id)
 			itemServices.activaUsuario(idTipo, espera, asignados, (err, item)=>{
 				if (err) {
@@ -221,4 +225,74 @@ function isInArray(value, array) {
 }
 
 
+								///////////// 			CUANDO DECLINA LA NOTIFICACION  		/////////////////// 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///// 			modifico y desactivo la notificacion y modifico el tipo de la notificacion
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+router.put('/cancelar/:idNotificacion/:idTipo/:tipo/:idUser', (req, res)=>{
+	notificacionService.desactiva(req.params.idNotificacion, (err, notificacion)=>{
+		if (err) {
+			res.json({status:'FAIL', err, code:0})    
+		}else{
+			req.params.tipo==1 
+			?eliminaAmigoUser(req.params.idTipo, res) 
+			:req.params.tipo==2 
+			?eliminaUserPlan(req.params.idTipo, req.session.usuario.user._id, res) 
+			:req.params.tipo==3 
+			?eliminarUserItem(req.params.idTipo, req.params.idUser, res, req) 
+			:res.json({status:'SUCCESS', notificacion, code:1}) 
+		}
+	})
+})
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////// 			no acepto que un usuario sea parte de un item 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const eliminarUserItem =(idItem, idUser, res, req)=>{
+	itemServices.getById(idItem, (err, item)=>{
+		if (err) {
+			res.json({status:'FAIL', err, code:0})    
+		}else{
+			res.json({status:'SUCCESS', item, code:1})    
+		}
+	})
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///// 			elimino el registro para agregar amigo
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const eliminaAmigoUser =(idTipo, res)=>{
+	amigoUserService.elimina(idTipo, (err, data)=>{
+		if (err) {
+			res.json({status:'FAIL', err, code:0})    
+		}else{
+			res.json({status:'SUCCESS', data, code:1})    
+		}
+	})
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///// 			saco al usuario del plan
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const eliminaUserPlan =(idTipo, idUser, res)=>{
+	console.log(idTipo)
+	planServices.getByIdPlan(idTipo, (err, plan)=>{
+		if (err) {
+			res.json({status: 'FAIL', err, code:0})
+		}else{
+			let asignados = plan[0].asignados.filter(e=>{
+				if(e._id != idUser) return e 
+			})
+
+			planServices.salir(idTipo, asignados, (err, plan2)=>{
+				if (err) {
+					res.json({status: 'FAIL', err, code:0})
+				}else{
+					res.json({status: 'SUCCESS', plan2, code:1})
+				}
+			})
+		}
+	})
+}
 module.exports = router
+

@@ -15,21 +15,30 @@ export default class RestriccionesPlanComponent extends Component{
 		}
 	}
 	componentWillMount(){
-		axios.get('x/v1/res/restriccion')
-	 	.then(e=>{
-	 		let restriccion = e.data.restriccion.map(e=>{
-	 			return {
-	 				_id:e._id,
-	 				ruta:e.ruta,
-	 				nombre:e.nombre
-	 			}
-	 		})
-	 		this.setState({restriccion})
-	 	})
-	 	.catch(err=>{
-	 		console.log(e.err)
-	 	})
+ 		console.log(this.props.misRestricciones.length)
+ 		if (this.props.misRestricciones.length>1 ) {
+			
+			// this.setState({restriccion:this.props.misRestricciones, restriccionArray:this.props.restricciones})
+			this.setState({restriccion:this.props.misRestricciones, restriccionArray:this.props.restricciones, restriccionesAsignadas:this.props.restriccionesAsignadas})
+		}
+		if (this.props.misRestricciones.length === 0) {
+			axios.get('x/v1/res/restriccion')
+		 	.then(e=>{
+		 		let restriccion = e.data.restriccion.map(e=>{
+		 			return {
+		 				_id:e._id,
+		 				ruta:e.ruta,
+		 				nombre:e.nombre
+		 			}
+		 		})
+		 		this.setState({restriccion})
+		 	})
+		 	.catch(err=>{
+		 		console.log(e.err)
+		 	})
+		 } 
 	}
+	 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////  GENERO EL ARRAY DE LAS RESTRICCIONESAsignadas //////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -65,6 +74,7 @@ export default class RestriccionesPlanComponent extends Component{
 		})
 	}
 	render(){
+	 	//console.log(this.state.restriccion)
 		return(
 			<Modal
 		          animationType="slide"
@@ -80,7 +90,7 @@ export default class RestriccionesPlanComponent extends Component{
 							<Text style={CreatePlanStyle.textoRes}>Restricciones</Text>
 						</View>	
 						{this.renderRestricciones()}
-						<TouchableOpacity onPress={() => { this.props.restriccion(this.state.restriccionArray, this.state.restriccionesAsignadas)} } 
+						<TouchableOpacity onPress={() => { this.props.restriccion(this.state.restriccionArray, this.state.restriccionesAsignadas, this.state.restriccion)} } 
 						style={CreatePlanStyle.btnHecho}><Text style={CreatePlanStyle.hecho}>Hecho!</Text></TouchableOpacity>
 					</View>
 				</ScrollView>	

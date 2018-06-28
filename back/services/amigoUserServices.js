@@ -33,6 +33,9 @@ class amigoUserService{
             'updatedAt': moment().format('YYYY-MM-DD h:mm:ss')
     	}}, callback);
 	}
+	elimina(_id, callback){
+		amigoUser.remove({_id}, callback);
+	}
 }
 
 

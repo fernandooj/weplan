@@ -80,16 +80,6 @@ export default class ajustesAmigosComponent extends Component{
  	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////			OBTENGO CADA UNO DE LOS REGISTROS						 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- // 	getRow(){
- // 		const filteredEmails = this.state.filteredData.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
-	// 	return filteredEmails.map((data, key)=>{
-	// 		return  <TouchableOpacity style={AjustesStyle.registro} key={key} onPress={()=>this.updateState(data.id, data.estado, data.token)} > 
-	// 				<Image source={{ uri: data.photo}}  style={data.estado ?AjustesStyle.avatarA :AjustesStyle.avatarA2} /> 
-	// 				<Text style={AjustesStyle.textoAvatar}>{data.nombre}</Text>
-	// 				{!data.estado ?<Image source={require('./agregado.png')} style={AjustesStyle.agregado}/> :null} 
-	// 		    </TouchableOpacity>
-	// 	})
-	// }
  	getRow(){
  		const filteredEmails = this.state.filteredData.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
 		return filteredEmails.map((data, key)=>{

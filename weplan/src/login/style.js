@@ -1,8 +1,13 @@
 import {StyleSheet, Dimensions} from 'react-native';
-export const LoginStyle = StyleSheet.create({ 
+import { MediaQueryStyleSheet } from "react-native-responsive";
+export const LoginStyle = MediaQueryStyleSheet.create({ 
+	container:{
+		flex:1,
+		height:1200
+	},
 	fondo:{
 		flex: 1,
-		   alignItems: 'center'
+		alignItems: 'center'
 		/*justifyContent: 'center', justifica contenido verticalmente */
 	},
 	image:{
@@ -62,6 +67,7 @@ export const LoginStyle = StyleSheet.create({
 		borderColor: '#FFD8D9',
 		color:'#ffffff'	
 	},
+	
 	textAlert:{
 		color:'#7585eb',
 		marginTop:20,
@@ -81,7 +87,34 @@ export const LoginStyle = StyleSheet.create({
 		fontSize:17
 	},
 
-})
+},{
+ 		"@media (min-device-width: 320) and (max-device-height: 550)": {
+ 			image:{
+				marginTop:0,
+				marginBottom:0,
+			},
+			facebook:{
+				fontSize:20,
+				paddingTop:17,
+				paddingBottom:7,
+				paddingLeft:21,
+				paddingRight:14,
+				borderRadius: 50,
+				borderWidth: 5,
+				marginRight:20,
+			},
+			google:{
+				fontSize:20,
+				paddingTop:15,
+				paddingBottom:10,
+				paddingLeft:18,
+				paddingRight:11,
+				borderRadius: 50,
+				borderWidth: 3,
+ 
+			},
+ 		}
+ 	})
 
 
 
