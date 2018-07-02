@@ -18,6 +18,7 @@ export default class CrearItemComponent extends Component{
       enviarChat:false,
       adjuntarAmigos:false,
       asignados:[],
+      misUsuarios:[],
       usuariosAsignados:[]
     }  
   }
@@ -100,7 +101,10 @@ export default class CrearItemComponent extends Component{
             {adjuntarAmigos ?<AgregarAmigosComponent 
               titulo='Asignar Amigos'
               close={(e)=>this.setState({asignados:[], usuariosAsignados:[], adjuntarAmigos:false})} 
-              updateStateAsignados={(asignados, usuariosAsignados)=>this.setState({asignados, usuariosAsignados, adjuntarAmigos:false})}
+              updateStateAsignados={(asignados, usuariosAsignados, misUsuarios)=>this.setState({asignados, usuariosAsignados, misUsuarios, adjuntarAmigos:false})}
+                  asignados={this.state.asignados}
+                  usuariosAsignados={this.state.usuariosAsignados}
+                  misUsuarios={this.state.misUsuarios}
               /> :null }
             
             {/* Enviar al Chat */}
@@ -141,8 +145,8 @@ export default class CrearItemComponent extends Component{
     }else if(isNaN(valor)){
       alerta('El Valor solo puede ser numerico')
     }else{
-      // let planId = this.props.planId
-      let planId = '5b32a782922f9a3108fcc507'
+      let planId = this.props.planId
+      // let planId = '5b32a782922f9a3108fcc507'
       let data = new FormData();
       let deudaAsignados = Math.ceil((valor/(asignados.length+1))/100)*100
       let deudaCreador = valor - (deudaAsignados * asignados.length)

@@ -126,8 +126,23 @@ export const AmigosStyle = MediaQueryStyleSheet.create({
 		},
 		text: {
 			color:'#969696',
-			fontSize: 18,
-			 
+			fontSize: 18,	 
+		},
+		avatar:{
+			height: 50,
+			width: 50,
+			borderRadius: 30,
+		},
+		avatar2:{   
+			height: 50,
+			width: 50,
+			borderRadius: 25,
+			borderWidth: 3,
+		},
+		textoAvatar:{
+			fontSize:18,
+			marginLeft:20,
+			marginTop:10
 		},
 	}
 })

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, TouchableOpacity, TextInput, Alert, Platform, ImageBackground, ScrollView} from 'react-native'
+import {View, Text, TouchableOpacity, TextInput, Alert, Platform, ImageBackground, ScrollView, AsyncStorage} from 'react-native'
 import {LoginStyle} from '../login/style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
@@ -59,6 +59,7 @@ export default class LoginComponent extends Component{
 						console.log(e.data.user)
 						if (e.data.code==1) {
 							if (e.data.user.categorias.length>1) {
+								saveInfo()
 								navigate('inicio') 
 							}else{
 								navigate('editPerfil2') 
@@ -90,6 +91,7 @@ export default class LoginComponent extends Component{
 				.then((e)=>{
 					if (e.data.code==1) {
 						if (e.data.user.categorias.length>1) {
+							saveInfo()
 							navigate('inicio') 
 						}else{
 							navigate('editPerfil2') 
@@ -190,7 +192,7 @@ export default class LoginComponent extends Component{
 		const {navigate} = this.props.navigation
 		axios.post('/x/v1/user/login/', {username, password, tokenPhone:token} )
 		.then((res)=>{
-			console.log(res.data.code)
+			console.log(res.data)
 			if(res.data.code==0){
 				Alert.alert(
 	            'Opss!! Error',
@@ -201,6 +203,7 @@ export default class LoginComponent extends Component{
 	              { cancelable: false }
 	            )
 			}else if (res.data.code==1){
+				saveInfo(true)
 				navigate('inicio')
 			}else{
 				Alert.alert(
@@ -219,6 +222,12 @@ export default class LoginComponent extends Component{
 	}	 
 }
 
-
+const saveInfo = async (userInfo)=>{
+	try {
+	    await AsyncStorage.setItem('userInfo', '1');
+	} catch (error) {
+	   console.log(error)
+	}
+}
  
 

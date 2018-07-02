@@ -20,14 +20,20 @@ export default class AgregarAmigosComponent extends Component{
 		this.searchUpdated = this.searchUpdated.bind(this)
 	}
 	componentWillMount(){
-		axios.get('/x/v1/ami/amigoUser/asignados/true')
-		.then((e)=>{
-			console.log(e.data.asignados)
-			this.setState({filteredData:e.data.asignados, allList:e.data.asignados})
-		})	
-		.catch((err)=>{
-			console.log(err)
-		})
+		console.log(this.props)
+ 		if (this.props.misUsuarios.length>1 ) {
+			this.setState({filteredData:this.props.misUsuarios, asignados:this.props.asignados, asignadosUsuarios:this.props.usuariosAsignados})
+		}
+		if (this.props.misUsuarios.length === 0) {
+			axios.get('/x/v1/ami/amigoUser/asignados/true')
+			.then((e)=>{
+				console.log(e.data.asignados)
+				this.setState({filteredData:e.data.asignados, allList:e.data.asignados})
+			})	
+			.catch((err)=>{
+				console.log(err)
+			})
+		}
 	}
 	 
 	getRow(){
@@ -115,7 +121,7 @@ export default class AgregarAmigosComponent extends Component{
 			{
 				this.state.asignados.length>0
 				?<View style={AmigosStyle.containerHecho}>
-					<TouchableOpacity style={AmigosStyle.btnHecho} onPress={(e)=>{this.props.updateStateAsignados(this.state.asignados, this.state.asignadosUsuarios)}} > 
+					<TouchableOpacity style={AmigosStyle.btnHecho} onPress={(e)=>{this.props.updateStateAsignados(this.state.asignados, this.state.asignadosUsuarios, this.state.filteredData)}} > 
 						<Text style={AmigosStyle.hecho}>Hecho!</Text>
 					</TouchableOpacity> 
 				</View>	

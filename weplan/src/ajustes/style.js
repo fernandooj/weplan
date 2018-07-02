@@ -206,5 +206,19 @@ export const AjustesStyle = MediaQueryStyleSheet.create({
 			marginTop:15,
 			width:'55%'
 		},
+		avatar: {
+			marginTop:10,
+			borderRadius: 60,
+			width: 120,
+			height: 120,
+			borderWidth:5,
+		},
+		btnMenu:{
+	 		paddingTop:7, 
+	 		paddingBottom:7,
+	 	},
+	 	perfil:{
+		 	marginBottom:-20
+		},
 	}
 })

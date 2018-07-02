@@ -23,10 +23,12 @@ class FirebaseClient {
 				response = await response.json();
 				if(!response.success){
 
-					Alert.alert('Failed to send notification, check error log')
+					//Alert.alert('Failed to send notification, check error log')
+					console.log('Failed to send notification, check error log')
 				}
 			} catch (err){
-				Alert.alert('Failed to send notification, check error log')
+				//Alert.alert('Failed to send notification, check error log')
+				console.log('Failed to send notification' +err)
 			}
 		} catch (err) {
 			Alert.alert(err && err.message)

@@ -17,8 +17,6 @@ export default class RestriccionesPlanComponent extends Component{
 	componentWillMount(){
  		console.log(this.props.misRestricciones.length)
  		if (this.props.misRestricciones.length>1 ) {
-			
-			// this.setState({restriccion:this.props.misRestricciones, restriccionArray:this.props.restricciones})
 			this.setState({restriccion:this.props.misRestricciones, restriccionArray:this.props.restricciones, restriccionesAsignadas:this.props.restriccionesAsignadas})
 		}
 		if (this.props.misRestricciones.length === 0) {

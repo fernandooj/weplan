@@ -16,6 +16,9 @@ export const PagoStyle = MediaQueryStyleSheet.create({
 	contenedor:{
 		width:'90%',
 	},
+	contenedorImagen:{
+		minWidth:100,
+	},
 	image:{
 		width:100,
 		height:100,
@@ -74,14 +77,14 @@ export const PagoStyle = MediaQueryStyleSheet.create({
 		alignItems: 'flex-end',
 	},
 	tituloDeuda:{
-		fontSize:22,
+		fontSize:21,
 		color:'#8796F4',
-		width:'75%',
+		width:'70%',
 	},
 	valorDeuda:{
 		fontSize:18,
 		color:'#c5012b',
-		width:'25%',
+		width:'29%',
 	},
 	montoTitulo:{
 		width:'50%',
@@ -227,6 +230,15 @@ export const PagoStyle = MediaQueryStyleSheet.create({
 			width:'60%',
 			marginLeft:15,
 			marginTop:6
+		},
+		contentItem:{
+			flex:1,
+			height:screenHeight+210,
+		},
+		montoTitulo:{
+			width:'50%',
+			fontSize:19,
+			top:-8
 		},
 	}
 })

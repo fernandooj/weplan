@@ -7,8 +7,8 @@ import axios from 'axios'
 import CrearItemComponent from './crearItemComponent'
 import CabezeraComponent from '../ajustes/cabezera.js'
 import update from 'react-addons-update';
-
- 
+import Icon from 'react-native-fa-icons';
+import {sendRemoteNotification} from '../push/envioNotificacion.js' 
 
 export default class ItemComponent extends Component{
 	state={
@@ -17,96 +17,198 @@ export default class ItemComponent extends Component{
 		deuda:[],
 		pago:[],
 		itemsPlan:[],
-		render:true,
+		articulosPendientes:[],
+		articulosPublicados:[],
+		noasignados:[],
+		pendientes:[],
+		render:0,
 		total:0
 	}
 	componentWillMount(){
-		// let planId = this.props.navigation.state.params	
-		let planId = '5b32a782922f9a3108fcc507'	
+		let planId = this.props.navigation.state.params	
+		// let planId = '5b32a782922f9a3108fcc507'	
 		this.setState({planId})
+ 
 		axios.get('/x/v1/ite/item/'+planId)
 		.then(e=>{
-		 	console.log(e.data)
+			console.log(e.data)
 			this.setState({pago:e.data.pago, deuda:e.data.deuda, total:e.data.total})
 		})		 
 		.catch(err=>{
 			console.log(err)
-		})	
+		})
+ 
+		axios.get('/x/v1/ite/item/pendientes/'+planId)
+		.then(e=>{
+			this.setState({articulosPendientes:e.data.pendientes})
+		})		 
+		.catch(err=>{
+			console.log(err)
+		})
+ 
+		axios.get('/x/v1/ite/item/publicados/'+planId)
+		.then(e=>{
+			this.setState({articulosPublicados:e.data.publicados})
+		})		 
+		.catch(err=>{
+			console.log(err)
+		})
+ 
+	}
+	peticiones(render){
+		this.setState({render})
+	}
+	updateItems(id, deuda, titulo){
+		deuda = parseInt(deuda)
+		const pago = {id, deuda, titulo}
+		this.setState({
+		  pago: update(this.state.pago, {$unshift: [pago]}),
+		  show:false,
+		  total:this.state.total+deuda
+		}) 
 	}
 	renderAcordeon() {
 		const {render, total}=this.state
 		return (
 			<View>
-			  	<View style={ItemStyle.headerCollapsable }>
-			    	<TouchableOpacity onPress={()=>this.setState({render:true})}>
-			    		<Text style={ItemStyle.headerText}>Mis Items</Text>
+				<View style={ItemStyle.headerCollapsable}>
+			    	<TouchableOpacity onPress={()=>this.peticiones(render==1 ?0 :1)}>
+			    		<Text style={ItemStyle.headerText}><Icon name={render==1 ?'angle-down' :'angle-right'} allowFontScaling style={ItemStyle.iconMenu} /> Artículos Pendientes</Text>
 			    	</TouchableOpacity>
-			    	{	render
-			    		?<View>{this.renderPagos()}{this.renderDeuda()}</View>
-			    		:null
-			    	}
 			    	{
-			    		<View style={ItemStyle.contenedorTotal}>
-			    			<Text style={ItemStyle.textoTotal}>Total</Text>
-			    			<Text style={total>=0 ?ItemStyle.valueTotal :ItemStyle.valueNoAsignadoTotal}>
-								{'$ '+Number(total).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
-							</Text>
-			    		</View>
+			    	 	render==1
+			    	 	&&this.articulosPendientes()
+			    	}
+			  	</View>
+			  	<View style={ItemStyle.headerCollapsable}>
+			    	<TouchableOpacity onPress={()=>this.peticiones(render==2 ?0 :2)}>
+			    		<Text style={ItemStyle.headerText}><Icon name={render==2 ?'angle-down' :'angle-right'} allowFontScaling style={ItemStyle.iconMenu} /> Mis Artículos</Text>
+			    	</TouchableOpacity>
+			    	{	render==2
+			    		&&<View>
+			    			<View>
+			    				{this.articulosMios()}{this.articulosAsignados()}
+			    			</View>
+				    		<View style={ItemStyle.contenedorTotal}>
+				    			<Text style={ItemStyle.textoTotal}>Total</Text>
+				    			<Text style={total>=0 ?ItemStyle.valueTotal :ItemStyle.valueNoAsignadoTotal}>
+									{'$ '+Number(total).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
+								</Text>
+				    		</View>
+				    	</View>
 			    	}
 			  	</View>
 
 			  	<View style={[ItemStyle.headerCollapsable, ItemStyle.headerCollapsableFirst]}>
-			    	<TouchableOpacity onPress={this.joinItems.bind(this)}>
-			    		<Text style={[ItemStyle.headerText, ItemStyle.headerTextFirst]}>Items</Text>
+			    	<TouchableOpacity onPress={()=>this.peticiones(render==3 ?0 :3)}>
+			    		<Text style={[ItemStyle.headerText, ItemStyle.headerTextFirst]}><Icon name={render==3 ?'angle-down' :'angle-right'} allowFontScaling style={ItemStyle.iconMenu} /> Artículos Publicados</Text>
 			    	</TouchableOpacity>
 			    	 {
-			    	 	!render
-			    	 	?this.renderItemsPlan()
-			    	 	:null
+			    	 	render==3
+			    	 	&&this.articulosPublicados()
 			    	 }
 			  	</View>
 			</View>
 		);
 	}
-	updateItems(id, deuda, titulo){
-		console.log(deuda)
-		const pago = {id, deuda, titulo}
-		this.setState({
-		  pago: update(this.state.pago, {$unshift: [pago]}),
-		  show:false
-		}) 
-	}
-	joinItems(){
-		// const {todosItems, items} = this.state
-		// const diffBy = (pred) => (a, b) => a.filter(x => !b.some(y => pred(x, y)))								
-		// const makeSymmDiffFunc = (pred) => (a, b) => diffBy(pred)(a, b).concat(diffBy(pred)(b, a))
-		// const myDiff = makeSymmDiffFunc((x, y) => x.id === y.id)													
-		// const itemsPlan = myDiff(items, todosItems)																					   									 				
-		// this.setState({itemsPlan, render:false})
-	}
-	renderItemsPlan(){
-		return this.state.itemsPlan.map((e, key)=>{
+	articulosPendientes(){
+		return this.state.articulosPendientes.map((e, key)=>{
 			return (
-			   <View style={ItemStyle.content} key={key}>
-			  		<TouchableOpacity style={!key==0 ?ItemStyle.boton: [ItemStyle.boton, ItemStyle.botonFirst]}  >
-			  			
+			    <View style={ItemStyle.content} key={key}>
+			  		<TouchableOpacity style={!key==0 ?ItemStyle.filaDeuda: [ItemStyle.filaDeuda, ItemStyle.filaDeuda]}>
 				   		<View style={ItemStyle.contentText}>
 					   		<Text style={ItemStyle.tituloItem}>
 					   			{e.titulo}  
 					   		</Text>
-				   		 	<Text style={ItemStyle.by}>By {e.nombre}</Text> 
+				   		 	<Text style={ItemStyle.by}>By {e.nombre}</Text>  
 				   		</View>	
-							<Text style={ItemStyle.valueItems}>
+				   		<View>
+							<Text style={ItemStyle.valorPositivo}>
 								{'$ '+Number(e.deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
 							</Text>
+							<TouchableOpacity onPress={()=>this.aceptarItem(e.id, e.token, e.titulo, e.imagen, e.deuda, e.valor)} style={ItemStyle.aceptarPendiente}>
+								<Text>Aceptar</Text>
+							</TouchableOpacity>
+						</View>
 				   	</TouchableOpacity>
 			  	</View> 
 			)
 		})
 	}
-	renderPagos() {
+
+	aceptarItem(idItem, token, titulo, imagen, monto){
+		console.log({idItem, token, titulo, imagen, monto})
+		axios.put(`/x/v1/ite/item/activar/${idItem}`, {monto})
+		.then(e=>{
+			console.log(e.data)
+			if (e.data.code==1) {
+				sendRemoteNotification(4, token, 'Home', `Aceptaron tu item ${titulo}`,  ', esta dentro de tu item', imagen)
+				this.setState({render:2})
+				this.peticion(this.state.planId)
+			}else if(e.data.code==2){
+				this.alerta('Opss!! Articulo Cerrado', 'El dueño del articulo ya lo ha terminado, y ya no puedes ingresar')
+			}else{
+				this.alerta('Opss!! revisa tus datos que falta algo', '')
+			}
+		})
+		.catch(err=>{
+			console.log(err)
+		})
+	}
+	peticion(planId){
+		axios.get('/x/v1/ite/item/'+planId)
+		.then(e=>{
+			this.setState({pago:e.data.pago, deuda:e.data.deuda, total:e.data.total})
+		})		 
+		.catch(err=>{
+			console.log(err)
+		})
+	}
+	articulosPublicados(){
+		return this.state.articulosPublicados.map((e, key)=>{
+			return (
+			  <View style={ItemStyle.content} key={key}>
+			  		<TouchableOpacity style={!key==0 ?ItemStyle.filaDeuda: [ItemStyle.filaDeuda, ItemStyle.filaDeuda]}>
+				   		<View style={ItemStyle.contentText}>
+					   		<Text style={ItemStyle.tituloItem}>
+					   			{e.titulo}  
+					   		</Text>
+				   		 	<Text style={ItemStyle.by}>By {e.nombre}</Text>  
+				   		</View>	
+				   		<View>
+							<Text style={ItemStyle.valorPositivo}>
+								{'$ '+Number(e.deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
+							</Text>
+							<TouchableOpacity onPress={()=>this.ingresarItem(e.id, e.token, e.titulo, e.imagen, e.deuda, e.valor)} style={ItemStyle.aceptarPendiente}>
+								<Text>Me Interesa</Text>
+							</TouchableOpacity>
+						</View>
+				   	</TouchableOpacity>
+			  	</View> 
+			)
+		})
+	}
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////// SI EL USUARIO HACE CLICK EN ME INTERESA, ENVIA LA NOTIFICACION AL CREADOR DEL ITEM PARA DARLE PERMISO DE INGRESAR
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	ingresarItem(idItem, token, titulo, imagen){
+		console.log(idItem)
+		axios.put('x/v1/ite/item', {idItem})
+		.then(e=>{
+			if (e.data.code==1) {
+				sendRemoteNotification(4, token, "notificacion", 'Quieren acceder a un item', `, quiere acceder a ${titulo}`, imagen)
+				let articulosPublicados = this.state.articulosPublicados.filter(e=>{
+					return e.id!=idItem
+				})
+ 				this.setState({articulosPublicados})
+			}
+		})
+		.catch(err=>{
+			console.log(err)
+		})
+	}
+	articulosMios() {
 	   const {navigate} = this.props.navigation
- 
 	   	return this.state.pago.map((e, key)=>{
 			return (
 			   <View style={ItemStyle.content} key={key}>
@@ -124,7 +226,7 @@ export default class ItemComponent extends Component{
 					   	{
 					   		e.abierto
 					   		&&<TouchableOpacity style={ItemStyle.closeItem} onPress={()=>this.cerrarItem(e.id, e.titulo)}>
-						   		<Text style={ItemStyle.textCloseItem}>Cerrar Item</Text>
+						   		<Text style={ItemStyle.textCloseItem}>Cerrar Artículo</Text>
 						   	</TouchableOpacity>
 					   	}
 					</View>
@@ -132,7 +234,7 @@ export default class ItemComponent extends Component{
 			)
 		})
 	}
-	renderDeuda() {
+	articulosAsignados() {
 	   const {navigate} = this.props.navigation
  
 	   	return this.state.deuda.map((e, key)=>{
@@ -157,34 +259,34 @@ export default class ItemComponent extends Component{
 
 
   	render() {
-		const {show, items, itemsPlan} = this.state
+		const {show, items, itemsPlan, render} = this.state
 		const {navigate} = this.props.navigation
-		console.log(this.state.pago)
 		return (
-			<View  style={ItemStyle.contentItem}>
-				<CabezeraComponent navigate={navigate} url={'chat'} parameter={this.state.planId} />
-				<ScrollView>
-				  	{/*****   show the modal to create component	*****/}
-					  	{
-					  		show
-					  		?<CrearItemComponent  
-					  			planId={this.props.navigation.state.params}
-					  			updateItems={(id, deuda, titulo)=>this.updateItems(id, deuda, titulo)}
-					  			close={()=>this.setState({show:false})}
-					  		 />
-					  		:null 
-					  	}
-					<View style={ItemStyle.subContentItem}>
-					{/*****   boton para mostrar crear item	*****/}
-					  	<TouchableOpacity onPress={()=>this.setState({show:true})} style={ItemStyle.contenedorNuevo}>
-							<Image source={require('../ajustes/nuevo.png')} style={ItemStyle.btnNuevoGrupo} />
-							<Text style={ItemStyle.CrearItem}>Crear Item</Text>
-					  	</TouchableOpacity>
-					  	
-					 	{this.renderAcordeon()}
-				  	</View>
-				</ScrollView>
-			</View>
+			<ScrollView>
+				<View  style={ItemStyle.contentItem}>
+					<CabezeraComponent navigate={navigate} url={'chat'} parameter={this.state.planId} />
+					
+					  	{/*****   show the modal to create component	*****/}
+						  	{
+						  		show
+						  		?<CrearItemComponent  
+						  			planId={this.props.navigation.state.params}
+						  			updateItems={(id, deuda, titulo)=>this.updateItems(id, deuda, titulo)}
+						  			close={()=>this.setState({show:false})}
+						  		 />
+						  		:null 
+						  	}
+						<View style={ItemStyle.subContentItem}>
+						{/*****   boton para mostrar crear item	*****/}
+						  	<TouchableOpacity onPress={()=>this.setState({show:true})} style={ItemStyle.contenedorNuevo}>
+								<Image source={require('../ajustes/nuevo.png')} style={ItemStyle.btnNuevoGrupo} />
+								<Text style={ItemStyle.CrearItem}>Crear Artículo</Text>
+						  	</TouchableOpacity>
+						  	
+						 	{this.renderAcordeon()}
+					  	</View>
+				</View>
+			</ScrollView>
 		);
 	}
 	cerrarItem(id, titulo){

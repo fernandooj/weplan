@@ -37,7 +37,7 @@ export default class pagoComponent extends Component{
 			<View>
 			{/* ITEM INFORMACION */}
 				<View style={PagoStyle.contenedorItem}>
-					<View >
+					<View style={PagoStyle.contenedorImagen}>
 						<Image source={{uri:item.rutaImagen}} style={PagoStyle.image}/>
 					</View>
 					<View>	

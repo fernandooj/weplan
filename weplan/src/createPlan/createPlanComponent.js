@@ -30,6 +30,7 @@ export default class createPlanComponent extends Component{
  			usuariosAsignados:[],
  			restricciones:[],
  			restriccionesAsignadas:[],
+ 			misUsuarios:[],
  			misRestricciones:[],
  			imagen:null,
  			adjuntarAmigos:false,
@@ -229,18 +230,16 @@ export default class createPlanComponent extends Component{
 							    		<Image source={require('./add.png')} style={CreatePlanStyle.add} />
 							    	</TouchableOpacity>
 						    	}
-
-						    	
 						    </View>
 						}
 						{
 							restriccion 
 							?<RestriccionesPlanComponent  
-						    restriccion={(restricciones, restriccionesAsignadas, misRestricciones)=>this.setState({restricciones, restriccionesAsignadas, misRestricciones, restriccion:false})}
-						    restricciones={this.state.restricciones}
-						    restriccionesAsignadas={this.state.restriccionesAsignadas}
-						    misRestricciones={this.state.misRestricciones}
-						     />
+							    restriccion={(restricciones, restriccionesAsignadas, misRestricciones)=>this.setState({restricciones, restriccionesAsignadas, misRestricciones, restriccion:false})}
+							    restricciones={this.state.restricciones}
+							    restriccionesAsignadas={this.state.restriccionesAsignadas}
+							    misRestricciones={this.state.misRestricciones}
+						    />
 						     
 						    :null
 						}
@@ -268,7 +267,10 @@ export default class createPlanComponent extends Component{
 				    		?<AgregarAmigosComponent 
 				                titulo='Asignar Amigos'
 				                close={(e)=>this.setState({asignados:[], usuariosAsignados:[], adjuntarAmigos:false})} 
-				                updateStateAsignados={(asignados, usuariosAsignados)=>this.setState({asignados, usuariosAsignados, adjuntarAmigos:false})}
+				                updateStateAsignados={(asignados, usuariosAsignados, misUsuarios)=>this.setState({asignados, usuariosAsignados, misUsuarios, adjuntarAmigos:false})}
+				                asignados={this.state.asignados}
+							    usuariosAsignados={this.state.usuariosAsignados}
+							    misUsuarios={this.state.misUsuarios}
 				            /> 
 				            :null 
 				        } 

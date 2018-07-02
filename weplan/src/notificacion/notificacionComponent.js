@@ -92,16 +92,11 @@ export default class notificacionComponent extends Component{
 	render(){
 		const {navigate} = this.props.navigation
 		return(<ScrollView>
-			<View style={NotiStyle.contenedor}>
-				<CabezeraComponent navigate={navigate} url={'Home'} texto={'Notificaciones'} />
-				
-					 
-					
+				<View style={NotiStyle.contenedor}>
+					<CabezeraComponent navigate={navigate} url={'inicio'} texto={'Notificaciones'} />
 						{this.renderNotificacion()}
-				 
-				
-				
-			</View></ScrollView>
+				</View>
+			</ScrollView>
 		)
 	}
 	handleSubmit(idNotificacion, idTipo, tipo, token, idUser, monto, titulo, imagen){
@@ -110,7 +105,7 @@ export default class notificacionComponent extends Component{
 		.then(e=>{
 
 			if (e.data.code==1) {
-				//this.updateStado(idNotificacion)
+				this.updateStado(idNotificacion)
 				if (tipo==1) {
 					sendRemoteNotification(tipo, token, 'Home', 'Aceptaron ser tu amigo',  ', te agrego como amigo', null)
 				}

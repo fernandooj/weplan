@@ -6,12 +6,12 @@ export const ItemStyle = StyleSheet.create({
 	//////////// pagina principal   //////////
 	contentItem: {
 		flex: 1,
-		height:screenHeight,
+		minHeight:screenHeight,
 		backgroundColor: '#F8F8F8',		 
 	}, 
 	subContentItem:{
 		flex: 1,
-		height:screenHeight,
+	 	minHeight:screenHeight,
 		marginRight:'4%',
 		marginLeft:'4%'
 	},
@@ -43,6 +43,11 @@ export const ItemStyle = StyleSheet.create({
 		color:'#AFE1F2',
 		borderColor: '#AFE1F2',
 		borderBottomWidth:1,
+	},
+	iconMenu:{
+		fontSize:25,
+		position:'relative',
+		top:10 
 	},
 	boton:{
 		width:'100%',
@@ -86,7 +91,7 @@ export const ItemStyle = StyleSheet.create({
 	valorPositivo:{
 		color:'#79CF40',
 		alignSelf: 'flex-start', 
-		width:'40%',
+		width:'100%',
 	},
 	valorNegativo:{
 		color:'#c5012b',
@@ -245,7 +250,9 @@ export const ItemStyle = StyleSheet.create({
 		marginTop:5,
 		color:'#ffffff'
 	},
+	aceptarPendiente:{
 
+	},
 
 	////////////////////////////////////////////////////////////////////////////////////
 	////////////////// 		contenedor total

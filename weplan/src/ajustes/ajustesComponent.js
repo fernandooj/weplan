@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity} from 'react-native'
+import {View, Text, Image, TouchableOpacity, AsyncStorage} from 'react-native'
 import {AjustesStyle} from '../ajustes/style'
 import axios from 'axios'
 import CabezeraComponent from './cabezera.js'
@@ -79,6 +79,7 @@ export default class ajustesComponent extends Component{
 		.then((res)=>{
 			console.log(res.data)
 			if(res.data.code==1){
+				saveInfo()
 				navigate('Login')
 			}else if (res.data.code==1){
 				alert('error intenta nuevamente')
@@ -87,5 +88,13 @@ export default class ajustesComponent extends Component{
 		.catch((err)=>{
 			console.log(err)
 		})
+	}
+}
+
+const saveInfo = async (userInfo)=>{
+	try {
+	    await AsyncStorage.setItem('userInfo', '0');
+	} catch (error) {
+	   console.log(error)
 	}
 }

@@ -30,6 +30,7 @@ export default class homeComponent extends Component{
 		.catch(err=>{
 			console.log(err)
 		})	
+
 	}
 
 	  async componentDidMount(){

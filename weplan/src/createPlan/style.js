@@ -217,7 +217,7 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 	contentAdd:{
 		flexDirection:'row',
 		marginTop:10,
-		width:'58.5%' 
+		width:240
 	},
  	avatar:{
  		width:40,
@@ -285,5 +285,16 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 			left:-10,
 			fontSize:15,
 		},
+		contentAdd:{
+			width:230 
+		},
+		addBtn:{
+	 		width:30,
+	 		height:30,
+	 	},
+	 	add:{
+	 		width:30,
+	 		height:30,
+	 	},
 	}
 })

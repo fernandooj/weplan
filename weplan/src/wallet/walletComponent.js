@@ -87,7 +87,7 @@ export default class walletComponent extends Component{
 		const {navigate} = this.props.navigation
 		return(	 
 			<View style={walletStyle.contenedor}>
-				<CabezeraComponent navigate={navigate} url={'Home'} texto='My Wallet' />
+				<CabezeraComponent navigate={navigate} url={'inicio'} texto='My Wallet' />
 				<ScrollView style={walletStyle.subContenedor}>
 					{rows}	
 				</ScrollView>	
