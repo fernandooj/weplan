@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, Dimensions, TouchableOpacity, TextInput, ScrollView, Picker, ImageBackground} from 'react-native'
+import {View, Text, Dimensions, TouchableOpacity, TextInput, ScrollView, Picker, ImageBackground,Alert} from 'react-native'
 import {LoginStyle} from '../editPerfil/style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
@@ -13,7 +13,16 @@ export default class editPerfilComponent extends Component{
 		avatarSource: null,
 		videoSource: null,
 		selectedValue:'YY',
-		textNombre:null,
+		textNombre:'',
+		textTelefono:'',
+		textApellido:'',
+		textEmail:'',
+		textGenero:'',
+		textMonth:'',
+		textDate:'',
+		textYear:'',
+		textCiudad:'',
+		email:false,
 		ciudad:[]
 	  };
 	}
@@ -22,6 +31,17 @@ export default class editPerfilComponent extends Component{
 		.then(e=>{
 			this.setState({ciudad:e.data.ciudad})
 		})
+		axios.get('/x/v1/user/profile')
+		.then(e=>{
+			console.log(e.data.user.user.email)
+			if (e.data.user.user.email==='false') {
+				//this.setState({ textEmail:e.data.user.user.email})
+			}else{
+				this.setState({email:true})
+			}
+			 
+		})
+			
 	}
 	ciudad(){
 		return this.state.ciudad.map((e, key)=>{
@@ -29,6 +49,7 @@ export default class editPerfilComponent extends Component{
 		})
 	}
 	render(){
+		console.log(this.state.textCiudad)
 		return(
 			<View style={LoginStyle.fondo} >
 				<View>
@@ -60,20 +81,32 @@ export default class editPerfilComponent extends Component{
 			        onValueChange={(textCiudad) => this.setState({textCiudad})}
 			        selectedValue={this.state.textCiudad}
 	              >
-		              <Picker.Item label='Ciudad' value='Ciudad'  />
-		              {this.ciudad()}
+		          {this.ciudad()}
 	             </Picker>
 	            </View>
-			    <TextInput
-			        style={LoginStyle.input}
-			        onChangeText={(textTelefono) => this.setState({textTelefono})}
-			        value={this.state.textTelefono}
-			        underlineColorAndroid='transparent'
-           			placeholder="Telefono"
-           			placeholderTextColor="#8F9093" 
-           			keyboardType='numeric'
-           			maxLength={10} 
-			    />	
+	            {
+	            	this.state.email
+	            	?<TextInput
+				        style={LoginStyle.input}
+				        onChangeText={(textTelefono) => this.setState({textTelefono})}
+				        value={this.state.textTelefono}
+				        underlineColorAndroid='transparent'
+	           			placeholder="Telefono"
+	           			placeholderTextColor="#8F9093" 
+	           			keyboardType='numeric'
+	           			maxLength={10} 
+				    />	
+				    :<TextInput
+				        style={LoginStyle.input}
+				        onChangeText={(textEmail) => this.setState({textEmail})}
+				        value={this.state.textEmail}
+				        underlineColorAndroid='transparent'
+	           			placeholder="Email"
+	           			placeholderTextColor="#8F9093" 
+				    />	
+	            }
+			    
+			    
 			    <View style={LoginStyle.date}>
 				    <View style={LoginStyle.containDatePicker}>
 					    <Picker
@@ -214,8 +247,22 @@ export default class editPerfilComponent extends Component{
 	}
 	handleSubmit(){
 		const {navigate} = this.props.navigation
-		const {textNombre, textApellido, textCiudad, textTelefono, textMonth, textDate, textYear, textGenero} = this.state
-		navigate('editPerfil1', {textNombre, textApellido, textCiudad, textTelefono, textMonth, textDate, textYear, textGenero})
+		const {textNombre, textApellido, textCiudad, textTelefono, textMonth, textDate, textYear, textGenero, textEmail} = this.state
+		console.log({textNombre, textApellido, textCiudad, textTelefono, textMonth, textDate, textYear, textGenero, textEmail})
+		if (textNombre=='' || textApellido==''|| textCiudad==''||  textMonth==''|| textDate==''|| textYear==''|| textGenero=='') {
+			Alert.alert(
+				'Opss!! revisa tus datos que falta algo',
+				'todos los campos son obligatorios',
+			[
+				{text: 'OK', onPress: () => console.log('OK Pressed')},
+			],
+				{ cancelable: false }
+			)
+		}else{
+			navigate('editPerfil1', {textNombre, textApellido, textCiudad, textTelefono, textMonth, textDate, textYear, textGenero, textEmail})
+		}
+		
+		
  
 	}
 	 

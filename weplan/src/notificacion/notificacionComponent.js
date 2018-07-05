@@ -100,10 +100,8 @@ export default class notificacionComponent extends Component{
 		)
 	}
 	handleSubmit(idNotificacion, idTipo, tipo, token, idUser, monto, titulo, imagen){
-		console.log(imagen)
 		axios.put('/x/v1/not/notificacion/'+idNotificacion+'/'+idTipo+'/'+tipo+'/'+idUser, {monto})
 		.then(e=>{
-
 			if (e.data.code==1) {
 				this.updateStado(idNotificacion)
 				if (tipo==1) {
@@ -130,8 +128,7 @@ export default class notificacionComponent extends Component{
 		axios.put('/x/v1/not/notificacion/cancelar/'+idNotificacion+'/'+idTipo+'/'+tipo+'/'+idUser, {monto})
 		.then(e=>{
 			if (e.data.code==1) {
-				console.log(e.data)
-				console.log(tipo)
+				this.updateStado(idNotificacion)
 				if (tipo==3) {
 					sendRemoteNotification(tipo, token, 'Home', `no Aceptaron tu item`,  `, salio del item ${titulo}`, imagen)
 				}
@@ -145,6 +142,7 @@ export default class notificacionComponent extends Component{
 		let notificacion = this.state.notificacion.filter(e=>{
 			return e.id!=id
 		})
+		console.log({notificacion, id})
 		this.setState({notificacion})
 	}
 	alerta(titulo, subtitulo){

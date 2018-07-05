@@ -58,68 +58,34 @@ export default class RegistroComponent extends Component{
 		const {navigate} = this.props.navigation
 		const tokenPhone = this.props.navigation.state.params.tokenPhone
 		let username = this.state.text;
-		let isEmail = username.includes("@");
+		let tipo = username.includes("@") ?1 :2;
 		let acceso = 'suscriptor'
 		
-		if(isEmail){
-		    axios.post('/x/v1/user/sign_up', {username, tipo:1, acceso, tokenPhone})
-			.then((res)=>{
-				console.log(res.data)
-				let data = res.data.code
-				if(data==0){
-					this.setState({codigo:0})
-				}else if(data==1){
-					this.setState({codigo:1})
-					setTimeout(function(){ 
-						navigate('insertCode', username) }, 
-					3000);
-				}else if(data==2){
-					this.setState({codigo:2})
-				}
-				else if(data==3){
-					this.setState({codigo:3})
-					setTimeout(function(){ 
-						navigate('insertCode', username) }, 
-					3000);
-				}
-				
-			})
-			.catch((err)=>{
-				console.log(err)
-			})
-		// treat as email
-		} else {
-		  	axios.post('/x/v1/user/sign_up', {username, tipo:2, acceso, tokenPhone})
-			.then((res)=>{
-				console.log(res.data.code)
-				let data = res.data.code
-				if(data==0){
-					this.setState({codigo:0})
-				}else if(data==1){
-					this.setState({codigo:1})
-					setTimeout(function(){ 
-						navigate('insertCode', username) },  
-					3000);
-				}else if(data==2){
-					this.setState({codigo:2})
-				}
-				else if(data==3){
-					this.setState({codigo:3})
-					setTimeout(function(){ 
-						navigate('insertCode', username) }, 
-					3000);
-				}
-			})
-			.catch((err)=>{
-				console.log(err)
-			})
-		 // treat as phone
-		}
-
-	 
-		
+	  	axios.post('/x/v1/user/sign_up', {username, tipo, acceso, tokenPhone})
+		.then((res)=>{
+			console.log(res.data.code)
+			let data = res.data.code
+			if(data==0){
+				this.setState({codigo:0})
+			}else if(data==1){
+				this.setState({codigo:1})
+				setTimeout(function(){ 
+					navigate('insertCode', username) },  
+				3000);
+			}else if(data==2){
+				this.setState({codigo:2})
+			}
+			else if(data==3){
+				this.setState({codigo:3})
+				setTimeout(function(){ 
+					navigate('insertCode', username) }, 
+				3000);
+			}
+		})
+		.catch((err)=>{
+			console.log(err)
+		})	
 	}
-	 
 }
 
 

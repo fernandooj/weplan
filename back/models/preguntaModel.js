@@ -11,7 +11,7 @@ let encuestaSchema = mongoose.Schema({
 	descripcion  : { type : String },
 	pregunta1  	 : { type : String },
 	pregunta2  	 : { type : String },
-	tipo  		 : { type : String },
+	tipo  		 : { type : Boolean },
 	userId     	 : { type: Schema.Types.ObjectId, ref: 'User'}, 
 	planId 		 : { type: Schema.Types.ObjectId, ref: 'Plan'},
 	createdAt  	 : { type: String, default: moment().format('YYYY-MM-DD h:mm') },

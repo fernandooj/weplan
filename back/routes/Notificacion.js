@@ -34,15 +34,15 @@ router.get('/', (req, res)=>{
 		}else{
 			notificacion = notificacion.map((e)=>{
 				return {
-					id 		    : e._id,
-					tipo 		: e.tipo, 
-					activo  	: e.activo,
-					idUser      : e.idUsuarioAsigna._id,
-					nombre    : e.idUsuarioAsigna.nombre,
+					id 	   : e._id,
+					tipo   : e.tipo, 
+					activo : e.activo,
+					idUser : e.idUsuarioAsigna._id,
+					nombre : e.idUsuarioAsigna.nombre,
 					idTipo : e.tipo===1 ?e.idAmigoUser._id 	   :e.tipo===2 ?e.idPlan._id :e.tipo===3 ?e.idItem._id :e.tipo===4 &&e.idItem._id,
 					photo  : e.tipo===1 ?e.idUsuarioAsigna.photo  :e.tipo===2 ?e.idPlan.imagenMiniatura[0] :e.tipo===3 ?e.idItem.imagenMiniatura :e.tipo===4 &&e.idItem.imagenMiniatura,
-					titulo 	    : e.tipo===1 ?e.idUsuarioAsigna.nombre :e.tipo===2 ?e.idPlan.nombre :e.tipo===3 ?e.idItem.titulo :e.tipo===4 &&e.idItem.titulo,
-					token  	 	: e.idUsuarioAsigna.tokenPhone,
+					titulo : e.tipo===1 ?e.idUsuarioAsigna.nombre :e.tipo===2 ?e.idPlan.nombre :e.tipo===3 ?e.idItem.titulo :e.tipo===4 &&e.idItem.titulo,
+					token  : e.idUsuarioAsigna.tokenPhone,
 					////////////////////////////  AMIGOS  ////////////////////////////////////
 					//idAmigoUser : e.idAmigoUser ?e.idAmigoUser._id 				:null,
 
@@ -98,8 +98,20 @@ router.put('/:idNotificacion/:idTipo/:tipo/:idUser', (req,res)=>{
 })
 
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///// 			activo el usuario si es true es que ya son amigos
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const activaAmigoUser =(idTipo, res)=>{
+	amigoUserService.activa(idTipo, (err, asignados)=>{
+		if (err) {
+			res.json({status:'FAIL', err, code:0})    
+		}else{
+			res.json({status:'SUCCESS', asignados, code:1})    
+		}
+	})
+}
+
 const verificaItemAbierto=(usuario, idTipo, id, res, req)=>{
-	 
 	itemServices.getById(idTipo, (err, item)=>{
 		if (err) {
 			console.log(err)
@@ -114,19 +126,6 @@ const verificaItemAbierto=(usuario, idTipo, id, res, req)=>{
 		}
 	})
 }
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///// 			activo el usuario si es true es que ya son amigos
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const activaAmigoUser =(idTipo, res)=>{
-	amigoUserService.activa(idTipo, (err, asignados)=>{
-		if (err) {
-			res.json({status:'FAIL', err, code:0})    
-		}else{
-			res.json({status:'SUCCESS', asignados, code:1})    
-		}
-	})
-}
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////// 			agrego al usuario al item 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -147,7 +146,7 @@ const activaItem =(usuario, idTipo, id, res, req)=>{
 					res.json({status: 'FAIL', err, code:0})
 				}else{
 					//res.json({status:'SUCCESS', asignados, code:1})
-					nuevoPago(req, res, idTipo, req.body.monto)    	
+					nuevoPago(req, res, idTipo, id, req.body.monto)    	
 				}
 			})
 		}
@@ -155,16 +154,17 @@ const activaItem =(usuario, idTipo, id, res, req)=>{
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////// 	CREO UN NUEVO PAGO CUANDO EL USUARIO ACEPTA SER PARTE DEL ITEM
+//////// 	CREO UN NUEVO PAGO CUANDO EL CREADOR DEL ITEM ACEPTA QUE EL OTRO USUARIO SEA PARTE DEL ITEM
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const nuevoPago = (req, res, itemId, montoCreador) =>{
+const nuevoPago = (req, res, itemId, idUser, montoCreador) =>{
 	req.body['abono']=false
 	req.body['activo']=true
 	req.body['metodo']=null
 	req.body['itemId']=itemId
 	req.body['monto']=-(req.body.monto)
 	req.body['descripcion']='pago inicial por inscribirse'
-	pagoServices.create(req.body, req.session.usuario.user._id, req.session.usuario.user._id, (err, pago)=>{
+	//pagoServices.create(req.body, req.session.usuario.user._id, req.session.usuario.user._id, (err, pago)=>{
+	pagoServices.create(req.body, idUser, idUser, (err, pago)=>{
 		if(err){
 			res.json({err})
 		}else{
@@ -275,15 +275,16 @@ const eliminaAmigoUser =(idTipo, res)=>{
 ///// 			saco al usuario del plan
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const eliminaUserPlan =(idTipo, idUser, res)=>{
-	console.log(idTipo)
+	
 	planServices.getByIdPlan(idTipo, (err, plan)=>{
 		if (err) {
 			res.json({status: 'FAIL', err, code:0})
 		}else{
 			let asignados = plan[0].asignados.filter(e=>{
-				if(e._id != idUser) return e 
+				return e != idUser  
 			})
-
+			console.log('------')
+			console.log(asignados)
 			planServices.salir(idTipo, asignados, (err, plan2)=>{
 				if (err) {
 					res.json({status: 'FAIL', err, code:0})

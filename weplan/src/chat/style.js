@@ -601,7 +601,7 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 		borderColor:'#9CB7F5',
 	}
 },{
-	"@media (min-device-width: 320) and (max-device-height: 550)": {
+		"@media (max-device-width: 380)": {
 		btnImagenPlan:{
 			position:'absolute',
 			top:10,

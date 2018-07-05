@@ -31,6 +31,8 @@ class userServices {
 		newUsuario.estado   = "inactivo"
 		newUsuario.tipo	    = "local"
 		newUsuario.acceso   = user.acceso
+		newUsuario.telefono = user.tipo==2 &&user.username
+		newUsuario.email    = user.tipo==1 &&user.username
 		newUsuario.save(callback);	 
 	}
 	facebook(user, callback){
@@ -102,8 +104,8 @@ class userServices {
 	            'nacimiento': 	  user.nacimiento,
 	            'password': 	  newUsuario.generateHash(user.password),
 	            'sexo':       	  user.sexo,
-	            'pais':  	  	  user.pais,
 	            'ciudad':     	  user.ciudad,
+	            'telefono':   	  user.telefono,
 	            'photo':   	  	  ruta,
 	            'updatedAt':      moment().format('YYYY-MM-DD h:mm:ss')
         	}}, callback);
@@ -111,10 +113,9 @@ class userServices {
 			User.findByIdAndUpdate(id._id, {$set: {
 	            'nombre':       user.nombre,
 	            'nacimiento': 	  user.nacimiento,
-	            'password': newUsuario.generateHash(user.password),
 	            'sexo':       	  user.sexo,
-	            'pais':       	  user.pais,
 	            'ciudad':     	  user.ciudad,
+	            'telefono':   	  user.telefono,
 	            'photo':   	  	  ruta,
 	            'updatedAt':      moment().format('YYYY-MM-DD h:mm:ss')
         	}}, callback);
@@ -131,7 +132,7 @@ class userServices {
 		newUsuario.username = user.email
 		newUsuario.email 	= user.email
 		newUsuario.nombre 	= user.nombre
-		newUsuario.password =  newUsuario.generateHash(user.password)
+		newUsuario.password = newUsuario.generateHash(user.password)
 		newUsuario.telefono = user.telefono
 		newUsuario.estado   = user.estado
 		newUsuario.sexo   	= user.sexo

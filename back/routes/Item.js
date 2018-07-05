@@ -35,7 +35,6 @@ router.get('/', function(req, res){
 /////////////////////////	 GET BY USER/PLAN 	///////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 router.get('/:user', (req, res)=>{
-	console.log(req.session.usuario.user._id)
 	let id = req.session.usuario.user._id
 	if (req.params.user=='user') {
 		itemServices.getByidUSer(id, (err, item)=>{
@@ -97,6 +96,72 @@ router.get('/:user', (req, res)=>{
 	}
 })
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////	 GET BY ID ITEM 	 
+///////////////////////////////////////////////////////////////////////////////////////////////
+router.get('/id/:id', (req, res)=>{
+	itemServices.getById(req.params.id, (err, plan)=>{
+		if(err){
+			res.json({err, code:0})
+		}else{
+			res.json({ status: 'SUCCESS', mensaje: plan, total:plan.length, code:1 });				
+		}
+	})
+})
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////		OBTENGO LOS QUE ESTAN EN ESPERA  
+///////////////////////////////////////////////////////////////////////////////////////////////
+router.get('/pendientes/:planId', (req, res)=>{
+	
+	itemServices.getEspera(req.session.usuario.user._id, req.params.planId, (err, pendientes)=>{
+		if(err){
+			res.json({err, code:0})
+		}else{ //
+			pendientes = pendientes.map((e)=>{
+				return{
+					id:e._id,
+					titulo:e.titulo,
+					valor:e.valor,
+					idUsuario:e.userId.userId,
+					nombre:e.userId.nombre,
+					token:e.userId.tokenPhone,
+					imagen:e.imagenResize,
+					deuda:Math.ceil((e.valor/(e.asignados.length+2))/100)*100
+				}
+			})
+			res.json({ status: 'SUCCESS', pendientes, code:1 });				
+		}
+	})
+})
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////		OBTENGO LOS QUE NO ESTAN ASIGNADOS
+///////////////////////////////////////////////////////////////////////////////////////////////
+router.get('/publicados/:planId', (req, res)=>{
+	itemServices.getPublicado(req.session.usuario.user._id, req.params.planId, (err, publicados)=>{
+		if(err){
+			res.json({err, code:0})
+		}else{
+			publicados = publicados.map((e)=>{
+				return{
+					id:e._id,
+					titulo:e.titulo,
+					valor:e.valor,
+					idUsuario:e.userId.userId,
+					nombre:e.userId.nombre,
+					token:e.userId.tokenPhone,
+					imagen:e.imagenResize,
+					deuda:Math.ceil((e.valor/(e.asignados.length+2))/100)*100
+				}
+			})
+			console.log(publicados)
+			res.json({ status: 'SUCCESS', publicados, code:1 });				
+		}
+	})
+})
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////	 GET BY ID ITEM 	///////////////////////////////////////////////
@@ -288,6 +353,95 @@ let createChat = function(req, res, userId, item, imagen){
 			res.json({err, code:0})
 		}else{
 			res.json({ status: 'SUCCESS', item, chat, code:1, imagen,  other:'save chat' });
+		}
+	})
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////// 			agrego al usuario al item 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+router.put('/activar/:idTipo', (req, res)=>{
+	console.log(req.params.idTipo)
+	console.log('---------------')
+	// itemServices.getById(req.params.idTipo, (err, item)=>{
+	// 		let espera = item[0].espera.filter(e=>{
+	// 			return e!=req.session.usuario.user._id
+	// 		})
+	 
+	// 		let asignados = item[0].asignados.concat(req.session.usuario.user._id)
+	// 		itemServices.activaUsuario(req.params.idTipo, espera, asignados, (err, item)=>{
+	// 			if (err) {
+	// 				res.json({status: 'FAIL', err, code:0})
+	// 			}else{
+	// 				//res.json({status:'SUCCESS', asignados, code:1})
+	// 				nuevoPago(req, res, req.params.idTipo, req.body.monto)    	
+	// 			}
+	// 		})
+	 
+	// })
+})
+const activaItem =(usuario, idTipo, id, res, req)=>{
+	
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////// 	CREO UN NUEVO PAGO CUANDO EL USUARIO ACEPTA SER PARTE DEL ITEM
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const nuevoPago = (req, res, itemId, montoCreador) =>{
+	req.body['abono']=false
+	req.body['activo']=true
+	req.body['metodo']=null
+	req.body['itemId']=itemId
+	req.body['monto']=-(req.body.monto)
+	req.body['descripcion']='pago inicial por inscribirse'
+	pagoServices.create(req.body, req.session.usuario.user._id, req.session.usuario.user._id, (err, pago)=>{
+		if(err){
+			res.json({err})
+		}else{
+			//res.json({ status: 'SUCCESS', pago, code:1 });
+			editaPagoCreador(itemId, req.session.usuario.user._id, montoCreador, req.body.monto, res)					
+		}
+	})
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////// 	EDITO AL DUEÑO DEL ITEM, CUANDO EL USUARIO ACEPTA SER PARTE DEL ITEM
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const editaPagoCreador = (itemId, userId, montoCreador, montoAsignado, res)=>{
+	itemServices.getById(itemId, (err, item)=>{
+		if (err) {
+			console.log(err)
+		}else{
+			pagoServices.betyByItemAndUser(itemId, item[0].userId._id, (err, pago)=>{
+				if(err){
+					res.json({err})
+				}else{
+					pagoServices.edit(pago._id, montoCreador, (err, pago2)=>{
+						if (err) {
+							console.log(err)
+						}else{
+							editaPagoAsignados(itemId, item[0].userId._id, montoAsignado, res )
+						}
+					})					
+				}
+			})
+		}
+	})
+}
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////// 	EDITO LOS DEMAS PAGOS DE LOS MIEMBROS DEL ITEM, CUANDO EL USUARIO ACEPTA SER PARTE DEL ITEM
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const editaPagoAsignados = (itemId, userId, monto, res)=>{
+	pagoServices.betyByItemAndUserNotEqual(itemId, userId, (err, pago)=>{
+		if(err){
+			res.json({err})
+		}else{
+			pago.map(e=>{
+				pagoServices.edit(e._id, monto, (err, pago2)=>{
+					//console.log(pago2)
+				})
+			})
+			res.json({ status: 'SUCCESS', pago, code:1 });				
 		}
 	})
 }

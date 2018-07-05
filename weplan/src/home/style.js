@@ -140,7 +140,7 @@ export const HomeStyle = MediaQueryStyleSheet.create({
 		justifyContent: 'center',
 	},	 
 },{
-	"@media (min-device-width: 320) and (max-device-height: 550)": {
+	"@media (max-device-width: 380)": {
 		iconHead:{
 		 	width:35,
 		 	height:35,

@@ -88,7 +88,7 @@ export const LoginStyle = MediaQueryStyleSheet.create({
 	},
 
 },{
- 		"@media (min-device-width: 320) and (max-device-height: 550)": {
+	"@media (max-device-width: 380)": {
  			image:{
 				marginTop:0,
 				marginBottom:0,

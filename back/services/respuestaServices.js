@@ -29,7 +29,6 @@ class respuestaServices{
 
 				////////////////////////////////////  cuenta las respuestas del usuario //////////////////////////
 				respuestaSchema.count({idPregunta: data.idPregunta, userId}).exec((err, totalIdUsuario)=>{
-
 					callback(totalRespuestas, totalValor, totalIdUsuario)
 				});
 			});

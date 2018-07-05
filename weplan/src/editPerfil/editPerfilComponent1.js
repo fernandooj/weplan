@@ -1,5 +1,5 @@
 import React, {Component} 						 from 'react'
-import {View, Text, TouchableOpacity, TextInput, CheckBox, Linking} from 'react-native'
+import {View, Text, TouchableOpacity, TextInput, CheckBox, Linking, Alert} from 'react-native'
 import {LoginStyle} 							 from '../editPerfil/style'
 import Image 									 from 'react-native-scalable-image';
 import axios 									 from 'axios';
@@ -19,7 +19,8 @@ export default class editPerfilComponent1 extends Component{
 		avatarSource: null,
 		videoSource: null,
 		condiciones:false,
-		photo:{}
+		photo:'',
+		password:''
 	  };
 	}
 	componentWillMount(){
@@ -91,40 +92,56 @@ export default class editPerfilComponent1 extends Component{
 		let tipo = 'suscriptor'
 		let pais = 10
 		let password = textPassword
+		
+		let telefono = params.textTelefono
+		let email = params.textEmail
 		let sexo = params.textGenero
 		let data = new FormData();
 	
 		data.append('nombre', nombre);
+		data.append('email', email);
 		data.append('nacimiento', nacimiento);
 		data.append('ciudad', ciudad);
 		data.append('tipo', tipo);
 		data.append('pais', pais);
 		data.append('password', password);
 		data.append('sexo', sexo);
+		data.append('telefono', telefono);
 		data.append('imagen', photo);
 
-		console.log(id)
-		console.log({nombre, nacimiento, ciudad, tipo, pais, password, sexo, data} )
-		  
+ 
+		console.log({photo, nacimiento, ciudad, tipo, pais, password, sexo, telefono, email})
+		if (photo==='' || password=='') {
+			Alert.alert(
+				'Opss!! revisa tus datos que falta algo',
+				'El Avatar y la contraseña son obligatorios',
+			[
+				{text: 'OK', onPress: () => console.log('OK Pressed')},
+			],
+				{ cancelable: false }
+			)
+		}else{
+			axios({
+			  method: 'put', //you can set what request you want to be
+			  url: '/x/v1/user/update/'+id,
+			  data: data,
+			  headers: {
+			   'Accept': 'application/json',
+			    'Content-Type': 'multipart/form-data'
+			  }
+			})
+			.then((res)=>{
+	 
+				if(res.data.status=="SUCCESS"){
+					navigate('editPerfil2')
+				}
+			})
+			.catch((err)=>{
+				console.log(err)
+			})
+		}
 
-		axios({
-		  method: 'put', //you can set what request you want to be
-		  url: '/x/v1/user/update/'+id,
-		  data: data,
-		  headers: {
-		   'Accept': 'application/json',
-		    'Content-Type': 'multipart/form-data'
-		  }
-		})
-		.then((res)=>{
-			console.log(res)
-			if(res.data.status=="SUCCESS"){
-				navigate('editPerfil2')
-			}
-		})
-		.catch((err)=>{
-			console.log(err)
-		})
+		
 	}
 }
 

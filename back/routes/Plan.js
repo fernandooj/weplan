@@ -196,7 +196,7 @@ router.put('/', (req, res)=>{
 })
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///// 			cuando se crea el plan tambien se crea la notificacion 
+///// 			cuando se crea el plan tambien se crea la notificacion  
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const creaNotificacion = (req, res, plan, rutaImagenResize)=>{
 	plan.asignados.map(e=>{
@@ -204,18 +204,18 @@ const creaNotificacion = (req, res, plan, rutaImagenResize)=>{
 			console.log(notificacion)
 		})
 	})
-	res.json({status:'SUCCESS', message: plan, imagen:rutaImagenResize, code:1})    
+	res.json({status:'SUCCESS', message: plan, code:1})    
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/////// MODIFICO LAS IMAGENES SI SE ENVIAN DESDE LA WEB / ACEPTAN VARIAS IMAGENES
+/////// INSERTO UN USUARIO AL PLAN
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.put('/insertar/:planId', (req,res)=>{
 	planServices.getByIdPlan(req.params.planId, (err, plan)=>{
 		if(err) {
 			console.log(err)
 		}else{
-			//agregarUsuarioPlan(req, res, plan[0].asignados)
+			agregarUsuarioPlan(req, res, plan[0].asignados)
 		}
 	})
 })
@@ -225,9 +225,26 @@ const agregarUsuarioPlan =(req, res, planes)=>{
 		if (err) {
 			console.log(err)
 		}else{
-			res.json({ status: 'SUCCESS', plan, code:1 });	
+			console.log(plan)
+			//res.json({ status: 'SUCCESS', plan, code:1 });	
+			creaNotificacionUsuarioChat(req, res, plan )
 		}
 	})
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///// 			funcion cuando inserto un usuario a un plan desde el chat
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const creaNotificacionUsuarioChat = (req, res, plan)=>{
+		notificacionService.create(req.session.usuario.user._id, req.body.id, 2, plan._id, (err, notificacion)=>{
+		if (err) {
+			res.json({status:'FAIL', err, code:0})   
+		}else{
+			res.json({status:'SUCCESS', notificacion, code:1})   
+		}
+	 
+	})
+	 
 }
 
 

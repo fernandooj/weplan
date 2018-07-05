@@ -93,6 +93,7 @@ export default class MapaPlanComponent extends Component{
 							<Image source={require('../agregarAmigos/back.png')} style={CreatePlanStyle.imagenClose} />
 						</TouchableOpacity>
 		          		<GooglePlacesAutocomplete
+		          		 	
 							placeholder='Buscar'
 							minLength={2} // minimum length of text to search
 							autoFocus={true}
@@ -123,9 +124,9 @@ export default class MapaPlanComponent extends Component{
 									color: '#1faadb'
 								},
 							}}
-							currentLocation={false} // Will add a 'Current location' button at the top of the predefined places list
+							currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
 							currentLocationLabel="Current location"
-							nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+							nearbyPlacesAPI='GoogleReverseGeocoding' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
 							GoogleReverseGeocodingQuery={{
 							// available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
 							}}

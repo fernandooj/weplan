@@ -15,6 +15,19 @@ class itemServices {
  	getByPlan(planId, callback){
 		itemSchema.find({planId}).populate('userId').exec(callback)
  	}
+
+ 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 	/////////   obtengo los que estan en estado de espera del usuario logueado
+ 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 	getEspera(userId, planId, callback){
+ 		itemSchema.find({planId, espera:userId}).populate('userId').exec(callback)
+ 	}
+ 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 	/////////   obtengo los que estan no estan ni asignados ni en espera del usuario logueado
+ 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 	getPublicado(userId, planId, callback){
+ 		itemSchema.find({planId}).and([{asignados:{$ne:userId}}, {userId:{$ne:userId}}, {espera:{$ne:userId}}]).populate('userId').exec(callback)
+ 	}
 	create(itemData, id, callback){
 		let item 		 = new itemSchema();
 		item.titulo 	 = itemData.titulo	

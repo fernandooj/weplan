@@ -452,24 +452,35 @@ module.exports = function(app, passport){
     app.put('/x/v1/user/update/:_id', function(req, res, next){
         let ruta = null
         let fullUrl = null
+        console.log(req.body)
         if (req.files) {
-            let extension = req.files.imagen.name.split('.').pop()
-            let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
-            fullUrl = '../../front/docs/public/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
-            ruta = req.protocol+'://'+req.get('Host') + '/public/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
+            if (req.files.imagen!=undefined) {
+                let extension = req.files.imagen.name.split('.').pop()
+                let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
+                fullUrl = '../../front/docs/public/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
+                ruta = req.protocol+'://'+req.get('Host') + '/public/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
+                fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))   
+            }        
         }else{
-            ruta = req.protocol+'://'+req.get('Host') + '/avatar.png'
+            ruta = req.body.photo
         }
-        
 
  
-        userServices.edit(req.body, req.params, ruta, function(err, user){
-            if(!user){
+        userServices.edit(req.body, req.params, ruta, function(err, user1){
+            if(err){
                 res.json({ status: 'FAIL', message: err}) 
             } else{
-                
-                res.json({ status: 'SUCCESS', message: 'Usuario Activado', user: user }); 
-                fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))                
+              
+               
+                userServices.login(user1, (err, user)=>{
+                    console.log(user)
+                    if (!err) {
+                        req.session.usuario = {user:user}
+                        res.json({ status: 'SUCCESS', message: 'Usuario Activado', user }); 
+
+                    }
+                    
+                })       
             }
         }) 
     })

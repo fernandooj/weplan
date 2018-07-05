@@ -186,7 +186,7 @@ export const AjustesStyle = MediaQueryStyleSheet.create({
 	},
 
 },{
-	"@media (min-device-width: 320) and (max-device-height: 550)": {
+		"@media (max-device-width: 380)": {
 		input:{
 			width:230
 		},

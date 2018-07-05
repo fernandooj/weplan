@@ -12,7 +12,6 @@ class amigoUserService{
 			console.log(estado)
 			amigoUser.find().or([{idUsuario, estado},{asignado:idUsuario, estado}]).populate('asignado').populate('idUsuario').exec(callback)
 		}else{
-			console.log('nonono')
 			amigoUser.find().or([{idUsuario},{asignado:idUsuario}]).populate('asignado').populate('idUsuario').exec(callback)
 		}
 

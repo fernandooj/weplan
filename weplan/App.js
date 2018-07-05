@@ -117,7 +117,7 @@ const NavigationApp = StackNavigator({
 },{ headerMode: 'none', transitionConfig })
  
 const NavigationAppLogin = StackNavigator({  
-    Home:          {screen: homeComponent}, 
+    Home:          {screen: perfilComponent}, 
     Login:         {screen: LoginComponent },
     Registro:      {screen: RegistroComponent },
     insertCode:    {screen: insertCodeComponent },
@@ -147,10 +147,14 @@ const NavigationAppLogin = StackNavigator({
 
 class Splash extends Component <{}>{
   render(){
+    var num = Math.floor(Math.random() * 3);
+    console.log(`${URL}public/img/splash${num}.png`)
     return (<Image 
            style={styles.image}
            resizeMode={'contain'}   /* <= changed  */
-           source={require('./splash.png')} />)
+           // source={require('./splash2.png')}
+           source={{uri:`${URL}public/img/splash2.png`}}
+          />)
   }    
 }
 
@@ -195,7 +199,7 @@ export default class App extends Component<{}> {
 const styles = StyleSheet.create({
     image: {
         flex: 1,
-        alignSelf: 'stretch',
+        
         width: win.width,
         height: win.height,
     }

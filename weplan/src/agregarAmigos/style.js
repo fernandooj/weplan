@@ -118,7 +118,7 @@ export const AmigosStyle = MediaQueryStyleSheet.create({
  		color:'white'
  	}
 },{
-	"@media (min-device-width: 320) and (max-device-height: 550)": {
+		"@media (max-device-width: 380)": {
 		imagenTitulo:{
 			width:35,
 			height:35,

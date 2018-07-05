@@ -31,6 +31,8 @@ export default class ChatComponent extends Component{
 			showPdf:false,
 			usuariosAsignados:[],
 			planAsignados:[],
+			asignados:[],
+			misUsuarios:[],
 			
 		}
 		this.onReceivedMessage = this.onReceivedMessage.bind(this);
@@ -38,7 +40,7 @@ export default class ChatComponent extends Component{
 
 	componentWillMount(){
 		let planId = this.props.navigation.state.params	
-		// let planId = '5b366b4b320e942c37e6e43e'	 
+		// let planId = '5b3a64b569c2d44a5a5812a8'	 
 		console.log(planId) 
 		this.socket = SocketIOClient(URL);
 		this.socket.on('userJoined'+planId, this.onReceivedMessage);
@@ -59,7 +61,7 @@ export default class ChatComponent extends Component{
 		/////////////////	OBTENGO TODOS LOS MENSAJES Y EL PLAN
 		axios.get(`/x/v1/cha/chat/chatPlan/${planId}`)
 		.then(e=>{
- 			console.log(e.data)
+ 			console.log(e.data.chat)
 			this.setState({mensajes:e.data.chat, planId, imagen: e.data.plan.imagenResize[0], nombrePlan: e.data.plan.nombre, planId, planAsignados:e.data.plan.asignados, plan:e.data.plan})
 			
 			// e.data.chat.map(data=>{
@@ -336,7 +338,7 @@ export default class ChatComponent extends Component{
 									</TouchableOpacity>
 									{
 										plan.idUsuario._id === id && !e.estaPlan && e.contactoId !=id
-										&&<TouchableOpacity onPress={()=>this.agregarUsuarioPlan(e.contactoId, e.id)}>
+										&&<TouchableOpacity onPress={()=>this.agregarUsuarioPlan(e.contactoId, e.id, e.cToken)}>
 											<Text style={ChatStyle.cTextBotones}>Agregar al plan</Text>
 										</TouchableOpacity>
 									}
@@ -432,31 +434,32 @@ export default class ChatComponent extends Component{
 	}
 
 
-	agregarUsuarioPlan(id, idChat){
-		console.log(idChat)
+	agregarUsuarioPlan(id, idChat, token){
+ 		const {imagen, nombrePlan} = this.state
 		let mensajes = this.state.mensajes.filter(e=>{
-			if(e.id=idChat) e.estaPlan=true
-			return e.id
+			if(e.id==idChat) e.estaPlan=true
+			return e
 		})
-		console.log(mensajes)
-		this.setState({mensajes})
+ 
 		axios.put(`/x/v1/pla/plan/insertar/${this.state.planId}`, {id})
-      .then(res=>{      
-      	if(res.data.code==1){ 
-      		this.setState({mensajes})
+      	.then(res=>{      
+      		console.log(res.data)
+	      	if(res.data.code==1){ 
+	      		this.setState({mensajes})
+	      		sendRemoteNotification(2, token, 'misPlanes', 'Te han agregado a un plan', `, Te agrego a ${nombrePlan}`, imagen)
 			}else{
-			Alert.alert(
-				'Opss!! revisa tus datos que falta algo',
-				'',
-			[
-				{text: 'OK', onPress: () => console.log('OK Pressed')},
-			],
-				{ cancelable: false }
-			)
-		}
+				Alert.alert(
+					'Opss!! revisa tus datos que falta algo',
+					'',
+				[
+					{text: 'OK', onPress: () => console.log('OK Pressed')},
+				],
+					{ cancelable: false }
+				)
+			}
      	})
-      .catch(err=>{
-      	console.log(err)
+      	.catch(err=>{
+      		console.log(err)
      	})
 	}
 	 
@@ -487,7 +490,11 @@ export default class ChatComponent extends Component{
 				{adjuntarAmigos &&<AgregarAmigosComponent 
 					                titulo='Enviar Contacto'
 					                close={(e)=>this.setState({asignados:[], usuariosAsignados:[], adjuntarAmigos:false})} 
-					                updateStateAsignados={(asignados, usuariosAsignados)=>{this.setState({adjuntarAmigos:false, showOpciones:false});pedirContacto(asignados, usuariosAsignados, this.state.planId)}}
+					                updateStateAsignados={(asignados, usuariosAsignados, misUsuarios)=>{this.setState({adjuntarAmigos:false, showOpciones:false});pedirContacto(asignados, usuariosAsignados, this.state.planId)}}
+					                //updateStateAsignados={(asignados, usuariosAsignados, misUsuarios)=>this.setState({asignados, usuariosAsignados, misUsuarios, adjuntarAmigos:false})}
+					                asignados={this.state.asignados}
+								    usuariosAsignados={this.state.usuariosAsignados}
+								    misUsuarios={this.state.misUsuarios}
 				                /> }
 
 			{mapa &&<MapaPlanComponent 
@@ -547,6 +554,7 @@ export default class ChatComponent extends Component{
 		console.log(idItem)
 		axios.put('x/v1/ite/item', {idItem})
 		.then(e=>{
+
 			if (e.data.code==1) {
 				sendRemoteNotification(4, token, "notificacion", 'Quieren acceder a un item', `, quiere acceder a ${titulo}`, imagen)
 				let mensajes = this.state.mensajes.filter(e=>{
