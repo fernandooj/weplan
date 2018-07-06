@@ -125,6 +125,9 @@ class chatServices{
 	 				preguntaIdRespuesta:'$RespuestaData.idPregunta',
 	 				totalUno:{
 	 					$cond:[{$eq:['$RespuestaData.valor',1]},1,0]
+	 				},
+	 				totalRepuestas:{
+	 					$cond:[{$gte:['$RespuestaData.valor',0]},1,0]
 	 				}
 	 			}
 	 		},
@@ -136,14 +139,14 @@ class chatServices{
 			        _id:
 				        {
 				        	id:'$_id',
-				        	idItem: '$itemId',
+				        	encuestaId: '$encuestaId',
 				        	//abono:  "$abono",
 				        },
 			         data: {
                      $addToSet: {info:[{mensaje:"$mensaje", fecha: "$createdAt", documento: "$documento", lat:"$lat", lng:"$lng", tipo:"$tipo", nombre:"$nombre", photo:"$photo", token:"$token", itemTitulo:"$itemTitulo", asignados:"$asignados", espera:"$espera", itemDescripcion:"$itemDescripcion", itemValor:"$itemValor", encuestaTitulo:"$encuestaTitulo", encuestaId:"$encuestaId", encuestaUserId:"$encuestaUserId", encuestaDescripcion:"$encuestaDescripcion", tipoEncuesta:"$tipoEncuesta", pregunta1:"$pregunta1", pregunta2:"$pregunta2", valorRespuesta:"$valorRespuesta", cNombre:"$cNombre", cPhoto:"$cPhoto", cToken:"$cToken", contactoId:"$contactoId", userIdRespuesta:"$userIdRespuesta", preguntaIdRespuesta:'$RespuestaData.idPregunta', userId:'$userId'}]}
                         //$addToSet: {info:[{titulo:'$titulo', userId:'$userId', abierto:'$abierto'}]},
                   },
-			         totalPreguntas:{ $sum :1},
+			         totalRepuestas:{$sum:"$totalRepuestas"},
 			         totalUno:{$sum:"$totalUno"}
 			    }
 			},

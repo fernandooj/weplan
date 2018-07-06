@@ -216,7 +216,7 @@ export default class ChatComponent extends Component{
 							<Text style={ChatStyle.pTitulo}>{e.eTitulo}</Text>
 							<View style={ChatStyle.contenedorDescripcion}>
 								<Image source={require('../encuesta/item4.png')} style={ChatStyle.decoracion} />
-								<Text style={ChatStyle.pDescripcion}></Text>
+								<Text style={ChatStyle.pDescripcion}>{e.asignados.includes(id) ?'si' :'no'}</Text>
 								<Image source={require('../encuesta/item4.png')} style={ChatStyle.decoracion} />
 							</View>
 						</View>
@@ -225,9 +225,9 @@ export default class ChatComponent extends Component{
 							{
 								e.tipoEncuesta==1 
 								?<View style={ChatStyle.contenedorOpciones}>
-								 	<TouchableOpacity onPress={!e.asignados.includes(id) || e.encuestaUserId==id  ?()=> this.handleSubmitPregunta(e.encuestaId, 1, e.id) :null} style={ChatStyle.btnInteres} >
+								 	<TouchableOpacity onPress={!e.asignados.includes(id)   ?()=> this.handleSubmitPregunta(e.encuestaId, 1, e.id) :null} style={ChatStyle.btnInteres} >
 										{
-											e.asignados.includes(id) || e.encuestaUserId==id
+											e.asignados.includes(id) 
 											?<View style={ChatStyle.contenedorRespuesta}>
 												<Image source={{uri:e.pregunta1}} style={ChatStyle.imagenRespuesta} />
 												<Text style={ChatStyle.textoPregunta}>{e.respuesta1} %</Text>
@@ -235,9 +235,9 @@ export default class ChatComponent extends Component{
 											:<Image source={{uri:e.pregunta1}} style={ChatStyle.imagenPregunta} />
 										}
 									</TouchableOpacity>
-									<TouchableOpacity onPress={!e.asignados.includes(id) || e.encuestaUserId==id ?()=> this.handleSubmitPregunta(e.encuestaId, 2, e.id) :null} style={ChatStyle.btnInteres} >
+									<TouchableOpacity onPress={!e.asignados.includes(id)  ?()=> this.handleSubmitPregunta(e.encuestaId, 2, e.id) :null} style={ChatStyle.btnInteres} >
 										{
-											e.asignados.includes(id) || e.encuestaUserId==id  
+											e.asignados.includes(id)   
 											?<View style={ChatStyle.contenedorRespuesta}>
 												<Image source={{uri:e.pregunta2}} style={ChatStyle.imagenRespuesta} />
 												<Text style={ChatStyle.textoPregunta}>{e.respuesta2} %</Text>
@@ -248,16 +248,16 @@ export default class ChatComponent extends Component{
 								 </View> 
 								:e.tipoEncuesta==2
 								?<View style={ChatStyle.contenedorOpciones}>
-									<TouchableOpacity onPress={!e.asignados.includes(id) || e.encuestaUserId==id ?()=> this.handleSubmitPregunta(e.encuestaId, 1, e.id) :null} style={ChatStyle.btnInteres} >
+									<TouchableOpacity onPress={!e.asignados.includes(id)  ?()=> this.handleSubmitPregunta(e.encuestaId, 1, e.id) :null} style={ChatStyle.btnInteres} >
 										{
-											e.asignados.includes(id) || e.encuestaUserId==id  
+											e.asignados.includes(id)   
 											?<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.respuesta1} %</Text></View> 
 											:<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.pregunta1}</Text></View> 
 										}
 									</TouchableOpacity>
-									<TouchableOpacity onPress={!e.asignados.includes(id) || e.encuestaUserId==id ?()=> this.handleSubmitPregunta(e.encuestaId, 2, e.id) :null} style={ChatStyle.btnInteres} >
+									<TouchableOpacity onPress={!e.asignados.includes(id)  ?()=> this.handleSubmitPregunta(e.encuestaId, 2, e.id) :null} style={ChatStyle.btnInteres} >
 								  		{
-											e.asignados.includes(id) || e.encuestaUserId==id  
+											e.asignados.includes(id)   
 											?<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.respuesta2} %</Text></View> 
 											:<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.pregunta2}</Text></View> 
 										}
@@ -265,9 +265,9 @@ export default class ChatComponent extends Component{
 								</View> 
 								:e.tipoEncuesta==3
 								?<View style={ChatStyle.contenedorOpciones}>
-									<TouchableOpacity onPress={!e.asignados.includes(id) || e.encuestaUserId==id ?()=> this.handleSubmitPregunta(e.encuestaId, 1, e.id) :null} style={ChatStyle.btnInteres} >
+									<TouchableOpacity onPress={!e.asignados.includes(id) ?()=> this.handleSubmitPregunta(e.encuestaId, 1, e.id) :null} style={ChatStyle.btnInteres} >
 										{
-											e.asignados.includes(id) || e.encuestaUserId==id  
+											e.asignados.includes(id)  
 											?<View style={ChatStyle.contenedorPregunta}>
 												<Image source={{uri:e.pregunta1}} style={ChatStyle.imagenRespuesta} />
 												<Text style={ChatStyle.textoPregunta}>{e.respuesta1} %</Text>
@@ -275,25 +275,25 @@ export default class ChatComponent extends Component{
 											:<Image source={{uri:e.pregunta1}} style={ChatStyle.imagenPregunta} />
 										}
 									</TouchableOpacity>
-									<TouchableOpacity onPress={!e.asignados.includes(id) || e.encuestaUserId==id ?()=> this.handleSubmitPregunta(e.encuestaId, 2, e.id) :null} style={ChatStyle.btnInteres} >
+									<TouchableOpacity onPress={!e.asignados.includes(id) ?()=> this.handleSubmitPregunta(e.encuestaId, 2, e.id) :null} style={ChatStyle.btnInteres} >
 								  		{
-											e.asignados.includes(id) || e.encuestaUserId==id  
+											e.asignados.includes(id)  
 											?<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.respuesta2} %</Text></View> 
 											:<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.pregunta2}</Text></View> 
 										}
 									</TouchableOpacity>
 								</View> 
 								:<View style={ChatStyle.contenedorOpciones}>
-									<TouchableOpacity onPress={!e.asignados.includes(id) || e.encuestaUserId==id ?()=> this.handleSubmitPregunta(e.encuestaId, 1, e.id) :null} style={ChatStyle.btnInteres} >
+									<TouchableOpacity onPress={!e.asignados.includes(id) ?()=> this.handleSubmitPregunta(e.encuestaId, 1, e.id) :null} style={ChatStyle.btnInteres} >
 										{
-											e.asignados.includes(id) || e.encuestaUserId==id  
+											e.asignados.includes(id)  
 											?<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.respuesta1} %</Text></View> 
 											:<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.pregunta1}</Text></View> 
 										}
 									</TouchableOpacity>
-									<TouchableOpacity onPress={!e.asignados.includes(id) || e.encuestaUserId==id ?()=> this.handleSubmitPregunta(e.encuestaId, 2, e.id) :null} style={ChatStyle.btnInteres} >
+									<TouchableOpacity onPress={!e.asignados.includes(id) ?()=> this.handleSubmitPregunta(e.encuestaId, 2, e.id) :null} style={ChatStyle.btnInteres} >
 								  		{
-											e.asignados.includes(id) || e.encuestaUserId==id  
+											e.asignados.includes(id)  
 											?<View style={ChatStyle.contenedorPregunta}>
 												<Image source={{uri:e.pregunta2}} style={ChatStyle.imagenRespuesta} />
 												<Text style={ChatStyle.textoPregunta}>{e.respuesta2} %</Text>

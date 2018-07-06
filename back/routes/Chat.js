@@ -25,7 +25,11 @@ router.get('/chatPlan/:id', (req, res)=>{
 				if (err2) {
 					res.json({status:'FAIL', err, code:0})   
 				}else{
-					
+					let arrayIdPreguntas = []
+					chat[0].data.filter(e=>{
+						arrayIdPreguntas.push(e.info[0].userIdRespuesta)
+					})
+					//let asignado = isInArray(req.session.usuario.user._id, arrayIdPreguntas)
 					chat = chat.map(e=>{
 						// return{
 						// 	id           : e._id,
@@ -73,13 +77,17 @@ router.get('/chatPlan/:id', (req, res)=>{
 						// 	estaPlan: isInArray(e.tipo==4 &&e.contactoId._id, plan[0].asignados)
 						// 	//estaPlan: plan[0].asignados.includes(e.contactoId &&e.contactoId._id)
 						// }
-						let porcentaje2 = (e.totalUno*100)/e.totalPreguntas
+						let porcentaje2 = (e.totalUno*100)/e.totalRepuestas
 						let porcentaje1 = 100-porcentaje2
 						let total1=e.totalUno
-						let total2=e.totalPreguntas - e.totalUno
+						let total2=e.totalRepuestas - e.totalUno
 						porcentaje1 = Math.round(porcentaje1 * 100) / 100
 						porcentaje2 = Math.round(porcentaje2 * 100) / 100
-						
+						let asignados = e.data.map(e=>{
+							// arrayIdPreguntas.push(e.info[0].userIdRespuesta)
+							return e.info[0].userIdRespuesta
+						})
+						asignados.push(e.data[0].info[0].encuestaUserId)
 						return{
 							id           : e.data[0].info[0].encuestaId,
 							userId       : e.data[0].info[0].userId,
@@ -99,12 +107,15 @@ router.get('/chatPlan/:id', (req, res)=>{
 							eTitulo		 : e.data[0].info[0].encuestaTitulo,
 							pregunta1	 : e.data[0].info[0].pregunta1,
 							pregunta2	 : e.data[0].info[0].pregunta2,
-							respuesta1   :porcentaje1,
-							respuesta2   :porcentaje2,
+							respuesta1   : porcentaje1,
+							respuesta2   : porcentaje2,
 							porcentaje1,
 							porcentaje2,
-							asignados     : e.data[0].info[0].userIdRespuesta,
-							asignado     : e.data[0].info[0].encuestaUserId == req.session.usuario.user._id || e.data[0].info[0].userIdRespuesta == req.session.usuario.user._id ?true :false,
+							asignados      ,
+							encuestaUserId : e.data[0].info[0].encuestaUserId,
+							// asignado       : isInArray('5aec2e62de7fa7694e1a1f3a', asignados),
+							id : req.session.usuario.user._id,
+							// asignado     : arrayIdPreguntas.includes(req.session.usuario.user._id),
 
 							//////////////////////////////////////////////////////////////////////////////
 							//////////////////////////////// contacto   //////////////////////////////////
@@ -117,9 +128,10 @@ router.get('/chatPlan/:id', (req, res)=>{
 					})
 
 					 
-			 		console.log(chat)
+			 		 
+			 		 
 					
-					res.json({status:'SUCCESS', chat, plan:plan[0], total:chat.length, code:1}) 
+					res.json({status:'SUCCESS', chat, arrayIdPreguntas,  plan:plan[0], total:chat.length, code:1}) 
 
 
 				}
@@ -129,7 +141,8 @@ router.get('/chatPlan/:id', (req, res)=>{
 }) 
 
 function isInArray(value, array) {
-  return array.indexOf(value) > -1;
+	console.log({value,array})
+  	return array.indexOf(value) > -1;
 }
 
 router.post('/', (req, res)=>{

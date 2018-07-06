@@ -204,7 +204,7 @@ const creaNotificacion = (req, res, plan, rutaImagenResize)=>{
 			console.log(notificacion)
 		})
 	})
-	res.json({status:'SUCCESS', message: plan, code:1})    
+	res.json({status:'SUCCESS', message: plan, rutaImagenResize, code:1})    
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -24,17 +24,16 @@ router.get('/asignados/:estado', (req, res)=>{
 			res.json({status:'FAIL', err, code:0})    
 		}else{
 			let idUsuario = req.session.usuario.user._id
-			// asignados=asignados.map((e)=>{
-			// 	return {
-			// 		id      : e.asignado._id==idUsuario ?e.idUsuario._id      :e.asignado._id,
-			// 		username: e.asignado._id==idUsuario ?e.idUsuario.username :e.asignado.username,
-			// 		photo   : e.asignado._id==idUsuario ?e.idUsuario.photo    :e.asignado.photo,
-			// 		nombre  : e.asignado._id==idUsuario ?e.idUsuario.nombre   :e.asignado.nombre,
-			// 		token   : e.asignado._id==idUsuario ?e.idUsuario.tokenPhone   :e.asignado.tokenPhone,
-			// 		estado  : e.estado,	
-			// 	}
-			// })
-			console.log(asignados)
+			asignados=asignados.map((e)=>{
+				return {
+					id      : e.asignado &&e.asignado._id==idUsuario &&e.idUsuario?e.idUsuario._id          :e.asignado &&e.asignado._id,
+					username: e.asignado &&e.asignado._id==idUsuario &&e.idUsuario?e.idUsuario.username     :e.asignado &&e.asignado.username,
+					photo   : e.asignado &&e.asignado._id==idUsuario &&e.idUsuario?e.idUsuario.photo        :e.asignado &&e.asignado.photo,
+					nombre  : e.asignado &&e.asignado._id==idUsuario &&e.idUsuario?e.idUsuario.nombre   	   :e.asignado &&e.asignado.nombre,
+					token   : e.asignado &&e.asignado._id==idUsuario &&e.idUsuario?e.idUsuario.tokenPhone   :e.asignado &&e.asignado.tokenPhone,
+					estado  : e.estado,	
+				}
+			})
 			res.json({status:'SUCCESS', asignados, code:1})    
 		}
 	})

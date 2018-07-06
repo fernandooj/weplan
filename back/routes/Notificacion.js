@@ -37,12 +37,12 @@ router.get('/', (req, res)=>{
 					id 	   : e._id,
 					tipo   : e.tipo, 
 					activo : e.activo,
-					idUser : e.idUsuarioAsigna._id,
-					nombre : e.idUsuarioAsigna.nombre,
-					idTipo : e.tipo===1 ?e.idAmigoUser._id 	   :e.tipo===2 ?e.idPlan._id :e.tipo===3 ?e.idItem._id :e.tipo===4 &&e.idItem._id,
-					photo  : e.tipo===1 ?e.idUsuarioAsigna.photo  :e.tipo===2 ?e.idPlan.imagenMiniatura[0] :e.tipo===3 ?e.idItem.imagenMiniatura :e.tipo===4 &&e.idItem.imagenMiniatura,
-					titulo : e.tipo===1 ?e.idUsuarioAsigna.nombre :e.tipo===2 ?e.idPlan.nombre :e.tipo===3 ?e.idItem.titulo :e.tipo===4 &&e.idItem.titulo,
-					token  : e.idUsuarioAsigna.tokenPhone,
+					idUser : e.idUsuarioAsigna &&e.idUsuarioAsigna._id,
+					nombre : e.idUsuarioAsigna &&e.idUsuarioAsigna.nombre,
+					idTipo : e.idAmigoUser ?e.idAmigoUser._id 	     :e.idPlan ?e.idPlan._id 				:e.idItem ?e.idItem._id 			:e.idItem===4 &&e.idItem._id,
+					photo  : e.idAmigoUser ?e.idUsuarioAsigna.photo  :e.idPlan ?e.idPlan.imagenMiniatura[0] :e.idItem ?e.idItem.imagenMiniatura :e.idItem===4 &&e.idItem.imagenMiniatura,
+					titulo : e.idAmigoUser ?e.idUsuarioAsigna.nombre :e.idPlan ?e.idPlan.nombre 			:e.idItem ?e.idItem.titulo 			:e.idItem===4 &&e.idItem.titulo,
+					token  : e.idUsuarioAsigna &&e.idUsuarioAsigna.tokenPhone,
 					////////////////////////////  AMIGOS  ////////////////////////////////////
 					//idAmigoUser : e.idAmigoUser ?e.idAmigoUser._id 				:null,
 
@@ -59,9 +59,9 @@ router.get('/', (req, res)=>{
 
 				}
 			})
+			res.json({status:'SUCCESS', notificacion, code:1})   
 		}
-		console.log(notificacion)
-		res.json({status:'SUCCESS', notificacion, code:1})    
+		 
 	})
 })
 
