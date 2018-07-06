@@ -46,7 +46,7 @@ export default class createPlanComponent extends Component{
 	}
 
 	componentWillMount(){
-		console.log(this.props.navigation.state.params)
+		console.log(this.props.navigation.state.params) 
 		if (this.props.navigation.state.params) {
 			axios.get('/x/v1/pla/plan/getbyid/'+this.props.navigation.state.params)
 			.then((e)=>{
@@ -92,7 +92,7 @@ export default class createPlanComponent extends Component{
 	render(){
 		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy} = this.state
 		const {navigate} = this.props.navigation
-		console.log(fechaHoy)
+
 		return (
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} > 
 				<CabezeraComponent navigate={navigate} url={'inicio'} parameter={this.state.planId} />
@@ -107,7 +107,7 @@ export default class createPlanComponent extends Component{
 							underlineColorAndroid='transparent'
 							placeholder="NOMBRE DE TU PLAN"
 							placeholderTextColor="#8F9093" 
-							maxLength={20}
+							maxLength={30}
 					    />
 					</View>
 					:<View style={CreatePlanStyle.encabezadoPlan2}>
@@ -323,7 +323,7 @@ export default class createPlanComponent extends Component{
 		lng 		= cargaPlan.lng ?cargaPlan.lng :lng
 		fechaLugar  = cargaPlan.fechaLugar ?cargaPlan.fechaLugar :fechaLugar
 		imagen 		= cargaPlan.ImagenResize ?cargaPlan.ImagenResize[0] :imagen
-		console.log(usuariosAsignados)
+
 
 		if (!cargaPlan) {
 			let data = new FormData();
@@ -346,7 +346,7 @@ export default class createPlanComponent extends Component{
 						console.log(res.data)
 						if(res.data.status=="SUCCESS"){
 						usuariosAsignados.map(e=>{
-							sendRemoteNotification(2, e.token, 'misPlanes', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, res.data.imagen[0])
+							sendRemoteNotification(2, e.token, 'misPlanes', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, res.data.rutaImagenResize[0])
 						})
 							navigate('chat', id)
 						}
