@@ -25,11 +25,8 @@ router.get('/chatPlan/:id', (req, res)=>{
 				if (err2) {
 					res.json({status:'FAIL', err, code:0})   
 				}else{
-					let arrayIdPreguntas = []
-					chat[0].data.filter(e=>{
-						arrayIdPreguntas.push(e.info[0].userIdRespuesta)
-					})
-					//let asignado = isInArray(req.session.usuario.user._id, arrayIdPreguntas)
+					 
+					console.log(chat)
 					chat = chat.map(e=>{
 						// return{
 						// 	id           : e._id,
@@ -89,7 +86,7 @@ router.get('/chatPlan/:id', (req, res)=>{
 						})
 						asignados.push(e.data[0].info[0].encuestaUserId)
 						return{
-							id           : e.data[0].info[0].encuestaId,
+							id           : e._id.id,
 							userId       : e.data[0].info[0].userId,
 							nombre 		 : e.data[0].info[0].nombre,
 							photo 		 : e.data[0].info[0].photo,
@@ -114,7 +111,7 @@ router.get('/chatPlan/:id', (req, res)=>{
 							asignados      ,
 							encuestaUserId : e.data[0].info[0].encuestaUserId,
 							// asignado       : isInArray('5aec2e62de7fa7694e1a1f3a', asignados),
-							id : req.session.usuario.user._id,
+							 
 							// asignado     : arrayIdPreguntas.includes(req.session.usuario.user._id),
 
 							//////////////////////////////////////////////////////////////////////////////
@@ -131,7 +128,7 @@ router.get('/chatPlan/:id', (req, res)=>{
 			 		 
 			 		 
 					
-					res.json({status:'SUCCESS', chat, arrayIdPreguntas,  plan:plan[0], total:chat.length, code:1}) 
+					res.json({status:'SUCCESS', chat,  plan:plan[0], total:chat.length, code:1}) 
 
 
 				}

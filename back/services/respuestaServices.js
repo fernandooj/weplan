@@ -14,7 +14,7 @@ class respuestaServices{
 	}
 	create(data, id, callback){
 		var respuesta = new respuestaSchema()
-		respuesta.idPregunta= data.idPregunta
+		respuesta.idEncuesta= data.idEncuesta
 		respuesta.userId= id
 		respuesta.valor= data.valor
 		respuesta.save(callback)

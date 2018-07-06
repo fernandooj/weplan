@@ -7,7 +7,7 @@ let moment   = require('moment');
 
 
 let respuestaSchema = mongoose.Schema({
-	idPregunta : { type: Schema.Types.ObjectId, ref: 'Pregunta'}, 
+	idEncuesta : { type: Schema.Types.ObjectId, ref: 'Pregunta'}, 
 	userId     : { type: Schema.Types.ObjectId, ref: 'User'},
 	valor      : { type : Number },
 	createdAt  : { type: String, default: moment().format('YYYY-MM-DD h:mm') },

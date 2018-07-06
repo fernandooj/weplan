@@ -76,7 +76,7 @@ class chatServices{
  		      $lookup:{
  		         from:"respuestas",
  		         localField:'encuestaId',
- 		         foreignField:"idPregunta", 
+ 		         foreignField:"idEncuesta", 
  		         as:"RespuestaData"
  		      }
 	 		}, 
@@ -122,7 +122,7 @@ class chatServices{
 	 				////// respuesta de cada encuesta
 	 				valorRespuesta:'$RespuestaData.valor',
 	 				userIdRespuesta:'$RespuestaData.userId',
-	 				preguntaIdRespuesta:'$RespuestaData.idPregunta',
+	 				preguntaIdRespuesta:'$RespuestaData.idEncuesta',
 	 				totalUno:{
 	 					$cond:[{$eq:['$RespuestaData.valor',1]},1,0]
 	 				},
@@ -143,7 +143,7 @@ class chatServices{
 				        	//abono:  "$abono",
 				        },
 			         data: {
-                     $addToSet: {info:[{mensaje:"$mensaje", fecha: "$createdAt", documento: "$documento", lat:"$lat", lng:"$lng", tipo:"$tipo", nombre:"$nombre", photo:"$photo", token:"$token", itemTitulo:"$itemTitulo", asignados:"$asignados", espera:"$espera", itemDescripcion:"$itemDescripcion", itemValor:"$itemValor", encuestaTitulo:"$encuestaTitulo", encuestaId:"$encuestaId", encuestaUserId:"$encuestaUserId", encuestaDescripcion:"$encuestaDescripcion", tipoEncuesta:"$tipoEncuesta", pregunta1:"$pregunta1", pregunta2:"$pregunta2", valorRespuesta:"$valorRespuesta", cNombre:"$cNombre", cPhoto:"$cPhoto", cToken:"$cToken", contactoId:"$contactoId", userIdRespuesta:"$userIdRespuesta", preguntaIdRespuesta:'$RespuestaData.idPregunta', userId:'$userId'}]}
+                     $addToSet: {info:[{mensaje:"$mensaje", fecha: "$createdAt", documento: "$documento", lat:"$lat", lng:"$lng", tipo:"$tipo", nombre:"$nombre", photo:"$photo", token:"$token", itemTitulo:"$itemTitulo", asignados:"$asignados", espera:"$espera", itemDescripcion:"$itemDescripcion", itemValor:"$itemValor", encuestaTitulo:"$encuestaTitulo", encuestaId:"$encuestaId", encuestaUserId:"$encuestaUserId", encuestaDescripcion:"$encuestaDescripcion", tipoEncuesta:"$tipoEncuesta", pregunta1:"$pregunta1", pregunta2:"$pregunta2", valorRespuesta:"$valorRespuesta", cNombre:"$cNombre", cPhoto:"$cPhoto", cToken:"$cToken", contactoId:"$contactoId", userIdRespuesta:"$userIdRespuesta", preguntaIdRespuesta:'$RespuestaData.idEncuesta', userId:'$userId'}]}
                         //$addToSet: {info:[{titulo:'$titulo', userId:'$userId', abierto:'$abierto'}]},
                   },
 			         totalRepuestas:{$sum:"$totalRepuestas"},
