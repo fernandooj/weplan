@@ -60,17 +60,9 @@ let totales = (req, res)=>{
 		porcentaje2 = Math.round(porcentaje2 * 100) / 100
 		res.json({ status: 'SUCCESS', totalRespuestas, total1, total2, porcentaje1, porcentaje2, code:1 });
 	})
-		//editaRespuesta(req, res)
+ 
 }
-// let editaRespuesta = (req, res)=>{
-// 	chatServices.innactiva(req.body.idChat, (err, chat)=>{
-// 		if (err) {
-// 			res.json({status:'FAIL', err, code:0})   
-// 		}else{
-			 
-// 		}
-// 	})
-// }
+ 
  
 
 module.exports = router;

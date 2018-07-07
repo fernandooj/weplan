@@ -13,9 +13,8 @@ export default class encuestaComponent extends Component{
 	state={
 		show:false,
 		misEncuestas:[],
-		encuesta:[],
- 
-		render:1
+		encuestasPublicadas:[],
+		render:0
 	}
 	componentWillMount(){
 		let planId = this.props.navigation.state.params	
@@ -23,85 +22,148 @@ export default class encuestaComponent extends Component{
  
 		axios.get('/x/v1/enc/encuesta/'+planId)
 		.then(e=>{
-			console.log(e.data)
-			this.setState({misEncuestas:e.data.encuesta, id : 100, planId})
+			this.setState({misEncuestas:e.data.encuesta, planId})
 		})		 
 		.catch(err=>{
 			console.log(err)
 		})
  
-		// axios.get('/x/v1/ite/item/pendientes/'+planId)
-		// .then(e=>{
-		// 	this.setState({articulosPendientes:e.data.pendientes})
-		// })		 
-		// .catch(err=>{
-		// 	console.log(err)
-		// })
- 
-		// axios.get('/x/v1/ite/item/publicados/'+planId)
-		// .then(e=>{
-		// 	this.setState({articulosPublicados:e.data.publicados})
-		// })		 
-		// .catch(err=>{
-		// 	console.log(err)
-		// })
- 
+		axios.get('/x/v1/enc/encuesta/publicados/'+planId)
+		.then(e=>{
+			this.setState({encuestasPublicadas:e.data.encuesta, id:e.data.id})
+		})		 
+		.catch(err=>{
+			console.log(err)
+		})
 	}
 	 
-	 
+	peticiones(render){
+		this.setState({render})
+	}
 	renderAcordeon() {
 		const {render, total}=this.state
+		console.log(this.state.encuestasPublicadas)
 		return (
 			<View>
 				<View style={EncuestaStyle.headerCollapsable}>
-			    	<TouchableOpacity >
+			    	<TouchableOpacity onPress={()=>this.peticiones(render==1 ?0 :1)}>
 			    		<Text style={EncuestaStyle.headerText}><Icon name={render==1 ?'angle-down' :'angle-right'} allowFontScaling style={EncuestaStyle.iconMenu} /> Mis Encuestas</Text>
 			    	</TouchableOpacity>
 			    	{
 			    	 	render==1
-			    	 	&&this.encuestas()
+			    	 	&&this.misEncuestas()
 			    	}
 			  	</View>
 			  	 
 
 			  	<View style={[EncuestaStyle.headerCollapsable, EncuestaStyle.headerCollapsableFirst]}>
-			    	<TouchableOpacity >
-			    		<Text style={[EncuestaStyle.headerText, EncuestaStyle.headerTextFirst]}><Icon name={render==3 ?'angle-down' :'angle-right'} allowFontScaling style={EncuestaStyle.iconMenu} /> Encuestas Publicadas</Text>
+			    	<TouchableOpacity onPress={()=>this.peticiones(render==2 ?0 :2)}>
+			    		<Text style={[EncuestaStyle.headerText, EncuestaStyle.headerTextFirst]}>
+			    			<Icon name={render==3 ?'angle-down' :'angle-right'} allowFontScaling style={EncuestaStyle.iconMenu} /> Encuestas Publicadas
+			    		</Text>
 			    	</TouchableOpacity>
 			    	 {
 			    	 	render==2
-			    	 	&&this.misEncuestas()
+			    	 	&&this.encuestasPublicadas()
 			    	 }
 			  	</View>
 			</View>
 		);
 	}
 	  
-	encuestas(){
-		const {id} = this.state
+	
+	misEncuestas(){
 		return this.state.misEncuestas.map((e, key)=>{
-			let asignado = e.asignados.includes(id)
 			e.respuesta1= e.respuesta1==null ? 0:e.respuesta1  
 			e.respuesta2= e.respuesta2==null ? 0:e.respuesta2  
 			return(
-					<View key={key} style={e.userId== id ?EncuestaStyle.contenedorEncuesta :[EncuestaStyle.contenedorEncuesta, EncuestaStyle.contenedorEncuestaLeft]}>
-						<TouchableOpacity >
-							<Image
-								style={e.userId== id ?EncuestaStyle.pPhoto : [EncuestaStyle.pPhoto, EncuestaStyle.pPhotoLeft]}
-								width={45}
-								height={45}
-								source={{uri: e.photo}}
-						    />
-						</TouchableOpacity>
+					<View key={key} style={EncuestaStyle.contenedorEncuesta}>
 						<View style={EncuestaStyle.contenedorTitulos}>
 							<Text style={EncuestaStyle.pTitulo}>{e.eTitulo}</Text>
 						</View>
-						
 						<View>
 							{
 								e.tipoEncuesta==1 
 								?<View style={EncuestaStyle.contenedorOpciones}>
 								 	<TouchableOpacity  style={EncuestaStyle.btnInteres} >
+										 
+										 <Image source={{uri:e.pregunta1}} style={EncuestaStyle.imagenPregunta} />
+								 
+									</TouchableOpacity>
+									<TouchableOpacity style={EncuestaStyle.btnInteres} >
+										 
+										 <Image source={{uri:e.pregunta2}} style={EncuestaStyle.imagenPregunta} />
+									 
+									</TouchableOpacity>
+								 </View> 
+								:e.tipoEncuesta==2
+								?<View style={EncuestaStyle.contenedorOpciones}>
+									<TouchableOpacity style={EncuestaStyle.btnInteres} >
+										 
+											 <View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta1}</Text></View> 
+										 
+									</TouchableOpacity>
+									<TouchableOpacity style={EncuestaStyle.btnInteres} >
+								  		 
+											 <View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta2}</Text></View> 
+									 
+									</TouchableOpacity>
+								</View> 
+								:e.tipoEncuesta==3
+								?<View style={EncuestaStyle.contenedorOpciones}>
+									<TouchableOpacity style={EncuestaStyle.btnInteres} >
+										 
+											 <Image source={{uri:e.pregunta1}} style={EncuestaStyle.imagenPregunta} />
+										 
+									</TouchableOpacity>
+									<TouchableOpacity style={EncuestaStyle.btnInteres} >
+								  		  
+										 <View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta2}</Text></View> 
+										 
+									</TouchableOpacity>
+								</View> 
+								:<View style={EncuestaStyle.contenedorOpciones}>
+									<TouchableOpacity style={EncuestaStyle.btnInteres} >
+										 
+											 <View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta1}</Text></View> 
+										 
+									</TouchableOpacity>
+									<TouchableOpacity style={EncuestaStyle.btnInteres} >
+								  		 
+											 <Image source={{uri:e.pregunta2}} style={EncuestaStyle.imagenPregunta} />  
+										 
+									</TouchableOpacity>
+								</View> 
+							}	
+						<View style={EncuestaStyle.contenedorOpciones}>
+							<View style={EncuestaStyle.porcentajeContenedor}><Text style={EncuestaStyle.porcentaje}>{e.respuesta1!=null ?e.porcentaje1 :0} %</Text></View> 
+							<View style={EncuestaStyle.porcentajeContenedor}><Text style={EncuestaStyle.porcentaje}>{e.respuesta2!=null ?e.porcentaje2 :0} %</Text></View> 
+						</View> 
+						</View>
+						<View style={EncuestaStyle.separador}></View>
+					</View>
+				)
+		})
+	}
+
+	encuestasPublicadas(){
+		const {id} = this.state
+		return this.state.encuestasPublicadas.map((e, key)=>{
+			let asignado = e.asignados.includes(id)
+			e.respuesta1= e.respuesta1==null ? 0:e.respuesta1  
+			e.respuesta2= e.respuesta2==null ? 0:e.respuesta2  
+			return(
+					<View key={key} style={EncuestaStyle.contenedorEncuesta}>
+						<View style={EncuestaStyle.contenedorTitulos}>
+							<Text style={EncuestaStyle.pTitulo}>{e.eTitulo}</Text>
+						</View>
+						 
+						
+						<View>
+							{
+								e.tipoEncuesta==1 
+								?<View style={EncuestaStyle.contenedorOpciones}>
+								 	<TouchableOpacity onPress={!asignado   ?()=> this.handleSubmitPregunta(1, e.id) :null} style={EncuestaStyle.btnInteres} >
 										{
 											asignado 
 											?<View style={EncuestaStyle.contenedorRespuesta}>
@@ -111,7 +173,7 @@ export default class encuestaComponent extends Component{
 											:<Image source={{uri:e.pregunta1}} style={EncuestaStyle.imagenPregunta} />
 										}
 									</TouchableOpacity>
-									<TouchableOpacity style={EncuestaStyle.btnInteres} >
+									<TouchableOpacity onPress={!asignado  ?()=> this.handleSubmitPregunta(2, e.id) :null} style={EncuestaStyle.btnInteres} >
 										{
 											asignado   
 											?<View style={EncuestaStyle.contenedorRespuesta}>
@@ -124,14 +186,14 @@ export default class encuestaComponent extends Component{
 								 </View> 
 								:e.tipoEncuesta==2
 								?<View style={EncuestaStyle.contenedorOpciones}>
-									<TouchableOpacity style={EncuestaStyle.btnInteres} >
+									<TouchableOpacity onPress={!asignado  ?()=> this.handleSubmitPregunta(1, e.id) :null} style={EncuestaStyle.btnInteres} >
 										{
 											asignado   
 											?<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.respuesta1} %</Text></View> 
 											:<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta1}</Text></View> 
 										}
 									</TouchableOpacity>
-									<TouchableOpacity style={EncuestaStyle.btnInteres} >
+									<TouchableOpacity onPress={!asignado  ?()=> this.handleSubmitPregunta(2, e.id) :null} style={EncuestaStyle.btnInteres} >
 								  		{
 											asignado   
 											?<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.respuesta2} %</Text></View> 
@@ -141,7 +203,7 @@ export default class encuestaComponent extends Component{
 								</View> 
 								:e.tipoEncuesta==3
 								?<View style={EncuestaStyle.contenedorOpciones}>
-									<TouchableOpacity style={EncuestaStyle.btnInteres} >
+									<TouchableOpacity onPress={!asignado ?()=> this.handleSubmitPregunta(1, e.id) :null} style={EncuestaStyle.btnInteres} >
 										{
 											asignado  
 											?<View style={EncuestaStyle.contenedorPregunta}>
@@ -151,7 +213,7 @@ export default class encuestaComponent extends Component{
 											:<Image source={{uri:e.pregunta1}} style={EncuestaStyle.imagenPregunta} />
 										}
 									</TouchableOpacity>
-									<TouchableOpacity style={EncuestaStyle.btnInteres} >
+									<TouchableOpacity onPress={!asignado ?()=> this.handleSubmitPregunta(2, e.id) :null} style={EncuestaStyle.btnInteres} >
 								  		{
 											asignado  
 											?<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.respuesta2} %</Text></View> 
@@ -160,14 +222,14 @@ export default class encuestaComponent extends Component{
 									</TouchableOpacity>
 								</View> 
 								:<View style={EncuestaStyle.contenedorOpciones}>
-									<TouchableOpacity style={EncuestaStyle.btnInteres} >
+									<TouchableOpacity onPress={!asignado ?()=> this.handleSubmitPregunta(1, e.id) :null} style={EncuestaStyle.btnInteres} >
 										{
 											asignado  
 											?<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.respuesta1} %</Text></View> 
 											:<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta1}</Text></View> 
 										}
 									</TouchableOpacity>
-									<TouchableOpacity style={EncuestaStyle.btnInteres} >
+									<TouchableOpacity onPress={!asignado ?()=> this.handleSubmitPregunta(2, e.id) :null} style={EncuestaStyle.btnInteres} >
 								  		{
 											asignado  
 											?<View style={EncuestaStyle.contenedorPregunta}>
@@ -180,16 +242,34 @@ export default class encuestaComponent extends Component{
 								</View> 
 							}	
 						</View>
+						<View style={EncuestaStyle.separador}></View>
 					</View>
 				)
 		})
 	}
- 
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	////// ENVIO LA RESPUESTA EN LAS ENCUESTAS
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	handleSubmitPregunta(valor, idEncuesta){
+		axios.post('/x/v1/res/respuesta', {valor, idEncuesta})
+		.then(res=>{
+	 
+			let encuestasPublicadas = this.state.encuestasPublicadas.filter((e)=>{
+				if (e.id==idEncuesta) {e.respuesta1=res.data.porcentaje1; e.respuesta2=res.data.porcentaje2; e.asignados.push(this.state.id)}
+				return e
+			})
+			this.setState({encuestasPublicadas})
+		})
+		.catch(err=>{
+			console.log(err)
+		})
+	}
+
 	updateItems(){
 		axios.get('/x/v1/enc/encuesta/'+this.state.planId)
 		.then(e=>{
 			console.log(e.data)
-			this.setState({misEncuestas:e.data.encuesta, show:false})
+			this.setState({misEncuestas:e.data.encuesta, show:false, render:1})
 		})		 
 		.catch(err=>{
 			console.log(err)

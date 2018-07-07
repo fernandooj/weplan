@@ -44,7 +44,6 @@ router.get('/:user', (req, res)=>{
 			if(err){
 				res.json({err, code:0})
 			}else{
-				console.log(encuesta)
 				encuesta = encuesta.map(e=>{ 
 					let porcentaje1 = (e.totalUno*100)/e.totalRepuestas
 					let porcentaje2 = 100-porcentaje1
@@ -80,6 +79,49 @@ router.get('/:user', (req, res)=>{
 })
 
  
+///////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////	 OBTENGO LOS PUBLICADOS QUE NO HA CREADO EL USUARIO LOGUEADO
+///////////////////////////////////////////////////////////////////////////////////////////////
+router.get('/publicados/:idPlan', (req, res)=>{
+		encuestaServices.getPublicados(req.params.idPlan, req.session.usuario.user._id, (err, encuesta)=>{
+			if(err){
+				res.json({err, code:0})
+			}else{
+				console.log(encuesta)
+				encuesta = encuesta.map(e=>{ 
+					let porcentaje1 = (e.totalUno*100)/e.totalRepuestas
+					let porcentaje2 = 100-porcentaje1
+					 
+					porcentaje1 = Math.round(porcentaje1 * 100) / 100
+					porcentaje2 = Math.round(porcentaje2 * 100) / 100
+
+					let asignados = e.data.map(e=>{
+						// arrayIdPreguntas.push(e.info[0].userIdRespuesta)
+						return e.info[0].userIdRespuesta
+					})
+					asignados.push(e.data[0].info[0].encuestaUserId)
+					return{
+						id	 : e._id.id,
+						tipoEncuesta : e.data[0].info[0].tipo,
+						eTitulo		 : e.data[0].info[0].titulo,
+						pregunta1	 : e.data[0].info[0].pregunta1,
+						pregunta2	 : e.data[0].info[0].pregunta2,
+						respuesta1   : porcentaje1,
+						respuesta2   : porcentaje2,
+						porcentaje1,
+						porcentaje2,
+						asignados,
+						totalRespuestas : e.totalRepuestas,
+						encuestaUserId : e.data[0].info[0].encuestaUserId,
+					}
+				})
+				encuesta.reverse()
+				res.json({ status: 'SUCCESS', encuesta, id: req.session.usuario.user._id,  code:1 });		
+			}
+		})
+ 
+})
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////	 GET BY ID ITEM 	///////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////

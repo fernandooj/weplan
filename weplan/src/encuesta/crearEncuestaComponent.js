@@ -17,7 +17,7 @@ export default class CrearEncuestaComponent extends Component{
       imagen2:'',
       descripcion:'',
       valor:0,
-      enviarChat:false,
+      enviarChat:'Enviar',
       adjuntarAmigos:false,
       asignados:[]
     }  
@@ -118,9 +118,9 @@ export default class CrearEncuestaComponent extends Component{
 
           {/* Guardar */}  
           <View style={EncuestaStyle.save} > 
-            <TouchableOpacity style={EncuestaStyle.btnSave} onPress={this.handleSubmit.bind(this)}>
+            <TouchableOpacity style={EncuestaStyle.btnSave} onPress={this.state.enviarChat=='Enviar' ?this.handleSubmit.bind(this) :null}>
              <Image source={require('./item8.png')} style={EncuestaStyle.iconSave} />
-              <Text style={EncuestaStyle.adjuntar} style={EncuestaStyle.textSave}>Enviar</Text>
+              <Text style={EncuestaStyle.adjuntar} style={EncuestaStyle.textSave}>{this.state.enviarChat}</Text>
             </TouchableOpacity> 
           </View>
         </View>
@@ -130,10 +130,11 @@ export default class CrearEncuestaComponent extends Component{
   }
  
   handleSubmit(){
+    this.setState({enviarChat:'Enviando...'})
     const {titulo, descripcion, imagen, imagen2, id, pregunta1, pregunta2} = this.state
     let planId = this.props.planId
     //let planId = '5aefdb91423c402001dbb329'
-   
+    console.log(planId)
     let data = new FormData();
      if (titulo.length==0) {
       alerta('El titulo es obligatorio')

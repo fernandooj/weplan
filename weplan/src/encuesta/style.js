@@ -92,7 +92,16 @@ export const EncuestaStyle = StyleSheet.create({
 		flexDirection:'row',
 		marginTop:10
  	},
- 	
+ 	separador:{
+		borderWidth:2,
+		borderTopColor:'#ffffff',
+		borderBottomColor:'#CACACA',
+		borderLeftColor:'#f8f8f8',
+		borderRightColor:'#f8f8f8',
+		marginTop:5,
+		marginBottom:5,
+		width:'100%'
+	},
  	////////////////////////////////////////////
 	////////////////// contenedor 3  ==> items
 	////////////////////////////////////////////
@@ -100,20 +109,10 @@ export const EncuestaStyle = StyleSheet.create({
  		flexDirection:'row',		 
 	},
 	contenedorEncuesta:{
-		alignSelf: 'flex-end',  
-		borderWidth: 0,
-		borderRadius: 10,
-		borderColor: '#ddd',
-		borderBottomWidth: 0,
-
-		marginLeft: 25,
-		marginRight: 15,
-		marginTop: 5,
-		width:screenWidth/1.5,	
+	 	width:'100%',
+	 	alignItems:'center'
 	},
-	contenedorEncuestaLeft:{
-		alignSelf: 'flex-start',  
-	},
+	 
 	pNombre:{
 		backgroundColor:'rgba(196, 196, 196, 0.3)',
 		color:'#A8A8A8',
@@ -122,10 +121,8 @@ export const EncuestaStyle = StyleSheet.create({
 		borderTopRightRadius: 10,
 	},
 	pTitulo:{
-		backgroundColor:'#dbe4f2',
-		color:'#4f61d3',
-		padding:6,
-		borderRadius:5
+		alignItems:'center',
+		textAlign:'center'
 	},
 	contenedorDescripcion:{
 		flexDirection:'row',
@@ -135,11 +132,6 @@ export const EncuestaStyle = StyleSheet.create({
 		paddingBottom:75,
 		backgroundColor:'#ffffff',
 
-	},
-	contenedorTitulos:{
-		borderColor:'#c4c4c4',
-		borderWidth:3,
-		borderRadius:10
 	},
 	pDescripcion:{
 		color:'#5664ba',
@@ -153,8 +145,8 @@ export const EncuestaStyle = StyleSheet.create({
 
 	
 	imagenPregunta:{
-		width:80,
-		height:80,
+		width:100,
+		height:100,
 		borderRadius:50,
 		zIndex:1000,
 		borderColor:'#9CB7F5',
@@ -176,8 +168,8 @@ export const EncuestaStyle = StyleSheet.create({
 		borderWidth:5,	
 	},
 	contenedorRespuesta:{
-		width:80,
-		height:80,
+		width:100,
+		height:100,
 		borderRadius:50,
 		zIndex:1000,
 		flexDirection: 'column',
@@ -186,8 +178,8 @@ export const EncuestaStyle = StyleSheet.create({
         marginRight:5
 	},
 	contenedorPregunta:{
-		width:80,
-		height:80,
+		width:100,
+		height:100,
 		borderRadius:50,
 		zIndex:1000,
 		borderColor:'#9CB7F5',
@@ -211,6 +203,21 @@ export const EncuestaStyle = StyleSheet.create({
 		borderWidth:5,
 		position:'relative',
 		top:45,
+	},
+	porcentajeContenedor:{
+		flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+		width:100,
+	},
+	porcentaje:{
+		color:'#7585eb',
+		marginTop:10,
+		marginBottom:10,
+		padding:0,
+	 	textAlign: 'center',
+		width:100,
+	 
 	},
  	//////////////////////////////////////////////////////
   	//////////////// 	crear encuesta
