@@ -133,7 +133,7 @@ export default class CrearEncuestaComponent extends Component{
     const {titulo, descripcion, imagen, imagen2, id, pregunta1, pregunta2} = this.state
     let planId = this.props.planId
     //let planId = '5aefdb91423c402001dbb329'
-    console.log(pregunta1)
+   
     let data = new FormData();
      if (titulo.length==0) {
       alerta('El titulo es obligatorio')
@@ -145,38 +145,41 @@ export default class CrearEncuestaComponent extends Component{
       axios.post('/x/v1/enc/encuesta', {descripcion,  titulo, planId})
       .then(e=>{
         let encuestaId = e.data.encuesta._id
-        console.log(e.data)
-       
-        data.append('imagen',    imagen);
-        data.append('imagen2',   imagen2);
-        data.append('pregunta1', pregunta1);
-        data.append('pregunta2', pregunta2);
-        data.append('encuestaId',encuestaId);
-        data.append('planId', planId);
+         console.log({titulo, descripcion, imagen, imagen2, id, pregunta1, pregunta2, encuestaId, planId})
+        
+            
+           
+            data.append('imagen',    imagen);
+            data.append('imagen2',   imagen2);
+            data.append('pregunta1', pregunta1);
+            data.append('pregunta2', pregunta2);
+            data.append('encuestaId',encuestaId);
+            data.append('planId',    planId);
 
-   
-        axios({
-              method: 'post', //you can set what request you want to be
-              url: '/x/v1/enc/encuesta/'+encuestaId,
-              data: data,
-              headers: { 
-                'Accept': 'application/json',
-                'Content-Type': 'multipart/form-data'
+       
+            axios({
+                  method: 'post', //you can set what request you want to be
+                  url: '/x/v1/enc/encuesta/'+encuestaId,
+                  data: data,
+                  headers: { 
+                    'Accept': 'application/json',
+                    'Content-Type': 'multipart/form-data'
+                  }
+                })
+            .then(res=>{  
+              console.log(res.data)     
+              if(res.data.code==1){ 
+                this.props.updateItems()
+              }else{
+                Alert.alert(
+                 'Error!, intenta nuevamente'
+                )
               }
             })
-        .then(res=>{  
-          console.log(res.data)     
-          if(res.data.code==1){ 
-            this.props.updateItems(encuestaId, titulo)
-          }else{
-            Alert.alert(
-             'Error!, intenta nuevamente'
-            )
-          }
-        })
-        .catch(err=>{
-          console.log(err)
-        })
+            .catch(err=>{
+              console.log(err)
+            })
+            
       })
       .catch(err=>{
         console.log(err)

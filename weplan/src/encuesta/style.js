@@ -6,12 +6,12 @@ export const EncuestaStyle = StyleSheet.create({
 	//////////// pagina principal   //////////
 	contentItem: {
 		flex: 1,
-		height:screenHeight,
+		minHeight:screenHeight,
 		backgroundColor: '#F8F8F8',		 
 	}, 
 	subContentItem:{
 		flex: 1,
-		height:screenHeight,
+		minHeight:screenHeight,
 		marginRight:'4%',
 		marginLeft:'4%'
 	},
@@ -80,11 +80,10 @@ export const EncuestaStyle = StyleSheet.create({
 		color: '#8796F4',
 	},
 	btnNuevoGrupo:{
- 		width:28,
- 		height:28,
+ 		width:25,
+ 		height:25,
  		marginRight:10,
  		marginLeft:14, 
- 		marginTop:0
  	},
  	CrearEncuesta:{
 		fontSize:20
@@ -94,7 +93,125 @@ export const EncuestaStyle = StyleSheet.create({
 		marginTop:10
  	},
  	
+ 	////////////////////////////////////////////
+	////////////////// contenedor 3  ==> items
+	////////////////////////////////////////////
+	contenedorOpciones:{
+ 		flexDirection:'row',		 
+	},
+	contenedorEncuesta:{
+		alignSelf: 'flex-end',  
+		borderWidth: 0,
+		borderRadius: 10,
+		borderColor: '#ddd',
+		borderBottomWidth: 0,
 
+		marginLeft: 25,
+		marginRight: 15,
+		marginTop: 5,
+		width:screenWidth/1.5,	
+	},
+	contenedorEncuestaLeft:{
+		alignSelf: 'flex-start',  
+	},
+	pNombre:{
+		backgroundColor:'rgba(196, 196, 196, 0.3)',
+		color:'#A8A8A8',
+		padding:9,
+		borderTopLeftRadius: 10,
+		borderTopRightRadius: 10,
+	},
+	pTitulo:{
+		backgroundColor:'#dbe4f2',
+		color:'#4f61d3',
+		padding:6,
+		borderRadius:5
+	},
+	contenedorDescripcion:{
+		flexDirection:'row',
+		paddingLeft:10,
+		paddingRight:10,
+		paddingTop:15,
+		paddingBottom:75,
+		backgroundColor:'#ffffff',
+
+	},
+	contenedorTitulos:{
+		borderColor:'#c4c4c4',
+		borderWidth:3,
+		borderRadius:10
+	},
+	pDescripcion:{
+		color:'#5664ba',
+		width:'80%',
+		textAlign:'center'
+	},
+	decoracion:{
+		width:24,
+		height:35
+	},
+
+	
+	imagenPregunta:{
+		width:80,
+		height:80,
+		borderRadius:50,
+		zIndex:1000,
+		borderColor:'#9CB7F5',
+		borderWidth:5,
+		marginRight:5,
+		flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+       marginRight:5
+	},
+	imagenRespuesta:{
+		width:100,
+		height:100,
+		borderRadius:50,
+		zIndex:1000,
+       	opacity: 0.4,
+       	position:'absolute',
+       	borderColor:'#9CB7F5',
+		borderWidth:5,	
+	},
+	contenedorRespuesta:{
+		width:80,
+		height:80,
+		borderRadius:50,
+		zIndex:1000,
+		flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight:5
+	},
+	contenedorPregunta:{
+		width:80,
+		height:80,
+		borderRadius:50,
+		zIndex:1000,
+		borderColor:'#9CB7F5',
+		borderWidth:5,	
+		flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+
+        backgroundColor:'#ffffff',
+        marginRight:5
+	},
+	textoPregunta:{
+		textAlign:'center',
+	 	color:'black',
+	 	fontSize:20
+	},
+	pPhoto:{
+		alignSelf: 'flex-end', 
+		borderRadius:35,	
+		borderColor:'#9CB7F5',
+		borderWidth:5,
+		position:'relative',
+		top:45,
+	},
  	//////////////////////////////////////////////////////
   	//////////////// 	crear encuesta
   	//////////////////////////////////////////////////////

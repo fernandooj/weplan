@@ -8,6 +8,7 @@ class amigoUserService{
 		amigoUser.find({}).populate('asignado').exec(callback)
 	}
 	getById(idUsuario, estado, callback){
+		console.log(idUsuario)
 		if (estado!=='null') {
 			console.log(estado)
 			amigoUser.find().or([{idUsuario, estado},{asignado:idUsuario, estado}]).populate('asignado').populate('idUsuario').exec(callback)

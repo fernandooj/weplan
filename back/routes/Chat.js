@@ -26,7 +26,6 @@ router.get('/chatPlan/:id', (req, res)=>{
 					res.json({status:'FAIL', err, code:0})   
 				}else{
 					 
-					console.log(chat)
 					chat = chat.map(e=>{
 						// return{
 						// 	id           : e._id,
@@ -74,12 +73,16 @@ router.get('/chatPlan/:id', (req, res)=>{
 						// 	estaPlan: isInArray(e.tipo==4 &&e.contactoId._id, plan[0].asignados)
 						// 	//estaPlan: plan[0].asignados.includes(e.contactoId &&e.contactoId._id)
 						// }
-						let porcentaje2 = (e.totalUno*100)/e.totalRepuestas
-						let porcentaje1 = 100-porcentaje2
-						let total1=e.totalUno
-						let total2=e.totalRepuestas - e.totalUno
+						 
+
+						 
+
+						let porcentaje1 = (e.totalUno*100)/e.totalRepuestas
+						let porcentaje2 = 100-porcentaje1
+						 
 						porcentaje1 = Math.round(porcentaje1 * 100) / 100
 						porcentaje2 = Math.round(porcentaje2 * 100) / 100
+
 						let asignados = e.data.map(e=>{
 							// arrayIdPreguntas.push(e.info[0].userIdRespuesta)
 							return e.info[0].userIdRespuesta
@@ -108,11 +111,8 @@ router.get('/chatPlan/:id', (req, res)=>{
 							respuesta2   : porcentaje2,
 							porcentaje1,
 							porcentaje2,
-							asignados      ,
+							asignados,
 							encuestaUserId : e.data[0].info[0].encuestaUserId,
-							// asignado       : isInArray('5aec2e62de7fa7694e1a1f3a', asignados),
-							 
-							// asignado     : arrayIdPreguntas.includes(req.session.usuario.user._id),
 
 							//////////////////////////////////////////////////////////////////////////////
 							//////////////////////////////// contacto   //////////////////////////////////
@@ -162,6 +162,7 @@ router.post('/', (req, res)=>{
 		contactoId:req.body.contactoId,
 		cNombre:req.body.cNombre,
 		cPhoto:req.body.cPhoto,
+		
 	}
 	cliente.publish('chat', JSON.stringify(mensajeJson))
 	chatServices.create(req.body, req.session.usuario.user._id, req.body.tipo, null, (err, chat)=>{

@@ -39,8 +39,8 @@ export default class ChatComponent extends Component{
 	}
 
 	componentWillMount(){
-		// let planId = this.props.navigation.state.params	
-		let planId = '5b3eca1a26e1b479975858e6'	 
+		let planId = this.props.navigation.state.params	
+		// let planId = '5b3f9da239e97c7d2fd4a425'	 
 		console.log(planId) 
 		this.socket = SocketIOClient(URL);
 		this.socket.on('userJoined'+planId, this.onReceivedMessage);
@@ -61,17 +61,9 @@ export default class ChatComponent extends Component{
 		/////////////////	OBTENGO TODOS LOS MENSAJES Y EL PLAN
 		axios.get(`/x/v1/cha/chat/chatPlan/${planId}`)
 		.then(e=>{
- 			console.log(e.data)
+ 			console.log(e.data.chat)
 			this.setState({mensajes:e.data.chat, planId, imagen: e.data.plan.imagenResize[0], nombrePlan: e.data.plan.nombre, planId, planAsignados:e.data.plan.asignados, plan:e.data.plan})
 			
-			// e.data.chat.map(data=>{
-			// 	let encuestaId = data.encuestaId ?data.encuestaId :1
-			// 	console.log(encuestaId)
-			// 	axios.get('/x/v1/res/respuesta/'+encuestaId)
-			// 	.then(e2=>{
-			// 		console.log(e2.data)
-			// 	})
-			// })
 			
 		})
 		.catch(err=>{
@@ -202,6 +194,8 @@ export default class ChatComponent extends Component{
 				)
 			}else if(e.tipoChat==3){
 				let asignado = e.asignados.includes(id)
+				e.respuesta1= e.respuesta1==null ? 0:e.respuesta1  
+				e.respuesta2= e.respuesta2==null ? 0:e.respuesta2  
 				return(
 					<View key={key} style={e.userId== id ?ChatStyle.contenedorEncuesta :[ChatStyle.contenedorEncuesta, ChatStyle.contenedorEncuestaLeft]}>
 						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', e.userId)}>
@@ -552,7 +546,6 @@ export default class ChatComponent extends Component{
 	/////// SI EL USUARIO HACE CLICK EN ME INTERESA, ENVIA LA NOTIFICACION AL CREADOR DEL ITEM PARA DARLE PERMISO DE INGRESAR
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	ingresarItem(token, idItem, id, titulo, imagen){
-		console.log(idItem)
 		axios.put('x/v1/ite/item', {idItem})
 		.then(e=>{
 
@@ -574,7 +567,6 @@ export default class ChatComponent extends Component{
 	////// ENVIO LA RESPUESTA EN LAS ENCUESTAS
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	handleSubmitPregunta(idEncuesta, valor, idChat){
- 
 		axios.post('/x/v1/res/respuesta', {valor, idEncuesta, idChat})
 		.then(res=>{
 	 
@@ -582,7 +574,6 @@ export default class ChatComponent extends Component{
 				if (e.id==idChat) {e.respuesta1=res.data.porcentaje1; e.respuesta2=res.data.porcentaje2; e.asignados.push(this.state.id)}
 				return e
 			})
-			console.log(mensajes)
 			this.setState({mensajes})
 		})
 		.catch(err=>{

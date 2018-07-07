@@ -40,12 +40,40 @@ router.get('/:user', (req, res)=>{
 			}
 		})
 	}else{
-		encuestaServices.getByPlan(req.params.user, (err, item)=>{
+		encuestaServices.getByPlan(req.params.user, id, (err, encuesta)=>{
 			if(err){
 				res.json({err, code:0})
 			}else{
-				//itemPlan(item, id, res)
-				res.json({ status: 'SUCCESS', item, total:item.length, code:1 });				
+				console.log(encuesta)
+				encuesta = encuesta.map(e=>{ 
+					let porcentaje1 = (e.totalUno*100)/e.totalRepuestas
+					let porcentaje2 = 100-porcentaje1
+					 
+					porcentaje1 = Math.round(porcentaje1 * 100) / 100
+					porcentaje2 = Math.round(porcentaje2 * 100) / 100
+
+					let asignados = e.data.map(e=>{
+						// arrayIdPreguntas.push(e.info[0].userIdRespuesta)
+						return e.info[0].userIdRespuesta
+					})
+					asignados.push(e.data[0].info[0].encuestaUserId)
+					return{
+						encuestaId	 : e._id.id,
+						tipoEncuesta : e.data[0].info[0].tipo,
+						eTitulo		 : e.data[0].info[0].titulo,
+						pregunta1	 : e.data[0].info[0].pregunta1,
+						pregunta2	 : e.data[0].info[0].pregunta2,
+						respuesta1   : porcentaje1,
+						respuesta2   : porcentaje2,
+						porcentaje1,
+						porcentaje2,
+						asignados,
+						totalRespuestas : e.totalRepuestas,
+						encuestaUserId : e.data[0].info[0].encuestaUserId,
+					}
+				})
+				encuesta.reverse()
+				res.json({ status: 'SUCCESS', encuesta,  code:1 });		
 			}
 		})
 	}
@@ -85,6 +113,7 @@ router.post('/', function(req, res){
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 router.post('/:id', (req,res)=>{
+	console.log(req.files)
 	let id = req.session.usuario.user._id
 	let ruta  = null
 	let ruta2 = null
@@ -149,6 +178,8 @@ router.post('/:id', (req,res)=>{
 	/////////////////////////////////////////////////////////////////////////////
 	let createChat = (req, res, id, tipo, pregunta1, pregunta2, encuesta)=>{
 		chatServices.create(req.body, id,  3, null, (err,chat)=>{
+			let asignados = []
+			asignados.push(req.session.usuario.user._id)
 			let mensajeJson={
 				id :         encuesta._id,
 				planId: 	 req.body.planId, 
@@ -156,6 +187,7 @@ router.post('/:id', (req,res)=>{
 				userId: 	 req.session.usuario.user._id, 
 				photo:  	 req.session.usuario.user.photo, 
 				nombre: 	 req.session.usuario.user.nombre, 
+				asignados,
 				tipoEncuesta:tipo, 
 				pregunta1,   
 				pregunta2, 
@@ -166,9 +198,7 @@ router.post('/:id', (req,res)=>{
 			}
 
 			cliente.publish('chat', JSON.stringify(mensajeJson))
-			console.log('---------')
-		console.log('mensajeJson')
-		console.log('---------')
+			 
 
 			if(err){
 				res.json({err, code:0})
