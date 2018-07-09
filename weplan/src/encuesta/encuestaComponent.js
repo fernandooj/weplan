@@ -136,8 +136,8 @@ export default class encuestaComponent extends Component{
 								</View> 
 							}	
 						<View style={EncuestaStyle.contenedorOpciones}>
-							<View style={EncuestaStyle.porcentajeContenedor}><Text style={EncuestaStyle.porcentaje}>{e.respuesta1!=null ?e.porcentaje1 :0} %</Text></View> 
-							<View style={EncuestaStyle.porcentajeContenedor}><Text style={EncuestaStyle.porcentaje}>{e.respuesta2!=null ?e.porcentaje2 :0} %</Text></View> 
+							<View style={EncuestaStyle.porcentajeContenedor}><Text style={EncuestaStyle.porcentaje}>{e.respuesta1} %</Text></View> 
+							<View style={EncuestaStyle.porcentajeContenedor}><Text style={EncuestaStyle.porcentaje}>{e.respuesta2} %</Text></View> 
 						</View> 
 						</View>
 						<View style={EncuestaStyle.separador}></View>

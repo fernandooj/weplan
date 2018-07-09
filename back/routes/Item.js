@@ -273,7 +273,6 @@ let createPago = function(req, res, id, item){
 ///// 		CREO LA NOTIFICACIÓN AL CREAR EL ITEM
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const creaNotificacionVarios = (req, res, item, imagen)=>{
-	console.log(item.espera)
 	item.espera.map(e=>{
 		notificacionService.create(req.session.usuario.user._id, e, 3, item._id, (err, notificacion)=>{
 			console.log(notificacion)
@@ -344,7 +343,9 @@ let createChat = function(req, res, userId, item, imagen){
 		rutaImagen:imagen,
 		fecha:req.body.fecha, 
 		valor:req.body.valor, 
-		tipoChat:2
+		tipoChat:2,
+		esperaItem: item.espera,
+		asignadoItem: []
 	}
 	cliente.publish('chat', JSON.stringify(mensajeJson))
 

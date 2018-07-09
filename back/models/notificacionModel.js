@@ -31,5 +31,7 @@ module.exports = mongoose.model('Notificacion', notificacionSchema)
 
 /// idUsuario 		==> El usuario que se tiene asignado la notificacion
 /// idUsuarioAsigna ==> El usuario quien crea la notificacion
-/// tipo 1   ==> notificacion cuando se agregar un amigo
-/// tipo 2   ==> notificacion cuando se quiere ser parte de un item
+/// tipo 1   ==> notificacion cuando se quiere agregar a un amigo
+/// tipo 2   ==> notificacion cuando se quiere se le agrego a un plan
+/// tipo 3   ==> notificacion cuando se le agrego a un item
+/// tipo 4   ==> notificacion cuando se quiere ser parte de un item

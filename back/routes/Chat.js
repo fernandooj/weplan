@@ -17,7 +17,7 @@ let respuestaServices = require('../services/respuestaServices.js');
 
 router.get('/chatPlan/:id', (req, res)=>{
 
-	planServices.getByIdPlan(req.params.id, (err, plan)=>{
+	planServices.getByIdPlanPopulate(req.params.id, (err, plan)=>{
 		if (err) {
 			console.log(err)
 		}else{
@@ -88,20 +88,34 @@ router.get('/chatPlan/:id', (req, res)=>{
 							return e.info[0].userIdRespuesta
 						})
 						asignados.push(e.data[0].info[0].encuestaUserId)
+						let asignadoItems = e.data[0].info[0].asignados
 						return{
 							id           : e._id.id,
 							userId       : e.data[0].info[0].userId,
 							nombre 		 : e.data[0].info[0].nombre,
 							photo 		 : e.data[0].info[0].photo,
-							token 		 : e.data[0].info[0].tokenPhone,
+							token 		 : e.data[0].info[0].token,
 							mensaje 	 : e.data[0].info[0].mensaje,
 							fecha 	     : e.data[0].info[0].fecha,
 							documento 	 : e.data[0].info[0].documento,
 							lat 	 	 : e.data[0].info[0].lat,
 							lng 	 	 : e.data[0].info[0].lng,
 							tipoChat	 : e.data[0].info[0].tipo,
-							////////////////////////////////////////////////////////////////////////////
-							////////////////////////////// ENCUESTAS ///////////////////////////////////
+
+							///////////////////////////////////////////////////////////////////////////////
+							//////////////////////////////// ARTICULOS   //////////////////////////////////
+ 
+
+							esperaItem	 : e.data[0].info[0].espera,
+							asignadoItem : e.data[0].info[0].asignados,
+							 
+							itemId	 	 : e.data[0].info[0].itemId,
+							titulo	 	 : e.data[0].info[0].itemTitulo,
+							descripcion	 : e.data[0].info[0].itemDescripcion,
+							rutaImagen	 : e.data[0].info[0].imagenMiniatura,
+							valor	 	 : e.data[0].info[0].itemValor,
+							//////////////////////////////////////////////////////////////////////////////
+							////////////////////////////// ENCUESTAS /////////////////////////////////////
 							encuestaId	 : e.data[0].info[0].encuestaId,
 							tipoEncuesta : e.data[0].info[0].tipoEncuesta,
 							eTitulo		 : e.data[0].info[0].encuestaTitulo,
@@ -124,7 +138,7 @@ router.get('/chatPlan/:id', (req, res)=>{
 						}
 					})
 
-					 
+					 	
 			 		 
 			 		 
 					

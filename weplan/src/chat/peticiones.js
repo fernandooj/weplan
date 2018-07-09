@@ -35,20 +35,50 @@ export const pedirPdf = (planId) =>{
 	DocumentPicker.show({
       	filetype: [DocumentPickerUtil.pdf()],
    		},(error,res) => {
-    	if (error) {
-    		console.log(error)
-    	}else{
-    		let imagen = {
+   			let imagen = {
 			    uri: res.uri,
 			    type: res.type,
 			    name: res.fileName,
 			    path: res.uri
 			};
-			if (imagen!==null){
-				console.log(res.fileName)
-				alerta(res.fileName, imagen, subirDocumento, 7, planId )
-			}
-    	}
+   			console.log(imagen)
+			let data = new FormData();
+			data.append('imagen', imagen);
+			data.append('tipo', 7);
+			data.append('planId', planId);
+		    axios({
+		          method: 'post', //you can set what request you want to be
+		          url: '/x/v1/cha/chat/documento',
+		          data: data,
+		          headers: { 
+		            'Accept': 'application/json',
+		            'Content-Type': 'multipart/form-data'
+		          }
+		        })
+		    .then(res=>{  
+		      console.log(res.data)     
+		      if(res.data.code!==1){ 
+		        alertaError()
+		      }
+		    })
+		    .catch(err=>{
+		      console.log(err)
+		    })
+
+   //  	if (error) {
+   //  		console.log(error)
+   //  	}else{
+   //  		let imagen = {
+			//     uri: res.uri,
+			//     type: res.type,
+			//     name: res.fileName,
+			//     path: res.uri
+			// };
+			// if (imagen!==null){
+			// 	console.log(res.fileName)
+			// 	alerta(res.fileName, imagen, subirDocumento, 7, planId )
+			// }
+   //  	}
    });	
 }
  

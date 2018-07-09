@@ -1,8 +1,8 @@
 import {StyleSheet, Dimensions} from 'react-native';
 var screenHeight = Dimensions.get('window').height;
 var screenWidth = Dimensions.get('window').width;
-
-export const ItemStyle = StyleSheet.create({ 
+import { MediaQueryStyleSheet } from "react-native-responsive";
+export const ItemStyle = MediaQueryStyleSheet.create({ 
 	//////////// pagina principal   //////////
 	contentItem: {
 		flex: 1,
@@ -207,17 +207,53 @@ export const ItemStyle = StyleSheet.create({
 		marginTop:6
 	},
 	btnAdjuntar:{
-		backgroundColor:'rgba(232, 232, 232, 0.6)',
+		flexDirection : 'row',
 		padding:10,
-		borderRadius:10,
-		marginRight:5
+		paddingTop:10,
+		paddingBottom:5,	 
 	},
 	adjuntar:{
-		color:'#ffffff',
+		color:'#7e7e7e',
+		width:"90%",
+		fontSize:17,
+		marginTop:12
+	},
+	adjuntar2:{
+		color:'#d9e4f2',
+		alignSelf: 'flex-end', 
+		fontSize:35
+	},
+	btnAdjuntarExistente:{
+		flexDirection : 'row',
+	},
+	addIcon:{
+		width:30,
+		height:30,
+		marginTop:10
+	},	
+	adjuntarExistentes:{
+		backgroundColor:'#DBE4F2',
+		borderRadius:20,
+		fontSize:15,
+		padding:5,
+		paddingLeft:10,
+		width:190,
+		margin:10,
+	},
+	textoPregunta:{
+		fontSize:13,
+		padding:10,
+		paddingBottom:0
+	},
+	separador:{
+		height:1,
+		backgroundColor:'#d9e4f2',
+		marginLeft:10,
+		marginRight:10,
+		marginBottom:5
 	},
 	btnEnviar:{
 		flexDirection:'row',
-		backgroundColor:'rgba(232, 232, 232, 0.6)',
 		padding:10, 
 		borderRadius:10,
 	},
@@ -225,7 +261,8 @@ export const ItemStyle = StyleSheet.create({
 		backgroundColor:'rgba(115, 175, 251, 0.6)',
 	},
 	enviar:{
-		color:'#ffffff',
+		color:'#7e7e7e',
+		width:"83%",
 	},
 	enviarIcon:{
 		width:20,
@@ -279,4 +316,17 @@ export const ItemStyle = StyleSheet.create({
 		fontSize:20
 	}
 
+},{
+	"@media (max-device-width: 320)": {
+		textoPregunta:{
+			fontSize:11,
+		},
+		adjuntar:{
+			fontSize:15,
+		},
+		adjuntarExistentes:{
+			fontSize:14,
+			width:170
+		}
+	}
 })

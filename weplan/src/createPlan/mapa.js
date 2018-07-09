@@ -5,7 +5,7 @@ import Icon from 'react-native-fa-icons';
  
 import MapView, { AnimatedRegion, Marker } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
- 
+
  
 
 
@@ -76,11 +76,13 @@ export default class MapaPlanComponent extends Component{
 			this.setState({x:this.props.actualPosicion})
 		}	
 	}
+
 	render(){
 		console.log(this.props.actualPosicion)
 		console.log(this.state.x)
 		return(
 			<View>
+				 
 				<Modal
 			          animationType="slide"
 			          transparent={false}

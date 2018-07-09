@@ -1,7 +1,13 @@
 import {StyleSheet, Dimensions, PixelRatio} from 'react-native';
 const width = Dimensions.get('window');
-export const LoginStyle = StyleSheet.create({ 
-	 
+const height = Dimensions.get('window').height;
+import { MediaQueryStyleSheet } from "react-native-responsive";
+export const LoginStyle = MediaQueryStyleSheet.create({ 
+	contenedor:{
+		flex: 1,
+		height:height,
+		backgroundColor:'#ffffff',
+	},
 	fondo:{
 		flex: 1,
 		backgroundColor:'#ffffff',
@@ -10,7 +16,8 @@ export const LoginStyle = StyleSheet.create({
 	},
 	image:{
 		marginTop:15,
-        marginBottom:40,
+        marginBottom:30,
+ 
 	},
 	image2:{
 		marginTop:10,
@@ -110,9 +117,11 @@ export const LoginStyle = StyleSheet.create({
 		width: 150,
 		height: 150
 	},
+ 
 	signup_btn:{
 		backgroundColor:'rgba(117, 139, 252, 0.6)',
 		marginTop:20,
+		marginBottom:20,
 		borderRadius: 50,
 		padding:10,
 		width:240,
@@ -217,17 +226,11 @@ export const LoginStyle = StyleSheet.create({
 		height:75
 	},
 	textoRes:{
-		//backgroundColor:'#f8f8f8',
-		//borderRadius:20,
-		//padding:4,
-		//paddingLeft:10,
-		//paddingRight:10,
 		fontSize:19,
 		color:'#969696',
 		width: 100,
 		height:60,
 		textAlign: 'center',
-		 
 	},
 	banRes:{
 		position:'relative', 
@@ -242,6 +245,17 @@ export const LoginStyle = StyleSheet.create({
 	banResActive:{
 		color:'#FF5959'
 	},
+},{
+	"@media (max-device-width: 320)": {
+		image:{
+			marginTop:10,
+	        marginBottom:10,
+		},
+		signup_btn:{
+			marginTop:10,
+			marginBottom:10,
+		},
+	}
 })
 
 

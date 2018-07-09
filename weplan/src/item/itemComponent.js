@@ -25,8 +25,8 @@ export default class ItemComponent extends Component{
 		total:0
 	}
 	componentWillMount(){
-		let planId = this.props.navigation.state.params	
-		// let planId = '5b32a782922f9a3108fcc507'	
+		// let planId = this.props.navigation.state.params	
+		let planId = '5b42f50885f6f07bd8ef33be'	
 		this.setState({planId})
  
 		axios.get('/x/v1/ite/item/'+planId)
@@ -259,7 +259,7 @@ export default class ItemComponent extends Component{
 
 
   	render() {
-		const {show, items, itemsPlan, render} = this.state
+		const {show, items, itemsPlan, render, planId} = this.state
 		const {navigate} = this.props.navigation
 		return (
 			<ScrollView>
@@ -270,7 +270,7 @@ export default class ItemComponent extends Component{
 						  	{
 						  		show
 						  		?<CrearItemComponent  
-						  			planId={this.props.navigation.state.params}
+						  			planId={planId}
 						  			updateItems={(id, deuda, titulo)=>this.updateItems(id, deuda, titulo)}
 						  			close={()=>this.setState({show:false})}
 						  		 />

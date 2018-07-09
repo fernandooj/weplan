@@ -1,9 +1,9 @@
- import React, {Component} from 'react'
+import React, {Component} from 'react'
 import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Alert} from 'react-native'
 import {PagoStyle} from '../pago/style'
 import CabezeraComponent from '../ajustes/cabezera.js'
 import axios from 'axios'
- 
+import {sendRemoteNotification} from '../push/envioNotificacion.js'
  
 
 export default class pagoComponent extends Component{
@@ -20,7 +20,6 @@ export default class pagoComponent extends Component{
 	 	let planId = this.props.navigation.state.params.planId
 	 	axios.get('x/v1/ite/item/id/'+itemId)
 	 	.then(e=>{
-	 		console.log('------')
 	 		console.log(e.data)
 	 		this.setState({item:e.data.mensaje[0], itemId, valor, planId})
 	 	})
@@ -38,7 +37,7 @@ export default class pagoComponent extends Component{
 			{/* ITEM INFORMACION */}
 				<View style={PagoStyle.contenedorItem}>
 					<View style={PagoStyle.contenedorImagen}>
-						<Image source={{uri:item.rutaImagen}} style={PagoStyle.image}/>
+						<Image source={{uri:item.imagenResize}} style={PagoStyle.image}/>
 					</View>
 					<View>	
 						<Text style={PagoStyle.titulo}>{item.titulo}</Text>
@@ -166,7 +165,8 @@ export default class pagoComponent extends Component{
 		}
 	}
 	handleSubmit(e){
-		let {monto, metodo, descripcion, itemId, valor} = this.state
+		let {monto, metodo, descripcion, itemId, valor, item} = this.state
+		montos=monto
 		monto = parseInt(monto)
 		valor = Math.abs(valor)
   		const {navigate} = this.props.navigation		
@@ -182,14 +182,31 @@ export default class pagoComponent extends Component{
 		}else{
 			axios.post('x/v1/pag/pago', {monto, metodo, descripcion, itemId, abono:true, userId:null})
 			.then(e=>{
-				Alert.alert(
-				  'tu pago fue actualizado',
-				  '',
-				  [
-				    {text: 'OK', onPress: () => navigate('item', {itemId, monto})},
-				  ],
-				  { cancelable: false }
-				)
+				if (e.data.code==1) {
+					metodo==1 
+					?sendRemoteNotification(5, item.userId.tokenPhone, 'item', `Te pagaron ${montos}`, `, Te pagaron del item ${item.titulo}`, item.imagenResize)
+					:sendRemoteNotification(6, item.userId.tokenPhone, 'item', `Te pagaron ${montos}`, `, Te pagaron del item ${item.titulo}`, item.imagenResize)
+						
+					
+					Alert.alert(
+					  'tu pago fue actualizado',
+					  '',
+					  [
+					    {text: 'OK', onPress: () => navigate('item', {itemId, monto})},
+					  ],
+					  { cancelable: false }
+					)
+				}else{
+					Alert.alert(
+					  'Opss algo salio mal, intenta nuevamente',
+					  '',
+					  [
+					    {text: 'OK', onPress: () => navigate('item', {itemId, monto})},
+					  ],
+					  { cancelable: false }
+					)
+				}
+				
 				
 			})
 			.catch(err=>{

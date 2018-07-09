@@ -111,22 +111,25 @@ export default class AgregarAmigosComponent extends Component{
 				    />
 				    <Image source={require('./search.png')} style={AmigosStyle.btnBuscar} />
  				</View>
-				<View style={AmigosStyle.contenedorAmigos}>
-					<ScrollView style={AmigosStyle.contenedorLista}>
-						{this.getRow()}
+				
+					<ScrollView style={AmigosStyle.contenedorLista} showsHorizontalScrollIndicator={false}>
+						<View style={AmigosStyle.contenedorAmigos}>
+							{this.getRow()}
+							{/* Btn Hecho */}
+							{
+								this.state.asignados.length>0
+								&&<View style={AmigosStyle.containerHecho}>
+									<TouchableOpacity style={AmigosStyle.btnHecho} onPress={(e)=>{this.props.updateStateAsignados(this.state.asignados, this.state.asignadosUsuarios, this.state.filteredData)}} > 
+										<Text style={AmigosStyle.hecho}>Hecho!</Text>
+									</TouchableOpacity> 
+								</View>	
+								 
+							}
+						</View>	
 					</ScrollView>
-				</View>	
+				
 
-			{/* Btn Hecho */}
-			{
-				this.state.asignados.length>0
-				?<View style={AmigosStyle.containerHecho}>
-					<TouchableOpacity style={AmigosStyle.btnHecho} onPress={(e)=>{this.props.updateStateAsignados(this.state.asignados, this.state.asignadosUsuarios, this.state.filteredData)}} > 
-						<Text style={AmigosStyle.hecho}>Hecho!</Text>
-					</TouchableOpacity> 
-				</View>	
-				:null
-			}
+			
 				
 				</Modal>   
 			</View>

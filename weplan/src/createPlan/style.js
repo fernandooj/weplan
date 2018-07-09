@@ -142,7 +142,7 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 	},
 	map: {
 		marginTop:0,
-		height: screenHeight/1.3, 
+		height: 455, 
 		width: '100%',
 	},
 	btnClose:{
@@ -261,12 +261,15 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
  	}
 
 },{
-	"@media (max-device-width: 380)": {
+	"@media (max-device-width: 320)": {
 		textarea:{
 			width:'90%'
 		},
 		touchRes:{
 			width:'80%'
+		},
+		map: {
+			height: 390, 
 		},
 		rutaRes:{
 			width:40,

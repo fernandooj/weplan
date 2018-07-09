@@ -17,6 +17,7 @@ export default class CrearItemComponent extends Component{
       valor:0,
       enviarChat:false,
       adjuntarAmigos:false,
+      mensajeEnvio:'Enviar',
       asignados:[],
       misUsuarios:[],
       usuariosAsignados:[]
@@ -37,8 +38,8 @@ export default class CrearItemComponent extends Component{
   }
 
   render() {
-    const {enviarChat, valor, adjuntarAmigos, asignados, usuariosAsignados} = this.state
-    console.log(usuariosAsignados)
+    const {enviarChat, valor, adjuntarAmigos, asignados, usuariosAsignados, mensajeEnvio} = this.state
+    console.log(asignados)
     return (
       <View style={ItemStyle.container}>
         <View style={ItemStyle.modalIn}>
@@ -67,7 +68,7 @@ export default class CrearItemComponent extends Component{
                 placeholderTextColor="#8F9093" 
                 style={ItemStyle.titulo}
                 onChangeText={(titulo) => this.setState({titulo})}
-                maxLength={15}
+                maxLength={30}
              />
             <TextInput 
               placeholder='Descripcion'
@@ -77,7 +78,7 @@ export default class CrearItemComponent extends Component{
               multiline = {true}
               style={ItemStyle.descripcion}
               onChangeText={(descripcion) => this.setState({descripcion})}
-              maxLength={30}
+              maxLength={60}
             />
             <Image source={require('./item4.png')} style={ItemStyle.decoracion} />
             <View style={ItemStyle.valor}>
@@ -91,11 +92,49 @@ export default class CrearItemComponent extends Component{
                 onChangeText={(valor) => this.setState({valor})}
               />
             </View>
-          </View> 
 
           {/* Adjuntar Amigos */}
+            {asignados.length==0 &&<Text style={ItemStyle.textoPregunta}>¿Deseas compartir este artículo con algún amigo del plan?</Text>}
+             {
+              asignados.length==0
+              ?<TouchableOpacity style={ItemStyle.btnAdjuntar} onPress={()=>this.setState({adjuntarAmigos:true})}>
+                 <Text style={ItemStyle.adjuntar}>Asignar Amigos</Text>
+                 <Text style={ItemStyle.adjuntar2}>></Text>
+               </TouchableOpacity> 
+              :<View style={ItemStyle.btnAdjuntarExistente} >
+                 <Text style={ItemStyle.adjuntarExistentes}>{asignados.length==1 ?`${asignados.length} Asignado Existente` :`${asignados.length} Asignados Existentes`}</Text>
+                 <TouchableOpacity onPress={()=>this.setState({adjuntarAmigos:true})}>
+                   <Image source={require('./add.png')} style={ItemStyle.addIcon} />
+                 </TouchableOpacity>
+               </View>  
+             }
+            <View style={ItemStyle.separador}></View>
+            {adjuntarAmigos ?<AgregarAmigosComponent 
+              titulo='Asignar Amigos'
+              close={(e)=>this.setState({asignados:[], usuariosAsignados:[], adjuntarAmigos:false})} 
+              updateStateAsignados={(asignados, usuariosAsignados, misUsuarios)=>this.setState({asignados, usuariosAsignados, misUsuarios, adjuntarAmigos:false})}
+                  asignados={this.state.asignados}
+                  usuariosAsignados={this.state.usuariosAsignados}
+                  misUsuarios={this.state.misUsuarios}
+              /> :null }
+
+            {/* Enviar al Chat */}
+              <TouchableOpacity 
+                style={[ItemStyle.btnEnviar]} 
+                onPress={mensajeEnvio=='Enviar' ?(enviarChat)=>this.setState({enviarChat:!this.state.enviarChat}) :null}>
+              <Text style={ItemStyle.enviar}>Enviar al chat</Text>
+              {
+                !enviarChat
+                ?<Image source={require('./item6.png')} style={ItemStyle.enviarIcon} />
+                :<Image source={require('./item7.png')} style={ItemStyle.enviarIcon} />
+              }
+            </TouchableOpacity>
+
+          </View> 
+
+          {/* Adjuntar Amigos  
           <View style={ItemStyle.valor} >
-            <TouchableOpacity style={ItemStyle.btnAdjuntar} onPress={()=>this.setState({adjuntarAmigos:true})}>
+             <TouchableOpacity style={ItemStyle.btnAdjuntar} onPress={()=>this.setState({adjuntarAmigos:true})}>
               <Text style={ItemStyle.adjuntar}>Asignar Amigos</Text>
             </TouchableOpacity> 
             {adjuntarAmigos ?<AgregarAmigosComponent 
@@ -107,7 +146,7 @@ export default class CrearItemComponent extends Component{
                   misUsuarios={this.state.misUsuarios}
               /> :null }
             
-            {/* Enviar al Chat */}
+            {/* Enviar al Chat 
             <TouchableOpacity 
               style={[ItemStyle.btnEnviar, enviarChat && ItemStyle.btnEnviarActive]} 
               onPress={(enviarChat)=>this.setState({enviarChat:!this.state.enviarChat})}>
@@ -118,13 +157,13 @@ export default class CrearItemComponent extends Component{
                 :<Image source={require('./item7.png')} style={ItemStyle.enviarIcon} />
               }
             </TouchableOpacity>
-          </View> 
+          </View> */}
 
           {/* Guardar */}  
           <View style={ItemStyle.save} > 
             <TouchableOpacity style={ItemStyle.btnSave} onPress={this.handleSubmit.bind(this)}>
              <Image source={require('./item8.png')} style={ItemStyle.iconSave} />
-              <Text style={ItemStyle.adjuntar} style={ItemStyle.textSave}>Enviar</Text>
+              <Text style={ItemStyle.adjuntar} style={ItemStyle.textSave}>{mensajeEnvio}</Text>
             </TouchableOpacity> 
           </View>
         </View>
@@ -136,7 +175,7 @@ export default class CrearItemComponent extends Component{
 
   handleSubmit(){
     const {titulo, descripcion, valor, imagen, enviarChat, asignados, id, nombre, photo, usuariosAsignados} = this.state
-
+   
     const fecha = moment().format('h:mm')
     if (titulo.length==0) {
       alerta('El titulo es obligatorio')
@@ -145,6 +184,7 @@ export default class CrearItemComponent extends Component{
     }else if(isNaN(valor)){
       alerta('El Valor solo puede ser numerico')
     }else{
+      this.setState({mensajeEnvio:'Enviando...'})
       let planId = this.props.planId
       // let planId = '5b32a782922f9a3108fcc507'
       let data = new FormData();
@@ -154,10 +194,9 @@ export default class CrearItemComponent extends Component{
       axios.post('/x/v1/ite/item', {descripcion, valor, titulo, planId, espera:asignados, tipo:1})
       .then(e=>{
         let itemId = e.data.item._id
-        console.log(e.data.item)
+        console.log({descripcion, valor, titulo, planId, asignados, imagen, fecha, titulo, enviarChat, espera:asignados})
         data.append('imagen', imagen);
         data.append('planId', planId);
-        data.append('fecha',  fecha);
         data.append('titulo', titulo);
         data.append('descripcion', descripcion);
         data.append('valor', valor);
@@ -183,6 +222,7 @@ export default class CrearItemComponent extends Component{
             
             this.props.updateItems(itemId, valor, titulo)
           }else{
+            this.setState({mensajeEnvio:'Enviar'})
             Alert.alert(
               'Opss!! revisa tus datos que falta algo',
               res.data,

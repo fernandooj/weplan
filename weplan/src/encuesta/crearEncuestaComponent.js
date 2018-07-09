@@ -71,7 +71,7 @@ export default class CrearEncuestaComponent extends Component{
                 multiline = {true}
                 style={EncuestaStyle.descripcion}
                 onChangeText={(titulo) => this.setState({titulo})}
-                maxLength={15}
+                maxLength={30}
               />
               <Image source={require('./item4.png')} style={EncuestaStyle.decoracion} />
             </View>

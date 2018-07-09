@@ -16,7 +16,7 @@ import AgregarAmigosComponent    from '../agregarAmigos/agregarAmigos.js'
 import TakePhotoComponent 	  		 from '../takePhoto/takePhotoComponent.js'
 import CabezeraComponent from '../ajustes/cabezera.js'
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
-
+import AlertInput from 'react-native-alert-input';
 
 export default class createPlanComponent extends Component{
 	constructor(props){
@@ -39,6 +39,7 @@ export default class createPlanComponent extends Component{
  			restriccion:false,
  			iconCreate:true,
  			cargaPlan:false,
+ 			showAlertUbicacion:false,
  			position: 1,
 	      	interval: null,
 	      	imagenes:[]
@@ -82,19 +83,37 @@ export default class createPlanComponent extends Component{
 			this.setState({lat,lng, direccion, mapa:false})
 		}else{
 			let direccion1 = lat+','+lng 
-			this.setState({lat,lng, direccion:direccion1, mapa:false})
+			this.setState({lat,lng, direccion:'', mapa:false, showAlertUbicacion:true})
 		}
 	}
 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////   	SI LA UBICACION NO TIENE NOMBRE MUESTRA UNA ALERTA PARA QUE LO INSERTE
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	renderAlertNombreEvento(){
+		return(
+			<AlertInput 
+				show={this.state.showAlertUbicacion} 
+				cancelText
+				title='Digita el nombre de lugar de tu evento.' 
+				cancelText={false}
+				submitText='Guardar'
+				onSubmit={(direccion)=>this.setState({showAlertUbicacion:false, direccion })} 
+			/>)
+	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////  	RENDER  	/////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	render(){
 		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy} = this.state
 		const {navigate} = this.props.navigation
-
+		console.log(direccion)
 		return (
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} > 
+				{/* si la ubicacion no tiene */}
+				{this.renderAlertNombreEvento()}
+				
+
 				<CabezeraComponent navigate={navigate} url={'inicio'} parameter={this.state.planId} />
 				{
 					!cargaPlan
@@ -140,7 +159,7 @@ export default class createPlanComponent extends Component{
 								placeholder="descripcion"
 								placeholderTextColor="#c9c9c9" 
 								multiline={true}
-								maxLength={30}
+								maxLength={60}
 							/>
 						</View>
 						:<View style={CreatePlanStyle.cajaInpunts}>
@@ -210,7 +229,7 @@ export default class createPlanComponent extends Component{
 					   	<Text style={[CreatePlanStyle.btnInputs]}>{cargaPlan.lugar}</Text>
 						</View>
 					}
-					
+				
 
 				{/*  restricciones  */}
 					<View style={CreatePlanStyle.cajaInpunts}>
@@ -315,7 +334,7 @@ export default class createPlanComponent extends Component{
  	}
 	handleSubmit(){
 		const {navigate} = this.props.navigation
-		let {nombre, descripcion, fechaLugar, lat, lng, asignados, usuariosAsignados, restricciones, imagen, tipo, cargaPlan, planPadre} = this.state
+		let {nombre, descripcion, fechaLugar, lat, lng, asignados, usuariosAsignados, restricciones, imagen, tipo, cargaPlan, planPadre, direccion} = this.state
 
 		nombre 		= cargaPlan.nombre ?cargaPlan.nombre :nombre
 		descripcion = cargaPlan.descripcion ?cargaPlan.descripcion :descripcion
@@ -324,10 +343,10 @@ export default class createPlanComponent extends Component{
 		fechaLugar  = cargaPlan.fechaLugar ?cargaPlan.fechaLugar :fechaLugar
 		imagen 		= cargaPlan.ImagenResize ?cargaPlan.ImagenResize[0] :imagen
 
-
+		console.log(direccion)
 		if (!cargaPlan) {
 			let data = new FormData();
-			axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, restricciones, tipo})
+			axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, restricciones, tipo, lugar:direccion})
 			.then(e=>{
 				if(e.data.code==1){	
 					let id = e.data.message._id;

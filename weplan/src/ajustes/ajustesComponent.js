@@ -36,6 +36,7 @@ export default class ajustesComponent extends Component{
 				<TouchableOpacity style={AjustesStyle.perfil} onPress={()=>navigate('perfil')}>
 					<Image source={{uri: perfil.photo}} style={AjustesStyle.avatar} />
 					<Text style={AjustesStyle.username}>{perfil.nombre}</Text>
+					<Text style={AjustesStyle.username}>{perfil.username}</Text>
 					<Text style={AjustesStyle.separador}></Text>
 				</TouchableOpacity>
 			)

@@ -1,5 +1,7 @@
 import {StyleSheet, Dimensions} from 'react-native';
 import { MediaQueryStyleSheet } from "react-native-responsive";
+var screenHeight = Dimensions.get('window').height;
+
 export const AmigosStyle = MediaQueryStyleSheet.create({  
 	contenedor:{
 		alignItems: 'center',
@@ -11,8 +13,7 @@ export const AmigosStyle = MediaQueryStyleSheet.create({
 		marginTop:10
 	},
 	contenedorAmigos:{
- 		width:'100%',	
- 		alignItems: 'center',
+ 		paddingLeft:50,
  	},
 	avatar:{
 		height: 60,
@@ -100,11 +101,13 @@ export const AmigosStyle = MediaQueryStyleSheet.create({
 		height:25
  	}, 
  	contenedorLista:{
- 		width:'80%',
+ 		width:'100%',
+ 		height:screenHeight+200
  	},
  	/////////// btn hecho /////////////
  	containerHecho:{
-
+ 		marginTop:20,
+ 		marginBottom:20,
 		alignItems: 'center',
  	},
  	btnHecho:{
@@ -119,6 +122,9 @@ export const AmigosStyle = MediaQueryStyleSheet.create({
  	}
 },{
 		"@media (max-device-width: 380)": {
+		contenedorAmigos:{
+ 			paddingLeft:30,
+ 		},
 		imagenTitulo:{
 			width:35,
 			height:35,

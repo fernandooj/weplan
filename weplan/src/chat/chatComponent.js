@@ -39,8 +39,8 @@ export default class ChatComponent extends Component{
 	}
 
 	componentWillMount(){
-		let planId = this.props.navigation.state.params	
-		// let planId = '5b3f9da239e97c7d2fd4a425'	 
+		// let planId = this.props.navigation.state.params	
+		let planId = '5b42f50885f6f07bd8ef33be'	 
 		console.log(planId) 
 		this.socket = SocketIOClient(URL);
 		this.socket.on('userJoined'+planId, this.onReceivedMessage);
@@ -147,6 +147,8 @@ export default class ChatComponent extends Component{
 				)
 			}
 			else if(e.tipoChat===2){
+				let esperaItem = e.esperaItem.includes(id)
+				let asignadoItem = e.asignadoItem.includes(id)
 				return (
 					<View style={ChatStyle.container} key={key} >
 			         	<View style={ChatStyle.modalIn}>
@@ -176,14 +178,14 @@ export default class ChatComponent extends Component{
 					             </Text>  
 					       	</View>
 					       	{
-					       		(!e.asignadoItem && !e.esperaItem)  && e.userId !== id
+					       		(!asignadoItem && !esperaItem)  && e.userId !== id
 					       		?<View style={e.userId== id ?ChatStyle.contenedorInteres :[ChatStyle.contenedorInteres, ChatStyle.contenedorInteresLeft]}>
 							       	<TouchableOpacity onPress={()=> this.ingresarItem(e.token, e.itemId, e.id, e.titulo, e.rutaImagen)} style={ChatStyle.btnInteres} >
 							       		<Image source={require('./me_interesa.png')} style={ChatStyle.imagenInteres} />
 							       		<Text style={ChatStyle.textoInteres}>Me Interesa</Text>
 							       	</TouchableOpacity>
 							      </View> 	
-							      :!e.asignadoItem && e.esperaItem
+							      :!asignadoItem && esperaItem
 							      ?<View style={e.userId== id ?ChatStyle.contenedorInteres :[ChatStyle.contenedorInteres, ChatStyle.contenedorInteresLeft]}>
 							      	<Image source={require('./espera.png')} style={ChatStyle.imagenEspera} />
 							      </View>
@@ -548,11 +550,11 @@ export default class ChatComponent extends Component{
 	ingresarItem(token, idItem, id, titulo, imagen){
 		axios.put('x/v1/ite/item', {idItem})
 		.then(e=>{
-
+			console.log(e.data)
 			if (e.data.code==1) {
 				sendRemoteNotification(4, token, "notificacion", 'Quieren acceder a un item', `, quiere acceder a ${titulo}`, imagen)
 				let mensajes = this.state.mensajes.filter(e=>{
-					if (e.id==id) {e.esperaItem=true}
+					if (e.id==id) {e.esperaItem.push(this.state.id)}
 						return e
 				})
  				this.setState({mensajes})

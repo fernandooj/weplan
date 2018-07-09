@@ -39,7 +39,9 @@ export default class editPerfilComponent1 extends Component{
 		console.log(this.state.condiciones)
 		return(
 			<View style={LoginStyle.fondo}>
-	           	<TakePhotoComponent fuente={'foto.png'} ancho={150} alto={10} updateImagen={(photo) => {this.setState({photo})}} />
+				 
+	           		<TakePhotoComponent fuente={'foto.png'} ancho={145} alto={10} updateImagen={(photo) => {this.setState({photo})}} />
+	           	 
 		        <TextInput
 			        style={LoginStyle.input}
 			        onChangeText={(textPassword) => this.setState({textPassword})}

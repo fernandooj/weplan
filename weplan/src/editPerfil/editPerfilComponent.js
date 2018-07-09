@@ -35,7 +35,7 @@ export default class editPerfilComponent extends Component{
 		.then(e=>{
 			console.log(e.data.user.user.email)
 			if (e.data.user.user.email==='false') {
-				//this.setState({ textEmail:e.data.user.user.email})
+
 			}else{
 				this.setState({email:true})
 			}
@@ -51,6 +51,7 @@ export default class editPerfilComponent extends Component{
 	render(){
 		console.log(this.state.textCiudad)
 		return(
+			<ScrollView style={LoginStyle.contenedor} >
 			<View style={LoginStyle.fondo} >
 				<View>
 					<Image
@@ -243,6 +244,7 @@ export default class editPerfilComponent extends Component{
 			    	<Text  style={LoginStyle.btnRegistro}>Guardar</Text>
 			    </TouchableOpacity>
 		    </View>
+		    </ScrollView>
 		)
 	}
 	handleSubmit(){
