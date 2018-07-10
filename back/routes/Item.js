@@ -74,7 +74,7 @@ router.get('/:user', (req, res)=>{
 							}
 						})
 						const add = (a, b)=>{
-				 			return a + b;
+				 			return a - b;
 						}
 						let sumaPago  =[];
 						let sumaDeuda =[];
@@ -360,27 +360,26 @@ let createChat = function(req, res, userId, item, imagen){
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////// 			agrego al usuario al item 
+//////// 			agrego al usuario al item cuando acepta ser parte del item
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.put('/activar/:idTipo', (req, res)=>{
 	console.log(req.params.idTipo)
 	console.log('---------------')
-	// itemServices.getById(req.params.idTipo, (err, item)=>{
-	// 		let espera = item[0].espera.filter(e=>{
-	// 			return e!=req.session.usuario.user._id
-	// 		})
-	 
-	// 		let asignados = item[0].asignados.concat(req.session.usuario.user._id)
-	// 		itemServices.activaUsuario(req.params.idTipo, espera, asignados, (err, item)=>{
-	// 			if (err) {
-	// 				res.json({status: 'FAIL', err, code:0})
-	// 			}else{
-	// 				//res.json({status:'SUCCESS', asignados, code:1})
-	// 				nuevoPago(req, res, req.params.idTipo, req.body.monto)    	
-	// 			}
-	// 		})
-	 
-	// })
+	itemServices.getById(req.params.idTipo, (err, item)=>{
+		let espera = item[0].espera.filter(e=>{
+			return e!=req.session.usuario.user._id
+		})
+ 
+		let asignados = item[0].asignados.concat(req.session.usuario.user._id)
+		itemServices.activaUsuario(req.params.idTipo, espera, asignados, (err, item)=>{
+			if (err) {
+				res.json({status: 'FAIL', err, code:0})
+			}else{
+				//res.json({status:'SUCCESS', asignados, code:1})
+				nuevoPago(req, res, req.params.idTipo, req.body.monto)    	
+			}
+		})
+	})
 })
 const activaItem =(usuario, idTipo, id, res, req)=>{
 	

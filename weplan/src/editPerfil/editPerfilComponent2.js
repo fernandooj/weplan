@@ -70,6 +70,7 @@ export default class editPerfilComponent2 extends Component{
 	}
 	render(){
 		const {activo} = this.state
+		console.log(this.state.restriccionArray.length)
 		return(
 			<ScrollView style={LoginStyle.fondoUltimo}>
 				<View style={LoginStyle.contenedorRes}>
@@ -84,12 +85,12 @@ export default class editPerfilComponent2 extends Component{
 			    
 			    <View style={LoginStyle.contenedorBtnlisto}>
 			    	{
-			    		!this.state.restriccionArray.length>0
+			    		this.state.restriccionArray.length<3
 			    		?<TouchableOpacity  style={LoginStyle.estasListoBtn} onPress={this.selecciona.bind(this)}>
 					    	<Text  style={LoginStyle.btnEstasListo}>!Estas Listo!</Text>
 					    </TouchableOpacity>
 					    :<TouchableOpacity  style={[LoginStyle.estasListoBtn, LoginStyle.estasListoBtnActivo]} onPress={this.handleSubmit.bind(this)}>
-					    	<Text  style={[LoginStyle.btnEstasListo, LoginStyle.btnEstasListoActivo]}>!Hecho!</Text>
+					    	<Text  style={[LoginStyle.btnEstasListo, LoginStyle.btnEstasListoActivo]}>!Estas Listo!</Text>
 					    </TouchableOpacity>
 			    	}
 				    
@@ -108,7 +109,7 @@ export default class editPerfilComponent2 extends Component{
 	selecciona(){
 		 
 		Alert.alert(
-		  'Selecciona al menos una categoria',
+		  'Selecciona al menos tres categorias',
 		  '',
 		  [
 		    {text: 'OK', onPress: () => console.log('OK Pressed')},

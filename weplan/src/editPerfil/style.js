@@ -247,6 +247,9 @@ export const LoginStyle = MediaQueryStyleSheet.create({
 	},
 },{
 	"@media (max-device-width: 320)": {
+		touchRes:{
+			margin:1
+		},
 		image:{
 			marginTop:10,
 	        marginBottom:10,

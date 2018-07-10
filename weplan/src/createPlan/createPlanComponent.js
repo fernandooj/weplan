@@ -107,7 +107,6 @@ export default class createPlanComponent extends Component{
 	render(){
 		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy} = this.state
 		const {navigate} = this.props.navigation
-		console.log(direccion)
 		return (
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} > 
 				{/* si la ubicacion no tiene */}
@@ -341,9 +340,9 @@ export default class createPlanComponent extends Component{
 		lat 		= cargaPlan.lat ?cargaPlan.lat :lat
 		lng 		= cargaPlan.lng ?cargaPlan.lng :lng
 		fechaLugar  = cargaPlan.fechaLugar ?cargaPlan.fechaLugar :fechaLugar
-		imagen 		= cargaPlan.ImagenResize ?cargaPlan.ImagenResize[0] :imagen
+		imagen 		= cargaPlan.imagenResize ?cargaPlan.imagenResize[0] :imagen
 
-		console.log(direccion)
+		console.log(imagen)
 		if (!cargaPlan) {
 			let data = new FormData();
 			axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, restricciones, tipo, lugar:direccion})
@@ -381,7 +380,7 @@ export default class createPlanComponent extends Component{
 				console.log(err)
 			})
 		}else{
-			axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, restricciones, tipo, imagen, planPadre})
+			axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, restricciones, tipo, imagenOriginal:imagen, imagenResize:imagen, imagenMiniatura:imagen, planPadre})
 			.then(e=>{
 				if(e.data.code==1){	
 					let id = e.data.message._id;

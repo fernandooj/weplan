@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground, Alert } from 'react-native'
+import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground, Alert, Keyboard} from 'react-native'
 import axios from 'axios'
 import SocketIOClient from 'socket.io-client';
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
@@ -39,8 +39,8 @@ export default class ChatComponent extends Component{
 	}
 
 	componentWillMount(){
-		// let planId = this.props.navigation.state.params	
-		let planId = '5b42f50885f6f07bd8ef33be'	 
+		let planId = this.props.navigation.state.params	
+		// let planId = '5b42f50885f6f07bd8ef33be'	 
 		console.log(planId) 
 		this.socket = SocketIOClient(URL);
 		this.socket.on('userJoined'+planId, this.onReceivedMessage);
@@ -587,6 +587,7 @@ export default class ChatComponent extends Component{
 	////// ENVIO EL MENSAJE DEL CHAT 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	handleSubmit(){
+		Keyboard.dismiss()
 		const fecha = moment().format('h:mm')
 		const {planId, mensaje, id, photo} = this.state
 		this.textInput.clear()

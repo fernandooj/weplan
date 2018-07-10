@@ -20,6 +20,7 @@ class planServices {
 		planSchema.find({$or:[{'asignados':asignados, activo:true},{'idUsuario':asignados, activo:true}]}, null, {sort: {_id: -1}}).populate('idUsuario', 'nombre ciudad photo').populate('asignados', 'nombre ciudad photo').exec(callback)
 	}
 	create(planData, id, callback){
+		console.log(planData)
 		let plan 			 = new planSchema();
 		plan.tipo 		     = planData.tipo	
 		plan.nombre 		 = planData.nombre	

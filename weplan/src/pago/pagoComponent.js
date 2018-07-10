@@ -165,10 +165,11 @@ export default class pagoComponent extends Component{
 		}
 	}
 	handleSubmit(e){
-		let {monto, metodo, descripcion, itemId, valor, item} = this.state
+		let {monto, metodo, descripcion, itemId, planId, valor, item} = this.state
 		montos=monto
 		monto = parseInt(monto)
 		valor = Math.abs(valor)
+		descripcion = descripcion ? descripcion :'abono usuario'
   		const {navigate} = this.props.navigation		
 		if (monto> valor) {
 			Alert.alert(
@@ -192,7 +193,7 @@ export default class pagoComponent extends Component{
 					  'tu pago fue actualizado',
 					  '',
 					  [
-					    {text: 'OK', onPress: () => navigate('item', {itemId, monto})},
+					    {text: 'OK', onPress: () => navigate('item', planId)},
 					  ],
 					  { cancelable: false }
 					)
@@ -201,7 +202,7 @@ export default class pagoComponent extends Component{
 					  'Opss algo salio mal, intenta nuevamente',
 					  '',
 					  [
-					    {text: 'OK', onPress: () => navigate('item', {itemId, monto})},
+					    {text: 'OK', onPress: () => navigate('item', planId)},
 					  ],
 					  { cancelable: false }
 					)
