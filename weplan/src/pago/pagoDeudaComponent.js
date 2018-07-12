@@ -21,34 +21,10 @@ export default class pagoDeudaComponent extends Component{
 	 	let planId = this.props.navigation.state.params.planId
 	 	// let planId = '5aefdb91423c402001dbb329'
 	 	// let itemId = '5af143b7076e9c07c4973aa8'
-	 	axios.get('x/v1/ite/item/id/'+itemId)
+	 	axios.get('x/v1/pag/pago/porusuario/'+itemId)
 	 	.then(e=>{
-	 		console.log(e.data)
-			///////////////////////////////////////////////////////////////////////////////////////////////////////
-			////////////////////		busco los pagos asignados de los usuarios del item
-			///////////////////////////////////////////////////////////////////////////////////////////////////////
-			let usuarios=[]
-	 		e.data.mensaje[0].asignados.filter(e=>{
-	 			axios.get('/x/v1/pag/pago/user/'+itemId+'/'+e._id)
-				.then(res=>{
-				 		
-						usuarios.push({
-							monto  : res.data.pago[0].monto<0 ?res.data.pago[0].monto :res.data.deuda[0].monto, 
-							id     : e._id,
-							nombre : e.nombre,
-							photo  : e.photo
-						})
-				 
-					console.log(usuarios)
-					this.setState({usuarios})
-				})
-				.catch(err=>{
-					return err
-				})
-	 		}) 	
-	 		
-
-	 		this.setState({item:e.data.mensaje[0], itemId, planId})
+	 		console.log(e.data.item)
+	 		this.setState({usuarios:e.data.pago, itemId, item:e.data.item[0], planId})
 	 	})
 	 	.catch(err=>{
 	 		console.log(e.err)
@@ -78,23 +54,28 @@ export default class pagoDeudaComponent extends Component{
 
 			{/* SEPARADOR */}
 				<View style={PagoStyle.separador}></View>
-				
 			</View>
 		)
 	}
+	renderPagosHechos(id){
+		 axios.get('x/v1/pag/pago/pagoshechos/'+id)
+	   	.then(res=>{	 
+	   		return <Text>aaf </Text>
+	   	})
+	}
 	renderAsignados(){
-		const valor = this.state.item.valor
 		return this.state.usuarios.map((e, key)=>{
 			return(
 	 			<TouchableOpacity style={PagoStyle.pagoDeudaContenedor} key={key} 
-	 				onPress={e.monto<0 ?()=>this.setState({show:true, userId:e.id, photo:e.photo, nombre:e.nombre, monto:e.monto}) :null}>
+	 				onPress={()=>this.setState({show:true, userId:e.id, photo:e.photo, nombre:e.nombre, monto:e.monto})}>
 	 				<Image source={{uri: e.photo}} style={PagoStyle.pagoDeudaAvatar}/>
-	 				<Text style={PagoStyle.pagoDeudaNombre}>{e.nombre}</Text>
-	 				{
-	 					e.monto<0
-	 					?<Text style={PagoStyle.pagoDeudaMonto}>{'$ '+Number(e.monto).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
-	 					:<Text style={PagoStyle.pagoDeudaMontoActive}>$ 0</Text>
-	 				}
+	 				<Text style={PagoStyle.pagoDeudaNombre}>{e.nombre}</Text> 
+	 				<Text style={PagoStyle.pagoDeudaMonto}>{'$ '+Number(e.monto).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+	 				<View>	
+		 				{ 
+		 					this.renderPagosHechos(e.id)
+		 				}
+		 			</View>
 	 				<View style={PagoStyle.separador}></View>
 	 			</TouchableOpacity>
 			)
@@ -104,7 +85,7 @@ export default class pagoDeudaComponent extends Component{
   	render() {
   		const {navigate} = this.props.navigation
   		const {show, monto, photo, nombre, itemId, userId, usuarios} = this.state
- 
+ 		console.log(usuarios)
 		const add = (a, b)=>{
  			return a + b;
 		}

@@ -40,7 +40,7 @@ export default class ChatComponent extends Component{
 
 	componentWillMount(){
 		let planId = this.props.navigation.state.params	
-		// let planId = '5b42f50885f6f07bd8ef33be'	 
+		// let planId = '5b45707a411dc46479c9751a'	 
 		console.log(planId) 
 		this.socket = SocketIOClient(URL);
 		this.socket.on('userJoined'+planId, this.onReceivedMessage);
@@ -150,29 +150,34 @@ export default class ChatComponent extends Component{
 				let esperaItem = e.esperaItem.includes(id)
 				let asignadoItem = e.asignadoItem.includes(id)
 				return (
-					<View style={ChatStyle.container} key={key} >
-			         	<View style={ChatStyle.modalIn}>
-			         		<ImageBackground source={require('./item2.png')} style={e.userId== id ?ChatStyle.fondoHeaderItem :[ChatStyle.fondoHeaderItem, ChatStyle.fondoHeaderItemLeft]}>	 
-						      {/* imagen avatar */}
-						         <Text style={e.userId== id ?ChatStyle.nombreIt :[ChatStyle.nombreIt, ChatStyle.nombreItLeft]}>{e.nombre}</Text>
-
-						      {/* imagen avatar */}
-						      		<TouchableOpacity  onPress={e.userId== id ?null :()=> navigate('profile', e.userId)}>
-									<Image source={{uri: e.photo}}
-										style={e.userId== id ?ChatStyle.iconAvatar :[ChatStyle.iconAvatar, ChatStyle.iconAvatarLeft]} 
-									/>
-									</TouchableOpacity>
-									</ImageBackground>	
-							   {/* fotografia item */}
-						         <Image source={{uri: e.rutaImagen}}
-						         	style={e.userId== id ?ChatStyle.fotografia :[ChatStyle.fotografia, ChatStyle.fotografiaLeft]}
-						         />
-	  							
+					<View key={key} style={ChatStyle.contenedorBox}>
+			      		<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', e.userId)} style={e.userId== id ?ChatStyle.cBtnAvatarItem : [ChatStyle.cBtnAvatarItem, ChatStyle.cBtnAvatarItemLeft]}>
+				      		
+							{/* imagen avatar */}
+							<Image style={ChatStyle.photo}
+								width={45}
+								height={45}
+								source={{uri: e.photo}}  />
+						</TouchableOpacity>
+					 {/* texto avatar */}
+				      		<View style={e.userId== id ?ChatStyle.boxItem :[ChatStyle.boxItem, ChatStyle.boxLeft]}  >
+								<View style={ChatStyle.tituloTipoChat}>
+									<Text style={e.userId== id ?ChatStyle.cNombreTipoChat :[ChatStyle.cNombreTipoChat, ChatStyle.cNombreTipoChatLeft]}>{e.nombre}</Text>
+								</View>
+							</View>
+					   {/* fotografia item */}
+				         <Image source={{uri: e.rutaImagen}}
+				         	style={e.userId== id ?ChatStyle.fotografia :[ChatStyle.fotografia, ChatStyle.fotografiaLeft]}
+				         />
+	  					<View style={e.userId== id ?ChatStyle.boxItem2 :[ChatStyle.boxItem2, ChatStyle.boxLeft]} >
 					         {/* rest modal  
 					         <View style={[ChatStyle.box, ChatStyle.modal]}>*/} 
 					         <View style={e.userId== id ?ChatStyle.contenedorItem :[ChatStyle.contenedorItem, ChatStyle.contenedorItemLeft]}>
 					             <Text style={e.userId== id ?ChatStyle.titulo :[ChatStyle.titulo, ChatStyle.tituloLeft]}>{e.titulo}</Text>
-					             <Text style={e.userId== id ?ChatStyle.descripcion :[ChatStyle.descripcion, ChatStyle.descripcionLeft]}>{e.descripcion}</Text>  
+					            {
+					            	e.descripcion.length>0
+					            	&&<Text style={e.userId== id ?ChatStyle.descripcion :[ChatStyle.descripcion, ChatStyle.descripcionLeft]}>{e.descripcion}</Text>  
+					            }
 					             <Text style={e.userId== id ?ChatStyle.valor :[ChatStyle.valor, ChatStyle.valorLeft] }>
 					             	{'$ '+Number(e.valor).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
 					             </Text>  
@@ -210,10 +215,10 @@ export default class ChatComponent extends Component{
 						</TouchableOpacity>
 						<View style={ChatStyle.contenedorTitulos}>
 							<Text style={ChatStyle.pNombre}>{e.nombre}</Text>
-							<Text style={ChatStyle.pTitulo}>{e.eTitulo}</Text>
+							 
 							<View style={ChatStyle.contenedorDescripcion}>
 								<Image source={require('../encuesta/item4.png')} style={ChatStyle.decoracion} />
-								<Text style={ChatStyle.pDescripcion}>{asignado ?'si' :'no'}</Text>
+								 <Text style={ChatStyle.pDescripcion}>{e.eTitulo}</Text> 
 								<Image source={require('../encuesta/item4.png')} style={ChatStyle.decoracion} />
 							</View>
 						</View>
@@ -303,130 +308,130 @@ export default class ChatComponent extends Component{
 						</View>
 					</View>
 				)
-				}else if (e.tipoChat===4) {
-					return (
-						<View key={key} style={ChatStyle.contenedorBox}>
-							<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', e.userId)} style={e.userId== id ?ChatStyle.cBtnAvatarC : [ChatStyle.cBtnAvatarC, ChatStyle.cBtnAvatarCLeft]}>
-								<Image
-									style={ChatStyle.photo}
-									width={45}
-									height={45}
-									source={{uri: e.photo}}
-							    />
-							</TouchableOpacity>
+			}else if (e.tipoChat===4) {
+				return (
+					<View key={key} style={ChatStyle.contenedorBox}>
+						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', e.userId)} style={e.userId== id ?ChatStyle.cBtnAvatarC : [ChatStyle.cBtnAvatarC, ChatStyle.cBtnAvatarCLeft]}>
 							<Image
-								style={e.userId==id ?ChatStyle.cPhoto :[ChatStyle.cPhoto, ChatStyle.cPhotoLeft]} 
-								width={60}
-								height={60}
-								source={{uri: e.cPhoto}}
-						   />
-							<TouchableOpacity style={e.userId== id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]}>
-								<View style={ChatStyle.tituloTipoChat}>
-									<Text style={e.userId== id ?ChatStyle.cNombreTipoChat :[ChatStyle.cNombreTipoChat, ChatStyle.cNombreTipoChatLeft]}>{e.nombre}</Text>
-								</View>
-								<View style={ChatStyle.mensajeCChat}>
-									<Text style={e.userId== id ?ChatStyle.cMensaje :[ChatStyle.cMensaje, ChatStyle.cMensajeLeft]}>{e.cNombre}</Text>
-									<Text style={e.userId== id ?ChatStyle.cFecha   :[ChatStyle.cFecha,   ChatStyle.cFechaLeft]}>{e.fecha}</Text>
-								</View>
-								
-								<View style={ChatStyle.botonesContacto}>
-									<TouchableOpacity>
-										<Text style={ChatStyle.cTextBotones}>Agregar Contacto</Text>
+								style={ChatStyle.photo}
+								width={45}
+								height={45}
+								source={{uri: e.photo}}
+						    />
+						</TouchableOpacity>
+						<Image
+							style={e.userId==id ?ChatStyle.cPhoto :[ChatStyle.cPhoto, ChatStyle.cPhotoLeft]} 
+							width={60}
+							height={60}
+							source={{uri: e.cPhoto}}
+					   />
+						<TouchableOpacity style={e.userId== id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]}>
+							<View style={ChatStyle.tituloTipoChat}>
+								<Text style={e.userId== id ?ChatStyle.cNombreTipoChat :[ChatStyle.cNombreTipoChat, ChatStyle.cNombreTipoChatLeft]}>{e.nombre}</Text>
+							</View>
+							<View style={ChatStyle.mensajeCChat}>
+								<Text style={e.userId== id ?ChatStyle.cMensaje :[ChatStyle.cMensaje, ChatStyle.cMensajeLeft]}>{e.cNombre}</Text>
+								<Text style={e.userId== id ?ChatStyle.cFecha   :[ChatStyle.cFecha,   ChatStyle.cFechaLeft]}>{e.fecha}</Text>
+							</View>
+							
+							<View style={ChatStyle.botonesContacto}>
+								<TouchableOpacity>
+									<Text style={ChatStyle.cTextBotones}>Agregar Contacto</Text>
+								</TouchableOpacity>
+								{
+									plan.idUsuario._id === id && !e.estaPlan && e.contactoId !=id
+									&&<TouchableOpacity onPress={()=>this.agregarUsuarioPlan(e.contactoId, e.id, e.cToken)}>
+										<Text style={ChatStyle.cTextBotones}>Agregar al plan</Text>
 									</TouchableOpacity>
-									{
-										plan.idUsuario._id === id && !e.estaPlan && e.contactoId !=id
-										&&<TouchableOpacity onPress={()=>this.agregarUsuarioPlan(e.contactoId, e.id, e.cToken)}>
-											<Text style={ChatStyle.cTextBotones}>Agregar al plan</Text>
-										</TouchableOpacity>
-									}
-								</View>
-							</TouchableOpacity>
-						</View>	
-					)
-				}else if (e.tipoChat===5) {
-					return (
-						<View key={key} style={ChatStyle.contenedorBox}>
-							<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', e.userId)} style={e.userId== id ?ChatStyle.cBtnAvatarC : [ChatStyle.cBtnAvatarC, ChatStyle.cBtnAvatarCLeft]}>
+								}
+							</View>
+						</TouchableOpacity>
+					</View>	
+				)
+			}else if (e.tipoChat===5) {
+				return (
+					<View key={key} style={ChatStyle.contenedorBox}>
+						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', e.userId)} style={e.userId== id ?ChatStyle.cBtnAvatarC : [ChatStyle.cBtnAvatarC, ChatStyle.cBtnAvatarCLeft]}>
+							<Image
+								style={ChatStyle.photo}
+								width={45}
+								height={45}
+								source={{uri: e.photo}}
+						    />
+						</TouchableOpacity>
+						<TouchableOpacity style={e.userId== id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]}  >
+							<View style={ChatStyle.tituloTipoChat}>
+								<Text style={e.userId== id ?ChatStyle.cNombreTipoChat :[ChatStyle.cNombreTipoChat, ChatStyle.cNombreTipoChatLeft]}>{e.nombre}</Text>
+							</View>
+							<View style={ChatStyle.mensajeCChat}>
+		                  <MapComponent lat={parseFloat(e.lat)} lng={parseFloat(e.lng)} />
+								<Text style={e.userId== id ?ChatStyle.cFecha   :[ChatStyle.cFecha,   ChatStyle.cFechaLeft]}>{e.fecha}</Text>
+							</View>
+						</TouchableOpacity>
+					</View>	
+				)	
+			}else if (e.tipoChat===6) {
+				return (
+					<View key={key} style={ChatStyle.contenedorBox}>
+						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', e.userId)} style={e.userId== id ?ChatStyle.cBtnAvatarC : [ChatStyle.cBtnAvatarC, ChatStyle.cBtnAvatarCLeft]}>
+							<Image
+								style={ChatStyle.photo}
+								width={45}
+								height={45}
+								source={{uri: e.photo}}
+						    />
+
+						</TouchableOpacity>
+						<TouchableOpacity style={e.userId== id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]}  >
+							<View style={ChatStyle.tituloTipoChat}>
+								<Text style={e.userId== id ?ChatStyle.cNombreTipoChat :[ChatStyle.cNombreTipoChat, ChatStyle.cNombreTipoChatLeft]}>{e.nombre}</Text>
+							</View>
+							 
 								<Image
-									style={ChatStyle.photo}
-									width={45}
-									height={45}
-									source={{uri: e.photo}}
-							    />
-							</TouchableOpacity>
-							<TouchableOpacity style={e.userId== id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]}  >
-								<View style={ChatStyle.tituloTipoChat}>
-									<Text style={e.userId== id ?ChatStyle.cNombreTipoChat :[ChatStyle.cNombreTipoChat, ChatStyle.cNombreTipoChatLeft]}>{e.nombre}</Text>
-								</View>
-								<View style={ChatStyle.mensajeCChat}>
-			                  <MapComponent lat={parseFloat(e.lat)} lng={parseFloat(e.lng)} />
-									<Text style={e.userId== id ?ChatStyle.cFecha   :[ChatStyle.cFecha,   ChatStyle.cFechaLeft]}>{e.fecha}</Text>
-								</View>
-							</TouchableOpacity>
-						</View>	
-					)	
-				}else if (e.tipoChat===6) {
-					return (
-						<View key={key} style={ChatStyle.contenedorBox}>
-							<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', e.userId)} style={e.userId== id ?ChatStyle.cBtnAvatarC : [ChatStyle.cBtnAvatarC, ChatStyle.cBtnAvatarCLeft]}>
-								<Image
-									style={ChatStyle.photo}
-									width={45}
-									height={45}
-									source={{uri: e.photo}}
+									style={ChatStyle.Iphoto}
+									width='100%'
+									height={150}
+									source={{uri: e.documento,cache:true}}
 							    />
 
-							</TouchableOpacity>
-							<TouchableOpacity style={e.userId== id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]}  >
-								<View style={ChatStyle.tituloTipoChat}>
-									<Text style={e.userId== id ?ChatStyle.cNombreTipoChat :[ChatStyle.cNombreTipoChat, ChatStyle.cNombreTipoChatLeft]}>{e.nombre}</Text>
-								</View>
-								 
-									<Image
-										style={ChatStyle.Iphoto}
-										width='100%'
-										height={150}
-										source={{uri: e.documento,cache:true}}
-								    />
- 
-							</TouchableOpacity>
-						</View>	
-					)	
-				}else if (e.tipoChat===7) {
-					return (
-						<View key={key} style={ChatStyle.contenedorBox}>
-							<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', e.userId)} style={e.userId== id ?ChatStyle.cBtnAvatarC : [ChatStyle.cBtnAvatarC, ChatStyle.cBtnAvatarCLeft]}>
-								<Image
-									style={ChatStyle.photo}
-									width={45}
-									height={45}
-									source={{uri: e.photo}}
-							    />
-							</TouchableOpacity>
+						</TouchableOpacity>
+					</View>	
+				)	
+			}else if (e.tipoChat===7) {
+				return (
+					<View key={key} style={ChatStyle.contenedorBox}>
+						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', e.userId)} style={e.userId== id ?ChatStyle.cBtnAvatarC : [ChatStyle.cBtnAvatarC, ChatStyle.cBtnAvatarCLeft]}>
 							<Image
-								style={e.userId==id ?ChatStyle.cPhoto :[ChatStyle.cPhoto, ChatStyle.cPhotoLeft]} 
-								width={60}
-								height={60}
-								source={{uri: e.cPhoto}}
-						   />
-							<TouchableOpacity style={e.userId== id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]} 
-								onPress={()=> this.setState({showPdf:true})} >
-								<View style={ChatStyle.tituloTipoChat}>
-									<Text style={e.userId== id ?ChatStyle.cNombreTipoChat :[ChatStyle.cNombreTipoChat, ChatStyle.cNombreTipoChatLeft]}>{e.nombre}</Text>
-								</View>
-								<View style={ChatStyle.mensajeCChat}>
-			                  <Text style={e.userId== id ?ChatStyle.cDocumento :[ChatStyle.cDocumento, ChatStyle.cDocumentoLeft]}>{e.documento.slice(70, 100)}</Text>
-									<Text style={e.userId== id ?ChatStyle.cFecha   :[ChatStyle.cFecha,   ChatStyle.cFechaLeft]}>{e.fecha}</Text>
-								</View>
-							</TouchableOpacity>
-							{
-								showPdf
-								&&<PdfComponent documento={e.documento} close={()=>this.setState({showPdf:false})} />
-							}
-							
-						</View>	
-					)
-				}
+								style={ChatStyle.photo}
+								width={45}
+								height={45}
+								source={{uri: e.photo}}
+						    />
+						</TouchableOpacity>
+						<Image
+							style={e.userId==id ?ChatStyle.cPhoto :[ChatStyle.cPhoto, ChatStyle.cPhotoLeft]} 
+							width={60}
+							height={60}
+							source={{uri: e.cPhoto}}
+					   />
+						<TouchableOpacity style={e.userId== id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]} 
+							onPress={()=> this.setState({showPdf:true})} >
+							<View style={ChatStyle.tituloTipoChat}>
+								<Text style={e.userId== id ?ChatStyle.cNombreTipoChat :[ChatStyle.cNombreTipoChat, ChatStyle.cNombreTipoChatLeft]}>{e.nombre}</Text>
+							</View>
+							<View style={ChatStyle.mensajeCChat}>
+		                  <Text style={e.userId== id ?ChatStyle.cDocumento :[ChatStyle.cDocumento, ChatStyle.cDocumentoLeft]}>{e.documento.slice(70, 100)}</Text>
+								<Text style={e.userId== id ?ChatStyle.cFecha   :[ChatStyle.cFecha,   ChatStyle.cFechaLeft]}>{e.fecha}</Text>
+							</View>
+						</TouchableOpacity>
+						{
+							showPdf
+							&&<PdfComponent documento={e.documento} close={()=>this.setState({showPdf:false})} />
+						}
+						
+					</View>	
+				)
+			}
 		})
 	}
 

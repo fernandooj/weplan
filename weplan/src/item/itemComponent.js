@@ -21,12 +21,12 @@ export default class ItemComponent extends Component{
 		articulosPublicados:[],
 		noasignados:[],
 		pendientes:[],
-		render:0,
+		render:2,
 		total:0
 	}
 	componentWillMount(){
 		// let planId = this.props.navigation.state.params	
-		let planId = '5b42f50885f6f07bd8ef33be'	
+		let planId = '5b45707a411dc46479c9751a'	
 		this.setState({planId})
  
 		axios.get('/x/v1/ite/item/'+planId)
@@ -136,6 +136,9 @@ export default class ItemComponent extends Component{
 		})
 	}
 
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////// SI ESTA EN LISTADO DE ESPERA Y EL USUARIO ACEPTA ENTRAR 
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	aceptarItem(idItem, token, titulo, imagen, monto){
 		console.log({idItem, token, titulo, imagen, monto})
 		axios.put(`/x/v1/ite/item/activar/${idItem}`, {monto})
@@ -155,6 +158,8 @@ export default class ItemComponent extends Component{
 			console.log(err)
 		})
 	}
+
+
 	peticion(planId){
 		axios.get('/x/v1/ite/item/'+planId)
 		.then(e=>{

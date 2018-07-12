@@ -8,7 +8,7 @@ let moment   = require('moment');
 let fecha = moment().format('YYYY-MM-DD-h-mm')
 
 let pagoServices = require('../services/pagoServices.js')
-
+let itemServices = require('../services/itemServices.js')
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////	 	GET ALL 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,10 +59,51 @@ router.get('/suma/:idItem', (req, res)=>{
 	})
 })
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////	 OBTENGO DE CADA USUARIO LO QUE ADEUDA POR CADA ITEM pantalla abonos por el creador del item
+///////////////////////////////////////////////////////////////////////////////////////////////
+router.get('/porusuario/:itemId', (req, res)=>{
+	itemServices.getById(req.params.itemId, (err, item)=>{
+		if(!err){
+			pagoServices.deudaPorUsuario(req.session.usuario.user._id, req.params.itemId, (err, pago)=>{
+				if(err){
+					res.json({err, code:0})
+				}else{
+					pago = pago.map(e=>{
+						let data = e.data[0].info[0]
+						return{
+							id:e._id,
+							nombre:data.nombre,
+							photo:data.photo,
+							monto:(Math.ceil((data.valor/(data.asignados.length+1))/100)*100)-e.deuda,
+						}
+					})
+					res.json({ status: 'SUCCESS', pago, item, code:1 });				
+				}
+			})
+		}
+	})
+	
+})
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////	 OBTENGO CADA PAGO DE CADA USUARIO
+///////////////////////////////////////////////////////////////////////////////////////////////
+router.get('/pagoshechos/:userId', (req, res)=>{
+	pagoServices.pagosPorUsuario(req.params.userId, (err, pago)=>{
+		if(err){
+			res.json({err, code:0})
+		}else{
+			res.json({ status: 'SUCCESS', pago,  code:1 });				
+		}
+	})
+})
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////// 		OBTIENE LA SUMA DE LOS RESULTADOS POR USUARIOS
 ///////////////////////////////////////////////////////////////////////////////////////////////
-router.get('/user/:idItem/:idUser', (req, res)=>{
+router.get('/user/:idItem/', (req, res)=>{
 	pagoServices.suma(req.params.idItem, req.params.idUser, (err, pago)=>{
 		if(err){
 			res.json({status: 'FAIL', err, code:0})
@@ -82,6 +123,27 @@ const sumaTodos = (req, res, pago) =>{
 		}
 	})
 }
+
+// router.get('/user/:idItem/:idUser', (req, res)=>{
+// 	pagoServices.suma(req.params.idItem, req.params.idUser, (err, pago)=>{
+// 		if(err){
+// 			res.json({status: 'FAIL', err, code:0})
+// 		}else{
+// 			sumaTodos(req, res, pago) 
+// 		}
+// 	})
+// })
+
+// const sumaTodos = (req, res, pago) =>{
+// 	pagoServices.sumaTodos(req.params.idItem, (err, deuda)=>{
+// 		if(err){
+// 			res.json({err, code:0})
+// 		}else{
+// 			console.log(deuda)
+// 			res.json({ status: 'SUCCESS', pago, deuda, total:pago.length, code:1 });				
+// 		}
+// 	})
+// }
 
 
  

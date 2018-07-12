@@ -67,6 +67,7 @@ class itemServices {
         }}, callback);	
 	}
 	sumaItemPropios(planId, userId, callback){
+		console.log(userId)
 		planId = mongoose.Types.ObjectId(planId);
 		userId = mongoose.Types.ObjectId(userId);
 		itemSchema.aggregate([
@@ -78,12 +79,12 @@ class itemServices {
 					from:"pagos",
 					localField:"_id",
 					foreignField:"itemId",
-					as:"PlanData"
+					as:"PagoData"
 				}
 			}, 
 			{
 			    $unwind:{
-			        path:"$PlanData",
+			        path:"$PagoData",
 			        preserveNullAndEmptyArrays:true
 			    }
 			},
@@ -91,9 +92,12 @@ class itemServices {
 			    $project:{
 			        _id:1,
 			        userId:1,
-	 				montos:"$PlanData.monto",
-	 				pagoId:"$PlanData._id",
-			        abono:"$PlanData.abono",
+			        asignados:1,
+			        valor:1,
+	 				montos:"$PagoData.monto",
+	 				pagoId:"$PagoData._id",
+			        abono:"$PagoData.abono",
+			        userIdPago:'$PagoData.userId',
 			        titulo:1,
 			        abierto:1
 			    }
@@ -101,6 +105,9 @@ class itemServices {
 			{
 				"$match": {
 					abono:true,
+					// userIdPago:{
+					// 	$ne:userId
+					// },
 					userId
 				}
 		    },
@@ -110,7 +117,7 @@ class itemServices {
 			       deuda: { $sum: "$montos"}, 
 			       count: { $sum: 1 }, // for no. of documents count
 			       data: {
-			       	$addToSet: {info:[{titulo:'$titulo', userId:'$userId', abierto:'$abierto'}]},
+			       	$addToSet: {info:[{titulo:'$titulo', userId:'$userId', abierto:'$abierto', asignados:'$asignados', valor:'$valor'}]},
 			       }
 			    } 
 			},

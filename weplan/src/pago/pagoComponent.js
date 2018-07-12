@@ -4,7 +4,7 @@ import {PagoStyle} from '../pago/style'
 import CabezeraComponent from '../ajustes/cabezera.js'
 import axios from 'axios'
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
- 
+import { TextInputMask } from 'react-native-masked-text' 
 
 export default class pagoComponent extends Component{
  	state={
@@ -65,6 +65,11 @@ export default class pagoComponent extends Component{
 			</View>
 		)
 	}
+	getValor(e){
+	    e = e.substr(1)
+	    e = e.replace(/[^0-9]/g, '')    
+	    this.setState({valorInicial:e, monto:Number(e)})
+	}
 	renderPago(){
 		const {cc, debito, efectivo} = this.state
 		return(
@@ -72,14 +77,24 @@ export default class pagoComponent extends Component{
 			{/* FORMULARIO PAGAR */}
 				<View style={PagoStyle.contenedorDeuda}>
 					<Text style={PagoStyle.montoTitulo}>Monto de Pago</Text>
-					<TextInput 
+					<TextInputMask
+	                  ref="text"
+	                  placeholder='Valor a Pagar'
+	                  type={'money'}
+	                  options={{ unit: '$', zeroCents:true, precision:0 }} 
+	                  style={PagoStyle.inputValor}
+	                  underlineColorAndroid='transparent'
+	                  onChangeText={this.getValor.bind(this)} 
+	                  value={this.state.valorInicial}
+	                />
+					{/*<TextInput 
 		                placeholder='Valor a Pagar'
 		                underlineColorAndroid='transparent'
 		                placeholderTextColor="#8F9093" 
 		                keyboardType='numeric'
 		                style={PagoStyle.inputValor}
 		                onChangeText={(monto) => this.setState({monto})}
-		            />
+		            />*/}
 				</View>
 
 			{/* SEPARADOR */}

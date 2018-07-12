@@ -4,7 +4,7 @@ import {EncuestaStyle}        from '../encuesta/style'
 import axios                  from 'axios'
 import TakePhotoComponent     from '../takePhoto/takePhotoComponent.js'
 import socket from '../../socket.js'
- 
+import { TextInputMask } from 'react-native-masked-text'
 
 export default class AbonarComponent extends Component{
   constructor(props) {
@@ -21,9 +21,13 @@ export default class AbonarComponent extends Component{
   componentWillMount(){
      console.log(this.props)
   }
-
+  getValor(e){
+    e = e.substr(1)
+    e = e.replace(/[^0-9]/g, '')    
+    this.setState({valorInicial:e, monto:Number(e)})
+  }
   render() {
-    const {enviarChat, valor, adjuntarAmigos, asignados} = this.state
+    const {enviarChat, valor, adjuntarAmigos, asignados, valorInicial} = this.state
     return (
       <View style={EncuestaStyle.container}>
         <View style={EncuestaStyle.modalIn}>
@@ -41,14 +45,24 @@ export default class AbonarComponent extends Component{
               </View>
               <View style={EncuestaStyle.contenedorAbono}>
                 <Text style={EncuestaStyle.textoAbono}>Monto</Text>
-                <TextInput 
+                <TextInputMask
+                  placeholder='Valor'
+                  type={'money'}
+                  options={{ unit: '$', zeroCents:true, precision:0 }} 
+                  style={EncuestaStyle.descripcionAbono}
+                  underlineColorAndroid='transparent'
+                  onChangeText={this.getValor.bind(this)} 
+                  value={valorInicial}
+                />
+
+                {/*<TextInput 
                   keyboardType='numeric'
                   underlineColorAndroid='transparent' 
                   editable = {true}
                   multiline = {true}
                   style={EncuestaStyle.descripcionAbono}
                   onChangeText={(monto) => this.setState({monto})}
-                />
+                />*/}
               </View>
               
             </View> 

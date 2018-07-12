@@ -5,6 +5,7 @@ import axios              from 'axios'
 import TakePhotoComponent from '../takePhoto/takePhotoComponent.js'
 import AgregarAmigosComponent    from '../agregarAmigos/agregarAmigos.js'
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
+import { TextInputMask } from 'react-native-masked-text'
 import socket from '../../socket.js'
 import moment from 'moment'
 
@@ -36,10 +37,13 @@ export default class CrearItemComponent extends Component{
       console.log(err)
     })
   }
-
+  getValor(e){
+    e = e.substr(1)
+    e = e.replace(/[^0-9]/g, '')    
+    this.setState({valorInicial:e, valor:Number(e)})
+  }
   render() {
-    const {enviarChat, valor, adjuntarAmigos, asignados, usuariosAsignados, mensajeEnvio} = this.state
-    console.log(asignados)
+    const {enviarChat, valorInicial, adjuntarAmigos, asignados, usuariosAsignados, mensajeEnvio} = this.state
     return (
       <View style={ItemStyle.container}>
         <View style={ItemStyle.modalIn}>
@@ -83,14 +87,24 @@ export default class CrearItemComponent extends Component{
             <Image source={require('./item4.png')} style={ItemStyle.decoracion} />
             <View style={ItemStyle.valor}>
               <Text style={ItemStyle.textoValor}>Valor</Text>
-              <TextInput 
+
+              <TextInputMask
+                placeholder='Valor'
+                type={'money'}
+                options={{ unit: '$', zeroCents:true, precision:0 }} 
+                style={ItemStyle.inputValor}
+                underlineColorAndroid='transparent'
+                onChangeText={(valor)=>this.getValor(valor)} 
+                value={valorInicial}
+              />
+              {/*<TextInput 
                 placeholder='Valor'
                 keyboardType='numeric'
                 underlineColorAndroid='transparent'
                 placeholderTextColor="#8F9093" 
                 style={ItemStyle.inputValor}
                 onChangeText={(valor) => this.setState({valor})}
-              />
+              />*/}
             </View>
 
           {/* Adjuntar Amigos */}

@@ -88,52 +88,52 @@ router.get('/chatPlan/:id', (req, res)=>{
 							return e.info[0].userIdRespuesta
 						})
 						asignados.push(e.data[0].info[0].encuestaUserId)
-						let asignadoItems = e.data[0].info[0].asignados
+						let data = e.data[0].info[0]
 						return{
 							id           : e._id.id,
-							userId       : e.data[0].info[0].userId,
-							nombre 		 : e.data[0].info[0].nombre,
-							photo 		 : e.data[0].info[0].photo,
-							token 		 : e.data[0].info[0].token,
-							mensaje 	 : e.data[0].info[0].mensaje,
-							fecha 	     : e.data[0].info[0].fecha,
-							documento 	 : e.data[0].info[0].documento,
-							lat 	 	 : e.data[0].info[0].lat,
-							lng 	 	 : e.data[0].info[0].lng,
-							tipoChat	 : e.data[0].info[0].tipo,
+							userId       : data.userId,
+							nombre 		 : data.nombre,
+							photo 		 : data.photo,
+							token 		 : data.token,
+							mensaje 	 : data.mensaje,
+							fecha 	     : data.fecha,
+							documento 	 : data.documento,
+							lat 	 	 : data.lat,
+							lng 	 	 : data.lng,
+							tipoChat	 : data.tipo,
 
 							///////////////////////////////////////////////////////////////////////////////
 							//////////////////////////////// ARTICULOS   //////////////////////////////////
  
 
-							esperaItem	 : e.data[0].info[0].espera,
-							asignadoItem : e.data[0].info[0].asignados,
+							esperaItem	 : data.espera,
+							asignadoItem : data.asignados,
 							 
-							itemId	 	 : e.data[0].info[0].itemId,
-							titulo	 	 : e.data[0].info[0].itemTitulo,
-							descripcion	 : e.data[0].info[0].itemDescripcion,
-							rutaImagen	 : e.data[0].info[0].imagenMiniatura,
-							valor	 	 : e.data[0].info[0].itemValor,
+							itemId	 	 : data.itemId,
+							titulo	 	 : data.itemTitulo,
+							descripcion	 : data.itemDescripcion,
+							rutaImagen	 : data.imagenMiniatura,
+							valor	 	 : data.asignados ?Math.ceil((data.itemValor/(data.asignados.length +2))/100)*100 :0,
 							//////////////////////////////////////////////////////////////////////////////
 							////////////////////////////// ENCUESTAS /////////////////////////////////////
-							encuestaId	 : e.data[0].info[0].encuestaId,
-							tipoEncuesta : e.data[0].info[0].tipoEncuesta,
-							eTitulo		 : e.data[0].info[0].encuestaTitulo,
-							pregunta1	 : e.data[0].info[0].pregunta1,
-							pregunta2	 : e.data[0].info[0].pregunta2,
+							encuestaId	 : data.encuestaId,
+							tipoEncuesta : data.tipoEncuesta,
+							eTitulo		 : data.encuestaTitulo,
+							pregunta1	 : data.pregunta1,
+							pregunta2	 : data.pregunta2,
 							respuesta1   : porcentaje1,
 							respuesta2   : porcentaje2,
 							porcentaje1,
 							porcentaje2,
 							asignados,
-							encuestaUserId : e.data[0].info[0].encuestaUserId,
+							encuestaUserId : data.encuestaUserId,
 
 							//////////////////////////////////////////////////////////////////////////////
 							//////////////////////////////// contacto   //////////////////////////////////
-							contactoId  : e.data[0].info[0].contactoId,
-							cNombre	    : e.data[0].info[0].cNombre,
-							cPhoto 	    : e.data[0].info[0].cPhoto,	
-							cToken 	    : e.data[0].info[0].cToken,	
+							contactoId  : data.contactoId,
+							cNombre	    : data.cNombre,
+							cPhoto 	    : data.cPhoto,	
+							cToken 	    : data.cToken,	
 							    
 						}
 					})

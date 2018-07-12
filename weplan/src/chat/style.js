@@ -6,8 +6,13 @@ import { MediaQueryStyleSheet } from "react-native-responsive";
 export const ChatStyle = MediaQueryStyleSheet.create({ 
  	contenedorGeneral:{
  		flex:1,
+ 		backgroundColor:'#f8f7fc'
  	},
+ 	contenedorChat:{
+ 		height:1900,
+ 		flex:1,
 
+ 	},
  	////////////////// cabezera
  	cabezera:{
 		flexWrap: 'wrap', 
@@ -86,25 +91,15 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 		width:45,
 		height:26
 	},
-	contenedorChat:{
-		// flex:.4,
-		// marginBottom:15
-	},
 	contenedorOpciones:{
  		flexDirection:'row',
 		backgroundColor:'#ffffff',
 		padding:8,
 		left:5,
-		marginTop:-75,
+		marginTop:-85,
 		width:230,
 		borderRadius:35
 	},
-	// contenedorOpciones:{
-	// 	flexDirection:'row',
-	// 	marginTop:-55,
-	// 	justifyContent: 'center',
- //        alignItems: 'center',
-	// },
 	btnIconoOpciones:{
 		backgroundColor:'#ebebeb',
 		padding:3,
@@ -156,7 +151,7 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 		shadowOpacity: 0.7,
 		shadowRadius: 2,
 		//elevation: 3,
-		marginLeft: 25,
+		marginLeft: 15,
 		marginRight: 15,
 		marginTop: 5,
 		width:screenWidth/1.5,		
@@ -208,6 +203,9 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 		borderRadius:35,	
 		borderColor:'#9CB7F5',
 	},
+	photoLeft:{
+		 
+	},
 	mensaje:{
 		padding: 20,
 		shadowOffset: { width: 0, height: 2 },
@@ -216,8 +214,10 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 		zIndex:0,
 		top:0,
 		left:0,
-		height:screenHeight-125,
+		height:screenHeight-175,
+		marginTop:10,
 		width:screenWidth,
+
 	},
 
 	////////////////////////////////////////////
@@ -240,47 +240,56 @@ export const ChatStyle = MediaQueryStyleSheet.create({
  	contenedorItemLeft:{
 		alignSelf: 'flex-start',  
  	},
-	fondoHeaderItem:{
-		marginLeft: 15,
-		marginRight: 15,
-		width:screenWidth/1.54,
-		height:45,
-	 	alignSelf: 'flex-end',  
-		zIndex:10, 
-	 	flexDirection:'row',
-		top: 10,
-		borderTopLeftRadius:10,  
-	},  
-	fondoHeaderItemLeft:{
-		alignSelf: 'flex-start',  
-	},
+ 
 	headerLeft:{
 		alignSelf: 'flex-start',
 		left:18,
 		borderTopRightRadius:10,  
 	},
-	iconAvatar:{
-		position:'absolute',
-		top:-3,  
-		right:5,
+	boxItem:{
+		backgroundColor:'#d8e4f3',
+		alignSelf: 'flex-end',  
+		borderWidth: 0,
+		borderRadius: 10,
+		borderColor: '#ddd',
+		borderBottomWidth: 0,
+		shadowColor: '#000',
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.7,
+		shadowRadius: 2,
+		marginLeft: 15,
+		marginRight: 15,
+		width:screenWidth/1.5,		
+	},
+	boxItem2:{
+		backgroundColor:'#ffffff',
+		alignSelf: 'flex-end',  
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.7,
+		shadowRadius: 2,
+		//elevation: 3,
+		marginLeft: 15,
+		marginRight: 15,
+		width:screenWidth/1.5,		
+	},
+	cBtnAvatarItem:{
+		alignSelf: 'flex-end', 
+		position:'relative',
+		top:30,
 		zIndex:100,
-		width:50,
-		height:50,
-		borderRadius:25,
-		zIndex:1000,
-		borderColor:'#9CB7F5',
-		borderWidth:5,
+		flexDirection:'row',
 	},
-	iconAvatarLeft:{
-		left:5
+	cBtnAvatarItemLeft:{
+		alignSelf: 'flex-start',
 	},
+ 
 	fotografia:{
 		position:'absolute',
-		top:80, 
+		top:85, 
 		right:screenWidth/1.7,
 		zIndex:100,
-		width:85,
-		height:85,
+		width:80,
+		height:80,
 		borderRadius:50, 
 		zIndex:1000,
 		borderColor:'#9CB7F5',
@@ -289,14 +298,15 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 	fotografiaLeft:{
 		left:screenWidth/1.7,
 	},
+	btnPerfilItem:{
+		flexDirection:'row',
+	},
 	nombreIt:{
-		position:'relative',
-		zIndex:100,
 		top:-10,
 		left:10,
-		zIndex:1000,
-		color:'white',
-		fontSize:20,
+	 	width:'75%',
+		color:'#7a7a7a',
+		fontSize:15,
 		alignSelf: 'flex-end',  
 	}, 
 	nombreItLeft:{ 
@@ -319,20 +329,21 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 		color:'#5664ba',
 		fontSize:21,
 		marginLeft:80,
-		minHeight:60
+		minHeight:60,
+		width:150
 	},
 	descripcionLeft:{
 		marginLeft:5,
 	},
 	valor:{
 		backgroundColor:'#dbe4f2',
-		padding:8,
+		padding:6,
 		borderRadius:20,
 		color:'#969696',
-		fontSize:18,
+		fontSize:17,
 		marginLeft:80,
 		marginTop:5,
-		width:'50%',
+		width:'60%',
 		textAlign:'center'
 	},
 	valorLeft:{
@@ -664,6 +675,32 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 		},
 		textoPregunta:{
 			fontSize:15
+		},
+		contenedorOpciones:{
+			width:205,
+			marginTop:-70,
+		},
+		btnIconoOpciones:{
+ 
+			padding:3,
+			width:28,
+			borderRadius:14,
+			marginRight:10,
+		},
+		opcionesIconos:{
+			width:22,
+			height:22,
+		},
+		contenedorRespuesta:{
+			width:90,
+			height:90,
+		},
+		contenedorPregunta:{
+			width:90,
+			height:90,
+		},
+		descripcion:{
+			fontSize :20
 		}
 	}
 })

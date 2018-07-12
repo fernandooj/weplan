@@ -170,12 +170,15 @@ export const ItemStyle = MediaQueryStyleSheet.create({
 		zIndex:100 
 	},
 	titulo:{
-		marginLeft:100,
-		fontSize:25
+		marginLeft:75,
+		fontSize:25,
+		width:120,
+		paddingRight:5,
+		paddingLeft:5
 	},
 	descripcion:{ 
 		marginTop:-10,
-		marginLeft:100,
+		marginLeft:80,
 		fontSize:18, 
 		color:'#5664BA'
 	},

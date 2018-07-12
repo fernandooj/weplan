@@ -54,13 +54,16 @@ router.get('/:user', (req, res)=>{
 						res.json({err, code:0})
 					}else{
 						pago = pago.map(e=>{
+							let data = e.data[0].info[0]
 							return{
 								id:e._id,
-								titulo:e.data[0].info[0].titulo,
-								idUsuario:e.data[0].info[0].userId,
-								valor:e.data[0].info[0].valor,
-		 						deuda:e.deuda,
-		 						abierto:e.data[0].info[0].abierto
+								titulo:data.titulo,
+								idUsuario:data.userId,
+								valor:data.valor,
+								deuda2:e.deuda,
+		 						deuda:e.deuda-(Math.ceil((data.valor/(data.asignados.length+1))/100)*100)===0 ?e.deuda :e.deuda-(Math.ceil((data.valor/(data.asignados.length+1))/100)*100)===0,
+		 						
+		 						abierto:data.abierto,
 							}
 						})
 						deuda = deuda.map(e=>{
@@ -74,7 +77,7 @@ router.get('/:user', (req, res)=>{
 							}
 						})
 						const add = (a, b)=>{
-				 			return a - b;
+				 			return a + b;
 						}
 						let sumaPago  =[];
 						let sumaDeuda =[];
@@ -88,6 +91,7 @@ router.get('/:user', (req, res)=>{
 						let sumDeuda = sumaDeuda.reduce(add, 0);
 						let total = sumPago + sumDeuda;
 
+						console.log(pago)
 						res.json({ status: 'SUCCESS', pago, deuda, deudaTotal:deuda.length, pagoTotal:pago.length, total, code:1 });	
 					}
 				})								
@@ -109,6 +113,9 @@ router.get('/id/:id', (req, res)=>{
 		}
 	})
 })
+
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////		OBTENGO LOS QUE ESTAN EN ESPERA  
@@ -157,7 +164,6 @@ router.get('/publicados/:planId', (req, res)=>{
 					deuda:Math.ceil((e.valor/(e.asignados.length+2))/100)*100
 				}
 			})
-			console.log(publicados)
 			res.json({ status: 'SUCCESS', publicados, code:1 });				
 		}
 	})
