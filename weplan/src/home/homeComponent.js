@@ -84,9 +84,9 @@ export default class homeComponent extends Component{
 		})
 	}
 	updatePlanes(){
-		axios.get('/x/v1/pla/plan/clientes')
+		axios.get('/x/v1/pla/plan/pago')
 		.then(e=>{
-			this.setState({planes:e.data.message})
+			this.setState({planes:e.data.planes})
 		})
 		.catch(err=>{
 			console.log(err)
@@ -94,9 +94,10 @@ export default class homeComponent extends Component{
 	}
 	handleScroll(event) {
 		if(event.nativeEvent.contentOffset.y<=0){
-			axios.get('/x/v1/pla/plan/clientes')
+			axios.get('/x/v1/pla/plan/pago')
 			.then(e=>{
-				this.setState({planes:e.data.message})
+				console.log(e.data)
+				this.setState({planes:e.data.planes})
 			})
 			.catch(err=>{
 				console.log(err)

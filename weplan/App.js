@@ -142,21 +142,10 @@ const NavigationAppLogin = StackNavigator({
     insertCode2:   {screen: insertCodeComponent2 },
     nuevoPassword: {screen: nuevoPasswordComponent },
     infoPlan:      {screen: infoPlanComponent },
-},{ headerMode: 'none', transitionConfig })
+},{ headerMode: 'none', transitionConfig})
 
 
-class Splash extends Component <{}>{
-  render(){
-    var num = Math.floor(Math.random() * 5);
-    console.log(num)
-    return (
-          <Image 
-           style={styles.image}
-           resizeMode={'contain'}  
-           source={num===0 ?require('./splash0.jpg') :num===1 ?require('./splash1.jpg') :num===2 ?require('./splash2.jpg') :num===3 ?require('./splash3.jpg') :num===4 &&require('./splash4.jpg')}
-          />)
-  }    
-}
+ 
 
 export default class App extends Component<{}> {
   constructor(props) {
@@ -166,6 +155,8 @@ export default class App extends Component<{}> {
     };
   }
   componentWillMount() {
+    var num = Math.floor(Math.random() * 5);
+    this.setState({num})
     axios.get('/x/v1/user/profile/')
     .then((res)=>{
  
@@ -180,17 +171,23 @@ export default class App extends Component<{}> {
     })
   }
   render() {
+    const {num} = this.state
     const {google, local} = this.state
     if (local==null) {
       return (
-         <Splash />)
+         <Image 
+           style={styles.image}
+           resizeMode={'contain'}  
+           source={num===0 ?require('./splash0.jpg') :num===1 ?require('./splash1.jpg') :num===2 ?require('./splash2.jpg') :num===3 ?require('./splash3.jpg') :num===4 &&require('./splash4.jpg')}
+          />
+          )
     }else if(local==1){
       return (
         <NavigationAppLogin />
       )
     }else if(local==2){
       return (
-        <NavigationApp />
+        <NavigationApp screenProps={{num}}/>
       )
     }
   }

@@ -20,5 +20,4 @@ export default class CabezeraComponent extends Component{
 			</View>
 		)
 	}
-	
 }

@@ -134,8 +134,10 @@ export default class LoginComponent extends Component{
 	
 	render(){
 		const {navigate} = this.props.navigation
+		const {num} = this.props.screenProps
+		console.log(num)
 		return(
-				<ImageBackground style={LoginStyle.fondo} source={require('./fondo.png')} >
+				<ImageBackground style={LoginStyle.fondo}  source={num===0 ?require('../../splash0.jpg') :num===1 ?require('../../splash1.jpg') :num===2 ?require('../../splash2.jpg') :num===3 ?require('../../splash3.jpg') :num===4 &&require('../../splash4.jpg')} >
 					<View>
 						<Image
 							style={LoginStyle.image}

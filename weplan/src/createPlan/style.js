@@ -1,5 +1,6 @@
 import {StyleSheet, Dimensions} from 'react-native';
 var screenHeight = Dimensions.get('window').height;
+var screenWidth = Dimensions.get('window').width;
 import { MediaQueryStyleSheet } from "react-native-responsive";
 export const CreatePlanStyle = MediaQueryStyleSheet.create({ 
 	contenedor:{
@@ -258,7 +259,59 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
  		position:'absolute',
  		top:17,
  		right:4
- 	}
+ 	},
+
+ 	//////////////////////////////////////////////////
+	////////// TIPO MAPA
+	/////////////////////////////////////////////////
+	tipoPlan:{
+		backgroundColor:'rgba(0,0,0,.6)',
+		width:screenWidth,
+		height:screenHeight,
+		position:'absolute',
+		zIndex:100,
+		justifyContent: 'center', 
+		alignItems: 'center',
+	},
+	btnModal:{
+		backgroundColor:'#ffffff',
+		margin:10,
+		padding:15,
+		borderRadius: 20, 
+		shadowColor: '#000000',
+ 		borderWidth:4,
+ 		borderColor:'rgba(0,0,0,.1)',
+	},
+	contenedorArea:{
+		backgroundColor:'#F2F4F4',
+		borderRadius:50,
+		 
+		marginTop:10,
+	 	paddingLeft:15,
+ 
+		flexDirection: 'row',
+		justifyContent: 'center',
+
+	},
+	inputArea:{
+		color: '#8F9093',
+		height:40,
+		width:225,
+		padding:0,
+		
+		color:'#969696'
+	},
+	// borderWidth: 0,
+	// alignItems: 'center',
+	// marginTop:10,
+	// width:240,
+	// height:40,
+	// backgroundColor: '#D9E6F4',
+	// borderRadius: 50,
+	// paddingLeft:20,
+	// paddingTop:10,
+	// color:'#969696'
+
 
 },{
 	"@media (max-device-width: 320)": {

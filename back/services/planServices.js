@@ -30,6 +30,7 @@ class planServices {
 		plan.idUsuario 		 = id	
 		plan.fechaLugar 	 = planData.fechaLugar
 		plan.lat 			 = planData.lat	
+		plan.area 			 = planData.area	
 		plan.lng 			 = planData.lng	
 		plan.lugar 			 = planData.lugar	
 		plan.asignados 		 = planData.asignados	
