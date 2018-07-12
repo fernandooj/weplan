@@ -3,6 +3,9 @@ import {View, Text, ScrollView, ImageBackground, TouchableOpacity, Image, TextIn
 import {walletStyle} from '../wallet/style'
 import axios from 'axios'
 import CabezeraComponent from '../ajustes/cabezera.js'
+
+import CabezeraMenuComponent from '../cabezeraFooter/cabezeraComponent'
+import FooterComponent 	 from '../cabezeraFooter/footerComponent'
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////  ARCHIVOS GENERADOS POR EL EQUIPO  //////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -87,10 +90,12 @@ export default class walletComponent extends Component{
 		const {navigate} = this.props.navigation
 		return(	 
 			<View style={walletStyle.contenedor}>
-				<CabezeraComponent navigate={navigate} url={'inicio'} texto='My Wallet' />
+				<CabezeraMenuComponent navigate={navigate}  />
+				<CabezeraComponent navigate={navigate} url={'inicio'} texto='My Wallet' margin />
 				<ScrollView style={walletStyle.subContenedor}>
 					{rows}	
-				</ScrollView>	
+				</ScrollView>
+				<FooterComponent navigate={navigate} />		
 			</View> 
 		)
 	}

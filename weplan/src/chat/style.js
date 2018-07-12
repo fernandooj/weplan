@@ -100,6 +100,15 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 		width:230,
 		borderRadius:35
 	},
+	contenedorOpcionesBotones:{
+ 		flexDirection:'row',
+		backgroundColor:'#ffffff',
+		padding:8,
+		left:5,
+		marginTop:-85,
+		width:230,
+		borderRadius:35
+	},
 	btnIconoOpciones:{
 		backgroundColor:'#ebebeb',
 		padding:3,
@@ -612,7 +621,7 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 		borderColor:'#9CB7F5',
 	}
 },{
-		"@media (max-device-width: 320)": {
+	"@media (max-device-width: 320)": {
 		btnImagenPlan:{
 			position:'absolute',
 			top:10,
@@ -678,10 +687,13 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 		},
 		contenedorOpciones:{
 			width:205,
-			marginTop:-70,
+			marginTop:-80,
+		},
+		contenedorOpcionesBotones:{
+			width:205,
+			marginTop:-30,
 		},
 		btnIconoOpciones:{
- 
 			padding:3,
 			width:28,
 			borderRadius:14,

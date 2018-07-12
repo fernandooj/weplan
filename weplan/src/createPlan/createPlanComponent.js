@@ -214,19 +214,22 @@ export default class createPlanComponent extends Component{
 					{  
 						!cargaPlan.lugar
 						?<View style={CreatePlanStyle.cajaInpunts}>
-				    	 <Image source={require('./map.png')} style={CreatePlanStyle.iconInput} />
-					     <TouchableOpacity onPress={() => this.setState({mapa:true})}>
+				    	<Image source={require('./map.png')} style={CreatePlanStyle.iconInput} />
+					    <TouchableOpacity onPress={() => this.setState({mapa:true})}>
 					    	<Text style={direccion ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>{direccion ?direccion.substr(0,60) :'Ubicación'}</Text>
 					    </TouchableOpacity>
-					    {mapa ?<MapaPlanComponent 
+						</View>
+					   :<TouchableOpacity onPress={() => this.setState({mapa:true})} style={CreatePlanStyle.cajaInpunts}> 
+			    			<Image source={require('./map.png')} style={CreatePlanStyle.iconInput} />
+			    			<Text style={[CreatePlanStyle.btnInputs]}>{cargaPlan.lugar}</Text>
+						</TouchableOpacity>	
+					}
+					{
+						mapa &&<MapaPlanComponent 
 							close={()=> this.setState({mapa:false})} 						   			/////////   cierro el modal
 							updateStateX={(lat,lng, direccion)=>this.updateStateX(lat,lng, direccion)}  /////////	me devuelve la posicion del marcador 
-						/>: null }	
-						</View>
-					   :<View style={CreatePlanStyle.cajaInpunts}> 
-				    		<Image source={require('./map.png')} style={CreatePlanStyle.iconInput} />
-					   	<Text style={[CreatePlanStyle.btnInputs]}>{cargaPlan.lugar}</Text>
-						</View>
+							ubicacionDefecto={cargaPlan ?{infoplan:true, lat:parseFloat(cargaPlan.lat), lng:parseFloat(cargaPlan.lng)} :{infoplan:false}}
+						/> 
 					}
 				
 
@@ -340,12 +343,13 @@ export default class createPlanComponent extends Component{
 		lat 		= cargaPlan.lat ?cargaPlan.lat :lat
 		lng 		= cargaPlan.lng ?cargaPlan.lng :lng
 		fechaLugar  = cargaPlan.fechaLugar ?cargaPlan.fechaLugar :fechaLugar
+		let lugar   = cargaPlan ?cargaPlan.lugar :direccion
 		imagen 		= cargaPlan.imagenResize ?cargaPlan.imagenResize[0] :imagen
 
-		console.log(imagen)
+		console.log(lugar)
 		if (!cargaPlan) {
 			let data = new FormData();
-			axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, restricciones, tipo, lugar:direccion})
+			axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, restricciones, tipo, lugar})
 			.then(e=>{
 				if(e.data.code==1){	
 					let id = e.data.message._id;
@@ -380,7 +384,7 @@ export default class createPlanComponent extends Component{
 				console.log(err)
 			})
 		}else{
-			axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, restricciones, tipo, imagenOriginal:imagen, imagenResize:imagen, imagenMiniatura:imagen, planPadre})
+			axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, lugar, restricciones, tipo, imagenOriginal:imagen, imagenResize:imagen, imagenMiniatura:imagen, planPadre})
 			.then(e=>{
 				if(e.data.code==1){	
 					let id = e.data.message._id;

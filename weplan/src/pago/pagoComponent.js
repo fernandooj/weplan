@@ -12,7 +12,8 @@ export default class pagoComponent extends Component{
  		cc:false,
  		debito:false,
  		efectivo:false,
- 		valor:0
+ 		valor:0,
+ 		metodo:0
  	}
 	componentWillMount(){
 	 	let itemId = this.props.navigation.state.params.id
@@ -195,6 +196,15 @@ export default class pagoComponent extends Component{
 			  ],
 			  { cancelable: false }
 			)
+		}else if(metodo==0){
+			Alert.alert(
+			  'el monto no puede ser mayor a tu deuda',
+			  '',
+			  [
+			    {text: 'OK', onPress: () => console.log('OK Pressed')},
+			  ],
+			  { cancelable: false }
+			)
 		}else{
 			axios.post('x/v1/pag/pago', {monto, metodo, descripcion, itemId, abono:true, userId:null})
 			.then(e=>{
@@ -229,6 +239,8 @@ export default class pagoComponent extends Component{
 				console.log(err)
 			})
 		}
+			
+	 
 	}
 }
 

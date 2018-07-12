@@ -55,14 +55,6 @@ export default class AbonarComponent extends Component{
                   value={valorInicial}
                 />
 
-                {/*<TextInput 
-                  keyboardType='numeric'
-                  underlineColorAndroid='transparent' 
-                  editable = {true}
-                  multiline = {true}
-                  style={EncuestaStyle.descripcionAbono}
-                  onChangeText={(monto) => this.setState({monto})}
-                />*/}
               </View>
               
             </View> 
@@ -102,19 +94,30 @@ export default class AbonarComponent extends Component{
         { cancelable: false }
       )
     } else{
-      axios.post('x/v1/pag/pago', {monto, metodo:2, estado:1, itemId, userId, abono:true})
+      axios.post('x/v1/pag/pago', {monto, metodo:2, estado:1, itemId, descripcion:'abono de parte del dueño del item', userId, abono:true})
       .then(e=>{
         console.log(e.data)
-        Alert.alert(
-          'Tu pago fue actualizado',
-          '',
-          [
-            //{text: 'OK', onPress: () => navigate('item', {itemId, monto})},
-             
-            {text: 'OK', onPress: () => this.props.updateItems(userId, monto)},
-          ],
-          { cancelable: false }
-        )
+        if (e.data.code==1) {
+          Alert.alert(
+            'Tu pago fue actualizado',
+            '',
+            [  
+              {text: 'OK', onPress: () => this.props.updateItems(userId, monto)},
+            ],
+            { cancelable: false }
+          )
+        }
+        if(e.data.code==2){
+          Alert.alert(
+            '!opss Artículo abierto',
+            'puedes hacer pagos hasta que el usuario cierre el item',
+            [  
+              {text: 'OK', onPress: () => this.props.close()},
+            ],
+            { cancelable: false }
+          )
+        }
+        
         
       })
       .catch(err=>{

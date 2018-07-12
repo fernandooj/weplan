@@ -3,6 +3,9 @@ import {View, Text, Image, TouchableOpacity, ImageBackground, ScrollView, Platfo
 import {HomeStyle} from '../home/style'
 import axios from 'axios'
 
+import CabezeraComponent from '../cabezeraFooter/cabezeraComponent'
+import FooterComponent 	 from '../cabezeraFooter/footerComponent'
+
 import FCM, {NotificationActionType} from "react-native-fcm";
 import {registerKilledListener, registerAppListener} from "../push/Listeners";
 
@@ -104,45 +107,14 @@ export default class homeComponent extends Component{
 		const {navigate} = this.props.navigation
 		return(	 
 			<View style={HomeStyle.contenedor}>
-				<View style={HomeStyle.cabezera}>
-					<TouchableOpacity onPress={() => navigate('ajustes')}>
-						<Image source={require('./icon1.png')} style={HomeStyle.iconHead} />
-					</TouchableOpacity>
-					<TouchableOpacity onPress={()=> this.updatePlanes()} >
-						<Image source={require('./icon2.png')} style={HomeStyle.iconHead2} />
-					</TouchableOpacity>
-					<TouchableOpacity>
-						<Image source={require('./icon3.png')} style={HomeStyle.iconHead} />
-					</TouchableOpacity>
-				</View>
+				<CabezeraComponent navigate={navigate} />
 				<ScrollView style={HomeStyle.contenedorPlan} onScroll={this.handleScroll.bind(this)} scrollEventThrottle={16}>
 				{
 					this.renderPlans()
 				}	
 				</ScrollView>
  
-				<View style={HomeStyle.footer3} >
-					<TouchableOpacity onPress={()=> navigate('inicio')} style={HomeStyle.btnFooter3}>
-						<Image source={require('./home.png')} style={HomeStyle.iconFooter3} />
-						{/*<Text style={HomeStyle.textoFooter3}>Home</Text>*/}
-					</TouchableOpacity>
-					<TouchableOpacity onPress={()=> navigate('wallet')} style={HomeStyle.btnFooter3}>
-						<Image source={require('./mi_wallet.png')} style={HomeStyle.iconFooter3} />
-						{/*<Text style={HomeStyle.textoFooter3}>My Wallet</Text>*/}
-					</TouchableOpacity>
-					<TouchableOpacity onPress={()=> navigate('createPlan')} style={[HomeStyle.btnFooter3, HomeStyle.btnFooter3Create]} >
-						<Image source={require('./crear_plan.png')} style={HomeStyle.iconFooter3Create} />
-						{/*<Text style={HomeStyle.textoFooter3}>Crear Plan</Text>*/}
-					</TouchableOpacity>
-					<TouchableOpacity onPress={()=> navigate('misPlanes')} style={HomeStyle.btnFooter3} >
-						<Image source={require('./mis_planes.png')} style={HomeStyle.iconFooter3} />
-						{/*<Text style={HomeStyle.textoFooter3}>Planes</Text>*/} 
-					</TouchableOpacity>
-					<TouchableOpacity onPress={()=> navigate('notificacion')} style={HomeStyle.btnFooter3} >
-						<Image source={require('./notificaciones.png')} style={HomeStyle.iconFooter3} />
-						{/*<Text style={HomeStyle.textoFooter3}>Notificacion</Text>*/}
-					</TouchableOpacity>
-				</View>
+				<FooterComponent navigate={navigate} />
 				
 		   </View>
 		)

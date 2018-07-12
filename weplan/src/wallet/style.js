@@ -5,7 +5,8 @@ export const walletStyle = StyleSheet.create({
 	 
 	contenedor:{
 		alignItems: 'center',
-
+		flex: 1,
+		backgroundColor:"#ffffff",
 	},
 	subContenedor:{
 		width:'80%',

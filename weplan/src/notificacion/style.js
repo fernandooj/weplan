@@ -4,9 +4,16 @@ var screenWidth = Dimensions.get('window').width;
 
 export const NotiStyle = StyleSheet.create({ 
 	contenedor:{
-		alignItems: 'center',
-
+		flex: 1,
+		backgroundColor:"#ffffff",
 	},
+	contenedorPlan:{
+		flex: .5,	
+	},
+	
+	// contenedor:{
+	// 	alignItems: 'center',
+	// },
 	subContenedor:{
 		width:'86%',
 		 
@@ -53,20 +60,20 @@ export const NotiStyle = StyleSheet.create({
  	btnNoti:{
  		borderWidth:3,
  		borderRadius:12,
- 		padding:10,
+ 		padding:6,
  		borderColor:'#E1E1E3',
  		backgroundColor:'#FFFFFF',
- 		marginLeft:10,
+ 		marginLeft:5,
  		marginTop:10,
  	},
  	textoNoti:{
  		color:'#5664ba',
- 		fontSize:16,
+ 		fontSize:14,
  	},
  	textoNotifica:{
  		color:'#5664ba',
- 		fontSize:16,
- 		width:230
+ 		fontSize:14,
+ 		width:220
  	},
  	tituloNoti:{
  		marginTop:15,

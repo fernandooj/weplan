@@ -25,7 +25,12 @@ router.get('/chatPlan/:id', (req, res)=>{
 				if (err2) {
 					res.json({status:'FAIL', err, code:0})   
 				}else{
-					 
+					let planAsignados = []
+					plan[0].asignados.filter(e=>{
+						planAsignados.push(e._id)
+						 
+					}) 
+					console.log(planAsignados)
 					chat = chat.map(e=>{
 						// return{
 						// 	id           : e._id,
@@ -134,7 +139,7 @@ router.get('/chatPlan/:id', (req, res)=>{
 							cNombre	    : data.cNombre,
 							cPhoto 	    : data.cPhoto,	
 							cToken 	    : data.cToken,	
-							    
+
 						}
 					})
 
@@ -142,7 +147,7 @@ router.get('/chatPlan/:id', (req, res)=>{
 			 		 
 			 		 
 					
-					res.json({status:'SUCCESS', chat,  plan:plan[0], total:chat.length, code:1}) 
+					res.json({status:'SUCCESS', chat,  plan:plan[0], total:chat.length, planAsignados, code:1}) 
 
 
 				}

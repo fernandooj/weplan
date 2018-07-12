@@ -188,7 +188,7 @@ export const PagoStyle = MediaQueryStyleSheet.create({
 		fontSize:20
 	}
 },{
-	"@media (max-device-width: 380)": {
+	"@media (max-device-width: 320)": {
 		image:{
 			width:70,
 			height:70,

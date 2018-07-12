@@ -61,8 +61,8 @@ export default class ChatComponent extends Component{
 		/////////////////	OBTENGO TODOS LOS MENSAJES Y EL PLAN
 		axios.get(`/x/v1/cha/chat/chatPlan/${planId}`)
 		.then(e=>{
- 			console.log(e.data.chat)
-			this.setState({mensajes:e.data.chat, planId, imagen: e.data.plan.imagenResize[0], nombrePlan: e.data.plan.nombre, planId, planAsignados:e.data.plan.asignados, plan:e.data.plan})
+ 			console.log(e.data)
+			this.setState({mensajes:e.data.chat, planId, imagen: e.data.plan.imagenResize[0], nombrePlan: e.data.plan.nombre, planId, planAsignados:e.data.planAsignados, plan:e.data.plan})
 			
 			
 		})
@@ -121,7 +121,7 @@ export default class ChatComponent extends Component{
 	renderMensajes(){
 		const {navigate} = this.props.navigation
 		const {id, mensajes, planAsignados, plan, showPdf} = this.state
- 
+ 		console.log(planAsignados)
 		return mensajes.map((e,key)=>{
 			if (e.tipoChat===1) {
 				return (
@@ -309,6 +309,7 @@ export default class ChatComponent extends Component{
 					</View>
 				)
 			}else if (e.tipoChat===4) {
+				let estaPlan = planAsignados.includes(e.contactoId) 
 				return (
 					<View key={key} style={ChatStyle.contenedorBox}>
 						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', e.userId)} style={e.userId== id ?ChatStyle.cBtnAvatarC : [ChatStyle.cBtnAvatarC, ChatStyle.cBtnAvatarCLeft]}>
@@ -339,7 +340,7 @@ export default class ChatComponent extends Component{
 									<Text style={ChatStyle.cTextBotones}>Agregar Contacto</Text>
 								</TouchableOpacity>
 								{
-									plan.idUsuario._id === id && !e.estaPlan && e.contactoId !=id
+									plan.idUsuario._id === id && !estaPlan && e.contactoId !=id
 									&&<TouchableOpacity onPress={()=>this.agregarUsuarioPlan(e.contactoId, e.id, e.cToken)}>
 										<Text style={ChatStyle.cTextBotones}>Agregar al plan</Text>
 									</TouchableOpacity>
@@ -436,34 +437,7 @@ export default class ChatComponent extends Component{
 	}
 
 
-	agregarUsuarioPlan(id, idChat, token){
- 		const {imagen, nombrePlan} = this.state
-		let mensajes = this.state.mensajes.filter(e=>{
-			if(e.id==idChat) e.estaPlan=true
-			return e
-		})
- 
-		axios.put(`/x/v1/pla/plan/insertar/${this.state.planId}`, {id})
-      	.then(res=>{      
-      		console.log(res.data)
-	      	if(res.data.code==1){ 
-	      		this.setState({mensajes})
-	      		sendRemoteNotification(2, token, 'misPlanes', 'Te han agregado a un plan', `, Te agrego a ${nombrePlan}`, imagen)
-			}else{
-				Alert.alert(
-					'Opss!! revisa tus datos que falta algo',
-					'',
-				[
-					{text: 'OK', onPress: () => console.log('OK Pressed')},
-				],
-					{ cancelable: false }
-				)
-			}
-     	})
-      	.catch(err=>{
-      		console.log(err)
-     	})
-	}
+
 	 
 	render(){
 		const {adjuntarAmigos, asignados, usuariosAsignados, mapa} = this.state
@@ -483,7 +457,7 @@ export default class ChatComponent extends Component{
 			{/* BOTONES OPCIONES */}
 				{
 					this.state.showOpciones
-					&&<View style={ChatStyle.contenedorOpciones}>
+					&&<View style={ChatStyle.contenedorOpcionesBotones}>
 						{this.opciones()}
 					</View>
 				}
@@ -548,6 +522,36 @@ export default class ChatComponent extends Component{
 		})
 	}
  
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////// 	AGREGO UN CONTACTO AL PLAN
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	agregarUsuarioPlan(id, idChat, token){
+ 		const {imagen, nombrePlan} = this.state
+		
+		console.log(this.state.planAsignados)
+ 
+		axios.put(`/x/v1/pla/plan/insertar/${this.state.planId}`, {id})
+      	.then(res=>{      
+      		console.log(res.data)
+	      	if(res.data.code==1){ 
+	      		this.setState({planAsignados: this.state.planAsignados.concat([id])})
+	      		sendRemoteNotification(2, token, 'misPlanes', 'Te han agregado a un plan', `, Te agrego a ${nombrePlan}`, imagen)
+			}else{
+				Alert.alert(
+					'Opss!! revisa tus datos que falta algo',
+					'',
+				[
+					{text: 'OK', onPress: () => console.log('OK Pressed')},
+				],
+					{ cancelable: false }
+				)
+			}
+     	})
+      	.catch(err=>{
+      		console.log(err)
+     	})
+	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////// SI EL USUARIO HACE CLICK EN ME INTERESA, ENVIA LA NOTIFICACION AL CREADOR DEL ITEM PARA DARLE PERMISO DE INGRESAR

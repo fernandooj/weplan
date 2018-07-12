@@ -1,21 +1,22 @@
 import {StyleSheet, Dimensions} from 'react-native';
 const Height = Dimensions.get('window').height;
 const Width = Dimensions.get('window').width;
-
-export const MisPlanesStyle = StyleSheet.create({
+import { MediaQueryStyleSheet } from "react-native-responsive";
+export const MisPlanesStyle = MediaQueryStyleSheet.create({
 	contenedor:{
 		flex: 1,
 		alignItems: 'center',
-		height:Height  
+		 
 	},
 	/////////////////////////////////////////////////////////////////////////// cabezera
 	contenedorCabezera:{
 		flexDirection:'row',
-		marginBottom:15
+		marginBottom:15,
+		marginTop:45
 	},
 	input:{
 		marginTop:10,
-		width:'75%',
+		width:'70%',
 		height:40,
 		backgroundColor: '#f0f2f2',
 		borderRadius: 50,
@@ -39,7 +40,7 @@ export const MisPlanesStyle = StyleSheet.create({
 	btnBuscar:{
 		position:'absolute',
 		top: 16,  
-		right:49, 
+		right:30, 
 		width:25,
 		height:25
  	}, 
@@ -82,10 +83,36 @@ export const MisPlanesStyle = StyleSheet.create({
 		color:'#98c2c6',
 		paddingLeft:6,
 		marginBottom:6,
-	 
 	},
-	 
+	sinPlanes:{
+		width:350,
+		height:450,
+		marginBottom:10
+	}
+},{
+	"@media (max-device-width: 320)": {
+		input:{
+			marginTop:10,
+			width:'70%',
+			height:35,
+			backgroundColor: '#f0f2f2',
+			borderRadius: 50,
+			borderWidth: 0.5,
+			borderColor: '#cccccc',
+			borderBottomWidth:0,
+			paddingLeft:20,
+			color: '#8F9093',
+			alignItems: 'center',
+		},
+		btnBuscar:{
+			top: 15,  
+			right:15, 
+	 	}, 
+	 	sinPlanes:{
+			width:240,
+			height:350,
+			marginBottom:10
+		}
 
-
-
+	}
 })

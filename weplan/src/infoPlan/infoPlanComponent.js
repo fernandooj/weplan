@@ -10,19 +10,22 @@ import moment from 'moment'
  
 
 
-import RestriccionesPlanComponent from './restricciones.js'
-import MapaPlanComponent 		  from './mapa.js'
+import RestriccionesPlanComponent from '../createPlan/restricciones.js'
+import MapaPlanComponent 		  from '../createPlan/mapa.js'
 import AgregarAmigosComponent     from '../agregarAmigos/agregarAmigos.js'
 import TakePhotoComponent 	  	  from '../takePhoto/takePhotoComponent.js'
 import CabezeraComponent 		  from '../ajustes/cabezera.js'
 import {sendRemoteNotification}   from '../push/envioNotificacion.js'
 
 
-const infoPlanComponent =(props)=>{
-	let data = props.navigation.state.params.plan
-	let id   = props.navigation.state.params.id
+export default class infoPlanComponent extends Component{
+	state={mapa:false}
+	render(){
+	let data = this.props.navigation.state.params.plan
+	console.log(data)
+	let id   = this.props.navigation.state.params.id
 	console.log(data.idUsuario._id)
-	let {navigate} = props.navigation
+	let {navigate} = this.props.navigation
 	let menus = [
 		{funcion:()=>salir(data._id, navigate), texto:'Salir del Plan', show: id==data.idUsuario._id ?false :true },
 		{funcion:()=>finalizar(data._id, navigate), texto:'Finalizar Plan', show: id==data.idUsuario._id ?true :false }
@@ -62,10 +65,18 @@ const infoPlanComponent =(props)=>{
 					</View>
 
 				{/*  mapa   */}
-					<View style={InfoPlanStyle.cajaInpunts}> 
+					<TouchableOpacity onPress={() => this.setState({mapa:true})} style={InfoPlanStyle.cajaInpunts}> 
 			    		<Image source={require('./map.png')} style={InfoPlanStyle.iconInput} />
-				   	<Text style={[InfoPlanStyle.btnInputs]}>{data.lugar}</Text>
-					</View>
+				   		<Text style={[InfoPlanStyle.btnInputs]}>{data.lugar}</Text>
+					</TouchableOpacity>
+
+					{
+						this.state.mapa &&<MapaPlanComponent 
+							close={()=> this.setState({mapa:false})} 						   			/////////   cierro el modal
+							updateStateX={(lat,lng, direccion)=>this.updateStateX(lat,lng, direccion)}  /////////	me devuelve la posicion del marcador 
+							ubicacionDefecto={{infoplan:true, lat:parseFloat(data.lat), lng:parseFloat(data.lng)}}
+						/> 
+					}
 				 
 					
 
@@ -118,20 +129,21 @@ const infoPlanComponent =(props)=>{
 			    </View>	
 			    {/* listado */}
 					 
-						{
-							menus.map((e, key)=>{
-								if(e.show){
-									return (<TouchableOpacity onPress={e.funcion} key={key} style={InfoPlanStyle.botones}>
-											<Text style={key==1 ?InfoPlanStyle.textoBotones :[InfoPlanStyle.textoBotones, InfoPlanStyle.textoBotonesLast]}>{e.texto}</Text>
-										</TouchableOpacity>)
-								}
-								
-							})
-						}
+					{
+						menus.map((e, key)=>{
+							if(e.show){
+								return (<TouchableOpacity onPress={e.funcion} key={key} style={InfoPlanStyle.botones}>
+										<Text style={key==1 ?InfoPlanStyle.textoBotones :[InfoPlanStyle.textoBotones, InfoPlanStyle.textoBotonesLast]}>{e.texto}</Text>
+									</TouchableOpacity>)
+							}
+							
+						})
+					}
 					 
 			</View>
 		</ScrollView>
-	)
+		)
+	}	
 }	
 const finalizar = (id, navigate)=>{
 	Alert.alert(
@@ -175,4 +187,4 @@ const handleSalir = (id, navigate)=>{
 		}
 	})
 }
-export default infoPlanComponent
+ 

@@ -3,6 +3,9 @@ import {View, Text, ScrollView, ImageBackground, TouchableOpacity, Image, TextIn
 import {MisPlanesStyle} from '../misPlanes/style'
 import axios from 'axios'
 
+import CabezeraComponent from '../cabezeraFooter/cabezeraComponent'
+import FooterComponent 	 from '../cabezeraFooter/footerComponent'
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////  ARCHIVOS GENERADOS POR EL EQUIPO  //////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -15,6 +18,7 @@ export default class MisPlanesComponent extends Component{
 		super(props)
 		this.state={
 			filteredData:[],
+			planesAsignados:0,
 			allList:[]
 		}
 	}
@@ -23,7 +27,8 @@ export default class MisPlanesComponent extends Component{
 		.then(e=>{
 			console.log(e.data.result)
 			let filteredData = e.data.result
-			this.setState({allList:filteredData, filteredData})
+			let planesAsignados = e.data.result==0 ?1 :2
+			this.setState({allList:filteredData, filteredData, planesAsignados})
 		})
 		.catch(res=>{
 			console.log(res)
@@ -82,12 +87,21 @@ export default class MisPlanesComponent extends Component{
 		const {navigate} = this.props.navigation
 		return(	 
 			<View style={MisPlanesStyle.contenedor}>
+				<CabezeraComponent navigate={navigate} />
 					{this.cabezera()}
-				<ScrollView>
-					<View style={MisPlanesStyle.container}>
-					{rows}
-					</View>	
-				</ScrollView>	
+				{
+					this.state.planesAsignados==1
+					?<Image source={require('./sinPlanes.png')} style={MisPlanesStyle.sinPlanes} />
+					:this.state.planesAsignados==2
+					?<ScrollView>
+						<View style={MisPlanesStyle.container}>
+						{rows}
+						</View>	
+					</ScrollView>
+					:<View></View>
+				}
+				
+				<FooterComponent navigate={navigate} />	
 			</View> 
 		)
 	}

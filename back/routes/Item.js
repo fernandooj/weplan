@@ -61,7 +61,7 @@ router.get('/:user', (req, res)=>{
 								idUsuario:data.userId,
 								valor:data.valor,
 								deuda2:e.deuda,
-		 						deuda:e.deuda-(Math.ceil((data.valor/(data.asignados.length+1))/100)*100)===0 ?e.deuda :e.deuda-(Math.ceil((data.valor/(data.asignados.length+1))/100)*100)===0,
+		 						deuda:e.deuda-(Math.ceil((data.valor/(data.asignados.length+1))/100)*100)===0 ?e.deuda :e.deuda-(Math.ceil((data.valor/(data.asignados.length+1))/100)*100),
 		 						
 		 						abierto:data.abierto,
 							}

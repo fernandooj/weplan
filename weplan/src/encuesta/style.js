@@ -1,8 +1,8 @@
 import {StyleSheet, Dimensions} from 'react-native';
 var screenHeight = Dimensions.get('window').height;
 var screenWidth = Dimensions.get('window').width;
-
-export const EncuestaStyle = StyleSheet.create({ 
+import { MediaQueryStyleSheet } from "react-native-responsive";
+export const EncuestaStyle = MediaQueryStyleSheet.create({ 
 	//////////// pagina principal   //////////
 	contentItem: {
 		flex: 1,
@@ -425,5 +425,21 @@ export const EncuestaStyle = StyleSheet.create({
 		alignItems: 'center',
 		fontSize:16
 	}
-
+},{
+	"@media (max-device-width: 320)": {
+		textoAbono:{
+			fontSize:17,
+		},
+		descripcionAbono:{
+			width:'60%',
+			backgroundColor:'#dbe4f2',
+			borderRadius:25,
+			fontSize:18,
+			padding:3,
+			paddingLeft:10,
+			marginTop:6,
+			marginLeft:10,
+			color:'grey'
+		},
+	}
 })

@@ -154,11 +154,21 @@ const sumaTodos = (req, res, pago) =>{
 router.post('/', (req, res)=>{
 	let id = req.body.userId==null ?req.session.usuario.user._id :req.body.userId
 	console.log(req.body)
-	pagoServices.create(req.body, id, req.session.usuario.user._id, (err, pago)=>{
-		if(err){
-			res.json({err})
-		}else{
-			res.json({ status: 'SUCCESS', mensaje: pago, total:pago.length, code:1 });					
+
+	itemServices.getById(req.body.itemId, (err, item)=>{
+		console.log(item[0].abierto)
+		if (!err) {
+			if (item[0].abierto==true) {
+				res.json({ status: 'FAIL', mensaje:'el item esta abierto', code:2 });		
+			}else{
+				pagoServices.create(req.body, id, req.session.usuario.user._id, (err, pago)=>{
+					if(err){
+						res.json({err})
+					}else{
+						res.json({ status: 'SUCCESS', mensaje: pago, total:pago.length, code:1 });					
+					}
+				})
+			}
 		}
 	})
 })

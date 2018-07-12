@@ -78,8 +78,9 @@ export default class MapaPlanComponent extends Component{
 	}
 
 	render(){
-		console.log(this.props.actualPosicion)
-		console.log(this.state.x)
+		const {ubicacionDefecto} = this.props
+		console.log(ubicacionDefecto)
+ 
 		return(
 			<View>
 				 
@@ -94,8 +95,9 @@ export default class MapaPlanComponent extends Component{
 						<TouchableOpacity onPress={(e)=>{this.props.close(this.state.asignadosEmpty)}}  style={CreatePlanStyle.btnClose} >
 							<Image source={require('../agregarAmigos/back.png')} style={CreatePlanStyle.imagenClose} />
 						</TouchableOpacity>
-		          		<GooglePlacesAutocomplete
-		          		 	
+						{
+							!ubicacionDefecto.infoplan
+							&&<GooglePlacesAutocomplete
 							placeholder='Buscar'
 							minLength={2} // minimum length of text to search
 							autoFocus={true}
@@ -139,31 +141,36 @@ export default class MapaPlanComponent extends Component{
 							}}
 							filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3', 'sublocality']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
 							debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
-							 
 						/>
+						}
+		          		
 		          	</View>		
 	      			<View style ={CreatePlanStyle.container}>
 				        <MapView
 				          style={CreatePlanStyle.map}
 				          region={{
-				            latitude: this.state.x.latitude,
-				            longitude: this.state.x.longitude,
+				            latitude:  ubicacionDefecto.infoplan ?ubicacionDefecto.lat :this.state.x.latitude,
+				            longitude: ubicacionDefecto.infoplan ?ubicacionDefecto.lng : this.state.x.longitude,
 				            latitudeDelta: 0.015,
 				            longitudeDelta: 0.0121,
 				          }}
 				        >
 				          <Marker draggable
-						    coordinate={this.state.x}
+						    coordinate={ubicacionDefecto.infoplan ?{latitude:this.props.ubicacionDefecto.lat, longitude:this.props.ubicacionDefecto.lng} :this.state.x}
 						    onDragEnd={(e) => {this.setState({ x: e.nativeEvent.coordinate }); console.log(e.nativeEvent.coordinate)}}
 						  />
 				        </MapView>
-				        <View  style={CreatePlanStyle.contenedorRes}>
-				       		<TouchableOpacity 
-				       			onPress={() => { this.props.updateStateX(this.state.x.latitude, this.state.x.longitude,this.state.direccion)} } 
-								style={CreatePlanStyle.btnHecho}>
-								<Text style={CreatePlanStyle.hecho}>Hecho !</Text>
-							</TouchableOpacity>
-						</View>
+				        {
+				        	!ubicacionDefecto.infoplan
+				        	&&<View  style={CreatePlanStyle.contenedorRes}>
+					       		<TouchableOpacity 
+					       			onPress={() => { this.props.updateStateX(this.state.x.latitude, this.state.x.longitude,this.state.direccion)} } 
+									style={CreatePlanStyle.btnHecho}>
+									<Text style={CreatePlanStyle.hecho}>Hecho !</Text>
+								</TouchableOpacity>
+							</View>
+				        }
+				        
 				    </View>
 			    </Modal>    
 			</View>

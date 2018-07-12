@@ -5,9 +5,10 @@ import axios from 'axios'
 
 export default class CabezeraComponent extends Component{
 	render(){
-		const {navigate, show, url, parameter, texto} = this.props
+		const {navigate, show, url, parameter, texto, margin} = this.props
+		console.log(margin)
 		return(	 
-			<View style={AjustesStyle.contenedorBack}>
+			<View style={margin ?[{marginTop:48}, AjustesStyle.contenedorBack] :AjustesStyle.contenedorBack }>
 				<TouchableOpacity onPress={()=> navigate(url, parameter)} style={AjustesStyle.btnBack}>
 					<Image source={require('./atras.png')} style={AjustesStyle.imgBack} />
 				</TouchableOpacity>
