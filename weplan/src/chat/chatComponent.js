@@ -15,6 +15,7 @@ import MapaPlanComponent 	  from '../createPlan/mapa.js'
 import PdfComponent           from '../pdf/pdfComponent.js'
 import MapComponent           from '../mapa/mapComponent.js'
 import {pedirImagen, pedirPdf, pedirContacto, pedirMapa} from './peticiones.js'		
+import { showLocation, Popup } from 'react-native-map-link'
 import {URL} from '../../App.js'
 export default class ChatComponent extends Component{
 	constructor(props){
@@ -33,14 +34,14 @@ export default class ChatComponent extends Component{
 			planAsignados:[],
 			asignados:[],
 			misUsuarios:[],
-			
+			mapaVisible: false ////// muestra el modal del mapa para abrirlo con alguna otra app
 		}
 		this.onReceivedMessage = this.onReceivedMessage.bind(this);
 	}
 
 	componentWillMount(){
 		let planId = this.props.navigation.state.params	
-		// let planId = '5b45707a411dc46479c9751a'	 
+		// let planId = '5b47c7489f436157e1cd6646'	 
 		console.log(planId) 
 		this.socket = SocketIOClient(URL);
 		this.socket.on('userJoined'+planId, this.onReceivedMessage);
@@ -170,8 +171,6 @@ export default class ChatComponent extends Component{
 				         	style={e.userId== id ?ChatStyle.fotografia :[ChatStyle.fotografia, ChatStyle.fotografiaLeft]}
 				         />
 	  					<View style={e.userId== id ?ChatStyle.boxItem2 :[ChatStyle.boxItem2, ChatStyle.boxLeft]} >
-					         {/* rest modal  
-					         <View style={[ChatStyle.box, ChatStyle.modal]}>*/} 
 					         <View style={e.userId== id ?ChatStyle.contenedorItem :[ChatStyle.contenedorItem, ChatStyle.contenedorItemLeft]}>
 					             <Text style={e.userId== id ?ChatStyle.titulo :[ChatStyle.titulo, ChatStyle.tituloLeft]}>{e.titulo}</Text>
 					            {
@@ -204,26 +203,31 @@ export default class ChatComponent extends Component{
 				e.respuesta1= e.respuesta1==null ? 0:e.respuesta1  
 				e.respuesta2= e.respuesta2==null ? 0:e.respuesta2  
 				return(
-					<View key={key} style={e.userId== id ?ChatStyle.contenedorEncuesta :[ChatStyle.contenedorEncuesta, ChatStyle.contenedorEncuestaLeft]}>
-						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', e.userId)}>
-							<Image
-								style={e.userId== id ?ChatStyle.pPhoto : [ChatStyle.pPhoto, ChatStyle.pPhotoLeft]}
+					<View key={key} style={ChatStyle.contenedorBox}>
+						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', e.userId)} style={e.userId== id ?ChatStyle.cBtnAvatarItem : [ChatStyle.cBtnAvatarItem, ChatStyle.cBtnAvatarItemLeft]}>
+				      		
+							{/* imagen avatar */}
+							<Image style={ChatStyle.photo}
 								width={45}
 								height={45}
-								source={{uri: e.photo}}
-						    />
+								source={{uri: e.photo}}  />
 						</TouchableOpacity>
-						<View style={ChatStyle.contenedorTitulos}>
-							<Text style={ChatStyle.pNombre}>{e.nombre}</Text>
-							 
+					 {/* texto avatar */}
+			      		<View style={e.userId== id ?ChatStyle.boxItem :[ChatStyle.boxItem, ChatStyle.boxLeft]}  >
+							<View style={ChatStyle.tituloTipoChat}>
+								<Text style={e.userId== id ?ChatStyle.cNombreTipoChat :[ChatStyle.cNombreTipoChat, ChatStyle.cNombreTipoChatLeft]}>{e.nombre}</Text>
+							</View>
+						</View>
+						 
+						<View style={e.userId== id ?ChatStyle.boxItem2 :[ChatStyle.boxItem2, ChatStyle.boxLeft]}>
 							<View style={ChatStyle.contenedorDescripcion}>
 								<Image source={require('../encuesta/item4.png')} style={ChatStyle.decoracion} />
 								 <Text style={ChatStyle.pDescripcion}>{e.eTitulo}</Text> 
 								<Image source={require('../encuesta/item4.png')} style={ChatStyle.decoracion} />
 							</View>
-						</View>
+						</View>						 
 						
-						<View>
+						<View style={e.userId== id ?ChatStyle.boxItem2 :[ChatStyle.boxItem2, ChatStyle.boxLeft]} >
 							{
 								e.tipoEncuesta==1 
 								?<View style={ChatStyle.contenedorOpciones}>
@@ -336,7 +340,7 @@ export default class ChatComponent extends Component{
 							</View>
 							
 							<View style={ChatStyle.botonesContacto}>
-								<TouchableOpacity>
+								<TouchableOpacity onPress={()=>this.agregarAmigo(e.contactoId, e.id, e.cToken)}>
 									<Text style={ChatStyle.cTextBotones}>Agregar Contacto</Text>
 								</TouchableOpacity>
 								{
@@ -365,7 +369,11 @@ export default class ChatComponent extends Component{
 								<Text style={e.userId== id ?ChatStyle.cNombreTipoChat :[ChatStyle.cNombreTipoChat, ChatStyle.cNombreTipoChatLeft]}>{e.nombre}</Text>
 							</View>
 							<View style={ChatStyle.mensajeCChat}>
-		                  <MapComponent lat={parseFloat(e.lat)} lng={parseFloat(e.lng)} />
+								<TouchableOpacity onPress={()=>this.setState({mapaVisible:true})}>
+									<MapComponent lat={parseFloat(e.lat)} lng={parseFloat(e.lng)} />
+									{this.renderModalAbrirMapa(e.lat, e.lng, e.lugar)}
+								</TouchableOpacity>
+		                 		
 								<Text style={e.userId== id ?ChatStyle.cFecha   :[ChatStyle.cFecha,   ChatStyle.cFechaLeft]}>{e.fecha}</Text>
 							</View>
 						</TouchableOpacity>
@@ -437,7 +445,32 @@ export default class ChatComponent extends Component{
 	}
 
 
-
+	renderModalAbrirMapa(lat, lng, lugar){
+		return(
+			<Popup
+			    isVisible={this.state.mapaVisible}
+			    onCancelPressed={() => this.setState({ mapaVisible: false })}
+			    onAppPressed={() => this.setState({ mapaVisible: false })}
+			    onBackButtonPressed={() => this.setState({ mapaVisible: false })}
+			    modalProps={{ // you can put all react-native-modal props inside.
+			        animationIn: 'slideInUp'
+			    }}
+			   
+			    options={{ latitude: lat,
+				    longitude: lng,
+				    //sourceLatitude: -8.0870631,  // optionally specify starting location for directions
+				    //sourceLongitude: -34.8941619,  // not optional if sourceLatitude is specified
+				    title: lugar,  // optional
+				    googleForceLatLon: false,  // optionally force GoogleMaps to use the latlon for the query instead of the title
+				    
+				    dialogTitle: 'Abrir Con', // optional (default: 'Open in Maps')
+				    dialogMessage: '', // optional (default: 'What app would you like to use?')
+				    cancelText: 'Cancelar', // optional (default: 'Cancel')
+				    appsWhiteList: ['google-maps'] }}
+			    style={{ /* Optional: you can override default style by passing your values. */ }}
+			/>
+		)	
+	}
 	 
 	render(){
 		const {adjuntarAmigos, asignados, usuariosAsignados, mapa} = this.state
@@ -476,6 +509,7 @@ export default class ChatComponent extends Component{
 			{mapa &&<MapaPlanComponent 
 							close={()=> this.setState({mapa:false})} 						   			/////////   cierro el modal
 							updateStateX={(lat,lng, direccion)=>{this.setState({mapa:false, showOpciones:false});pedirMapa(lat,lng, this.state.planId) }}// devuelve la posicion del marcador 
+							ubicacionDefecto={{infoplan:false}}
 						/> }	
 
 			{/* FOOTER INPUT / ENVIAR */}
@@ -528,8 +562,6 @@ export default class ChatComponent extends Component{
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	agregarUsuarioPlan(id, idChat, token){
  		const {imagen, nombrePlan} = this.state
-		
-		console.log(this.state.planAsignados)
  
 		axios.put(`/x/v1/pla/plan/insertar/${this.state.planId}`, {id})
       	.then(res=>{      

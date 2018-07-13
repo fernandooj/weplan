@@ -96,7 +96,7 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 		backgroundColor:'#ffffff',
 		padding:8,
 		left:5,
-		marginTop:-85,
+		 
 		width:230,
 		borderRadius:35
 	},
@@ -256,7 +256,7 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 		borderTopRightRadius:10,  
 	},
 	boxItem:{
-		backgroundColor:'#d8e4f3',
+		 
 		alignSelf: 'flex-end',  
 		borderWidth: 0,
 		borderRadius: 10,
@@ -433,9 +433,7 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 		paddingLeft:10,
 		paddingRight:10,
 		paddingTop:15,
-		paddingBottom:75,
 		backgroundColor:'#ffffff',
-
 	},
 	contenedorTitulos:{
 		borderColor:'#c4c4c4',
@@ -444,7 +442,7 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 	},
 	pDescripcion:{
 		color:'#5664ba',
-		width:'80%',
+		width:120,
 		textAlign:'center'
 	},
 	decoracion:{
@@ -687,7 +685,7 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 		},
 		contenedorOpciones:{
 			width:205,
-			marginTop:-80,
+			 
 		},
 		contenedorOpcionesBotones:{
 			width:205,
