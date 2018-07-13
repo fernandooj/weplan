@@ -113,7 +113,7 @@ router.get('/chatPlan/:id', (req, res)=>{
 
 							esperaItem	 : data.espera,
 							asignadoItem : data.asignados,
-							 
+							abierto      : data.abierto,
 							itemId	 	 : data.itemId,
 							titulo	 	 : data.itemTitulo,
 							descripcion	 : data.itemDescripcion,

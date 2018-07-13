@@ -255,6 +255,63 @@ class userServices {
 		], callback)
 	}
 
+		////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////	es la deuda de cada usuario por cada item, pantalla abonos por el creador del item
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	deudaUsuarioPorPlan(userId, planId, callback){
+		let userIds = mongoose.Types.ObjectId(userId);
+		planId = mongoose.Types.ObjectId(planId);
+		User.aggregate([ 
+			{
+				$lookup:{
+					from:"pagos",
+					localField:"_id",
+					foreignField:"userId",
+					as:"PagoData"
+				}
+			}, 
+			{
+			    $unwind:{
+			        path:"$PagoData",
+			        preserveNullAndEmptyArrays:true
+			    }
+			},
+			 
+			// {
+			// $project:{
+			//         _id:1,
+			//         nombre:1,
+			//         photo:1,
+			//         pagoId:"$PagoData._id",
+			//         monto:"$PagoData.monto",
+	 	// 			itemId:"$PagoData.itemId",
+	 	// 			abono:"$PagoData.abono",
+	 	// 			fecha:"$PagoData.createdAt",
+			//     }
+			// },
+			// {
+			// 	$match:{
+			// 		planId,
+			// 		// abono:true,
+			// 		// _id:{
+			// 		// 	$ne:userIds
+			// 		// },
+			// 	}
+			// },
+			// {
+			// 	$group : {
+			//        _id : '$_id',
+			//        deuda: { $sum: "$monto"}, 
+			//        count: { $sum: 1 }, // for no. of documents count
+			//        data: {
+			//        	$addToSet: {info:[{monto:'$monto', photo:'$photo', nombre:'$nombre', fecha:'$fecha', }]},
+			//        }
+			//     } 
+			// },
+ 
+		], callback)
+	}
+
 
 }
 

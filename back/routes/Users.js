@@ -10,6 +10,7 @@ let client = null;
 let moment   = require('moment');
 let fecha = moment().format('YYYY-MM-DD-h-mm')
 let itemServices = require('../services/itemServices.js')
+let planServices = require('../services/planServices.js')
 ///////////////////////////////////////////////////////////////////////////
 /*
     CONFIGURACION DATOS TWILIO
@@ -590,6 +591,23 @@ module.exports = function(app, passport){
                     if(err){
                         res.json({err, code:0})
                     }else{
+                        res.json({ status: 'SUCCESS', usuarios, item, code:1 });                
+                    }
+                })
+            }
+        })
+    })
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////    OBTENGO DE CADA USUARIO LO QUE ADEUDA POR PLAN pantalla detalle deudas del plan en my wallet
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    app.get('/x/v1/user/deudaUsuarioPorPlan/:planId', (req, res)=>{
+        planServices.getByIdPlan(req.params.planId, (err, plan)=>{
+            if(!err){
+                userServices.deudaUsuarioPorPlan(req.session.usuario.user._id, req.params.planId, (err, usuarios)=>{
+                    if(err){
+                        res.json({err, code:0})
+                    }else{
                         // usuarios = usuarios.map(e=>{
                         //     let data = e.data[0].info[0]
                         //     return{
@@ -606,13 +624,13 @@ module.exports = function(app, passport){
                         //     })
 
                         // })
-                        res.json({ status: 'SUCCESS', usuarios, item, code:1 });                
+                        console.log(usuarios)
+                        res.json({ status: 'SUCCESS', usuarios, plan, code:1 });                
                     }
                 })
             }
         })
     })
-
 
     // =====================================
     // LOGOUT ==============================

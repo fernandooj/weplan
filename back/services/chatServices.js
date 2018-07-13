@@ -103,6 +103,7 @@ class chatServices{
 	 				token:        '$UserData.tokenPhone',
 	 				//////// info del item 
 	 				itemId:  	 '$ItemData._id',
+	 				abierto:  	 '$ItemData.abierto',
 	 				itemTitulo:  '$ItemData.titulo',
 	 				asignados:   '$ItemData.asignados',
 	 				espera:      '$ItemData.espera',
@@ -145,7 +146,7 @@ class chatServices{
 				        	//abono:  "$abono",
 				        },
 			         data: {
-                     $addToSet: {info:[{mensaje:"$mensaje", fecha: "$createdAt", documento: "$documento", lat:"$lat", lng:"$lng", tipo:"$tipo", nombre:"$nombre", photo:"$photo", token:"$token", itemTitulo:"$itemTitulo", asignados:"$asignados", espera:"$espera", itemDescripcion:"$itemDescripcion", imagenMiniatura:"$imagenMiniatura", itemValor:"$itemValor", encuestaTitulo:"$encuestaTitulo", encuestaId:"$encuestaId", encuestaUserId:"$encuestaUserId", encuestaDescripcion:"$encuestaDescripcion", tipoEncuesta:"$tipoEncuesta", pregunta1:"$pregunta1", pregunta2:"$pregunta2", valorRespuesta:"$valorRespuesta", cNombre:"$cNombre", cPhoto:"$cPhoto", cToken:"$cToken", contactoId:"$contactoId", userIdRespuesta:"$userIdRespuesta", preguntaIdRespuesta:'$RespuestaData.idEncuesta', userId:'$userId', itemId:'$itemId'}]}
+                     $addToSet: {info:[{mensaje:"$mensaje", fecha: "$createdAt", documento: "$documento", lat:"$lat", lng:"$lng", tipo:"$tipo", nombre:"$nombre", photo:"$photo", token:"$token", itemTitulo:"$itemTitulo", abierto:"$abierto", asignados:"$asignados", espera:"$espera", itemDescripcion:"$itemDescripcion", imagenMiniatura:"$imagenMiniatura", itemValor:"$itemValor", encuestaTitulo:"$encuestaTitulo", encuestaId:"$encuestaId", encuestaUserId:"$encuestaUserId", encuestaDescripcion:"$encuestaDescripcion", tipoEncuesta:"$tipoEncuesta", pregunta1:"$pregunta1", pregunta2:"$pregunta2", valorRespuesta:"$valorRespuesta", cNombre:"$cNombre", cPhoto:"$cPhoto", cToken:"$cToken", contactoId:"$contactoId", userIdRespuesta:"$userIdRespuesta", preguntaIdRespuesta:'$RespuestaData.idEncuesta', userId:'$userId', itemId:'$itemId'}]}
                         //$addToSet: {info:[{titulo:'$titulo', userId:'$userId', abierto:'$abierto'}]},
                   },
 			         totalRepuestas:{$sum:"$totalRepuestas"},

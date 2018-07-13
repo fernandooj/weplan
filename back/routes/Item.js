@@ -61,7 +61,7 @@ router.get('/:user', (req, res)=>{
 								idUsuario:data.userId,
 								valor:data.valor,
 								deuda2:e.deuda,
-		 						deuda:e.deuda-(Math.ceil((data.valor/(data.asignados.length+1))/100)*100)===0 ?e.deuda :e.deuda-(Math.ceil((data.valor/(data.asignados.length+1))/100)*100),
+		 						deuda:e.deuda===(Math.ceil((data.valor/(data.asignados.length+1))/100)*100) ?0 :e.deuda-(Math.ceil((data.valor/(data.asignados.length+1))/100)*100),
 		 						
 		 						abierto:data.abierto,
 							}
@@ -351,7 +351,8 @@ let createChat = function(req, res, userId, item, imagen){
 		valor:req.body.valor, 
 		tipoChat:2,
 		esperaItem: item.espera,
-		asignadoItem: []
+		asignadoItem: [],
+		abierto:true
 	}
 	cliente.publish('chat', JSON.stringify(mensajeJson))
 
@@ -458,19 +459,22 @@ const editaPagoAsignados = (itemId, userId, monto, res)=>{
 router.put('/', (req, res)=>{
 	
 	itemServices.getById(req.body.idItem, (err, item)=>{
-		if(isInArray(req.session.usuario.user._id, item[0].espera)){
-			res.json({status: 'FAIL', mensaje:'ya esta en lista de espera', code:2})
+		if (!item[0].abierto) {
+			res.json({status: 'FAIL', mensaje:'ya se cerro el item', code:3})
 		}else{
-			let nuevoArray = item[0].espera.concat(req.session.usuario.user._id)
-			itemServices.ingresarItem(req.body.idItem, nuevoArray, (err, item)=>{
-				if (err) {
-					res.json({status: 'FAIL', err, code:0})
-				}else{
-					creaNotificacion(req, res, item)	
-				}
-			})
+			if(isInArray(req.session.usuario.user._id, item[0].espera)){
+				res.json({status: 'FAIL', mensaje:'ya esta en lista de espera', code:2})
+			}else{
+				let nuevoArray = item[0].espera.concat(req.session.usuario.user._id)
+				itemServices.ingresarItem(req.body.idItem, nuevoArray, (err, item)=>{
+					if (err) {
+						res.json({status: 'FAIL', err, code:0})
+					}else{
+						creaNotificacion(req, res, item)	
+					}
+				})
+			}
 		}
-		
 	})
 })
 

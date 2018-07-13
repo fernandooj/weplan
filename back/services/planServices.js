@@ -31,7 +31,7 @@ class planServices {
 		plan.fechaLugar 	 = planData.fechaLugar
 		plan.lat 			 = planData.lat	
 		plan.area 			 = planData.area	
-		plan.lng 			 = planData.lng	
+		plan.lng 			 = planData.lng	 
 		plan.lugar 			 = planData.lugar	
 		plan.asignados 		 = planData.asignados	
 		plan.imagenOriginal  = planData.imagenOriginal	

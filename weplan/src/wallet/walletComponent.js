@@ -24,6 +24,7 @@ export default class walletComponent extends Component{
 	componentWillMount(){
 		axios.get('/x/v1/pla/plan/suma/totales/plan')
 		.then(e=>{
+			console.log(e.data.result)
 			this.setState({allList:e.data.result, filteredData:e.data.result})
 		})
 		.catch(res=>{
@@ -42,9 +43,10 @@ export default class walletComponent extends Component{
 		}	
 	}
 	getRow(filteredData){
+		const {navigate} = this.props.navigation
 		if(filteredData.length>0){
 			return filteredData.map((e, key)=>{
-			return  <TouchableOpacity onPress={()=>this.handleSubmit(this)} key={key}>
+			return  <TouchableOpacity onPress={()=>navigate('costoPlan', e.id )} key={key}>
 					<View style={walletStyle.item}>
 						<Image source={{uri: e.imagen[0]}} style={walletStyle.imagen} />
 						<View style={walletStyle.boxPlan1} >

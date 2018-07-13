@@ -130,78 +130,7 @@ class pagoServices{
 		], callback);
  	}
  	 
- 	////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////	es la deuda de cada usuario por cada item, pantalla abonos por el creador del item
-	////////////////////////////////////////////////////////////////////////////////////////////////
-	deudaPorUsuario(userId, itemId, callback){
-		let userIds = mongoose.Types.ObjectId(userId);
-		itemId = mongoose.Types.ObjectId(itemId);
-		pagoSchema.aggregate([ 
-			{
-				$lookup:{
-					from:"users",
-					localField:"userId",
-					foreignField:"_id",
-					as:"UserData"
-				}
-			}, 
-			{
-			    $unwind:{
-			        path:"$UserData",
-			        preserveNullAndEmptyArrays:true
-			    }
-			},
-			{
-				$lookup:{
-					from:"items",
-					localField:"itemId",
-					foreignField:"_id",
-					as:"ItemData"
-				}
-			}, 
-			{
-			    $unwind:{
-			        path:"$ItemData",
-			        preserveNullAndEmptyArrays:true
-			    }
-			},
-			{
-			    $project:{
-			        _id:1,
-			        userId:1,
-			        itemId:"$ItemData._id",
-	 				abono:1,
-			        monto:1,
-			        nombre:"$UserData.nombre",
-			        photo:"$UserData.photo",
-			        titulo:"$ItemData.titulo",
-			        valor:"$ItemData.valor",
-			        asignados:"$ItemData.asignados"
-			    }
-			},
-			{
-				$match:{
-					abono:true,
-					itemId,
-					userId:{
-						$ne:userIds
-					},
-				},
-				
-		    },
-			{
-			    $group : {
-			       _id : '$userId',
-			       deuda: { $sum: "$monto"}, 
-			       count: { $sum: 1 }, // for no. of documents count
-			       data: {
-			       	$addToSet: {info:[{nombre:'$nombre', photo:'$photo', valor:'$valor', asignados:'$asignados'}]},
-			       }
-			    } 
-			},
-		], callback)
-	}
-
+ 	 
 }
 
 module.exports = new pagoServices()

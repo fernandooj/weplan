@@ -182,7 +182,7 @@ export default class ChatComponent extends Component{
 					             </Text>  
 					       	</View>
 					       	{
-					       		(!asignadoItem && !esperaItem)  && e.userId !== id
+					       		(!asignadoItem && !esperaItem &&e.abierto)  && e.userId !== id
 					       		?<View style={e.userId== id ?ChatStyle.contenedorInteres :[ChatStyle.contenedorInteres, ChatStyle.contenedorInteresLeft]}>
 							       	<TouchableOpacity onPress={()=> this.ingresarItem(e.token, e.itemId, e.id, e.titulo, e.rutaImagen)} style={ChatStyle.btnInteres} >
 							       		<Image source={require('./me_interesa.png')} style={ChatStyle.imagenInteres} />
@@ -613,6 +613,7 @@ export default class ChatComponent extends Component{
 	/////// SI EL USUARIO HACE CLICK EN ME INTERESA, ENVIA LA NOTIFICACION AL CREADOR DEL ITEM PARA DARLE PERMISO DE INGRESAR
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	ingresarItem(token, idItem, id, titulo, imagen){
+		const {navigate} = this.props.navigation
 		axios.put('x/v1/ite/item', {idItem})
 		.then(e=>{
 			console.log(e.data)
@@ -623,6 +624,17 @@ export default class ChatComponent extends Component{
 						return e
 				})
  				this.setState({mensajes})
+			}
+			if(e.data.code==3){
+				Alert.alert(
+					'Opss!! ya se cerro el item',
+					'pero crea tu propio item',
+				[
+					{text: 'Cancelar', onPress: () => console.log('OK Pressed')},
+					{text: 'Crear Item', onPress: () => navigate('item', this.state.planId)},
+				],
+					{ cancelable: false }
+				)
 			}
 		})
 		.catch(err=>{
