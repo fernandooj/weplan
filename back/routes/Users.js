@@ -9,7 +9,7 @@ let client = null;
 
 let moment   = require('moment');
 let fecha = moment().format('YYYY-MM-DD-h-mm')
-
+let itemServices = require('../services/itemServices.js')
 ///////////////////////////////////////////////////////////////////////////
 /*
     CONFIGURACION DATOS TWILIO
@@ -519,7 +519,7 @@ module.exports = function(app, passport){
 
     ///////////////////////////////////////////////////////////////////////////
     /*
-    Edita Password 
+    ENVIA EL MENSAJE PARA RECUPERAR LA CONTRASEÑA
     */
     ///////////////////////////////////////////////////////////////////////////
     app.post('/x/v1/user/recupera_contrasena', function(req, res){
@@ -564,7 +564,11 @@ module.exports = function(app, passport){
     })
  
  
-
+    ///////////////////////////////////////////////////////////////////////////
+    /*
+    EDITA LA CONTRASEÑA
+    */
+    ///////////////////////////////////////////////////////////////////////////
     app.post('/x/v1/user/password', function(req, res){
         userServices.editaPassword(req.session.usuario.user._id, req.body.password, req.body.token, (err, user)=>{
             if (!err) {
@@ -574,6 +578,41 @@ module.exports = function(app, passport){
             }
         })
     })
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////    OBTENGO DE CADA USUARIO LO QUE ADEUDA POR  ITEM pantalla abonos por el creador del item
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    app.get('/x/v1/user/porusuario/:itemId', (req, res)=>{
+        itemServices.getById(req.params.itemId, (err, item)=>{
+            if(!err){
+                userServices.deudaPorUsuario(req.session.usuario.user._id, req.params.itemId, (err, usuarios)=>{
+                    if(err){
+                        res.json({err, code:0})
+                    }else{
+                        // usuarios = usuarios.map(e=>{
+                        //     let data = e.data[0].info[0]
+                        //     return{
+                        //         id:e._id,
+                        //         nombre:data.nombre,
+                        //         photo:data.photo,
+                        //         monto:(Math.ceil((item[0].valor/(item[0].asignados.length+1))/100)*100)-e.deuda,
+                        //     }
+                        //     return e.data.map(e2=>{
+                        //         return{
+                        //             monto2:e2.info[0].monto
+                        //         }
+                        //        // console.log(e2.info[0].monto)
+                        //     })
+
+                        // })
+                        res.json({ status: 'SUCCESS', usuarios, item, code:1 });                
+                    }
+                })
+            }
+        })
+    })
+
 
     // =====================================
     // LOGOUT ==============================

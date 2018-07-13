@@ -160,7 +160,14 @@ export const PagoStyle = MediaQueryStyleSheet.create({
 		fontSize:18,
 		marginTop:7
 	},
-
+	infoAbonoDeuda:{
+		flexDirection:'row',
+		alignSelf: 'flex-end',
+		marginRight:12
+	},
+	textAbonoDeuda:{
+		fontSize:12
+	},
 
 
 	////////////////////////////////////////////////////////////////////////////////////

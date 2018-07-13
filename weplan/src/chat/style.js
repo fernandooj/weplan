@@ -477,8 +477,6 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 		borderWidth:3,	
 	},
 	contenedorRespuesta:{
-		  
-	 
 		flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',

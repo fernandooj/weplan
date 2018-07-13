@@ -88,14 +88,6 @@ export default class pagoComponent extends Component{
 	                  onChangeText={this.getValor.bind(this)} 
 	                  value={this.state.valorInicial}
 	                />
-					{/*<TextInput 
-		                placeholder='Valor a Pagar'
-		                underlineColorAndroid='transparent'
-		                placeholderTextColor="#8F9093" 
-		                keyboardType='numeric'
-		                style={PagoStyle.inputValor}
-		                onChangeText={(monto) => this.setState({monto})}
-		            />*/}
 				</View>
 
 			{/* SEPARADOR */}
@@ -208,6 +200,7 @@ export default class pagoComponent extends Component{
 		}else{
 			axios.post('x/v1/pag/pago', {monto, metodo, descripcion, itemId, abono:true, userId:null})
 			.then(e=>{
+				console.log(e.data)
 				if (e.data.code==1) {
 					metodo==1 
 					?sendRemoteNotification(5, item.userId.tokenPhone, 'item', `Te pagaron ${montos}`, `, Te pagaron del item ${item.titulo}`, item.imagenResize)
@@ -224,13 +217,13 @@ export default class pagoComponent extends Component{
 					)
 				}else{
 					Alert.alert(
-					  'Opss algo salio mal, intenta nuevamente',
-					  '',
-					  [
-					    {text: 'OK', onPress: () => navigate('item', planId)},
-					  ],
-					  { cancelable: false }
-					)
+			            '!opss Artículo abierto',
+			            'puedes hacer pagos hasta que el usuario cierre el item',
+			            [  
+			              {text: 'OK', onPress: () => console.log('OK Pressed')},
+			            ],
+			            { cancelable: false }
+		          	)
 				}
 				
 				

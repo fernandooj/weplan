@@ -26,7 +26,7 @@ export default class ItemComponent extends Component{
 	}
 	componentWillMount(){
 		let planId = this.props.navigation.state.params	
-		// let planId = '5b45707a411dc46479c9751a'	
+		// let planId = '5b479935a767c75dcd41452c'	
 		this.setState({planId})
  
 		axios.get('/x/v1/ite/item/'+planId)

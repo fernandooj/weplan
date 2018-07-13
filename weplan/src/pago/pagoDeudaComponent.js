@@ -21,10 +21,10 @@ export default class pagoDeudaComponent extends Component{
 	 	let planId = this.props.navigation.state.params.planId
 	 	// let planId = '5aefdb91423c402001dbb329'
 	 	// let itemId = '5af143b7076e9c07c4973aa8'
-	 	axios.get('x/v1/pag/pago/porusuario/'+itemId)
+	 	axios.get('x/v1/user/porusuario/'+itemId)
 	 	.then(e=>{
-	 		console.log(e.data.item)
-	 		this.setState({usuarios:e.data.pago, itemId, item:e.data.item[0], planId})
+	 		console.log(e.data.usuarios)
+	 		this.setState({usuarios:e.data.usuarios, itemId, item:e.data.item[0], planId})
 	 	})
 	 	.catch(err=>{
 	 		console.log(e.err)
@@ -65,15 +65,26 @@ export default class pagoDeudaComponent extends Component{
 	}
 	renderAsignados(){
 		return this.state.usuarios.map((e, key)=>{
+			let deuda = e.deuda-(Math.ceil((this.state.item.valor/(this.state.item.asignados.length+1))/100)*100)
+			let data = e.data[0].info[0]
 			return(
-	 			<TouchableOpacity style={PagoStyle.pagoDeudaContenedor} key={key} 
-	 				onPress={()=>this.setState({show:true, userId:e.id, photo:e.photo, nombre:e.nombre, monto:e.monto})}>
-	 				<Image source={{uri: e.photo}} style={PagoStyle.pagoDeudaAvatar}/>
-	 				<Text style={PagoStyle.pagoDeudaNombre}>{e.nombre}</Text> 
-	 				<Text style={PagoStyle.pagoDeudaMonto}>{'$ '+Number(e.monto).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+	 			<TouchableOpacity  key={key} onPress={()=>this.setState({show:true, userId:e._id, photo:data.photo, nombre:data.nombre, monto:e.deuda})}>
+	 				<View style={PagoStyle.pagoDeudaContenedor}>
+		 				<Image source={{uri: data.photo}} style={PagoStyle.pagoDeudaAvatar} />
+		 				<Text style={PagoStyle.pagoDeudaNombre}>{data.nombre}</Text> 
+		 				<Text style={PagoStyle.pagoDeudaMonto}>{'$ '+Number(deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+		 			</View>
 	 				<View>	
 		 				{ 
-		 					this.renderPagosHechos(e.id)
+		 					e.data.map((e2, key2)=>{
+		 						return(
+		 							<View key={key2} style={PagoStyle.infoAbonoDeuda}>
+		 								<Text style={PagoStyle.textAbonoDeuda}>Abono: </Text>
+		 								<Text style={PagoStyle.textAbonoDeuda}>{e2.info[0].fecha} / </Text>
+		 								<Text style={PagoStyle.textAbonoDeuda}>{'$ '+Number(e2.info[0].monto).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+		 							</View>
+		 						)
+		 					})
 		 				}
 		 			</View>
 	 				<View style={PagoStyle.separador}></View>
@@ -91,7 +102,7 @@ export default class pagoDeudaComponent extends Component{
 		}
 		let suma=[]
 		usuarios.filter(e=>{
-			suma.push(e.monto)
+			suma.push(e.deuda-(Math.ceil((this.state.item.valor/(this.state.item.asignados.length+1))/100)*100))
 		})
 		var sum = suma.reduce(add, 0);
 		return (

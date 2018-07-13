@@ -2,7 +2,7 @@
 
 let User = require('./../models/usersModel.js');
 let moment   = require('moment');
-
+let mongoose = require('mongoose')
 class userServices {
 	get(callback){
 		User.find({}, null, {sort: {_id: -1}}, callback)
@@ -25,7 +25,7 @@ class userServices {
 	
 	create(user, randonNumber, callback ){ 
 		let newUsuario = new User() 
-		newUsuario.username = user.username,
+		newUsuario.username = user.username, 
 		newUsuario.token    = randonNumber,
 		newUsuario.tokenPhone = user.tokenPhone
 		newUsuario.estado   = "inactivo"
@@ -151,6 +151,110 @@ class userServices {
             'updatedAt'   : new Date()
         }}, callback)
 	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////	es la deuda de cada usuario por cada item, pantalla abonos por el creador del item
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	deudaPorUsuario(userId, itemId, callback){
+		let userIds = mongoose.Types.ObjectId(userId);
+		itemId = mongoose.Types.ObjectId(itemId);
+		User.aggregate([ 
+			{
+				$lookup:{
+					from:"pagos",
+					localField:"_id",
+					foreignField:"userId",
+					as:"PagoData"
+				}
+			}, 
+			{
+			    $unwind:{
+			        path:"$PagoData",
+			        preserveNullAndEmptyArrays:true
+			    }
+			},
+			{
+			$project:{
+			        _id:1,
+			        nombre:1,
+			        photo:1,
+			        pagoId:"$PagoData._id",
+			        monto:"$PagoData.monto",
+	 				itemId:"$PagoData.itemId",
+	 				abono:"$PagoData.abono",
+	 				fecha:"$PagoData.createdAt",
+			    }
+			},
+			{
+				$match:{
+					abono:true,
+					itemId,
+					_id:{
+						$ne:userIds
+					},
+				}
+			},
+			{
+				$group : {
+			       _id : '$_id',
+			       deuda: { $sum: "$monto"}, 
+			       count: { $sum: 1 }, // for no. of documents count
+			       data: {
+			       	$addToSet: {info:[{monto:'$monto', photo:'$photo', nombre:'$nombre', fecha:'$fecha', }]},
+			       }
+			    } 
+			},
+			// {
+			// 	$lookup:{
+			// 		from:"items",
+			// 		localField:"itemId",
+			// 		foreignField:"_id",
+			// 		as:"ItemData"
+			// 	}
+			// }, 
+			// {
+			//     $unwind:{
+			//         path:"$ItemData",
+			//         preserveNullAndEmptyArrays:true
+			//     }
+			// },
+			// {
+			//     $project:{
+			//         _id:1,
+			//         userId:1,
+			//         itemId:"$ItemData._id",
+	 	// 			abono:1,
+			//         monto:1,
+			//         nombre:"$UserData.nombre",
+			//         photo:"$UserData.photo",
+			//         titulo:"$ItemData.titulo",
+			//         valor:"$ItemData.valor",
+			//         asignados:"$ItemData.asignados"
+			//     }
+			// },
+			// {
+			// 	$match:{
+			// 		abono:true,
+			// 		itemId,
+			// 		userId:{
+			// 			$ne:userIds
+			// 		},
+			// 	},
+				
+		 //    },
+			// {
+			//     $group : {
+			//        _id : '$userId',
+			//        deuda: { $sum: "$monto"}, 
+			//        count: { $sum: 1 }, // for no. of documents count
+			//        data: {
+			//        	$addToSet: {info:[{nombre:'$nombre', photo:'$photo', valor:'$valor', asignados:'$asignados'}]},
+			//        }
+			//     } 
+			// },
+		], callback)
+	}
+
 
 }
 
