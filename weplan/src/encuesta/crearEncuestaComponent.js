@@ -130,7 +130,6 @@ export default class CrearEncuestaComponent extends Component{
   }
  
   handleSubmit(){
-    this.setState({enviarChat:'Enviando...'})
     const {titulo, descripcion, imagen, imagen2, id, pregunta1, pregunta2} = this.state
     let planId = this.props.planId
     //let planId = '5aefdb91423c402001dbb329'
@@ -143,6 +142,7 @@ export default class CrearEncuestaComponent extends Component{
     }else if(pregunta2==0 && imagen2==0){
       alerta('La segunda opción es obligatoria')
     }else{
+      this.setState({enviarChat:'Enviando...'})
       axios.post('/x/v1/enc/encuesta', {descripcion,  titulo, planId})
       .then(e=>{
         let encuestaId = e.data.encuesta._id

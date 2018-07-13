@@ -236,7 +236,7 @@ export default class ChatComponent extends Component{
 											asignado 
 											?<View style={ChatStyle.contenedorRespuesta}>
 												<Image source={{uri:e.pregunta1}} style={ChatStyle.imagenRespuesta} />
-												<Text style={ChatStyle.textoPregunta}>{e.respuesta1} %</Text>
+												<Text style={ChatStyle.textoRespuesta}>{e.respuesta1} %</Text>
 											</View> 
 											:<Image source={{uri:e.pregunta1}} style={ChatStyle.imagenPregunta} />
 										}
@@ -246,7 +246,7 @@ export default class ChatComponent extends Component{
 											asignado   
 											?<View style={ChatStyle.contenedorRespuesta}>
 												<Image source={{uri:e.pregunta2}} style={ChatStyle.imagenRespuesta} />
-												<Text style={ChatStyle.textoPregunta}>{e.respuesta2} %</Text>
+												<Text style={ChatStyle.textoRespuesta}>{e.respuesta2} %</Text>
 											</View> 
 											:<Image source={{uri:e.pregunta2}} style={ChatStyle.imagenPregunta} />
 										}
@@ -257,15 +257,21 @@ export default class ChatComponent extends Component{
 									<TouchableOpacity onPress={!asignado  ?()=> this.handleSubmitPregunta(e.encuestaId, 1, e.id) :null} style={ChatStyle.btnInteres} >
 										{
 											asignado   
-											?<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.respuesta1} %</Text></View> 
-											:<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.pregunta1}</Text></View> 
+											?<View style={ChatStyle.contenedorRespuesta}>
+												<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.pregunta1}</Text></View>
+												<Text style={ChatStyle.textoRespuesta}>{e.respuesta1} %</Text>
+											</View>
+											:<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoRespuesta}>{e.respuesta1} %</Text></View>  
 										}
 									</TouchableOpacity>
 									<TouchableOpacity onPress={!asignado  ?()=> this.handleSubmitPregunta(e.encuestaId, 2, e.id) :null} style={ChatStyle.btnInteres} >
 								  		{
 											asignado   
-											?<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.respuesta2} %</Text></View> 
-											:<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.pregunta2}</Text></View> 
+											?<View style={ChatStyle.contenedorRespuesta}>
+												<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.pregunta2}</Text></View>
+												<Text style={ChatStyle.textoRespuesta}>{e.respuesta2} %</Text>
+											</View>
+											:<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoRespuesta}>{e.respuesta2} %</Text></View> 
 										}
 									</TouchableOpacity>
 								</View> 
@@ -276,7 +282,7 @@ export default class ChatComponent extends Component{
 											asignado  
 											?<View style={ChatStyle.contenedorPregunta}>
 												<Image source={{uri:e.pregunta1}} style={ChatStyle.imagenRespuesta} />
-												<Text style={ChatStyle.textoPregunta}>{e.respuesta1} %</Text>
+												<Text style={ChatStyle.textoRespuesta}>{e.respuesta1} %</Text>
 												</View> 
 											:<Image source={{uri:e.pregunta1}} style={ChatStyle.imagenPregunta} />
 										}
@@ -284,7 +290,7 @@ export default class ChatComponent extends Component{
 									<TouchableOpacity onPress={!asignado ?()=> this.handleSubmitPregunta(e.encuestaId, 2, e.id) :null} style={ChatStyle.btnInteres} >
 								  		{
 											asignado  
-											?<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.respuesta2} %</Text></View> 
+											?<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoRespuesta}>{e.respuesta2} %</Text></View> 
 											:<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.pregunta2}</Text></View> 
 										}
 									</TouchableOpacity>
@@ -293,7 +299,7 @@ export default class ChatComponent extends Component{
 									<TouchableOpacity onPress={!asignado ?()=> this.handleSubmitPregunta(e.encuestaId, 1, e.id) :null} style={ChatStyle.btnInteres} >
 										{
 											asignado  
-											?<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.respuesta1} %</Text></View> 
+											?<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoRespuesta}>{e.respuesta1} %</Text></View> 
 											:<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.pregunta1}</Text></View> 
 										}
 									</TouchableOpacity>
@@ -302,7 +308,7 @@ export default class ChatComponent extends Component{
 											asignado  
 											?<View style={ChatStyle.contenedorPregunta}>
 												<Image source={{uri:e.pregunta2}} style={ChatStyle.imagenRespuesta} />
-												<Text style={ChatStyle.textoPregunta}>{e.respuesta2} %</Text>
+												<Text style={ChatStyle.textoRespuesta}>{e.respuesta2} %</Text>
 											</View> 
 											:<Image source={{uri:e.pregunta2}} style={ChatStyle.imagenPregunta} />  
 										}

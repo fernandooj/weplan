@@ -442,7 +442,7 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 	},
 	pDescripcion:{
 		color:'#5664ba',
-		width:120,
+		width:160,
 		textAlign:'center'
 	},
 	decoracion:{
@@ -466,19 +466,19 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 	},
 	imagenRespuesta:{
 		width:100,
-		height:100,
-		borderRadius:50,
+		height:60,
+		borderRadius:20,
 		zIndex:1000,
-       	opacity: 0.4,
-       	position:'absolute',
+       	// opacity: 0.4,    estos dos codigitos dan la opcion de insertar el porcentaje dentro de la imagen
+       	// position:'absolute',
+       	opacity: 0.8,
+ 
        	borderColor:'#9CB7F5',
-		borderWidth:5,	
+		borderWidth:3,	
 	},
 	contenedorRespuesta:{
-		width:100,
-		height:100,
-		borderRadius:50,
-		zIndex:1000,
+		  
+	 
 		flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
@@ -486,15 +486,14 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 	},
 	contenedorPregunta:{
 		width:100,
-		height:100,
-		borderRadius:50,
+		height:60,
+		borderRadius:20,
 		zIndex:1000,
 		borderColor:'#9CB7F5',
-		borderWidth:5,	
+		borderWidth:3,	
 		flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-
         backgroundColor:'#ffffff',
         marginRight:5
 	},
@@ -502,6 +501,10 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 		textAlign:'center',
 	 	color:'black',
 	 	fontSize:25
+	},
+	textoRespuesta:{
+		fontSize:18,
+
 	},
 	pPhoto:{
 		alignSelf: 'flex-end', 
@@ -671,10 +674,7 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 			width:80,
 			height:80,
 		},
-		imagenRespuesta:{
-			width:80,
-			height:80,
-		},
+		 
 		contenedorPregunta:{
 			width:80,
 			height:80,
@@ -685,7 +685,9 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 		},
 		contenedorOpciones:{
 			width:205,
-			 
+		},
+		pDescripcion:{
+			width:140
 		},
 		contenedorOpcionesBotones:{
 			width:205,
@@ -701,13 +703,14 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 			width:22,
 			height:22,
 		},
-		contenedorRespuesta:{
+		imagenRespuesta:{
 			width:90,
-			height:90,
+			height:50,
 		},
+	 
 		contenedorPregunta:{
 			width:90,
-			height:90,
+			height:55,
 		},
 		descripcion:{
 			fontSize :20
