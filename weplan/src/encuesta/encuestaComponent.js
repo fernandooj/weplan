@@ -85,53 +85,33 @@ export default class encuestaComponent extends Component{
 							{
 								e.tipoEncuesta==1 
 								?<View style={EncuestaStyle.contenedorOpciones}>
-								 	<TouchableOpacity  style={EncuestaStyle.btnInteres} >
-										 
-										 <Image source={{uri:e.pregunta1}} style={EncuestaStyle.imagenPregunta} />
-								 
-									</TouchableOpacity>
-									<TouchableOpacity style={EncuestaStyle.btnInteres} >
-										 
-										 <Image source={{uri:e.pregunta2}} style={EncuestaStyle.imagenPregunta} />
-									 
-									</TouchableOpacity>
+								 	<View  style={EncuestaStyle.btnInteres} > 
+										<Image source={{uri:e.pregunta1}} style={EncuestaStyle.imagenRespuesta} />
+									</View>
+									<View style={EncuestaStyle.btnInteres} >
+										<Image source={{uri:e.pregunta2}} style={EncuestaStyle.imagenRespuesta} />
+									</View>
 								 </View> 
 								:e.tipoEncuesta==2
 								?<View style={EncuestaStyle.contenedorOpciones}>
-									<TouchableOpacity style={EncuestaStyle.btnInteres} >
-										 
-											 <View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta1}</Text></View> 
-										 
-									</TouchableOpacity>
-									<TouchableOpacity style={EncuestaStyle.btnInteres} >
-								  		 
-											 <View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta2}</Text></View> 
-									 
-									</TouchableOpacity>
+									<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta1}</Text></View> 
+									<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta2}</Text></View> 
 								</View> 
 								:e.tipoEncuesta==3
 								?<View style={EncuestaStyle.contenedorOpciones}>
-									<TouchableOpacity style={EncuestaStyle.btnInteres} >
-										 
-											 <Image source={{uri:e.pregunta1}} style={EncuestaStyle.imagenPregunta} />
-										 
+									<TouchableOpacity style={EncuestaStyle.btnInteres} > 
+										<Image source={{uri:e.pregunta1}} style={EncuestaStyle.imagenPregunta} />
 									</TouchableOpacity>
 									<TouchableOpacity style={EncuestaStyle.btnInteres} >
-								  		  
-										 <View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta2}</Text></View> 
-										 
+										<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta2}</Text></View> 
 									</TouchableOpacity>
 								</View> 
 								:<View style={EncuestaStyle.contenedorOpciones}>
-									<TouchableOpacity style={EncuestaStyle.btnInteres} >
-										 
-											 <View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta1}</Text></View> 
-										 
+									<TouchableOpacity style={EncuestaStyle.btnInteres} > 
+										<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta1}</Text></View> 
 									</TouchableOpacity>
-									<TouchableOpacity style={EncuestaStyle.btnInteres} >
-								  		 
-											 <Image source={{uri:e.pregunta2}} style={EncuestaStyle.imagenPregunta} />  
-										 
+									<TouchableOpacity style={EncuestaStyle.btnInteres} > 
+										<Image source={{uri:e.pregunta2}} style={EncuestaStyle.imagenPregunta} />  
 									</TouchableOpacity>
 								</View> 
 							}	
@@ -168,9 +148,12 @@ export default class encuestaComponent extends Component{
 											asignado 
 											?<View style={EncuestaStyle.contenedorRespuesta}>
 												<Image source={{uri:e.pregunta1}} style={EncuestaStyle.imagenRespuesta} />
-												<Text style={EncuestaStyle.textoPregunta}>{e.respuesta1} %</Text>
+												<Text style={EncuestaStyle.textoRespuesta}>{e.respuesta1} %</Text>
 											</View> 
-											:<Image source={{uri:e.pregunta1}} style={EncuestaStyle.imagenPregunta} />
+											:<View style={EncuestaStyle.contenedorRespuesta}>
+												<Image source={{uri:e.pregunta1}} style={EncuestaStyle.imagenRespuesta} />
+												<Text style={EncuestaStyle.textoRespuesta}>{e.respuesta1} %</Text>
+											</View> 
 										}
 									</TouchableOpacity>
 									<TouchableOpacity onPress={!asignado  ?()=> this.handleSubmitPregunta(2, e.id) :null} style={EncuestaStyle.btnInteres} >
@@ -178,9 +161,12 @@ export default class encuestaComponent extends Component{
 											asignado   
 											?<View style={EncuestaStyle.contenedorRespuesta}>
 												<Image source={{uri:e.pregunta2}} style={EncuestaStyle.imagenRespuesta} />
-												<Text style={EncuestaStyle.textoPregunta}>{e.respuesta2} %</Text>
+												<Text style={EncuestaStyle.textoRespuesta}>{e.respuesta2} %</Text>
 											</View> 
-											:<Image source={{uri:e.pregunta2}} style={EncuestaStyle.imagenPregunta} />
+											:<View style={EncuestaStyle.contenedorRespuesta}>
+												<Image source={{uri:e.pregunta2}} style={EncuestaStyle.imagenRespuesta} />
+												<Text style={EncuestaStyle.textoRespuesta}>{e.respuesta2} %</Text>
+											</View> 
 										}
 									</TouchableOpacity>
 								 </View> 
@@ -189,15 +175,27 @@ export default class encuestaComponent extends Component{
 									<TouchableOpacity onPress={!asignado  ?()=> this.handleSubmitPregunta(1, e.id) :null} style={EncuestaStyle.btnInteres} >
 										{
 											asignado   
-											?<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.respuesta1} %</Text></View> 
-											:<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta1}</Text></View> 
+											?<View style={EncuestaStyle.contenedorRespuesta}>
+												<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta1}</Text></View>
+												<Text style={EncuestaStyle.textoRespuesta}>{e.respuesta1} %</Text>
+											</View>
+											:<View style={EncuestaStyle.contenedorRespuesta}>
+												<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta1}</Text></View>
+												<Text style={EncuestaStyle.textoRespuesta}>{e.respuesta1} %</Text>
+											</View>
 										}
 									</TouchableOpacity>
 									<TouchableOpacity onPress={!asignado  ?()=> this.handleSubmitPregunta(2, e.id) :null} style={EncuestaStyle.btnInteres} >
 								  		{
 											asignado   
-											?<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.respuesta2} %</Text></View> 
-											:<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta2}</Text></View> 
+											?<View style={EncuestaStyle.contenedorRespuesta}>
+												<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta2}</Text></View>
+												<Text style={EncuestaStyle.textoRespuesta}>{e.respuesta2} %</Text>
+											</View>
+											:<View style={EncuestaStyle.contenedorRespuesta}>
+												<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta2}</Text></View>
+												<Text style={EncuestaStyle.textoRespuesta}>{e.respuesta2} %</Text>
+											</View>
 										}
 									</TouchableOpacity>
 								</View> 
@@ -205,38 +203,56 @@ export default class encuestaComponent extends Component{
 								?<View style={EncuestaStyle.contenedorOpciones}>
 									<TouchableOpacity onPress={!asignado ?()=> this.handleSubmitPregunta(1, e.id) :null} style={EncuestaStyle.btnInteres} >
 										{
-											asignado  
-											?<View style={EncuestaStyle.contenedorPregunta}>
+											asignado 
+											?<View style={EncuestaStyle.contenedorRespuesta}>
 												<Image source={{uri:e.pregunta1}} style={EncuestaStyle.imagenRespuesta} />
-												<Text style={EncuestaStyle.textoPregunta}>{e.respuesta1} %</Text>
-												</View> 
-											:<Image source={{uri:e.pregunta1}} style={EncuestaStyle.imagenPregunta} />
+												<Text style={EncuestaStyle.textoRespuesta}>{e.respuesta1} %</Text>
+											</View> 
+											:<View style={EncuestaStyle.contenedorRespuesta}>
+												<Image source={{uri:e.pregunta1}} style={EncuestaStyle.imagenRespuesta} />
+												<Text style={EncuestaStyle.textoRespuesta}>{e.respuesta1} %</Text>
+											</View> 
 										}
 									</TouchableOpacity>
 									<TouchableOpacity onPress={!asignado ?()=> this.handleSubmitPregunta(2, e.id) :null} style={EncuestaStyle.btnInteres} >
 								  		{
-											asignado  
-											?<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.respuesta2} %</Text></View> 
-											:<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta2}</Text></View> 
+											asignado   
+											?<View style={EncuestaStyle.contenedorRespuesta}>
+												<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta2}</Text></View>
+												<Text style={EncuestaStyle.textoRespuesta}>{e.respuesta2} %</Text>
+											</View>
+											:<View style={EncuestaStyle.contenedorRespuesta}>
+												<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta2}</Text></View>
+												<Text style={EncuestaStyle.textoRespuesta}>{e.respuesta2} %</Text>
+											</View>
 										}
 									</TouchableOpacity>
 								</View> 
 								:<View style={EncuestaStyle.contenedorOpciones}>
 									<TouchableOpacity onPress={!asignado ?()=> this.handleSubmitPregunta(1, e.id) :null} style={EncuestaStyle.btnInteres} >
 										{
-											asignado  
-											?<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.respuesta1} %</Text></View> 
-											:<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta1}</Text></View> 
+											asignado   
+											?<View style={EncuestaStyle.contenedorRespuesta}>
+												<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta1}</Text></View>
+												<Text style={EncuestaStyle.textoRespuesta}>{e.respuesta1} %</Text>
+											</View>
+											:<View style={EncuestaStyle.contenedorRespuesta}>
+												<View style={EncuestaStyle.contenedorPregunta}><Text style={EncuestaStyle.textoPregunta}>{e.pregunta1}</Text></View>
+												<Text style={EncuestaStyle.textoRespuesta}>{e.respuesta1} %</Text>
+											</View>
 										}
 									</TouchableOpacity>
 									<TouchableOpacity onPress={!asignado ?()=> this.handleSubmitPregunta(2, e.id) :null} style={EncuestaStyle.btnInteres} >
 								  		{
-											asignado  
-											?<View style={EncuestaStyle.contenedorPregunta}>
+											asignado   
+											?<View style={EncuestaStyle.contenedorRespuesta}>
 												<Image source={{uri:e.pregunta2}} style={EncuestaStyle.imagenRespuesta} />
-												<Text style={EncuestaStyle.textoPregunta}>{e.respuesta2} %</Text>
+												<Text style={EncuestaStyle.textoRespuesta}>{e.respuesta2} %</Text>
 											</View> 
-											:<Image source={{uri:e.pregunta2}} style={EncuestaStyle.imagenPregunta} />  
+											:<View style={EncuestaStyle.contenedorRespuesta}>
+												<Image source={{uri:e.pregunta2}} style={EncuestaStyle.imagenRespuesta} />
+												<Text style={EncuestaStyle.textoRespuesta}>{e.respuesta2} %</Text>
+											</View>
 										}
 									</TouchableOpacity>
 								</View> 

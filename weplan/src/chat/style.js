@@ -105,7 +105,7 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 		backgroundColor:'#ffffff',
 		padding:8,
 		left:5,
-		marginTop:-85,
+		marginTop:-35,
 		width:230,
 		borderRadius:35
 	},
@@ -514,7 +514,7 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 	},
 
 	////////////////////////////////////////////
-	////////////////// contenedor 4  ==> items
+	////////////////// contenedor 4  ==> chat
 	////////////////////////////////////////////
  
 	mensajeCChat:{
@@ -593,7 +593,23 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 		alignSelf: 'flex-start', 
 		marginLeft:25
 	},
-
+	/////////// btn hecho /////////////
+ 	containerHecho:{
+ 		marginTop:20,
+ 		marginBottom:20,
+		alignItems: 'center',
+ 	},
+ 	btnHecho:{
+ 		width:170,
+ 		alignItems: 'center',
+ 		backgroundColor:'#94A5F3',
+ 		borderRadius:10,
+ 		padding:10
+ 	},
+ 	hecho:{
+ 		color:'white',
+ 		fontSize:16
+ 	},
 
 	////////////////////////////////////////////
 	////////////////// contenedor 5  ==> items

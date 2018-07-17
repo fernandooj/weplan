@@ -154,7 +154,7 @@ export default class pagoComponent extends Component{
   	render() {
   		const {valor} = this.state
   		const {navigate} = this.props.navigation
-		if (valor!==0) {
+		 
 			return (
 				<View>
 					<CabezeraComponent navigate={navigate} url={'item'} parameter={this.state.planId} texto='Pago Deuda'/>
@@ -168,9 +168,7 @@ export default class pagoComponent extends Component{
 					</ScrollView>
 				</View>
 			);
-		}else{
-			return (<View><Text>Cargando...</Text></View>)
-		}
+		 
 	}
 	handleSubmit(e){
 		let {monto, metodo, descripcion, itemId, planId, valor, item} = this.state
@@ -198,13 +196,13 @@ export default class pagoComponent extends Component{
 			  { cancelable: false }
 			)
 		}else{
-			axios.post('x/v1/pag/pago', {monto, metodo, descripcion, itemId, abono:true, userId:null})
+			axios.post('x/v1/pag/pago', {monto, metodo, descripcion, itemId, planId, abono:true, userId:null})
 			.then(e=>{
 				console.log(e.data)
 				if (e.data.code==1) {
 					metodo==1 
-					?sendRemoteNotification(5, item.userId.tokenPhone, 'item', `Te pagaron ${montos}`, `, Te pagaron del item ${item.titulo}`, item.imagenResize)
-					:sendRemoteNotification(6, item.userId.tokenPhone, 'item', `Te pagaron ${montos}`, `, Te pagaron del item ${item.titulo}`, item.imagenResize)
+					?sendRemoteNotification(5, item.userId.tokenPhone, 'notificacion', `Te pagaron ${montos}`, `, Te pagaron del item ${item.titulo}`, item.imagenResize)
+					:sendRemoteNotification(6, item.userId.tokenPhone, 'notificacion', `Te pagaron ${montos}`, `, Te pagaron del item ${item.titulo}`, item.imagenResize)
 						
 					
 					Alert.alert(

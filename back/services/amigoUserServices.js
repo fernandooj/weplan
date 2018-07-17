@@ -15,7 +15,9 @@ class amigoUserService{
 		}else{
 			amigoUser.find().or([{idUsuario},{asignado:idUsuario}]).populate('asignado').populate('idUsuario').exec(callback)
 		}
-
+	}
+	yaSonAmigos(idUsuario, asignado, callback){
+		amigoUser.find().or([{idUsuario, asignado, estado:true},{idUsuario:asignado, asignado:idUsuario, estado:true}]).populate('asignado').populate('idUsuario').exec(callback)
 	}
 	buscarUsuario(idUsuario, callback){
 		amigoUser.find({idUsuario}, callback)

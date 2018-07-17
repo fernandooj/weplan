@@ -131,7 +131,8 @@ class chatServices{
 	 				},
 	 				totalRepuestas:{
 	 					$cond:[{$gte:['$RespuestaData.valor',0]},1,0]
-	 				}
+	 				},
+	 				
 	 			}
 	 		},
 	 		{ 

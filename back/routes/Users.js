@@ -19,7 +19,7 @@ let planServices = require('../services/planServices.js')
 client = require('twilio')( 
     'AC4befe78c65f3b0e70b62d21d9087a74f', //TWILIO_ACCOUNT_SID
     '267e2522810ddde9dc330acbc9ad6fd0'//TWILIO_AUTH_TOKEN
-);
+); 
 
 ///////////////////////////////////////////////////////////////////////////
 /*
@@ -367,7 +367,7 @@ module.exports = function(app, passport){
             userServices.getOneUser(req.params.id, (err, user)=>{
                 if(!err){
                     console.log(user)
-                    res.json({status:'SUCCESS', user})
+                    res.json({status:'SUCCESS', user, code:1})
                 }else{
                     res.json({ status: 'FAIL', err}) 
                 }
@@ -591,6 +591,7 @@ module.exports = function(app, passport){
                     if(err){
                         res.json({err, code:0})
                     }else{
+                        console.log(usuarios)
                         res.json({ status: 'SUCCESS', usuarios, item, code:1 });                
                     }
                 })

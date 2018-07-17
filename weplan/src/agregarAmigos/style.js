@@ -121,7 +121,7 @@ export const AmigosStyle = MediaQueryStyleSheet.create({
  		color:'white'
  	}
 },{
-		"@media (max-device-width: 380)": {
+	"@media (max-device-width: 380)": {
 		contenedorAmigos:{
  			paddingLeft:30,
  		},

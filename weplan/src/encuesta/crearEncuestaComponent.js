@@ -56,8 +56,6 @@ export default class CrearEncuestaComponent extends Component{
               </TouchableOpacity>
 
             {/* INPUT TITULO */}
-              
-
             </ImageBackground>
             
             {/* IMAGEN DECORACION TITULO */}
@@ -96,7 +94,7 @@ export default class CrearEncuestaComponent extends Component{
                   style={EncuestaStyle.camera} />
               </TouchableOpacity>
             </View>
-          {/**************/}
+ 
           {/* PREGUNTA 2 */}
             <View style={EncuestaStyle.btnPregunta}>
               <TextInput 
@@ -113,7 +111,6 @@ export default class CrearEncuestaComponent extends Component{
                   style={EncuestaStyle.camera} />
               </TouchableOpacity>
             </View>
-          {/**************/}
           </View> 
 
           {/* Guardar */}  

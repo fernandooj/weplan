@@ -85,7 +85,8 @@ export const pedirPdf = (planId) =>{
    });	
 }
  
-export const pedirContacto = (asignados, usuariosAsignados, planId)=>{	
+export const pedirContacto = (usuariosAsignados, planId)=>{	
+	console.log(usuariosAsignados)
 	let data = []
 	usuariosAsignados.filter(e=>{
 		data.push(e.nombre)

@@ -51,7 +51,7 @@ export default class AbonarComponent extends Component{
                   options={{ unit: '$', zeroCents:true, precision:0 }} 
                   style={EncuestaStyle.descripcionAbono}
                   underlineColorAndroid='transparent'
-                  onChangeText={this.getValor.bind(this)} 
+                  onChangeText={this.getValor.bind(this)}
                   value={valorInicial}
                 />
 
@@ -72,7 +72,7 @@ export default class AbonarComponent extends Component{
  
   handleSubmit(){
     const {monto} = this.state
-    let {userId, itemId, valor} = this.props
+    let {userId, itemId, valor, planId} = this.props
     valor = Math.abs(valor)
     console.log({userId, itemId, valor})
     if (monto> valor) {
@@ -94,7 +94,7 @@ export default class AbonarComponent extends Component{
         { cancelable: false }
       )
     } else{
-      axios.post('x/v1/pag/pago', {monto, metodo:2, estado:1, itemId, descripcion:'abono de parte del dueño del item', userId, abono:true})
+      axios.post('x/v1/pag/pago', {monto, metodo:2, estado:1, itemId, planId, descripcion:'abono de parte del dueño del item', userId, abono:true})
       .then(e=>{
         console.log(e.data)
         if (e.data.code==1) {

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground, Alert, Keyboard} from 'react-native'
+import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground, Alert, Keyboard, Modal} from 'react-native'
 import axios from 'axios'
 import SocketIOClient from 'socket.io-client';
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
@@ -9,13 +9,19 @@ import moment from 'moment'
 import ImagePicker from 'react-native-image-picker';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////  ARCHIVOS GENERADOS POR EL EQUIPO  //////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+import QRCodeScanner from 'react-native-qrcode-scanner';
 import AgregarAmigosComponent from '../agregarAmigos/agregarAmigos.js'
 import MapaPlanComponent 	  from '../createPlan/mapa.js'
 import PdfComponent           from '../pdf/pdfComponent.js'
 import MapComponent           from '../mapa/mapComponent.js'
 import {pedirImagen, pedirPdf, pedirContacto, pedirMapa} from './peticiones.js'		
 import { showLocation, Popup } from 'react-native-map-link'
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////// 
+
 import {URL} from '../../App.js'
 export default class ChatComponent extends Component{
 	constructor(props){
@@ -34,7 +40,8 @@ export default class ChatComponent extends Component{
 			planAsignados:[],
 			asignados:[],
 			misUsuarios:[],
-			mapaVisible: false ////// muestra el modal del mapa para abrirlo con alguna otra app
+			mapaVisible: false, ////// muestra el modal del mapa para abrirlo con alguna otra app
+			modalQr: false 		    ////// muestra el modal del QR
 		}
 		this.onReceivedMessage = this.onReceivedMessage.bind(this);
 	}
@@ -122,7 +129,6 @@ export default class ChatComponent extends Component{
 	renderMensajes(){
 		const {navigate} = this.props.navigation
 		const {id, mensajes, planAsignados, plan, showPdf} = this.state
- 		console.log(planAsignados)
 		return mensajes.map((e,key)=>{
 			if (e.tipoChat===1) {
 				return (
@@ -238,7 +244,10 @@ export default class ChatComponent extends Component{
 												<Image source={{uri:e.pregunta1}} style={ChatStyle.imagenRespuesta} />
 												<Text style={ChatStyle.textoRespuesta}>{e.respuesta1} %</Text>
 											</View> 
-											:<Image source={{uri:e.pregunta1}} style={ChatStyle.imagenPregunta} />
+											:<View style={ChatStyle.contenedorRespuesta}>
+												<Image source={{uri:e.pregunta1}} style={ChatStyle.imagenRespuesta} />
+												<Text style={ChatStyle.textoRespuesta}>{e.respuesta1} %</Text>
+											</View> 
 										}
 									</TouchableOpacity>
 									<TouchableOpacity onPress={!asignado  ?()=> this.handleSubmitPregunta(e.encuestaId, 2, e.id) :null} style={ChatStyle.btnInteres} >
@@ -248,7 +257,10 @@ export default class ChatComponent extends Component{
 												<Image source={{uri:e.pregunta2}} style={ChatStyle.imagenRespuesta} />
 												<Text style={ChatStyle.textoRespuesta}>{e.respuesta2} %</Text>
 											</View> 
-											:<Image source={{uri:e.pregunta2}} style={ChatStyle.imagenPregunta} />
+											:<View style={ChatStyle.contenedorRespuesta}>
+												<Image source={{uri:e.pregunta2}} style={ChatStyle.imagenRespuesta} />
+												<Text style={ChatStyle.textoRespuesta}>{e.respuesta2} %</Text>
+											</View> 
 										}
 									</TouchableOpacity>
 								 </View> 
@@ -261,7 +273,10 @@ export default class ChatComponent extends Component{
 												<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.pregunta1}</Text></View>
 												<Text style={ChatStyle.textoRespuesta}>{e.respuesta1} %</Text>
 											</View>
-											:<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoRespuesta}>{e.respuesta1} %</Text></View>  
+											:<View style={ChatStyle.contenedorRespuesta}>
+												<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.pregunta1}</Text></View>
+												<Text style={ChatStyle.textoRespuesta}>{e.respuesta1} %</Text>
+											</View>
 										}
 									</TouchableOpacity>
 									<TouchableOpacity onPress={!asignado  ?()=> this.handleSubmitPregunta(e.encuestaId, 2, e.id) :null} style={ChatStyle.btnInteres} >
@@ -271,7 +286,10 @@ export default class ChatComponent extends Component{
 												<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.pregunta2}</Text></View>
 												<Text style={ChatStyle.textoRespuesta}>{e.respuesta2} %</Text>
 											</View>
-											:<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoRespuesta}>{e.respuesta2} %</Text></View> 
+											:<View style={ChatStyle.contenedorRespuesta}>
+												<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.pregunta2}</Text></View>
+												<Text style={ChatStyle.textoRespuesta}>{e.respuesta2} %</Text>
+											</View>
 										}
 									</TouchableOpacity>
 								</View> 
@@ -364,9 +382,13 @@ export default class ChatComponent extends Component{
 							</View>
 							
 							<View style={ChatStyle.botonesContacto}>
-								<TouchableOpacity onPress={()=>this.agregarAmigo(e.contactoId, e.id, e.cToken)}>
-									<Text style={ChatStyle.cTextBotones}>Agregar Contacto</Text>
-								</TouchableOpacity>
+								{
+									e.esAMigo
+									&&<TouchableOpacity onPress={()=>this.agregarAmigo(e.id, e.contactoId, e.cToken)}>
+										<Text style={ChatStyle.cTextBotones}>Agregar Contacto</Text>
+									</TouchableOpacity>
+								}
+								
 								{
 									plan.idUsuario._id === id && !estaPlan && e.contactoId !=id
 									&&<TouchableOpacity onPress={()=>this.agregarUsuarioPlan(e.contactoId, e.id, e.cToken)}>
@@ -468,6 +490,29 @@ export default class ChatComponent extends Component{
 		})
 	}
 
+	agregarAmigo(id, idAsignado, token){
+		axios.post('/x/v1/ami/amigoUser', {asignado: idAsignado} )
+		.then((e)=>{
+			console.log(e.data)
+			if (e.data.code==1) {
+				sendRemoteNotification(1, token, "notificacion", 'Tienes una solicitud de amistad', ', Quiere agregarte como amigo', null)
+			}else{
+				Alert.alert(
+				  'Opss!! revisa tus datos que falta algo',
+				  '',
+				  [
+				    {text: 'OK', onPress: () => console.log('OK Pressed')},
+				  ],
+				  { cancelable: false }
+				)
+			}
+		})
+		.catch((err)=>{
+			console.log(err)
+		})
+	}
+
+
 
 	renderModalAbrirMapa(lat, lng, lugar){
 		return(
@@ -497,7 +542,7 @@ export default class ChatComponent extends Component{
 	}
 	 
 	render(){
-		const {adjuntarAmigos, asignados, usuariosAsignados, mapa} = this.state
+		const {adjuntarAmigos, asignados, usuariosAsignados, mapa, qr, planId} = this.state
 		return(
 			<View style={ChatStyle.contenedorGeneral} > 
 				{this.renderCabezera()}
@@ -523,7 +568,7 @@ export default class ChatComponent extends Component{
 				{adjuntarAmigos &&<AgregarAmigosComponent 
 					                titulo='Enviar Contacto'
 					                close={(e)=>this.setState({asignados:[], usuariosAsignados:[], adjuntarAmigos:false})} 
-					                updateStateAsignados={(asignados, usuariosAsignados, misUsuarios)=>{this.setState({adjuntarAmigos:false, showOpciones:false});pedirContacto(asignados, usuariosAsignados, this.state.planId)}}
+					                updateStateAsignados={(asignados, usuariosAsignados, misUsuarios)=>{this.setState({adjuntarAmigos:false, showOpciones:false});pedirContacto(usuariosAsignados, this.state.planId)}}
 					                //updateStateAsignados={(asignados, usuariosAsignados, misUsuarios)=>this.setState({asignados, usuariosAsignados, misUsuarios, adjuntarAmigos:false})}
 					                asignados={this.state.asignados}
 								    usuariosAsignados={this.state.usuariosAsignados}
@@ -535,6 +580,9 @@ export default class ChatComponent extends Component{
 							updateStateX={(lat,lng, direccion)=>{this.setState({mapa:false, showOpciones:false});pedirMapa(lat,lng, this.state.planId) }}// devuelve la posicion del marcador 
 							ubicacionDefecto={{infoplan:false}}
 						/> }	
+
+
+			{this.renderQr()}
 
 			{/* FOOTER INPUT / ENVIAR */}
 				<View style={ChatStyle.footer}>
@@ -559,6 +607,55 @@ export default class ChatComponent extends Component{
 			</View>	
 		)
 	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////// MODAL CON LA CAMARA DE QR
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	renderQr(){
+  		return(
+  			<Modal
+				animationType="slide"
+				transparent={false}
+				visible={this.state.modalQr}
+				onRequestClose={() => {
+					console.log('Modal has been closed.');
+	        }}>
+  			<QRCodeScanner
+		        onRead={this.infoQr.bind(this)}
+		        topContent={
+		          <Text style={ChatStyle.centerText}>
+		            Scanea el Qr de tu usuario
+		          </Text>
+		        }
+		        bottomContent={
+		          	<View style={ChatStyle.containerHecho}>
+			    		<TouchableOpacity  style={ChatStyle.btnHecho} onPress={()=>this.setState({modalQr:false})}>
+					    	<Text  style={ChatStyle.hecho}>!Cerrar!</Text>
+					    </TouchableOpacity>
+					</View> 
+		        }
+		    />
+		    
+		    </Modal>
+  		)
+  	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////// OBTENGO LA INFORMACION DEL USUARIO DEL CODIGO QR
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  	infoQr(e){
+  		if (e.data) {
+  			axios.get(`x/v1/users/getOneUser/${e.data}`)
+  			.then(e=>{
+  				let infoUser = [{nombre:e.data.user.nombre, id:e.data.user._id, photo: e.data.user.photo}]
+	  			 
+	  			if (e.data.code==1) {
+	  				pedirContacto(infoUser, this.state.planId)
+ 					this.setState({modalQr:false, showOpciones:false})
+	  			}
+	  		})
+		}
+  	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////// RENDER LAS OPCIONES
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -569,7 +666,7 @@ export default class ChatComponent extends Component{
 			{url:`${URL}public/img/opcion_2.png`, click:()=>this.setState({mapa:true})},
 			{url:`${URL}public/img/opcion_3.png`, click:()=>this.setState({adjuntarAmigos:true})},
 			{url:`${URL}public/img/opcion_4.png`, click:()=>{pedirPdf(planId); this.setState({showOpciones:false})}},
-			{url:`${URL}public/img/opcion_5.png`, click:null}
+			{url:`${URL}public/img/opcion_5.png`, click:()=>this.setState({modalQr:true})}
 		]
 		return opciones.map((e, key)=>{
 			return (

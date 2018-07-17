@@ -46,10 +46,11 @@ class pagoServices{
 		chat.monto  	  = data.monto
 		chat.abono  	  = data.abono
 		chat.descripcion  = data.descripcion
-		chat.activo  	  = data.activo
+		chat.activo  	  = true
 		chat.userId  	  = id!==null ?id :data.userId
 		chat.userIdAbona  = userIdAbona
 		chat.itemId 	  = data.itemId
+		chat.planId 	  = data.planId
 		chat.save(callback)
 	}
 	edit(_id, monto, callback){

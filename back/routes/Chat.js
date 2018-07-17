@@ -14,7 +14,7 @@ var sizeOf = promisify(require('image-size'));
 let chatServices = require('../services/chatServices.js')
 let planServices = require('../services/planServices.js')
 let respuestaServices = require('../services/respuestaServices.js');
-
+let amigoUserService = require('../services/amigoUserServices.js');
 router.get('/chatPlan/:id', (req, res)=>{
 
 	planServices.getByIdPlanPopulate(req.params.id, (err, plan)=>{
@@ -30,7 +30,7 @@ router.get('/chatPlan/:id', (req, res)=>{
 						planAsignados.push(e._id)
 						 
 					}) 
-					console.log(planAsignados)
+ 
 					chat = chat.map(e=>{
 						// return{
 						// 	id           : e._id,
@@ -139,22 +139,32 @@ router.get('/chatPlan/:id', (req, res)=>{
 							cNombre	    : data.cNombre,
 							cPhoto 	    : data.cPhoto,	
 							cToken 	    : data.cToken,	
+							esAMigo     : false
+							 
 
 						}
 					})
-
-					 	
-			 		 
-			 		 
-					
 					res.json({status:'SUCCESS', chat,  plan:plan[0], total:chat.length, planAsignados, code:1}) 
-
-
 				}
 			})
 		}
 	})
 }) 
+
+function esAmigo(id1, id2){
+	amigoUserService.yaSonAmigos(id1, id2, (err, asignados)=>{
+		if (!err) {
+			if (asignados.length>0) {
+				return 1
+			}else{
+				return 2	
+			} 
+			//console.log(asignados.length)
+		}
+
+	})
+}
+
 
 function isInArray(value, array) {
 	console.log({value,array})

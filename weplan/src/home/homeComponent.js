@@ -6,6 +6,7 @@ import axios from 'axios'
 import CabezeraComponent from '../cabezeraFooter/cabezeraComponent'
 import FooterComponent 	 from '../cabezeraFooter/footerComponent'
 
+
 import FCM, {NotificationActionType} from "react-native-fcm";
 import {registerKilledListener, registerAppListener} from "../push/Listeners";
 
@@ -21,7 +22,8 @@ export default class homeComponent extends Component{
 			allList: [],
 			filteredData:[],
 			buildArray: [],
-			planes:[]
+			planes:[],
+			text:'tomatela te digo'
 		}
 	}
 	componentWillMount(){
@@ -108,6 +110,7 @@ export default class homeComponent extends Component{
 		const {navigate} = this.props.navigation
 		return(	 
 			<View style={HomeStyle.contenedor}>
+				
 				<CabezeraComponent navigate={navigate} />
 				<ScrollView style={HomeStyle.contenedorPlan} onScroll={this.handleScroll.bind(this)} scrollEventThrottle={16}>
 				{

@@ -149,6 +149,10 @@ android {
 }
 
 dependencies {
+    compile (project(':react-native-camera')) {
+        exclude group: "com.google.android.gms"
+        compile 'com.android.support:exifinterface:+'
+    }
     compile project(':react-native-pdf')
     compile project(':react-native-fetch-blob')
     compile(project(':react-native-maps')){
@@ -186,6 +190,9 @@ dependencies {
         force = true;
     }
     compile ('com.google.firebase:firebase-messaging:10.2.1') {
+        force = true;
+    }
+    compile ('com.google.android.gms:play-services-vision:10.2.1') {
         force = true;
     }
 

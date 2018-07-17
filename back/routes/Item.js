@@ -265,7 +265,7 @@ router.post('/:id', (req,res)=>{
 ////////   CREO UN PRIMER PAGO, O DEUDA 
 //////////////////////////////////////////////////////////////////////////////////////////
 let createPago = function(req, res, id, item){	 
-	let data = {userId:id, itemId:item._id, monto:req.valor, abono:true, metodo:null, descripcion:'pago inicial por inscribirse', activo:true}
+	let data = {userId:id, itemId:item._id, monto:req.valor, planId:req.planId, abono:true, metodo:null, descripcion:'pago inicial por inscribirse', activo:true}
 	pagoServices.create(data, null, id, (err, pago)=>{
 		if(err){
 			console.log(err)

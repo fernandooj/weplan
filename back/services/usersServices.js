@@ -23,7 +23,7 @@ class userServices {
 		User.findOne({_id},{nombre:1, photo:1, ciudad:1, tokenPhone:1}, callback)
 	}
 	
-	create(user, randonNumber, callback ){ 
+	create(user, randonNumber, callback){ 
 		let newUsuario = new User() 
 		newUsuario.username = user.username, 
 		newUsuario.token    = randonNumber,
@@ -187,7 +187,7 @@ class userServices {
 			},
 			{
 				$match:{
-					abono:true,
+					 
 					itemId,
 					_id:{
 						$ne:userIds
@@ -255,8 +255,8 @@ class userServices {
 		], callback)
 	}
 
-		////////////////////////////////////////////////////////////////////////////////////////////////
-	///////////	es la deuda de cada usuario por cada item, pantalla abonos por el creador del item
+	////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////	es la deuda de cada usuario por cada plan, pantalla abonos por el creador del item
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	deudaUsuarioPorPlan(userId, planId, callback){
 		let userIds = mongoose.Types.ObjectId(userId);
@@ -277,37 +277,37 @@ class userServices {
 			    }
 			},
 			 
-			// {
-			// $project:{
-			//         _id:1,
-			//         nombre:1,
-			//         photo:1,
-			//         pagoId:"$PagoData._id",
-			//         monto:"$PagoData.monto",
-	 	// 			itemId:"$PagoData.itemId",
-	 	// 			abono:"$PagoData.abono",
-	 	// 			fecha:"$PagoData.createdAt",
-			//     }
-			// },
-			// {
-			// 	$match:{
-			// 		planId,
-			// 		// abono:true,
-			// 		// _id:{
-			// 		// 	$ne:userIds
-			// 		// },
-			// 	}
-			// },
-			// {
-			// 	$group : {
-			//        _id : '$_id',
-			//        deuda: { $sum: "$monto"}, 
-			//        count: { $sum: 1 }, // for no. of documents count
-			//        data: {
-			//        	$addToSet: {info:[{monto:'$monto', photo:'$photo', nombre:'$nombre', fecha:'$fecha', }]},
-			//        }
-			//     } 
-			// },
+			{
+			$project:{
+			        _id:1,
+			        nombre:1,
+			        photo:1,
+			        pagoId:"$PagoData._id",
+			        monto:"$PagoData.monto",
+	 				itemId:"$PagoData.itemId",
+	 				abono:"$PagoData.abono",
+	 				fecha:"$PagoData.createdAt",
+			    }
+			},
+			{
+				$match:{
+					planId,
+					// abono:true,
+					// _id:{
+					// 	$ne:userIds
+					// },
+				}
+			},
+			{
+				$group : {
+			       _id : '$_id',
+			       deuda: { $sum: "$monto"}, 
+			       count: { $sum: 1 }, // for no. of documents count
+			       data: {
+			       	$addToSet: {info:[{monto:'$monto', photo:'$photo', nombre:'$nombre', fecha:'$fecha', }]},
+			       }
+			    } 
+			},
  
 		], callback)
 	}

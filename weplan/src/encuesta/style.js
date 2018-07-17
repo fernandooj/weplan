@@ -113,37 +113,7 @@ export const EncuestaStyle = MediaQueryStyleSheet.create({
 	 	alignItems:'center'
 	},
 	 
-	pNombre:{
-		backgroundColor:'rgba(196, 196, 196, 0.3)',
-		color:'#A8A8A8',
-		padding:9,
-		borderTopLeftRadius: 10,
-		borderTopRightRadius: 10,
-	},
-	pTitulo:{
-		alignItems:'center',
-		textAlign:'center'
-	},
-	contenedorDescripcion:{
-		flexDirection:'row',
-		paddingLeft:10,
-		paddingRight:10,
-		paddingTop:15,
-		paddingBottom:75,
-		backgroundColor:'#ffffff',
-
-	},
-	pDescripcion:{
-		color:'#5664ba',
-		width:'80%',
-		textAlign:'center'
-	},
-	decoracion:{
-		width:24,
-		height:35
-	},
-
-	
+	  
 	imagenPregunta:{
 		width:100,
 		height:100,
@@ -159,19 +129,15 @@ export const EncuestaStyle = MediaQueryStyleSheet.create({
 	},
 	imagenRespuesta:{
 		width:100,
-		height:100,
-		borderRadius:50,
+		height:60,
+		borderRadius:20,
 		zIndex:1000,
-       	opacity: 0.4,
-       	position:'absolute',
+       	opacity: 0.8,
        	borderColor:'#9CB7F5',
-		borderWidth:5,	
+		borderWidth:3,	
+		marginLeft:5
 	},
 	contenedorRespuesta:{
-		width:100,
-		height:100,
-		borderRadius:50,
-		zIndex:1000,
 		flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
@@ -179,22 +145,25 @@ export const EncuestaStyle = MediaQueryStyleSheet.create({
 	},
 	contenedorPregunta:{
 		width:100,
-		height:100,
-		borderRadius:50,
+		height:60,
+		borderRadius:20,
 		zIndex:1000,
 		borderColor:'#9CB7F5',
-		borderWidth:5,	
+		borderWidth:3,	
 		flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-
         backgroundColor:'#ffffff',
         marginRight:5
 	},
 	textoPregunta:{
 		textAlign:'center',
 	 	color:'black',
-	 	fontSize:20
+	 	fontSize:22
+	},
+	textoRespuesta:{
+		fontSize:18,
+
 	},
 	pPhoto:{
 		alignSelf: 'flex-end', 
@@ -429,6 +398,9 @@ export const EncuestaStyle = MediaQueryStyleSheet.create({
 	"@media (max-device-width: 320)": {
 		textoAbono:{
 			fontSize:17,
+		},
+		textoPregunta:{
+		 	fontSize:20
 		},
 		descripcionAbono:{
 			width:'60%',

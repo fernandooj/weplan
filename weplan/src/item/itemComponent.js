@@ -218,7 +218,7 @@ export default class ItemComponent extends Component{
 			return (
 			   <View style={ItemStyle.content} key={key}>
 			   		<View style={!key==0 ?ItemStyle.boton: [ItemStyle.boton, ItemStyle.botonFirst]}>
-				  		<TouchableOpacity style={ItemStyle.infoItem} onPress={e.deuda<0 ?()=>navigate('pago', {id:e.id, valor:e.deuda, planId:this.state.planId}) :e.deuda==0 ?null :()=>navigate('pagoDeuda', {id:e.id, planId:this.state.planId})}>
+				  		<TouchableOpacity style={ItemStyle.infoItem} onPress={()=>navigate('pagoDeuda', {id:e.id, valor:e.deuda, planId:this.state.planId})}>
 					   		<View style={ItemStyle.contentText}>
 						   		<Text style={ItemStyle.tituloItem}>
 						   			{e.titulo}  
@@ -246,7 +246,7 @@ export default class ItemComponent extends Component{
 			return (
 			   <View style={ItemStyle.content} key={key}>
 			  		<TouchableOpacity style={!key==0 ?ItemStyle.filaDeuda: [ItemStyle.filaDeuda, ItemStyle.filaDeuda]} 
-			  			onPress={e.deuda<0 ?()=>navigate('pago', {id:e.id, valor:e.deuda, planId:this.state.planId}) :e.deuda==0 ?null :()=>navigate('pagoDeuda', {id:e.id, planId:this.state.planId})}>
+			  			 onPress={()=>navigate('pago', {id:e.id, valor:e.deuda, planId:this.state.planId})}>
 				   		<View style={ItemStyle.contentText}>
 					   		<Text style={ItemStyle.tituloItem}>
 					   			{e.titulo}  

@@ -22,8 +22,8 @@ export default class costoPlanComponent extends Component{
  	}
 	componentWillMount(){
  		// console.log(this.props.navigation.state.params)
-	 	// let planId = this.props.navigation.state.params
-	 	let planId = '5b47c7489f436157e1cd6646'
+	 	let planId = this.props.navigation.state.params
+	 	// let planId = '5b47c7489f436157e1cd6646'
 	 	axios.get('x/v1/user/deudaUsuarioPorPlan/'+planId)
 	 	.then(e=>{
 	 		console.log(e.data.plan[0].imagenMiniatura[0])

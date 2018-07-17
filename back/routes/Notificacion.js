@@ -141,12 +141,12 @@ const activaItem =(usuario, idTipo, id, res, req)=>{
 			})
 	 
 			let asignados = item[0].asignados.concat(id)
-			itemServices.activaUsuario(idTipo, espera, asignados, (err, item)=>{
+			itemServices.activaUsuario(idTipo, espera, asignados, (err, item2)=>{
 				if (err) {
 					res.json({status: 'FAIL', err, code:0})
 				}else{
 					//res.json({status:'SUCCESS', asignados, code:1})
-					nuevoPago(req, res, idTipo, id, req.body.monto)    	
+					nuevoPago(req, res, idTipo, id, req.body.monto, item)    	
 				}
 			})
 		}
@@ -156,11 +156,14 @@ const activaItem =(usuario, idTipo, id, res, req)=>{
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////// 	CREO UN NUEVO PAGO CUANDO EL CREADOR DEL ITEM ACEPTA QUE EL OTRO USUARIO SEA PARTE DEL ITEM
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const nuevoPago = (req, res, itemId, idUser, montoCreador) =>{
+const nuevoPago = (req, res, itemId, idUser, montoCreador, item) =>{
+	console.log('-------')
+	console.log(item[0].planId)
 	req.body['abono']=false
 	req.body['activo']=true
 	req.body['metodo']=null
 	req.body['itemId']=itemId
+	req.body['planId']=item[0].planId
 	req.body['monto']=-(req.body.monto)
 	req.body['descripcion']='pago inicial por inscribirse'
 	//pagoServices.create(req.body, req.session.usuario.user._id, req.session.usuario.user._id, (err, pago)=>{

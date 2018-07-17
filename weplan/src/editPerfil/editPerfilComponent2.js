@@ -3,7 +3,7 @@ import {View, Text, Image, TouchableOpacity,  ScrollView,  Alert} from 'react-na
 import {LoginStyle} from '../editPerfil/style'
 //import Image from 'react-native-scalable-image';
 import axios from 'axios';
- 
+import {QrComponent} from '../qr/qrComponent.js'
 
 
 export default class editPerfilComponent2 extends Component{
@@ -12,7 +12,8 @@ export default class editPerfilComponent2 extends Component{
 	  this.state = {
 		    restriccionArray:[],
 		    categoria:[],
-		    activo:false
+		    activo:false,
+		    qr:false
 	  };
 	}
 	componentWillMount(){
@@ -69,10 +70,15 @@ export default class editPerfilComponent2 extends Component{
 		})
 	}
 	render(){
-		const {activo} = this.state
+		const {activo, qr} = this.state
 		console.log(this.state.restriccionArray.length)
 		return(
 			<ScrollView style={LoginStyle.fondoUltimo}>
+			{
+				qr
+				&&<QrComponent num={this.props.screenProps.num} close={()=>this.setState({qr:false})} />
+			}
+				
 				<View style={LoginStyle.contenedorRes}>
 						<Image
 							style={LoginStyle.image2}

@@ -13,6 +13,7 @@ let pagoSchema = mongoose.Schema({
 	activo		  : { type : Boolean},
 	abono		  : { type : Boolean},
 	itemId     	  : { type: Schema.Types.ObjectId, ref:'Item'},
+	planId     	  : { type: Schema.Types.ObjectId, ref:'Plan'},
 	userId     	  : { type: Schema.Types.ObjectId, ref:'User'}, 
 	userIdAbona   : { type: Schema.Types.ObjectId, ref:'User'}, 
 	createdAt	  : { type: String, default: moment().format('YYYY-MM-DD h:mm') },

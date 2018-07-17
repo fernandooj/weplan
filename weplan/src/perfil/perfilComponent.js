@@ -10,6 +10,7 @@ import moment from 'moment'
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 import {URL}  from '../../App.js';
 import TakePhotoComponent 	from '../takePhoto/takePhotoComponent.js'
+import QrComponent from '../qr/qrComponent.js'
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////// 
 
@@ -27,6 +28,7 @@ export default class perfilComponent extends Component{
 			fechaHoy:moment().format('YYYY-MM-DD h:mm'),
 			imagen:false,
 			exitoso:false,
+			qr:false,
 		}
 	}
 	componentWillMount(){
@@ -52,7 +54,7 @@ export default class perfilComponent extends Component{
 	}
 	 
  	renderPerfil(){
-		const {perfil, imagen, ciudad, sexo, photo, exitoso, nombre} = this.state
+		const {perfil, imagen, ciudad, sexo, photo, exitoso, nombre, qr} = this.state
 		const {navigate} = this.props.navigation
 		console.log(imagen)
 		let a=60
@@ -65,9 +67,17 @@ export default class perfilComponent extends Component{
 					<View style={!imagen ?perfilStyle.avatar2 :perfilStyle.avatar3} >
 						<TakePhotoComponent fuente={'cam.png'} ancho={!imagen ?a :b} alto={!imagen ?a :b} updateImagen={(photo) => {this.setState({photo, imagen:true})}} />
 					</View>
+
 					{
 						!imagen
 						&&<Image source={{uri: photo}} style={perfilStyle.avatar} />
+					}
+						<TouchableOpacity style={perfilStyle.btnHecho} onPress={()=>this.setState({qr:true})} > 
+							<Text style={perfilStyle.hecho}>mi codigo Qr</Text> 
+						</TouchableOpacity> 
+					{
+						qr
+						&&<QrComponent num={this.props.screenProps.num} close={()=>this.setState({qr:false})} />
 					}
 					<View style={imagen &&perfilStyle.inputs}>
 					{/* NOMBRE */}

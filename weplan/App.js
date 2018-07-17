@@ -4,7 +4,8 @@ import {
   Easing, StyleSheet, Text, View, Image, Dimensions
 } from 'react-native'
 import axios                  from 'axios' 
- 
+import { StackNavigator } from 'react-navigation'
+
 import homeComponent          from './src/home/homeComponent';
 import LoginComponent         from './src/login/loginComponent';
 import RegistroComponent      from './src/registro/registroComponent';
@@ -31,10 +32,9 @@ import insertCodeComponent2   from './src/editPassword/insertCodeComponent2';
 import nuevoPasswordComponent from './src/editPassword/nuevoPasswordComponent';
 import infoPlanComponent      from './src/infoPlan/infoPlanComponent';
 import costoPlanComponent     from './src/costoPlan/costoPlanComponent';
+import qrComponent            from './src/qr/qrComponent';
 
 
-
-import { StackNavigator } from 'react-navigation'
 
 export const URL = 'https://appweplan.com/';
 axios.defaults.baseURL = URL;
@@ -185,7 +185,7 @@ export default class App extends Component<{}> {
           )
     }else if(local==1){
       return (
-        <NavigationAppLogin />
+        <NavigationAppLogin screenProps={{num}}/>
       )
     }else if(local==2){
       return (
