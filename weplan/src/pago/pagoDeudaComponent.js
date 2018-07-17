@@ -80,11 +80,6 @@ export default class pagoDeudaComponent extends Component{
 		 				<Text style={PagoStyle.pagoDeudaMonto}>{'$ '+Number(deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
 		 			</View>
 	 				<View>	
-		 				{ 
-		 					// pagos = e.data.filter(e3=>{
-		 					// 	return e3.info[0].monto!=costoDividirPlan
-		 					// })	 
-		 				}
 		 				{
 		 					e.data.map((e2, key2)=>{
 		 						if (e2.info[0].monto!==-costoDividirPlan) {
@@ -159,10 +154,10 @@ export default class pagoDeudaComponent extends Component{
 		 
 	}
 	updateItems(id, monto){
-		console.log(id)
+		console.log({id, monto})
 		console.log(parseInt(monto))
 		let usuarios = this.state.usuarios.filter(e=>{
-			if(e.id==id) {e.monto=parseInt(e.monto)+parseInt(monto)}
+			if(e._id==id) {e.deuda=parseInt(e.deuda)+parseInt(monto)}
 			return e   
 		})
 		this.setState({usuarios, show:false})
