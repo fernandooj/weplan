@@ -32,7 +32,7 @@ import insertCodeComponent2   from './src/editPassword/insertCodeComponent2';
 import nuevoPasswordComponent from './src/editPassword/nuevoPasswordComponent';
 import infoPlanComponent      from './src/infoPlan/infoPlanComponent';
 import costoPlanComponent     from './src/costoPlan/costoPlanComponent';
-import qrComponent            from './src/qr/qrComponent';
+ 
 
 
 
@@ -118,7 +118,7 @@ const NavigationApp = StackNavigator({
 },{ headerMode: 'none', transitionConfig })
  
 const NavigationAppLogin = StackNavigator({  
-    Home:          {screen: homeComponent}, 
+    Home:          {screen: walletComponent}, 
     Login:         {screen: LoginComponent },
     Registro:      {screen: RegistroComponent },
     insertCode:    {screen: insertCodeComponent },

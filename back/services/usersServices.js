@@ -204,54 +204,6 @@ class userServices {
 			       }
 			    } 
 			},
-			// {
-			// 	$lookup:{
-			// 		from:"items",
-			// 		localField:"itemId",
-			// 		foreignField:"_id",
-			// 		as:"ItemData"
-			// 	}
-			// }, 
-			// {
-			//     $unwind:{
-			//         path:"$ItemData",
-			//         preserveNullAndEmptyArrays:true
-			//     }
-			// },
-			// {
-			//     $project:{
-			//         _id:1,
-			//         userId:1,
-			//         itemId:"$ItemData._id",
-	 	// 			abono:1,
-			//         monto:1,
-			//         nombre:"$UserData.nombre",
-			//         photo:"$UserData.photo",
-			//         titulo:"$ItemData.titulo",
-			//         valor:"$ItemData.valor",
-			//         asignados:"$ItemData.asignados"
-			//     }
-			// },
-			// {
-			// 	$match:{
-			// 		abono:true,
-			// 		itemId,
-			// 		userId:{
-			// 			$ne:userIds
-			// 		},
-			// 	},
-				
-		 //    },
-			// {
-			//     $group : {
-			//        _id : '$userId',
-			//        deuda: { $sum: "$monto"}, 
-			//        count: { $sum: 1 }, // for no. of documents count
-			//        data: {
-			//        	$addToSet: {info:[{nombre:'$nombre', photo:'$photo', valor:'$valor', asignados:'$asignados'}]},
-			//        }
-			//     } 
-			// },
 		], callback)
 	}
 
@@ -283,6 +235,7 @@ class userServices {
 			        nombre:1,
 			        photo:1,
 			        pagoId:"$PagoData._id",
+			        planId:"$PagoData.planId",
 			        monto:"$PagoData.monto",
 	 				itemId:"$PagoData.itemId",
 	 				abono:"$PagoData.abono",
@@ -304,7 +257,7 @@ class userServices {
 			       deuda: { $sum: "$monto"}, 
 			       count: { $sum: 1 }, // for no. of documents count
 			       data: {
-			       	$addToSet: {info:[{monto:'$monto', photo:'$photo', nombre:'$nombre', fecha:'$fecha', }]},
+			       	$addToSet: {info:[{idPago:'$pagoId', monto:'$monto', photo:'$photo', nombre:'$nombre', fecha:'$fecha', }]},
 			       }
 			    } 
 			},

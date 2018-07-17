@@ -50,19 +50,52 @@ export const costoPlanStyle = StyleSheet.create({
 	},
 	total:{
 		color:'#79CF40',
-		alignSelf: 'flex-start', 
-		 
+		alignSelf: 'flex-start', 	 
 		fontSize:20
-	},
-	boxPlan1:{
-		 
 	},
 	back:{
 		width:20,
 		height:20,
-	 
 		marginLeft:6 
-	}
+	},
+	////////////////////////////////////////////////////////////////////////////////////
+	////////////////// 		pago deuda
+	////////////////////////////////////////////////////////////////////////////////////
+	pagoDeudaContenedor:{
+		flexDirection:'row',
+		marginTop:10,
+	},
+	pagoDeudaAvatar:{
+		width:50,
+		height:50,
+		borderRadius:35,
+		borderWidth: 5,
+		borderColor:'#a5a5a5',
+	},
+	pagoDeudaNombre:{
+		width:'55%',
+		fontSize:18,
+		marginLeft:12,
+		marginTop:10
+	},
+	pagoDeudaMonto:{
+		color:'#c5012b',
+		fontSize:18,
+		marginTop:7
+	},
+	pagoDeudaMontoActive:{
+		color:'#79CF40',
+		fontSize:18,
+		marginTop:7
+	},
+	infoAbonoDeuda:{
+		flexDirection:'row',
+		alignSelf: 'flex-end',
+		marginRight:12
+	},
+	textAbonoDeuda:{
+		fontSize:12
+	},
 	 
 })
 

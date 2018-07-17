@@ -69,9 +69,7 @@ export default class pagoDeudaComponent extends Component{
 		let costoDividirPlan = Math.ceil((this.state.item.valor/(this.state.item.asignados.length+1))/100)*100
 		return this.state.usuarios.map((e, key)=>{
 			let deuda = e.deuda===costoDividirPlan ?costoDividirPlan :e.deuda
-			// let deuda = e.deuda 
 			let data = e.data[0].info[0]
-			
 			return(
 	 			<TouchableOpacity  key={key} onPress={()=>this.setState({show:true, userId:e._id, photo:data.photo, nombre:data.nombre, monto:e.deuda})}>
 	 				<View style={PagoStyle.pagoDeudaContenedor}>

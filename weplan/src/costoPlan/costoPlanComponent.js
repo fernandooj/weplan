@@ -26,7 +26,7 @@ export default class costoPlanComponent extends Component{
 	 	// let planId = '5b47c7489f436157e1cd6646'
 	 	axios.get('x/v1/user/deudaUsuarioPorPlan/'+planId)
 	 	.then(e=>{
-	 		console.log(e.data.plan[0].imagenMiniatura[0])
+	 		console.log(e.data.usuarios)
 	 		this.setState({usuarios:e.data.usuarios, plan:e.data.plan[0], planId})
 	 	})
 	 	.catch(err=>{
@@ -66,35 +66,35 @@ export default class costoPlanComponent extends Component{
 		}
 	}
 	 
-	// renderAsignados(){
-	// 	return this.state.usuarios.map((e, key)=>{
-	// 		let deuda = e.deuda-(Math.ceil((this.state.item.valor/(this.state.item.asignados.length+1))/100)*100)
-	// 		let data = e.data[0].info[0]
-	// 		return(
-	//  			<TouchableOpacity  key={key} onPress={()=>this.setState({show:true, userId:e._id, photo:data.photo, nombre:data.nombre, monto:e.deuda})}>
-	//  				<View style={costoPlanStyle.pagoDeudaContenedor}>
-	// 	 				<Image source={{uri: data.photo}} style={costoPlanStyle.pagoDeudaAvatar} />
-	// 	 				<Text style={costoPlanStyle.pagoDeudaNombre}>{data.nombre}</Text> 
-	// 	 				<Text style={costoPlanStyle.pagoDeudaMonto}>{'$ '+Number(deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
-	// 	 			</View>
-	//  				<View>	
-	// 	 				{ 
-	// 	 					e.data.map((e2, key2)=>{
-	// 	 						return(
-	// 	 							<View key={key2} style={costoPlanStyle.infoAbonoDeuda}>
-	// 	 								<Text style={costoPlanStyle.textAbonoDeuda}>Abono: </Text>
-	// 	 								<Text style={costoPlanStyle.textAbonoDeuda}>{e2.info[0].fecha} / </Text>
-	// 	 								<Text style={costoPlanStyle.textAbonoDeuda}>{'$ '+Number(e2.info[0].monto).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
-	// 	 							</View>
-	// 	 						)
-	// 	 					})
-	// 	 				}
-	// 	 			</View>
-	//  				<View style={costoPlanStyle.separador}></View>
-	//  			</TouchableOpacity>
-	// 		)
-	// 	})
-	// }
+	renderAsignados(){
+		let pagos=[];
+		return this.state.usuarios.map((e, key)=>{
+			let data = e.data[0].info[0]
+			return(
+	 			<TouchableOpacity  key={key} onPress={()=>this.setState({show:true, userId:e._id, photo:data.photo, nombre:data.nombre, monto:e.deuda})}>
+	 				<View style={costoPlanStyle.pagoDeudaContenedor}>
+		 				<Image source={{uri: data.photo}} style={costoPlanStyle.pagoDeudaAvatar} />
+		 				<Text style={costoPlanStyle.pagoDeudaNombre}>{data.nombre}</Text> 
+		 				<Text style={costoPlanStyle.pagoDeudaMonto}>{'$ '+Number(e.deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+		 			</View>
+	 				<View>	
+		 				{
+		 					e.data.map((e2, key2)=>{
+		 							return(
+			 							<View key={key2} style={costoPlanStyle.infoAbonoDeuda}>
+			 								<Text style={costoPlanStyle.textAbonoDeuda}>Abono: </Text>
+			 								<Text style={costoPlanStyle.textAbonoDeuda}>{e2.info[0].fecha} / </Text>
+			 								<Text style={costoPlanStyle.textAbonoDeuda}>{'$ '+Number(e2.info[0].monto).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+			 							</View>
+			 						)
+		 					})
+		 				}
+		 			</View>
+	 				<View style={costoPlanStyle.separador}></View>
+	 			</TouchableOpacity>
+			)
+		})
+	}
  
   	render() {
   		const {navigate} = this.props.navigation
@@ -107,7 +107,7 @@ export default class costoPlanComponent extends Component{
 					 
 					<View style={costoPlanStyle.contenedor}>
 						{this.renderItem()}
-						{/*this.renderAsignados()*/}
+						{this.renderAsignados() }
 						
 					</View>	
 					{

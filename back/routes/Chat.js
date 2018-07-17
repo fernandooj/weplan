@@ -21,66 +21,18 @@ router.get('/chatPlan/:id', (req, res)=>{
 		if (err) {
 			console.log(err)
 		}else{
-			chatServices.getByPlan(req.params.id, req.session.usuario.user._id, (err2, chat)=>{
+			chatServices.getByPlan(req.params.id, req.session.usuario.user._id, (err2, chatInfo)=>{
 				if (err2) {
 					res.json({status:'FAIL', err, code:0})   
 				}else{
 					let planAsignados = []
+					let chat = []
 					plan[0].asignados.filter(e=>{
 						planAsignados.push(e._id)
 						 
 					}) 
- 
-					chat = chat.map(e=>{
-						// return{
-						// 	id           : e._id,
-						// 	userId       : e.userId._id,
-						// 	nombre 		 : e.userId.nombre,
-						// 	photo 		 : e.userId.photo,
-						// 	token 		 : e.userId.tokenPhone,
-						// 	mensaje 	 : e.mensaje,
-						// 	fecha 	     : e.createdAt,
-						// 	documento 	 : e.documento,
-						// 	lat 	 	 : e.lat,
-						// 	lng 	 	 : e.lng,
-						// 	//////////////////////////// ITEM //////////////////////////////////////////
-						// 	asignadoItem : e.itemId &&isInArray(req.session.usuario.user._id, e.itemId.asignados),
-						// 	esperaItem   : e.itemId &&isInArray(req.session.usuario.user._id, e.itemId.espera),
-						// 	itemId 		 : e.itemId &&e.itemId._id  ,
-						// 	titulo 		 : e.itemId &&e.itemId.titulo ,
-						// 	descripcion  : e.itemId &&e.itemId.descripcion ,
-						// 	rutaImagen	 : e.itemId &&e.itemId.imagenResize ,
-						// 	valor 		 : e.itemId &&Math.ceil((e.itemId.valor/(e.itemId.asignados.length+2))/100)*100 ,
-						// 	////////////////////////////////////////////////////////////////////////////
-						// 	////////////////////////////// ENCUESTAS ///////////////////////////////////
-						// 	encuestaId	 :e.tipo==3 &&e.encuestaId._id ,
-						// 	eTitulo		 :e.tipo==3 &&e.encuestaId.titulo ,
-						// 	eDescripcion :e.tipo==3 &&e.encuestaId.descripcion ,
-						// 	pregunta1	 :e.tipo==3 &&e.encuestaId.pregunta1 ,
-						// 	pregunta2	 :e.tipo==3 &&e.encuestaId.pregunta2 ,
-						// 	////////////////////////////////////////////////////////////////////////////
-						// 	//respuesta1   : res.data.porcentaje1,
-						// 	//respuesta2   : res.data.porcentaje2,
-						// 	tipoEncuesta : e.encuestaId ?e.encuestaId.tipo :null, 
-						// 	tipoChat	 : e.tipo,
-						// 	estado       : e.estado,
-						// 	//porcentaje1  : res.data.porcentaje1,
-						// 	//porcentaje2  : res.data.porcentaje2,
-						// 	//asignado     : res.data.asignado
-						// 	////////////////////////////////////////////////////////////////////////////
-						// 	////////////////////////////// contacto   //////////////////////////////////
-						// 	contactoId : e.tipo==4 &&e.contactoId._id   ,
-						// 	cNombre	   : e.tipo==4 &&e.contactoId.nombre,
-						// 	cPhoto 	   : e.tipo==4 &&e.contactoId.photo ,	
-						// 	cToken 	   : e.tipo==4 &&e.contactoId.tokenPhone ,	
-						// 	////////////////////////////////////////////////////////////////////////////////////
-						// 	////////////////////////////// esta en el plan   //////////////////////////////////	
-						// 	estaPlan: isInArray(e.tipo==4 &&e.contactoId._id, plan[0].asignados)
-						// 	//estaPlan: plan[0].asignados.includes(e.contactoId &&e.contactoId._id)
-						// }
-						 
-
-						 
+ 			
+					chatInfo.forEach(e=>{	 
 
 						let porcentaje1 = (e.totalUno*100)/e.totalRepuestas
 						let porcentaje2 = 100-porcentaje1
@@ -94,7 +46,7 @@ router.get('/chatPlan/:id', (req, res)=>{
 						})
 						asignados.push(e.data[0].info[0].encuestaUserId)
 						let data = e.data[0].info[0]
-						return{
+						chat.push({
 							id           : e._id.id,
 							userId       : data.userId,
 							nombre 		 : data.nombre,
@@ -139,11 +91,10 @@ router.get('/chatPlan/:id', (req, res)=>{
 							cNombre	    : data.cNombre,
 							cPhoto 	    : data.cPhoto,	
 							cToken 	    : data.cToken,	
-							esAMigo     : false
-							 
-
-						}
+							esAMigo     : yaEsAmigo(req.session.usuario.user._id, data.contactoId)
+						})
 					})
+					console.log(chat)
 					res.json({status:'SUCCESS', chat,  plan:plan[0], total:chat.length, planAsignados, code:1}) 
 				}
 			})
@@ -151,18 +102,9 @@ router.get('/chatPlan/:id', (req, res)=>{
 	})
 }) 
 
-function esAmigo(id1, id2){
-	amigoUserService.yaSonAmigos(id1, id2, (err, asignados)=>{
-		if (!err) {
-			if (asignados.length>0) {
-				return 1
-			}else{
-				return 2	
-			} 
-			//console.log(asignados.length)
-		}
-
-	})
+function yaEsAmigo(id1, id2){
+ 
+	 return true
 }
 
 
