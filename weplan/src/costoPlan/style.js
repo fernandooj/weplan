@@ -8,6 +8,14 @@ export const costoPlanStyle = StyleSheet.create({
 		flex: 1,
 		backgroundColor:"#ffffff",
 	},
+	container:{
+		flex: 1,
+		height:screenHeight.height
+	},
+	contentItem:{
+		flex: 1,
+		height:screenHeight.height
+	},
 	subContenedor:{
 		width:'80%',
 	},
@@ -39,15 +47,40 @@ export const costoPlanStyle = StyleSheet.create({
 		marginTop:5,
 		marginBottom:5
 	},
-	nombre:{
-		color:'#5664ba',
-		fontSize:19,
-		width:160,
-	},
-	textoTotal:{
+	titulo:{
 		fontSize:20,
-		marginRight:10
+		color:'#000000'
 	},
+	descripcion:{
+		color:'#5664ba',
+		fontSize:14,
+	},
+	autor:{
+		backgroundColor:'rgba(90,90,90,.2)',
+		padding:5,
+		borderRadius:17,
+		width:150,
+		marginTop:10
+	},
+	ubicacion:{
+		color:'#5664ba',
+		fontSize:13,
+		marginTop:10
+	},
+	lugar:{
+		marginTop:-5
+	},
+	btnChat:{
+		padding:2,
+		backgroundColor:'white',
+		borderColor:'#5664ba',
+		borderWidth:3,
+		borderRadius:20,
+		alignItems : 'center',
+		marginTop:10,
+		width:80
+	},
+	
 	total:{
 		color:'#79CF40',
 		alignSelf: 'flex-start', 	 
@@ -96,7 +129,26 @@ export const costoPlanStyle = StyleSheet.create({
 	textAbonoDeuda:{
 		fontSize:12
 	},
-	 
+	contenedorAvatar:{
+		width:'34%',
+		marginTop:5
+	},
+	contenedorTotal:{
+		flexDirection:'row',
+		position:'absolute',
+		bottom:30,
+		backgroundColor:'#dadede',
+		width:'100%',
+		alignItems:'flex-end',
+		paddingLeft:180
+	},
+	textoTotal:{
+		fontSize:20,
+		marginRight:10
+	},
+	valueTotal:{
+		fontSize:20,
+	} 
 })
 
 

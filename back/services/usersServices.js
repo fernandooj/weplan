@@ -228,7 +228,6 @@ class userServices {
 			        preserveNullAndEmptyArrays:true
 			    }
 			},
-			 
 			{
 			$project:{
 			        _id:1,
@@ -236,24 +235,27 @@ class userServices {
 			        photo:1,
 			        pagoId:"$PagoData._id",
 			        planId:"$PagoData.planId",
-			        monto:"$PagoData.monto",
+			        monto :"$PagoData.monto",
 	 				itemId:"$PagoData.itemId",
-	 				abono:"$PagoData.abono",
-	 				fecha:"$PagoData.createdAt",
+	 				abono :"$PagoData.abono",
+	 				fecha :"$PagoData.createdAt",
 			    }
 			},
 			{
 				$match:{
 					planId,
 					// abono:true,
-					// _id:{
-					// 	$ne:userIds
-					// },
+					_id:{
+						$ne:userIds
+					},
 				}
 			},
 			{
 				$group : {
-			       _id : '$_id',
+			       _id : {
+			       		id:'$_id',
+			       		itemId:'$itemId'
+			       },
 			       deuda: { $sum: "$monto"}, 
 			       count: { $sum: 1 }, // for no. of documents count
 			       data: {

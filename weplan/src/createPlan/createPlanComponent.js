@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Picker} from 'react-native'
+import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Picker, Alert} from 'react-native'
 
 import {CreatePlanStyle} from '../createPlan/style'
 import axios from 'axios'
@@ -420,7 +420,20 @@ export default class createPlanComponent extends Component{
 						usuariosAsignados.map(e=>{
 							sendRemoteNotification(2, e.token, 'misPlanes', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, res.data.rutaImagenResize[0])
 						})
-							navigate('chat', id)
+							if (!publico) {
+								navigate('chat', id)
+							}else{
+								Alert.alert(
+									`Tu plan ha sido creado`,
+									'ya puedes ir a pagar para que se muestre en el home',
+								[
+									{text: 'Mejor Luego', onPress: () => navigate('inicio')},
+									{text: 'Pagar', onPress: () => navigate('inicio')},
+								],
+									{ cancelable: false }
+								)
+							}
+							
 						}
 					})
 					.catch((err)=>{
@@ -441,7 +454,9 @@ export default class createPlanComponent extends Component{
 					usuariosAsignados.map(e=>{
 						sendRemoteNotification(2, e.token, 'misPlanes', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, imagen)
 					})
-					navigate('chat', id)
+					 
+						navigate('chat', id)
+					 
 				}
 
 			})

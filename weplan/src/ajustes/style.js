@@ -186,7 +186,7 @@ export const AjustesStyle = MediaQueryStyleSheet.create({
 	},
 
 },{
-		"@media (max-device-width: 380)": {
+	"@media (max-device-width: 320)": {
 		input:{
 			width:230
 		},
@@ -209,8 +209,8 @@ export const AjustesStyle = MediaQueryStyleSheet.create({
 		avatar: {
 			marginTop:10,
 			borderRadius: 60,
-			width: 120,
-			height: 120,
+			width: 110,
+			height: 110,
 			borderWidth:5,
 		},
 		btnMenu:{
@@ -218,7 +218,7 @@ export const AjustesStyle = MediaQueryStyleSheet.create({
 	 		paddingBottom:7,
 	 	},
 	 	perfil:{
-		 	marginBottom:-20
+		 	marginBottom:-25
 		},
 	}
 })

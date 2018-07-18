@@ -32,7 +32,7 @@ router.get('/chatPlan/:id', (req, res)=>{
 						 
 					}) 
  			
-					chatInfo.forEach(e=>{	 
+					chatInfo.map(e=>{	 
 
 						let porcentaje1 = (e.totalUno*100)/e.totalRepuestas
 						let porcentaje2 = 100-porcentaje1
@@ -46,6 +46,19 @@ router.get('/chatPlan/:id', (req, res)=>{
 						})
 						asignados.push(e.data[0].info[0].encuestaUserId)
 						let data = e.data[0].info[0]
+						const yaEsAmigo=(id1, id2)=>{
+							amigoUserService.yaSonAmigos(id1, id2, (err, asignados)=>{
+								if (!err) {
+									if (asignados.length==0) {
+										return true
+									}else{
+										return false	
+									} 
+									// console.log(asignados.length)
+								}
+							})
+						}
+
 						chat.push({
 							id           : e._id.id,
 							userId       : data.userId,
@@ -61,8 +74,6 @@ router.get('/chatPlan/:id', (req, res)=>{
 
 							///////////////////////////////////////////////////////////////////////////////
 							//////////////////////////////// ARTICULOS   //////////////////////////////////
- 
-
 							esperaItem	 : data.espera,
 							asignadoItem : data.asignados,
 							abierto      : data.abierto,
@@ -91,7 +102,8 @@ router.get('/chatPlan/:id', (req, res)=>{
 							cNombre	    : data.cNombre,
 							cPhoto 	    : data.cPhoto,	
 							cToken 	    : data.cToken,	
-							esAMigo     : yaEsAmigo(req.session.usuario.user._id, data.contactoId)
+							// esAMigo     : yaEsAmigo(req.session.usuario.user._id, data.contactoId)
+							esAMigo     : true
 						})
 					})
 					console.log(chat)
@@ -102,10 +114,7 @@ router.get('/chatPlan/:id', (req, res)=>{
 	})
 }) 
 
-function yaEsAmigo(id1, id2){
- 
-	 return true
-}
+
 
 
 function isInArray(value, array) {

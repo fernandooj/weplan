@@ -48,14 +48,13 @@ export default class ajustesComponent extends Component{
 				<Text>Cargando</Text>
 			)
 		}
-		
 	}
 	renderMenu(){
 		const {navigate} = this.props.navigation
 		return this.state.menus.map((e, key)=>{
 			return(
 				<View key={key} >
-					<TouchableOpacity style={AjustesStyle.btnMenu} onPress={e.method==1 ?() => navigate(e.value) :e.metodo==2 ?this.closeSession.bind(this) :this.abrirQr.bind(this)}>
+					<TouchableOpacity style={AjustesStyle.btnMenu} onPress={e.method==1 ?() => navigate(e.value) :e.method==2 ?this.closeSession.bind(this) :this.abrirQr.bind(this)}>
 						<Text>{e.label} </Text>
 					</TouchableOpacity>
  

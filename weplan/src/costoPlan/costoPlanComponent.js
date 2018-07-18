@@ -36,28 +36,31 @@ export default class costoPlanComponent extends Component{
 	 
 
 	renderItem(){
-		const {plan, valor} = this.state
-		console.log(plan)
-			if (plan.nombre) {
-		return(
-			<View>
-				{/* ITEM INFORMACION */}
+		const {navigate} = this.props.navigation
+		const {plan, valor, planId} = this.state
+		if (plan.nombre) {
+			return(
+				<View>
+					{/* ITEM INFORMACION */}
 					<View style={costoPlanStyle.contenedorItem}>
-						<View >
+						<View style={costoPlanStyle.contenedorAvatar}>
 							<Image source={{uri:plan.imagenMiniatura[0]}} style={costoPlanStyle.imagen}/>
+							<TouchableOpacity onPress={()=>navigate('chat', planId)} style={costoPlanStyle.btnChat}>
+								<Text>Abrir Chat</Text>	
+							</TouchableOpacity>
 						</View>
 						<View>	
 							<Text style={costoPlanStyle.titulo}>{plan.nombre}</Text>
 							<Text style={costoPlanStyle.descripcion}>{plan.descripcion}</Text>
-							<Text style={costoPlanStyle.nombre}>Creador {plan.idUsuario.nombre}</Text>
+							<Text style={costoPlanStyle.autor}>Creador {plan.idUsuario.nombre}</Text>
 							<View style={costoPlanStyle.contenedorValor}>
-								<Text style={costoPlanStyle.valorTexto}>Ubicacion</Text>
-								<Text style={costoPlanStyle.valorTexto}>{plan.lugar}</Text>
+								<Text style={costoPlanStyle.ubicacion}>Ubicacion</Text>
+								<Text style={costoPlanStyle.lugar}>{plan.lugar}</Text>
 							</View>
 						</View>
 					</View>
 
-				{/* SEPARADOR */}
+					{/* SEPARADOR */}
 					<View style={costoPlanStyle.separador}></View>
 				</View>
 			)
@@ -77,20 +80,8 @@ export default class costoPlanComponent extends Component{
 		 				<Text style={costoPlanStyle.pagoDeudaNombre}>{data.nombre}</Text> 
 		 				<Text style={costoPlanStyle.pagoDeudaMonto}>{'$ '+Number(e.deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
 		 			</View>
-	 				<View>	
-		 				{
-		 					e.data.map((e2, key2)=>{
-		 							return(
-			 							<View key={key2} style={costoPlanStyle.infoAbonoDeuda}>
-			 								<Text style={costoPlanStyle.textAbonoDeuda}>Abono: </Text>
-			 								<Text style={costoPlanStyle.textAbonoDeuda}>{e2.info[0].fecha} / </Text>
-			 								<Text style={costoPlanStyle.textAbonoDeuda}>{'$ '+Number(e2.info[0].monto).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
-			 							</View>
-			 						)
-		 					})
-		 				}
-		 			</View>
-	 				<View style={costoPlanStyle.separador}></View>
+	 				 
+	 				 
 	 			</TouchableOpacity>
 			)
 		})
@@ -99,11 +90,19 @@ export default class costoPlanComponent extends Component{
   	render() {
   		const {navigate} = this.props.navigation
   		const {show, monto, photo, nombre, itemId, userId, usuarios} = this.state
- 		let sum = 100
+ 		console.log(userId)
+		const add = (a, b)=>{
+ 			return a + b;
+		}
+		let suma=[]
+		usuarios.filter(e=>{
+			suma.push(e.deuda)
+		})
+		var sum = suma.reduce(add, 0);
 		return (
 			<ScrollView style={costoPlanStyle.container}>
 				<View style={costoPlanStyle.contentItem}>
-					<CabezeraComponent navigate={navigate} url={'wallet'} parameter={this.state.planId} />
+					<CabezeraComponent navigate={navigate} url={'wallet'} parameter={this.state.planId} texto='Mi Wallet' />
 					 
 					<View style={costoPlanStyle.contenedor}>
 						{this.renderItem()}
