@@ -87,7 +87,7 @@ export default class ChatComponent extends Component{
 	 	this.setState({
 		  mensajes: update(this.state.mensajes, {$push: [messages]})
 		})
-	 }
+	}
  
  
 

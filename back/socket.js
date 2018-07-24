@@ -5,6 +5,7 @@ module.exports = function(server){
 	let cliente = redis.createClient()
 
 	cliente.subscribe('chat')
+	cliente.subscribe('notificacion')
 
 
 	io.on('connection', (socket)=>{
@@ -18,6 +19,12 @@ module.exports = function(server){
 			let newInfo = JSON.parse(info)
 			console.log(newInfo)
 			io.emit('userJoined'+newInfo.planId, JSON.parse(info))
+		}
+		if (canal==='notificacion'){
+			console.log('----------------')
+			let newInfo = JSON.parse(info)
+			console.log(newInfo)
+			io.emit('editProfile'+newInfo.userId, true)
 		}
 	})
 }

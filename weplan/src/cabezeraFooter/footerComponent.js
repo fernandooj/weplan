@@ -2,23 +2,42 @@ import React, {Component} from 'react'
 import {View, Image, TouchableOpacity, Text} from 'react-native'
 import {cabezeraFooterStyle} from '../cabezeraFooter/style'
 import axios from 'axios'
+import SocketIOClient from 'socket.io-client';
+import {URL} from '../../App.js'
 
 export default class CabezeraComponent extends Component{
-	state={notificacion:false}
+	constructor(props) {
+	  super(props);
+	
+	  this.state = {notificacion:false};
+	  this.onReceivedMessage = this.onReceivedMessage.bind(this);
+	}
+ 
 	componentWillMount(){
 		/////////////////	OBTENGO EL PERFIL
+		
 		axios.get('/x/v1/user/profile') 
 		.then((res)=>{
 			console.log(res.data.user.user.notificacion)
-			this.setState({notificacion:res.data.user.user.notificacion})
+			this.setState({notificacion:res.data.user.user.notificacion, id:res.data.user.user._id})
 		})
 		.catch((err)=>{
 			console.log(err)
 		})
+		this.socket = SocketIOClient(URL);
+		this.socket.on('editProfile', this.onReceivedMessage);
+		//console.log(this.state.id)
+	}
+	onReceivedMessage(notificacion) {
+		console.log(notificacion)
+		//this.setState({notificacion})
+	 // 	this.setState({
+		//   mensajes: update(this.state.mensajes, {$push: [messages]})
+		// })
 	}
 	render(){
 		const {navigate} = this.props	
-		console.log(this.state.notificacion)
+		
 		return(
 			<View style={cabezeraFooterStyle.footer3} >
 				<TouchableOpacity onPress={()=> navigate('inicio')} style={cabezeraFooterStyle.btnFooter3}>
