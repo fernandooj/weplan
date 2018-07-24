@@ -58,8 +58,10 @@ export default class LoginComponent extends Component{
 							console.log(e.data.user)
 							if (e.data.code==1) {
 								if (e.data.user.categorias.length>1) {
+									saveInfo(e.data.user)
 									navigate('inicio') 
 								}else{
+									saveInfo(e.data.user)
 									navigate('editPerfil2') 
 								}
 							}
@@ -238,12 +240,13 @@ export default class LoginComponent extends Component{
 	}	 
 }
 
-// const saveInfo = async (userInfo)=>{
-// 	try {
-// 	    await AsyncStorage.setItem('userInfo', '1');
-// 	} catch (error) {
-// 	   console.log(error)
-// 	}
-// }
+const saveInfo = async (userInfo)=>{
+	console.log(userInfo)
+	try {
+	    await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
+	} catch (error) {
+	   console.log(error)
+	}
+}
  
 

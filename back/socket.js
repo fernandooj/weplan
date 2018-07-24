@@ -24,7 +24,7 @@ module.exports = function(server){
 			console.log('----------------')
 			let newInfo = JSON.parse(info)
 			console.log(newInfo)
-			io.emit('editProfile'+newInfo.userId, true)
+			io.emit(`editProfile${newInfo.userId}`, true)
 		}
 	})
 }

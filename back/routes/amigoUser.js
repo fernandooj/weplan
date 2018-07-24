@@ -3,6 +3,8 @@
 
 let express = require('express')
 let router = express.Router();
+let redis        = require('redis')
+let cliente      = redis.createClient()
 let amigoUserService = require('../services/amigoUserServices.js');
 let userServices 	 = require('./../services/usersServices.js') 
 let notificacionService = require('../services/notificacionServices.js');

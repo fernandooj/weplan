@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Image, TouchableOpacity, Text} from 'react-native'
+import {View, Image, TouchableOpacity, Text, AsyncStorage} from 'react-native'
 import {cabezeraFooterStyle} from '../cabezeraFooter/style'
 import axios from 'axios'
 import SocketIOClient from 'socket.io-client';
@@ -13,27 +13,43 @@ export default class CabezeraComponent extends Component{
 	  this.onReceivedMessage = this.onReceivedMessage.bind(this);
 	}
  
-	componentWillMount(){
+	componentWillMount = async () => {
 		/////////////////	OBTENGO EL PERFIL
 		
 		axios.get('/x/v1/user/profile') 
 		.then((res)=>{
-			console.log(res.data.user.user.notificacion)
+			// console.log(res.data.user.user.notificacion)
 			this.setState({notificacion:res.data.user.user.notificacion, id:res.data.user.user._id})
 		})
 		.catch((err)=>{
 			console.log(err)
 		})
+
+		let value = await AsyncStorage.getItem('userInfo');
+		value =  JSON.parse(value)
+		 console.log(value._id);
 		this.socket = SocketIOClient(URL);
-		this.socket.on('editProfile', this.onReceivedMessage);
+		this.socket.on('editProfile'+value._id, this.onReceivedMessage);
+		// AsyncStorage.getItem('userInfo', (err, result) => {
+	 //      console.log(result);
+	 //    });
+
 		//console.log(this.state.id)
 	}
+	// componentDidMount = async () => {
+	//   try {
+	//     const value = await AsyncStorage.getItem('userInfo');
+	//     if (value !== null) {
+	//       // We have data!!
+	//       console.log(value);
+	//     }
+	//    } catch (error) {
+	//       console.log(error);
+	//    }
+	// }
 	onReceivedMessage(notificacion) {
 		console.log(notificacion)
-		//this.setState({notificacion})
-	 // 	this.setState({
-		//   mensajes: update(this.state.mensajes, {$push: [messages]})
-		// })
+		this.setState({notificacion})
 	}
 	render(){
 		const {navigate} = this.props	
