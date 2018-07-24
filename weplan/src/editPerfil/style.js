@@ -69,6 +69,9 @@ export const LoginStyle = MediaQueryStyleSheet.create({
 		marginTop:10,
 		height:40,
 		paddingLeft:10,
+		borderWidth: 0.5,
+		borderColor: '#d6d7da',
+		borderBottomWidth:0,
 	},
 	inputCiudad:{
 		color: '#8F9093',
@@ -77,22 +80,21 @@ export const LoginStyle = MediaQueryStyleSheet.create({
 	containDatePicker:{
 		backgroundColor:'#8FA8F7',
 		borderRadius:50,
-		width:'31%',
+		width:'30%',
 		marginRight:10,
 		marginTop:10,
 	},
 	containDatePickerYear:{
 		backgroundColor:'#8FA8F7',
 		borderRadius:50,
-		width:'34%',
+		width:'33%',
 		marginRight:10,
 		marginTop:10,
 	},
 	datePicker:{
 		width:'100%',
-		color:'#ffffff',
-		padding:0,
-        height:40,
+		padding:3,
+        height:42,
 	},
 	containDatePickerGenero:{
 		backgroundColor:'#8FA8F7',
@@ -244,6 +246,10 @@ export const LoginStyle = MediaQueryStyleSheet.create({
 	},
 	banResActive:{
 		color:'#FF5959'
+	},
+	check:{
+		width:30,
+		height:30
 	},
 },{
 	"@media (max-device-width: 320)": {

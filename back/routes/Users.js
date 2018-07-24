@@ -633,6 +633,18 @@ module.exports = function(app, passport){
         })
     })
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////    DESACTIVO LA NOTIFICACION O EL PUNTO DEL FOOTER
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    app.put('/x/v1/user/desactivaNotificacion', (req, res)=>{
+        userServices.desactivaNotificacion(req.session.usuario.user._id, (err, user)=>{
+            if (!err) {
+                req.session.usuario = {user:user}
+                res.json({ status: 'SUCCESS', user, code:1 }); 
+            }
+        })
+    })
+
     // =====================================
     // LOGOUT ==============================
     // =====================================

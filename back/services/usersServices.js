@@ -31,6 +31,7 @@ class userServices {
 		newUsuario.estado   = "inactivo"
 		newUsuario.tipo	    = "local"
 		newUsuario.acceso   = user.acceso
+		newUsuario.notificacion = false
 		newUsuario.telefono = user.tipo==2 &&user.username
 		newUsuario.email    = user.tipo==1 &&user.username
 		newUsuario.save(callback);	 
@@ -152,6 +153,15 @@ class userServices {
         }}, callback)
 	}
 
+	///////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////    DESACTIVO LA NOTIFICACION O EL PUNTO DEL FOOTER
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+	desactivaNotificacion(id, callback){
+		User.findByIdAndUpdate(id, {$set: {
+            notificacion    : false,
+            'updatedAt'   : new Date()
+        }}, callback)
+	}
 	////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////	es la deuda de cada usuario por cada item, pantalla abonos por el creador del item
 	////////////////////////////////////////////////////////////////////////////////////////////////

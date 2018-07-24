@@ -3,7 +3,7 @@ import {View, Text, ScrollView, ImageBackground, TouchableOpacity, Image, TextIn
 import {MisPlanesStyle} from '../misPlanes/style'
 import axios from 'axios'
 
-import CabezeraComponent from '../cabezeraFooter/cabezeraComponent'
+ 
 import FooterComponent 	 from '../cabezeraFooter/footerComponent'
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -87,7 +87,7 @@ export default class MisPlanesComponent extends Component{
 		const {navigate} = this.props.navigation
 		return(	 
 			<View style={MisPlanesStyle.contenedor}>
-				<CabezeraComponent navigate={navigate} />
+		 
 					{this.cabezera()}
 				{
 					this.state.planesAsignados==1

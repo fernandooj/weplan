@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, Image, TouchableOpacity, Dimensions, Alert, Modal} from 'react-native'
 import {CreatePlanStyle} from '../createPlan/style'
-import Icon from 'react-native-fa-icons';
  
 import MapView, { AnimatedRegion, Marker } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';

@@ -3,8 +3,8 @@ import {View, Text, Image, TouchableOpacity,  ScrollView,  Alert} from 'react-na
 import {LoginStyle} from '../editPerfil/style'
 //import Image from 'react-native-scalable-image';
 import axios from 'axios';
-import {QrComponent} from '../qr/qrComponent.js'
-
+ 
+import QrComponent from '../qr/qrComponent.js'
 
 export default class editPerfilComponent2 extends Component{
 	constructor(props) {
@@ -13,7 +13,7 @@ export default class editPerfilComponent2 extends Component{
 		    restriccionArray:[],
 		    categoria:[],
 		    activo:false,
-		    qr:false
+		    qr:true
 	  };
 	}
 	componentWillMount(){

@@ -3,7 +3,6 @@ import {View, Text, Dimensions, TouchableHighlight, TextInput, Alert, ScrollView
 import {EditPasswordStyle} from '../editPassword/style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
-import Icon from 'react-native-fa-icons';
  
 
 export default class EditPasswordComponent extends Component{

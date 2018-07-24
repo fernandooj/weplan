@@ -4,7 +4,6 @@ import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Picker, Aler
 import {CreatePlanStyle} from '../createPlan/style'
 import axios from 'axios'
 import Modal from 'react-native-modalbox';
-import Icon from 'react-native-fa-icons';
 import DatePicker from 'react-native-datepicker'
 import moment from 'moment'
 import Slideshow from 'react-native-slideshow';

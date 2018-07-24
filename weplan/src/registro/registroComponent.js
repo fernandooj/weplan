@@ -3,7 +3,7 @@ import {View, Text, Dimensions, TouchableHighlight, TextInput, Alert, ScrollView
 import {LoginStyle} from '../login/style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
-import Icon from 'react-native-fa-icons';
+ 
  
 
 export default class RegistroComponent extends Component{

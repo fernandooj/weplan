@@ -3,11 +3,7 @@ import {View, Text, Dimensions, TouchableHighlight, TextInput, Alert, ImageBackg
 import {EditPasswordStyle} from '../editPassword/style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
-import Icon from 'react-native-fa-icons';
-
-import {FBLogin, FBLoginManager} from 'react-native-facebook-login';
-import FCM, {NotificationActionType} from "react-native-fcm";
-import {registerKilledListener, registerAppListener} from "../push/Listeners";
+ 
 
 export default class nuevoPasswordComponent extends Component{
 	constructor(props) {
@@ -17,26 +13,7 @@ export default class nuevoPasswordComponent extends Component{
 	  	 token: "",
 	  };
 	}
-	async componentDidMount(){
-	    registerAppListener(this.props.navigation);
-
-	    try{
-	      let result = await FCM.requestPermissions({badge: false, sound: true, alert: true});
-	    } catch(e){
-	      console.error(e);
-	    }
-
-	    FCM.getFCMToken().then(token => {
-	      console.log(token);
-	      this.setState({token: token || ""})
-	    });
-
-	    if(Platform.OS === 'ios'){
-	      FCM.getAPNSToken().then(token => {
-	        console.log("APNS TOKEN (getFCMToken)", token);
-	      });
-	    }
-	}
+	 
 	render(){
 		const {navigate} = this.props.navigation
 		const {codigo} = this.state 

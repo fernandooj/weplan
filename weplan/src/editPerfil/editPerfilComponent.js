@@ -1,11 +1,114 @@
 import React, {Component} from 'react'
-import {View, Text, Dimensions, TouchableOpacity, TextInput, ScrollView, Picker, ImageBackground,Alert} from 'react-native'
+import {View, Text, Dimensions, TouchableOpacity, TextInput, ScrollView, ImageBackground, Alert, PickerIOS} from 'react-native'
 import {LoginStyle} from '../editPerfil/style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
+import ModalPicker from 'react-native-modal-picker'
 
-
-
+const day  = [
+	{label:1, key:0},
+	{label:2, key:2},
+	{label:3, key:3},
+	{label:4, key:4},
+	{label:5, key:5},
+	{label:6, key:6},
+	{label:7, key:7},
+	{label:9, key:9},
+	{label:10, key:10},
+	{label:11, key:11},
+	{label:12, key:12},
+	{label:13, key:13},
+	{label:14, key:14},
+	{label:15, key:15},
+	{label:16, key:16},
+	{label:17, key:17},
+	{label:18, key:18},
+	{label:19, key:19},
+	{label:20, key:20},
+	{label:21, key:21},
+	{label:22, key:22},
+	{label:23, key:23},
+	{label:24, key:24},
+	{label:25, key:25},
+	{label:26, key:26},
+	{label:27, key:27},
+	{label:28, key:28},
+	{label:29, key:29},
+	{label:30, key:30},
+	{label:31, key:31}
+]
+const month = [
+	{label:1, key:0},
+	{label:2, key:2},
+	{label:3, key:3},
+	{label:4, key:4},
+	{label:5, key:5},
+	{label:6, key:6},
+	{label:7, key:7},
+	{label:8, key:8},
+	{label:9, key:9},
+	{label:10, key:10},
+	{label:11, key:11},
+	{label:12, key:12}
+]
+const year = [  
+	{label:1950, key:0},
+    {label:1951, key:1951},
+    {label:1952, key:1952},
+    {label:1953, key:1953},
+    {label:1954, key:1954},
+    {label:1955, key:1955},
+    {label:1956, key:1956},
+    {label:1957, key:1957},
+    {label:1958, key:1958},
+    {label:1959, key:1959},
+    {label:1960, key:1960},
+    {label:1961, key:1961},
+    {label:1962, key:1962},
+    {label:1963, key:1963},
+    {label:1964, key:1964},
+    {label:1965, key:1965},
+    {label:1966, key:1966},
+    {label:1967, key:1967},
+    {label:1968, key:1968},
+    {label:1969, key:1969},
+    {label:1970, key:1970},
+    {label:1971, key:1971},
+    {label:1972, key:1972},
+    {label:1973, key:1973},
+    {label:1974, key:1974},
+    {label:1975, key:1975},
+    {label:1976, key:1976},
+    {label:1977, key:1977},
+    {label:1978, key:1978},
+    {label:1979, key:1979},
+    {label:1980, key:1980},
+    {label:1981, key:1981},
+    {label:1982, key:1982},
+    {label:1983, key:1983},
+    {label:1984, key:1984},
+    {label:1985, key:1985},
+    {label:1986, key:1986},
+    {label:1987, key:1987},
+    {label:1988, key:1988},
+    {label:1989, key:1989},
+    {label:1990, key:1990},
+    {label:1991, key:1991},
+    {label:1992, key:1992},
+    {label:1993, key:1993},
+    {label:1994, key:1994},
+    {label:1995, key:1995},
+    {label:1996, key:1996},
+    {label:1997, key:1997},
+    {label:1998, key:1998},
+    {label:1999, key:1999},
+    {label:2000, key:2000},
+    {label:2001, key:2001}
+]
+const genero = [
+	{label:'Masculino', key:1},
+	{label:'Femenino', key:2}
+]
 export default class editPerfilComponent extends Component{
 	constructor(props) {
 	  super(props);
@@ -29,11 +132,16 @@ export default class editPerfilComponent extends Component{
 	componentWillMount(){
 		axios.get('/x/v1/ciu/ciudad')
 		.then(e=>{
-			this.setState({ciudad:e.data.ciudad})
+			let ciudad = e.data.ciudad.map((e, key)=>{
+				return {
+					label:e.label,
+					key
+				}
+			})
+			this.setState({ciudad})
 		})
 		axios.get('/x/v1/user/profile')
 		.then(e=>{
-			console.log(e.data.user.user.email)
 			if (e.data.user.user.email==='false') {
 
 			}else{
@@ -43,13 +151,8 @@ export default class editPerfilComponent extends Component{
 		})
 			
 	}
-	ciudad(){
-		return this.state.ciudad.map((e, key)=>{
-			return (<Picker.Item key={key} label={e.label} value={e.label}  />)
-		})
-	}
+	 
 	render(){
-		console.log(this.state.textCiudad)
 		return(
 			<ScrollView style={LoginStyle.contenedor} >
 			<View style={LoginStyle.fondo} >
@@ -77,13 +180,16 @@ export default class editPerfilComponent extends Component{
            			placeholderTextColor="#8F9093" 
 			    />	
 			    <View style={LoginStyle.containCiudad}>	
-			     <Picker
-	                style={LoginStyle.inputCiudad}
-			        onValueChange={(textCiudad) => this.setState({textCiudad})}
-			        selectedValue={this.state.textCiudad}
-	              >
-		          {this.ciudad()}
-	             </Picker>
+			     <View style={{  justifyContent:'space-around' }}>
+				    <ModalPicker
+		                data={this.state.ciudad}
+		                initValue="Ciudad"
+		                color='#8F9093'
+			            font={15}
+		                onChange={(e)=> this.setState({textCiudad:e.label})} 
+		                style={LoginStyle.datePicker}
+		            />
+		          </View>
 	            </View>
 	            {
 	            	this.state.email
@@ -110,135 +216,49 @@ export default class editPerfilComponent extends Component{
 			    
 			    <View style={LoginStyle.date}>
 				    <View style={LoginStyle.containDatePicker}>
-					    <Picker
-			                selectedValue={this.state.textMonth}
-			                onValueChange={(textMonth) => this.setState({textMonth})}
+					{/* DIA */}
+					    <ModalPicker
+			                data={day}
+			                initValue="Dia"
+			                color='#ffffff'
+			                font={16}
+			                onChange={(e)=> this.setState({textDate:e.label})} 
 			                style={LoginStyle.datePicker}
-			              >
-			              <Picker.Item label='01' value='01'  />
-			              <Picker.Item label='02' value='02'  />
-			              <Picker.Item label='03' value='03'  />
-			              <Picker.Item label='04' value='04'  />
-			              <Picker.Item label='05' value='05'  />
-			              <Picker.Item label='06' value='06'  />
-			              <Picker.Item label='07' value='07'  />
-			              <Picker.Item label='08' value='08'  />
-			              <Picker.Item label='09' value='09'  />
-			              <Picker.Item label='10' value='10' />
-			              <Picker.Item label='11' value='11' />
-			              <Picker.Item label='12' value='12' />
-			            </Picker>
+			            />
+					    
 			        </View>
 			        <View style={LoginStyle.containDatePicker}>
-			            <Picker
-			                selectedValue={this.state.textDate}
-			                onValueChange={(textDate) => this.setState({textDate})}
+			    	{/* MES */}
+			            <ModalPicker
+			                data={month}
+			                initValue="Mes"
+			                color='#ffffff'
+			                font={16}
+			                onChange={(e)=> this.setState({textMonth:e.label})} 
 			                style={LoginStyle.datePicker}
-			              >
-			              <Picker.Item label='01' value='01' />
-			              <Picker.Item label='02' value='02' />
-			              <Picker.Item label='03' value='03' />
-			              <Picker.Item label='04' value='04' />
-			              <Picker.Item label='05' value='05' />
-			              <Picker.Item label='06' value='06' />
-			              <Picker.Item label='07' value='07' />
-			              <Picker.Item label='08' value='08' />
-			              <Picker.Item label='09' value='09' />
-			              <Picker.Item label='10' value='10' />
-			              <Picker.Item label='11' value='11' />
-			              <Picker.Item label='12' value='12' />
-			              <Picker.Item label='13' value='13' />
-			              <Picker.Item label='14' value='14' />
-			              <Picker.Item label='15' value='15' />
-			              <Picker.Item label='16' value='16' />
-			              <Picker.Item label='17' value='17' />
-			              <Picker.Item label='18' value='18' />
-			              <Picker.Item label='19' value='19' />
-			              <Picker.Item label='20' value='20' />
-			              <Picker.Item label='21' value='21' />
-			              <Picker.Item label='22' value='22' />
-			              <Picker.Item label='23' value='23' />
-			              <Picker.Item label='24' value='24' />
-			              <Picker.Item label='25' value='25' />
-			              <Picker.Item label='26' value='26' />
-			              <Picker.Item label='27' value='27' />
-			              <Picker.Item label='28' value='28' />
-			              <Picker.Item label='29' value='29' />
-			              <Picker.Item label='30' value='30' />
-			              <Picker.Item label='31' value='31' />
-			            </Picker>
+			            />
 			        </View>    
-			        <View style={LoginStyle.containDatePickerYear}>    
-			            <Picker
-			                selectedValue={this.state.textYear}
-			                onValueChange={(textYear) => this.setState({textYear})}
+			        <View style={LoginStyle.containDatePickerYear}>   
+			        {/* AÑO */} 
+			            <ModalPicker
+			                data={year}
+			                initValue="Año"
+			                color='#ffffff'
+			                font={16}
+			                onChange={(e)=> this.setState({textYear:e.label})} 
 			                style={LoginStyle.datePicker}
-			            >
-			            <Picker.Item label='1950' value='1950' />
-			            <Picker.Item label='1951' value='1951' />
-			            <Picker.Item label='1952' value='1952' />
-			            <Picker.Item label='1953' value='1953' />
-			            <Picker.Item label='1954' value='1954' />
-			            <Picker.Item label='1955' value='1955' />
-			            <Picker.Item label='1956' value='1956' />
-			            <Picker.Item label='1957' value='1957' />
-			            <Picker.Item label='1958' value='1958' />
-			            <Picker.Item label='1959' value='1959' />
-			            <Picker.Item label='1960' value='1960' />
-			            <Picker.Item label='1961' value='1961' />
-			            <Picker.Item label='1962' value='1962' />
-			            <Picker.Item label='1963' value='1963' />
-			            <Picker.Item label='1964' value='1964' />
-			            <Picker.Item label='1965' value='1965' />
-			            <Picker.Item label='1966' value='1966' />
-			            <Picker.Item label='1967' value='1967' />
-			            <Picker.Item label='1968' value='1968' />
-			            <Picker.Item label='1969' value='1969' />
-			            <Picker.Item label='1970' value='1970' />
-			            <Picker.Item label='1971' value='1971' />
-			            <Picker.Item label='1972' value='1972' />
-			            <Picker.Item label='1973' value='1973' />
-			            <Picker.Item label='1974' value='1974' />
-			            <Picker.Item label='1975' value='1975' />
-			            <Picker.Item label='1976' value='1976' />
-			            <Picker.Item label='1977' value='1977' />
-			            <Picker.Item label='1978' value='1978' />
-			            <Picker.Item label='1979' value='1979' />
-			            <Picker.Item label='1980' value='1980' />
-			            <Picker.Item label='1981' value='1981' />
-			            <Picker.Item label='1982' value='1982' />
-			            <Picker.Item label='1983' value='1983' />
-			            <Picker.Item label='1984' value='1984' />
-			            <Picker.Item label='1985' value='1985' />
-			            <Picker.Item label='1986' value='1986' />
-			            <Picker.Item label='1987' value='1987' />
-			            <Picker.Item label='1988' value='1988' />
-			            <Picker.Item label='1989' value='1989' />
-			            <Picker.Item label='1990' value='1990' />
-			            <Picker.Item label='1991' value='1991' />
-			            <Picker.Item label='1992' value='1992' />
-			            <Picker.Item label='1993' value='1993' />
-			            <Picker.Item label='1994' value='1994' />
-			            <Picker.Item label='1995' value='1995' />
-			            <Picker.Item label='1996' value='1996' />
-			            <Picker.Item label='1997' value='1997' />
-			            <Picker.Item label='1998' value='1998' />
-			            <Picker.Item label='1999' value='1999' />
-			            <Picker.Item label='2000' value='2000' />
-			            <Picker.Item label='2001' value='2001' />
-			            </Picker>
+			            />
 			        </View>    
 	            </View>	
 	            <View style={LoginStyle.containDatePickerGenero}> 
-					<Picker
-						selectedValue={this.state.textGenero}
-						onValueChange={(textGenero) => this.setState({textGenero})}
-						style={LoginStyle.genero}
-					>
-					<Picker.Item label='Genero'/>
-					<Picker.Item label='Femenino' value='f' />
-					<Picker.Item label='Masculino' value='m' />
-		            </Picker>	
+	            	<ModalPicker
+		                data={genero}
+		                initValue="Genero"
+		                color='#ffffff'
+		                font={16}
+		                onChange={(e)=> this.setState({textGenero:e.label})} 
+		                style={LoginStyle.datePicker}
+		            />
 		        </View>  
 			    <TouchableOpacity  style={LoginStyle.signup_btn} onPress={this.handleSubmit.bind(this)}>
 			    	<Text  style={LoginStyle.btnRegistro}>Guardar</Text>

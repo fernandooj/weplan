@@ -12,7 +12,7 @@ export const MisPlanesStyle = MediaQueryStyleSheet.create({
 	contenedorCabezera:{
 		flexDirection:'row',
 		marginBottom:15,
-		marginTop:45
+		marginTop:5
 	},
 	input:{
 		marginTop:10,
@@ -85,8 +85,8 @@ export const MisPlanesStyle = MediaQueryStyleSheet.create({
 		marginBottom:6,
 	},
 	sinPlanes:{
-		width:350,
-		height:450,
+		width:390,
+		height:530,
 		marginBottom:10
 	}
 },{

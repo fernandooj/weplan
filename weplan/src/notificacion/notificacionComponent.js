@@ -4,7 +4,6 @@ import {NotiStyle} from '../notificacion/style'
 import axios from 'axios'
 import CabezeraComponent from '../ajustes/cabezera.js'
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
-import CabezeraMenuComponent from '../cabezeraFooter/cabezeraComponent'
 import FooterComponent 	 from '../cabezeraFooter/footerComponent'
 
 export default class notificacionComponent extends Component{
@@ -93,8 +92,8 @@ export default class notificacionComponent extends Component{
 	render(){
 		const {navigate} = this.props.navigation
 		return(	<View style={NotiStyle.contenedor}>
-					<CabezeraMenuComponent navigate={navigate}  />
-					<CabezeraComponent navigate={navigate} url={'inicio'} texto={'Notificaciones'} margin />
+		 
+					<CabezeraComponent navigate={navigate} url={'inicio'} texto={'Notificaciones'}  />
 					<ScrollView style={NotiStyle.contenedorPlan}>
 						{this.renderNotificacion()}
 					</ScrollView>

@@ -3,7 +3,6 @@ import {View, Text, TouchableOpacity, TextInput, CheckBox, Linking, Alert} from 
 import {LoginStyle} 							 from '../editPerfil/style'
 import Image 									 from 'react-native-scalable-image';
 import axios 									 from 'axios';
-import ImagePicker 								 from 'react-native-image-picker';
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////  ARCHIVOS GENERADOS POR EL EQUIPO  //////////////////////////////////////////

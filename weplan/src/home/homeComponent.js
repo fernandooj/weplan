@@ -23,7 +23,6 @@ export default class homeComponent extends Component{
 			filteredData:[],
 			buildArray: [],
 			planes:[],
-			text:'tomatela te digo'
 		}
 	}
 	componentWillMount(){

@@ -64,7 +64,12 @@ export const cabezeraFooterStyle = MediaQueryStyleSheet.create({
 		width:'65%', 
 		height:35,  
 	}, 
-  
+  	punto:{
+  		fontSize:30,
+  		position:'absolute',
+  		bottom:-16,
+  		color:'#00c026'
+  	}
 },{
 	"@media (max-device-width: 380)": {
 		iconHead:{
