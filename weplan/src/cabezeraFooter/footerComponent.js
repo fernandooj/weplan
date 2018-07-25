@@ -25,29 +25,15 @@ export default class CabezeraComponent extends Component{
 			console.log(err)
 		})
 
-		let value = await AsyncStorage.getItem('userInfo');
-		value =  JSON.parse(value)
-		 console.log(value._id);
+		let userInfoId = await AsyncStorage.getItem('userInfoId');
+		
+		userInfoId =  JSON.parse(userInfoId)
+		console.log(userInfoId);
 		this.socket = SocketIOClient(URL);
-		this.socket.on('editProfile'+value._id, this.onReceivedMessage);
-		// AsyncStorage.getItem('userInfo', (err, result) => {
-	 //      console.log(result);
-	 //    });
-
-		//console.log(this.state.id)
+		this.socket.on('editProfile'+userInfoId, this.onReceivedMessage);
 	}
-	// componentDidMount = async () => {
-	//   try {
-	//     const value = await AsyncStorage.getItem('userInfo');
-	//     if (value !== null) {
-	//       // We have data!!
-	//       console.log(value);
-	//     }
-	//    } catch (error) {
-	//       console.log(error);
-	//    }
-	// }
-	onReceivedMessage(notificacion) {
+ 
+	onReceivedMessage = async (notificacion) =>{
 		console.log(notificacion)
 		this.setState({notificacion})
 	}
@@ -83,12 +69,13 @@ export default class CabezeraComponent extends Component{
 			</View>
 		)
 	}
-	updatePerfilNotificacion(){
+	updatePerfilNotificacion = async (userInfo)=>{
 		const {navigate} = this.props	
 		axios.put('/x/v1/user/desactivaNotificacion') 
 		.then((res)=>{
 			console.log(res.data)
-			res.data.code===1 &&navigate('notificacion');this.setState({notificacion:false})
+			res.data.code===1 &&navigate('notificacion');this.setState({notificacion:false}); 
+			// await AsyncStorage.setItem('userInfoNotificacion', false);
 		})
 		.catch((err)=>{
 			console.log(err)
