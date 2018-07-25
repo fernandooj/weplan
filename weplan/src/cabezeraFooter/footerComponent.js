@@ -9,37 +9,34 @@ export default class CabezeraComponent extends Component{
 	constructor(props) {
 	  super(props);
 	
-	  this.state = {notificacion:false};
+	  this.state = {notificacion:'false'};
 	  this.onReceivedMessage = this.onReceivedMessage.bind(this);
 	}
  
 	componentWillMount = async () => {
 		/////////////////	OBTENGO EL PERFIL
-		
-		axios.get('/x/v1/user/profile') 
-		.then((res)=>{
-			// console.log(res.data.user.user.notificacion)
-			this.setState({notificacion:res.data.user.user.notificacion, id:res.data.user.user._id})
-		})
-		.catch((err)=>{
-			console.log(err)
-		})
-
+		 
+	 
 		let userInfoId = await AsyncStorage.getItem('userInfoId');
+		let notificacion = await AsyncStorage.getItem('userInfoNotificacion');
 		
 		userInfoId =  JSON.parse(userInfoId)
-		console.log(userInfoId);
+		notificacion =  JSON.parse(notificacion)
+		console.log(userInfoId)
+
+		this.setState({notificacion})
 		this.socket = SocketIOClient(URL);
 		this.socket.on('editProfile'+userInfoId, this.onReceivedMessage);
 	}
  
 	onReceivedMessage = async (notificacion) =>{
 		console.log(notificacion)
+		await AsyncStorage.setItem('userInfoNotificacion', 'true');
 		this.setState({notificacion})
 	}
 	render(){
 		const {navigate} = this.props	
-		
+		//console.log(this.state.userInfoId)
 		return(
 			<View style={cabezeraFooterStyle.footer3} >
 				<TouchableOpacity onPress={()=> navigate('inicio')} style={cabezeraFooterStyle.btnFooter3}>
@@ -61,7 +58,7 @@ export default class CabezeraComponent extends Component{
 				<TouchableOpacity onPress={()=> this.updatePerfilNotificacion()} style={cabezeraFooterStyle.btnFooter3} >
 					<Image source={require('./notificaciones.png')} style={cabezeraFooterStyle.iconFooter3} />
 					{
-						this.state.notificacion
+						this.state.notificacion==='true'
 						&&<Text style={cabezeraFooterStyle.punto}>&#8226;</Text>
 					}
 					{/*<Text style={cabezeraFooterStyle.textoFooter3}>Notificacion</Text>*/}

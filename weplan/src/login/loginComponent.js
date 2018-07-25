@@ -243,9 +243,10 @@ export default class LoginComponent extends Component{
 const saveInfo = async (userInfo)=>{
 	let id = JSON.stringify(userInfo._id)
 	let notificacion = JSON.stringify(userInfo.notificacion)
+	console.log(id)
 	try {
 	    await AsyncStorage.setItem('userInfoId', id);
-	    // await AsyncStorage.setItem('userInfoNotificacion', notificacion);
+	    await AsyncStorage.setItem('userInfoNotificacion', notificacion);
 	} catch (error) {
 	   console.log(error)
 	}
