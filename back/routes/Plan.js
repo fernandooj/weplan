@@ -103,8 +103,21 @@ router.post('/', function(req, res){
 			if(err){
 				res.json({err})
 			}else{
-				res.json({ status: 'SUCCESS', message: plan, code:1 });	
-				
+				if (req.body.planPadre) {
+						req.body.asignados.map(e=>{
+							let mensajeJson={
+								userId:e,
+								notificacion:true,
+							}
+							cliente.publish('notificacion', JSON.stringify(mensajeJson))
+							notificacionService.create(req.session.usuario.user._id, e, 2, plan._id, true, (err, notificacion)=>{
+								console.log(notificacion)
+							})
+						})
+					res.json({status:'SUCCESS', message: plan, code:1})  
+				}else{
+					res.json({ status: 'SUCCESS', message: plan, code:1 });	
+				}
 			}
 		})
     }
@@ -216,13 +229,13 @@ router.put('/', (req, res)=>{
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const creaNotificacion = (req, res, plan, rutaImagenResize)=>{
 	plan.asignados.map(e=>{
-		let mensajeJson={
-			userId:e,
-			notificacion:true,
-		}
-		cliente.publish('notificacion', JSON.stringify(mensajeJson))
+	let mensajeJson={
+		userId:e,
+		notificacion:true,
+	}
+	cliente.publish('notificacion', JSON.stringify(mensajeJson))
 
-		notificacionService.create(req.session.usuario.user._id, e, 2, plan._id, (err, notificacion)=>{
+		notificacionService.create(req.session.usuario.user._id, e, 2, plan._id, true, (err, notificacion)=>{
 			console.log(notificacion)
 		})
 	})
@@ -258,15 +271,13 @@ const agregarUsuarioPlan =(req, res, planes)=>{
 ///// 			funcion cuando inserto un usuario a un plan desde el chat
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const creaNotificacionUsuarioChat = (req, res, plan)=>{
-		notificacionService.create(req.session.usuario.user._id, req.body.id, 2, plan._id, (err, notificacion)=>{
+	notificacionService.create(req.session.usuario.user._id, req.body.id, 2, plan._id, (err, notificacion)=>{
 		if (err) {
 			res.json({status:'FAIL', err, code:0})   
 		}else{
 			res.json({status:'SUCCESS', notificacion, code:1})   
 		}
-	 
-	})
-	 
+	}) 
 }
 
 

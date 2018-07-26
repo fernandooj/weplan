@@ -522,14 +522,16 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 		borderTopLeftRadius:10,
 		borderTopRightRadius:10, 
 	},
-	cPhoto:{
+	cPhotoContainer:{
 		position:'absolute',
-		borderWidth:4,
-		borderRadius:35,	
-		borderColor:'#9CB7F5',
 		left:'22%', 
 		top:60,
 		zIndex:100
+	},
+	cPhoto:{
+		borderWidth:4,
+		borderRadius:35,	
+		borderColor:'#9CB7F5',
 	},
 	cPhotoLeft:{
 		left:'56%',

@@ -291,19 +291,7 @@ const creaNotificacionVarios = (req, res, item, imagen)=>{
 	})  
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///// 			cuando se crea la peticion de ingresar tambien se crea la notificacion 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const creaNotificacion = (req, res, item, imagen)=>{
- 	console.log(item._id)
-	notificacionService.create(req.session.usuario.user._id, item.userId, 4, item._id, true, (err, notificacion)=>{
-		if (err) {
-			res.json({status:'FAIL', err, code:0})   
-		}else{
-			res.json({status:'SUCCESS', item, notificacion, imagen, code:1})    
-		}
-	})
-}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////// CAMBIO LOS TAMAÑOS DE LAS IMAGENES
@@ -473,7 +461,12 @@ const editaPagoAsignados = (itemId, userId, monto, res)=>{
 ////////   SI UN USUARIO QUIERE INGRESAR AL ITEM, LO REGISTRO Y LO DEJO EN ESPERA 
 //////////////////////////////////////////////////////////////////////////////////////////
 router.put('/', (req, res)=>{
-	
+	let mensajeJson={
+		userId:req.body.userId,
+		notificacion:true,
+	}
+	cliente.publish('notificacion', JSON.stringify(mensajeJson))
+
 	itemServices.getById(req.body.idItem, (err, item)=>{
 		if (!item[0].abierto) {
 			res.json({status: 'FAIL', mensaje:'ya se cerro el item', code:3})
@@ -493,6 +486,21 @@ router.put('/', (req, res)=>{
 		}
 	})
 })
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///// 			cuando se crea la peticion de ingresar tambien se crea la notificacion 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const creaNotificacion = (req, res, item, imagen)=>{
+ 	console.log(item._id)
+ 	
+	notificacionService.create(req.session.usuario.user._id, item.userId, 4, item._id, true, (err, notificacion)=>{
+		if (err) {
+			res.json({status:'FAIL', err, code:0})   
+		}else{
+			res.json({status:'SUCCESS', item, notificacion, imagen, code:1})    
+		}
+	})
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////
 ////////   VERIFICO QUE EL USUARIO YA ALLA MANDADO LA SOLICITUD DE INGRESAR 

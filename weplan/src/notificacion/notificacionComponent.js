@@ -38,13 +38,18 @@ export default class notificacionComponent extends Component{
 			 						:e.tipo==3 ?`Te agrego al item: ${e.titulo}. El valor para entrar es: ${valor}`
 			 						:e.tipo==4 ?`Quiere acceder al item: ${e.titulo}. El valor para entrar es: ${valor}`
 			 						:e.tipo==5 ?`Acepto ser tu amigo`
-			 						:e.tipo==6 &&`Acepto ser parte del item: ${e.titulo}`
+			 						:e.tipo==6 ?`Acepto ser parte del item: ${e.titulo}`
+			 						:e.tipo==7 ?`Te agrego al item: ${e.titulo}`
+			 						:e.tipo==8 ?`Se salio del plan: ${e.titulo}`
+			 						:e.tipo==9 &&`No le entro al item: ${e.titulo}`
 			 					}
 			 				</Text>
 			 				{
 								e.activo
 								?<View style={NotiStyle.contenedorNoti}> 
-					 				<TouchableOpacity  style={NotiStyle.btnNoti} 
+								{
+									e.tipo!==2
+									&&<TouchableOpacity  style={NotiStyle.btnNoti} 
 					 					onPress={
 					 						e.tipo==1
 					 						?()=>this.handleSubmit(e.id, e.idTipo, 1, e.token, e.idUser)
@@ -59,13 +64,14 @@ export default class notificacionComponent extends Component{
 					 					<Text  style={NotiStyle.textoNoti}> 
 					 					{
 					 						e.tipo==1  ? 'Agregar'
-					 						:e.tipo==2 ? 'Entrarle'
 					 						:e.tipo==3 ?'Entrarle'
 					 						:e.tipo==4 &&'Aceptarlo'
 
 					 					}
 					 					</Text>
 					 				</TouchableOpacity>
+								}
+					 				
 					 				<TouchableOpacity style={NotiStyle.btnNoti}
 					 					onPress={
 					 						e.tipo==1

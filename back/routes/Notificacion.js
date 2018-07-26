@@ -44,7 +44,7 @@ router.get('/', (req, res)=>{
 					idUser : e.idUsuarioAsigna &&e.idUsuarioAsigna._id,
 					nombre : e.idUsuarioAsigna &&e.idUsuarioAsigna.nombre,
 					idTipo : e.idAmigoUser ?e.idAmigoUser._id 	     :e.idPlan ?e.idPlan._id 				:e.idItem ?e.idItem._id 			:e.idItem===4 &&e.idItem._id,
-					photo  : e.idAmigoUser ?e.idUsuarioAsigna.photo  :e.idPlan ?e.idPlan.imagenMiniatura[0] :e.idItem ?e.idItem.imagenMiniatura :e.idItem===4 ?e.idItem.imagenMiniatura :e.tipo==5 ?e.idUsuarioAsigna.photo :e.tipo==6 &&e.idUsuarioAsigna.photo,
+					photo  : e.idAmigoUser ?e.idUsuarioAsigna.photo  :e.idPlan ?e.idPlan.imagenMiniatura[0] :e.idItem ?e.idItem.imagenMiniatura :e.idItem===4 ?e.idItem.imagenMiniatura :e.tipo==5 &&e.idUsuarioAsigna.photo ,
 					titulo : e.idAmigoUser ?e.idUsuarioAsigna.nombre :e.idPlan ?e.idPlan.nombre 			:e.idItem ?e.idItem.titulo 			:e.idItem===4 &&e.idItem.titulo,
 					token  : e.idUsuarioAsigna &&e.idUsuarioAsigna.tokenPhone,
 					////////////////////////////  AMIGOS  ////////////////////////////////////
@@ -185,6 +185,7 @@ const activaItem =(usuario, idTipo, id, res, req)=>{
 //////// 	CREO UN NUEVO PAGO CUANDO EL CREADOR DEL ITEM ACEPTA QUE EL OTRO USUARIO SEA PARTE DEL ITEM
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const nuevoPago = (req, res, itemId, idUser, montoCreador, item) =>{
+	let tipo = req.params.tipo==3 ?6 :req.params.tipo==4 &&7
 	req.body['abono']=false
 	req.body['activo']=true
 	req.body['metodo']=null
@@ -198,7 +199,7 @@ const nuevoPago = (req, res, itemId, idUser, montoCreador, item) =>{
 			res.json({err})
 		}else{
 			//res.json({ status: 'SUCCESS', pago, code:1 });
-			editaPagoCreador(itemId, req.session.usuario.user._id, req.params.idUser, montoCreador, req.body.monto, res)					
+			editaPagoCreador(itemId, req.session.usuario.user._id, req.params.idUser, montoCreador, req.body.monto, tipo, res)					
 		}
 	})
 }
@@ -206,7 +207,7 @@ const nuevoPago = (req, res, itemId, idUser, montoCreador, item) =>{
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////// 	EDITO AL DUEÑO DEL ITEM, CUANDO EL USUARIO ACEPTA SER PARTE DEL ITEM
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const editaPagoCreador = (itemId, idSession, idUser, montoCreador, montoAsignado, res)=>{
+const editaPagoCreador = (itemId, idSession, idUser, montoCreador, montoAsignado, tipo, res)=>{
 	itemServices.getById(itemId, (err, item)=>{
 		if (err) {
 			console.log(err)
@@ -219,7 +220,7 @@ const editaPagoCreador = (itemId, idSession, idUser, montoCreador, montoAsignado
 						if (err) {
 							console.log(err)
 						}else{
-							editaPagoAsignados(itemId, item[0].userId._id, montoAsignado, idSession, idUser, res )
+							editaPagoAsignados(itemId, item[0].userId._id, montoAsignado, idSession, idUser, tipo, res )
 						}
 					})					
 				}
@@ -231,7 +232,7 @@ const editaPagoCreador = (itemId, idSession, idUser, montoCreador, montoAsignado
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////// 	EDITO LOS DEMAS PAGOS DE LOS MIEMBROS DEL ITEM, CUANDO EL USUARIO ACEPTA SER PARTE DEL ITEM
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const editaPagoAsignados = (itemId, userId, monto, idSession, idUser, res)=>{
+const editaPagoAsignados = (itemId, userId, monto, idSession, idUser, tipo, res)=>{
 	pagoServices.betyByItemAndUserNotEqual(itemId, userId, (err, pago)=>{
 		if(err){
 			res.json({err})
@@ -243,7 +244,7 @@ const editaPagoAsignados = (itemId, userId, monto, idSession, idUser, res)=>{
 			})
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			///////////////////  creo la notificacion de que ya acepto ser amigo
-			notificacionService.create(idSession, idUser, 6, null, false, (err, notificacion)=>{
+			notificacionService.create(idSession, idUser, tipo, itemId, false, (err, notificacion)=>{
 				if (err) {
 					res.json({status:'FAIL', err, code:0})    
 				}else{
@@ -268,6 +269,12 @@ function isInArray(value, array) {
 ///// 			modifico y desactivo la notificacion y modifico el tipo de la notificacion
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.put('/cancelar/:idNotificacion/:idTipo/:tipo/:idUser', (req, res)=>{
+	let mensajeJson={
+		userId:req.params.idUser,
+		notificacion:true,
+	}
+	cliente.publish('notificacion', JSON.stringify(mensajeJson))
+
 	notificacionService.desactiva(req.params.idNotificacion, (err, notificacion)=>{
 		if (err) {
 			res.json({status:'FAIL', err, code:0})    
@@ -291,7 +298,11 @@ const eliminarUserItem =(idItem, idUser, res, req)=>{
 		if (err) {
 			res.json({status:'FAIL', err, code:0})    
 		}else{
-			res.json({status:'SUCCESS', item, code:1})    
+			if (req.params.tipo==3) {
+				createNotificacionCancelar(req.session.usuario.user._id, idUser, 9, idItem, res)
+			}else{
+				res.json({status:'SUCCESS', item, code:1})  
+			}		  
 		}
 	})
 }
@@ -312,25 +323,34 @@ const eliminaAmigoUser =(idTipo, res)=>{
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///// 			saco al usuario del plan
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const eliminaUserPlan =(idTipo, idUser, res)=>{
+const eliminaUserPlan =(idTipo, idSession, res)=>{
 	planServices.getByIdPlan(idTipo, (err, plan)=>{
 		if (err) {
 			res.json({status: 'FAIL', err, code:0})
 		}else{
 			let asignados = plan[0].asignados.filter(e=>{
-				return e != idUser  
+				return e != idSession  
 			})
-			console.log('------')
-			console.log(asignados)
 			planServices.salir(idTipo, asignados, (err, plan2)=>{
 				if (err) {
 					res.json({status: 'FAIL', err, code:0})
 				}else{
-					res.json({status: 'SUCCESS', plan2, code:1})
+					createNotificacionCancelar(idSession, plan[0].idUsuario, 8, idTipo, res)
+					// res.json({status: 'SUCCESS', plan2, code:1})
 				}
 			})
 		}
 	})
+}
+
+const createNotificacionCancelar = (idSession, idUser, tipo, planId, res) =>{
+	notificacionService.create(idSession, idUser, tipo, planId, false, (err, notificacion)=>{
+		if (err) {
+			res.json({status:'FAIL', err, code:0})    
+		}else{
+			res.json({status:'SUCCESS', notificacion, code:1})    
+		}
+	})	
 }
 module.exports = router
 

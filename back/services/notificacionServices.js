@@ -21,8 +21,8 @@ class notificacionService{
 		notificacionSchemas.activo       	  = activo
 		notificacionSchemas.eliminado      	  = true
 		notificacionSchemas.idAmigoUser       = tipo==1 ?idTipo :null
-		notificacionSchemas.idPlan            = tipo==2 ?idTipo :null
-		notificacionSchemas.idItem            = tipo==3 || tipo==4 || tipo==6 ?idTipo :null
+		notificacionSchemas.idPlan            = tipo==2 || tipo==8 ?idTipo :null
+		notificacionSchemas.idItem            = tipo==3 || tipo==4 || tipo==6  || tipo==7 || tipo==9 ?idTipo :null
 		notificacionSchemas.save(callback)
 	}
 	desactiva(_id, callback){

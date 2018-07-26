@@ -190,7 +190,7 @@ export default class ChatComponent extends Component{
 					       	{
 					       		(!asignadoItem && !esperaItem &&e.abierto)  && e.userId !== id
 					       		?<View style={e.userId== id ?ChatStyle.contenedorInteres :[ChatStyle.contenedorInteres, ChatStyle.contenedorInteresLeft]}>
-							       	<TouchableOpacity onPress={()=> this.ingresarItem(e.token, e.itemId, e.id, e.titulo, e.rutaImagen)} style={ChatStyle.btnInteres} >
+							       	<TouchableOpacity onPress={()=> this.ingresarItem(e.token, e.itemId, e.id, e.titulo, e.rutaImagen, e.userId)} style={ChatStyle.btnInteres} >
 							       		<Image source={require('./me_interesa.png')} style={ChatStyle.imagenInteres} />
 							       		<Text style={ChatStyle.textoInteres}>Me Interesa</Text>
 							       	</TouchableOpacity>
@@ -366,13 +366,17 @@ export default class ChatComponent extends Component{
 								source={{uri: e.photo}}
 						    />
 						</TouchableOpacity>
-						<Image
-							style={e.userId==id ?ChatStyle.cPhoto :[ChatStyle.cPhoto, ChatStyle.cPhotoLeft]} 
-							width={60}
-							height={60}
-							source={{uri: e.cPhoto}}
-					   />
-						<TouchableOpacity style={e.userId== id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]}>
+						<TouchableOpacity style={e.userId==id ?ChatStyle.cPhotoContainer :[ChatStyle.cPhotoContainer, ChatStyle.cPhotoLeft]} 
+							onPress={e.contactoId== id ?null :()=> navigate('profile', {userId:e.contactoId, planId:plan})}>
+							<Image
+								style={ChatStyle.cPhoto} 
+								width={60}
+								height={60}
+								source={{uri: e.cPhoto}}
+						   	/>
+					   	</TouchableOpacity> 
+						<TouchableOpacity style={e.userId== id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]}
+							onPress={e.contactoId== id ?null :()=> navigate('profile', {userId:e.contactoId, planId:plan})}>
 							<View style={ChatStyle.tituloTipoChat}>
 								<Text style={e.userId== id ?ChatStyle.cNombreTipoChat :[ChatStyle.cNombreTipoChat, ChatStyle.cNombreTipoChatLeft]}>{e.nombre}</Text>
 							</View>
@@ -382,12 +386,12 @@ export default class ChatComponent extends Component{
 							</View>
 							
 							<View style={ChatStyle.botonesContacto}>
-								{
+								{/*
 									e.esAMigo
 									&&<TouchableOpacity onPress={()=>this.agregarAmigo(e.id, e.contactoId, e.cToken)}>
 										<Text style={ChatStyle.cTextBotones}>Agregar Contacto</Text>
 									</TouchableOpacity>
-								}
+								*/}
 								
 								{
 									plan.idUsuario._id === id && !estaPlan && e.contactoId !=id
@@ -709,9 +713,9 @@ export default class ChatComponent extends Component{
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////// SI EL USUARIO HACE CLICK EN ME INTERESA, ENVIA LA NOTIFICACION AL CREADOR DEL ITEM PARA DARLE PERMISO DE INGRESAR
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	ingresarItem(token, idItem, id, titulo, imagen){
+	ingresarItem(token, idItem, id, titulo, imagen, userId){
 		const {navigate} = this.props.navigation
-		axios.put('x/v1/ite/item', {idItem})
+		axios.put('x/v1/ite/item', {idItem, userId})
 		.then(e=>{
 			console.log(e.data)
 			if (e.data.code==1) {

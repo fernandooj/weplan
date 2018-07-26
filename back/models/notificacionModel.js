@@ -38,6 +38,9 @@ module.exports = mongoose.model('Notificacion', notificacionSchema)
 /// tipo 4   ==> notificacion cuando se quiere ser parte de un item
 /// tipo 5   ==> notificacion cuando acepto ser amigo 
 /// tipo 6   ==> notificacion cuando se acepto ser parte del item 
+/// tipo 7   ==> notificacion cuando te aceptaron como parte del item
+/// tipo 8   ==> notificacion cuando se salio del plan 
+/// tipo 9   ==> notificacion cuando se salio del item 
 
 /// activo ===> queda la notificacion en estado innactivo si es false no muestra los botones
 /// eliminado ===> elimina la notificacion del front, pero aca se sigue viendo
