@@ -42,6 +42,16 @@ router.get('/asignados/:estado', (req, res)=>{
 })
 
 
+router.get('/:id', (req, res)=>{ 
+	amigoUserService.getByUser(req.session.usuario.user._id, req.params.id, (err, asignados)=>{
+		if (err) {
+			res.json({status:'FAIL', err, code:0})    
+		}else{
+			res.json({status:'SUCCESS', asignados, code:1})    
+		}
+	})
+})
+
 router.post('/', (req, res)=>{
 	let id = req.session.usuario.user._id
 	amigoUserService.create(req.body.asignado, id, (err, amigoUser)=>{

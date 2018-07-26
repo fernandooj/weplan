@@ -7,6 +7,8 @@ let path = require('path')
 let moment   = require('moment');
 let fecha = moment().format('YYYY-MM-DD-h-mm')
 let Jimp = require("jimp");
+let redis        = require('redis')
+let cliente      = redis.createClient()
 var { promisify } = require('util');
 var sizeOf = promisify(require('image-size'));
 let mongoose = require('mongoose')
@@ -36,11 +38,11 @@ router.get('/:pago', (req, res)=>{
 			}
 		})	
 	}else{
-		planServices.getById(req.params.clientes, (err, planes)=>{
+		planServices.getByIdPlanPopulate(req.params.pago, (err, plan)=>{
 			if (err) {
 				res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
 			}else{
-				res.json({ status: 'SUCCESS', message: planes, code:1 });	
+				res.json({ status: 'SUCCESS', plan, code:1 });	
 			}
 		})
 	}
@@ -51,7 +53,7 @@ router.get('/:pago', (req, res)=>{
 /////// OBTENGO LOS PLANES DE UN USUARIO ESPECIFICO
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.get('/getbyid/:userId', (req, res)=>{
-	planServices.getByIdPlan(req.params.userId, (err, plan)=>{
+	planServices.getByUserId(req.params.userId, (err, plan)=>{
 		if (err) {
 			res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
 		}else{
@@ -65,7 +67,7 @@ router.get('/getbyid/:userId', (req, res)=>{
 /////// OBTENGO MIS PLANES 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.get('/getbyUserId/misPlanes', (req, res)=>{
-	planServices.getById(req.session.usuario.user._id, (err, planes)=>{
+	planServices.getByUserId(req.session.usuario.user._id, (err, planes)=>{
 		if (err) {
 			res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
 		}else{
@@ -214,6 +216,12 @@ router.put('/', (req, res)=>{
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const creaNotificacion = (req, res, plan, rutaImagenResize)=>{
 	plan.asignados.map(e=>{
+		let mensajeJson={
+			userId:e,
+			notificacion:true,
+		}
+		cliente.publish('notificacion', JSON.stringify(mensajeJson))
+
 		notificacionService.create(req.session.usuario.user._id, e, 2, plan._id, (err, notificacion)=>{
 			console.log(notificacion)
 		})

@@ -200,7 +200,9 @@ router.post('/cerrarItem', (req, res)=>{
 ///////////////////////	 		SAVE ITEM		//////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 router.post('/', function(req, res){
+
 	if (req.session.usuario) {
+		
 		itemServices.create(req.body, req.session.usuario.user._id, (err, item)=>{
 			if(err){
 				res.json({err, status: 'FAIL', code:0})
@@ -280,6 +282,11 @@ let createPago = function(req, res, id, item){
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const creaNotificacionVarios = (req, res, item, imagen)=>{
 	item.espera.map(e=>{
+		let mensajeJson={
+			userId:e,
+			notificacion:true,
+		}
+		cliente.publish('notificacion', JSON.stringify(mensajeJson))
 		notificacionService.create(req.session.usuario.user._id, e, 3, item._id, (err, notificacion)=>{
 			console.log(notificacion)
 		})

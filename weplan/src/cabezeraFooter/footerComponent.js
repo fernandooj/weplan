@@ -15,14 +15,11 @@ export default class CabezeraComponent extends Component{
  
 	componentWillMount = async () => {
 		/////////////////	OBTENGO EL PERFIL
-		 
-	 
 		let userInfoId = await AsyncStorage.getItem('userInfoId');
 		let notificacion = await AsyncStorage.getItem('userInfoNotificacion');
 		
 		userInfoId =  JSON.parse(userInfoId)
 		notificacion =  JSON.parse(notificacion)
-		console.log(userInfoId)
 
 		this.setState({notificacion})
 		this.socket = SocketIOClient(URL);
@@ -30,13 +27,11 @@ export default class CabezeraComponent extends Component{
 	}
  
 	onReceivedMessage = async (notificacion) =>{
-		console.log(notificacion)
 		await AsyncStorage.setItem('userInfoNotificacion', 'true');
-		this.setState({notificacion})
+		this.setState({notificacion:true})
 	}
 	render(){
 		const {navigate} = this.props	
-		//console.log(this.state.userInfoId)
 		return(
 			<View style={cabezeraFooterStyle.footer3} >
 				<TouchableOpacity onPress={()=> navigate('inicio')} style={cabezeraFooterStyle.btnFooter3}>
@@ -58,7 +53,7 @@ export default class CabezeraComponent extends Component{
 				<TouchableOpacity onPress={()=> this.updatePerfilNotificacion()} style={cabezeraFooterStyle.btnFooter3} >
 					<Image source={require('./notificaciones.png')} style={cabezeraFooterStyle.iconFooter3} />
 					{
-						this.state.notificacion==='true'
+						this.state.notificacion
 						&&<Text style={cabezeraFooterStyle.punto}>&#8226;</Text>
 					}
 					{/*<Text style={cabezeraFooterStyle.textoFooter3}>Notificacion</Text>*/}
@@ -70,14 +65,20 @@ export default class CabezeraComponent extends Component{
 		const {navigate} = this.props	
 		axios.put('/x/v1/user/desactivaNotificacion') 
 		.then((res)=>{
-			console.log(res.data)
-			res.data.code===1 &&navigate('notificacion');this.setState({notificacion:false}); 
-			// await AsyncStorage.setItem('userInfoNotificacion', false);
+			if(res.data.code===1){
+				navigate('notificacion')
+				this.setState({notificacion:false}) 
+			}  
+			 
 		})
 		.catch((err)=>{
 			console.log(err)
 		})
-		// 
+		try {
+		    await AsyncStorage.setItem('userInfoNotificacion', 'false');
+		} catch (error) {
+		   console.log(error)
+		}
 	}
 	
 }

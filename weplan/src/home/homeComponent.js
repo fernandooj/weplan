@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, ImageBackground, ScrollView, Platform} from 'react-native'
+import {View, Text, Image, TouchableOpacity, ImageBackground, ScrollView, Platform, Keyboard} from 'react-native'
 import {HomeStyle} from '../home/style'
 import axios from 'axios'
 
@@ -17,6 +17,7 @@ export default class homeComponent extends Component{
 		this.state={ 
 			isOpen: false,
 			isDisabled: false,
+			showBarra: true,  ///// muestra la barra superior
 			swipeToClose: true,
 			sliderValue: 0.3,
 			allList: [],
@@ -24,11 +25,12 @@ export default class homeComponent extends Component{
 			buildArray: [],
 			planes:[],
 		}
+	
 	}
 	componentWillMount(){
+		Keyboard.dismiss()
 		axios.get('/x/v1/pla/plan/pago')
 		.then(e=>{
-			console.log(e.data)
 			this.setState({planes:e.data.planes})
 		})
 		.catch(err=>{
@@ -97,20 +99,23 @@ export default class homeComponent extends Component{
 		if(event.nativeEvent.contentOffset.y<=0){
 			axios.get('/x/v1/pla/plan/pago')
 			.then(e=>{
-				console.log(e.data)
 				this.setState({planes:e.data.planes})
 			})
 			.catch(err=>{
 				console.log(err)
 			})
 		}
+		if(event.nativeEvent.contentOffset.y>40){
+			this.setState({showBarra:false})
+		}else if(event.nativeEvent.contentOffset.y<40){
+			this.setState({showBarra:true})
+		}
 	}
 	render(){
 		const {navigate} = this.props.navigation
 		return(	 
 			<View style={HomeStyle.contenedor}>
-				
-				<CabezeraComponent navigate={navigate} />
+				<CabezeraComponent navigate={navigate} hide={this.state.showBarra ?false :true} />
 				<ScrollView style={HomeStyle.contenedorPlan} onScroll={this.handleScroll.bind(this)} scrollEventThrottle={16}>
 				{
 					this.renderPlans()

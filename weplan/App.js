@@ -32,6 +32,7 @@ import insertCodeComponent2   from './src/editPassword/insertCodeComponent2';
 import nuevoPasswordComponent from './src/editPassword/nuevoPasswordComponent';
 import infoPlanComponent      from './src/infoPlan/infoPlanComponent';
 import costoPlanComponent     from './src/costoPlan/costoPlanComponent';
+import medioPagoComponent     from './src/medioPago/medioPagoComponent';
  
 
 
@@ -144,6 +145,7 @@ const NavigationAppLogin = StackNavigator({
     nuevoPassword: {screen: nuevoPasswordComponent },
     infoPlan:      {screen: infoPlanComponent },
     costoPlan:     {screen: costoPlanComponent },
+    medioPago:     {screen: medioPagoComponent },
 },{ headerMode: 'none', transitionConfig})
 
 

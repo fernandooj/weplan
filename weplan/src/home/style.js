@@ -41,6 +41,10 @@ export const HomeStyle = MediaQueryStyleSheet.create({
 	 	marginLeft:35,
 	 	marginRight:35
 	},
+	hideCabezera:{
+		position:'absolute',
+		top:-100
+	},
 	fondo:{
 		height:screenHeight-(screenHeight/9.7),
 	},
@@ -50,7 +54,6 @@ export const HomeStyle = MediaQueryStyleSheet.create({
 		width:screenWidth,
 		backgroundColor:"rgba(0,0,0,0.56)",  
 		paddingLeft:20,
-	 
 	},
 	footer1:{
 		flexDirection:'row',

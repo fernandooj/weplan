@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, AsyncStorage, StyleSheet, Modal, Alert} from 'react-native'
+import {View, Text, Image, TouchableOpacity, AsyncStorage, StyleSheet, Modal, Alert, Keyboard} from 'react-native'
 import {AjustesStyle} from '../ajustes/style'
 import axios from 'axios'
 import CabezeraComponent from './cabezera.js'
@@ -21,6 +21,7 @@ export default class ajustesComponent extends Component{
       	modalVisible:false
 	}
 	componentWillMount(){
+		Keyboard.dismiss()
 		/////////////////	OBTENGO EL PERFIL
 		axios.get('/x/v1/user/profile') 
 		.then((res)=>{

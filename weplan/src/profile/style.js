@@ -1,7 +1,7 @@
 import {StyleSheet, Dimensions} from 'react-native';
 var screenHeight = Dimensions.get('window');
-
-export const profileStyle = StyleSheet.create({
+import { MediaQueryStyleSheet } from "react-native-responsive";
+export const profileStyle = MediaQueryStyleSheet.create({
 	contenedor:{
 		alignItems: 'center',
 	},
@@ -84,6 +84,23 @@ export const profileStyle = StyleSheet.create({
 		height:90
 	}
 	 
+},{
+	"@media (max-device-width: 320)": {
+	 	avatar: {
+			borderRadius: 50,
+			width: 100,
+			height: 100,
+			borderWidth:6,
+		},
+		imagen:{
+			borderRadius: 25,
+			width: 50,
+			height: 50,
+			borderColor:'#9CB7F5',
+			borderWidth:4,
+			marginRight:15
+		},
+	}
 })
 
 

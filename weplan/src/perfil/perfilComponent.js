@@ -24,7 +24,7 @@ export default class perfilComponent extends Component{
 			nombre:'',
 			sexo:'',
 			password:'',
-			photo:'',
+			photo:'https://appweplan.com/public/assets/logo.png',
 			fechaHoy:moment().format('YYYY-MM-DD h:mm'),
 			imagen:false,
 			exitoso:false,

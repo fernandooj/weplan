@@ -19,6 +19,10 @@ export const cabezeraFooterStyle = MediaQueryStyleSheet.create({
 		borderBottomRightRadius: 50, 
 		backgroundColor:"rgba(255,255,255,0.79)",	 
 	},
+	hideCabezera:{
+		 
+		marginTop:-60,
+	},
 	iconHead:{
 	 	width:40,
 	 	height:40,

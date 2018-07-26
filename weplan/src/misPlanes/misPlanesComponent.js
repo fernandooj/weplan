@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, ScrollView, ImageBackground, TouchableOpacity, Image, TextInput} from 'react-native'
+import {View, Text, ScrollView, ImageBackground, TouchableOpacity, Image, TextInput, Keyboard} from 'react-native'
 import {MisPlanesStyle} from '../misPlanes/style'
 import axios from 'axios'
 
@@ -23,6 +23,7 @@ export default class MisPlanesComponent extends Component{
 		}
 	}
 	componentWillMount(){
+		Keyboard.dismiss()
 		axios.get('/x/v1/pla/plan/suma/totales/plan')
 		.then(e=>{
 			console.log(e.data.result)

@@ -15,7 +15,7 @@ export default class RestriccionesPlanComponent extends Component{
 		}
 	}
 	componentWillMount(){
- 		console.log(this.props.misRestricciones.length)
+ 
  		if (this.props.misRestricciones.length>1 ) {
 			this.setState({restriccion:this.props.misRestricciones, restriccionArray:this.props.restricciones, restriccionesAsignadas:this.props.restriccionesAsignadas})
 		}
@@ -65,7 +65,13 @@ export default class RestriccionesPlanComponent extends Component{
 				<TouchableOpacity key={key} style={CreatePlanStyle.touchRes} 
 					onPress={(index)=> {this.updateState(e._id, e.estado); this.updateRestriccion(e._id, e.ruta, e.nombre, e.estado); this.updateStateRestriccion(e._id)} }>
 					<Image source={{ uri: e.ruta}} style={CreatePlanStyle.iconRes}/>
-					<Icon name='ban' allowFontScaling style={[CreatePlanStyle.banRes, e.estado ?CreatePlanStyle.banResActive :CreatePlanStyle.banResInactive]} />
+					{
+						e.estado
+						?<Image source={require('./deneid1.png')} style={CreatePlanStyle.banRes} />
+						:<Image source={require('./deneid2.png')} style={CreatePlanStyle.banRes} />
+					}
+					
+					{/*<Icon name='ban' allowFontScaling style={[CreatePlanStyle.banRes, e.estado ?CreatePlanStyle.banResActive :CreatePlanStyle.banResInactive]} />*/}
 					<Text style={CreatePlanStyle.textoRes}>{e.nombre}</Text>
 				</TouchableOpacity>
 			)

@@ -11,6 +11,7 @@ import {URL}  from '../../App.js';
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////// 
 const getMatch = (a, b)=>{
+	 
    var matches = [];
    a.filter((aa, i)=>{
       b.filter((bb, e)=>{
@@ -30,25 +31,20 @@ export default class profileComponent extends Component{
 	}
 	componentWillMount(){
 
-		let userId = this.props.navigation.state.params
-		//let userId = '5aec2ef4de7fa7694e1a1f3b'
-		axios.get('/x/v1/pla/plan/'+userId) 
+		let userId = this.props.navigation.state.params.userId
+		// let userId = '5b37d5c226d7c9175c24ddbd'
+		 
+		axios.get(`/x/v1/pla/plan/getbyid/${userId}`) 
 		.then((res)=>{
+	 
 			/////////////////	OBTENGO MIS PLANES
 			axios.get('/x/v1/pla/plan/getbyUserId/misPlanes') 
 			.then((res2)=>{
-				
-				let planesComun = getMatch(res.data.message, res2.data.planes);
+				let planesComun = getMatch(res.data.plan, res2.data.planes);
 				this.setState({planesComun})
 			})
-			.catch((err)=>{
-				console.log(err)
-			})
 		})
-		.catch((err)=>{
-			console.log(err)
-		})
-		
+		 
 		/////////////////	OBTENGO EL PERFIL DEL USUARIO
 		axios.get('/x/v1/users/getOneUser/'+userId) 
 		.then((res)=>{
@@ -59,14 +55,14 @@ export default class profileComponent extends Component{
 		})
 
 		/////////////////	OBTENGO MIS AMIGOS ASIGNADOS
-		axios.get('/x/v1/ami/amigoUser/true')
+		axios.get(`/x/v1/ami/amigoUser/${userId}`)
 		.then(res=>{
 			console.log(res.data.asignados)
-			let asignado = res.data.asignados.filter(e=>{
-				return e.idUsuario._id==userId || e.asignado._id==userId 
-			})
-			if (asignado.length>0) {
-				 asignado[0].estado ?this.setState({esAmigo:'si'}) :this.setState({esAmigo:'siEsperando'})
+			// let asignado = res.data.asignados.filter(e=>{
+			// 	return e.idUsuario._id==userId || e.asignado._id==userId 
+			// })
+			if (res.data.asignados.length>0) {
+				 res.data.asignados[0].estado ?this.setState({esAmigo:'si'}) :this.setState({esAmigo:'siEsperando'})
 			}else{
 				this.setState({esAmigo:'no'})
 			}
@@ -90,7 +86,7 @@ export default class profileComponent extends Component{
 		return this.state.planesComun.map((e, key)=>{
 			return(
 				<TouchableOpacity style={profileStyle.contenedorRegistros} key={key} onPress={()=>navigate('chat', e._id)}>
-						<Image source={{uri: e.imagen}} style={profileStyle.imagen} />
+						<Image source={{uri: e.imagenMiniatura[0]}} style={profileStyle.imagen} />
 						<Text style={profileStyle.nombre}>{e.nombre}</Text>
 				</TouchableOpacity>
 			)
@@ -98,32 +94,34 @@ export default class profileComponent extends Component{
 	}
 	render(){
 		const {navigate} = this.props.navigation
-		console.log(this.state.perfil)
+ 
 		return(	 
-			<View style={profileStyle.contenedor}>
-				<CabezeraComponent navigate={navigate} url={'inicio'} texto='' />
-				<ScrollView style={profileStyle.subContenedor}>
-					{this.renderPerfil()}
-					<Text  style={profileStyle.planesTitulo}>Planes en común</Text>
-			 		{this.renderPlanes()}
-			 		<View style={profileStyle.perfil}>
-				 		{
-							this.state.esAmigo==='no'
-							?<TouchableOpacity onPress={()=>this.handleSubmit()} style={profileStyle.agregarBtn}>
-								<Image source={require('./agregar.png')} style={profileStyle.agregar}/>
-							</TouchableOpacity>
-							:this.state.esAmigo==='siEsperando'
-							?<Text style={profileStyle.agregar}>esta en espera de aceptar solicitud</Text>
-							:null
-						}
+			<ScrollView >
+				<View style={profileStyle.contenedor}>
+					<CabezeraComponent navigate={navigate} url={'chat'} texto='' parameter={this.props.navigation.state.params.planId._id} /> 
+			 
+					<View style={profileStyle.subContenedor}>
+						{this.renderPerfil()}
+						<Text  style={profileStyle.planesTitulo}>Planes en común</Text>
+				 		{this.renderPlanes()}
+				 		<View style={profileStyle.perfil}>
+					 		{
+								this.state.esAmigo==='no'
+								?<TouchableOpacity onPress={()=>this.handleSubmit()} style={profileStyle.agregarBtn}>
+									<Image source={require('./agregar.png')} style={profileStyle.agregar}/>
+								</TouchableOpacity>
+								:this.state.esAmigo==='siEsperando'
+								?<Text style={profileStyle.agregar}>esta en espera de aceptar solicitud</Text>
+								:null
+							}
+						</View>	
 					</View>	
-				</ScrollView>	
-			</View> 
+				</View>
+			</ScrollView> 
 		)
 	}
 	handleSubmit(){
 		const {_id, tokenPhone, nombre} = this.state.perfil
-		console.log(_id)
 		axios.post('/x/v1/ami/amigoUser', {asignado: _id} )
 		.then((e)=>{
 			console.log(e.data)

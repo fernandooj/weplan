@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Picker, Alert} from 'react-native'
+import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Picker, Alert, Dimensions} from 'react-native'
 
 import {CreatePlanStyle} from '../createPlan/style'
 import axios from 'axios'
@@ -16,7 +16,7 @@ import TakePhotoComponent 	  		 from '../takePhoto/takePhotoComponent.js'
 import CabezeraComponent from '../ajustes/cabezera.js'
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
 import AlertInput from 'react-native-alert-input';
-
+const screenWidth = Dimensions.get('window').width;
 export default class createPlanComponent extends Component{
 	constructor(props){
 		super(props);
@@ -50,9 +50,9 @@ export default class createPlanComponent extends Component{
 	componentWillMount(){
 		console.log(this.props.navigation.state.params) 
 		if (this.props.navigation.state.params) {
-			axios.get('/x/v1/pla/plan/getbyid/'+this.props.navigation.state.params)
+			axios.get('/x/v1/pla/plan/'+this.props.navigation.state.params)
 			.then((e)=>{
-				console.log(e.data.plan[0])
+				console.log(e.data)
 				let imagenes = []
 				e.data.plan[0].imagenResize.map(e=>{
 					imagenes.push({url:e})
@@ -139,17 +139,19 @@ export default class createPlanComponent extends Component{
 				<CabezeraComponent navigate={navigate} url={'inicio'} parameter={this.state.planId} texto={publico==true ?'Plan publico' :publico==false&&'plan privado'} />
 				{
 					!cargaPlan
-					?<View style={CreatePlanStyle.encabezadoPlan}>
-					<TakePhotoComponent fuente={'cam.png'} ancho={170} alto={120} ancho2={170} alto2={120} updateImagen={(imagen) => {this.setState({imagen})}} sinBorder />
-						<TextInput
-							style={CreatePlanStyle.input}
-							onChangeText={(nombre) => this.setState({nombre,iconCreate:false})}
-							value={nombre}
-							underlineColorAndroid='transparent'
-							placeholder="NOMBRE DE TU PLAN"
-							placeholderTextColor="#8F9093" 
-							maxLength={30}
-					    />
+					?<View style={imagen ?CreatePlanStyle.encabezadoPlan2 :CreatePlanStyle.encabezadoPlan}>
+						<TakePhotoComponent fuente={'cam.png'} ancho={screenWidth} alto={160} updateImagen={(imagen) => {this.setState({imagen})}}   />
+						<View style={CreatePlanStyle.textoCargado2}>
+							<TextInput
+								style={CreatePlanStyle.nombreCargado}
+								onChangeText={(nombre) => this.setState({nombre,iconCreate:false})}
+								value={nombre}
+								underlineColorAndroid='transparent'
+								placeholder="NOMBRE DE TU PLAN"
+								placeholderTextColor="#ffffff" 
+								maxLength={30}
+						    />
+						</View>
 					</View>
 					:<View style={CreatePlanStyle.encabezadoPlan2}>
 						<Slideshow 
@@ -375,7 +377,8 @@ export default class createPlanComponent extends Component{
  				return(
 	 				<View key={key} >
 	 					<Image source={{uri:e.ruta}} style={CreatePlanStyle.avatar} />
-	 					<Icon name='ban' allowFontScaling style={CreatePlanStyle.banResActiveAdd} />
+	 					<Image source={require('./deneid1.png')} style={CreatePlanStyle.banResActiveAdd} />
+	 					 
 	 				</View>
 	 			)
  			}
@@ -427,7 +430,7 @@ export default class createPlanComponent extends Component{
 									'ya puedes ir a pagar para que se muestre en el home',
 								[
 									{text: 'Mejor Luego', onPress: () => navigate('inicio')},
-									{text: 'Pagar', onPress: () => navigate('inicio')},
+									{text: 'Pagar', onPress: () => navigate('medioPago')},
 								],
 									{ cancelable: false }
 								)

@@ -90,7 +90,9 @@ export default class LoginComponent extends Component{
 							if (e.data.code==1) {
 								if (e.data.user.categorias.length>1) {
 									navigate('inicio') 
+									saveInfo(e.data.user)
 								}else{
+									saveInfo(e.data.user)
 									navigate('editPerfil2') 
 								}
 							}
@@ -221,7 +223,7 @@ export default class LoginComponent extends Component{
 	              { cancelable: false }
 	            )
 			}else if (res.data.code==1){
-				// saveInfo(true)
+				saveInfo(res.data.user)
 				navigate('inicio')
 			}else{
 				Alert.alert(

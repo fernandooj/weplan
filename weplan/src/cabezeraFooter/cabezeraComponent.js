@@ -5,9 +5,9 @@ import {cabezeraFooterStyle} from '../cabezeraFooter/style'
 
 export default class CabezeraComponent extends Component{
 	render(){
-		const {navigate} = this.props
+		const {navigate, hide} = this.props
 		return(
-			<View style={cabezeraFooterStyle.cabezera}>
+			<View style={!hide ?cabezeraFooterStyle.cabezera :[cabezeraFooterStyle.cabezera, cabezeraFooterStyle.hideCabezera, ]}>
 				<TouchableOpacity onPress={() => navigate('ajustes')}>
 					<Image source={require('./icon1.png')} style={cabezeraFooterStyle.iconHead} />
 				</TouchableOpacity>

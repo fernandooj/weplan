@@ -42,7 +42,7 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		alignItems: 'center',
 		backgroundColor:'#F2F4F4',
 		paddingTop: 30,
-		paddingBottom: 30,
+		paddingBottom: 0,
 	},
 	iconCamera:{
 		fontSize:100
@@ -123,6 +123,12 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		width:'100%',
 		padding:5,
 	},
+	textoCargado2:{
+		marginTop:-69,
+		backgroundColor:'#rgba(0,0,0,.5)',
+		width:'100%',
+		padding:5,
+	},
 	nombreCargado:{
 		color:"white",
 		fontSize:25,
@@ -188,6 +194,8 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		top:30,
 		left:-20,
 		fontSize:20,
+		width:20,
+		height:20,
 	},
 	banResInactive:{
 		color:'#9B9B9B'
@@ -254,11 +262,11 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
  		height:40,
  	},
  	banResActiveAdd:{
- 		color:'#FF5959',
- 		fontSize:30,
  		position:'absolute',
- 		top:17,
- 		right:4
+ 		top:21,
+ 		right:6,
+ 		width:20,
+ 		height:20
  	},
 
  	//////////////////////////////////////////////////
@@ -352,5 +360,15 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 	 		width:30,
 	 		height:30,
 	 	},
+	 	textoCargado:{
+			marginTop:-58,
+		},
+		textoCargado2:{
+			marginTop:-58,
+		},
+		nombreCargado:{
+			color:'#ffffff',
+			fontSize:15,
+		},
 	}
 })

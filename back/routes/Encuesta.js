@@ -233,7 +233,7 @@ router.post('/:id', (req,res)=>{
 				tipoEncuesta:tipo, 
 				pregunta1,   
 				pregunta2, 
-				pTitulo: 	 encuesta.titulo,
+				eTitulo: 	 encuesta.titulo,
 				pDescripcion:encuesta.descripcion, 
 				tipoChat    :3, 
 				estado: 	true

@@ -19,6 +19,9 @@ class amigoUserService{
 	yaSonAmigos(idUsuario, asignado, callback){
 		amigoUser.find().or([{idUsuario, asignado, estado:true},{idUsuario:asignado, asignado:idUsuario, estado:true}]).populate('asignado').populate('idUsuario').exec(callback)
 	}
+	getByUser(idUsuario, asignado, callback){
+		amigoUser.find().or([{idUsuario, asignado},{idUsuario:asignado, asignado:idUsuario}]).populate('asignado').populate('idUsuario').exec(callback)
+	}
 	buscarUsuario(idUsuario, callback){
 		amigoUser.find({idUsuario}, callback)
 	}
