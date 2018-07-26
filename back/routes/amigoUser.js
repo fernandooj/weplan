@@ -74,7 +74,7 @@ const creaNotificacion = (req, res, amigoUser)=>{
 	}
 	cliente.publish('notificacion', JSON.stringify(mensajeJson))
 
-	notificacionService.create(req.session.usuario.user._id, amigoUser.asignado, 1, amigoUser._id, (err, notificacion)=>{
+	notificacionService.create(req.session.usuario.user._id, amigoUser.asignado, 1, amigoUser._id, true, (err, notificacion)=>{
 		if (err) {
 			res.json({status:'FAIL', err, code:0})   
 		}else{

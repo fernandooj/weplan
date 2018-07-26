@@ -22,6 +22,7 @@ let notificacionSchema = mongoose.Schema({
 	idPlan 				: { type: Schema.Types.ObjectId, ref:'Plan'},
 	tipo      			: Number,
 	activo    			: Boolean,
+	eliminado  			: Boolean,
 	createdAt 			: { type: String, default: moment().format('YYYY-MM-DD h:mm:ss')},
 	updatedAt 			: { type: String, default: moment().format('YYYY-MM-DD h:mm:ss')},
 })
@@ -32,6 +33,11 @@ module.exports = mongoose.model('Notificacion', notificacionSchema)
 /// idUsuario 		==> El usuario que se tiene asignado la notificacion
 /// idUsuarioAsigna ==> El usuario quien crea la notificacion
 /// tipo 1   ==> notificacion cuando se quiere agregar a un amigo
-/// tipo 2   ==> notificacion cuando se quiere se le agrego a un plan
+/// tipo 2   ==> notificacion cuando se le agrego a un plan
 /// tipo 3   ==> notificacion cuando se le agrego a un item
 /// tipo 4   ==> notificacion cuando se quiere ser parte de un item
+/// tipo 5   ==> notificacion cuando acepto ser amigo 
+/// tipo 6   ==> notificacion cuando se acepto ser parte del item 
+
+/// activo ===> queda la notificacion en estado innactivo si es false no muestra los botones
+/// eliminado ===> elimina la notificacion del front, pero aca se sigue viendo

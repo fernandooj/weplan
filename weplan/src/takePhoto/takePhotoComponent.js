@@ -71,9 +71,9 @@ export default class TakePhotoComponent extends Component{
 						source={{uri : URL+'public/images/'+fuente }}
 					/>
 					:<Image 
-						width={ancho} 
-						height={alto} 
-						style={{flex:1}} 
+						width={!sinBorder ?ancho :ancho2} 
+						height={!sinBorder ?alto :alto2} 
+						style={!sinBorder ?{flex:1, borderRadius:ancho/2}: {flex:1}} 
 						source={this.state.avatarSource}
 					/>
 					}

@@ -200,9 +200,7 @@ router.post('/cerrarItem', (req, res)=>{
 ///////////////////////	 		SAVE ITEM		//////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////
 router.post('/', function(req, res){
-
 	if (req.session.usuario) {
-		
 		itemServices.create(req.body, req.session.usuario.user._id, (err, item)=>{
 			if(err){
 				res.json({err, status: 'FAIL', code:0})
@@ -256,8 +254,8 @@ router.post('/:id', (req,res)=>{
 			if (req.body.enviarChat=="true"){
 				createChat(req, res, id, item, rutaImagenResize)
 			}else{
-				//res.json({ status: 'SUCCESS', item, code:1, imagen: rutaImagenResize });	
-				creaNotificacion(req, res, item, rutaImagenResize)
+				res.json({ status: 'SUCCESS', item, code:1, imagen: rutaImagenResize });	
+				//creaNotificacion(req, res, item, rutaImagenResize)
 			}
 		}
 	})
@@ -287,12 +285,25 @@ const creaNotificacionVarios = (req, res, item, imagen)=>{
 			notificacion:true,
 		}
 		cliente.publish('notificacion', JSON.stringify(mensajeJson))
-		notificacionService.create(req.session.usuario.user._id, e, 3, item._id, (err, notificacion)=>{
+		notificacionService.create(req.session.usuario.user._id, e, 3, item._id, true, (err, notificacion)=>{
 			console.log(notificacion)
 		})
 	})  
 }
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///// 			cuando se crea la peticion de ingresar tambien se crea la notificacion 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const creaNotificacion = (req, res, item, imagen)=>{
+ 	console.log(item._id)
+	notificacionService.create(req.session.usuario.user._id, item.userId, 4, item._id, true, (err, notificacion)=>{
+		if (err) {
+			res.json({status:'FAIL', err, code:0})   
+		}else{
+			res.json({status:'SUCCESS', item, notificacion, imagen, code:1})    
+		}
+	})
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////// CAMBIO LOS TAMAÑOS DE LAS IMAGENES
@@ -377,8 +388,6 @@ let createChat = function(req, res, userId, item, imagen){
 //////// 			agrego al usuario al item cuando acepta ser parte del item
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.put('/activar/:idTipo', (req, res)=>{
-	console.log(req.params.idTipo)
-	console.log('---------------')
 	itemServices.getById(req.params.idTipo, (err, item)=>{
 		let espera = item[0].espera.filter(e=>{
 			return e!=req.session.usuario.user._id
@@ -492,19 +501,7 @@ function isInArray(value, array) {
 	return array.indexOf(value) > -1;
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-///// 			cuando se crea la peticion de ingresar tambien se crea la notificacion 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const creaNotificacion = (req, res, item, imagen)=>{
- 	console.log(item._id)
-	notificacionService.create(req.session.usuario.user._id, item.userId, 4, item._id, (err, notificacion)=>{
-		if (err) {
-			res.json({status:'FAIL', err, code:0})   
-		}else{
-			res.json({status:'SUCCESS', item, notificacion, imagen, code:1})    
-		}
-	})
-}
+
 
  
 

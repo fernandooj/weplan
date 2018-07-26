@@ -8,7 +8,8 @@ import FooterComponent 	 from '../cabezeraFooter/footerComponent'
 
 export default class notificacionComponent extends Component{
 	state={
-		notificacion:[]
+		notificacion:[],
+		eliminar:false /// muestra el boton de eliminar cada notificacion
 	}
 	componentWillMount(){
  		axios.get('/x/v1/not/notificacion')
@@ -24,83 +25,120 @@ export default class notificacionComponent extends Component{
 	renderNotificacion(){
  		return this.state.notificacion.map((e, key)=>{
  			let valor = '$ '+Number(e.valorItem).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
- 			if (e.activo==true) {
-	 				return(
-		 				<View key={key} style={NotiStyle.subContenedor}>
-			 				<View style={NotiStyle.contenedorNoti2}>
-				 				<Image source={{uri: e.photo}} style={NotiStyle.avatar} />
-			 					<View>
-					 				<Text style={NotiStyle.tituloNoti}>{e.nombre}</Text> 
-					 				<Text style={NotiStyle.textoNotifica}>
+			return(
+ 				<View key={key} style={NotiStyle.subContenedor}>
+	 				<View style={NotiStyle.contenedorNoti2}>
+		 				<Image source={e.photo ?{uri:e.photo} :{uri:'https://appweplan.com/public/assets/logo.png'}} style={NotiStyle.avatar} />
+	 					<View>
+			 				<Text style={NotiStyle.tituloNoti}>{e.nombre}</Text> 
+			 				<Text style={NotiStyle.textoNotifica}>
+			 					{
+			 						e.tipo==1 ?'Te quiere agregar como amigo' 
+			 						:e.tipo==2 ?`Te agrego al plan: ${e.titulo}` 
+			 						:e.tipo==3 ?`Te agrego al item: ${e.titulo}. El valor para entrar es: ${valor}`
+			 						:e.tipo==4 ?`Quiere acceder al item: ${e.titulo}. El valor para entrar es: ${valor}`
+			 						:e.tipo==5 ?`Acepto ser tu amigo`
+			 						:e.tipo==6 &&`Acepto ser parte del item: ${e.titulo}`
+			 					}
+			 				</Text>
+			 				{
+								e.activo
+								?<View style={NotiStyle.contenedorNoti}> 
+					 				<TouchableOpacity  style={NotiStyle.btnNoti} 
+					 					onPress={
+					 						e.tipo==1
+					 						?()=>this.handleSubmit(e.id, e.idTipo, 1, e.token, e.idUser)
+					 						:e.tipo==2
+					 						?()=>this.handleSubmit(e.id, e.idTipo, 2, e.token, e.idUser)
+					 						:e.tipo==3
+					 						?()=>this.handleSubmit(e.id, e.idTipo, 3, e.token, e.idUser, e.valorItem, e.titulo, e.photo) 
+					 						:e.tipo==4
+					 						?()=>this.handleSubmit(e.id, e.idTipo, 4, e.token, e.idUser, e.valorItem, e.titulo, e.photo) 
+					 						:null  
+					 					}>
+					 					<Text  style={NotiStyle.textoNoti}> 
 					 					{
-					 						e.tipo==1 ?'Te quiere agregar como amigo' 
-					 						:e.tipo==2 ?`Te agrego al plan: ${e.titulo}` 
-					 						:e.tipo==3 ?`Te agrego al item: ${e.titulo}. El valor para entrar es: ${valor}`
-					 						:e.tipo==4 &&`Quiere acceder al item: ${e.titulo}. El valor para entrar es: ${valor}`
+					 						e.tipo==1  ? 'Agregar'
+					 						:e.tipo==2 ? 'Entrarle'
+					 						:e.tipo==3 ?'Entrarle'
+					 						:e.tipo==4 &&'Aceptarlo'
+
 					 					}
-					 				</Text>
-					 				<View style={NotiStyle.contenedorNoti}>
-						 				<TouchableOpacity  style={NotiStyle.btnNoti} 
-						 					onPress={
-						 						e.tipo==1
-						 						?()=>this.handleSubmit(e.id, e.idTipo, 1, e.token, e.idUser)
-						 						:e.tipo==2
-						 						?()=>this.handleSubmit(e.id, e.idTipo, 2, e.token, e.idUser)
-						 						:e.tipo==3
-						 						?()=>this.handleSubmit(e.id, e.idTipo, 3, e.token, null, e.valorItem, e.titulo, e.photo) 
-						 						:e.tipo==4
-						 						?()=>this.handleSubmit(e.id, e.idTipo, 4, e.token, e.idUser, e.valorItem, e.titulo, e.photo) 
-						 						:null  
-						 					}>
-						 					<Text  style={NotiStyle.textoNoti}> 
-						 					{
-						 						e.tipo==1  ? 'Agregar'
-						 						:e.tipo==2 ? 'Entrarle'
-						 						:e.tipo==3 ?'Entrarle'
-						 						:e.tipo==4 &&'Aceptarlo'
+					 					</Text>
+					 				</TouchableOpacity>
+					 				<TouchableOpacity style={NotiStyle.btnNoti}
+					 					onPress={
+					 						e.tipo==1
+					 						?()=>this.handleCancel(e.id, e.idTipo, 1, null, e.idUser)
+					 						:e.tipo==2
+					 						?()=>this.handleCancel(e.id, e.idTipo, 2, null, e.idUser)
+					 						:e.tipo==3
+					 						?()=>this.handleCancel(e.id, e.idTipo, 3, e.token, e.idUser, e.valorItem, e.titulo, e.photo)
+					 						:e.tipo==4
+					 						?()=>this.handleCancel(e.id, e.idTipo, 4, null, e.idUser)
+					 						:null
 
-						 					}
-						 					</Text>
-						 				</TouchableOpacity>
-						 				<TouchableOpacity  style={NotiStyle.btnNoti}
-						 					onPress={
-						 						e.tipo==1
-						 						?()=>this.handleCancel(e.id, e.idTipo, 1, null, e.idUser)
-						 						:e.tipo==2
-						 						?()=>this.handleCancel(e.id, e.idTipo, 2, null, e.idUser)
-						 						:e.tipo==3
-						 						?()=>this.handleCancel(e.id, e.idTipo, 3, e.token, e.idUser, e.valorItem, e.titulo, e.photo)
-						 						:e.tipo==4
-						 						?()=>this.handleCancel(e.id, e.idTipo, 4, null, e.idUser)
-						 						:null
-
-						 					}
-						 				>
-						 					<Text style={NotiStyle.textoNoti}> Declinar</Text>
-						 				</TouchableOpacity>
-						 			</View>
+					 					}
+					 				>
+					 					<Text style={NotiStyle.textoNoti}> Declinar</Text>
+					 				</TouchableOpacity>
+					 				{/*<Image source={require('./puntos.png')} style={NotiStyle.puntos} />*/}
 					 			</View>
-				 			</View>
-				 			<View style={NotiStyle.separador}></View>
-				 		</View>
-	 				)
- 			}else{
- 				return(null)
- 			}
+					 			:<View>
+					 			{/* contenedor puntos */}
+					 			{
+					 				e.btnEliminar
+					 				&&<TouchableOpacity style={NotiStyle.eliminarBtn} onPress={()=>this.elimina(e.id)}>
+						 				<Text style={NotiStyle.eliminar}>Eliminar</Text>	
+						 			</TouchableOpacity>
+					 			}
+					 			
+					 			<TouchableOpacity style={NotiStyle.puntosBtn} onPress={()=>this.muestraBtnEliminar(e.id, e.btnEliminar)}>
+					 				<Image source={require('./puntos.png')} style={NotiStyle.puntos} />
+					 			</TouchableOpacity>
+					 			</View>
+			 				}
+			 				
+			 			</View>
+		 			</View>
+		 			<View style={NotiStyle.separador}></View>
+		 		</View>
+			)		 
  		})
+	}
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////  muestra boton de eliminar
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	muestraBtnEliminar(id, btnEliminar){
+		let notificacion = this.state.notificacion.filter(e=>{
+			if(e.id==id) e.btnEliminar=!btnEliminar  
+			return e
+		})
+		this.setState({notificacion})
 	}
 	render(){
 		const {navigate} = this.props.navigation
-		return(	<View style={NotiStyle.contenedor}>
-		 
-					<CabezeraComponent navigate={navigate} url={'inicio'} texto={'Notificaciones'}  />
-					<ScrollView style={NotiStyle.contenedorPlan}>
-						{this.renderNotificacion()}
-					</ScrollView>
-					<FooterComponent navigate={navigate} />	
-				</View>
-			
+		return(	
+			<View style={NotiStyle.contenedor}>
+				<CabezeraComponent navigate={navigate} url={'inicio'} texto={'Notificaciones'}  />
+				<ScrollView style={NotiStyle.contenedorPlan}>
+					{this.renderNotificacion()}
+				</ScrollView>
+				<FooterComponent navigate={navigate} />	
+			</View>
 		)
+	}
+	elimina(id){
+		axios.delete(`/x/v1/not/notificacion/${id}`)
+		.then(e=>{
+			if (e.data.code==1) {
+				let notificacion = this.state.notificacion.filter(e=>{
+					return e.id!==id
+				})
+				this.setState({notificacion})
+			}
+		})
 	}
 	handleSubmit(idNotificacion, idTipo, tipo, token, idUser, monto, titulo, imagen){
 		axios.put('/x/v1/not/notificacion/'+idNotificacion+'/'+idTipo+'/'+tipo+'/'+idUser, {monto})
@@ -143,7 +181,8 @@ export default class notificacionComponent extends Component{
 	}
 	updateStado(id){
 		let notificacion = this.state.notificacion.filter(e=>{
-			return e.id!=id
+			if(e.id==id) e.activo=false  
+			return e
 		})
 		console.log({notificacion, id})
 		this.setState({notificacion})

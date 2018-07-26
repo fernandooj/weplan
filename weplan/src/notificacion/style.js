@@ -1,22 +1,19 @@
 import {StyleSheet, Dimensions} from 'react-native';
 var screenWidth = Dimensions.get('window').width;
 
-
-export const NotiStyle = StyleSheet.create({ 
+import { MediaQueryStyleSheet } from "react-native-responsive";
+export const NotiStyle = MediaQueryStyleSheet.create({ 
 	contenedor:{
 		flex: 1,
 		backgroundColor:"#ffffff",
 	},
 	contenedorPlan:{
-		flex: .5,	
+		flex: .5,
+		paddingRight:15,	
+		paddingLeft:15,	
 	},
-	
-	// contenedor:{
-	// 	alignItems: 'center',
-	// },
 	subContenedor:{
-		width:'86%',
-		 
+		width:'100%',
 	},
 	avatar: {
 		marginTop:10,
@@ -89,5 +86,64 @@ export const NotiStyle = StyleSheet.create({
 		marginTop:5,
 		marginBottom:5
 	},
+	puntosBtn:{
+		position:'absolute',
+		bottom:0,
+		right:-25
+	},
+	puntos:{
+		width:33,
+		height:12,
+	},
+	eliminarBtn:{
+		backgroundColor:'#5664ba',
+		position:'absolute',
+		bottom:30,
+		padding:6,
+		borderRadius:10,
+		right:-25
+	},
+	eliminar:{
+		color:'#ffffff',
+		fontSize:12
+	}
 
+},{
+	"@media (max-device-width: 320)": {
+	 	avatar:{
+	 		width: 55,
+			height: 55,
+			borderWidth:3,
+	 	},
+	 	contenedorPlan:{
+			flex: .5,
+			paddingRight:10,	
+			paddingLeft:10,	
+		}, 
+		textoNoti:{
+	 		color:'#5664ba',
+	 		fontSize:12,
+	 	},
+	 	textoNotifica:{
+	 		color:'#5664ba',
+	 		fontSize:12,
+	 		width:220
+	 	},
+	 	puntosBtn:{
+			right:-13
+		},
+		puntos:{
+			width:30,
+			height:11,
+		},
+		eliminarBtn:{
+			bottom:30,
+			padding:5,
+			borderRadius:10,
+			right:-13
+		},
+		eliminar:{
+			fontSize:10
+		}
+	}
 })

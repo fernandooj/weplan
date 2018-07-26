@@ -6,9 +6,10 @@ import axios from 'axios';
  
 //import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
 import {FBLogin, FBLoginManager} from 'react-native-facebook-login';
+import FCM, {NotificationActionType} from "react-native-fcm";
+import {registerKilledListener, registerAppListener} from "../push/Listeners";
  
- 
- 
+registerKilledListener();
 export default class LoginComponent extends Component{
 	constructor(props) {
 	 super(props);
@@ -136,10 +137,28 @@ export default class LoginComponent extends Component{
 			// })
 			// .done();
 		}
-
-			
 	}
 	 
+	async componentDidMount(){
+	    registerAppListener(this.props.navigation);
+
+	    try{
+	      let result = await FCM.requestPermissions({badge: false, sound: true, alert: true});
+	    } catch(e){
+	      console.error(e);
+	    }
+
+	    FCM.getFCMToken().then(token => {
+	      console.log(token);
+	      this.setState({token: token || ""})
+	    });
+
+	    if(Platform.OS === 'ios'){
+	      FCM.getAPNSToken().then(token => {
+	        console.log("APNS TOKEN (getFCMToken)", token);
+	      });
+	    }
+	}
 
 	
 	render(){
