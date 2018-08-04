@@ -6,9 +6,11 @@ let fs = require('fs')
 let path = require('path')
 let moment   = require('moment');
 let fecha = moment().format('YYYY-MM-DD-h-mm')
-
+let redis        = require('redis')
+let cliente      = redis.createClient()
 let pagoServices = require('../services/pagoServices.js')
 let itemServices = require('../services/itemServices.js')
+let notificacionService = require('../services/notificacionServices.js');
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////	 	GET ALL 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -112,28 +114,6 @@ const sumaTodos = (req, res, pago) =>{
 	})
 }
 
-// router.get('/user/:idItem/:idUser', (req, res)=>{
-// 	pagoServices.suma(req.params.idItem, req.params.idUser, (err, pago)=>{
-// 		if(err){
-// 			res.json({status: 'FAIL', err, code:0})
-// 		}else{
-// 			sumaTodos(req, res, pago) 
-// 		}
-// 	})
-// })
-
-// const sumaTodos = (req, res, pago) =>{
-// 	pagoServices.sumaTodos(req.params.idItem, (err, deuda)=>{
-// 		if(err){
-// 			res.json({err, code:0})
-// 		}else{
-// 			console.log(deuda)
-// 			res.json({ status: 'SUCCESS', pago, deuda, total:pago.length, code:1 });				
-// 		}
-// 	})
-// }
-
-
  
 //////////////////////////////////////////////////////////////////////////////////////////
 ////////   GUARDO EL PAGO
@@ -141,7 +121,12 @@ const sumaTodos = (req, res, pago) =>{
 //////////////////////////////////////////////////////////////////////////////////////////
 router.post('/', (req, res)=>{
 	let id = req.body.userId==null ?req.session.usuario.user._id :req.body.userId
-	console.log(req.body)
+	let activo = req.body.metodo==3 ?false :true
+	let mensajeJson={
+		userId:req.body.userItem,
+		notificacion:true,
+	}
+	cliente.publish('notificacion', JSON.stringify(mensajeJson))
 
 	itemServices.getById(req.body.itemId, (err, item)=>{
 		console.log(item[0].abierto)
@@ -149,11 +134,12 @@ router.post('/', (req, res)=>{
 			if (item[0].abierto==true) {
 				res.json({ status: 'FAIL', mensaje:'el item esta abierto', code:2 });		
 			}else{
-				pagoServices.create(req.body, id, req.session.usuario.user._id, (err, pago)=>{
+				pagoServices.create(req.body, id, req.session.usuario.user._id, activo, (err, pago)=>{
 					if(err){
 						res.json({err})
 					}else{
-						res.json({ status: 'SUCCESS', mensaje: pago, total:pago.length, code:1 });					
+						creaNotificacion(req.session.usuario.user._id, req.body.userItem, pago._id, res)
+						//res.json({ status: 'SUCCESS', mensaje: pago, total:pago.length, code:1 });					
 					}
 				})
 			}
@@ -161,7 +147,18 @@ router.post('/', (req, res)=>{
 	})
 })
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///// 			cuando se crea el pago envio la notificacion
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const creaNotificacion = (SessionId, userId, pagoId, res)=>{ 	
+	notificacionService.create(SessionId, userId, 10, pagoId, true, (err, notificacion)=>{
+		if (err) {
+			res.json({status:'FAIL', err, code:0})   
+		}else{
+			res.json({status:'SUCCESS',  notificacion, code:1})    
+		}
+	})
+}
  
 
 

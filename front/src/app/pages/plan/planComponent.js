@@ -64,23 +64,32 @@ class PlanComponent extends React.Component {
       sorter: (a, b) => a.nombre.length - b.nombre.length,
       sortOrder: sortedInfo.columnKey === 'nombre' && sortedInfo.order,
     }, {
-      title: 'Descripcion',
-      dataIndex: 'descripcion',
-      key: 'descripcion',
-      sorter: (a, b) => a.descripcion - b.descripcion,
-      sortOrder: sortedInfo.columnKey === 'descripcion' && sortedInfo.order,
+      title: 'Total Planes Creados',
+      dataIndex: 'planPadre',
+      key: 'planPadre',
+      sorter: (a, b) => a.planPadre - b.planPadre,
+      sortOrder: sortedInfo.columnKey === 'planPadre' && sortedInfo.order,
     }, {
-      title: 'Tipo',
-      dataIndex: 'tipo',
-      key: 'tipo',
+      title: 'Lugar',
+      dataIndex: 'lugar',
+      key: 'lugar',
+      sorter: (a, b) => a.lugar - b.lugar,
+      sortOrder: sortedInfo.columnKey === 'lugar' && sortedInfo.order,
+    }, {
+      title: 'Estado',
+      dataIndex: 'activo',
+      key: 'activo',
+      render: (text, row, index) => {
+        return <p> {text ?'Activo' :'Innactivo'}</p>
+      },
       filters: [
-        { text: 'suscripcion', value: 'suscripcion' },
-        { text: 'pago', value: 'pago' },
+        { text: 'Activo', value: true },
+        { text: 'innactivo', value: false },
       ],
-      filteredValue: filteredInfo.tipo || null,
-      onFilter: (value, record) => record.tipo.includes(value),
-      sorter: (a, b) => a.tipo.length - b.tipo.length,
-      sortOrder: sortedInfo.columnKey === 'tipo' && sortedInfo.order,
+      filteredValue: filteredInfo.activo || null,
+      onFilter: (value, record) => record.activo.includes(value),
+      sorter: (a, b) => a.activo.length - b.activo.length,
+      sortOrder: sortedInfo.columnKey === 'activo' && sortedInfo.order,
     }];
     return (
       <Row>

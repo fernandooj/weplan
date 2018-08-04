@@ -11,7 +11,7 @@ class notificacionService{
 		notificacionSchema.find({_id}).populate('idAmigoUser').populate('idItem').exec(callback)
 	}
 	getByUser(idUsuario, callback){
-		notificacionSchema.find({idUsuario, eliminado:true}, null, {sort: {_id: -1}}).populate('idUsuario').populate('idPlan').populate('idAmigoUser').populate('idItem').populate('idUsuarioAsigna').exec(callback)
+		notificacionSchema.find({idUsuario, eliminado:true}, null, {sort: {_id: -1}}).populate('idUsuario').populate('idPlan').populate('idAmigoUser').populate('idItem').populate('idPago').populate('idUsuarioAsigna').exec(callback)
 	}
 	create(idUsuarioAsigna, idUsuario, tipo, idTipo, activo, callback){
 		let notificacionSchemas = new notificacionSchema();
@@ -22,6 +22,7 @@ class notificacionService{
 		notificacionSchemas.eliminado      	  = true
 		notificacionSchemas.idAmigoUser       = tipo==1 ?idTipo :null
 		notificacionSchemas.idPlan            = tipo==2 || tipo==8 ?idTipo :null
+		notificacionSchemas.idPago            = tipo==10 || tipo==11 || tipo==12  ?idTipo :null
 		notificacionSchemas.idItem            = tipo==3 || tipo==4 || tipo==6  || tipo==7 || tipo==9 ?idTipo :null
 		notificacionSchemas.save(callback)
 	}

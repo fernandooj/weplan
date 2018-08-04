@@ -14,6 +14,7 @@ import './style/index.scss'; // import general styles, mixins etc...
 
 
 export const URL = window.location.origin;
+// export const URL = 'https://appweplan.com/';
 axios.defaults.baseURL = URL;
 
 // smoothscroll polyfill

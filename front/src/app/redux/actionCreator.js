@@ -48,11 +48,11 @@ const obtieneUsuarios = ()=>{
 
 const obtienePlan = ()=>{
 	return dispatch=>{
-		return axios.get('/x/v1/pla/plan')
+		return axios.get('/x/v1/pla/plan/planesPublicos')
 	    .then(res=>{
 	   		dispatch({
 	   			type:'OBTENER_PLANES',
-	   			planes: res.data.planes
+	   			planes: res.data.plan
 	   		})
 	    })
 	}

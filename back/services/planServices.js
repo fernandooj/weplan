@@ -16,11 +16,67 @@ class planServices {
 	getByIdPlanPopulate(_id, callback){
 		planSchema.find({_id}).populate('idUsuario', 'nombre ciudad photo').populate('restricciones').populate('asignados').exec(callback)
 	}
+
+	getPublicos(idUsuario, acceso, callback){
+		console.log(idUsuario)
+		idUsuario = mongoose.Types.ObjectId(idUsuario);	
+		if (acceso==='suscriptor') {
+			// planSchema.find({idUsuario, activo:true, tipo:'pago'}).populate('idUsuario', 'nombre ciudad photo').populate('restricciones').exec(callback)
+			planSchema.aggregate([
+			    {
+			    	$match:{
+			    		idUsuario
+			    	},
+			    },
+			    {
+		 			$lookup: {
+		 				from: "plans",
+		 				localField: "_id",
+		 				foreignField: "planPadre",
+		 				as: "PlanData"
+		 			}
+		 		},
+			    {
+	 			$project:{
+		 				_id:1,
+		 				nombre:1,
+		 				tipo:1,
+		 				area:1,
+		 				lugar:1,
+		 				activo:1,
+		 				planPadre:{ $size: "$PlanData._id" },
+		 			},
+		 		},
+			], callback)
+		}else{
+			planSchema.find({}, null, {sort: {_id: -1}}).populate('asignados').populate('idUsuario', 'nombre ciudad photo').populate('restricciones').exec(callback)
+		}
+	}
+	//// me devuelve los de pago, con lat y lng
+	getByPagoLatLng(lat, lng, callback){
+		planSchema.aggregate([
+		    {
+		    	$geoNear: {
+			        near: { type: "Point", coordinates: [  parseFloat(lng) ,  parseFloat(lat) ] },
+			        distanceField: "dist",
+			      	query: { tipo: "pago" },
+			        maxDistance: 30000,
+			        num: 5,
+			        spherical: true
+			    }
+		    },
+		    {
+		    	$sort:{
+		    		_id:-1
+		    	}
+		    }
+		], callback)
+	}
 	getByUserId(asignados, callback){
 		planSchema.find({$or:[{'asignados':asignados, activo:true},{'idUsuario':asignados, activo:true}]}, null, {sort: {_id: -1}}).populate('idUsuario', 'nombre ciudad photo').populate('asignados', 'nombre ciudad photo').exec(callback)
 	}
-	create(planData, id, callback){
-		console.log(planData)
+	create(planData, id, lat, lng, callback){
+		let loc = {'type':'Point', "coordinates": [parseFloat(lng), parseFloat(lat)] }
 		let plan 			 = new planSchema();
 		plan.tipo 		     = planData.tipo	
 		plan.nombre 		 = planData.nombre	
@@ -29,9 +85,8 @@ class planServices {
 		plan.activo          = true	
 		plan.idUsuario 		 = id	
 		plan.fechaLugar 	 = planData.fechaLugar
-		plan.lat 			 = planData.lat	
+		plan.loc 			 = loc
 		plan.area 			 = planData.area	
-		plan.lng 			 = planData.lng	 
 		plan.lugar 			 = planData.lugar	
 		plan.asignados 		 = planData.asignados	
 		plan.imagenOriginal  = planData.imagenOriginal	

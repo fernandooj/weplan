@@ -99,12 +99,14 @@ class itemServices {
 			        abono:"$PagoData.abono",
 			        userIdPago:'$PagoData.userId',
 			        titulo:1,
-			        abierto:1
+			        abierto:1,
+			        activo:"$PagoData.activo",
 			    }
 			},
 			{
 				"$match": {
 					abono:true,
+					activo:true,
 					// userIdPago:{
 					// 	$ne:userId
 					// },
@@ -136,24 +138,25 @@ class itemServices {
 					from:"pagos",
 					localField:"_id",
 					foreignField:"itemId",
-					as:"PlanData"
+					as:"PagoData"
 				}
 			}, 
 			{
 			    $unwind:{
-			        path:"$PlanData",
+			        path:"$PagoData",
 			        preserveNullAndEmptyArrays:true
 			    }
 			},
 			{
 			    $project:{
 			        _id:1,
-			        userIds:"$PlanData.userId",
+			        userIds:"$PagoData.userId",
 			        userId:1,
-	 				montos:"$PlanData.monto",
-	 				pagoId:"$PlanData._id",
-			        abono:"$PlanData.abono",
+	 				montos:"$PagoData.monto",
+	 				pagoId:"$PagoData._id",
+			        abono:"$PagoData.abono",
 			        titulo:1,
+			        activo:"$PagoData.activo",
 			    }
 			},
 			{
@@ -161,7 +164,8 @@ class itemServices {
 					userId:{
 						$ne:idUser
 					},
-					userIds:idUser
+					userIds:idUser,
+					activo:true,
 				}
 		    },
 		    {

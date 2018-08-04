@@ -41,12 +41,12 @@ class pagoServices{
 	////////   id: es el id del usuario quien hace el pago, lo puede hacer el mismo usuario, o el dueño del item puede generar el abono
 	////////   userIdAbona: es quien hace el abono del pago, puede ser el mismo usuario o el dueño del item
 	//////////////////////////////////////////////////////////////////////////////////////////
-	create(data, id, userIdAbona, callback){
+	create(data, id, userIdAbona, activo, callback){
 		let chat = new pagoSchema();
 		chat.monto  	  = data.monto
 		chat.abono  	  = data.abono
 		chat.descripcion  = data.descripcion
-		chat.activo  	  = true
+		chat.activo  	  = activo
 		chat.userId  	  = id!==null ?id :data.userId
 		chat.userIdAbona  = userIdAbona
 		chat.itemId 	  = data.itemId
@@ -56,6 +56,12 @@ class pagoServices{
 	edit(_id, monto, callback){
 		pagoSchema.findOneAndUpdate({_id}, {$set: {
             'monto': monto,
+            'updatedAt': moment().format('YYYY-MM-DD h:mm:ss')
+    	}}, callback);
+	}
+	activa(_id, callback){
+		pagoSchema.findOneAndUpdate({_id}, {$set: {
+            'activo': true,
             'updatedAt': moment().format('YYYY-MM-DD h:mm:ss')
     	}}, callback);
 	}

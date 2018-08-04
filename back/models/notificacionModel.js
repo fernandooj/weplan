@@ -20,6 +20,7 @@ let notificacionSchema = mongoose.Schema({
 	idAmigoUser 		: { type: Schema.Types.ObjectId, ref:'amigoUser'},
 	idItem 				: { type: Schema.Types.ObjectId, ref:'Item'},
 	idPlan 				: { type: Schema.Types.ObjectId, ref:'Plan'},
+	idPago 				: { type: Schema.Types.ObjectId, ref:'Pago'},
 	tipo      			: Number,
 	activo    			: Boolean,
 	eliminado  			: Boolean,
@@ -40,7 +41,9 @@ module.exports = mongoose.model('Notificacion', notificacionSchema)
 /// tipo 6   ==> notificacion cuando se acepto ser parte del item 
 /// tipo 7   ==> notificacion cuando te aceptaron como parte del item
 /// tipo 8   ==> notificacion cuando se salio del plan 
-/// tipo 9   ==> notificacion cuando se salio del item 
+/// tipo 9   ==> notificacion cuando se salio del item
+/// tipo 10  ==> notificacion cuando se realizo pago en efectivo 
+/// tipo 11  ==> notificacion cuando se acepto el pago en efectivo 
 
 /// activo ===> queda la notificacion en estado innactivo si es false no muestra los botones
 /// eliminado ===> elimina la notificacion del front, pero aca se sigue viendo

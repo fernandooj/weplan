@@ -22,6 +22,8 @@
     "image-size": "^0.6.2",
     "imageinfo": "^1.0.4",
     "images-upload-middleware": "^1.1.1",
+    "ip": "^1.1.5",
+    "ip-locator": "0.0.1",
     "jimp": "^0.2.28",
     "moment": "^2.18.1",
     "mongoose": "^4.6.0",

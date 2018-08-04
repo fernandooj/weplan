@@ -4,13 +4,22 @@ let mongoose = require('mongoose')
 let Schema = mongoose.Schema
 let moment   = require('moment');
 
-
+const geoSchema = mongoose.Schema({
+	type:{
+		type:String,
+		default:"Point"
+	},
+	coordinates:{
+		type:[Number],
+		index:'2dsphere'
+	}
+})
 
 let planSchema = mongoose.Schema({
 	createdAt	  :  { type: String, default: moment().format('YYYY-MM-DD h:mm') },
 	nombre        :  { type : String },
 	tipo		  :  { type: String},
-	area		  :  { type: String},
+	area		  :  { type: Number},
 	activo		  :  { type: Boolean},
 	descripcion   :  { type : String },
 	imagenOriginal  : [{ type : String }],
@@ -19,8 +28,8 @@ let planSchema = mongoose.Schema({
 	restricciones : [{ type: Schema.Types.ObjectId, ref:'Restricciones'}],
 	idUsuario     :  { type: Schema.Types.ObjectId, ref:'User'},
 	fechaLugar    :  { type: String}, 
-	lat 		  :  { type: String},
-	lng           :  { type: String},
+	loc 		  :  geoSchema,
+	 
 	lugar         :  { type: String},
 	asignados     : [{ type: Schema.Types.ObjectId, ref:'User'}],
 	categorias    : [{ type: Schema.Types.ObjectId, ref:'CategoriaPlan'}],

@@ -43,9 +43,9 @@ router.get('/', (req, res)=>{
 					btnEliminar:false, /// pongo este valor para que muestre el boton de eliminar
 					idUser : e.idUsuarioAsigna &&e.idUsuarioAsigna._id,
 					nombre : e.idUsuarioAsigna &&e.idUsuarioAsigna.nombre,
-					idTipo : e.idAmigoUser ?e.idAmigoUser._id 	     :e.idPlan ?e.idPlan._id 				:e.idItem ?e.idItem._id 			:e.idItem===4 &&e.idItem._id,
-					photo  : e.idAmigoUser ?e.idUsuarioAsigna.photo  :e.idPlan ?e.idPlan.imagenMiniatura[0] :e.idItem ?e.idItem.imagenMiniatura :e.idItem===4 ?e.idItem.imagenMiniatura :e.tipo==5 &&e.idUsuarioAsigna.photo ,
-					titulo : e.idAmigoUser ?e.idUsuarioAsigna.nombre :e.idPlan ?e.idPlan.nombre 			:e.idItem ?e.idItem.titulo 			:e.idItem===4 &&e.idItem.titulo,
+					idTipo : e.idAmigoUser ?e.idAmigoUser._id :e.idPlan ?e.idPlan._id :e.idPago ?e.idPago._id	:e.idItem ?e.idItem._id :e.idItem===4 &&e.idItem._id,
+					photo  : e.idAmigoUser ?e.idUsuarioAsigna.photo  :e.idPlan ?e.idPlan.imagenMiniatura[0] :e.idItem ?e.idItem.imagenMiniatura :e.idItem===4 ?e.idItem.imagenMiniatura :e.tipo==5 ?e.idUsuarioAsigna.photo :e.idPago &&e.idUsuarioAsigna.photo ,
+					titulo : e.idAmigoUser ?e.idUsuarioAsigna.nombre :e.idPlan ?e.idPlan.nombre :e.idPago ?e.idPago.monto :e.idItem ?e.idItem.titulo :e.idItem===4 &&e.idItem.titulo,
 					token  : e.idUsuarioAsigna &&e.idUsuarioAsigna.tokenPhone,
 					////////////////////////////  AMIGOS  ////////////////////////////////////
 					//idAmigoUser : e.idAmigoUser ?e.idAmigoUser._id 				:null,
@@ -111,10 +111,37 @@ router.put('/:idNotificacion/:idTipo/:tipo/:idUser', (req,res)=>{
 			?activaAmigoUser(req.params.idTipo, req.params.idUser, req.session.usuario.user._id, res) 
 			:req.params.tipo==3 || req.params.tipo==4
 			?verificaItemAbierto(req.session.usuario, req.params.idTipo, id, res, req) 
+			:req.params.tipo==11
+			?editaPago(req.params.idTipo, req.session.usuario.user._id, req.params.idUser, res) 
 			:res.json({status:'SUCCESS', notificacion, code:1}) 
 		}
 	})
 })
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///// 			edito el pago y lo activo
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const editaPago =(idTipo,  idSession, idUser, res)=>{
+	console.log("idTipo")
+	console.log(idTipo)
+	pagoServices.activa(idTipo, (err, pago)=>{
+		if (err) {
+			res.json({status:'FAIL', err, code:0})    
+		}else{
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			///////////////////  creo la notificacion de que ya acepto ser amigo
+			notificacionService.create(idSession, idUser, 11, idTipo, false, (err, notificacion)=>{
+				if (err) {
+					res.json({status:'FAIL', err, code:0})    
+				}else{
+					res.json({status:'SUCCESS', notificacion, code:1})    
+				}
+			})	
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		}
+	})
+}
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -194,7 +221,7 @@ const nuevoPago = (req, res, itemId, idUser, montoCreador, item) =>{
 	req.body['monto']=-(req.body.monto)
 	req.body['descripcion']='pago inicial por inscribirse'
 	//pagoServices.create(req.body, req.session.usuario.user._id, req.session.usuario.user._id, (err, pago)=>{
-	pagoServices.create(req.body, idUser, idUser, (err, pago)=>{
+	pagoServices.create(req.body, idUser, idUser, true, (err, pago)=>{
 		if(err){
 			res.json({err})
 		}else{
@@ -285,10 +312,31 @@ router.put('/cancelar/:idNotificacion/:idTipo/:tipo/:idUser', (req, res)=>{
 			?eliminaUserPlan(req.params.idTipo, req.session.usuario.user._id, res) 
 			:req.params.tipo==3 
 			?eliminarUserItem(req.params.idTipo, req.params.idUser, res, req) 
+			:req.params.tipo==11
+			?rechazaPago(req.params.idTipo, req.session.usuario.user._id, req.params.idUser, res) 
 			:res.json({status:'SUCCESS', notificacion, code:1}) 
 		}
 	})
 })
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///// 			activo el usuario si es true es que ya son amigos
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const rechazaPago =(idTipo,  idSession, idUser, res)=>{
+	 
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////  creo la notificacion de que ya acepto ser amigo
+	notificacionService.create(idSession, idUser, 12, idTipo, false, (err, notificacion)=>{
+		if (err) {
+			res.json({status:'FAIL', err, code:0})    
+		}else{
+			res.json({status:'SUCCESS', notificacion, code:1})    
+		}
+	})	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	 
+}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////// 			no acepto que un usuario sea parte de un item 

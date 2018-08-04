@@ -29,7 +29,7 @@ class App extends Component {
   render() {
     let showMenu=false
     const { code, usuario } = this.props.usuario
-   
+ 
 
     if (this.props.perfil.code==1) {
       showMenu=true
@@ -56,7 +56,7 @@ class App extends Component {
       <div id="appContainer">
         <NavigationBar
           showMenu={showMenu}
-          infoUser={this.props.perfil.usuario}
+          infoUser={this.props.perfil.user}
           handleLeftNavItemClick={this.handleLeftNavItemClick}
           handleRightNavItemClick={this.handleRightNavItemClick}
         />

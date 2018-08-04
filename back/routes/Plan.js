@@ -9,15 +9,20 @@ let fecha = moment().format('YYYY-MM-DD-h-mm')
 let Jimp = require("jimp");
 let redis        = require('redis')
 let cliente      = redis.createClient()
-var { promisify } = require('util');
-var sizeOf = promisify(require('image-size'));
+let { promisify } = require('util');
+let sizeOf = promisify(require('image-size'));
 let mongoose = require('mongoose')
+let ip = require("ip");
+let ipLocator = require('ip-locator')
+
 let planServices = require('../services/planServices.js')
 const ubicacion     =  '../../front/docs/public/uploads/plan/'
 const ubicacionJimp =  '../front/docs/public/uploads/plan/'
 let notificacionService = require('../services/notificacionServices.js');
 
-
+ 
+ 
+ 
 router.get('/', (req, res)=>{
 	planServices.get((err, planes)=>{
 		if (err) {
@@ -27,6 +32,33 @@ router.get('/', (req, res)=>{
 		}
 	})
 })
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////// OBTENGO LOS PLANES PUBLICOS DEL USUARIO LOGUEADO, ESTO PARA EL ADMINISTRADOR
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+router.get('/planesPublicos/', (req, res)=>{
+	planServices.getPublicos(req.session.usuario.user._id, req.session.usuario.user.acceso, (err, plan)=>{
+		if (err) {
+			res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
+		}else{
+			res.json({ status: 'SUCCESS', plan, code:1 });	
+		}
+	})
+})
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////// CUENTA CUANTOS PLANES PRIVADOS SE HAN ABIERTO Y CERRADO POR ACA PLA PUBLICO
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+router.get('/cuentaPlanesPublicos/:id', (req, res)=>{
+	planServices.getCuentaPublicos(req.params.id, (err, plan)=>{
+		if (err) {
+			res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
+		}else{
+			res.json({ status: 'SUCCESS', plan, code:1 });	
+		}
+	})
+})
+
 
 router.get('/:pago', (req, res)=>{
 	if (req.params.pago==='pago') {
@@ -48,6 +80,27 @@ router.get('/:pago', (req, res)=>{
 	}
 })
  
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////// OBTENGO LOS PLANES DEL HOME, LOS QUE ESTAN MAS CERCA DEL USUARIO, DEPENDIENDO DE LA UBICACION Y DEL AREA DE INFLUENCIA
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+router.get(`/pago/:lat/:lon`, (req,res)=>{
+	ipLocator.getDomainOrIPDetails(ip.address(),'json', function (err, data) {
+	  let lat = req.params.lat ?req.params.lat :data.lat
+	  let lon = req.params.lon ?req.params.lon :data.lon
+ 
+	  planServices.getByPagoLatLng(lat, lon, (err, planes)=>{
+			if (err) {
+				res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
+			}else{
+				planes = planes.filter(e=>{
+					return (e.dist<e.area)	
+				})
+				res.json({ status: 'SUCCESS', planes, code:1 });	
+			}
+		})
+	})
+})
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////// OBTENGO LOS PLANES DE UN USUARIO ESPECIFICO
@@ -99,26 +152,33 @@ router.post('/', function(req, res){
 	if(req.session.usuario===undefined || req.session.usuario.user==null){
         res.json({status:'FAIL', user: 'SIN SESION', code:0 })
     }else{
-    	planServices.create(req.body, req.session.usuario.user._id, (err, plan)=>{
-			if(err){
-				res.json({err})
-			}else{
-				if (req.body.planPadre) {
-						req.body.asignados.map(e=>{
-							let mensajeJson={
-								userId:e,
-								notificacion:true,
-							}
-							cliente.publish('notificacion', JSON.stringify(mensajeJson))
-							notificacionService.create(req.session.usuario.user._id, e, 2, plan._id, true, (err, notificacion)=>{
-								console.log(notificacion)
-							})
-						})
-					res.json({status:'SUCCESS', message: plan, code:1})  
+    	ipLocator.getDomainOrIPDetails(ip.address(),'json', function (err, data) {
+			let lat = req.body.lat ?req.body.lat :data.lat
+			let lon = req.body.lng ?req.body.lng :data.lon
+
+	    	planServices.create(req.body, req.session.usuario.user._id, lat, lon, (err, plan)=>{
+	    		console.log(err)
+				if(err){
+					res.json({err})
 				}else{
-					res.json({ status: 'SUCCESS', message: plan, code:1 });	
+					if (req.body.planPadre) {
+							req.body.asignados.map(e=>{
+								let mensajeJson={
+									userId:e,
+									notificacion:true,
+								}
+								cliente.publish('notificacion', JSON.stringify(mensajeJson))
+								notificacionService.create(req.session.usuario.user._id, e, 2, plan._id, true, (err, notificacion)=>{
+									console.log(notificacion)
+								})
+							})
+						res.json({status:'SUCCESS', message: plan, code:1})  
+					}else{
+
+						res.json({ status: 'SUCCESS', message: plan, code:1 });	
+					}
 				}
-			}
+			})
 		})
     }
 })
