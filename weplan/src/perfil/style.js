@@ -74,7 +74,6 @@ export const perfilStyle = MediaQueryStyleSheet.create({
 
 	},
 	inputCiudad:{
-		color: '#8F9093',
 		height:40,
 	},
 	disabled:{

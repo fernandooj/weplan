@@ -3,7 +3,6 @@ import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Picker, Aler
 
 import {CreatePlanStyle} from '../createPlan/style'
 import axios from 'axios'
-import Modal from 'react-native-modalbox';
 import DatePicker from 'react-native-datepicker'
 import moment from 'moment'
 import Slideshow from 'react-native-slideshow';
@@ -16,7 +15,19 @@ import TakePhotoComponent 	  		 from '../takePhoto/takePhotoComponent.js'
 import CabezeraComponent from '../ajustes/cabezera.js'
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
 import AlertInput from 'react-native-alert-input';
+import ModalPicker from 'react-native-modal-picker'
+
 const screenWidth = Dimensions.get('window').width;
+const influencia = [
+	{label:'1 Km',  key:1000},
+	{label:'5 km',  key:5000},
+	{label:'7 km',  key:7000},
+	{label:'15 km', key:15000},
+	{label:'30 km', key:30000}
+]
+
+ 
+
 export default class createPlanComponent extends Component{
 	constructor(props){
 		super(props);
@@ -239,14 +250,17 @@ export default class createPlanComponent extends Component{
 					{  
 						!cargaPlan.lugar
 						?<View style={CreatePlanStyle.cajaInpunts}>
-				    	<Image source={require('./map.png')} style={CreatePlanStyle.iconInput} />
-					    <TouchableOpacity onPress={() => this.setState({mapa:true})}>
-					    	<Text style={direccion ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>{direccion ?direccion.substr(0,60) :'Ubicación'}</Text>
-					    </TouchableOpacity>
+				    		<Image source={require('./map.png')} style={CreatePlanStyle.iconInput} />
+					    	<TouchableOpacity onPress={() => this.setState({mapa:true})}  style={direccion ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>
+					    		<Text style={direccion ?CreatePlanStyle.textos :CreatePlanStyle.textosActivo}>{direccion ?direccion.substr(0,60) :'Ubicación'}</Text>
+					    	</TouchableOpacity>
 						</View>
 					   :<TouchableOpacity onPress={() => this.setState({mapa:true})} style={CreatePlanStyle.cajaInpunts}> 
 			    			<Image source={require('./map.png')} style={CreatePlanStyle.iconInput} />
-			    			<Text style={[CreatePlanStyle.btnInputs]}>{cargaPlan.lugar}</Text>
+			    			<View style={direccion ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>
+					    		<Text style={[CreatePlanStyle.textosActivo]}>{cargaPlan.lugar}</Text>
+					    	</View>
+			    			
 						</TouchableOpacity>	
 					}
 					{
@@ -263,8 +277,8 @@ export default class createPlanComponent extends Component{
 				    	<Image source={require('./denied.png')} style={CreatePlanStyle.iconInput} />
 					    {
 					    	restricciones.length==0
-					    	?<TouchableOpacity onPress={()=>this.setState({ restriccion:true})}>
-						    	<Text style={restricciones.length>0 ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>{restricciones.length>0 ?'tienes: '+restricciones.length+' Restricciones' :'Restricciones'}</Text>
+					    	?<TouchableOpacity onPress={()=>this.setState({ restriccion:true})} style={restricciones.length>0 ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>
+						    	<Text style={restricciones.length>0 ?CreatePlanStyle.textos :CreatePlanStyle.textosActivo}>{restricciones.length>0 ?'tienes: '+restricciones.length+' Restricciones' :'Restricciones'}</Text>
 						    </TouchableOpacity>
 					    	:<View style={CreatePlanStyle.contentAdd}>
 					    		<View style={CreatePlanStyle.agregadosContenedor}>
@@ -328,9 +342,17 @@ export default class createPlanComponent extends Component{
 				{/* Area de influencia */}
 				{	publico
 					&&<View style={CreatePlanStyle.cajaInpunts}>
-						<Image source={require('./area.png')} style={CreatePlanStyle.iconInput} />	
+						<Image source={require('./area.png')} style={CreatePlanStyle.iconInputArea} />	
 					    <View style={CreatePlanStyle.contenedorArea}>
-					    	<Picker
+					    	<ModalPicker
+				                data={influencia}
+				                initValue="Area de influencia"
+				                color='#8F9093'
+					            font={15}
+				                onChange={(e)=> this.setState({area:e.key})} 
+				                style={CreatePlanStyle.datePicker}
+				            />
+					    	{/*<Picker
 				                style={CreatePlanStyle.inputArea}
 						        onValueChange={(area) => this.setState({area})}
 						        selectedValue={this.state.area}
@@ -341,7 +363,7 @@ export default class createPlanComponent extends Component{
 					          	<Picker.Item label='7 Km' value='7'  />
 					          	<Picker.Item label='15 Km' value='15'  />
 					          	<Picker.Item label='30 Km' value='30'  />
-				            </Picker>
+				            </Picker>*/}
 			            </View>
 			        </View>
 				}
@@ -398,74 +420,107 @@ export default class createPlanComponent extends Component{
 		tipo        = publico ? 'pago' :'suscripcion'
 		area        = cargaPlan ?cargaPlan.area :area
 
-		console.log(lugar)
-		if (!cargaPlan) {
-			let data = new FormData();
-			axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, restricciones, tipo, lugar, area})
-			.then(e=>{
-				if(e.data.code==1){	
-					let id = e.data.message._id;
-					data.append('imagen', imagen);
-					data.append('id', e.data.message._id);
-					axios({
-						method: 'put', //you can set what request you want to be
-						url: '/x/v1/pla/plan',
-						data: data,
-						headers: {
-							'Accept': 'application/json',
-							'Content-Type': 'multipart/form-data'
-						}
-					})
-					.then((res)=>{
-						console.log(res.data)
-						if(res.data.status=="SUCCESS"){
-						usuariosAsignados.map(e=>{
-							sendRemoteNotification(2, e.token, 'misPlanes', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, res.data.rutaImagenResize[0])
-						})
-							if (!publico) {
-								navigate('chat', id)
-							}else{
-								Alert.alert(
-									`Tu plan ha sido creado`,
-									'ya puedes ir a pagar para que se muestre en el home',
-								[
-									{text: 'Mejor Luego', onPress: () => navigate('inicio')},
-									{text: 'Pagar', onPress: () => navigate('medioPago')},
-								],
-									{ cancelable: false }
-								)
-							}
-							
-						}
-					})
-					.catch((err)=>{
-						console.log(err)
-					})
-				}
+		console.log("area" +area)
+		console.log("lugar" + lugar)
 
-			})
-			.catch(err=>{
-				alert('error intenta nuevamente')
-				console.log(err)
-			})
-		}else{
-			axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, lugar, area, restricciones, tipo, imagenOriginal:imagen, imagenResize:imagen, imagenMiniatura:imagen, planPadre})
-			.then(e=>{
-				if(e.data.code==1){	
-					let id = e.data.message._id;
-					usuariosAsignados.map(e=>{
-						sendRemoteNotification(2, e.token, 'misPlanes', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, imagen)
-					})
-					 
-						navigate('chat', id)
-					 
-				}
-
-			})
-			.catch(err=>{
-				console.log(err)
-			})
+		if (!imagen &&tipo=='pago') {
+			Alert.alert(
+			  'La imagen es obligatoria',
+			  '',
+			  [
+			    {text: 'OK', onPress: () => console.log('OK Pressed')},
+			  ],
+			  { cancelable: false }
+			)
 		}
-		
+		else if (!lugar &&tipo=='pago') {
+			Alert.alert(
+			  'Selecciona un lugar',
+			  '',
+			  [
+			    {text: 'OK', onPress: () => console.log('OK Pressed')},
+			  ],
+			  { cancelable: false }
+			)
+		}
+		else if ((area==='' || !area) &&tipo=='pago') {
+			Alert.alert(
+			  'El area no puede ser vacia',
+			  '',
+			  [
+			    {text: 'OK', onPress: () => console.log('OK Pressed')},
+			  ],
+			  { cancelable: false }
+			)
+		}
+		else{
+			if (!cargaPlan) {
+				let data = new FormData();
+				axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, restricciones, tipo, lugar, area})
+				.then(e=>{
+					if(e.data.code==1){	
+						let id = e.data.message._id;
+						data.append('imagen', imagen);
+						data.append('id', e.data.message._id);
+						axios({
+							method: 'put', //you can set what request you want to be
+							url: '/x/v1/pla/plan',
+							data: data,
+							headers: {
+								'Accept': 'application/json',
+								'Content-Type': 'multipart/form-data'
+							}
+						})
+						.then((res)=>{
+							console.log(res.data)
+							if(res.data.status=="SUCCESS"){
+							usuariosAsignados.map(e=>{
+								sendRemoteNotification(2, e.token, 'misPlanes', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, res.data.rutaImagenResize[0])
+							})
+								if (!publico) {
+									navigate('chat', id)
+								}else{
+									Alert.alert(
+										`Tu plan ha sido creado`,
+										'ya puedes ir a pagar para que se muestre en el home',
+									[
+										{text: 'Mejor Luego', onPress: () => navigate('inicio')},
+										{text: 'Pagar', onPress: () => navigate('medioPago')},
+									],
+										{ cancelable: false }
+									)
+								}
+								
+							}
+						})
+						.catch((err)=>{
+							console.log(err)
+						})
+					}
+
+				})
+				.catch(err=>{
+					alert('error intenta nuevamente')
+					console.log(err)
+				})
+			}else{
+				axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, lugar, area, restricciones, tipo, imagenOriginal:imagen, imagenResize:imagen, imagenMiniatura:imagen, planPadre})
+				.then(e=>{
+					if(e.data.code==1){	
+						let id = e.data.message._id;
+						usuariosAsignados.map(e=>{
+							sendRemoteNotification(2, e.token, 'misPlanes', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, imagen)
+						})
+						 
+							navigate('chat', id)
+						 
+					}
+
+				})
+				.catch(err=>{
+					console.log(err)
+				})
+			}
+		}
 	}
 }			

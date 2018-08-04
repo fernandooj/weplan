@@ -74,34 +74,36 @@ export default class LoginComponent extends Component{
 						console.log("Error: ", error);
 					}
 				}else{
-					fetch(`https://graph.facebook.com/v2.12/me?fields=id,name,birthday,email,address,age_range,gender,picture{url}&access_token=${data.credentials.token}`)
-			        .then((response) => response.json())
-			        .then((result) => {
-			        	let accessToken1 = null
-						let idUser1 = result.id
-						let name1 = result.name
-						let photo1 = result.picture.data.url
-						let email1 = result.email
-						let tipo1 = 'facebook'
-						let acceso = 'suscriptor'
-						console.log({accessToken:accessToken1, idUser:idUser1, nombre:name1, photo:photo1, email:email1, tipo:tipo1, tokenPhone:token})
-						axios.post('/x/v1/user/facebook', {accessToken:accessToken1, idUser:idUser1, nombre:name1, photo:photo1, email:email1, username:email1, tipo:tipo1, acceso, tokenPhone:token})
-						.then((e)=>{
-							console.log(e.data.user)
-							if (e.data.code==1) {
-								if (e.data.user.categorias.length>1) {
-									navigate('inicio') 
-									saveInfo(e.data.user)
-								}else{
-									saveInfo(e.data.user)
-									navigate('editPerfil2') 
+					if (!error) {
+						fetch(`https://graph.facebook.com/v2.12/me?fields=id,name,birthday,email,address,age_range,gender,picture{url}&access_token=${data.credentials.token}`)
+				        .then((response) => response.json())
+				        .then((result) => {
+				        	let accessToken1 = null
+							let idUser1 = result.id
+							let name1 = result.name
+							let photo1 = result.picture.data.url
+							let email1 = result.email
+							let tipo1 = 'facebook'
+							let acceso = 'suscriptor'
+							console.log({accessToken:accessToken1, idUser:idUser1, nombre:name1, photo:photo1, email:email1, tipo:tipo1, tokenPhone:token})
+							axios.post('/x/v1/user/facebook', {accessToken:accessToken1, idUser:idUser1, nombre:name1, photo:photo1, email:email1, username:email1, tipo:tipo1, acceso, tokenPhone:token})
+							.then((e)=>{
+								console.log(e.data.user)
+								if (e.data.code==1) {
+									if (e.data.user.categorias.length>1) {
+										navigate('inicio') 
+										saveInfo(e.data.user)
+									}else{
+										saveInfo(e.data.user)
+										navigate('editPerfil2') 
+									}
 								}
-							}
-						})
-			        })
-			        .catch(() => {
-			          reject('ERROR')
-			        })
+							})
+				        })
+				        .catch(() => {
+				          reject('ERROR')
+				        })
+				    }
 				}
 			})	
 		}else{

@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, Platform} from 'react-native';
 var screenHeight = Dimensions.get('window').height;
 var screenWidth = Dimensions.get('window').width;
 import { MediaQueryStyleSheet } from "react-native-responsive";
@@ -59,7 +59,6 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 	},
 	btnInputs:{
 		borderWidth: 0,
-		alignItems: 'center',
 		marginTop:10,
 		width:240,
 		height:40,
@@ -67,10 +66,14 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		borderRadius: 50,
 		paddingLeft:20,
 		paddingTop:10,
+	},
+	textos:{
 		color:'#969696'
 	},
-	btnColor2Input:{
+	textosActivo:{
 		color:'#c9c9c9',
+	},
+	btnColor2Input:{
 		backgroundColor: '#f1f3f3',
 	},
 	cajaInpunts:{
@@ -83,6 +86,13 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		height:30,
 		position:'relative',
 		top:15,
+		marginRight:25
+	},
+	iconInputArea:{
+		width:34,
+		height:34,
+		position:'relative',
+		top:8,
 		marginRight:25
 	},
 	textInput:{
@@ -124,7 +134,7 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		padding:5,
 	},
 	textoCargado2:{
-		marginTop:-69,
+		marginTop: Platform.OS === 'android' ?-69 : -40,
 		backgroundColor:'#rgba(0,0,0,.5)',
 		width:'100%',
 		padding:5,
@@ -193,7 +203,6 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		position:'relative',
 		top:30,
 		left:-20,
-		fontSize:20,
 		width:20,
 		height:20,
 	},
@@ -293,13 +302,10 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 	contenedorArea:{
 		backgroundColor:'#F2F4F4',
 		borderRadius:50,
-		 
+		width:240,
 		marginTop:10,
 	 	paddingLeft:15,
- 
 		flexDirection: 'row',
-		justifyContent: 'center',
-
 	},
 	inputArea:{
 		color: '#8F9093',
@@ -309,18 +315,6 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		
 		color:'#969696'
 	},
-	// borderWidth: 0,
-	// alignItems: 'center',
-	// marginTop:10,
-	// width:240,
-	// height:40,
-	// backgroundColor: '#D9E6F4',
-	// borderRadius: 50,
-	// paddingLeft:20,
-	// paddingTop:10,
-	// color:'#969696'
-
-
 },{
 	"@media (max-device-width: 320)": {
 		textarea:{

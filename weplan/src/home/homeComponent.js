@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, ImageBackground, ScrollView, Platform, Keyboard} from 'react-native'
+import {View, Text, Image, TouchableOpacity, ImageBackground, ScrollView, Platform, Keyboard, Dimensions, Alert} from 'react-native'
 import {HomeStyle} from '../home/style'
 import axios from 'axios'
 
@@ -10,6 +10,13 @@ import FooterComponent 	 from '../cabezeraFooter/footerComponent'
 import FCM, {NotificationActionType} from "react-native-fcm";
 import {registerKilledListener, registerAppListener} from "../push/Listeners";
 
+
+const {width, height} = Dimensions.get('window')
+const SCREEN_HEIGHT = height
+const SCREEN_WIDTH = width
+const ASPECT_RATIO = width / height
+const LATITUD_DELTA = 0.092
+const LONGITUDE_DELTA  = LATITUD_DELTA * ASPECT_RATIO
 registerKilledListener();
 export default class homeComponent extends Component{
 	constructor(props){
@@ -27,18 +34,50 @@ export default class homeComponent extends Component{
 		}
 	
 	}
-	componentWillMount(){
-		Keyboard.dismiss()
-		axios.get('/x/v1/pla/plan/pago')
+
+	getPlans(lat, lng){
+		axios.get(`/x/v1/pla/plan/pago/${lat}/${lng}`)
 		.then(e=>{
+			console.log(e.data)
 			this.setState({planes:e.data.planes})
 		})
 		.catch(err=>{
 			console.log(err)
-		})	
-
+		})
 	}
-
+	async componentWillMount(){
+		Keyboard.dismiss()
+		 
+			
+		navigator.geolocation.getCurrentPosition(e=>{
+			console.log(e)
+			let lat =parseFloat(e.coords.latitude)
+			let lng = parseFloat(e.coords.longitude)
+			 
+			this.setState({lat, lng})
+			this.getPlans(lat, lng)
+			Alert.alert(
+			  `lat: ${lat}`,
+			 `lng: ${lng}`,
+			  [
+			    {text: 'OK', onPress: () => console.log('OK Pressed')},
+			  ],
+			  { cancelable: false }
+			)
+		}, (error)=>this.watchID = navigator.geolocation.watchPosition(e=>{
+			let lat =parseFloat(e.coords.latitude)
+			let lng = parseFloat(e.coords.longitude)
+			 
+			this.setState({lat, lng})
+			this.getPlans(lat, lng)
+		},
+		(error) => this.getPlans(null, null),
+		{enableHighAccuracy: true, timeout:5000, maximumAge:0})
+      )
+	}
+	componentWillUnmont(){
+		navigator.geolocation.clearWatch(this.watchID)
+	}
 	  async componentDidMount(){
 	    registerAppListener(this.props.navigation);
 	    FCM.getInitialNotification().then(notif => {
@@ -60,6 +99,8 @@ export default class homeComponent extends Component{
 	    } 
 	}
 
+
+
 	renderPlans(){
 		const {navigate} = this.props.navigation
 		return this.state.planes.map((e, key)=>{
@@ -73,6 +114,7 @@ export default class homeComponent extends Component{
 							</TouchableOpacity>	
 						</View>
 						<Text style={HomeStyle.textFooter2}>{e.descripcion}</Text>
+						<Text style={HomeStyle.textFooter2}>Estas a {parseInt(e.dist)} Metros</Text>
 						<View style={HomeStyle.footer2}>
 							{/*<Image source={require('./icon5.png')} style={HomeStyle.iconFooter} />*/}
 							<Image source={require('./icon6.png')} style={HomeStyle.iconFooter} />
@@ -87,8 +129,9 @@ export default class homeComponent extends Component{
 		})
 	}
 	updatePlanes(){
-		axios.get('/x/v1/pla/plan/pago')
+		axios.get(`/x/v1/pla/plan/pago/${this.state.lat}/${this.state.lng}`)
 		.then(e=>{
+			console.log(e.data)
 			this.setState({planes:e.data.planes})
 		})
 		.catch(err=>{
@@ -97,8 +140,9 @@ export default class homeComponent extends Component{
 	}
 	handleScroll(event) {
 		if(event.nativeEvent.contentOffset.y<=0){
-			axios.get('/x/v1/pla/plan/pago')
+			axios.get(`/x/v1/pla/plan/pago/${this.state.lat}/${this.state.lng}`)
 			.then(e=>{
+				console.log(e.data)
 				this.setState({planes:e.data.planes})
 			})
 			.catch(err=>{

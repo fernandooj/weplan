@@ -1,9 +1,8 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Alert} from 'react-native'
+import {View, Text, Image, TouchableOpacity, ScrollView, Alert} from 'react-native'
 
 import {InfoPlanStyle} from '../infoPlan/style'
 import axios from 'axios'
-import Modal from 'react-native-modalbox';
 import Icon from 'react-native-fa-icons';
 import DatePicker from 'react-native-datepicker'
 import moment from 'moment'

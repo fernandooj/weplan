@@ -11,9 +11,9 @@ export default class pagoComponent extends Component{
  		item:{asignados:[], userId:{}},
  		cc:false,
  		debito:false,
- 		efectivo:false,
+ 		efectivo:true,
  		valor:0,
- 		metodo:0
+ 		metodo:3
  	}
 	componentWillMount(){
 	 	let itemId = this.props.navigation.state.params.id
@@ -96,7 +96,7 @@ export default class pagoComponent extends Component{
 			{/* METODO DE PAGO CC/DEBITO/EFECTIVO */}
 				<Text style={PagoStyle.montoTitulo}>Metodo de Pago</Text>
 				<View style={PagoStyle.metodoContenedor}>
-					<TouchableOpacity onPress={(e)=>this.updateStateMetodo(1)} style={PagoStyle.metodoBtn}>
+					{/*<TouchableOpacity onPress={(e)=>this.updateStateMetodo(1)} style={PagoStyle.metodoBtn}>
 						{!cc
 						?<Image source={require('./cc.png')} style={PagoStyle.metodoImagen} />
 						:<Image source={require('./ccActivo.png')} style={PagoStyle.metodoImagen} />
@@ -109,7 +109,7 @@ export default class pagoComponent extends Component{
 						:<Image source={require('./debitoActivo.png')} style={PagoStyle.metodoImagen} />
 						}
 						<Text>Debito</Text>
-					</TouchableOpacity>
+					</TouchableOpacity>*/}
 					<TouchableOpacity onPress={(e)=>this.updateStateMetodo(3)} style={PagoStyle.metodoBtn}>
 						{!efectivo 
 						?<Image source={require('./efectivo.png')} style={PagoStyle.metodoImagen} />
@@ -176,6 +176,7 @@ export default class pagoComponent extends Component{
 		monto = parseInt(monto)
 		valor = Math.abs(valor)
 		descripcion = descripcion ? descripcion :'abono usuario'
+		console.log(montos, monto, valor)
   		const {navigate} = this.props.navigation		
 		if (monto> valor) {
 			Alert.alert(
@@ -188,7 +189,7 @@ export default class pagoComponent extends Component{
 			)
 		}else if(metodo==0){
 			Alert.alert(
-			  'el monto no puede ser mayor a tu deuda',
+			  'Selecciona algun metodo de pago',
 			  '',
 			  [
 			    {text: 'OK', onPress: () => console.log('OK Pressed')},
@@ -196,7 +197,7 @@ export default class pagoComponent extends Component{
 			  { cancelable: false }
 			)
 		}else{
-			axios.post('x/v1/pag/pago', {monto, metodo, descripcion, itemId, planId, abono:true, userId:null})
+			axios.post('x/v1/pag/pago', {monto, metodo, descripcion, itemId, planId, abono:true, userId:null, userItem:item.userId._id})
 			.then(e=>{
 				console.log(e.data)
 				if (e.data.code==1) {
@@ -207,7 +208,7 @@ export default class pagoComponent extends Component{
 					
 					Alert.alert(
 					  'tu pago fue actualizado',
-					  '',
+					   metodo==3 &&'Se ha enviado una notificacion al dueño del item',
 					  [
 					    {text: 'OK', onPress: () => navigate('item', planId)},
 					  ],

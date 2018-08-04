@@ -4,7 +4,8 @@ import {perfilStyle} from '../perfil/style'
 import axios from 'axios'
 import CabezeraComponent from '../ajustes/cabezera.js'
 import DatePicker from 'react-native-datepicker'
-import moment from 'moment'
+import moment from 'moment' 
+import ModalPicker from 'react-native-modal-picker'
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////  ARCHIVOS GENERADOS POR EL EQUIPO  //////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -13,7 +14,10 @@ import TakePhotoComponent 	from '../takePhoto/takePhotoComponent.js'
 import QrComponent from '../qr/qrComponent.js'
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////// 
-
+const generos = [
+	{label:'Masculino', key:1},
+	{label:'Femenino', key:2}
+]
 export default class perfilComponent extends Component{
 	constructor(props){
 		super(props)
@@ -36,27 +40,31 @@ export default class perfilComponent extends Component{
 		axios.get('/x/v1/user/profile') 
 		.then((res)=>{
 			console.log(res.data.user.user)
-			this.setState({nombre: res.data.user.user.nombre, apellido: res.data.user.user.apellido, ciudad: res.data.user.user.ciudad, photo:res.data.user.user.photo, 
-				nacimiento:res.data.user.user.nacimiento, sexo:res.data.user.user.sexo, id: res.data.user.user._id})
+			let ciudad = res.data.user.user.ciudad ? res.data.user.user.ciudad :'Ciudad'
+			let sexo = res.data.user.user.sexo ? res.data.user.user.sexo :'Genero'
+			this.setState({nombre: res.data.user.user.nombre, apellido: res.data.user.user.apellido, ciudad, photo:res.data.user.user.photo, 
+				nacimiento:res.data.user.user.nacimiento, sexo, id: res.data.user.user._id})
 		})
 		.catch((err)=>{
 			console.log(err)
 		})
 		axios.get('/x/v1/ciu/ciudad')
 		.then(e=>{
-			this.setState({ciudades:e.data.ciudad})
-		})
-	}
-	ciudad(){
-		return this.state.ciudades.map((e, key)=>{
-			return (<Picker.Item key={key} label={e.label} value={e.label}  />)
+			let ciudades = e.data.ciudad.map((e, key)=>{
+				return {
+					label:e.label,
+					key
+				}
+			})
+			this.setState({ciudades})
 		})
 	}
 	 
+	 
  	renderPerfil(){
-		const {perfil, imagen, ciudad, sexo, photo, exitoso, nombre, qr} = this.state
+		const {perfil, imagen, ciudad, ciudades, sexo, photo, exitoso, nombre, qr} = this.state
 		const {navigate} = this.props.navigation
-		console.log(imagen)
+		console.log(ciudad)
 		let a=60
 		let b=100
 		if (perfil) {
@@ -65,7 +73,7 @@ export default class perfilComponent extends Component{
 					
 					
 					<View style={!imagen ?perfilStyle.avatar2 :perfilStyle.avatar3} >
-						<TakePhotoComponent fuente={'cam.png'} ancho={!imagen ?a :b} alto={!imagen ?a :b} updateImagen={(photo) => {this.setState({photo, imagen:true})}} />
+						<TakePhotoComponent fuente={'camPerfil.png'} border={50} ancho={!imagen ?a :b} alto={!imagen ?a :b} updateImagen={(photo) => {this.setState({photo, imagen:true})}} />
 					</View>
 
 					{
@@ -97,14 +105,22 @@ export default class perfilComponent extends Component{
 						<View style={perfilStyle.contenedorRegistros}>
 							<Text style={perfilStyle.atributo}>Ciudad</Text>
 							<View style={perfilStyle.containCiudad}>	
-						    <Picker
+						    {/*<Picker
 				                style={perfilStyle.inputCiudad}
 						        onValueChange={(ciudad) => this.setState({ciudad})}
 						        selectedValue={this.state.ciudad}
 				              >
 				              <Picker.Item  label={ciudad} value={ciudad} />
 					          {this.ciudad()}
-				             </Picker>
+				             </Picker>*/}
+				             <ModalPicker
+				                data={ciudades}
+				                initValue={ciudad}
+				                color='#8F9093'
+					            font={15}
+				                onChange={(e)=> this.setState({ciudad:e.label})} 
+				                style={perfilStyle.inputCiudad}
+				            />
 				            </View>
 						</View>
 
@@ -148,7 +164,7 @@ export default class perfilComponent extends Component{
 						<View style={perfilStyle.contenedorRegistros}>
 							<Text style={perfilStyle.atributo}>Genero</Text>
 							<View style={perfilStyle.containCiudad}>
-								<Picker
+								{/*<Picker
 										selectedValue={this.state.genero}
 										onValueChange={(genero) => this.setState({genero})}
 										style={perfilStyle.inputCiudad}
@@ -159,7 +175,15 @@ export default class perfilComponent extends Component{
 										?<Picker.Item label='Femenino'  value='f' />
 										:<Picker.Item label='Masculino' value='m' />
 									}
-						        </Picker>
+						        </Picker>*/}
+						        <ModalPicker
+					                data={generos}
+					                initValue={sexo}
+					                color='#8F9093'
+					                font={16}
+					                onChange={(e)=> this.setState({sexo:e.label})} 
+					                style={perfilStyle.datePicker}
+					            />
 						    </View>	
 						</View>
 					

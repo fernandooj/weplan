@@ -60,7 +60,7 @@ export default class TakePhotoComponent extends Component{
 		});
 	}
 	render(){
-		const {sinBorder, ancho, alto, anchoDos, altoDos, fuente} = this.props
+		const {sinBorder, ancho, alto, anchoDos, altoDos, fuente, border} = this.props
 		return (
 			<TouchableOpacity onPress={this.selectPhotoTapped.bind(this)} style={{flex: .4}}>
 				<View>
@@ -73,7 +73,7 @@ export default class TakePhotoComponent extends Component{
 					:<Image 
 						width={!sinBorder ?ancho :ancho2} 
 						height={!sinBorder ?alto :alto2} 
-						style={!sinBorder ?{flex:1, borderRadius:ancho/2}: {flex:1}} 
+						style={!sinBorder ?{flex:1, borderRadius:border}: {flex:1}} 
 						source={this.state.avatarSource}
 					/>
 					}

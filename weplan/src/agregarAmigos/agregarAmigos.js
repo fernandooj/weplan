@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, TextInput, Modal, StyleSheet, ScrollView} from 'react-native'
+import {View, Text, Image, TouchableOpacity, Modal, ScrollView} from 'react-native'
 import SearchInput, { createFilter } from 'react-native-search-filter';
 import {AmigosStyle} from '../agregarAmigos/style'
-import Icon from 'react-native-fa-icons';
 import axios from 'axios'
 
 const KEYS_TO_FILTERS = ['nombre', 'username']

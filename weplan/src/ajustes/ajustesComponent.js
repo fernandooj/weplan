@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, AsyncStorage, StyleSheet, Modal, Alert, Keyboard} from 'react-native'
+import {View, Text, Image, TouchableOpacity, AsyncStorage, Modal, Alert, Keyboard} from 'react-native'
 import {AjustesStyle} from '../ajustes/style'
 import axios from 'axios'
 import CabezeraComponent from './cabezera.js'

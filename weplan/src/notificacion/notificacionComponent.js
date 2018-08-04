@@ -41,7 +41,10 @@ export default class notificacionComponent extends Component{
 			 						:e.tipo==6 ?`Acepto ser parte del item: ${e.titulo}`
 			 						:e.tipo==7 ?`Te agrego al item: ${e.titulo}`
 			 						:e.tipo==8 ?`Se salio del plan: ${e.titulo}`
-			 						:e.tipo==9 &&`No le entro al item: ${e.titulo}`
+			 						:e.tipo==9 ?`No le entro al item: ${e.titulo}`
+			 						:e.tipo==10 ?`Te abono en efectivo: ${e.titulo}`
+			 						:e.tipo==11 ?`Tu abono de: ${e.titulo}, fue Aprovado`
+			 						:e.tipo==12 &&`Tu abono de: ${e.titulo}, fue Rechazado`
 			 					}
 			 				</Text>
 			 				{
@@ -58,14 +61,17 @@ export default class notificacionComponent extends Component{
 					 						:e.tipo==3
 					 						?()=>this.handleSubmit(e.id, e.idTipo, 3, e.token, e.idUser, e.valorItem, e.titulo, e.photo) 
 					 						:e.tipo==4
-					 						?()=>this.handleSubmit(e.id, e.idTipo, 4, e.token, e.idUser, e.valorItem, e.titulo, e.photo) 
+					 						?()=>this.handleSubmit(e.id, e.idTipo, 4, e.token, e.idUser, e.valorItem, e.titulo, e.photo)
+					 						:e.tipo==10
+					 						?()=>this.handleSubmit(e.id, e.idTipo, 11, e.token, e.idUser, e.valorItem, e.titulo, e.photo)  
 					 						:null  
 					 					}>
 					 					<Text  style={NotiStyle.textoNoti}> 
 					 					{
 					 						e.tipo==1  ? 'Agregar'
 					 						:e.tipo==3 ?'Entrarle'
-					 						:e.tipo==4 &&'Aceptarlo'
+					 						:e.tipo==4 ?'Aceptarlo'
+					 						:e.tipo==10 &&'Aceptar Pago'
 
 					 					}
 					 					</Text>
@@ -82,6 +88,8 @@ export default class notificacionComponent extends Component{
 					 						?()=>this.handleCancel(e.id, e.idTipo, 3, e.token, e.idUser, e.valorItem, e.titulo, e.photo)
 					 						:e.tipo==4
 					 						?()=>this.handleCancel(e.id, e.idTipo, 4, null, e.idUser)
+					 						:e.tipo==10
+					 						?()=>this.handleCancel(e.id, e.idTipo, 11, e.token, e.idUser, null, e.titulo, e.photo)
 					 						:null
 
 					 					}
@@ -149,6 +157,7 @@ export default class notificacionComponent extends Component{
 	handleSubmit(idNotificacion, idTipo, tipo, token, idUser, monto, titulo, imagen){
 		axios.put('/x/v1/not/notificacion/'+idNotificacion+'/'+idTipo+'/'+tipo+'/'+idUser, {monto})
 		.then(e=>{
+			console.log(e.data)
 			if (e.data.code==1) {
 				this.updateStado(idNotificacion)
 				if (tipo==1) {
@@ -159,6 +168,9 @@ export default class notificacionComponent extends Component{
 				}
 				else if (tipo==4) {
 					sendRemoteNotification(tipo, token, 'Home', 'Estas dentro de un item',  `, te agrego al item ${titulo}`, imagen)
+				}
+				else if (tipo==11) {
+					sendRemoteNotification(tipo, token, 'Home', 'Aceptaron tu pago',  `, Acepto tu pago por: ${titulo} `, imagen)
 				}
 				
 			}else if(e.data.code==2){
@@ -178,6 +190,9 @@ export default class notificacionComponent extends Component{
 				this.updateStado(idNotificacion)
 				if (tipo==3) {
 					sendRemoteNotification(tipo, token, 'Home', `no Aceptaron tu item`,  `, salio del item ${titulo}`, imagen)
+				}
+				if (tipo==11) {
+					sendRemoteNotification(tipo, token, 'Home', `no Aceptaron tu pago`,  `, rechazo tu pago de: ${titulo}`, imagen)
 				}
 			}
 		})

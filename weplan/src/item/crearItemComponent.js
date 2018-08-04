@@ -208,7 +208,7 @@ export default class CrearItemComponent extends Component{
       axios.post('/x/v1/ite/item', {descripcion, valor, titulo, planId, espera:asignados, tipo:1})
       .then(e=>{
         let itemId = e.data.item._id
-        console.log({descripcion, valor, titulo, planId, asignados, imagen, fecha, titulo, enviarChat, espera:asignados})
+        console.log(e.data)
         data.append('imagen', imagen);
         data.append('planId', planId);
         data.append('titulo', titulo);
@@ -228,7 +228,7 @@ export default class CrearItemComponent extends Component{
         })
         .then(res=>{  
           //console.log(res.data)     
-          console.log(usuariosAsignados)
+          // console.log(usuariosAsignados)
           if(res.data.code==1){ 
             usuariosAsignados.map(e=>{
               sendRemoteNotification(3, e.token, 'notificacion', 'Te han agregado a un Item', `, Te agrego a ${titulo}`, res.data.imagen)

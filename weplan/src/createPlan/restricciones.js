@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, Image, TouchableOpacity, Modal, ScrollView} from 'react-native'
 import {CreatePlanStyle} from '../createPlan/style'
-import Icon from 'react-native-fa-icons';
 import axios from 'axios'
 
 export default class RestriccionesPlanComponent extends Component{
@@ -70,8 +69,6 @@ export default class RestriccionesPlanComponent extends Component{
 						?<Image source={require('./deneid1.png')} style={CreatePlanStyle.banRes} />
 						:<Image source={require('./deneid2.png')} style={CreatePlanStyle.banRes} />
 					}
-					
-					{/*<Icon name='ban' allowFontScaling style={[CreatePlanStyle.banRes, e.estado ?CreatePlanStyle.banResActive :CreatePlanStyle.banResInactive]} />*/}
 					<Text style={CreatePlanStyle.textoRes}>{e.nombre}</Text>
 				</TouchableOpacity>
 			)

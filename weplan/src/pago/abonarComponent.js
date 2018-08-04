@@ -102,7 +102,7 @@ export default class AbonarComponent extends Component{
             'Tu pago fue actualizado',
             '',
             [  
-              {text: 'OK', onPress: () => this.props.updateItems(userId, monto)},
+              {text: 'OK', onPress: () => this.props.updateItems(userId, 0)},
             ],
             { cancelable: false }
           )

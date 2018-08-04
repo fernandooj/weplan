@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Alert} from 'react-native'
+import {View, Text, Image, TouchableOpacity, ScrollView, Alert} from 'react-native'
 import SearchInput, { createFilter } from 'react-native-search-filter';
 import axios from 'axios'
 
