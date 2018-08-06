@@ -56,14 +56,14 @@ export default class homeComponent extends Component{
 			 
 			this.setState({lat, lng})
 			this.getPlans(lat, lng)
-			Alert.alert(
-			  `lat: ${lat}`,
-			 `lng: ${lng}`,
-			  [
-			    {text: 'OK', onPress: () => console.log('OK Pressed')},
-			  ],
-			  { cancelable: false }
-			)
+			// Alert.alert(
+			//   `lat: ${lat}`,
+			//  `lng: ${lng}`,
+			//   [
+			//     {text: 'OK', onPress: () => console.log('OK Pressed')},
+			//   ],
+			//   { cancelable: false }
+			// )
 		}, (error)=>this.watchID = navigator.geolocation.watchPosition(e=>{
 			let lat =parseFloat(e.coords.latitude)
 			let lng = parseFloat(e.coords.longitude)

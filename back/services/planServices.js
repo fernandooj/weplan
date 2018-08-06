@@ -21,7 +21,6 @@ class planServices {
 		console.log(idUsuario)
 		idUsuario = mongoose.Types.ObjectId(idUsuario);	
 		if (acceso==='suscriptor') {
-			// planSchema.find({idUsuario, activo:true, tipo:'pago'}).populate('idUsuario', 'nombre ciudad photo').populate('restricciones').exec(callback)
 			planSchema.aggregate([
 			    {
 			    	$match:{
@@ -49,7 +48,27 @@ class planServices {
 		 		},
 			], callback)
 		}else{
-			planSchema.find({}, null, {sort: {_id: -1}}).populate('asignados').populate('idUsuario', 'nombre ciudad photo').populate('restricciones').exec(callback)
+			planSchema.aggregate([
+			    {
+		 			$lookup: {
+		 				from: "plans",
+		 				localField: "_id",
+		 				foreignField: "planPadre",
+		 				as: "PlanData"
+		 			}
+		 		},
+			    {
+	 			$project:{
+		 				_id:1,
+		 				nombre:1,
+		 				tipo:1,
+		 				area:1,
+		 				lugar:1,
+		 				activo:1,
+		 				planPadre:{ $size: "$PlanData._id" },
+		 			},
+		 		},
+			], callback)
 		}
 	}
 	//// me devuelve los de pago, con lat y lng

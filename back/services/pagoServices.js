@@ -40,6 +40,7 @@ class pagoServices{
 	////////   data: info completa del usuario
 	////////   id: es el id del usuario quien hace el pago, lo puede hacer el mismo usuario, o el dueño del item puede generar el abono
 	////////   userIdAbona: es quien hace el abono del pago, puede ser el mismo usuario o el dueño del item
+	////////   activo     : si es true es que el pago ya se hizo efectivo, si es false esta en espera de comprobacion
 	//////////////////////////////////////////////////////////////////////////////////////////
 	create(data, id, userIdAbona, activo, callback){
 		let chat = new pagoSchema();

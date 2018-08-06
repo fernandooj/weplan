@@ -32,7 +32,7 @@ export default class MapaPlanComponent extends Component{
 			
 		navigator.geolocation.getCurrentPosition(e=>{
 			console.log(e)
-			let lat =parseFloat(e.coords.latitude)
+			let lat = parseFloat(e.coords.latitude)
 			let lng = parseFloat(e.coords.longitude)
 			let x = {
 				latitude:lat,
@@ -42,14 +42,14 @@ export default class MapaPlanComponent extends Component{
 			}
 			this.setState({x})
 			 
-			Alert.alert(
-			  `lat: ${lat}`,
-			 `lng: ${lng}`,
-			  [
-			    {text: 'OK', onPress: () => console.log('OK Pressed')},
-			  ],
-			  { cancelable: false }
-			)
+			// Alert.alert(
+			//   `lat: ${lat}`,
+			//  `lng: ${lng}`,
+			//   [
+			//     {text: 'OK', onPress: () => console.log('OK Pressed')},
+			//   ],
+			//   { cancelable: false }
+			// )
 		}, (error)=>this.watchID = navigator.geolocation.watchPosition(e=>{
 			let lat =parseFloat(e.coords.latitude)
 			let lng = parseFloat(e.coords.longitude)
@@ -60,14 +60,14 @@ export default class MapaPlanComponent extends Component{
 				longitudeDelta : LONGITUDE_DELTA
 			}
 			this.setState({x})
-			Alert.alert(
-			  `lat: ${lat}`,
-			 `lng: ${lng}`,
-			  [
-			    {text: 'OK', onPress: () => console.log('OK Pressed')},
-			  ],
-			  { cancelable: false }
-			)
+			// Alert.alert(
+			//   `lat: ${lat}`,
+			//  `lng: ${lng}`,
+			//   [
+			//     {text: 'OK', onPress: () => console.log('OK Pressed')},
+			//   ],
+			//   { cancelable: false }
+			// )
 		},
 		(error) => console.log('error'),
 		{enableHighAccuracy: true, timeout:5000, maximumAge:0})
@@ -92,11 +92,11 @@ export default class MapaPlanComponent extends Component{
 			<View>
 				 
 				<Modal
-			          animationType="slide"
-			          transparent={false}
-			          visible={this.state.modalVisible}
-			          onRequestClose={() => {
-			            console.log('Modal has been closed.');
+					animationType="slide"
+					transparent={false}
+					visible={this.state.modalVisible}
+					onRequestClose={() => {
+		            console.log('Modal has been closed.');
 		        }}>
 					<View style={CreatePlanStyle.tituloMapa}>
 						<TouchableOpacity onPress={(e)=>{this.props.close(this.state.asignadosEmpty)}}  style={CreatePlanStyle.btnClose} >

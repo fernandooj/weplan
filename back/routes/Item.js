@@ -402,30 +402,36 @@ const activaItem =(usuario, idTipo, id, res, req)=>{
 //////// 	CREO UN NUEVO PAGO CUANDO EL USUARIO ACEPTA SER PARTE DEL ITEM
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const nuevoPago = (req, res, itemId, montoCreador) =>{
+	
 	req.body['abono']=false
 	req.body['activo']=true
 	req.body['metodo']=null
 	req.body['itemId']=itemId
 	req.body['monto']=-(req.body.monto)
 	req.body['descripcion']='pago inicial por inscribirse'
-	pagoServices.create(req.body, req.session.usuario.user._id, req.session.usuario.user._id, (err, pago)=>{
+	pagoServices.create(req.body, req.session.usuario.user._id, req.session.usuario.user._id, true, (err, pago)=>{
 		if(err){
 			res.json({err})
 		}else{
-			//res.json({ status: 'SUCCESS', pago, code:1 });
-			editaPagoCreador(itemId, req.session.usuario.user._id, montoCreador, req.body.monto, res)					
+ 
+			editaPagoCreador(itemId, req.session.usuario.user._id, montoCreador, req.body.monto, req.session.usuario.user._id, res)					
 		}
 	})
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////// 	EDITO AL DUEÑO DEL ITEM, CUANDO EL USUARIO ACEPTA SER PARTE DEL ITEM
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const editaPagoCreador = (itemId, userId, montoCreador, montoAsignado, res)=>{
+const editaPagoCreador = (itemId, userId, montoCreador, montoAsignado, id, res)=>{
 	itemServices.getById(itemId, (err, item)=>{
 		if (err) {
 			console.log(err)
 		}else{
 			pagoServices.betyByItemAndUser(itemId, item[0].userId._id, (err, pago)=>{
+				let mensajeJson={
+					userId:item[0].userId._id,
+					notificacion:true,
+				}
+				cliente.publish('notificacion', JSON.stringify(mensajeJson))
 				if(err){
 					res.json({err})
 				}else{
@@ -433,7 +439,7 @@ const editaPagoCreador = (itemId, userId, montoCreador, montoAsignado, res)=>{
 						if (err) {
 							console.log(err)
 						}else{
-							editaPagoAsignados(itemId, item[0].userId._id, montoAsignado, res )
+							editaPagoAsignados(itemId, item[0], montoAsignado, id, res )
 						}
 					})					
 				}
@@ -444,8 +450,8 @@ const editaPagoCreador = (itemId, userId, montoCreador, montoAsignado, res)=>{
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////// 	EDITO LOS DEMAS PAGOS DE LOS MIEMBROS DEL ITEM, CUANDO EL USUARIO ACEPTA SER PARTE DEL ITEM
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const editaPagoAsignados = (itemId, userId, monto, res)=>{
-	pagoServices.betyByItemAndUserNotEqual(itemId, userId, (err, pago)=>{
+const editaPagoAsignados = (itemId, item, monto, id, res)=>{
+	pagoServices.betyByItemAndUserNotEqual(itemId, item.userId, (err, pago)=>{
 		if(err){
 			res.json({err})
 		}else{
@@ -454,7 +460,8 @@ const editaPagoAsignados = (itemId, userId, monto, res)=>{
 					//console.log(pago2)
 				})
 			})
-			res.json({ status: 'SUCCESS', pago, code:1 });				
+			creaNotificacion(id, res, item, 6, false)
+			// res.json({ status: 'SUCCESS', pago, code:1 });				
 		}
 	})
 }
@@ -462,13 +469,7 @@ const editaPagoAsignados = (itemId, userId, monto, res)=>{
 //////////////////////////////////////////////////////////////////////////////////////////
 ////////   SI UN USUARIO QUIERE INGRESAR AL ITEM, LO REGISTRO Y LO DEJO EN ESPERA 
 //////////////////////////////////////////////////////////////////////////////////////////
-router.put('/', (req, res)=>{
-	let mensajeJson={
-		userId:req.body.userId,
-		notificacion:true,
-	}
-	cliente.publish('notificacion', JSON.stringify(mensajeJson))
-
+router.put('/', (req, res)=>{	
 	itemServices.getById(req.body.idItem, (err, item)=>{
 		if (!item[0].abierto) {
 			res.json({status: 'FAIL', mensaje:'ya se cerro el item', code:3})
@@ -476,12 +477,17 @@ router.put('/', (req, res)=>{
 			if(isInArray(req.session.usuario.user._id, item[0].espera)){
 				res.json({status: 'FAIL', mensaje:'ya esta en lista de espera', code:2})
 			}else{
+				let mensajeJson={
+					userId:item[0].userId._id,
+					notificacion:true,
+				}
+				cliente.publish('notificacion', JSON.stringify(mensajeJson))
 				let nuevoArray = item[0].espera.concat(req.session.usuario.user._id)
 				itemServices.ingresarItem(req.body.idItem, nuevoArray, (err, item)=>{
 					if (err) {
 						res.json({status: 'FAIL', err, code:0})
 					}else{
-						creaNotificacion(req, res, item)	
+						creaNotificacion(req.session.usuario.user._id, res, item, 4, true)	
 					}
 				})
 			}
@@ -492,14 +498,12 @@ router.put('/', (req, res)=>{
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///// 			cuando se crea la peticion de ingresar tambien se crea la notificacion 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const creaNotificacion = (req, res, item, imagen)=>{
- 	console.log(item._id)
- 	
-	notificacionService.create(req.session.usuario.user._id, item.userId, 4, item._id, true, (err, notificacion)=>{
+const creaNotificacion = (id, res, item, tipo, activo)=>{ 	 
+	notificacionService.create(id, item.userId, tipo, item._id, activo, (err, notificacion)=>{
 		if (err) {
 			res.json({status:'FAIL', err, code:0})   
 		}else{
-			res.json({status:'SUCCESS', item, notificacion, imagen, code:1})    
+			res.json({status:'SUCCESS', item, notificacion, code:1})    
 		}
 	})
 }
