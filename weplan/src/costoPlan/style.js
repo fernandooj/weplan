@@ -1,7 +1,7 @@
 import {StyleSheet, Dimensions} from 'react-native';
 var screenHeight = Dimensions.get('window');
-
-export const costoPlanStyle = StyleSheet.create({
+import { MediaQueryStyleSheet } from "react-native-responsive";
+export const costoPlanStyle = MediaQueryStyleSheet.create({
 	 
 	contenedor:{
 		alignItems: 'center',
@@ -10,14 +10,14 @@ export const costoPlanStyle = StyleSheet.create({
 	},
 	container:{
 		flex: 1,
-		height:screenHeight.height
+		height:screenHeight.height,
 	},
 	contentItem:{
 		flex: 1,
-		height:screenHeight.height
+		height:screenHeight.height+50,
 	},
 	subContenedor:{
-		width:'80%',
+		width:100,
 	},
 	contenedorItem:{
 		flexDirection:'row',
@@ -68,6 +68,7 @@ export const costoPlanStyle = StyleSheet.create({
 		marginTop:10
 	},
 	lugar:{
+		width:180,
 		marginTop:-5
 	},
 	btnChat:{
@@ -106,7 +107,7 @@ export const costoPlanStyle = StyleSheet.create({
 		borderColor:'#a5a5a5',
 	},
 	pagoDeudaNombre:{
-		width:'55%',
+		width:160,
 		fontSize:18,
 		marginLeft:12,
 		marginTop:10
@@ -114,12 +115,14 @@ export const costoPlanStyle = StyleSheet.create({
 	pagoDeudaMonto:{
 		color:'#c5012b',
 		fontSize:18,
-		marginTop:7
+		marginTop:7,
+		width:80
 	},
 	pagoDeudaMontoActive:{
 		color:'#79CF40',
 		fontSize:18,
-		marginTop:7
+		marginTop:7,
+		width:80
 	},
 	infoAbonoDeuda:{
 		flexDirection:'row',
@@ -136,7 +139,7 @@ export const costoPlanStyle = StyleSheet.create({
 	contenedorTotal:{
 		flexDirection:'row',
 		position:'absolute',
-		bottom:30,
+		bottom:0,
 		backgroundColor:'#dadede',
 		width:'100%',
 		alignItems:'flex-end',
@@ -149,6 +152,15 @@ export const costoPlanStyle = StyleSheet.create({
 	valueTotal:{
 		fontSize:20,
 	} 
+},{
+	"@media (max-device-width: 320)": {
+		pagoDeudaNombre:{
+			width:160,
+			fontSize:15,
+			marginLeft:12,
+			marginTop:10
+		},
+	}
 })
 
 

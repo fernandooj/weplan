@@ -146,8 +146,8 @@ class planServices {
  			{
  			    $match:{
  			    	$or:[
- 			    	    {idUsuario},
- 			    	    {asignados:idUsuario},
+ 			    	    {idUsuario, tipo:'suscripcion'},
+ 			    	    {asignados:idUsuario, tipo:'suscripcion'},
  			    	]
  			    }
  			},

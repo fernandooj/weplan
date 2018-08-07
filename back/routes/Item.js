@@ -265,8 +265,6 @@ router.post('/:id', (req,res)=>{
 ////////   CREO UN PRIMER PAGO, O DEUDA 
 //////////////////////////////////////////////////////////////////////////////////////////
 let createPago = function(req, res, id, item){	
-	console.log("req.valor") 
-	console.log(req.valor) 
 	let data = {userId:id, itemId:item._id, monto:req.valor, planId:req.planId, abono:true, metodo:null, descripcion:'pago inicial por inscribirse', activo:true}
 	pagoServices.create(data, null, id, true, (err, pago)=>{
 		if(err){
@@ -356,7 +354,7 @@ let createChat = function(req, res, userId, item, imagen){
 		planId:req.body.planId, 
 		rutaImagen:imagen,
 		fecha:req.body.fecha, 
-		valor:req.body.valor, 
+		valor:req.body.valor/2, 
 		tipoChat:2,
 		esperaItem: item.espera,
 		asignadoItem: [],

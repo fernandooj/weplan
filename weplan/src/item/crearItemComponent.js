@@ -56,7 +56,8 @@ export default class CrearItemComponent extends Component{
           <TouchableOpacity style={ItemStyle.btnCamera}>
             <TakePhotoComponent fuente={'item1.png'} ancho={100} alto={100}  
                 updateImagen={(imagen) => {this.setState({imagen})}} 
-                style={ItemStyle.camera} />
+                style={ItemStyle.camera} 
+                border={50} />
           </TouchableOpacity>
 
           {/* rest modal */}

@@ -125,6 +125,7 @@ class itemServices {
 			},
 		], callback)
 	}
+
 	sumaItemAsignados(planId, idUser, callback){
 		planId = mongoose.Types.ObjectId(planId);
 		idUser = mongoose.Types.ObjectId(idUser);
@@ -203,55 +204,82 @@ class itemServices {
 			},
 		], callback)
 	}
- 	// sumaPlan(callback){
- 	// 	itemSchema.aggregate([
-	 // 		{
-	 // 			$lookup: {
-	 // 				from: "pagos",
-	 // 				localField: "_id",
-	 // 				foreignField: "itemId",
-	 // 				as: "ItemData"
-	 // 			}
-	 // 		},
-	 // 		{
-	 // 			$unwind:{
-	 // 				path: '$ItemData',
-	 // 				preserveNullAndEmptyArrays:true
-	 // 			}
 
-	 // 		},
-	 // 		{
-	 // 			$project:{
-	 // 				planId:1,
-	 // 				montos:"$ItemData.monto"
-	 // 			}
-	 // 		},
-	 // 		{
-	 // 			$group:{
-	 // 				_id:'$planId',
-	 // 				total:{ $sum:"$montos" }
-	 // 			}
-	 // 		},
-	 // 		{
-	 // 			$lookup:{
-	 // 				from:'plans',
-	 // 				localField:"_id",
-	 // 				foreignField:"_id",
-	 // 				as:"PlanData",
-	 // 			}
-	 // 		},
-	 // 		{
-	 // 			$unwind:"$PlanData",
-	 // 		},
-	 // 		{
-	 // 			$project:{
-	 // 				nombre:"$PlanData.nombre",
-	 // 				total:1
-	 // 			}
-	 // 		},
-		// ], callback);
- 	//}
 
+ 	sumaPorUsuarioDebo(planId, idUser, callback){
+		planId = mongoose.Types.ObjectId(planId);
+		idUser = mongoose.Types.ObjectId(idUser);
+		itemSchema.aggregate([
+			{ 
+				$match: {
+					planId,
+					userId:{
+						$ne:idUser
+					},
+				}
+			},
+			{
+				$lookup:{
+					from:"pagos",
+					localField:"_id",
+					foreignField:"itemId",
+					as:"PagoData"
+				}
+			}, 
+			{
+			    $unwind:{
+			        path:"$PagoData",
+			        preserveNullAndEmptyArrays:true
+			    }
+			},
+			{
+	 			$lookup: {
+	 				from: "users",
+	 				localField: "userId",
+	 				foreignField: "_id",
+	 				as: "UserData"
+	 			}
+	 		},
+	 		{
+	 			$unwind:
+	 			{
+	 				path:'$UserData',
+	 				preserveNullAndEmptyArrays: true
+	 			}
+	 		},
+			{
+			    $project:{
+			        _id:1,
+					userId:1,
+					titulo:1,
+					userIds:"$PagoData.userId",
+					montos:"$PagoData.monto",
+					pagoId:"$PagoData._id",
+					abono:"$PagoData.abono",
+					activo:"$PagoData.activo",
+			        nombre:'$UserData.nombre',
+			        photo:'$UserData.photo'
+			    }
+			},
+			{ 
+				$match: {
+					userIds:idUser,
+					activo:true
+				}
+			},
+			{
+			    $group : {
+			       _id : "$userId",
+			       total: { $sum: "$montos"}, 
+			       count: { $sum: 1 },  
+			       data: {
+			       	$addToSet: {info:[{titulo:'$titulo', userId:'$userIds', nombre:'$nombre', photo:'$photo'}]},
+			       }
+			    } 
+			},
+		], callback)
+	}
+	
 
 
  

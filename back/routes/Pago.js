@@ -147,6 +147,64 @@ router.post('/', (req, res)=>{
 	})
 })
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////	 OBTENGO LA DEUDA DE CADA USUARIO QUE LE DEBO
+///////////////////////////////////////////////////////////////////////////////////////////////
+router.get('/deudaPorUsuario/:planId', (req, res)=>{
+	pagoServices.sumaPorUsuarioDebo(req.params.planId, req.session.usuario.user._id, (err, debo)=>{
+		if(err){
+			res.json({err, code:0})
+		}else{	
+			pagoServices.sumaPorUsuarioDeboSinGroup(req.params.planId, req.session.usuario.user._id, (err, debo2)=>{
+				if(!err){
+					sumaPorUsuarioMeDebe(req.params.planId, req.session.usuario.user._id, debo, debo2, res)		
+				}
+			})			
+		}
+	})
+})
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////		OBTENGO LOS LA DEUDA DE CADA USUARIO QUE ME DEBE
+///////////////////////////////////////////////////////////////////////////////////////////////
+const sumaPorUsuarioMeDebe = (planId, id, debo, debo2, res)=>{
+	pagoServices.sumaPorUsuarioMeDebe(planId, id, (err, meDeben)=>{
+		if(err){
+			console.log(err)
+		}else{	
+			pagoServices.sumaPorUsuarioMeDebeSinGroup(planId, id, (err2, meDeben2)=>{
+				if (!err2) {
+					
+					let suma=[]
+					let suma1=[]
+					meDeben.filter(e=>{
+						suma.push(e.total)
+					})
+					debo.filter(e=>{
+						suma.push(e.total)
+					})
+					let sum = suma.reduce(add, 0);
+					let sum1 = suma1.reduce(add, 0);
+
+					let total = sum + sum1
+
+					res.json({ status: 'SUCCESS', debo, debo2, meDeben, meDeben2, total, code:1 });
+				}
+					
+			})			
+		}
+	})
+}
+
+
+const add = (a, b)=>{
+	return a + b;
+}
+
+
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///// 			cuando se crea el pago envio la notificacion
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

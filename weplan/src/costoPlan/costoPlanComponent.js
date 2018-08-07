@@ -17,17 +17,59 @@ export default class costoPlanComponent extends Component{
 	state={
  		plan:{},
  		valor:0,
+ 		total:0,
  		show:false,
- 		usuarios:[]
+ 		debo:[],
+ 		meDeben:[],
  	}
 	componentWillMount(){
  		// console.log(this.props.navigation.state.params)
 	 	let planId = this.props.navigation.state.params
-	 	// let planId = '5b47c7489f436157e1cd6646'
-	 	axios.get('x/v1/user/deudaUsuarioPorPlan/'+planId)
+	 	// let planId = '5b653497d1bd7e0d78a17a9e'
+	 	console.log(planId)
+	 	axios.get('x/v1/pla/plan/'+planId)
 	 	.then(e=>{
-	 		console.log(e.data.usuarios)
-	 		this.setState({usuarios:e.data.usuarios, plan:e.data.plan[0], planId})
+	 		console.log(e.data)
+	 		this.setState({plan:e.data.plan[0]})
+	 	})
+	 	.catch(err=>{
+	 		console.log(e.err)
+	 	})
+	 	axios.get('x/v1/pag/pago/deudaPorUsuario/'+planId)
+	 	.then(e=>{
+	 		console.log(e.data)
+	 		///////   Es lo que debo
+	 		let debo = e.data.debo.map(e2=>{
+	 			let data = e2.data[0].info[0]
+			    return {
+			    	 
+					userId:data.userId,
+					photo:data.photo,
+					nombre:data.nombre,
+					total:e2.total,
+					deuda:100,
+				    pagos:e.data.debo2.filter(e3=>{
+				       return e2._id===e3.userId
+				    })
+			  	}
+			})
+	 		//////	Es lo que me deben
+			let meDeben = e.data.meDeben.map(e2=>{
+	 			let data = e2.data[0].info[0]
+			    return {
+			    	 
+					userId:data.userId,
+					photo:data.photo,
+					nombre:data.nombre,
+					total:e2.total,
+					deuda:100,
+				    pagos:e.data.meDeben2.filter(e3=>{
+				       return e2._id===e3.userId
+				    })
+			  	}
+			})
+
+	 		this.setState({debo, meDeben, planId, total:e.data.total})
 	 	})
 	 	.catch(err=>{
 	 		console.log(e.err)
@@ -35,7 +77,7 @@ export default class costoPlanComponent extends Component{
 	}
 	 
 
-	renderItem(){
+	renderPlan(){
 		const {navigate} = this.props.navigation
 		const {plan, valor, planId} = this.state
 		if (plan.nombre) {
@@ -69,65 +111,97 @@ export default class costoPlanComponent extends Component{
 		}
 	}
 	 
-	renderAsignados(){
-		let pagos=[];
-		return this.state.usuarios.map((e, key)=>{
-			let data = e.data[0].info[0]
+	renderDebo(){
+		return this.state.debo.map((e, key)=>{			
 			return(
-	 			<TouchableOpacity  key={key} onPress={()=>this.setState({show:true, userId:e._id, photo:data.photo, nombre:data.nombre, monto:e.deuda})}>
+	 			<TouchableOpacity  key={key} onPress={()=>this.setState({show:true, userId:e._id, photo:e.photo, nombre:e.nombre, monto:e.deuda})}>
 	 				<View style={costoPlanStyle.pagoDeudaContenedor}>
-		 				<Image source={{uri: data.photo}} style={costoPlanStyle.pagoDeudaAvatar} />
-		 				<Text style={costoPlanStyle.pagoDeudaNombre}>{data.nombre}</Text> 
-		 				<Text style={costoPlanStyle.pagoDeudaMonto}>{'$ '+Number(e.deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+		 				<Image source={{uri: e.photo}} style={costoPlanStyle.pagoDeudaAvatar} />
+		 				<Text style={costoPlanStyle.pagoDeudaNombre}>{e.nombre}</Text> 
+		 				<Text style={costoPlanStyle.pagoDeudaMonto}>{'$ '+Number(e.total).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
 		 			</View>
-	 				 
-	 				 
+	 				<View>	
+		 				{
+		 					e.pagos.map((e2, key2)=>{
+		 						if (e2.monto>0) {
+		 							return(
+			 							<View key={key2} style={costoPlanStyle.infoAbonoDeuda}>
+			 								<Text style={costoPlanStyle.textAbonoDeuda}>Abono: </Text>
+			 								<Text style={costoPlanStyle.textAbonoDeuda}>{e2.createdAt} / </Text>
+			 								<Text style={costoPlanStyle.textAbonoDeuda}>{'$ '+Number(e2.monto).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+			 							</View>
+			 						)
+		 						}
+		 					})
+		 				}
+		 			</View>
+	 				<View style={costoPlanStyle.separador}></View>
 	 			</TouchableOpacity>
 			)
 		})
 	}
+
+	renderMeDeben(){
+		return this.state.meDeben.map((e, key)=>{			
+			return(
+	 			<TouchableOpacity  key={key} onPress={()=>this.setState({show:true, userId:e._id, photo:e.photo, nombre:e.nombre, monto:e.deuda})}>
+	 				<View style={costoPlanStyle.pagoDeudaContenedor}>
+		 				<Image source={{uri: e.photo}} style={costoPlanStyle.pagoDeudaAvatar} />
+		 				<Text style={costoPlanStyle.pagoDeudaNombre}>{e.nombre}</Text> 
+		 				<Text style={costoPlanStyle.pagoDeudaMontoActive}>{'$ '+Number(e.total).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+		 			</View>
+	 				<View>	
+		 				{
+		 					e.pagos.map((e2, key2)=>{
+		 						if (e2.monto>0) {
+		 							return(
+			 							<View key={key2} style={costoPlanStyle.infoAbonoDeuda}>
+			 								<Text style={costoPlanStyle.textAbonoDeuda}>Abono: </Text>
+			 								<Text style={costoPlanStyle.textAbonoDeuda}>{e2.createdAt} / </Text>
+			 								<Text style={costoPlanStyle.textAbonoDeuda}>{'$ '+Number(e2.monto).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+			 							</View>
+			 						)
+		 						}
+		 					})
+		 				}
+		 			</View>
+	 				<View style={costoPlanStyle.separador}></View>
+	 			</TouchableOpacity>
+			)
+		})
+	}
+
+ 
  
   	render() {
   		const {navigate} = this.props.navigation
-  		const {show, monto, photo, nombre, itemId, userId, usuarios} = this.state
- 		console.log(userId)
-		const add = (a, b)=>{
- 			return a + b;
-		}
-		let suma=[]
-		usuarios.filter(e=>{
-			suma.push(e.deuda)
-		})
-		var sum = suma.reduce(add, 0);
+  		const {show, monto, photo, nombre, itemId, userId, debo, total} = this.state
+
+		
 		return (
-			<ScrollView style={costoPlanStyle.container}>
-				<View style={costoPlanStyle.contentItem}>
-					<CabezeraComponent navigate={navigate} url={'wallet'} parameter={this.state.planId} texto='Mi Wallet' />
+			<View style={costoPlanStyle.container}>
+				<ScrollView >
+					<View style={costoPlanStyle.contentItem}>
+						<CabezeraComponent navigate={navigate} url={'wallet'} parameter={this.state.planId} texto='Mi Wallet' />
+						 
+						<View style={costoPlanStyle.contenedor}>
+							{this.renderPlan()}
+							<Text>Cuanto Debo</Text>
+							{this.renderDebo()}
+							<Text>Cuanto Me Deben</Text>
+							{this.renderMeDeben()}
+						</View>	
+					</View>
+				</ScrollView>
 					 
-					<View style={costoPlanStyle.contenedor}>
-						{this.renderItem()}
-						{this.renderAsignados() }
-						
-					</View>	
-					{
-			    		<View style={costoPlanStyle.contenedorTotal}>
-			    			<Text style={costoPlanStyle.textoTotal}>Total</Text>
-			    			<Text style={sum>=0 ?costoPlanStyle.valueTotal :costoPlanStyle.valueNoAsignadoTotal}>
-								{'$ '+Number(sum).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
-							</Text>
-			    		</View>
-			    	}		  
-				</View>
-			</ScrollView>
+	    		<View style={costoPlanStyle.contenedorTotal}>
+	    			<Text style={costoPlanStyle.textoTotal}>Total</Text>
+	    			<Text style={total>=0 ?costoPlanStyle.valueTotal :costoPlanStyle.valueNoAsignadoTotal}>
+						{'$ '+Number(total).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
+					</Text>
+	    		</View>
+			    	 		  
+			</View>	
 		);
-	}
-	updateItems(id, monto){
-		console.log(id)
-		console.log(parseInt(monto))
-		let usuarios = this.state.usuarios.filter(e=>{
-			if(e.id==id) {e.monto=parseInt(e.monto)+parseInt(monto)}
-			return e   
-		})
-		this.setState({usuarios, show:false})
 	}
 }

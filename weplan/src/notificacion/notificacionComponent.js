@@ -23,30 +23,35 @@ export default class notificacionComponent extends Component{
 	}
  
 	renderNotificacion(){
+		const {navigate} = this.props.navigation
  		return this.state.notificacion.map((e, key)=>{
  			let valor = '$ '+Number(e.valorItem).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
 			return(
  				<View key={key} style={NotiStyle.subContenedor}>
 	 				<View style={NotiStyle.contenedorNoti2}>
-		 				<Image source={e.photo ?{uri:e.photo} :{uri:'https://appweplan.com/public/assets/logo.png'}} style={NotiStyle.avatar} />
+	 					<TouchableOpacity onPress={e.tipo==2 ?()=>navigate('chat', e.idTipo) :null } >
+		 					<Image source={e.photo ?{uri:e.photo} :{uri:'https://appweplan.com/public/assets/logo.png'}} style={NotiStyle.avatar} />
+	 					</TouchableOpacity>
 	 					<View>
-			 				<Text style={NotiStyle.tituloNoti}>{e.nombre}</Text> 
-			 				<Text style={NotiStyle.textoNotifica}>
-			 					{
-			 						e.tipo==1 ?'Te quiere agregar como amigo' 
-			 						:e.tipo==2 ?`Te agrego al plan: ${e.titulo}` 
-			 						:e.tipo==3 ?`Te agrego al item: ${e.titulo}. El valor para entrar es: ${valor}`
-			 						:e.tipo==4 ?`Quiere acceder al item: ${e.titulo}. El valor para entrar es: ${valor}`
-			 						:e.tipo==5 ?`Acepto ser tu amigo`
-			 						:e.tipo==6 ?`Acepto ser parte del item: ${e.titulo}`
-			 						:e.tipo==7 ?`Te agrego al item: ${e.titulo}`
-			 						:e.tipo==8 ?`Se salio del plan: ${e.titulo}`
-			 						:e.tipo==9 ?`No le entro al item: ${e.titulo}`
-			 						:e.tipo==10 ?`Te abono en efectivo: ${e.titulo}`
-			 						:e.tipo==11 ?`Tu abono de: ${e.titulo}, fue Aprovado`
-			 						:e.tipo==12 &&`Tu abono de: ${e.titulo}, fue Rechazado`
-			 					}
-			 				</Text>
+	 						<TouchableOpacity onPress={e.tipo==2 ?()=>navigate('chat', e.idTipo) :null } >
+				 				<Text style={NotiStyle.tituloNoti}>{e.nombre}</Text> 
+				 				<Text style={NotiStyle.textoNotifica}>
+				 					{
+				 						e.tipo==1 ?'Te quiere agregar como amigo' 
+				 						:e.tipo==2 ?`Te agrego al plan: ${e.titulo}` 
+				 						:e.tipo==3 ?`Te agrego al item: ${e.titulo}. El valor para entrar es: ${valor}`
+				 						:e.tipo==4 ?`Quiere acceder al item: ${e.titulo}. El valor para entrar es: ${valor}`
+				 						:e.tipo==5 ?`Acepto ser tu amigo`
+				 						:e.tipo==6 ?`Acepto ser parte del item: ${e.titulo}`
+				 						:e.tipo==7 ?`Te agrego al item: ${e.titulo}`
+				 						:e.tipo==8 ?`Se salio del plan: ${e.titulo}`
+				 						:e.tipo==9 ?`No le entro al item: ${e.titulo}`
+				 						:e.tipo==10 ?`Te abono en efectivo: ${e.titulo}`
+				 						:e.tipo==11 ?`Tu abono de: ${e.titulo}, fue Aprovado`
+				 						:e.tipo==12 &&`Tu abono de: ${e.titulo}, fue Rechazado`
+				 					}
+				 				</Text>
+				 			</TouchableOpacity>
 			 				{
 								e.activo
 								?<View style={NotiStyle.contenedorNoti}> 

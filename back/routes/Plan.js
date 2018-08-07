@@ -306,6 +306,11 @@ const creaNotificacion = (req, res, plan, rutaImagenResize)=>{
 /////// INSERTO UN USUARIO AL PLAN
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.put('/insertar/:planId', (req,res)=>{
+	let mensajeJson={
+			userId:req.body.id,
+			notificacion:true,
+		}
+		cliente.publish('notificacion', JSON.stringify(mensajeJson))
 	planServices.getByIdPlan(req.params.planId, (err, plan)=>{
 		if(err) {
 			console.log(err)
@@ -331,7 +336,7 @@ const agregarUsuarioPlan =(req, res, planes)=>{
 ///// 			funcion cuando inserto un usuario a un plan desde el chat
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const creaNotificacionUsuarioChat = (req, res, plan)=>{
-	notificacionService.create(req.session.usuario.user._id, req.body.id, 2, plan._id, (err, notificacion)=>{
+	notificacionService.create(req.session.usuario.user._id, req.body.id, 2, plan._id, false, (err, notificacion)=>{
 		if (err) {
 			res.json({status:'FAIL', err, code:0})   
 		}else{
