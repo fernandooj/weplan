@@ -32,6 +32,7 @@ let UserSchema = mongoose.Schema({
 	password 	: String,
 	token		: String,
 	notificacion:{ type:Boolean },
+	calificacion:[{ type:Number }],
 	categorias  :[{type: Schema.Types.ObjectId, ref:'CategoriaPlan'}],
 });
 

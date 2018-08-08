@@ -10,7 +10,6 @@ export const walletStyle = StyleSheet.create({
 	},
 	subContenedor:{
 		width:'80%',
-
 	},
 	item:{
 		flexDirection:'row',
@@ -46,19 +45,19 @@ export const walletStyle = StyleSheet.create({
 		fontSize:20,
 		marginRight:10
 	},
-	total:{
-		color:'#79CF40',
-		alignSelf: 'flex-start', 
-		 
-		fontSize:20
+	pagoDeudaMonto:{
+		color:'#c5012b',
+		fontSize:17,
+		width:80
 	},
-	boxPlan1:{
-		 
+	pagoDeudaMontoActive:{
+		color:'#79CF40',
+		fontSize:17,
+		width:80
 	},
 	back:{
 		width:20,
 		height:20,
-	 
 		marginLeft:6 
 	}
 	 

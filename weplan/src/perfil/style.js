@@ -23,8 +23,8 @@ export const perfilStyle = MediaQueryStyleSheet.create({
 	},
 	avatar2:{
 		position:'absolute',
-		top:'20%',
-		left:'23%',
+		top:150,
+		left:23,
 		zIndex:100,
 	},
 	avatar3:{
@@ -35,6 +35,16 @@ export const perfilStyle = MediaQueryStyleSheet.create({
 		flexDirection:'row',
 		marginTop:10
 	},
+	btnQr:{
+ 		width:110,
+ 		alignItems: 'center',
+ 		backgroundColor:'#94A5F3',
+ 		borderRadius:10,
+ 		height:30,
+ 		padding:4,
+ 		marginLeft:39,
+ 		marginTop:49,
+ 	},
 	atributo:{
 		width:'30%',
 		marginLeft:'2%',
@@ -100,20 +110,28 @@ export const perfilStyle = MediaQueryStyleSheet.create({
  	hecho:{
  		color:'white'
  	},
-
+ 	calificacion:{
+ 		fontSize:20,
+ 		marginLeft:30,
+ 		marginTop:3
+ 	},
 },{
-	"@media (max-device-width: 380)": {
+	"@media (max-device-width: 320)": {
 		avatar2:{
-			top:'20%',
+			top:75,
+			left:63,
+			zIndex:100
 		},
 		valor:{
-			width:200,
+			width:180,
+			paddingTop:7,
+			paddingBottom:7,
 		},
 		containCiudad:{
-			width:200
+			width:180,	 
 		},
 		date:{
-			width:200
+			width:180
 		}
 	}
 })

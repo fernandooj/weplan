@@ -6,6 +6,7 @@ import CabezeraComponent from '../ajustes/cabezera.js'
 import DatePicker from 'react-native-datepicker'
 import moment from 'moment' 
 import ModalPicker from 'react-native-modal-picker'
+import StarRating from 'react-native-star-rating';
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////  ARCHIVOS GENERADOS POR EL EQUIPO  //////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -25,6 +26,7 @@ export default class perfilComponent extends Component{
 			perfil:[],
 			ciudades:[],
 			ciudad:'',
+			calificacion:[],
 			nombre:'',
 			sexo:'',
 			password:'',
@@ -39,11 +41,11 @@ export default class perfilComponent extends Component{
 		/////////////////	OBTENGO EL PERFIL
 		axios.get('/x/v1/user/profile') 
 		.then((res)=>{
-			console.log(res.data.user.user)
+			console.log(res.data.user.user.calificacion.length)
 			let ciudad = res.data.user.user.ciudad ? res.data.user.user.ciudad :'Ciudad'
 			let sexo = res.data.user.user.sexo ? res.data.user.user.sexo :'Genero'
 			this.setState({nombre: res.data.user.user.nombre, apellido: res.data.user.user.apellido, ciudad, photo:res.data.user.user.photo, 
-				nacimiento:res.data.user.user.nacimiento, sexo, id: res.data.user.user._id})
+				nacimiento:res.data.user.user.nacimiento, sexo, id: res.data.user.user._id, calificacion: res.data.user.user.calificacion})
 		})
 		.catch((err)=>{
 			console.log(err)
@@ -62,7 +64,7 @@ export default class perfilComponent extends Component{
 	 
 	 
  	renderPerfil(){
-		const {perfil, imagen, ciudad, ciudades, sexo, photo, exitoso, nombre, qr} = this.state
+		const {perfil, imagen, ciudad, ciudades, sexo, photo, exitoso, nombre, qr, calificacion} = this.state
 		const {navigate} = this.props.navigation
 		console.log(ciudad)
 		let a=60
@@ -70,23 +72,34 @@ export default class perfilComponent extends Component{
 		if (perfil) {
 			return(
 				<View style={perfilStyle.perfil}>
-					
-					
-					<View style={!imagen ?perfilStyle.avatar2 :perfilStyle.avatar3} >
-						<TakePhotoComponent fuente={'camPerfil.png'} border={50} ancho={!imagen ?a :b} alto={!imagen ?a :b} updateImagen={(photo) => {this.setState({photo, imagen:true})}} />
-					</View>
+					<View style={perfilStyle.contenedorRegistros}>
+						<View style={!imagen ?perfilStyle.avatar2 :perfilStyle.avatar3} >
+							<TakePhotoComponent fuente={'camPerfil.png'} border={50} ancho={!imagen ?a :b} alto={!imagen ?a :b} updateImagen={(photo) => {this.setState({photo, imagen:true})}} />
+						</View>
 
-					{
-						!imagen
-						&&<Image source={{uri: photo}} style={perfilStyle.avatar} />
-					}
-						<TouchableOpacity style={perfilStyle.btnHecho} onPress={()=>this.setState({qr:true})} > 
-							<Text style={perfilStyle.hecho}>mi codigo Qr</Text> 
-						</TouchableOpacity> 
+						{
+							!imagen
+							&&<Image source={{uri: photo}} style={perfilStyle.avatar} />
+						}
+							<TouchableOpacity style={perfilStyle.btnQr} onPress={()=>this.setState({qr:true})} > 
+								<Text style={perfilStyle.hecho}>mi codigo Qr</Text> 
+							</TouchableOpacity> 
+					</View>
 					{
 						qr
 						&&<QrComponent num={this.props.screenProps.num} close={()=>this.setState({qr:false})} />
 					}
+
+					<View style={perfilStyle.contenedorRegistros}>
+						<StarRating
+					        disabled={false}
+					        maxStars={5}
+					        rating={(calificacion.reduce((a, b) => a + b, 0))/calificacion.length}
+					        starSize={28}
+					    />
+					    <Text style={perfilStyle.calificacion}>{calificacion.length}</Text>
+					</View>
+					     
 					<View style={imagen &&perfilStyle.inputs}>
 					{/* NOMBRE */}
 						<View style={perfilStyle.contenedorRegistros}>

@@ -167,17 +167,6 @@ class planServices {
 	 			}
 	 		},
 	 		{
-	 			$project:{
-	 				_id:1,
-	 				nombreUsuario:'$UserData.nombre',
-	 				idUsuario:'$UserData._id',
-	 				imagenResize:1,
-	 				nombre:1,
-	 				fechaLugar:1,
-	 				activo:1
-	 			},
-	 		},
-	 		{
 	 			$lookup: {
 	 				from: "items",
 	 				localField: "_id",
@@ -196,15 +185,16 @@ class planServices {
 	 			$project:{
 	 				_id:1,
 	 				nombre:1,
-	 				idUsuario:1,
 	 				imagenResize:1,
-	 				nombreUsuario:1,
 	 				fechaLugar:1,
 	 				activo:1,
+	 				nombreUsuario:'$UserData.nombre',
+	 				idUsuario:'$UserData._id',
 	 				itemId:'$ItemData._id',
 	 				userItemId:'$ItemData.userId',
 	 				itemTitulo: '$ItemData.titulo',
-	 				valorItem:'$ItemData.valor'
+	 				valorItem:'$ItemData.valor',
+	 				asignadosItem:{ "$size": { "$ifNull": [ "$ItemData.asignados", [] ] } },
 	 			},
 	 		}, 
 			{
@@ -235,6 +225,7 @@ class planServices {
 			        valorItem:1,
 			        fechaLugar:1,
 			        activo:1,
+			        asignadosItem:1,
 			        monto: '$PagoData.monto',
 			        abono: '$PagoData.abono',
 			        userId: '$PagoData.userId',
@@ -249,7 +240,7 @@ class planServices {
 				        	abono:  "$abono",
 				        },
 			        data: {
-                        $addToSet: {info:["$idUsuario", "$nombreUsuario", '$abono', '$imagenResize', '$nombre', '$userItemId',  '$itemTitulo', '$valorItem', '$fechaLugar', '$activo']}
+                        $addToSet: {info:["$idUsuario", "$nombreUsuario", '$abono', '$imagenResize', '$nombre', '$userItemId',  '$itemTitulo', '$valorItem', '$fechaLugar', '$activo', '$asignadosItem']}
                     },
 			        total:{ $sum :'$monto'}
 			    }

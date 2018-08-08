@@ -24,7 +24,7 @@ export default class walletComponent extends Component{
 	componentWillMount(){
 		axios.get('/x/v1/pla/plan/suma/totales/plan')
 		.then(e=>{
-			console.log(e.data.result)
+			console.log(e.data)
 			this.setState({allList:e.data.result, filteredData:e.data.result})
 		})
 		.catch(res=>{
@@ -54,7 +54,10 @@ export default class walletComponent extends Component{
 							<Text style={walletStyle.fechaLugar}>By {e.nombreUsuario} </Text>
 							<View style={walletStyle.item}>	
 								<Text style={walletStyle.textoTotal}>Total</Text>
-								<Text style={walletStyle.total}>$ {e.total}</Text>
+								<Text style={e.total>=0 ?walletStyle.pagoDeudaMontoActive :walletStyle.pagoDeudaMonto}>
+									{'$ '+Number(e.total).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
+								</Text>
+								 
 							</View>	
 						</View>
 						<Image source={require('./back_plan.png')} style={walletStyle.back} />

@@ -184,9 +184,7 @@ const sumaPorUsuarioMeDebe = (planId, id, debo, debo2, res)=>{
 					let sum1 = suma1.reduce(add, 0);
 
 					let total = Math.abs(sum) + sum1
-					// let total = sum + sum1
-					console.log(sum)
-					console.log(sum1)
+ 
 					 
 					res.json({ status: 'SUCCESS', debo, debo2, meDeben, meDeben2, total,  code:1 });
 				}

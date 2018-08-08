@@ -374,13 +374,15 @@ router.get('/suma/totales/plan', (req, res)=>{
 				return e
 			})
 	 		let data = data1.map(e=>{
+
 				return{
 					id:e._id.id,
 					nombrePlan:e.data[0].info[4],
 					nombreUsuario:e.data[0].info[1],
 					imagen:e.data[0].info[3],
 					fecha:e.data[0].info[8],
-					total: e.total
+					// total: e.total
+					total: e.total- -Math.abs((Math.ceil((e.data[0].info[7]/(e.data[0].info[10]+1))/100)*100)) 
 				}
 			})
 
