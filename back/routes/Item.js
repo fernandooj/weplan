@@ -145,6 +145,62 @@ router.get('/pendientes/:planId', (req, res)=>{
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////	 OBTENGO LA DEUDA DE CADA USUARIO QUE LE DEBO
+///////////////////////////////////////////////////////////////////////////////////////////////
+router.get('/deudaPorUsuario/:planId', (req, res)=>{
+	itemServices.sumaPorUsuarioDebo(req.params.planId, req.session.usuario.user._id, (err, debo)=>{
+		if(err){
+			res.json({err, code:0})
+		}else{
+			pagoServices.sumaPorUsuarioDeboSinGroup(req.params.planId, req.session.usuario.user._id, (err, debo2)=>{
+				if(!err){
+					sumaPorUsuarioMeDebe(req.params.planId, req.session.usuario.user._id, debo, debo2, res)		
+				}
+			})			
+			// sumaPorUsuarioMeDebe(req.params.planId, req.session.usuario.user._id, debo, res)		
+		}
+	})
+})
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////		OBTENGO LOS LA DEUDA DE CADA USUARIO QUE ME DEBE
+///////////////////////////////////////////////////////////////////////////////////////////////
+const sumaPorUsuarioMeDebe = (planId, id, debo, debo2, res)=>{
+	pagoServices.sumaPorUsuarioMeDebe(planId, id, (err, meDeben)=>{
+		if(err){
+			console.log(err)
+		}else{	
+			pagoServices.sumaPorUsuarioMeDebeSinGroup(planId, id, (err2, meDeben2)=>{
+				if (!err2) {
+					let suma=[]
+					let suma1=[]
+					meDeben.filter(e=>{
+						suma.push(e.total)
+					})
+					debo.filter(e=>{
+						suma1.push(e.total)
+					})
+					let sum = suma.reduce(add, 0);
+					let sum1 = suma1.reduce(add, 0);
+
+					let total = Math.abs(sum) + sum1
+					// let total = sum + sum1
+					console.log(sum)
+					console.log(sum1)
+					 
+					res.json({ status: 'SUCCESS', debo, debo2, meDeben, meDeben2, total,  code:1 });
+				}
+					
+			})			
+		}
+	})
+}
+
+const add = (a, b)=>{
+	return a + b;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////		OBTENGO LOS QUE NO ESTAN ASIGNADOS
 ///////////////////////////////////////////////////////////////////////////////////////////////
 router.get('/publicados/:planId', (req, res)=>{
@@ -265,6 +321,8 @@ router.post('/:id', (req,res)=>{
 ////////   CREO UN PRIMER PAGO, O DEUDA 
 //////////////////////////////////////////////////////////////////////////////////////////
 let createPago = function(req, res, id, item){	
+	console.log("req.valor") 
+	console.log(req.valor) 
 	let data = {userId:id, itemId:item._id, monto:req.valor, planId:req.planId, abono:true, metodo:null, descripcion:'pago inicial por inscribirse', activo:true}
 	pagoServices.create(data, null, id, true, (err, pago)=>{
 		if(err){

@@ -8,11 +8,11 @@ import update from 'react-addons-update';
 import moment from 'moment'
 import ImagePicker from 'react-native-image-picker';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
+import QRCodeScanner from 'react-native-qrcode-scanner';
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////  ARCHIVOS GENERADOS POR EL EQUIPO  //////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-import QRCodeScanner from 'react-native-qrcode-scanner';
 import AgregarAmigosComponent from '../agregarAmigos/agregarAmigos.js'
 import MapaPlanComponent 	  from '../createPlan/mapa.js'
 import PdfComponent           from '../pdf/pdfComponent.js'
@@ -628,7 +628,7 @@ export default class ChatComponent extends Component{
 		        onRead={this.infoQr.bind(this)}
 		        topContent={
 		          <Text style={ChatStyle.centerText}>
-		            Scanea el Qr de tu usuario
+		            Scanea el Qr de tu amigo
 		          </Text>
 		        }
 		        bottomContent={

@@ -39,7 +39,9 @@ export default class homeComponent extends Component{
 		axios.get(`/x/v1/pla/plan/pago/${lat}/${lng}`)
 		.then(e=>{
 			console.log(e.data)
-			this.setState({planes:e.data.planes})
+			if (e.data.code===1) {
+				this.setState({planes:e.data.planes})
+			}
 		})
 		.catch(err=>{
 			console.log(err)

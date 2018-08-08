@@ -47,7 +47,7 @@ export default class notificacionComponent extends Component{
 				 						:e.tipo==8 ?`Se salio del plan: ${e.titulo}`
 				 						:e.tipo==9 ?`No le entro al item: ${e.titulo}`
 				 						:e.tipo==10 ?`Te abono en efectivo: ${e.titulo}`
-				 						:e.tipo==11 ?`Tu abono de: ${e.titulo}, fue Aprovado`
+				 						:e.tipo==11 ?`Tu abono de: ${e.titulo}, fue Aprobado`
 				 						:e.tipo==12 &&`Tu abono de: ${e.titulo}, fue Rechazado`
 				 					}
 				 				</Text>

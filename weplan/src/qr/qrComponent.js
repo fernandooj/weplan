@@ -46,7 +46,7 @@ export default class QrComponent extends Component{
 					<View style={QrStyle.qr} >
 						<QRCode value={id} size={180} />
 					</View>
-					<Text style={QrStyle.texto}>Este es tu codigo QR unico e irrepletible, úsalo para agregar amigos y únirte a planes !</Text>
+					<Text style={QrStyle.texto}>Este es tu Código QR unico e irrepletible, úsalo para agregar amigos y únirte a planes !</Text>
 					
 					<View style={QrStyle.containerHecho}>
 			    		<TouchableOpacity  style={QrStyle.btnHecho} onPress={()=>this.props.close(planId)}>

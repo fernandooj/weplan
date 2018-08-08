@@ -14,7 +14,7 @@ export const costoPlanStyle = MediaQueryStyleSheet.create({
 	},
 	contentItem:{
 		flex: 1,
-		height:screenHeight.height+50,
+		height:screenHeight.height+100,
 	},
 	subContenedor:{
 		width:100,
@@ -151,6 +151,11 @@ export const costoPlanStyle = MediaQueryStyleSheet.create({
 	},
 	valueTotal:{
 		fontSize:20,
+	},
+	tituloDeuda:{
+		color:'#5664ba',
+		fontSize:18,
+		marginTop:10
 	} 
 },{
 	"@media (max-device-width: 320)": {

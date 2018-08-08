@@ -35,7 +35,7 @@ export default class costoPlanComponent extends Component{
 	 	.catch(err=>{
 	 		console.log(e.err)
 	 	})
-	 	axios.get('x/v1/pag/pago/deudaPorUsuario/'+planId)
+	 	axios.get('x/v1/ite/item/deudaPorUsuario/'+planId)
 	 	.then(e=>{
 	 		console.log(e.data)
 	 		///////   Es lo que debo
@@ -49,7 +49,7 @@ export default class costoPlanComponent extends Component{
 					total:e2.total,
 					deuda:100,
 				    pagos:e.data.debo2.filter(e3=>{
-				       return e2._id===e3.userId
+				       return e2._id===e3.userIds
 				    })
 			  	}
 			})
@@ -148,7 +148,7 @@ export default class costoPlanComponent extends Component{
 	 				<View style={costoPlanStyle.pagoDeudaContenedor}>
 		 				<Image source={{uri: e.photo}} style={costoPlanStyle.pagoDeudaAvatar} />
 		 				<Text style={costoPlanStyle.pagoDeudaNombre}>{e.nombre}</Text> 
-		 				<Text style={costoPlanStyle.pagoDeudaMontoActive}>{'$ '+Number(e.total).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+		 				<Text style={costoPlanStyle.pagoDeudaMontoActive}>{'$ '+Math.abs((e.total)).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
 		 			</View>
 	 				<View>	
 		 				{
@@ -176,19 +176,16 @@ export default class costoPlanComponent extends Component{
   	render() {
   		const {navigate} = this.props.navigation
   		const {show, monto, photo, nombre, itemId, userId, debo, total} = this.state
-
-		
 		return (
 			<View style={costoPlanStyle.container}>
 				<ScrollView >
 					<View style={costoPlanStyle.contentItem}>
 						<CabezeraComponent navigate={navigate} url={'wallet'} parameter={this.state.planId} texto='Mi Wallet' />
-						 
 						<View style={costoPlanStyle.contenedor}>
 							{this.renderPlan()}
-							<Text>Cuanto Debo</Text>
+							<Text style={costoPlanStyle.tituloDeuda}>Cuanto Debo</Text>
 							{this.renderDebo()}
-							<Text>Cuanto Me Deben</Text>
+							<Text style={costoPlanStyle.tituloDeuda}>Cuanto Me Deben</Text>
 							{this.renderMeDeben()}
 						</View>	
 					</View>

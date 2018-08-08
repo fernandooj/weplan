@@ -273,7 +273,7 @@ class itemServices {
 			       total: { $sum: "$montos"}, 
 			       count: { $sum: 1 },  
 			       data: {
-			       	$addToSet: {info:[{titulo:'$titulo', userId:'$userIds', nombre:'$nombre', photo:'$photo'}]},
+			       	$addToSet: {info:[{titulo:'$titulo', userId:'$userId', nombre:'$nombre', photo:'$photo'}]},
 			       }
 			    } 
 			},

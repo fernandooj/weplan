@@ -138,79 +138,7 @@ class pagoServices{
 		], callback);
  	}
  	 
- 	sumaPorUsuarioDebo(planId, idUser, callback){
-		planId = mongoose.Types.ObjectId(planId);
-		idUser = mongoose.Types.ObjectId(idUser);
-		pagoSchema.aggregate([
-			{ 
-				$match: {
-					planId,
-					userId:idUser
-				}
-			},
-			{
-				$lookup:{
-					from:"items",
-					localField:"itemId",
-					foreignField:"_id",
-					as:"itemData"
-				}
-			}, 
-			{
-			    $unwind:{
-			        path:"$itemData",
-			        preserveNullAndEmptyArrays:true
-			    }
-			},
-			{
-	 			$lookup: {
-	 				from: "users",
-	 				localField: "userId",
-	 				foreignField: "_id",
-	 				as: "UserData"
-	 			}
-	 		},
-	 		{
-	 			$unwind:
-	 			{
-	 				path:'$UserData',
-	 				preserveNullAndEmptyArrays: true
-	 			}
-	 		},
-			{
-			    $project:{
-			        _id:1,
-					userId:1,
-					titulo:1,
-					monto:1,
-					abono:1,
-					activo:1,
-					itemId:'$itemData._id',
-					userIds:'$itemData.userId',
-			        nombre:'$UserData.nombre',
-			        photo:'$UserData.photo'
-			    }
-			},
-			{ 
-				$match: {
-					userIds:{
-						$ne:idUser
-					},
-					activo:true
-				}
-			},
-			{
-			    $group : {
-			       _id : "$userId",
-			       total: { $sum: "$monto"}, 
-			       count: { $sum: 1 },  
-			       data: {
-			       	$addToSet: {info:[{titulo:'$titulo', userId:'$userIds', nombre:'$nombre', photo:'$photo'}]},
-			       }
-			    } 
-			},
-		], callback)
-	}
+ 	 
 	sumaPorUsuarioDeboSinGroup(planId, idUser, callback){
 		planId = mongoose.Types.ObjectId(planId);
 		idUser = mongoose.Types.ObjectId(idUser);
@@ -258,6 +186,7 @@ class pagoServices{
 					monto:1,
 					abono:1,
 					activo:1,
+					createdAt:1,
 					itemId:'$itemData._id',
 					userIds:'$itemData.userId',
 			        nombre:'$UserData.nombre',

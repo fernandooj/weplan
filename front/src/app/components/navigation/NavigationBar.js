@@ -27,9 +27,9 @@ class NavigationBar extends React.Component{
           <section>
           { 
             this.props.showMenu
-            &&<Menu
-                onClick={this.handleClick}
-                selectedKeys={[this.state.current]}
+
+                selectedKeys={[this.sta            &&<Menu
+                onClick={this.handleClick}te.current]}
                 mode="horizontal"
               >
               <Menu.Item key="plan">

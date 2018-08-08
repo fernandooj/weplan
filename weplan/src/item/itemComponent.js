@@ -21,7 +21,7 @@ export default class ItemComponent extends Component{
 		articulosPublicados:[],
 		noasignados:[],
 		pendientes:[],
-		render:2,
+		render:0,
 		total:0
 	}
 	componentWillMount(){
@@ -33,7 +33,7 @@ export default class ItemComponent extends Component{
 		axios.get('/x/v1/ite/item/'+planId)
 		.then(e=>{
 			console.log(e.data)
-			this.setState({pago:e.data.pago, deuda:e.data.deuda, total:e.data.total})
+			this.setState({pago:e.data.pago, deuda:e.data.deuda, total:e.data.total, planId})
 		})		 
 		.catch(err=>{
 			console.log(err)
@@ -142,7 +142,7 @@ export default class ItemComponent extends Component{
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	aceptarItem(idItem, token, titulo, imagen, monto){
 		console.log({idItem, token, titulo, imagen, monto})
-		axios.put(`/x/v1/ite/item/activar/${idItem}`, {monto})
+		axios.put(`/x/v1/ite/item/activar/${idItem}`, {monto, planId:this.state.planId})
 		.then(e=>{
 			console.log(e.data)
 			if (e.data.code==1) {
