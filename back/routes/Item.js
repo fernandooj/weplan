@@ -448,9 +448,6 @@ router.put('/activar/:idTipo', (req, res)=>{
 		})
 	})
 })
-const activaItem =(usuario, idTipo, id, res, req)=>{
-	
-}
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////// 	CREO UN NUEVO PAGO CUANDO EL USUARIO ACEPTA SER PARTE DEL ITEM

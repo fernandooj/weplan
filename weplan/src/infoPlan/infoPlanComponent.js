@@ -159,9 +159,10 @@ const finalizar = (id, navigate)=>{
 const handleFinalizar = (id, navigate)=>{
 	axios.put('x/v1/pla/plan/finalizar', {id})
 	.then(e=>{
-		if (e.data.code==1) {
-			navigate('inicio')
-		}
+		console.log(e.data)
+		// if (e.data.code==1) {
+		// 	navigate('inicio')
+		// }
 	})
 }
 
@@ -181,9 +182,23 @@ const handleSalir = (id, navigate)=>{
 	axios.put('x/v1/pla/plan/salir', {id})
 	.then(e=>{
 		console.log(e.data)
-		if (e.data.code==1) {
+		if (e.data.total===0 &&e.data.code==1) {
 			navigate('inicio')
 		}
+		if (e.data.total!==0 &&e.data.code==1) {
+			Alert.alert(
+				'Opss!! no puedes salirte por que tienes deudas',
+				'',
+			[
+				{text: 'Cerrar', onPress: () => console.log('OK Pressed')},
+				{text: 'Ver Deudas', onPress: () => navigate('costoPlan', id )},
+			],
+				{ cancelable: false }
+			)
+		}
+		// if (e.data.code==1) {
+		// 	navigate('inicio')
+		// }
 	})
 }
  

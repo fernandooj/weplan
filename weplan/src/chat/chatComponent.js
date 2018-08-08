@@ -48,7 +48,7 @@ export default class ChatComponent extends Component{
 
 	componentWillMount(){
 		let planId = this.props.navigation.state.params	
-		// let planId = '5b47c7489f436157e1cd6646'	 
+		// let planId = '5b6ab0f62484f525805a3afe'	 
 		console.log(planId) 
 		this.socket = SocketIOClient(URL);
 		this.socket.on('userJoined'+planId, this.onReceivedMessage);

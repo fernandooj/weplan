@@ -15,11 +15,12 @@ let mongoose = require('mongoose')
 let ip = require("ip");
 let ipLocator = require('ip-locator')
 
-let planServices = require('../services/planServices.js')
 const ubicacion     =  '../../front/docs/public/uploads/plan/'
 const ubicacionJimp =  '../front/docs/public/uploads/plan/'
+let planServices = require('../services/planServices.js')
 let notificacionService = require('../services/notificacionServices.js');
-
+let itemServices = require('../services/itemServices.js')
+let pagoServices = require('../services/pagoServices.js')
  
  
  
@@ -168,13 +169,12 @@ router.post('/', function(req, res){
 									notificacion:true,
 								}
 								cliente.publish('notificacion', JSON.stringify(mensajeJson))
-								notificacionService.create(req.session.usuario.user._id, e, 2, plan._id, true, (err, notificacion)=>{
+								notificacionService.create(req.session.usuario.user._id, e, 2, plan._id, false, (err, notificacion)=>{
 									console.log(notificacion)
 								})
 							})
 						res.json({status:'SUCCESS', message: plan, code:1})  
 					}else{
-
 						res.json({ status: 'SUCCESS', message: plan, code:1 });	
 					}
 				}
@@ -183,25 +183,71 @@ router.post('/', function(req, res){
     }
 })
 
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////	SACO AL USUARIO DEL PLAN, PERO PRIMERO VERIFICO QUE NO LE DEBA A NADIE
+///////////////////////////////////////////////////////////////////////////////////////////////
 router.put('/salir', (req, res)=>{
-	planServices.getByIdPlan(req.body.id, (err, plan)=>{
-		if (err) {
-			res.json({status: 'FAIL', err, code:0})
+	itemServices.sumaPorUsuarioDebo(req.body.id, req.session.usuario.user._id, (err, debo)=>{
+		if(err){
+			res.json({err, code:0})
 		}else{
-			
-			let asignados = plan[0].asignados.filter(e=>{
-				if(e._id != req.session.usuario.user._id) return e 
-			})
-			planServices.salir(req.body.id, asignados, (err, plan2)=>{
-				if (err) {
-					res.json({status: 'FAIL', err, code:0})
-				}else{
-					res.json({status: 'SUCCESS', plan2, code:1})
-				}
-			})
+			sumaPorUsuarioMeDebe(req.body.id, req.session.usuario.user._id, debo, res)		 
 		}
 	})
 })
+///////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////		OBTENGO LOS LA DEUDA DE CADA USUARIO QUE ME DEBE
+///////////////////////////////////////////////////////////////////////////////////////////////
+const sumaPorUsuarioMeDebe = (planId, id, debo, res)=>{
+	pagoServices.sumaPorUsuarioMeDebe(planId, id, (err, meDeben)=>{
+		if(err){
+			console.log(err)
+		}else{
+			let suma=[]
+			let suma1=[]
+			meDeben.filter(e=>{
+				suma.push(e.total)
+			})
+			debo.filter(e=>{
+				suma1.push(e.total)
+			})
+			let sum = suma.reduce(add, 0);
+			let sum1 = suma1.reduce(add, 0);
+
+			let total = Math.abs(sum) + sum1
+			if (total===0) {
+				planServices.getByIdPlan(planId, (err, plan)=>{
+					if (err) {
+						res.json({status: 'FAIL', err, code:0})
+					}else{
+						let asignados = plan[0].asignados.filter(e=>{
+							if(e != id) return e 
+							// return e!==id 
+						})
+						console.log(asignados)
+						planServices.salir(planId, asignados, (err, plan2)=>{
+							if (err) {
+								res.json({status: 'FAIL', err, code:0})
+							}else{
+								res.json({status: 'SUCCESS', total, code:1})
+							}
+						})
+					}
+				})
+			}
+			else{
+				res.json({ status: 'SUCCESS', total, code:1 }); 
+			}
+			
+		}
+	})
+}
+
+const add = (a, b)=>{
+	return a + b;
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -289,13 +335,13 @@ router.put('/', (req, res)=>{
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const creaNotificacion = (req, res, plan, rutaImagenResize)=>{
 	plan.asignados.map(e=>{
-	let mensajeJson={
-		userId:e,
-		notificacion:true,
-	}
-	cliente.publish('notificacion', JSON.stringify(mensajeJson))
+		let mensajeJson={
+			userId:e,
+			notificacion:true,
+		}
+		cliente.publish('notificacion', JSON.stringify(mensajeJson))
 
-		notificacionService.create(req.session.usuario.user._id, e, 2, plan._id, true, (err, notificacion)=>{
+		notificacionService.create(req.session.usuario.user._id, e, 2, plan._id, false, (err, notificacion)=>{
 			console.log(notificacion)
 		})
 	})
