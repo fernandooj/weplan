@@ -1,18 +1,19 @@
 'use strict'
 
-let express = require('express')
-let router = express.Router()
-let fs = require('fs')
-let path = require('path')
-let moment   = require('moment');
-let fecha = moment().format('YYYY-MM-DD-h-mm')
-let Jimp = require("jimp");
-let redis        = require('redis')
-let cliente      = redis.createClient()
-let { promisify } = require('util');
-let sizeOf = promisify(require('image-size'));
-let mongoose = require('mongoose')
-let ip = require("ip");
+let express   = require('express')
+let router    = express.Router()
+let fs 	      = require('fs')
+let path      = require('path')
+let moment    = require('moment');
+let fecha     = moment().format('YYYY-MM-DD-h-mm')
+let fecha2    = moment().format('YYYY-MM-DD h:mm')
+let Jimp      = require("jimp");
+let redis     = require('redis')
+let cliente   = redis.createClient()
+let {promisify} = require('util');
+let sizeOf    = promisify(require('image-size'));
+let mongoose  = require('mongoose')
+let ip 		  = require("ip");
 let ipLocator = require('ip-locator')
 
 const ubicacion     =  '../../front/docs/public/uploads/plan/'
@@ -370,29 +371,44 @@ const sumaPorUsuarioMeDebe = (planId, id, debo, res)=>{
 						let asignados = plan[0].asignados.filter(e=>{
 							if(e != id) return e 
 						})
-						console.log(asignados)
+						//////////////////////////// salir del plan /////////////
 						planServices.salir(planId, asignados, (err, plan2)=>{
 							if (err) {
 								res.json({status: 'FAIL', err, code:0})
 							}else{
-								notificacionService.create(req.session.usuario.user._id, e, 14, plan[0]._id, true, (err, notificacion)=>{
-									if (!err) {
-										res.json({status: 'SUCCESS',  code:1})
-									}
-								})
-								
+								envioNotificacionSalir(id, plan[0]._id, plan[0].fechaLugar, total, res)
 							}
 						})
+						 
+						/////////////////////////////////////////////////////////
 					}
 				})
 			}
 			else{
 				res.json({ status: 'SUCCESS', total, code:1 }); 
 			}
-			
 		}
 	})
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////  si el usuario se sale despues de la fecha de inicio del plan le envio la notificacion
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const envioNotificacionSalir=(id, planId, fechaPlan, total, res)=>{
+	console.log(fechaPlan)
+	console.log(fecha2)
+	if (fechaPlan<fecha2) {
+		notificacionService.create(id, id, 14, planId, true, (err, notificacion)=>{
+			if (!err) {
+				res.json({status: 'SUCCESS',  total, code:1})
+			}
+		})
+	}else{
+		res.json({status: 'SUCCESS', total, code:1})
+	}
+	
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////// FINALIZO EL PLAN, VERIFICANDO QUE NO SE LE DEBA NADA A NADIE
@@ -435,6 +451,9 @@ router.put('/finalizar', (req, res)=>
 								console.log(notificacion)
 							})
 
+						})
+						notificacionService.create(req.session.usuario.user._id, req.session.usuario.user._id, 14, plan._id, false, (err, notificacion)=>{
+							console.log(notificacion)
 						})
 						res.json({ status: 'SUCCESS', deuda, total, plan, code:1 });	
 					}

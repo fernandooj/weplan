@@ -165,7 +165,7 @@ const handleFinalizar = (id, navigate, data)=>{
 		if (res.data.total===0 &&res.data.code==1) {
 			data.asignados.map(e=>{
 				sendRemoteNotification(13, e.tokenPhone, 'notificacion', `Plan Cerrado`, `, a cerrado el plan ${data.nombre}`, data.imagenMiniatura[0])
-				sendRemoteNotification(14, e.tokenPhone, 'notificacion', `Califica tu plan`, `,Califica el plan ${data.nombre}`, data.imagenMiniatura[0])
+				sendRemoteNotification(14, e.tokenPhone, 'notificacion', `Califica tu plan`, `Califica el plan ${data.nombre}`, data.imagenMiniatura[0])
 			})
 			setTimeout(function(){ 
 				navigate('inicio')
