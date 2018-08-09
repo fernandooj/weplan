@@ -11,7 +11,7 @@ export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaj
 	axios.get('/x/v1/user/profile') 
 	.then((res)=>{
 	    let body;
-	    let nombre = res.data.user.user.nombre
+	    let nombre = tipo==14 ?'' :res.data.user.user.nombre
 	    let photo  = res.data.user.user.photo
 	    imagen = imagen==null ? photo :imagen
 	    if(Platform.OS === 'android'){

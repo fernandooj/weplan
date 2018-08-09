@@ -27,7 +27,7 @@ export default class infoPlanComponent extends Component{
 	let {navigate} = this.props.navigation
 	let menus = [
 		{funcion:()=>salir(data._id, navigate), texto:'Salir del Plan', show: id==data.idUsuario._id ?false :true },
-		{funcion:()=>finalizar(data._id, navigate), texto:'Finalizar Plan', show: id==data.idUsuario._id ?true :false }
+		{funcion:()=>finalizar(data._id, navigate, data), texto:'Finalizar Plan', show: id==data.idUsuario._id ?true :false }
 	]
 	return (
 		<ScrollView  style={InfoPlanStyle.contenedorGeneral}>
@@ -144,25 +144,44 @@ export default class infoPlanComponent extends Component{
 		)
 	}	
 }	
-const finalizar = (id, navigate)=>{
+const finalizar = (id, navigate, data)=>{
 	Alert.alert(
 		'Opss!! estas a punto de finalizar este plan',
 		'estas seguro, despues no podras abrirlo',
 	[
 		{text: 'Mejor despues', onPress: () => console.log('OK Pressed')},
-		{text: 'Si, Finalizar', onPress: () => handleFinalizar(id, navigate)},
+		{text: 'Si, Finalizar', onPress: () => handleFinalizar(id, navigate, data)},
 	],
 		{ cancelable: false }
 	)
 }		
 
-const handleFinalizar = (id, navigate)=>{
+const handleFinalizar = (id, navigate, data)=>{
+	console.log(data.imagenMiniatura[0])
 	axios.put('x/v1/pla/plan/finalizar', {id})
-	.then(e=>{
-		console.log(e.data)
-		// if (e.data.code==1) {
-		// 	navigate('inicio')
-		// }
+	.then(res=>{
+		
+		
+		if (res.data.total===0 &&res.data.code==1) {
+			data.asignados.map(e=>{
+				sendRemoteNotification(13, e.tokenPhone, 'notificacion', `Plan Cerrado`, `, a cerrado el plan ${data.nombre}`, data.imagenMiniatura[0])
+				sendRemoteNotification(14, e.tokenPhone, 'notificacion', `Califica tu plan`, `,Califica el plan ${data.nombre}`, data.imagenMiniatura[0])
+			})
+			setTimeout(function(){ 
+				navigate('inicio')
+			}, 3000); 
+		}
+		if (res.data.total!==0 &&res.data.code==1) {
+			Alert.alert(
+				'Opss!! no puedes finalizar el plan',
+				'algunos usuarios tienen deudas',
+			[
+				{text: 'Cerrar', onPress: () => console.log('OK Pressed')},
+				//{text: 'Ver Deudas', onPress: () => navigate('costoPlan', id )},
+			],
+				{ cancelable: false }
+			)
+		}
 	})
 }
 
@@ -196,9 +215,6 @@ const handleSalir = (id, navigate)=>{
 				{ cancelable: false }
 			)
 		}
-		// if (e.data.code==1) {
-		// 	navigate('inicio')
-		// }
 	})
 }
  

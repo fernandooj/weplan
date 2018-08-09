@@ -280,7 +280,59 @@ class itemServices {
 		], callback)
 	}
 	
-
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////////   es la sumatoria de todas las deudas de un plan, para verificar si se puede cerrar
+	/////////   llama a esta funcion desde plan
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	sumaTotalPlan(idPlan, callback){
+		idPlan = mongoose.Types.ObjectId(idPlan);
+		itemSchema.aggregate([
+			
+			{
+				$lookup:{
+					from:"pagos",
+					localField:"_id",
+					foreignField:"itemId",
+					as:"PagoData"
+				}
+			}, 
+			{
+			    $unwind:{
+			        path:"$PagoData",
+			        preserveNullAndEmptyArrays:true
+			    }
+			},
+			{
+			    $project:{
+			        _id:1,
+					valor:1,
+					planId:1,
+					userIds:"$PagoData.userId",
+					monto:"$PagoData.monto",
+					activo:"$PagoData.activo",
+					// asignados:{ "$size": { "$ifNull": [ 1, [] ] } },
+					// asignados:{ $size:  1 },
+					asignados:1,
+			    }
+			},
+			{ 
+				$match: {
+					planId:idPlan,
+					activo:true
+				}
+			},
+			{
+			    $group : {
+			       _id : "$_id",
+			       total: { $sum: "$monto"}, 
+			       count: { $sum: 1 }, 
+			       data: {
+			       	$addToSet: {info:[{valor:'$valor', asignados:'$asignados' }]},
+			       } 
+			    } 
+			},
+		], callback)
+	}
 
  
 }

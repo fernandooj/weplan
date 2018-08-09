@@ -184,72 +184,6 @@ router.post('/', function(req, res){
 })
 
 
-
-///////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////	SACO AL USUARIO DEL PLAN, PERO PRIMERO VERIFICO QUE NO LE DEBA A NADIE
-///////////////////////////////////////////////////////////////////////////////////////////////
-router.put('/salir', (req, res)=>{
-	itemServices.sumaPorUsuarioDebo(req.body.id, req.session.usuario.user._id, (err, debo)=>{
-		if(err){
-			res.json({err, code:0})
-		}else{
-			sumaPorUsuarioMeDebe(req.body.id, req.session.usuario.user._id, debo, res)		 
-		}
-	})
-})
-///////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////		OBTENGO LOS LA DEUDA DE CADA USUARIO QUE ME DEBE
-///////////////////////////////////////////////////////////////////////////////////////////////
-const sumaPorUsuarioMeDebe = (planId, id, debo, res)=>{
-	pagoServices.sumaPorUsuarioMeDebe(planId, id, (err, meDeben)=>{
-		if(err){
-			console.log(err)
-		}else{
-			let suma=[]
-			let suma1=[]
-			meDeben.filter(e=>{
-				suma.push(e.total)
-			})
-			debo.filter(e=>{
-				suma1.push(e.total)
-			})
-			let sum = suma.reduce(add, 0);
-			let sum1 = suma1.reduce(add, 0);
-
-			let total = Math.abs(sum) + sum1
-			if (total===0) {
-				planServices.getByIdPlan(planId, (err, plan)=>{
-					if (err) {
-						res.json({status: 'FAIL', err, code:0})
-					}else{
-						let asignados = plan[0].asignados.filter(e=>{
-							if(e != id) return e 
-							// return e!==id 
-						})
-						console.log(asignados)
-						planServices.salir(planId, asignados, (err, plan2)=>{
-							if (err) {
-								res.json({status: 'FAIL', err, code:0})
-							}else{
-								res.json({status: 'SUCCESS', total, code:1})
-							}
-						})
-					}
-				})
-			}
-			else{
-				res.json({ status: 'SUCCESS', total, code:1 }); 
-			}
-			
-		}
-	})
-}
-
-const add = (a, b)=>{
-	return a + b;
-}
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////// MODIFICO LAS IMAGENES SI SE ENVIAN DESDE LA WEB / ACEPTAN VARIAS IMAGENES
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -392,15 +326,131 @@ const creaNotificacionUsuarioChat = (req, res, plan)=>{
 }
 
 
-router.put('/finalizar', (req, res)=>
-	planServices.finalizar(req.body.id, (err, plan)=>{
-		if (err) {
-			res.json({status: 'FAIL', err, code:0})
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////	SACO AL USUARIO DEL PLAN, PERO PRIMERO VERIFICO QUE NO LE DEBA A NADIE
+///////////////////////////////////////////////////////////////////////////////////////////////
+router.put('/salir', (req, res)=>{
+	itemServices.sumaPorUsuarioDebo(req.body.id, req.session.usuario.user._id, (err, debo)=>{
+		if(err){
+			res.json({err, code:0})
 		}else{
-			res.json({ status: 'SUCCESS', plan, code:1 });	
+			sumaPorUsuarioMeDebe(req.body.id, req.session.usuario.user._id, debo, res)		 
 		}
 	})
+})
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////		OBTENGO  LA DEUDA DE CADA USUARIO QUE LE DEBE AL USUARIO LOGUEADO
+///////////////////////////////////////////////////////////////////////////////////////////////
+const sumaPorUsuarioMeDebe = (planId, id, debo, res)=>{
+	pagoServices.sumaPorUsuarioMeDebe(planId, id, (err, meDeben)=>{
+		if(err){
+			console.log(err)
+		}else{
+			let suma=[]
+			let suma1=[]
+			meDeben.filter(e=>{
+				suma.push(e.total)
+			})
+			debo.filter(e=>{
+				suma1.push(e.total)
+			})
+			let sum = suma.reduce(add, 0);
+			let sum1 = suma1.reduce(add, 0);
+
+			let total = Math.abs(sum) + sum1
+			if (total===0) {
+				planServices.getByIdPlan(planId, (err, plan)=>{
+					if (err) {
+						res.json({status: 'FAIL', err, code:0})
+					}else{
+						let asignados = plan[0].asignados.filter(e=>{
+							if(e != id) return e 
+						})
+						console.log(asignados)
+						planServices.salir(planId, asignados, (err, plan2)=>{
+							if (err) {
+								res.json({status: 'FAIL', err, code:0})
+							}else{
+								notificacionService.create(req.session.usuario.user._id, e, 14, plan[0]._id, true, (err, notificacion)=>{
+									if (!err) {
+										res.json({status: 'SUCCESS',  code:1})
+									}
+								})
+								
+							}
+						})
+					}
+				})
+			}
+			else{
+				res.json({ status: 'SUCCESS', total, code:1 }); 
+			}
+			
+		}
+	})
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////// FINALIZO EL PLAN, VERIFICANDO QUE NO SE LE DEBA NADA A NADIE
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+router.put('/finalizar', (req, res)=>
+	itemServices.sumaTotalPlan(req.body.id, (err, deuda)=>{
+		if(!err){
+			deuda = deuda.map(e=>{
+				return{
+					id:e._id,
+					valor:e.data[0].info[0].valor,
+					// total: e.total
+					total: e.total- Math.abs((Math.ceil((e.data[0].info[0].valor/(e.data[0].info[0].asignados.length+1))/100)*100)) 
+				}
+			})
+			let suma=[]
+			deuda.filter(e=>{
+				suma.push(e.total)
+			})
+			let total = suma.reduce(add, 0);
+
+			if (total===0) {
+				planServices.finalizar(req.body.id, (err, plan)=>{
+					if (err) {
+						res.json({status: 'FAIL', err, code:0})
+					}else{
+						console.log(plan.asignados)
+						plan.asignados.map(e=>{
+							let mensajeJson={
+								userId:e,
+								notificacion:true,
+							}
+							cliente.publish('notificacion', JSON.stringify(mensajeJson))
+							notificacionService.create(req.session.usuario.user._id, e, 13, plan._id, false, (err, notificacion)=>{
+								console.log(notificacion)
+							})
+
+							notificacionService.create(req.session.usuario.user._id, e, 14, plan._id, true, (err, notificacion)=>{
+								console.log(notificacion)
+							})
+
+						})
+						res.json({ status: 'SUCCESS', deuda, total, plan, code:1 });	
+					}
+				})
+			}else{
+				res.json({ status: 'SUCCESS', deuda, total, code:1 });
+			}	 
+		}
+	})
+
+	
 )
+const add = (a, b)=>{
+	return a + b;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////// OBTENGO LOS TOTALES DE CADA PLAN
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -427,8 +477,8 @@ router.get('/suma/totales/plan', (req, res)=>{
 					nombreUsuario:e.data[0].info[1],
 					imagen:e.data[0].info[3],
 					fecha:e.data[0].info[8],
-					// total: e.total
-					total: e.total- -Math.abs((Math.ceil((e.data[0].info[7]/(e.data[0].info[10]+1))/100)*100)) 
+					total: e.total
+					// total: e.total- -Math.abs((Math.ceil((e.data[0].info[7]/(e.data[0].info[10]+1))/100)*100)) 
 				}
 			})
 
