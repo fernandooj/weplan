@@ -104,6 +104,21 @@ router.get(`/pago/:lat/:lon`, (req,res)=>{
 	})
 })
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////// OBTENGO LOS PLANES PUBLICOS INNACTIVOS DEL USUARIO LOGUEADO, ESTO ES DE LA PAGINA AJUSTES / PLANES PUBLICOS
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+router.get(`/planespublicos/innactivos`, (req,res)=>{
+	planServices.getPlanesPublicosDesactivados(req.session.usuario.user._id, (err, planes)=>{
+		if (err) {
+			res.json({ status: 'ERROR', message: err, code:0 });
+		}else{
+			res.json({ status: 'SUCCESS', planes, code:1 }); 	
+		}
+	})
+})
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////// OBTENGO LOS PLANES DE UN USUARIO ESPECIFICO
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -212,9 +227,9 @@ router.put('/web', (req, res)=>{
 			resizeImagenes(rutasImagenOriginal, randonNumber, extension)
 		})	
 	}else{
-		rutaImagenOriginal = req.protocol+'://'+req.get('Host') + '/plan.png'
-		rutaImagenResize = req.protocol+'://'+req.get('Host') + '/plan.png'
-		rutaImagenMiniatura = req.protocol+'://'+req.get('Host') + '/plan.png'
+		rutaImagenOriginal = req.protocol+'://'+req.get('Host') + '/public/img/plan.jpg'
+		rutaImagenResize = req.protocol+'://'+req.get('Host') + '/public/img/plan.jpg'
+		rutaImagenMiniatura = req.protocol+'://'+req.get('Host') + '/public/img/plan.jpg'
 	}
 	planServices.uploadImage(id, rutaImagenOriginal, rutaImagenResize, rutaImagenMiniatura, (err, plan)=>{
 		if(err){
@@ -251,9 +266,9 @@ router.put('/', (req, res)=>{
 		resizeImagenes(rutasImagenOriginal, randonNumber, extension)
 	
 	}else{
-		rutaImagenOriginal = req.protocol+'s://'+req.get('Host') + '/plan.png'
-		rutaImagenResize = req.protocol+'s://'+req.get('Host') + '/plan.png'
-		rutaImagenMiniatura = req.protocol+'s://'+req.get('Host') + '/plan.png'
+		rutaImagenOriginal = req.protocol+'s://'+req.get('Host') + '/public/img/plan.jpg'
+		rutaImagenResize = req.protocol+'s://'+req.get('Host') + '/public/img/plan.jpg'
+		rutaImagenMiniatura = req.protocol+'s://'+req.get('Host') + '/public/img/plan.jpg'
 	}
 	planServices.uploadImage(req.body.id, rutaImagenOriginal, rutaImagenResize, rutaImagenMiniatura, (err, plan)=>{
 		if(err){

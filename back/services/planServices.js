@@ -16,6 +16,9 @@ class planServices {
 	getByIdPlanPopulate(_id, callback){
 		planSchema.find({_id}).populate('idUsuario', 'nombre ciudad photo').populate('restricciones').populate('asignados').exec(callback)
 	}
+	getPlanesPublicosDesactivados(idUsuario, callback){
+		planSchema.find({idUsuario, tipo:'pago', activo:false}).populate('restricciones').exec(callback)
+	}
 
 	getPublicos(idUsuario, acceso, callback){
 		console.log(idUsuario)
@@ -86,7 +89,8 @@ class planServices {
 		    },
 		    {
 		    	$sort:{
-		    		_id:-1
+		    		area:-1,
+		    		createdAt:-1
 		    	}
 		    }
 		], callback)

@@ -2,7 +2,7 @@ import {StyleSheet, Dimensions} from 'react-native';
 const Height = Dimensions.get('window').height;
 const Width = Dimensions.get('window').width;
 import { MediaQueryStyleSheet } from "react-native-responsive";
-export const MisPlanesStyle = MediaQueryStyleSheet.create({
+export const planes = MediaQueryStyleSheet.create({
 	contenedor:{
 		flex: 1,
 		alignItems: 'center',

@@ -143,6 +143,7 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		color:"white",
 		fontSize:25,
 	},
+
 	ByCargado:{
 		color:"white",
 		fontSize:20,
@@ -173,6 +174,17 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 	},
 	buscador:{
 		width:'100%'
+	},
+	inputValor:{
+		color:"black",
+		fontSize:16,
+		marginTop:10,
+		borderColor: '#d6d7da',
+		borderWidth:2,
+		marginLeft:10,
+		marginRight:10,
+		borderRadius:20,
+		padding:7
 	},
 	///////////////////////////////////////
 	////////// restricciones //////////////
@@ -324,7 +336,7 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 			width:'80%'
 		},
 		map: {
-			height: 390, 
+			height: 340, 
 		},
 		rutaRes:{
 			width:40,

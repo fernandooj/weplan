@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, Dimensions, Alert, Modal, Keyboard} from 'react-native'
+import {View, Text, Image, TouchableOpacity, Dimensions, Alert, Modal, Keyboard, TextInput, ScrollView} from 'react-native'
 import {CreatePlanStyle} from '../createPlan/style'
  
-import MapView, { AnimatedRegion, Marker } from 'react-native-maps';
+import MapView, { AnimatedRegion, Marker, Circle } from 'react-native-maps';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-
+import { TextInputMask } from 'react-native-masked-text' 
  
 
 
@@ -22,13 +22,15 @@ export default class MapaPlanComponent extends Component{
 		      latitude: 4.597825,
 		      longitude: -74.0755723,
 		    },
+		    km:0,
+		    latitudeDelta: 0.015,
+			longitudeDelta: 0.0121,
 		    modalVisible:true
 		}
+		
 	}
 
 	async componentWillMount(){
-		Keyboard.dismiss()
-		 
 			
 		navigator.geolocation.getCurrentPosition(e=>{
 			console.log(e)
@@ -74,6 +76,7 @@ export default class MapaPlanComponent extends Component{
       )
 	}
 	componentWillUnmount() {
+		Keyboard.dismiss()
 		clearInterval(this.state.interval);
 	}
 	componentWillReceiveProps(NextProps){
@@ -85,8 +88,9 @@ export default class MapaPlanComponent extends Component{
 	}
 
 	render(){
-		const {ubicacionDefecto} = this.props
-		console.log(ubicacionDefecto)
+		const {ubicacionDefecto, inputValor} = this.props
+		const {valorInicial, km, latitudeDelta, longitudeDelta, direccion} = this.state
+		console.log(latitudeDelta)
  
 		return(
 			<View>
@@ -107,7 +111,7 @@ export default class MapaPlanComponent extends Component{
 							&&<GooglePlacesAutocomplete
 							placeholder='Buscar'
 							minLength={2} // minimum length of text to search
-							autoFocus={true}
+							autoFocus={false}
 							returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
 							listViewDisplayed='auto'    // true/false/undefined
 							fetchDetails={true}
@@ -152,36 +156,71 @@ export default class MapaPlanComponent extends Component{
 						}
 		          		
 		          	</View>		
-	      			<View style ={CreatePlanStyle.container}>
+	      			<ScrollView style ={CreatePlanStyle.container}>
 				        <MapView
 				          style={CreatePlanStyle.map}
-				          region={{
+				          initialRegion={{
 				            latitude:  ubicacionDefecto.infoplan ?ubicacionDefecto.lat :this.state.x.latitude,
 				            longitude: ubicacionDefecto.infoplan ?ubicacionDefecto.lng : this.state.x.longitude,
-				            latitudeDelta: 0.015,
-				            longitudeDelta: 0.0121,
+				            latitudeDelta: latitudeDelta,
+				            longitudeDelta: longitudeDelta,
 				          }}
 				        >
 				          <Marker draggable
 						    coordinate={ubicacionDefecto.infoplan ?{latitude:this.props.ubicacionDefecto.lat, longitude:this.props.ubicacionDefecto.lng} :this.state.x}
 						    onDragEnd={(e) => {this.setState({ x: e.nativeEvent.coordinate }); console.log(e.nativeEvent.coordinate)}}
 						  />
+						  <Circle 
+						  	radius={km}
+						  	center={{latitude:ubicacionDefecto.infoplan ?ubicacionDefecto.lat :this.state.x.latitude, 
+						  		longitude: ubicacionDefecto.infoplan ?ubicacionDefecto.lng : this.state.x.longitude}}
+						  	strokeColor = { '#1a66ff' }
+                			fillColor = { 'rgba(100,100,100,.2)' }
+						  />
 				        </MapView>
+				        {
+				        	inputValor
+				        	&&<TextInputMask
+			                  ref="text"
+			                  placeholder='Valor a invertir por día'
+			                  type={'money'}
+			                  options={{ unit: '$', zeroCents:true, precision:0 }} 
+			                  style={CreatePlanStyle.inputValor}
+			                  underlineColorAndroid='transparent'
+			                  onChangeText={this.getValor.bind(this)} 
+			                  value={valorInicial}
+			                />
+				        }
 				        {
 				        	!ubicacionDefecto.infoplan
 				        	&&<View  style={CreatePlanStyle.contenedorRes}>
 					       		<TouchableOpacity 
-					       			onPress={() => { this.props.updateStateX(this.state.x.latitude, this.state.x.longitude,this.state.direccion)} } 
+					       			onPress={() => { this.props.updateStateX(this.state.x.latitude, this.state.x.longitude, direccion, km)} } 
 									style={CreatePlanStyle.btnHecho}>
 									<Text style={CreatePlanStyle.hecho}>Hecho !</Text>
 								</TouchableOpacity>
 							</View>
 				        }
 				        
-				    </View>
+				    </ScrollView>
 			    </Modal>    
 			</View>
 		)
+	}
+	getValor(e){
+	    e = e.substr(1)
+	    e = e.replace(/[^0-9]/g, '') 
+	    e = Number(e)
+
+	    let km = (e*300)/2000 
+	    this.setState({latitudeDelta: 1.015, longitudeDelta: 1.0121})
+	    if (km>1000) {
+	    	console.log(km)
+	    	
+	    }
+	    this.setState({valorInicial:e, km})
+
+
 	}
 	 
 }

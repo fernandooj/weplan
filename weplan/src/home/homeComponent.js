@@ -106,6 +106,9 @@ export default class homeComponent extends Component{
 	renderPlans(){
 		const {navigate} = this.props.navigation
 		return this.state.planes.map((e, key)=>{
+			let data = parseInt(e.dist/1000);
+			data = data.toString()
+			// let newData = data.slice(0,-1)
 			return(
 				<ImageBackground source={{uri : e.imagenResize[0]}} style={HomeStyle.fondo} key={key}>
 					<View style={HomeStyle.footer}>
@@ -116,7 +119,7 @@ export default class homeComponent extends Component{
 							</TouchableOpacity>	
 						</View>
 						<Text style={HomeStyle.textFooter2}>{e.descripcion}</Text>
-						<Text style={HomeStyle.textFooter2}>Estas a {parseInt(e.dist)} Metros</Text>
+						<Text style={HomeStyle.textFooter2}>Estas a {parseInt(e.dist)<1000 ?`${parseInt(e.dist)} Metros` :`${data} Kilometros`}</Text>
 						<View style={HomeStyle.footer2}>
 							{/*<Image source={require('./icon5.png')} style={HomeStyle.iconFooter} />*/}
 							<Image source={require('./icon6.png')} style={HomeStyle.iconFooter} />

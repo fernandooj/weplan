@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, ScrollView, ImageBackground, TouchableOpacity, Image, TextInput, Keyboard} from 'react-native'
-import {MisPlanesStyle} from '../misPlanes/style'
+import {planes} from '../planesPublicos/style'
 import axios from 'axios'
 
  
@@ -13,7 +13,7 @@ import {URL}  from '../../App.js';
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////// 
 
-export default class MisPlanesComponent extends Component{
+export default class planesPublicosComponent extends Component{
 	constructor(props){
 		super(props)
 		this.state={
@@ -24,11 +24,11 @@ export default class MisPlanesComponent extends Component{
 	}
 	componentWillMount(){
 		Keyboard.dismiss()
-		axios.get('/x/v1/pla/plan/suma/totales/plan')
+		axios.get('/x/v1/pla/plan/planespublicos/innactivos')
 		.then(e=>{
-			console.log(e.data.result)
-			let filteredData = e.data.result
-			let planesAsignados = e.data.result==0 ?1 :2
+			console.log(e.data)
+			let filteredData = e.data.planes
+			let planesAsignados = e.data.planes==0 ?1 :2
 			this.setState({allList:filteredData, filteredData, planesAsignados})
 		})
 		.catch(res=>{
@@ -50,12 +50,12 @@ export default class MisPlanesComponent extends Component{
 	getRow(filteredData){
 		if(filteredData.length>0){
 			return filteredData.map((e, key)=>{
-			return  <TouchableOpacity onPress={()=>this.handleSubmit(e.id)} key={key} style={MisPlanesStyle.boxPlan}>
-					<Image source={{uri: e.imagen[0]}} style={MisPlanesStyle.background} />
-					<Text style={MisPlanesStyle.nombre}>{e.nombrePlan.length<27 ?e.nombrePlan :e.nombrePlan.substring(0, 27)+' ...'}</Text>
-					<View style={MisPlanesStyle.boxPlan1} >
-						<Text style={MisPlanesStyle.fechaLugar}>{e.fecha}</Text>
-						<Text style={e.total>0 ?MisPlanesStyle.debe :[MisPlanesStyle.debe, MisPlanesStyle.noDebe]}></Text>
+			return  <TouchableOpacity onPress={()=>this.handleSubmit(e.id)} key={key} style={planes.boxPlan}>
+					<Image source={{uri: e.imagen[0]}} style={planes.background} />
+					<Text style={planes.nombre}>{e.nombrePlan.length<27 ?e.nombrePlan :e.nombrePlan.substring(0, 27)+' ...'}</Text>
+					<View style={planes.boxPlan1} >
+						<Text style={planes.fechaLugar}>{e.fecha}</Text>
+						<Text style={e.total>0 ?planes.debe :[planes.debe, planes.noDebe]}></Text>
 					</View>
 				</TouchableOpacity>
 				})
@@ -66,19 +66,19 @@ export default class MisPlanesComponent extends Component{
 	cabezera(){
 		const {navigate} = this.props.navigation
 		return(
-			<View style={MisPlanesStyle.contenedorCabezera}> 
-				<TouchableOpacity onPress={()=>navigate('inicio')} style={MisPlanesStyle.btnClose} >
-					<Image source={require('../agregarAmigos/back.png')} style={MisPlanesStyle.imagenClose} />
+			<View style={planes.contenedorCabezera}> 
+				<TouchableOpacity onPress={()=>navigate('inicio')} style={planes.btnClose} >
+					<Image source={require('../agregarAmigos/back.png')} style={planes.imagenClose} />
 				</TouchableOpacity>
 				<TextInput
-      				style={MisPlanesStyle.input}
+      				style={planes.input}
 			        onChangeText={this.filteredData.bind(this)}
 			        value={this.state.username}
 			        underlineColorAndroid='transparent'
            			placeholder="Buscar"
            			placeholderTextColor="#8F9093" 
 			    />
-			    <Image source={require('../agregarAmigos/search.png')} style={MisPlanesStyle.btnBuscar} />
+			    <Image source={require('../agregarAmigos/search.png')} style={planes.btnBuscar} />
 			</View>
 		)
 	}
@@ -88,15 +88,15 @@ export default class MisPlanesComponent extends Component{
 		const rows = this.getRow(filteredData)
 		const {navigate} = this.props.navigation
 		return(	 
-			<View style={MisPlanesStyle.contenedor}>
+			<View style={planes.contenedor}>
 		 
 					{this.cabezera()}
 				{
 					this.state.planesAsignados==1
-					?<Image source={require('./sinPlanes.png')} style={MisPlanesStyle.sinPlanes} />
+					?<Image source={require('./sinPlanes.png')} style={planes.sinPlanes} />
 					:this.state.planesAsignados==2
 					?<ScrollView showsVerticalScrollIndicator={false}>
-						<View style={MisPlanesStyle.container}>
+						<View style={planes.container}>
 						{rows}
 						</View>	
 					</ScrollView>

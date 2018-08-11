@@ -10,10 +10,11 @@ export default class ajustesComponent extends Component{
 	state={
 		menus:[
 			{method:1, label:'Amigos', 		 	value:'ajustesAmigos', },
-			{method:3, label:'Qr', 		 		value:'abrirQr', },
-			{method:1, label:'Notificaciones',  value:'notificacion'},
-			{method:1, label:'My Wallet', 	 	value:'wallet'},
+			{method:1, label:'Planes Publicos', value:'planesPublicos', },
 			{method:1, label:'Metodos de Pago', value:'metodos'},
+			{method:3, label:'QR', 		 		value:'abrirQr', },
+			{method:1, label:'Privacidad',  	value:'privacidad'},
+			{method:1, label:'General', 	 	value:'general'},
 			{method:2, label:'Cerrar Sesion',   value:'closeSession'},
 		],
 		delay: 300,

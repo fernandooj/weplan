@@ -9,7 +9,7 @@ import moment from 'moment'
 import ImagePicker from 'react-native-image-picker';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-
+import Lightbox from 'react-native-lightbox';
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////  ARCHIVOS GENERADOS POR EL EQUIPO  //////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -446,12 +446,20 @@ export default class ChatComponent extends Component{
 								<Text style={e.userId== id ?ChatStyle.cNombreTipoChat :[ChatStyle.cNombreTipoChat, ChatStyle.cNombreTipoChatLeft]}>{e.nombre}</Text>
 							</View>
 							 
-								<Image
+								{/*<Image
 									style={ChatStyle.Iphoto}
 									width='100%'
 									height={150}
 									source={{uri: e.documento,cache:true}}
-							    />
+							    />*/}
+							    <Lightbox>
+								    <Image
+								      style={ChatStyle.Iphoto}
+									width='100%'
+									height={150}
+								      source={{ uri: e.documento }}
+								    />
+								  </Lightbox>
 
 						</TouchableOpacity>
 					</View>	

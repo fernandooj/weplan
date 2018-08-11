@@ -92,12 +92,12 @@ export default class createPlanComponent extends Component{
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////  ACTUALIZA LA UBICACION //////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	updateStateX(lat,lng, direccion){
+	updateStateX(lat,lng, direccion, area){
 		if (direccion) {
-			this.setState({lat,lng, direccion, mapa:false})
+			this.setState({lat,lng, area, direccion, mapa:false})
 		}else{
 			let direccion1 = lat+','+lng 
-			this.setState({lat,lng, direccion:'', mapa:false, showAlertUbicacion:true})
+			this.setState({lat,lng, area, direccion:'', mapa:false, showAlertUbicacion:true})
 		}
 	}
 
@@ -136,8 +136,9 @@ export default class createPlanComponent extends Component{
 	///////////////////////////////////////////////////  	RENDER  	/////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	render(){
-		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico} = this.state
+		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, area} = this.state
 		const {navigate} = this.props.navigation
+		console.log(area)
 		return (
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} > 
 				{/* si la ubicacion no tiene */}
@@ -265,8 +266,9 @@ export default class createPlanComponent extends Component{
 					}
 					{
 						mapa &&<MapaPlanComponent 
+							inputValor
 							close={()=> this.setState({mapa:false})} 						   			/////////   cierro el modal
-							updateStateX={(lat,lng, direccion)=>this.updateStateX(lat,lng, direccion)}  /////////	me devuelve la posicion del marcador 
+							updateStateX={(lat,lng, direccion, area)=>this.updateStateX(lat, lng, direccion, area)}  /////////	me devuelve la posicion del marcador 
 							ubicacionDefecto={cargaPlan.lat ?{infoplan:true, lat:parseFloat(cargaPlan.lat), lng:parseFloat(cargaPlan.lng)} :{infoplan:false}}
 						/> 
 					}
@@ -339,7 +341,7 @@ export default class createPlanComponent extends Component{
 					</View>
 				}
 					
-				{/* Area de influencia */}
+				{/* Area de influencia  
 				{	publico
 					&&<View style={CreatePlanStyle.cajaInpunts}>
 						<Image source={require('./area.png')} style={CreatePlanStyle.iconInputArea} />	
@@ -352,21 +354,9 @@ export default class createPlanComponent extends Component{
 				                onChange={(e)=> this.setState({area:e.key})} 
 				                style={CreatePlanStyle.datePicker}
 				            />
-					    	{/*<Picker
-				                style={CreatePlanStyle.inputArea}
-						        onValueChange={(area) => this.setState({area})}
-						        selectedValue={this.state.area}
-				            >
-					          	<Picker.Item label='Area de Influencia *' value=''  />
-					          	<Picker.Item label='1 Km' value='1'  />
-					          	<Picker.Item label='5 Km' value='5'  />
-					          	<Picker.Item label='7 Km' value='7'  />
-					          	<Picker.Item label='15 Km' value='15'  />
-					          	<Picker.Item label='30 Km' value='30'  />
-				            </Picker>*/}
 			            </View>
 			        </View>
-				}
+				*/}
 				
 				{/*  Crear Plan  */}
 					{
