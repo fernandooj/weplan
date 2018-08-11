@@ -490,7 +490,7 @@ const editaPagoCreador = (itemId, userId, montoCreador, montoAsignado, id, res)=
 						if (err) {
 							console.log(err)
 						}else{
-							editaPagoAsignados(itemId, item[0], montoAsignado, id, res )
+							editaPagoAsignados(itemId, item[0], montoAsignado, id, userId, res )
 						}
 					})					
 				}
@@ -501,7 +501,7 @@ const editaPagoCreador = (itemId, userId, montoCreador, montoAsignado, id, res)=
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////// 	EDITO LOS DEMAS PAGOS DE LOS MIEMBROS DEL ITEM, CUANDO EL USUARIO ACEPTA SER PARTE DEL ITEM
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const editaPagoAsignados = (itemId, item, monto, id, res)=>{
+const editaPagoAsignados = (itemId, item, monto, id, userId, res)=>{
 	pagoServices.betyByItemAndUserNotEqual(itemId, item.userId, (err, pago)=>{
 		if(err){
 			res.json({err})
@@ -511,7 +511,7 @@ const editaPagoAsignados = (itemId, item, monto, id, res)=>{
 					//console.log(pago2)
 				})
 			})
-			creaNotificacion(id, res, item, 6, false)
+			creaNotificacion(id, res, item, 6, false, userId)
 			// res.json({ status: 'SUCCESS', pago, code:1 });				
 		}
 	})
@@ -549,15 +549,42 @@ router.put('/', (req, res)=>{
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///// 			cuando se crea la peticion de ingresar tambien se crea la notificacion 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const creaNotificacion = (id, res, item, tipo, activo)=>{ 	 
+const creaNotificacion = (id, res, item, tipo, activo, userId)=>{ 	 
 	notificacionService.create(id, item.userId, tipo, item._id, activo, (err, notificacion)=>{
 		if (err) {
 			res.json({status:'FAIL', err, code:0})   
 		}else{
-			res.json({status:'SUCCESS', item, notificacion, code:1})    
+			if (userId) {
+				desactivaNotificacion(item._id, userId, res)    
+			}else{
+				res.json({status:'SUCCESS', item, notificacion, code:1})
+			}
+			
+			
 		}
 	})
 }
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///// 			desactivo la notificacion que se le envio al usuario invitandolo al item 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const desactivaNotificacion =(id, userId, res)=>{
+	console.log('--------------')
+	console.log(id)
+	console.log(userId)
+	notificacionService.getByItemUser(id, userId, (err, notificacion)=>{
+		if (!err) {
+			notificacionService.desactiva(notificacion[0]._id,  (err2, notifica)=>{
+				console.log(notificacion[0]._id)
+				if (!err2) {
+					res.json({status:'SUCCESS', notifica, code:1})
+				}
+			})
+		}
+	})
+}
+
+
 
 //////////////////////////////////////////////////////////////////////////////////////////
 ////////   VERIFICO QUE EL USUARIO YA ALLA MANDADO LA SOLICITUD DE INGRESAR 

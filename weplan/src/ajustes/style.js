@@ -139,7 +139,6 @@ export const AjustesStyle = MediaQueryStyleSheet.create({
 	},
 
 	btnHecho:{
- 		 
  		alignItems: 'center',
  		backgroundColor:'#94A5F3',
  		borderRadius:10,
@@ -150,7 +149,6 @@ export const AjustesStyle = MediaQueryStyleSheet.create({
  	},
  	hecho:{
  		color:'white',
-
  	},
  		
  	//////////////////////////////////////////////////////////////////////////////////
@@ -187,6 +185,13 @@ export const AjustesStyle = MediaQueryStyleSheet.create({
 
 },{
 	"@media (max-device-width: 320)": {
+		username:{ 
+			top:-20,
+			paddingTop:6,
+			paddingBottom:6,
+			paddingRight:20,
+			paddingLeft:20,
+		},
 		input:{
 			width:230
 		},
@@ -214,11 +219,11 @@ export const AjustesStyle = MediaQueryStyleSheet.create({
 			borderWidth:5,
 		},
 		btnMenu:{
-	 		paddingTop:7, 
-	 		paddingBottom:7,
+	 		paddingTop:4, 
+	 		paddingBottom:4,
 	 	},
 	 	perfil:{
-		 	marginBottom:-25
+		 	marginBottom:-39
 		},
 	}
 })

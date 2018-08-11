@@ -161,12 +161,12 @@ const handleFinalizar = (id, navigate, data)=>{
 	.then(res=>{
 		if (res.data.total===0 &&res.data.code==1) {
 			data.asignados.map(e=>{
-				sendRemoteNotification(13, e.tokenPhone, 'notificacion', `Plan Cerrado`, `, a cerrado el plan ${data.nombre}`, data.imagenMiniatura[0])
+				sendRemoteNotification(13, e.tokenPhone, 'notificacion', `Plan Cerrado`, `, ha cerrado el plan ${data.nombre}`, data.imagenMiniatura[0])
 				data.planPadre &&sendRemoteNotification(14, e.tokenPhone, 'notificacion', `Califica tu plan`, `Califica el plan ${data.nombre}`, data.imagenMiniatura[0])
 			})
 			setTimeout(function(){ 
 				navigate('inicio')
-			}, 3000); 
+			}, 1000); 
 		}
 		if (res.data.total!==0 &&res.data.code==1) {
 			Alert.alert(

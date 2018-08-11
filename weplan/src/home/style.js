@@ -2,6 +2,7 @@ import {StyleSheet, Dimensions} from 'react-native';
 var screenHeight = Dimensions.get('window').height;
 var screenWidth = Dimensions.get('window').width;
 import { MediaQueryStyleSheet } from "react-native-responsive";
+
 export const HomeStyle = MediaQueryStyleSheet.create({
 	contenedor:{
 		flex: 1,
@@ -143,7 +144,7 @@ export const HomeStyle = MediaQueryStyleSheet.create({
 		justifyContent: 'center',
 	},	 
 },{
-	"@media (max-device-width: 380)": {
+	"@media (max-device-width: 320)": {
 		iconHead:{
 		 	width:35,
 		 	height:35,
@@ -183,6 +184,14 @@ export const HomeStyle = MediaQueryStyleSheet.create({
 		 	marginBottom:15, 
 		 	marginLeft:2,
 		 	marginRight:2
+		},
+		fondo:{
+			height:screenHeight-(screenHeight/8.1),
+		},
+	},
+	"@media (min-device-height: 770)": {
+		fondo:{
+			height:screenHeight-(screenHeight/11.4),
 		},
 	}
 })

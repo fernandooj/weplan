@@ -13,6 +13,9 @@ class notificacionService{
 	getByUser(idUsuario, callback){
 		notificacionSchema.find({idUsuario, eliminado:true}, null, {sort: {_id: -1}}).populate('idUsuario').populate('idPlan').populate('idAmigoUser').populate('idItem').populate('idPago').populate('idUsuarioAsigna').exec(callback)
 	}
+	getByItemUser(idItem, idUsuario, callback){
+		notificacionSchema.find({idItem, idUsuario}, callback)
+	}
 	create(idUsuarioAsigna, idUsuario, tipo, idTipo, activo, callback){
 		let notificacionSchemas = new notificacionSchema();
 		notificacionSchemas.idUsuarioAsigna   = idUsuarioAsigna

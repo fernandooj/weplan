@@ -49,7 +49,6 @@ export const planes = MediaQueryStyleSheet.create({
 	/////////////////////////////////////////////////////////////////////////// filtros
 	container:{
 	 	width:Width-20,
-		
 	},
 	boxPlan:{
     	width: Width ,
@@ -59,7 +58,7 @@ export const planes = MediaQueryStyleSheet.create({
 	},
 	background:{
 		backgroundColor:'#ffffff', 
- 		height: Height/3.4, 
+ 		height: Height/2.9, 
 		width:'100%',
 	},
 	boxPlan1:{

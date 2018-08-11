@@ -59,7 +59,7 @@ export const MisPlanesStyle = MediaQueryStyleSheet.create({
 	},
 	background:{
 		backgroundColor:'#ffffff', 
- 		height: Height/3.4, 
+ 		height: Height/2.9, 
 		width:'100%',
 	},
 	boxPlan1:{
@@ -119,7 +119,10 @@ export const MisPlanesStyle = MediaQueryStyleSheet.create({
 			width:280,
 			height:390,
 			marginBottom:10
-		}
+		},
+		background:{ 
+	 		height: Height/3.5, 
+		},
 
 	}
 })
