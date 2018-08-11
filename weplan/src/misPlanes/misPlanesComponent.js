@@ -40,7 +40,6 @@ export default class MisPlanesComponent extends Component{
 		const filtered = this.state.allList.filter(function(e){
 			return (e.nombrePlan.search(regex)> -1)	
 		})
-		//this.setState({filteredData:filtered})
 		if (event.length>0) {
 			this.setState({filteredData:filtered})
 		}else{
@@ -89,8 +88,9 @@ export default class MisPlanesComponent extends Component{
 		const {navigate} = this.props.navigation
 		return(	 
 			<View style={MisPlanesStyle.contenedor}>
-		 
-					{this.cabezera()}
+				{
+					this.cabezera()
+				}
 				{
 					this.state.planesAsignados==1
 					?<Image source={require('./sinPlanes.png')} style={MisPlanesStyle.sinPlanes} />

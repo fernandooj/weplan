@@ -26,8 +26,6 @@ const influencia = [
 	{label:'30 km', key:30000}
 ]
 
- 
-
 export default class createPlanComponent extends Component{
 	constructor(props){
 		super(props);

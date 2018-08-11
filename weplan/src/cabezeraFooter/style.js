@@ -19,10 +19,6 @@ export const cabezeraFooterStyle = MediaQueryStyleSheet.create({
 		borderBottomRightRadius: 50, 
 		backgroundColor:"rgba(255,255,255,0.79)",	 
 	},
-	hideCabezera:{
-		 
-		marginTop:-60,
-	},
 	iconHead:{
 	 	width:40,
 	 	height:40,
@@ -39,9 +35,19 @@ export const cabezeraFooterStyle = MediaQueryStyleSheet.create({
 	 	marginLeft:35,
 	 	marginRight:35
 	},
-	 
- 
-	 
+	containerBuscador:{
+		flexDirection:'row'
+	},
+	buscador:{
+		width:200,
+		alignItems:'center',
+		paddingLeft:0,
+		fontSize:20
+	},
+	closeBtn:{
+		fontSize:20,
+		marginTop:15
+	},
 	footer3:{
 		backgroundColor:"#ffffff",
 		flexWrap: 'wrap', 
