@@ -437,24 +437,35 @@ router.put('/finalizar', (req, res)=>
 						res.json({status: 'FAIL', err, code:0})
 					}else{
 						console.log(plan.asignados)
+						////////////////////////////////////////////////////////////////   ENVIO NOTIFICACIONES 
 						plan.asignados.map(e=>{
 							let mensajeJson={
 								userId:e,
 								notificacion:true,
 							}
 							cliente.publish('notificacion', JSON.stringify(mensajeJson))
+
+							//////////////////////////////////////////////////////////// notificacion que se cerro el plan  
 							notificacionService.create(req.session.usuario.user._id, e, 13, plan._id, false, (err, notificacion)=>{
 								console.log(notificacion)
 							})
-
-							notificacionService.create(req.session.usuario.user._id, e, 14, plan._id, true, (err, notificacion)=>{
+							///////////////////////////////////////////////////////////  notificacion para calificar el plan
+							////////////////////////////////////////////////////////////////////////////////////////////////////////
+							if (req.body.planPadre) {
+								notificacionService.create(req.session.usuario.user._id, e, 14, req.body.planPadre, true, (err, notificacion)=>{
+									console.log(notificacion)
+								})
+							}
+							////////////////////////////////////////////////////////////////////////////////////////////////////////
+						})
+						////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+						///////////////////////////////////////////////////////////  notificacion para calificar el plan de parte del creador del plan
+						if (req.body.planPadre) {
+							notificacionService.create(req.session.usuario.user._id, req.session.usuario.user._id, 14, req.body.planPadre, true, (err, notificacion)=>{
 								console.log(notificacion)
 							})
-
-						})
-						notificacionService.create(req.session.usuario.user._id, req.session.usuario.user._id, 14, plan._id, false, (err, notificacion)=>{
-							console.log(notificacion)
-						})
+						}
+						////////////////////////////////////////////////////////////////////////////////////////////////////////
 						res.json({ status: 'SUCCESS', deuda, total, plan, code:1 });	
 					}
 				})

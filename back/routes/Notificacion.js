@@ -11,7 +11,7 @@ let amigoUserService    = require('../services/amigoUserServices.js');
 let itemServices 		= require('../services/itemServices.js')
 let pagoServices 		= require('../services/pagoServices.js')
 let planServices 		= require('../services/planServices.js')
-
+let userServices 		= require('./../services/usersServices.js') 
 
 router.get('/:id', (req, res)=>{ 
 	notificacionService.getById(req.params.id, (err, notificacion)=>{
@@ -113,17 +113,40 @@ router.put('/:idNotificacion/:idTipo/:tipo/:idUser', (req,res)=>{
 			?verificaItemAbierto(req.session.usuario, req.params.idTipo, id, res, req) 
 			:req.params.tipo==11
 			?editaPago(req.params.idTipo, req.session.usuario.user._id, req.params.idUser, res) 
+			:req.params.tipo==14
+			?insertaRatingUser(req.params.idTipo,  req.params.idUser, res) 
 			:res.json({status:'SUCCESS', notificacion, code:1}) 
 		}
 	})
 })
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///// 			inserta el ranking sobre el plan padre
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const insertaRatingUser = (rating, idUser, res) =>{
+	 
+	userServices.getOneUser(idUser,  (err, user)=>{
+		if (!err) {
+			console.log(user)
+			let calificacion = user.calificacion
+			calificacion = calificacion.concat(rating)
+			userServices.rating(idUser, calificacion,  (err, user)=>{
+				if (err) {
+					res.json({status:'FAIL', err, code:0})    
+				}else{
+					res.json({status:'SUCCESS', user, code:1})    
+				}
+			})	
+		}
 
+	})
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+}
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///// 			edito el pago y lo activo
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const editaPago =(idTipo,  idSession, idUser, res)=>{
-	console.log("idTipo")
 	console.log(idTipo)
 	pagoServices.activa(idTipo, (err, pago)=>{
 		if (err) {

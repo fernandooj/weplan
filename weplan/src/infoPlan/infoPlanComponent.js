@@ -21,7 +21,7 @@ export default class infoPlanComponent extends Component{
 	state={mapa:false}
 	render(){
 	let data = this.props.navigation.state.params.plan
-	console.log(data)
+	console.log(data.planPadre)
 	let id   = this.props.navigation.state.params.id
 	console.log(data.idUsuario._id)
 	let {navigate} = this.props.navigation
@@ -157,15 +157,12 @@ const finalizar = (id, navigate, data)=>{
 }		
 
 const handleFinalizar = (id, navigate, data)=>{
-	console.log(data.imagenMiniatura[0])
-	axios.put('x/v1/pla/plan/finalizar', {id})
+	axios.put('x/v1/pla/plan/finalizar', {id, planPadre:data.planPadre})
 	.then(res=>{
-		
-		
 		if (res.data.total===0 &&res.data.code==1) {
 			data.asignados.map(e=>{
 				sendRemoteNotification(13, e.tokenPhone, 'notificacion', `Plan Cerrado`, `, a cerrado el plan ${data.nombre}`, data.imagenMiniatura[0])
-				sendRemoteNotification(14, e.tokenPhone, 'notificacion', `Califica tu plan`, `Califica el plan ${data.nombre}`, data.imagenMiniatura[0])
+				data.planPadre &&sendRemoteNotification(14, e.tokenPhone, 'notificacion', `Califica tu plan`, `Califica el plan ${data.nombre}`, data.imagenMiniatura[0])
 			})
 			setTimeout(function(){ 
 				navigate('inicio')

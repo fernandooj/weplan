@@ -5,11 +5,13 @@ import axios from 'axios'
 import CabezeraComponent from '../ajustes/cabezera.js'
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
 import FooterComponent 	 from '../cabezeraFooter/footerComponent'
+import StarRating from 'react-native-star-rating';
 
 export default class notificacionComponent extends Component{
 	state={
 		notificacion:[],
-		eliminar:false /// muestra el boton de eliminar cada notificacion
+		eliminar:false, /// muestra el boton de eliminar cada notificacion
+		rating:0,
 	}
 	componentWillMount(){
  		axios.get('/x/v1/not/notificacion')
@@ -41,23 +43,33 @@ export default class notificacionComponent extends Component{
 				 						:e.tipo==2 ?`Te agrego al plan: ${e.titulo}` 
 				 						:e.tipo==3 ?`Te agrego al item: ${e.titulo}. El valor para entrar es: ${valor}`
 				 						:e.tipo==4 ?`Quiere acceder al item: ${e.titulo}. El valor para entrar es: ${valor}`
-				 						:e.tipo==5 ?`Acepto ser tu amigo`
-				 						:e.tipo==6 ?`Acepto ser parte del item: ${e.titulo}`
+				 						:e.tipo==5 ?`Aceptó ser tu amigo`
+				 						:e.tipo==6 ?`Aceptó ser parte del item: ${e.titulo}`
 				 						:e.tipo==7 ?`Te agrego al item: ${e.titulo}`
 				 						:e.tipo==8 ?`Se salio del plan: ${e.titulo}`
 				 						:e.tipo==9 ?`No le entro al item: ${e.titulo}`
 				 						:e.tipo==10 ?`Te abono en efectivo: ${e.titulo}`
 				 						:e.tipo==11 ?`Tu abono de: ${e.titulo}, fue Aprobado`
-				 						:e.tipo==12 &&`Tu abono de: ${e.titulo}, fue Rechazado`
+				 						:e.tipo==12 ?`Tu abono de: ${e.titulo}, fue Rechazado`
+				 						:e.tipo==13 ?`Cerro el plan: ${e.titulo}`
+				 						:e.tipo==14 &&`Califica el plan: ${e.titulo}`
 				 					}
 				 				</Text>
 				 			</TouchableOpacity>
 			 				{
-								e.activo
+								e.activo && e.tipo==14
+								?<View style={NotiStyle.contenedorNoti}>
+									<StarRating
+								        disabled={false}
+								        maxStars={5}
+								        rating={this.state.rating}
+								        starSize={25}
+								        selectedStar={(rating)=>this.handleSubmit(e.id, rating, 14, null, e.idUser)}
+								    />
+								</View>
+								:e.activo && e.tipo!==14
 								?<View style={NotiStyle.contenedorNoti}> 
-								{
-									e.tipo!==2
-									&&<TouchableOpacity  style={NotiStyle.btnNoti} 
+								 <TouchableOpacity  style={NotiStyle.btnNoti} 
 					 					onPress={
 					 						e.tipo==1
 					 						?()=>this.handleSubmit(e.id, e.idTipo, 1, e.token, e.idUser)
@@ -81,8 +93,6 @@ export default class notificacionComponent extends Component{
 					 					}
 					 					</Text>
 					 				</TouchableOpacity>
-								}
-					 				
 					 				<TouchableOpacity style={NotiStyle.btnNoti}
 					 					onPress={
 					 						e.tipo==1
@@ -122,10 +132,50 @@ export default class notificacionComponent extends Component{
 		 			</View>
 		 			<View style={NotiStyle.separador}></View>
 		 		</View>
-			)		 
+			)		  
  		})
 	}
-
+	handleSubmit(idNotificacion, idTipo, tipo, token, idUser, monto, titulo, imagen){
+		axios.put('/x/v1/not/notificacion/'+idNotificacion+'/'+idTipo+'/'+tipo+'/'+idUser, {monto})
+		.then(e=>{
+			console.log(e.data)
+			if (e.data.code==1) {
+				this.updateStado(idNotificacion)
+				if (tipo==1) {
+					sendRemoteNotification(tipo, token, 'Home', 'Aceptó ser tu amigo',  ', te agrego como amigo', null)
+				}
+				if (tipo==3) {
+					sendRemoteNotification(tipo, token, 'Home', `Aceptaron tu item ${titulo}`,  ', esta dentro de tu item', imagen)
+				}
+				else if (tipo==4) {
+					sendRemoteNotification(tipo, token, 'Home', 'Estas dentro de un item',  `, te agrego al item ${titulo}`, imagen)
+				}
+				else if (tipo==11) {
+					sendRemoteNotification(tipo, token, 'Home', 'Aceptaron tu pago',  `, Acepto tu pago por: ${titulo} `, imagen)
+				}
+				
+			}else if(e.data.code==2){
+				this.alerta('Opss!! Articulo Cerrado', 'El dueño del articulo ya lo ha terminado, y ya no puedes ingresar')
+			}else{
+				this.alerta('Opss!! revisa tus datos que falta algo', '')
+			}
+		})
+		.catch(err=>{
+			console.log(err)
+		})
+	}
+	// enviaPuntuacion(idNotificacion, idTipo, tipo){
+	// 	console.log(rating)
+	// 	this.setState({rating})
+	// 	axios.post(`/x/v1/not/notificacion/rating/${idNotificacion}/${idTipo}/${tipo}`)
+	// 	.then(e=>{
+	// 		console.log(e.data)
+	// 		updateStado(idNotificacion)
+	// 	})
+	// 	.catch(e=>{
+	// 		console.log(e)
+	// 	})
+	// }
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////  muestra boton de eliminar
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -159,35 +209,7 @@ export default class notificacionComponent extends Component{
 			}
 		})
 	}
-	handleSubmit(idNotificacion, idTipo, tipo, token, idUser, monto, titulo, imagen){
-		axios.put('/x/v1/not/notificacion/'+idNotificacion+'/'+idTipo+'/'+tipo+'/'+idUser, {monto})
-		.then(e=>{
-			console.log(e.data)
-			if (e.data.code==1) {
-				this.updateStado(idNotificacion)
-				if (tipo==1) {
-					sendRemoteNotification(tipo, token, 'Home', 'Aceptaron ser tu amigo',  ', te agrego como amigo', null)
-				}
-				if (tipo==3) {
-					sendRemoteNotification(tipo, token, 'Home', `Aceptaron tu item ${titulo}`,  ', esta dentro de tu item', imagen)
-				}
-				else if (tipo==4) {
-					sendRemoteNotification(tipo, token, 'Home', 'Estas dentro de un item',  `, te agrego al item ${titulo}`, imagen)
-				}
-				else if (tipo==11) {
-					sendRemoteNotification(tipo, token, 'Home', 'Aceptaron tu pago',  `, Acepto tu pago por: ${titulo} `, imagen)
-				}
-				
-			}else if(e.data.code==2){
-				this.alerta('Opss!! Articulo Cerrado', 'El dueño del articulo ya lo ha terminado, y ya no puedes ingresar')
-			}else{
-				this.alerta('Opss!! revisa tus datos que falta algo', '')
-			}
-		})
-		.catch(err=>{
-			console.log(err)
-		})
-	}
+	
 	handleCancel(idNotificacion, idTipo, tipo, token, idUser, monto, titulo, imagen){
 		axios.put('/x/v1/not/notificacion/cancelar/'+idNotificacion+'/'+idTipo+'/'+tipo+'/'+idUser, {monto})
 		.then(e=>{
