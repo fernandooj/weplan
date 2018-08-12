@@ -21,20 +21,20 @@ export default class CabezeraComponent extends Component{
 		if (!hide) {
 			Animated.timing(opacity,{
 				toValue:1,
-				duration:700
+				duration:400
 			}).start()
 			Animated.timing(top,{
 				toValue:0,
-				duration:700
+				duration:400
 			}).start()
 		}else{
 			Animated.timing(opacity,{
 				toValue:0,
-				duration:700
+				duration:400
 			}).start()
 			Animated.timing(top,{
 				toValue:-60,
-				duration:700
+				duration:400
 			}).start()
 		}
 		if (search) {

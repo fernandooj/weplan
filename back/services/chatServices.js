@@ -4,6 +4,9 @@ let chatSchema = require('../models/chatModel.js');
 let mongoose = require('mongoose')
  
 class chatServices{
+	getByItem(itemId, callback){
+		chatSchema.find({itemId}, callback)
+	}
 	getByPlan(planId, idUsuario, callback){
 		planId = mongoose.Types.ObjectId(planId);	
 		chatSchema.aggregate([

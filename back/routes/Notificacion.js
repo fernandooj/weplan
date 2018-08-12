@@ -12,6 +12,7 @@ let itemServices 		= require('../services/itemServices.js')
 let pagoServices 		= require('../services/pagoServices.js')
 let planServices 		= require('../services/planServices.js')
 let userServices 		= require('./../services/usersServices.js') 
+let chatServices 		= require('../services/chatServices.js')
 
 router.get('/:id', (req, res)=>{ 
 	notificacionService.getById(req.params.id, (err, notificacion)=>{
@@ -124,7 +125,6 @@ router.put('/:idNotificacion/:idTipo/:tipo/:idUser', (req,res)=>{
 ///// 			inserta el ranking sobre el plan padre
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const insertaRatingUser = (rating, idUser, res) =>{
-	 
 	userServices.getOneUser(idUser,  (err, user)=>{
 		if (!err) {
 			console.log(user)
@@ -138,11 +138,9 @@ const insertaRatingUser = (rating, idUser, res) =>{
 				}
 			})	
 		}
-
 	})
-	
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///// 			edito el pago y lo activo
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -194,13 +192,31 @@ const verificaItemAbierto=(usuario, idTipo, id, res, req)=>{
 		if (err) {
 			console.log(err)
 		}else{
-		 
 			if (item[0].abierto) {
+				//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				////////////////////////////// 		edito el chat con el nuevo valor 
+				let longitud;
+				if (item[0].asignados.length===0) {
+					longitud=3
+				}else{
+					longitud=2
+				}
+				chatServices.getByItem(item[0]._id, (err, chat)=>{
+					if (!err) {
+						let mensajeJson={
+							id:chat[0]._id,
+							planId:item[0].planId,
+							valor:Math.ceil((item[0].valor/(item[0].asignados.length+longitud))/100)*100,
+						}
+						cliente.publish('editaPago', JSON.stringify(mensajeJson))
+					}
+				})
+				//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				activaItem(usuario, idTipo, id, res, req)
 			}else{
+
 				res.json({status:'FAIL', mensaje:'EL ITEM ESTA CERRADO', code:2})
 			}
-			
 		}
 	})
 }
@@ -293,7 +309,7 @@ const editaPagoAsignados = (itemId, userId, monto, idSession, idUser, tipo, res)
 				})
 			})
 			////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			///////////////////  creo la notificacion de que ya acepto ser amigo
+			///////////////////  creo la notificacion de que ya esta dentro del item
 			notificacionService.create(idSession, idUser, tipo, itemId, false, (err, notificacion)=>{
 				if (err) {
 					res.json({status:'FAIL', err, code:0})    

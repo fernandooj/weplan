@@ -33,7 +33,7 @@ export default class MapaPlanComponent extends Component{
 	async componentWillMount(){
 			
 		navigator.geolocation.getCurrentPosition(e=>{
-			console.log(e)
+			// console.log(e)
 			let lat = parseFloat(e.coords.latitude)
 			let lng = parseFloat(e.coords.longitude)
 			let x = {
@@ -83,14 +83,14 @@ export default class MapaPlanComponent extends Component{
 		console.log(this.props)
 		console.log(NextProps)
 		if(this.props.actualPosicion){
-			this.setState({x:this.props.actualPosicion})
+			// this.setState({x:this.props.actualPosicion})
 		}	
 	}
 
 	render(){
 		const {ubicacionDefecto, inputValor} = this.props
 		const {valorInicial, km, latitudeDelta, longitudeDelta, direccion} = this.state
-		console.log(latitudeDelta)
+		console.log(ubicacionDefecto)
  
 		return(
 			<View>

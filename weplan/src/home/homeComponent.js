@@ -151,9 +151,9 @@ export default class homeComponent extends Component{
 				console.log(err)
 			})
 		}
-		if(event.nativeEvent.contentOffset.y>40){
+		if(event.nativeEvent.contentOffset.y>20){
 			this.setState({showBarra:false})
-		}else if(event.nativeEvent.contentOffset.y<40){
+		}else if(event.nativeEvent.contentOffset.y<90){
 			this.setState({showBarra:true})
 		}
 	}

@@ -43,7 +43,8 @@ export default class ChatComponent extends Component{
 			mapaVisible: false, ////// muestra el modal del mapa para abrirlo con alguna otra app
 			modalQr: false 		    ////// muestra el modal del QR
 		}
-		this.onReceivedMessage = this.onReceivedMessage.bind(this);
+		this.onReceivedMessage 	   = this.onReceivedMessage.bind(this);
+		this.onReceivedMessagePago = this.onReceivedMessagePago.bind(this);
 	}
 
 	componentWillMount(){
@@ -51,7 +52,8 @@ export default class ChatComponent extends Component{
 		// let planId = '5b653497d1bd7e0d78a17a9e'	 
 		console.log(planId) 
 		this.socket = SocketIOClient(URL);
-		this.socket.on('userJoined'+planId, this.onReceivedMessage);
+		this.socket.on(`chat${planId}`, 	this.onReceivedMessage);
+		this.socket.on(`editPago${planId}`, this.onReceivedMessagePago);
 
 
 		/////////////////	OBTENGO EL PERFIL
@@ -71,24 +73,25 @@ export default class ChatComponent extends Component{
 		.then(e=>{
  			console.log(e.data)
 			this.setState({mensajes:e.data.chat, planId, imagen: e.data.plan.imagenResize[0], nombrePlan: e.data.plan.nombre, planId, planAsignados:e.data.planAsignados, plan:e.data.plan})
-			
-			
 		})
 		.catch(err=>{
 			console.log(err)
 		})
 	}
-	componentWillReceiveProps(NextProps){
-		console.log(this.props)
-	}
-
+	 
 	onReceivedMessage(messages) {
 		console.log(messages)
 	 	this.setState({
 		  mensajes: update(this.state.mensajes, {$push: [messages]})
 		})
 	}
- 
+ 	onReceivedMessagePago(messages){
+ 		let mensajes = this.state.mensajes.filter((e)=>{
+			if (e.id==messages.id) {e.valor=messages.valor}
+			return e
+		})
+		this.setState({mensajes})
+ 	}
  
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

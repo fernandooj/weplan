@@ -21,9 +21,9 @@ export default class infoPlanComponent extends Component{
 	state={mapa:false}
 	render(){
 	let data = this.props.navigation.state.params.plan
-	console.log(data.planPadre)
+	console.log(data)
 	let id   = this.props.navigation.state.params.id
-	console.log(data.idUsuario._id)
+ 
 	let {navigate} = this.props.navigation
 	let menus = [
 		{funcion:()=>salir(data._id, navigate), texto:'Salir del Plan', show: id==data.idUsuario._id ?false :true },
@@ -73,7 +73,7 @@ export default class infoPlanComponent extends Component{
 						this.state.mapa &&<MapaPlanComponent 
 							close={()=> this.setState({mapa:false})} 						   			/////////   cierro el modal
 							updateStateX={(lat,lng, direccion)=>this.updateStateX(lat,lng, direccion)}  /////////	me devuelve la posicion del marcador 
-							ubicacionDefecto={{infoplan:true, lat:parseFloat(data.lat), lng:parseFloat(data.lng)}}
+							ubicacionDefecto={{infoplan:true, lat:parseFloat(data.loc.coordinates[1]), lng:parseFloat(data.loc.coordinates[0])}}
 						/> 
 					}
 				 

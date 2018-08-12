@@ -19,6 +19,7 @@ export const AjustesStyle = MediaQueryStyleSheet.create({
 	},
 	perfil:{
 	 	alignItems: 'center',
+	 	marginBottom:-15
 	},
 	username:{
 		position:'relative',
@@ -32,8 +33,8 @@ export const AjustesStyle = MediaQueryStyleSheet.create({
 		borderRadius:20,
 	},
  	btnMenu:{
- 		paddingTop:10, 
- 		paddingBottom:10,
+ 		paddingTop:7, 
+	 	paddingBottom:7,
  	},
 
 
