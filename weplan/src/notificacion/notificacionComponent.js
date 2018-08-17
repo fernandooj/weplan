@@ -123,7 +123,7 @@ export default class notificacionComponent extends Component{
 					 			}
 					 			
 					 			<TouchableOpacity style={NotiStyle.puntosBtn} onPress={()=>this.muestraBtnEliminar(e.id, e.btnEliminar)}>
-					 				<Image source={require('./puntos.png')} style={NotiStyle.puntos} />
+					 				<Image source={require('../images/puntos.png')} style={NotiStyle.puntos} />
 					 			</TouchableOpacity>
 					 			</View>
 			 				}

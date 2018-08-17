@@ -37,7 +37,7 @@ export default class AbonarComponent extends Component{
 
             {/* icono back */}
               <TouchableOpacity style={EncuestaStyle.btnBackAbono} onPress={()=>this.props.updateItems()}>
-                <Image source={require('../item/item3.png')} style={EncuestaStyle.backAbono} />
+                <Image source={require('../images/item3.png')} style={EncuestaStyle.backAbono} />
               </TouchableOpacity>
               <View style={EncuestaStyle.contenedorAbono}>
                 <Image source={{uri:this.props.photo}} style={EncuestaStyle.Avatar} />

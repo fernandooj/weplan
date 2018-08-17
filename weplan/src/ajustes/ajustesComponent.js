@@ -11,7 +11,7 @@ export default class ajustesComponent extends Component{
 		menus:[
 			{method:1, label:'Amigos', 		 	value:'ajustesAmigos', },
 			{method:1, label:'Planes Publicos', value:'planesPublicos', },
-			{method:1, label:'Metodos de Pago', value:'metodos'},
+			{method:1, label:'Facturacion', value:'facturacion'},
 			{method:3, label:'QR', 		 		value:'abrirQr', },
 			{method:1, label:'Privacidad',  	value:'privacidad'},
 			{method:1, label:'General', 	 	value:'general'},

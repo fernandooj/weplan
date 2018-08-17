@@ -285,7 +285,7 @@ export default class ItemComponent extends Component{
 						<View style={ItemStyle.subContentItem}>
 						{/*****   boton para mostrar crear item	*****/}
 						  	<TouchableOpacity onPress={()=>this.setState({show:true})} style={ItemStyle.contenedorNuevo}>
-								<Image source={require('../ajustes/nuevo.png')} style={ItemStyle.btnNuevoGrupo} />
+								<Image source={require('../images/nuevo.png')} style={ItemStyle.btnNuevoGrupo} />
 								<Text style={ItemStyle.CrearItem}>Crear Artículo</Text>
 						  	</TouchableOpacity>
 						  	

@@ -67,6 +67,9 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		paddingLeft:20,
 		paddingTop:10,
 	},
+	costoPlan:{
+		padding:10
+	},
 	textos:{
 		color:'#969696'
 	},
@@ -92,7 +95,7 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		width:34,
 		height:34,
 		position:'relative',
-		top:8,
+		top:12,
 		marginRight:25
 	},
 	textInput:{
@@ -353,7 +356,7 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		banRes:{
 			top:20,
 			left:-10,
-			fontSize:15,
+			 
 		},
 		contentAdd:{
 			width:230 

@@ -60,7 +60,7 @@ export default class walletComponent extends Component{
 								 
 							</View>	
 						</View>
-						<Image source={require('./back_plan.png')} style={walletStyle.back} />
+						<Image source={require('../images/back.png')} style={walletStyle.back} />
 					</View>
 					<View  style={walletStyle.separador}></View>
 				</TouchableOpacity>
@@ -74,7 +74,7 @@ export default class walletComponent extends Component{
 		return(
 			<View style={walletStyle.contenedorCabezera}> 
 				<TouchableOpacity onPress={()=>navigate('inicio')} style={walletStyle.btnClose} >
-					<Image source={require('../agregarAmigos/back.png')} style={walletStyle.imagenClose} />
+					<Image source={require('../images/back.png')} style={walletStyle.imagenClose} />
 				</TouchableOpacity>
 				<TextInput
       				style={walletStyle.input}
@@ -84,7 +84,7 @@ export default class walletComponent extends Component{
            			placeholder="Buscar"
            			placeholderTextColor="#8F9093" 
 			    />
-			    <Image source={require('../agregarAmigos/search.png')} style={walletStyle.btnBuscar} />
+			    <Image source={require('../images/search.png')} style={walletStyle.btnBuscar} />
 			</View>
 		)
 	}
@@ -103,8 +103,5 @@ export default class walletComponent extends Component{
 				<FooterComponent navigate={navigate} />		
 			</View> 
 		)
-	}
-	handleSubmit(planId, imagenPlan, nombre){
-		//navigate('chat', id)
 	}
 }

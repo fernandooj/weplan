@@ -61,8 +61,8 @@ export default class editPerfilComponent2 extends Component{
 					<Image source={{ uri: e.icon}} style={LoginStyle.iconRes} />
 					{
 						e.estado
-						?<Image source={require('./categoriaCheck.png')} style={LoginStyle.banRes} />
-						:<Image source={require('./categoriaCheckDisable.png')} style={LoginStyle.banRes} />
+						?<Image source={require('../images/categoriaCheck.png')} style={LoginStyle.banRes} />
+						:<Image source={require('../images/categoriaCheckDisable.png')} style={LoginStyle.banRes} />
 					}
 					<Text style={LoginStyle.textoRes}>{e.nombre}</Text>
 				</TouchableOpacity>
@@ -82,7 +82,7 @@ export default class editPerfilComponent2 extends Component{
 				<View style={LoginStyle.contenedorRes}>
 						<Image
 							style={LoginStyle.image2}
-							source={require('./eligePlanTitulo.png')}
+							source={require('../images/eligePlanTitulo.png')}
 					    />
 			    </View>
 			    <View style={LoginStyle.contenedorCofres}>

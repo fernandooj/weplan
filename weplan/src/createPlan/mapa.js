@@ -22,7 +22,7 @@ export default class MapaPlanComponent extends Component{
 		      latitude: 4.597825,
 		      longitude: -74.0755723,
 		    },
-		    km:0,
+		    km:this.props.ubicacionDefecto.area ?this.props.ubicacionDefecto.area :0,
 		    latitudeDelta: 0.015,
 			longitudeDelta: 0.0121,
 		    modalVisible:true
@@ -82,16 +82,23 @@ export default class MapaPlanComponent extends Component{
 	componentWillReceiveProps(NextProps){
 		console.log(this.props)
 		console.log(NextProps)
-		if(this.props.actualPosicion){
-			// this.setState({x:this.props.actualPosicion})
-		}	
+		// if(this.props.actualPosicion !==NextProps.actualPosicion){
+		// 	console.log(this.props.actualPosicion)
+		// 	// let km = this.props.actualPosicion.infoplan.area
+		// 	// let valorInicial = (area*2000)/300
+		// 	// // e = e.substr(1)
+		//  // //    e = e.replace(/[^0-9]/g, '') 
+		//  // //    e = Number(e)
+
+		//  // //    let km = (e*300)/2000 
+		     
+		//  //    this.setState({valorInicial, km})
+		// }	
 	}
 
 	render(){
-		const {ubicacionDefecto, inputValor} = this.props
+		const {ubicacionDefecto, inputValor, planPublico} = this.props
 		const {valorInicial, km, latitudeDelta, longitudeDelta, direccion} = this.state
-		console.log(ubicacionDefecto)
- 
 		return(
 			<View>
 				 
@@ -104,10 +111,10 @@ export default class MapaPlanComponent extends Component{
 		        }}>
 					<View style={CreatePlanStyle.tituloMapa}>
 						<TouchableOpacity onPress={(e)=>{this.props.close(this.state.asignadosEmpty)}}  style={CreatePlanStyle.btnClose} >
-							<Image source={require('../agregarAmigos/back.png')} style={CreatePlanStyle.imagenClose} />
+							<Image source={require('../images/back.png')} style={CreatePlanStyle.imagenClose} />
 						</TouchableOpacity>
 						{
-							!ubicacionDefecto.infoplan
+							!ubicacionDefecto.infoplan || ubicacionDefecto.muestraBtnHecho
 							&&<GooglePlacesAutocomplete
 							placeholder='Buscar'
 							minLength={2} // minimum length of text to search
@@ -188,18 +195,19 @@ export default class MapaPlanComponent extends Component{
 			                  style={CreatePlanStyle.inputValor}
 			                  underlineColorAndroid='transparent'
 			                  onChangeText={this.getValor.bind(this)} 
-			                  value={valorInicial}
+			                  value={(km*2000)/300}
 			                />
 				        }
 				        {
-				        	!ubicacionDefecto.infoplan
-				        	&&<View  style={CreatePlanStyle.contenedorRes}>
+				        	!ubicacionDefecto.infoplan || ubicacionDefecto.muestraBtnHecho
+				        	?<View  style={CreatePlanStyle.contenedorRes}>
 					       		<TouchableOpacity 
-					       			onPress={() => { this.props.updateStateX(this.state.x.latitude, this.state.x.longitude, direccion, km)} } 
+					       			onPress={() => { this.props.updateStateX(this.state.x.latitude, this.state.x.longitude, direccion, km, valorInicial)} } 
 									style={CreatePlanStyle.btnHecho}>
 									<Text style={CreatePlanStyle.hecho}>Hecho !</Text>
 								</TouchableOpacity>
 							</View>
+							:null
 				        }
 				        
 				    </ScrollView>
@@ -213,11 +221,7 @@ export default class MapaPlanComponent extends Component{
 	    e = Number(e)
 
 	    let km = (e*300)/2000 
-	    this.setState({latitudeDelta: 1.015, longitudeDelta: 1.0121})
-	    if (km>1000) {
-	    	console.log(km)
-	    	
-	    }
+	     
 	    this.setState({valorInicial:e, km})
 
 

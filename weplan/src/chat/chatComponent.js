@@ -111,10 +111,10 @@ export default class ChatComponent extends Component{
 					</TouchableOpacity>
 					<View style={ChatStyle.iconosHeaderContenedor}>
 						<TouchableOpacity onPress={() => navigate('encuesta', planId)}  style={ChatStyle.iconContenedor}>
-							<Image source={require('./preguntar.png')} style={ChatStyle.icon}  />
+							<Image source={require('../images/preguntar.png')} style={ChatStyle.icon}  />
 						</TouchableOpacity>
 						<TouchableOpacity onPress={() => navigate('item', planId)} style={ChatStyle.iconContenedor}>
-							<Image source={require('./cuentas.png')} style={ChatStyle.icon}  />
+							<Image source={require('../images/cuentas.png')} style={ChatStyle.icon}  />
 						</TouchableOpacity>
 					</View>
 				</View>
@@ -194,13 +194,13 @@ export default class ChatComponent extends Component{
 					       		(!asignadoItem && !esperaItem &&e.abierto)  && e.userId !== id
 					       		?<View style={e.userId== id ?ChatStyle.contenedorInteres :[ChatStyle.contenedorInteres, ChatStyle.contenedorInteresLeft]}>
 							       	<TouchableOpacity onPress={()=> this.ingresarItem(e.token, e.itemId, e.id, e.titulo, e.rutaImagen, e.userId)} style={ChatStyle.btnInteres} >
-							       		<Image source={require('./me_interesa.png')} style={ChatStyle.imagenInteres} />
+							       		<Image source={require('../images/me_interesa.png')} style={ChatStyle.imagenInteres} />
 							       		<Text style={ChatStyle.textoInteres}>Me Interesa</Text>
 							       	</TouchableOpacity>
 							      </View> 	
 							      :!asignadoItem && esperaItem
 							      ?<View style={e.userId== id ?ChatStyle.contenedorInteres :[ChatStyle.contenedorInteres, ChatStyle.contenedorInteresLeft]}>
-							      	<Image source={require('./espera.png')} style={ChatStyle.imagenEspera} />
+							      	<Image source={require('../images/espera.png')} style={ChatStyle.imagenEspera} />
 							      </View>
 							      :null
 					       	}
@@ -230,9 +230,9 @@ export default class ChatComponent extends Component{
 						 
 						<View style={e.userId== id ?ChatStyle.boxItem2 :[ChatStyle.boxItem2, ChatStyle.boxLeft]}>
 							<View style={ChatStyle.contenedorDescripcion}>
-								<Image source={require('../encuesta/item4.png')} style={ChatStyle.decoracion} />
+								<Image source={require('../images/item4.png')} style={ChatStyle.decoracion} />
 								 <Text style={ChatStyle.pDescripcion}>{e.eTitulo}</Text> 
-								<Image source={require('../encuesta/item4.png')} style={ChatStyle.decoracion} />
+								<Image source={require('../images/item4.png')} style={ChatStyle.decoracion} />
 							</View>
 						</View>						 
 						
@@ -563,7 +563,7 @@ export default class ChatComponent extends Component{
 				{this.renderCabezera()}
 
 			{/* AGREGAR IMAGENES */}
-				<ImageBackground source={require('./fondo.png')} style={ChatStyle.fondo}>	
+				<ImageBackground source={require('../images/fondo.png')} style={ChatStyle.fondo}>	
 					<ScrollView ref="scrollView"
 								style={ChatStyle.contenedorChat} 
 								onContentSizeChange={(width,height) => this.refs.scrollView.scrollTo({y:height})}>
@@ -603,7 +603,7 @@ export default class ChatComponent extends Component{
 				<View style={ChatStyle.footer}>
 					<View style={ChatStyle.footer1}>
 						<TouchableOpacity onPress={()=>this.setState({showOpciones:!this.state.showOpciones})} style={ChatStyle.opcionesBtn}>
-							<Image source={require('./opciones.png')} style={ChatStyle.opciones}  />
+							<Image source={require('../images/opciones.png')} style={ChatStyle.opciones}  />
 						</TouchableOpacity>
 						<TextInput
 							style={ChatStyle.textarea}
@@ -615,7 +615,7 @@ export default class ChatComponent extends Component{
 							ref={input => { this.textInput = input }}
 						/>
 						<TouchableOpacity onPress={this.state.mensaje.length>0 ?() => this.handleSubmit(this) :null}  style={ChatStyle.enviarBtn} >
-							<Image source={require('./enviar.png')} style={ChatStyle.enviar}  />
+							<Image source={require('../images/enviar.png')} style={ChatStyle.enviar}  />
 						</TouchableOpacity>
 					</View>
 				</View>

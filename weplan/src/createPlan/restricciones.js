@@ -66,8 +66,8 @@ export default class RestriccionesPlanComponent extends Component{
 					<Image source={{ uri: e.ruta}} style={CreatePlanStyle.iconRes}/>
 					{
 						e.estado
-						?<Image source={require('./deneid1.png')} style={CreatePlanStyle.banRes} />
-						:<Image source={require('./deneid2.png')} style={CreatePlanStyle.banRes} />
+						?<Image source={require('../images/deneid1.png')} style={CreatePlanStyle.banRes} />
+						:<Image source={require('../images/deneid2.png')} style={CreatePlanStyle.banRes} />
 					}
 					<Text style={CreatePlanStyle.textoRes}>{e.nombre}</Text>
 				</TouchableOpacity>
@@ -87,7 +87,7 @@ export default class RestriccionesPlanComponent extends Component{
 		        <ScrollView>
 					<View  style={CreatePlanStyle.contenedorRes}>
 						<View style={CreatePlanStyle.touchRes}>				 
-							<Image source={require('./denied.png')} style={CreatePlanStyle.rutaRes} />
+							<Image source={require('../images/denied.png')} style={CreatePlanStyle.rutaRes} />
 							<Text style={CreatePlanStyle.textoRes}>Restricciones</Text>
 						</View>	
 						{this.renderRestricciones()}

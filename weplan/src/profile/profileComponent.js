@@ -108,7 +108,7 @@ export default class profileComponent extends Component{
 					 		{
 								this.state.esAmigo==='no'
 								?<TouchableOpacity onPress={()=>this.handleSubmit()} style={profileStyle.agregarBtn}>
-									<Image source={require('./agregar.png')} style={profileStyle.agregar}/>
+									<Image source={require('../images/agregar.png')} style={profileStyle.agregar}/>
 								</TouchableOpacity>
 								:this.state.esAmigo==='siEsperando'
 								?<Text style={profileStyle.agregar}>esta en espera de aceptar solicitud</Text>

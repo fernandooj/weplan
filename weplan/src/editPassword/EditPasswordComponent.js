@@ -22,7 +22,7 @@ export default class EditPasswordComponent extends Component{
 					<Image
 						style={EditPasswordStyle.image}
 						width={140} // height will be calculated automatically
-						source={require('../login/logo.png')}
+						source={require('../images/logo.png')}
 				   />
 				</View>
 				<TextInput

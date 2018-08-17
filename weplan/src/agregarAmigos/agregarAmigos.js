@@ -42,7 +42,7 @@ export default class AgregarAmigosComponent extends Component{
 					onPress={(e)=>{this.updateState(data.id, data.estado); this.updateStateAsignados(data.estado, data.id); this.updateStateUsuarios(data.id, data.photo, data.nombre, data.estado, data.token)}} > 
 					<Image source={{ uri: data.photo}}  style={data.estado ?AmigosStyle.avatar :AmigosStyle.avatar2} /> 
 					<Text style={AmigosStyle.textoAvatar}>{data.nombre}</Text>
-					{!data.estado ?<Image source={require('../home/agregado.png')} style={AmigosStyle.agregado}/> :null} 
+					{!data.estado ?<Image source={require('../images/agregado.png')} style={AmigosStyle.agregado}/> :null} 
 			    	</TouchableOpacity>
 				})
 	}
@@ -92,9 +92,9 @@ export default class AgregarAmigosComponent extends Component{
 		        }}>
 				<View style={AmigosStyle.titulo}>
 					<TouchableOpacity onPress={(e)=>{this.props.close()}}  style={AmigosStyle.btnClose} >
-						<Image source={require('./back.png')} style={AmigosStyle.imagenClose} />
+						<Image source={require('../images/back.png')} style={AmigosStyle.imagenClose} />
 					</TouchableOpacity>
-					<Image source={require('./friends.png')} style={AmigosStyle.imagenTitulo}/>
+					<Image source={require('../images/friends.png')} style={AmigosStyle.imagenTitulo}/>
 	          		<Text style={AmigosStyle.text}>{this.props.titulo}</Text>
 	          	</View>	
 
@@ -108,7 +108,7 @@ export default class AgregarAmigosComponent extends Component{
 	           			placeholder="Buscar"
 	           			placeholderTextColor="#8F9093" 
 				    />
-				    <Image source={require('./search.png')} style={AmigosStyle.btnBuscar} />
+				    <Image source={require('../images/search.png')} style={AmigosStyle.btnBuscar} />
  				</View>
 				
 					<ScrollView style={AmigosStyle.contenedorLista} showsHorizontalScrollIndicator={false}>

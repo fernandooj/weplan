@@ -26,36 +26,45 @@ class NavigationBar extends React.Component{
           </section>
           <section>
           { 
-            this.props.showMenu
-
-                selectedKeys={[this.sta            &&<Menu
-                onClick={this.handleClick}te.current]}
+            this.props.showMenu &&  user.acceso !=="suscriptor"
+            ?<Menu
+                onClick={this.handleClick}
+                selectedKeys={[this.state.current]}
                 mode="horizontal"
               >
               <Menu.Item key="plan">
                 <Icon type="usergroup-add" />
                 <Link to='plan'>Planes</Link>
               </Menu.Item>
-              {
-                user.acceso !=="suscriptor"
-                &&<div>
-                    <Menu.Item key="usuario">
-                      <Icon type="usergroup-add" />
-                      <Link to='usuario'>Usuarios</Link>
-                    </Menu.Item>
-                    <Menu.Item key="restriccion">
-                      <Icon type="lock" />
-                      <Link to='restriccion'>Restricciones</Link>
-                    </Menu.Item>
-                    <Menu.Item key="categoria">
-                      <Icon type="lock" />
-                      <Link to='categoria'>Categorias</Link>
-                    </Menu.Item>
-                  </div>
-              }
-              
-               
+              <Menu.Item key="usuario">
+                <Icon type="usergroup-add" />
+                <Link to='usuario'>Usuarios</Link>
+              </Menu.Item>
+              <Menu.Item key="restriccion">
+                <Icon type="lock" />
+                <Link to='restriccion'>Restricciones</Link>
+              </Menu.Item>
+              <Menu.Item key="categoria">
+                <Icon type="lock" />
+                <Link to='categoria'>Categorias</Link>
+              </Menu.Item>
               <SubMenu title={<span><Avatar size="default" icon="user" />{user.nombre}</span>}>
+                <Menu.Item key="setting:1">Perfil</Menu.Item>
+                <Menu.Item key="setting:2">Notificaciones</Menu.Item>
+                <Menu.Item key="setting:3" onClick={()=>this.closeSession()}>Cerrar Sesión</Menu.Item>
+              </SubMenu>
+            </Menu>
+            :this.props.showMenu &&  user.acceso !=="superAdmin"
+            &&<Menu
+                onClick={this.handleClick}
+                selectedKeys={[this.state.current]}
+                mode="horizontal"
+              >
+              <Menu.Item key="plan">
+                <Icon type="usergroup-add" />
+                <Link to='plan'>Planes</Link>
+              </Menu.Item>
+            <SubMenu title={<span><Avatar size="default" icon="user" />{user.nombre}</span>}>
                 <Menu.Item key="setting:1">Perfil</Menu.Item>
                 <Menu.Item key="setting:2">Notificaciones</Menu.Item>
                 <Menu.Item key="setting:3" onClick={()=>this.closeSession()}>Cerrar Sesión</Menu.Item>

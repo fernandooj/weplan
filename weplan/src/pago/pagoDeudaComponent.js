@@ -112,7 +112,7 @@ export default class pagoDeudaComponent extends Component{
 		})
 		var sum = suma.reduce(add, 0);
 		 
-			if (usuarios.length!==0) {
+			if (planId.length!==0) {
 				return (<ScrollView style={PagoStyle.container}>
 					<View style={PagoStyle.contentItem}>
 						<CabezeraComponent navigate={navigate} url={'item'} parameter={planId} />
@@ -146,7 +146,7 @@ export default class pagoDeudaComponent extends Component{
 					</View>
 				</ScrollView>)
 			}else{
-				return <Text>Cargando...</Text>
+				return <Text></Text>
 			}
 			
 		 

@@ -17,7 +17,53 @@ class planServices {
 		planSchema.find({_id}).populate('idUsuario', 'nombre ciudad photo').populate('restricciones').populate('asignados').exec(callback)
 	}
 	getPlanesPublicosDesactivados(idUsuario, callback){
-		planSchema.find({idUsuario, tipo:'pago', activo:false}).populate('restricciones').exec(callback)
+		idUsuario = mongoose.Types.ObjectId(idUsuario);	
+		// planSchema.find({idUsuario, tipo:'pago', activo:false}).populate('restricciones').exec(callback)
+		planSchema.aggregate([
+		    {
+		    	$match:{
+		    		idUsuario,
+		    		tipo:'pago', 
+		    		activo:false
+		    	},
+		    },
+		    {
+	 			$lookup: {
+	 				from: "pagopublicos",
+	 				localField: "_id",
+	 				foreignField: "planId",
+	 				as: "PagoData"
+	 			}
+	 		},
+	 		{
+ 				$unwind:{
+	 				path:'$PagoData',
+	 				preserveNullAndEmptyArrays: true
+	 			}
+	 		},
+		    {
+ 			$project:{
+	 				_id:1,
+	 				nombre:1,
+	 				tipo:1,
+	 				area:1,
+	 				lugar:1,
+	 				activo:1,
+	 				idUsuario:1,
+	 				imagenMiniatura:1,
+	 				monto:'$PagoData.monto'
+	 			},
+	 		},
+	 		{
+	 		    $group:{
+	 		        _id:'$_id',
+	 		        saldo:{$sum:'$monto'},
+	 		        data: {
+                        $addToSet: {info:[{imagenMiniatura:'$imagenMiniatura', nombre:'$nombre'}]}
+                    },
+	 		    }
+	 		},
+		], callback)
 	}
 
 	getPublicos(idUsuario, acceso, callback){
@@ -81,7 +127,7 @@ class planServices {
 		    	$geoNear: {
 			        near: { type: "Point", coordinates: [  parseFloat(lng) ,  parseFloat(lat) ] },
 			        distanceField: "dist",
-			      	query: { tipo: "pago" },
+			      	query: { tipo: "pago", activo:true },
 			        maxDistance: 30000,
 			        num: 5,
 			        spherical: true
@@ -105,7 +151,7 @@ class planServices {
 		plan.nombre 		 = planData.nombre	
 		plan.descripcion	 = planData.descripcion	
 		plan.restricciones   = planData.restricciones	
-		plan.activo          = true	
+		plan.activo          = planData.activo	
 		plan.idUsuario 		 = id	
 		plan.fechaLugar 	 = planData.fechaLugar
 		plan.loc 			 = loc
@@ -142,6 +188,11 @@ class planServices {
 	salir(id, asignados, callback){
 		planSchema.findByIdAndUpdate(id, {$set: {
 	        'asignados': asignados,
+        }}, callback);
+	}
+	cambioestado(id, activo, callback){
+		planSchema.findByIdAndUpdate(id, {$set: {
+	        'activo': activo,
         }}, callback);
 	}
 	sumaPlan(idUsuario, callback){

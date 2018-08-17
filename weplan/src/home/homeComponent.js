@@ -102,6 +102,7 @@ export default class homeComponent extends Component{
 	
 	 
 	getRow(filteredData){
+		const {navigate} = this.props.navigation
 		const filtered = this.state.filteredData.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
 		return filtered.map((e, key)=>{
 		let data = parseInt(e.dist/1000);
@@ -111,14 +112,14 @@ export default class homeComponent extends Component{
 					<View style={HomeStyle.footer1}>
 						<Text style={HomeStyle.textFooter1}>{e.nombre}</Text>
 						<TouchableOpacity onPress={() => navigate('createPlan', e._id )} style={HomeStyle.btnIconVer}>
-							<Image source={require('./icon4.png')} style={HomeStyle.iconVer} />
+							<Image source={require('../images/icon4.png')} style={HomeStyle.iconVer} />
 						</TouchableOpacity>	
 					</View>
 					<Text style={HomeStyle.textFooter2}>{e.descripcion}</Text>
 					<Text style={HomeStyle.textFooter2}>Estas a {parseInt(e.dist)<1000 ?`${parseInt(e.dist)} Metros` :`${data} Kilometros`}</Text>
 					<View style={HomeStyle.footer2}>
-						<Image source={require('./icon6.png')} style={HomeStyle.iconFooter} />
-						<Image source={require('./icon7.png')} style={HomeStyle.iconFooter} />
+						{/*<Image source={require('../images/icon6.png')} style={HomeStyle.iconFooter} />
+						<Image source={require('../images/icon7.png')} style={HomeStyle.iconFooter} />*/}
 					</View>
 					
 				</View> 
@@ -126,7 +127,6 @@ export default class homeComponent extends Component{
 			})
 	}
 	searchUpdated (term) {
-		console.log(term)
 		this.setState({searchTerm: term})
 	}
 	 
@@ -159,7 +159,6 @@ export default class homeComponent extends Component{
 	}
 	render(){
 		const {navigate} = this.props.navigation
-		 
 		return(	 
 			<View style={HomeStyle.contenedor}>
 				<CabezeraComponent navigate={navigate} hide={this.state.showBarra ?false :true} term={(term)=>this.searchUpdated(term)} />

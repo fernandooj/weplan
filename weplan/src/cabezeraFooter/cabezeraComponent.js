@@ -59,13 +59,13 @@ export default class CabezeraComponent extends Component{
 			return(
 				<Animated.View style={[cabezeraFooterStyle.cabezera, { opacity: this.state.opacity, top:this.state.top}]}>	
 					<TouchableOpacity onPress={() => navigate('ajustes')}>
-						<Image source={require('./icon1.png')} style={cabezeraFooterStyle.iconHead} />
+						<Image source={require('../images/icon1.png')} style={cabezeraFooterStyle.iconHead} />
 					</TouchableOpacity>
 					<TouchableOpacity onPress={() => navigate('inicio')}>
-						<Image source={require('./icon2.png')} style={cabezeraFooterStyle.iconHead2} />
+						<Image source={require('../images/icon2.png')} style={cabezeraFooterStyle.iconHead2} />
 					</TouchableOpacity>
 					<TouchableOpacity onPress={() => this.setState({search:true})}>
-						<Image source={require('./icon3.png')} style={cabezeraFooterStyle.iconHead} />
+						<Image source={require('../images/icon3.png')} style={cabezeraFooterStyle.iconHead} />
 					</TouchableOpacity>
 				</Animated.View> 
 			)

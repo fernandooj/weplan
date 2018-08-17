@@ -98,22 +98,22 @@ export default class pagoComponent extends Component{
 				<View style={PagoStyle.metodoContenedor}>
 					{/*<TouchableOpacity onPress={(e)=>this.updateStateMetodo(1)} style={PagoStyle.metodoBtn}>
 						{!cc
-						?<Image source={require('./cc.png')} style={PagoStyle.metodoImagen} />
-						:<Image source={require('./ccActivo.png')} style={PagoStyle.metodoImagen} />
+						?<Image source={require('../images/cc.png')} style={PagoStyle.metodoImagen} />
+						:<Image source={require('../images/ccActivo.png')} style={PagoStyle.metodoImagen} />
 						}
 						<Text>Credito</Text>
 					</TouchableOpacity>
 					<TouchableOpacity onPress={(e)=>this.updateStateMetodo(2)} style={PagoStyle.metodoBtn}>
 						{!debito
-						?<Image source={require('./debito.png')} style={PagoStyle.metodoImagen} />
-						:<Image source={require('./debitoActivo.png')} style={PagoStyle.metodoImagen} />
+						?<Image source={require('../images/debito.png')} style={PagoStyle.metodoImagen} />
+						:<Image source={require('../images/debitoActivo.png')} style={PagoStyle.metodoImagen} />
 						}
 						<Text>Debito</Text>
 					</TouchableOpacity>*/}
 					<TouchableOpacity onPress={(e)=>this.updateStateMetodo(3)} style={PagoStyle.metodoBtn}>
 						{!efectivo 
-						?<Image source={require('./efectivo.png')} style={PagoStyle.metodoImagen} />
-						:<Image source={require('./efectivoActivo.png')} style={PagoStyle.metodoImagen} />
+						?<Image source={require('../images/efectivo.png')} style={PagoStyle.metodoImagen} />
+						:<Image source={require('../images/efectivoActivo.png')} style={PagoStyle.metodoImagen} />
 						}
 						<Text>Efectivo</Text>
 					</TouchableOpacity>
@@ -132,7 +132,7 @@ export default class pagoComponent extends Component{
 	            />
 	        {/* ICON PAGAR */}
 	        	<TouchableOpacity onPress={this.handleSubmit.bind(this)} style={PagoStyle.pagarBtn}>
-	        		<Image source={require('./iconPagar.png')} style={PagoStyle.pagarImagen} />
+	        		<Image source={require('../images/iconPagar.png')} style={PagoStyle.pagarImagen} />
 	        	</TouchableOpacity>
 			</View>
 		)

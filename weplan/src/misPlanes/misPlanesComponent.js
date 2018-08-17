@@ -67,7 +67,7 @@ export default class MisPlanesComponent extends Component{
 		return(
 			<View style={MisPlanesStyle.contenedorCabezera}> 
 				<TouchableOpacity onPress={()=>navigate('inicio')} style={MisPlanesStyle.btnClose} >
-					<Image source={require('../agregarAmigos/back.png')} style={MisPlanesStyle.imagenClose} />
+					<Image source={require('../images/back.png')} style={MisPlanesStyle.imagenClose} />
 				</TouchableOpacity>
 				<TextInput
       				style={MisPlanesStyle.input}
@@ -77,7 +77,7 @@ export default class MisPlanesComponent extends Component{
            			placeholder="Buscar"
            			placeholderTextColor="#8F9093" 
 			    />
-			    <Image source={require('../agregarAmigos/search.png')} style={MisPlanesStyle.btnBuscar} />
+			    <Image source={require('../images/search.png')} style={MisPlanesStyle.btnBuscar} />
 			</View>
 		)
 	}
@@ -93,7 +93,7 @@ export default class MisPlanesComponent extends Component{
 				}
 				{
 					this.state.planesAsignados==1
-					?<Image source={require('./sinPlanes.png')} style={MisPlanesStyle.sinPlanes} />
+					?<Image source={require('../images/sinPlanes.png')} style={MisPlanesStyle.sinPlanes} />
 					:this.state.planesAsignados==2
 					?<ScrollView showsVerticalScrollIndicator={false}>
 						<View style={MisPlanesStyle.container}>

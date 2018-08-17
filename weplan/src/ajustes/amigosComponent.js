@@ -148,7 +148,7 @@ export default class ajustesAmigosComponent extends Component{
  		return(
  			<View style={AjustesStyle.lista}>
 				<TouchableOpacity  style={AjustesStyle.registro}>
-					<Image source={require('./nuevo.png')} style={AjustesStyle.btnNuevoGrupo} />
+					<Image source={require('../images/nuevo.png')} style={AjustesStyle.btnNuevoGrupo} />
 					<Text>Crear Grupo</Text>
 				</TouchableOpacity>
 				<View style={AjustesStyle.separador}></View>
@@ -184,9 +184,9 @@ export default class ajustesAmigosComponent extends Component{
 				           			placeholderTextColor="#8F9093" 
 				           			 
 							    />
-							   <Image source={require('../agregarAmigos/search.png')} style={AjustesStyle.btnSearch} />
+							   <Image source={require('../images/search.png')} style={AjustesStyle.btnSearch} />
 							   <TouchableOpacity style={AjustesStyle.btnBuscar} onPress={this.handleSubmit.bind(this)}>
-							   	<Image source={require('./agregar.png')} style={AjustesStyle.btnAgregar} />
+							   	<Image source={require('../images/agregar.png')} style={AjustesStyle.btnAgregar} />
 							   </TouchableOpacity>
 							</View>
 							{

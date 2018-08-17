@@ -1,11 +1,11 @@
 import React, {Component} from 'react'
-import {View, Text, ScrollView, ImageBackground, TouchableOpacity, Image, TextInput, Keyboard} from 'react-native'
+import {View, Text, ScrollView, ImageBackground, TouchableOpacity, Image, TextInput} from 'react-native'
 import {planes} from '../planesPublicos/style'
 import axios from 'axios'
+import CabezeraComponent from '../ajustes/cabezera.js'
 
  
 import FooterComponent 	 from '../cabezeraFooter/footerComponent'
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////  ARCHIVOS GENERADOS POR EL EQUIPO  //////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -18,18 +18,14 @@ export default class planesPublicosComponent extends Component{
 		super(props)
 		this.state={
 			filteredData:[],
-			planesAsignados:0,
 			allList:[]
 		}
 	}
 	componentWillMount(){
-		Keyboard.dismiss()
 		axios.get('/x/v1/pla/plan/planespublicos/innactivos')
 		.then(e=>{
 			console.log(e.data)
-			let filteredData = e.data.planes
-			let planesAsignados = e.data.planes==0 ?1 :2
-			this.setState({allList:filteredData, filteredData, planesAsignados})
+			this.setState({allList:e.data.planes, filteredData:e.data.planes})
 		})
 		.catch(res=>{
 			console.log(res)
@@ -38,25 +34,37 @@ export default class planesPublicosComponent extends Component{
 	filteredData(event){
 		const regex = new RegExp(event, 'i');
 		const filtered = this.state.allList.filter(function(e){
-			return (e.nombrePlan.search(regex)> -1)	
+			return (e.data[0].info[5].search(regex)> -1)	
 		})
-		//this.setState({filteredData:filtered})
 		if (event.length>0) {
 			this.setState({filteredData:filtered})
 		}else{
 			this.setState({filteredData:this.state.allList})
 		}	
 	}
+	 
 	getRow(filteredData){
+		const {navigate} = this.props.navigation
 		if(filteredData.length>0){
 			return filteredData.map((e, key)=>{
-			return  <TouchableOpacity onPress={()=>this.handleSubmit(e.id)} key={key} style={planes.boxPlan}>
-					<Image source={{uri: e.imagen[0]}} style={planes.background} />
-					<Text style={planes.nombre}>{e.nombrePlan.length<27 ?e.nombrePlan :e.nombrePlan.substring(0, 27)+' ...'}</Text>
-					<View style={planes.boxPlan1} >
-						<Text style={planes.fechaLugar}>{e.fecha}</Text>
-						<Text style={e.total>0 ?planes.debe :[planes.debe, planes.noDebe]}></Text>
+			return  <TouchableOpacity onPress={()=>navigate('detallePlanPublico', e.id)} key={key}>
+					<View style={planes.item}>
+						<Image source={{uri: e.imagen[0]}} style={planes.imagen} />
+						<View style={planes.boxPlan1} >
+							<Text style={planes.nombre}>{e.nombre.length<30 ?e.nombre :e.nombre.substring(0, 30)+' ...'}</Text>
+							 
+							 <View style={planes.item}>	
+								<Text style={planes.textoTotal}>Has Invertido</Text>
+								 
+							</View> 
+							<Text style={planes.pagoDeudaMontoActive}>
+								{'$ '+Number(Math.abs(e.saldo)).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
+							</Text>	
+							 
+						</View>
+						<Image source={require('../images/back.png')} style={planes.back} />
 					</View>
+					<View  style={planes.separador}></View>
 				</TouchableOpacity>
 				})
 		}else{
@@ -68,7 +76,7 @@ export default class planesPublicosComponent extends Component{
 		return(
 			<View style={planes.contenedorCabezera}> 
 				<TouchableOpacity onPress={()=>navigate('inicio')} style={planes.btnClose} >
-					<Image source={require('../agregarAmigos/back.png')} style={planes.imagenClose} />
+					<Image source={require('../images/back.png')} style={planes.imagenClose} />
 				</TouchableOpacity>
 				<TextInput
       				style={planes.input}
@@ -78,7 +86,7 @@ export default class planesPublicosComponent extends Component{
            			placeholder="Buscar"
            			placeholderTextColor="#8F9093" 
 			    />
-			    <Image source={require('../agregarAmigos/search.png')} style={planes.btnBuscar} />
+			    <Image source={require('../images/search.png')} style={planes.btnBuscar} />
 			</View>
 		)
 	}
@@ -89,27 +97,13 @@ export default class planesPublicosComponent extends Component{
 		const {navigate} = this.props.navigation
 		return(	 
 			<View style={planes.contenedor}>
-		 
-					{this.cabezera()}
-				{
-					this.state.planesAsignados==1
-					?<Image source={require('./sinPlanes.png')} style={planes.sinPlanes} />
-					:this.state.planesAsignados==2
-					?<ScrollView showsVerticalScrollIndicator={false}>
-						<View style={planes.container}>
-						{rows}
-						</View>	
-					</ScrollView>
-					:<View></View>
-				}
-				
-				<FooterComponent navigate={navigate} />	
+				 
+				<CabezeraComponent navigate={navigate} url={'ajustes'} texto='Planes Publicos'  />
+				<ScrollView style={planes.subContenedor}>
+					{rows}	
+				</ScrollView>
+				<FooterComponent navigate={navigate} />		
 			</View> 
 		)
-	}
-	handleSubmit(planId){
-		const {navigate} = this.props.navigation
-		let id = planId
-		navigate('chat', id)
 	}
 }

@@ -21,7 +21,7 @@ export default class insertCodeComponent extends Component{
 					<Image
 						style={LoginStyle.image}
 						width={140} // height will be calculated automatically
-						source={require('../login/logo.png')}
+						source={require('../images/logo.png')}
 				   />
 				</View>
 				<TextInput

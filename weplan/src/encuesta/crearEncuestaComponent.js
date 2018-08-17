@@ -43,16 +43,16 @@ export default class CrearEncuestaComponent extends Component{
         <View style={EncuestaStyle.modalIn}>
           {/* icono */}
           <TouchableOpacity style={EncuestaStyle.btnIcon}>
-            <Image source={require('./item5.png')} style={EncuestaStyle.icon} />
+            <Image source={require('../images/item5.png')} style={EncuestaStyle.icon} />
           </TouchableOpacity>
 
           {/* rest modal */}
           <View style={EncuestaStyle.modal}>
-            <ImageBackground source={require('./item2.png')} style={EncuestaStyle.header}> 
+            <ImageBackground source={require('../images/item2.png')} style={EncuestaStyle.header}> 
               
             {/* ICONO REGRESAR */}
               <TouchableOpacity style={EncuestaStyle.btnBack} onPress={()=>this.props.close(false)}>
-                <Image source={require('./item3.png')} style={EncuestaStyle.back} />
+                <Image source={require('../images/item3.png')} style={EncuestaStyle.back} />
               </TouchableOpacity>
 
             {/* INPUT TITULO */}
@@ -60,7 +60,7 @@ export default class CrearEncuestaComponent extends Component{
             
             {/* IMAGEN DECORACION TITULO */}
             <View style={EncuestaStyle.contenedorDescripcion}>
-              <Image source={require('./item4.png')} style={EncuestaStyle.decoracion} />
+              <Image source={require('../images/item4.png')} style={EncuestaStyle.decoracion} />
               <TextInput 
                 placeholder='Titulo'
                 underlineColorAndroid='transparent' 
@@ -71,7 +71,7 @@ export default class CrearEncuestaComponent extends Component{
                 onChangeText={(titulo) => this.setState({titulo})}
                 maxLength={30}
               />
-              <Image source={require('./item4.png')} style={EncuestaStyle.decoracion} />
+              <Image source={require('../images/item4.png')} style={EncuestaStyle.decoracion} />
             </View>
           </View> 
 
@@ -116,7 +116,7 @@ export default class CrearEncuestaComponent extends Component{
           {/* Guardar */}  
           <View style={EncuestaStyle.save} > 
             <TouchableOpacity style={EncuestaStyle.btnSave} onPress={this.state.enviarChat=='Enviar' ?this.handleSubmit.bind(this) :null}>
-             <Image source={require('./item8.png')} style={EncuestaStyle.iconSave} />
+             <Image source={require('../images/item8.png')} style={EncuestaStyle.iconSave} />
               <Text style={EncuestaStyle.adjuntar} style={EncuestaStyle.textSave}>{this.state.enviarChat}</Text>
             </TouchableOpacity> 
           </View>

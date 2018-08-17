@@ -294,14 +294,44 @@ module.exports = function(app, passport){
 
     ///////////////////////////////////////////////////////////////////////////
     /*
+    busco al usuario logueado, esto es por que desde el admin actualizo la info,
+    pero en el usuario no se ven los cambios
+    */
+    ///////////////////////////////////////////////////////////////////////////
+    app.get('/x/v1/user/profile2', function(req, res){
+        userServices.getOneUser(req.session.usuario.user._id, (err, usuario)=>{
+            if(!err){
+                res.json({status:'SUCCESS', usuario})
+            }else{
+                res.json({ status: 'FAIL', err}) 
+            }
+        })
+    })
+
+    ///////////////////////////////////////////////////////////////////////////
+    /*
     lista usuarios
     */
     ///////////////////////////////////////////////////////////////////////////
-    app.get('/x/v1/users/', function(req,res){
+    app.get('/x/v1/users/', (req,res)=>{
         if(req.session.usuario){
             if (req.session.usuario.user.acceso=='superAdmin') {
-                userServices.get(function(err, usuarios){
+                userServices.get((err, usuarios)=>{
                     if(!err){
+                        usuarios = usuarios.map(e=>{
+                            let data = e.data[0].info[0]
+                            return{
+                                id:e._id,
+                                saldo:e.saldo,
+                                photo:data.photo,
+                                ciudad:data.ciudad,
+                                estado:data.estado,
+                                nombre:data.nombre,
+                                cedula:data.cedula,
+                                telefono:data.telefono,
+                                username:data.username,
+                            }
+                        })
                         res.json({status:'SUCCESS', usuarios})
                     }else{
                         res.json({ status: 'FAIL', err}) 
@@ -315,6 +345,62 @@ module.exports = function(app, passport){
         }
     })
 
+
+    ///////////////////////////////////////////////////////////////////////////
+    /*
+    Inserta Pago
+    
+    app.post('/x/v1/users/insertapago', function(req,res){
+        if(req.session.usuario){
+            if (req.session.usuario.user.acceso=='superAdmin') {
+                let activo = true
+                userServices.insertPago(req.body, activo, (err, usuarios)=>{
+                    if(!err){
+                        let nuevoSaldo = usuarios.saldo + parseInt(req.body.monto)
+                        userServices.editoSaldo(req.body.userId, nuevoSaldo, (err, data)=>{
+                            if (!err) {
+                                 res.json({status:'SUCCESS', data})
+                            }
+                        })
+                    }else{
+                        res.json({ status: 'FAIL', err}) 
+                    }
+                })
+            }else{
+                res.json({ status: 'FAIL', message:'No tienes acceso'})
+            }
+        }else{
+            res.json({ status: 'FAIL', message:'usuario no logueado'})  
+        }
+    })
+*/
+    ///////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////
+    /*
+    DESCUENTa un Pago cuando se activa un plan
+    
+    app.post('/x/v1/users/descuentapago', function(req,res){
+        if(req.session.usuario){
+            let activo = true
+            userServices.descuentaPago(req.body, req.session.usuario.user._id, activo, (err, usuarios)=>{
+                if(!err){
+                    console.log(usuarios)
+                    let nuevoSaldo = usuarios.saldo + parseInt(-Math.abs(req.body.monto))
+                    userServices.editoSaldo(req.session.usuario.user._id, nuevoSaldo, (err, data)=>{
+                        if (!err) {
+                             res.json({status:'SUCCESS', data, code:1})
+                        }
+                    })
+                }else{
+                    res.json({ status: 'FAIL', err}) 
+                }
+            })
+        }else{
+            res.json({ status: 'FAIL', message:'usuario no logueado'})  
+        }
+    })
+*/
+    ///////////////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////////////
     /*

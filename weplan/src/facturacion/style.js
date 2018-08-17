@@ -1,7 +1,7 @@
 import {StyleSheet, Dimensions} from 'react-native';
 var screenHeight = Dimensions.get('window');
-import { MediaQueryStyleSheet } from "react-native-responsive";
-export const planes = MediaQueryStyleSheet.create({
+
+export const style = StyleSheet.create({
 	 
 	contenedor:{
 		alignItems: 'center',
@@ -24,8 +24,10 @@ export const planes = MediaQueryStyleSheet.create({
 		borderWidth:6,
 		marginRight:15
 	},
-	contenedorLeft:{
-		// width:'80%'
+	contenedorImagenes:{
+		marginTop:10,
+		flexDirection :'row',
+		alignItems: 'center',
 	},
 	separador:{
 		borderWidth:2,
@@ -38,57 +40,32 @@ export const planes = MediaQueryStyleSheet.create({
 	},
 	nombre:{
 		color:'#5664ba',
-		fontSize:20,
+		fontSize:19,
 		width:160,
 	},
 	textoTotal:{
 		fontSize:20,
 		marginRight:10
 	},
-	pagoDeudaMonto:{
-		color:'#c5012b',
-		fontSize:17,
-		width:80
-	},
-	pagoDeudaMontoActive:{
+	total:{
 		color:'#79CF40',
-		fontSize:17,
-		width:80
+		alignSelf: 'flex-start', 
+		fontSize:20
+	},
+	boxPlan1:{
+		 
 	},
 	back:{
 		width:20,
 		height:20,
+	 
 		marginLeft:6 
 	},
-	activarBtn:{
-		backgroundColor:'#5664ba',
-	 	width:60,
-	 	alignItems:'center',
-		padding:4,
-		borderRadius:10,
-		top:5
-	},
-	activarTxt:{
-		color:'#ffffff',
-		fontSize:12
-	} 
-},{
-	"@media (max-device-width: 320)": {
-		nombre:{
-			fontSize:18,
-		},
-		textoTotal:{
-			fontSize:18,
-			marginRight:10
-		},
-		subContenedor:{
-			width:'95%',
-		},
-		pagoDeudaMontoActive:{
-			width:100
-		}
-		 
-	}
+	titulo:{
+		fontSize:20,
+		color:'#9CB7F5',
+		alignItems:'center'
+	}	
 })
 
 

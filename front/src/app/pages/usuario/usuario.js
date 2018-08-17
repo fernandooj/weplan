@@ -3,7 +3,7 @@ import React, { Component
 import store          from '../../redux/store'
 import {connect}      from 'react-redux'
 import UsuarioComponent  from './usuarioComponent'
-import {obtieneUsuarios}      from '../../redux/actionCreator'
+import {obtieneUsuarios, crearPago}      from '../../redux/actionCreator'
  
  
 store.dispatch(obtieneUsuarios())
@@ -12,9 +12,8 @@ store.dispatch(obtieneUsuarios())
 class Usuario extends Component {
  	
 	render(){
-
 		return(
-			<UsuarioComponent usuarios={this.props.usuarios} />
+			<UsuarioComponent usuarios={this.props.usuarios} nuevoPago={(data)=>this.props.nuevoPago(data)} />
 		)
 	}
 }
@@ -28,15 +27,9 @@ const mapStateToProps = state=>{
 }
 const mapDispatchToProps = dispatch=>{
   return{
-    handleSubmit(e, validateFields){
-      e.preventDefault()
-      validateFields((err, values) => {
-        console.log(values)
-        if (!err) {
-          store.dispatch(login(values))
-        }
-      });
-      
+    nuevoPago(data){
+      console.log(data)
+      store.dispatch(crearPago(data))
     }
   }
 }

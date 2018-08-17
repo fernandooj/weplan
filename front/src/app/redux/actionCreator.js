@@ -38,14 +38,18 @@ const obtieneUsuarios = ()=>{
 	return dispatch=>{
 		return axios.get('/x/v1/users/')
 	   .then(res=>{
-   		dispatch({
-   			type:'OBTENER_USUARIOS',
-   			usuarios: res.data.usuarios
-   		})
+	   		console.log(res.data)
+	   		dispatch({
+	   			type:'OBTENER_USUARIOS',
+	   			usuarios: res.data.usuarios
+	   		})
+	   	})
+	   .catch(err=>{
+	   	console.log(err)
 	   })
 	}
 }
-
+ 
 const obtienePlan = ()=>{
 	return dispatch=>{
 		return axios.get('/x/v1/pla/plan/planesPublicos')
@@ -118,6 +122,7 @@ const crearPlan= (data)=>{
 	return dispatch=>{
 		return axios.post('/x/v1/pla/plan', data)
 	    .then(res=>{
+
 	    	dispatch({
 	   			type:'CREAR_PLAN',
 	   			plan: res.data.message
@@ -136,8 +141,21 @@ const insertaImagenPlan = (data) =>{
 		})
 	}
 }
+const crearPago= (data)=>{
+	return dispatch=>{
+		return axios.post('/x/v1/pag/pagoPublico', data)
+	    .then(res=>{
+	    	console.log(res.data)
+	    	dispatch({
+	   			type:'CREAR_PAGO',
+	   			nuevoPago: res.data.pago,
+	   			nuevoSaldo: res.data.pago.monto,
+	   		})
+	   	})
+	}
+}
  
-export {perfil, login, obtieneUsuarios, obtienePlan, obtieneRestriccion, obtieneCategoria, crearPlan, insertaImagenPlan, obtieneUnPlan, creaRestriccion, creaCategoria}
+export {perfil, login, obtieneUsuarios, obtienePlan, obtieneRestriccion, obtieneCategoria, crearPlan, insertaImagenPlan, obtieneUnPlan, creaRestriccion, creaCategoria, crearPago}
 
 
 

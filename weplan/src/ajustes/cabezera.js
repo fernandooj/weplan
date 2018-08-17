@@ -9,7 +9,7 @@ export default class CabezeraComponent extends Component{
 		return(	  
 			<View style={ Platform.OS==='android' ?AjustesStyle.contenedorBack :[{marginTop:22}, AjustesStyle.contenedorBack] }>
 				<TouchableOpacity onPress={()=> navigate(url, parameter)} style={AjustesStyle.btnBack}>
-					<Image source={require('./atras.png')} style={AjustesStyle.imgBack} />
+					<Image source={require('../images/back.png')} style={AjustesStyle.imgBack} />
 				</TouchableOpacity>
 				{
 					texto
@@ -19,7 +19,7 @@ export default class CabezeraComponent extends Component{
 				{
 					show
 					?<TouchableOpacity onPress={()=> navigate(url)} style={AjustesStyle.btnEdit}>
-						<Image source={require('./atras.png')} style={AjustesStyle.imgBack} />
+						<Image source={require('../images/back.png')} style={AjustesStyle.imgBack} />
 					</TouchableOpacity>
 					:null
 				}

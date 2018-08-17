@@ -31,9 +31,11 @@ import EditPasswordComponent  from './src/editPassword/EditPasswordComponent';
 import insertCodeComponent2   from './src/editPassword/insertCodeComponent2';
 import nuevoPasswordComponent from './src/editPassword/nuevoPasswordComponent';
 import infoPlanComponent      from './src/infoPlan/infoPlanComponent';
-import costoPlanComponent      from './src/costoPlan/costoPlanComponent';
-import medioPagoComponent      from './src/medioPago/medioPagoComponent';
-import planesPublicosComponent from './src/planesPublicos/planesPublicosComponent';
+import costoPlanComponent          from './src/costoPlan/costoPlanComponent';
+import medioPagoComponent          from './src/medioPago/medioPagoComponent';
+import facturacionComponent        from './src/facturacion/facturacionComponent';
+import planesPublicosComponent     from './src/planesPublicos/planesPublicosComponent';
+import detallePlanPublicoComponent from './src/planesPublicos/detallePlanPublicoComponent';
  
 
 
@@ -148,6 +150,8 @@ const NavigationAppLogin = StackNavigator({
     costoPlan:     {screen: costoPlanComponent },
     medioPago:     {screen: medioPagoComponent },
     planesPublicos:{screen: planesPublicosComponent },
+    facturacion:   {screen: facturacionComponent },
+    detallePlanPublico:{screen: detallePlanPublicoComponent },
 },{ headerMode: 'none', transitionConfig})
 
 

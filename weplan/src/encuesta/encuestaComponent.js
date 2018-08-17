@@ -313,7 +313,7 @@ export default class encuestaComponent extends Component{
 						<View style={EncuestaStyle.subContentItem}>
 						{/*****   boton para mostrar crear item	*****/}
 						  	<TouchableOpacity onPress={()=>this.setState({show:true})} style={EncuestaStyle.contenedorNuevo}>
-								<Image source={require('../ajustes/nuevo.png')} style={EncuestaStyle.btnNuevoGrupo} />
+								<Image source={require('../images/nuevo.png')} style={EncuestaStyle.btnNuevoGrupo} />
 								<Text style={EncuestaStyle.CrearEncuesta}>Crear Encuesta</Text>
 						  	</TouchableOpacity>
 						  	

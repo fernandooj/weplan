@@ -12,6 +12,18 @@ let moment   = require('moment');
 /////////////////////////////////////////////////////////////////////////
 /********** genero la base la coleccion llamada users   ****************/
 /////////////////////////////////////////////////////////////////////////
+// const pagoSchema = mongoose.Schema({
+	 
+// 	monto         : { type : Number },
+// 	referencia    : { type : String },
+// 	metodo		  : { type : String },
+// 	descripcion   : { type : String },
+// 	activo		  : { type : Boolean},
+// 	planId     	  : { type: Schema.Types.ObjectId, ref:'Plan'},
+// 	createdAt	  : { type: String, default: moment().format('YYYY-MM-DD h:mm') },
+ 
+// })
+
 let UserSchema = mongoose.Schema({
 	createdAt	: { type: String, default: moment().format('YYYY-MM-DD h:mm:ss') },
 	username	: String,
@@ -31,6 +43,7 @@ let UserSchema = mongoose.Schema({
 	username	: String,
 	password 	: String,
 	token		: String,
+	cedula		: Number,
 	notificacion:{ type:Boolean },
 	calificacion:[{ type:Number }],
 	categorias  :[{type: Schema.Types.ObjectId, ref:'CategoriaPlan'}],

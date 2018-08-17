@@ -33,7 +33,7 @@ const mapStateToProps = state=>{
 const mapDispatchToProps = dispatch=>{
   return{
     handleSubmit(values, restriccion, categoria, ubicacion, x){
-      values['tipo'] = 'pago'
+      values['tipo']          = 'pago'
       values['restricciones'] = restriccion
       values['categorias']    = categoria
       values['lat']           = x.latitude

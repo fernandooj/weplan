@@ -75,13 +75,13 @@ export default class createPlanComponent extends Component{
 		}else{
 			this.setState({tipoPlan:true})
 		}
-		this.setState({
-	      interval: setInterval(() => {
-	        this.setState({
-	          position: this.state.position === this.state.imagenes.length ? 0 : this.state.position + 1
-	        });
-	      }, 2000)
-	    });
+		// this.setState({
+	 //      interval: setInterval(() => {
+	 //        this.setState({
+	 //          position: this.state.position === this.state.imagenes.length ? 0 : this.state.position + 1
+	 //        });
+	 //      }, 2000)
+	 //    });
 	}
 	componentWillUnmount() {
 		clearInterval(this.state.interval);
@@ -90,12 +90,12 @@ export default class createPlanComponent extends Component{
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////  ACTUALIZA LA UBICACION //////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	updateStateX(lat,lng, direccion, area){
+	updateStateX(lat,lng, direccion, area, costo){
 		if (direccion) {
-			this.setState({lat,lng, area, direccion, mapa:false})
+			this.setState({lat,lng, area, costo, direccion, mapa:false})
 		}else{
 			let direccion1 = lat+','+lng 
-			this.setState({lat,lng, area, direccion:'', mapa:false, showAlertUbicacion:true})
+			this.setState({lat,lng, area, costo, direccion:'', mapa:false, showAlertUbicacion:true})
 		}
 	}
 
@@ -134,9 +134,9 @@ export default class createPlanComponent extends Component{
 	///////////////////////////////////////////////////  	RENDER  	/////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	render(){
-		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, area} = this.state
+		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, area, costo} = this.state
 		const {navigate} = this.props.navigation
-		console.log(area)
+		console.log(costo)
 		return (
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} > 
 				{/* si la ubicacion no tiene */}
@@ -205,7 +205,7 @@ export default class createPlanComponent extends Component{
 					{
 						!cargaPlan
 						?<View style={CreatePlanStyle.cajaInpunts}>
-					    	<Image source={require('./fecha.png')} style={CreatePlanStyle.iconInput} />
+					    	<Image source={require('../images/fecha.png')} style={CreatePlanStyle.iconInput} />
 						   <DatePicker
 						   		minDate={this.state.fechaHoy}
 					    		customStyles={{
@@ -239,7 +239,7 @@ export default class createPlanComponent extends Component{
 						   />
 						</View> 
 						:<View style={CreatePlanStyle.cajaInpunts}>
-							<Image source={require('./fecha.png')} style={CreatePlanStyle.iconInput} />
+							<Image source={require('../images/fecha.png')} style={CreatePlanStyle.iconInput} />
 							<Text style={CreatePlanStyle.btnInputs}>{cargaPlan.fechaLugar}</Text>
 						</View>
 					}
@@ -247,15 +247,15 @@ export default class createPlanComponent extends Component{
 
 				{/*  mapa  */}
 					{  
-						!cargaPlan.lugar
+						!cargaPlan.lat
 						?<View style={CreatePlanStyle.cajaInpunts}>
-				    		<Image source={require('./map.png')} style={CreatePlanStyle.iconInput} />
+				    		<Image source={require('../images/map.png')} style={CreatePlanStyle.iconInput} />
 					    	<TouchableOpacity onPress={() => this.setState({mapa:true})}  style={direccion ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>
 					    		<Text style={direccion ?CreatePlanStyle.textos :CreatePlanStyle.textosActivo}>{direccion ?direccion.substr(0,60) :'Ubicación'}</Text>
 					    	</TouchableOpacity>
 						</View>
 					   :<TouchableOpacity onPress={() => this.setState({mapa:true})} style={CreatePlanStyle.cajaInpunts}> 
-			    			<Image source={require('./map.png')} style={CreatePlanStyle.iconInput} />
+			    			<Image source={require('../images/map.png')} style={CreatePlanStyle.iconInput} />
 			    			<View style={direccion ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>
 					    		<Text style={[CreatePlanStyle.textosActivo]}>{cargaPlan.lugar}</Text>
 					    	</View>
@@ -264,17 +264,17 @@ export default class createPlanComponent extends Component{
 					}
 					{
 						mapa &&<MapaPlanComponent 
-							inputValor
+							inputValor= {!cargaPlan && publico ?true :false}
 							close={()=> this.setState({mapa:false})} 						   			/////////   cierro el modal
-							updateStateX={(lat,lng, direccion, area)=>this.updateStateX(lat, lng, direccion, area)}  /////////	me devuelve la posicion del marcador 
-							ubicacionDefecto={cargaPlan.lat ?{infoplan:true, lat:parseFloat(cargaPlan.lat), lng:parseFloat(cargaPlan.lng)} :{infoplan:false}}
+							updateStateX={(lat,lng, direccion, area, costo)=>this.updateStateX(lat, lng, direccion, area, costo)}  /////////	me devuelve la posicion del marcador 
+							ubicacionDefecto={cargaPlan.loc ?{infoplan:true, lat:parseFloat(cargaPlan.loc.coordinates[1]), lng:parseFloat(cargaPlan.loc.coordinates[0])} :{infoplan:false, muestraBtnHecho:true}}
 						/> 
 					}
 				
 
 				{/*  restricciones  */}
 					<View style={CreatePlanStyle.cajaInpunts}>
-				    	<Image source={require('./denied.png')} style={CreatePlanStyle.iconInput} />
+				    	<Image source={require('../images/denied.png')} style={CreatePlanStyle.iconInput} />
 					    {
 					    	restricciones.length==0
 					    	?<TouchableOpacity onPress={()=>this.setState({ restriccion:true})} style={restricciones.length>0 ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>
@@ -287,7 +287,7 @@ export default class createPlanComponent extends Component{
 						    	{
 						    		!this.props.navigation.state.params
 						    		&&<TouchableOpacity onPress={() => this.setState({restriccion:true})} style={CreatePlanStyle.addBtn}>
-							    		<Image source={require('./add.png')} style={CreatePlanStyle.add} />
+							    		<Image source={require('../images/add.png')} style={CreatePlanStyle.add} />
 							    	</TouchableOpacity>
 						    	}
 						    </View>
@@ -309,7 +309,7 @@ export default class createPlanComponent extends Component{
 				{
 					!publico
 					&&<View style={CreatePlanStyle.cajaInpunts}>
-				    	<Image source={require('./friends.png')} style={CreatePlanStyle.iconInput} />
+				    	<Image source={require('../images/friends.png')} style={CreatePlanStyle.iconInput} />
 				    	{	
 				    		asignados.length==0
 				    		?<TouchableOpacity onPress={() => this.setState({adjuntarAmigos:true})}>
@@ -320,7 +320,7 @@ export default class createPlanComponent extends Component{
 						    		{this.renderUsuariosAsignados()} 
 						    	</View>
 						    	<TouchableOpacity onPress={() => this.setState({adjuntarAmigos:true})} style={CreatePlanStyle.addBtn}>
-						    		<Image source={require('./add.png')} style={CreatePlanStyle.add} />
+						    		<Image source={require('../images/add.png')} style={CreatePlanStyle.add} />
 						    	</TouchableOpacity>
 						    </View>
 				    	}
@@ -339,29 +339,30 @@ export default class createPlanComponent extends Component{
 					</View>
 				}
 					
-				{/* Area de influencia  
+				{/* Area de influencia  */}
 				{	publico
 					&&<View style={CreatePlanStyle.cajaInpunts}>
-						<Image source={require('./area.png')} style={CreatePlanStyle.iconInputArea} />	
+						<Image source={require('../images/area.png')} style={CreatePlanStyle.iconInputArea} />	
 					    <View style={CreatePlanStyle.contenedorArea}>
-					    	<ModalPicker
+					    	<Text style={CreatePlanStyle.costoPlan}>Costo plan: {costo}</Text>
+					    	{/*<ModalPicker
 				                data={influencia}
 				                initValue="Area de influencia"
 				                color='#8F9093'
 					            font={15}
 				                onChange={(e)=> this.setState({area:e.key})} 
 				                style={CreatePlanStyle.datePicker}
-				            />
+				            />*/}
 			            </View>
 			        </View>
-				*/}
+				}
 				
 				{/*  Crear Plan  */}
 					{
 						iconCreate
-						?<Image source={require('./createDisable.png')} style={CreatePlanStyle.createIconDisable} />
+						?<Image source={require('../images/createDisable.png')} style={CreatePlanStyle.createIconDisable} />
 						:<TouchableOpacity onPress={this.handleSubmit.bind(this)} style={CreatePlanStyle.create}>
-							<Image source={require('./create.png')} style={CreatePlanStyle.createIcon} />
+							<Image source={require('../images/create.png')} style={CreatePlanStyle.createIcon} />
 						</TouchableOpacity>
 					}
 			    </View>	
@@ -374,7 +375,7 @@ export default class createPlanComponent extends Component{
  				return(
 	 				<View key={key} >
 	 					<Image source={{uri:e.photo}} style={CreatePlanStyle.avatar} />
-	 					<Image source={require('./agregado.png')} style={CreatePlanStyle.iconAgregado} />
+	 					<Image source={require('../images/agregado.png')} style={CreatePlanStyle.iconAgregado} />
 	 					<Text style={CreatePlanStyle.textoAgregado} >{e.nombre}</Text>
 	 				</View>
 	 			)
@@ -387,7 +388,7 @@ export default class createPlanComponent extends Component{
  				return(
 	 				<View key={key} >
 	 					<Image source={{uri:e.ruta}} style={CreatePlanStyle.avatar} />
-	 					<Image source={require('./deneid1.png')} style={CreatePlanStyle.banResActiveAdd} />
+	 					<Image source={require('../images/deneid1.png')} style={CreatePlanStyle.banResActiveAdd} />
 	 					 
 	 				</View>
 	 			)
@@ -396,7 +397,7 @@ export default class createPlanComponent extends Component{
  	}
 	handleSubmit(){
 		const {navigate} = this.props.navigation
-		let {nombre, descripcion, fechaLugar, lat, lng, asignados, usuariosAsignados, restricciones, imagen, tipo, cargaPlan, planPadre, direccion, area, publico} = this.state
+		let {nombre, descripcion, fechaLugar, lat, lng, asignados, usuariosAsignados, restricciones, imagen, tipo, cargaPlan, planPadre, direccion, area, publico, costo} = this.state
 
 		nombre 		= cargaPlan.nombre ?cargaPlan.nombre :nombre
 		descripcion = cargaPlan.descripcion ?cargaPlan.descripcion :descripcion
@@ -407,9 +408,9 @@ export default class createPlanComponent extends Component{
 		imagen 		= cargaPlan.imagenResize ?cargaPlan.imagenResize[0] :imagen
 		tipo        = publico ? 'pago' :'suscripcion'
 		area        = cargaPlan ?cargaPlan.area :area
-
-		console.log("area" +area)
-		console.log("lugar" + lugar)
+		let activo  = publico ? false : true
+		 
+		console.log("costo" + costo)
 
 		if (!imagen &&tipo=='pago') {
 			Alert.alert(
@@ -444,7 +445,7 @@ export default class createPlanComponent extends Component{
 		else{
 			if (!cargaPlan) {
 				let data = new FormData();
-				axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, restricciones, tipo, lugar, area})
+				axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, restricciones, tipo, lugar, area, activo})
 				.then(e=>{
 					if(e.data.code==1){	
 						let id = e.data.message._id;
@@ -470,10 +471,10 @@ export default class createPlanComponent extends Component{
 								}else{
 									Alert.alert(
 										`Tu plan ha sido creado`,
-										'ya puedes ir a pagar para que se muestre en el home',
+										'puedes activarlo ahora por las proximas 24 horas, o activarlo luego desde ajustes',
 									[
 										{text: 'Mejor Luego', onPress: () => navigate('inicio')},
-										{text: 'Pagar', onPress: () => navigate('medioPago')},
+										{text: 'Activar', onPress: () => this.activarPlan(costo, navigate, id)},
 									],
 										{ cancelable: false }
 									)
@@ -492,23 +493,61 @@ export default class createPlanComponent extends Component{
 					console.log(err)
 				})
 			}else{
-				axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, lugar, area, restricciones, tipo, imagenOriginal:imagen, imagenResize:imagen, imagenMiniatura:imagen, planPadre})
+				axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, lugar, area, restricciones, tipo, activo, imagenOriginal:imagen, imagenResize:imagen, imagenMiniatura:imagen, planPadre})
 				.then(e=>{
 					if(e.data.code==1){	
 						let id = e.data.message._id;
 						usuariosAsignados.map(e=>{
 							sendRemoteNotification(2, e.token, 'misPlanes', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, imagen)
 						})
-						 
-							navigate('chat', id)
-						 
+						navigate('chat', id)
 					}
-
 				})
 				.catch(err=>{
 					console.log(err)
 				})
 			}
 		}
+	}
+	activarPlan(costo, navigate, id){
+		axios.get('/x/v1/pag/pagopublico/byuser')  
+		.then((res)=>{
+		if (res.data.pago[0].saldo<costo) {
+				Alert.alert(
+					`Tu saldo es insuficiente`,
+					'',
+				[
+					{text: 'Mejor Luego', onPress: () => navigate('inicio')},
+					{text: 'Recargar', onPress: () => navigate('facturacion')},
+				],
+					{ cancelable: false }
+				)
+			}
+			else{
+				axios.put('/x/v1/pla/plan/cambiarestado', {id, activo:true})
+				.then(data=>{
+					if(data.data.code==1){
+						axios.post('/x/v1/pag/pagopublico', {monto:-Math.abs(costo), planId:id, userId:res.data.pago[0]._id})
+						.then(res2=>{
+							if (res2.data.code==1) {
+								Alert.alert(
+									`Tu plan ha sido creado`,
+									'ya puedes verlo en el home',
+								[
+									{text: 'Cerrar', onPress: () => navigate('inicio')},
+									 
+								],
+									{ cancelable: false }
+								)
+							}
+						})
+					}
+				})
+				
+			}
+		})
+		.catch((err)=>{
+			console.log(err)
+		})
 	}
 }			

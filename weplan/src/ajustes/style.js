@@ -172,7 +172,7 @@ export const AjustesStyle = MediaQueryStyleSheet.create({
  		width:'30%'
  	},
  	textBack:{
- 		width:'30%'
+ 		width:'35%'
  	},
  	separador:{
 		borderWidth:2,

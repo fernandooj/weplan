@@ -49,12 +49,12 @@ export default class CrearItemComponent extends Component{
         <View style={ItemStyle.modalIn}>
           {/* icono */}
           <TouchableOpacity style={ItemStyle.btnIcon}>
-            <Image source={require('./item5.png')} style={ItemStyle.icon} />
+            <Image source={require('../images/item5.png')} style={ItemStyle.icon} />
           </TouchableOpacity>
 
           {/* camera */}
           <TouchableOpacity style={ItemStyle.btnCamera}>
-            <TakePhotoComponent fuente={'item1.png'} ancho={100} alto={100}  
+            <TakePhotoComponent fuente={'../images/item1.png'} ancho={100} alto={100}  
                 updateImagen={(imagen) => {this.setState({imagen})}} 
                 style={ItemStyle.camera} 
                 border={50} />
@@ -62,11 +62,11 @@ export default class CrearItemComponent extends Component{
 
           {/* rest modal */}
           <View style={ItemStyle.modal}>
-            {/*<Image source={require('./item2.png')} style={ItemStyle.header} />*/}
+            {/*<Image source={require('../images/item_2.png')} style={ItemStyle.header} />*/}
             <View style={ItemStyle.header}></View>
           {/* icono back */}
             <TouchableOpacity style={ItemStyle.btnBack} onPress={()=>this.props.close(false)}>
-              <Image source={require('./item3.png')} style={ItemStyle.back} />
+              <Image source={require('../images/item3.png')} style={ItemStyle.back} />
             </TouchableOpacity>
             <TextInput placeholder='Titulo' 
                 underlineColorAndroid='transparent' 
@@ -85,7 +85,7 @@ export default class CrearItemComponent extends Component{
               onChangeText={(descripcion) => this.setState({descripcion})}
               maxLength={60}
             />
-            <Image source={require('./item4.png')} style={ItemStyle.decoracion} />
+            <Image source={require('../images/item4.png')} style={ItemStyle.decoracion} />
             <View style={ItemStyle.valor}>
               <Text style={ItemStyle.textoValor}>Valor</Text>
 
@@ -119,7 +119,7 @@ export default class CrearItemComponent extends Component{
               :<View style={ItemStyle.btnAdjuntarExistente} >
                  <Text style={ItemStyle.adjuntarExistentes}>{asignados.length==1 ?`${asignados.length} Asignado Existente` :`${asignados.length} Asignados Existentes`}</Text>
                  <TouchableOpacity onPress={()=>this.setState({adjuntarAmigos:true})}>
-                   <Image source={require('./add.png')} style={ItemStyle.addIcon} />
+                   <Image source={require('../images/add.png')} style={ItemStyle.addIcon} />
                  </TouchableOpacity>
                </View>  
              }
@@ -140,8 +140,8 @@ export default class CrearItemComponent extends Component{
               <Text style={ItemStyle.enviar}>Enviar al chat</Text>
               {
                 !enviarChat
-                ?<Image source={require('./item6.png')} style={ItemStyle.enviarIcon} />
-                :<Image source={require('./item7.png')} style={ItemStyle.enviarIcon} />
+                ?<Image source={require('../images/item6.png')} style={ItemStyle.enviarIcon} />
+                :<Image source={require('../images/item7.png')} style={ItemStyle.enviarIcon} />
               }
             </TouchableOpacity>
 
@@ -177,7 +177,7 @@ export default class CrearItemComponent extends Component{
           {/* Guardar */}  
           <View style={ItemStyle.save} > 
             <TouchableOpacity style={ItemStyle.btnSave} onPress={this.handleSubmit.bind(this)}>
-             <Image source={require('./item8.png')} style={ItemStyle.iconSave} />
+             <Image source={require('../images/item8.png')} style={ItemStyle.iconSave} />
               <Text style={ItemStyle.adjuntar} style={ItemStyle.textSave}>{mensajeEnvio}</Text>
             </TouchableOpacity> 
           </View>

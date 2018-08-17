@@ -113,6 +113,15 @@ router.get(`/planespublicos/innactivos`, (req,res)=>{
 		if (err) {
 			res.json({ status: 'ERROR', message: err, code:0 });
 		}else{
+			planes = planes.map(e=>{
+                let data = e.data[0].info[0]
+                return{
+                    id:e._id,
+                    saldo:e.saldo,
+                    imagen:data.imagenMiniatura,
+                    nombre:data.nombre,
+                }
+            })
 			res.json({ status: 'SUCCESS', planes, code:1 }); 	
 		}
 	})
@@ -297,6 +306,21 @@ const creaNotificacion = (req, res, plan, rutaImagenResize)=>{
 	})
 	res.json({status:'SUCCESS', message: plan, rutaImagenResize, code:1})    
 }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////// ACTIVO O DESACTIVO LOS PLANES
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+router.put('/cambiarestado', (req,res)=>{
+	planServices.cambioestado(req.body.id, req.body.activo, (err, plan)=>{
+		if(err) {
+			res.json({status:'FAIL', message: err,  code:0})  
+		}else{
+			res.json({status:'SUCCESS',  plan, code:1})  
+		}
+	})
+})
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////// INSERTO UN USUARIO AL PLAN

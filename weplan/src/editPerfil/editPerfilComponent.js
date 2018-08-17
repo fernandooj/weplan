@@ -160,7 +160,7 @@ export default class editPerfilComponent extends Component{
 					<Image
 						style={LoginStyle.image}
 						width={140}
-						source={require('../login/logo.png')}
+						source={require('../images/logo.png')}
 				    />
 				</View>
 				<TextInput

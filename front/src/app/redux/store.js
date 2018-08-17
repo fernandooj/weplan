@@ -67,6 +67,16 @@ const reducer = (state, action)=>{
 			categorias:[action.categoria, ...state.categorias]
 		}
 	}
+	if (action.type==='CREAR_PAGO') {
+
+		return{
+			...state,
+			usuarios:state.usuarios.filter(e=>{
+				if (e.id==action.nuevoPago.userId) {e.saldo=action.nuevoSaldo+e.saldo}
+					return e
+			})
+		}
+	}
 	return state
 }
 

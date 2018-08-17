@@ -173,7 +173,7 @@ export default class LoginComponent extends Component{
 						<Image
 							style={LoginStyle.image}
 							width={140} // height will be calculated automatically
-							source={require('./logo.png')}
+							source={require('../images/logo.png')}
 					   />
 					</View>
 					<TextInput
@@ -209,14 +209,14 @@ export default class LoginComponent extends Component{
 				        <Image
 							style={LoginStyle.image}
 							width={60} // height will be calculated automatically
-							source={require('./facebook.png')}
+							source={require('../images/facebook.png')}
 					    />
 				      </TouchableOpacity>
 				      <TouchableOpacity onPress={()=>this._signInRedes(2)} >
 				       <Image
 							style={LoginStyle.image}
 							width={60} // height will be calculated automatically
-							source={require('./google.png')}
+							source={require('../images/google.png')}
 					    />
 				      </TouchableOpacity>
 				    </View>  

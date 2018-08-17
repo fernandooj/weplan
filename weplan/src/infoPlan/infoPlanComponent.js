@@ -59,13 +59,13 @@ export default class infoPlanComponent extends Component{
 					
 				{/* fecha  */}
 				  	<View style={InfoPlanStyle.cajaInpunts}>
-						<Image source={require('./fecha.png')} style={InfoPlanStyle.iconInput} />
+						<Image source={require('../images/fecha.png')} style={InfoPlanStyle.iconInput} />
 						<Text style={InfoPlanStyle.btnInputs}>{data.fechaLugar}</Text>
 					</View>
 
 				{/*  mapa   */}
 					<TouchableOpacity onPress={() => this.setState({mapa:true})} style={InfoPlanStyle.cajaInpunts}> 
-			    		<Image source={require('./map.png')} style={InfoPlanStyle.iconInput} />
+			    		<Image source={require('../images/map.png')} style={InfoPlanStyle.iconInput} />
 				   		<Text style={[InfoPlanStyle.btnInputs]}>{data.lugar}</Text>
 					</TouchableOpacity>
 
@@ -81,7 +81,7 @@ export default class infoPlanComponent extends Component{
 
 				{/*  restricciones   */}
 					<View style={InfoPlanStyle.cajaInpunts}>
-				    	<Image source={require('./denied.png')} style={InfoPlanStyle.iconInput} />
+				    	<Image source={require('../images/denied.png')} style={InfoPlanStyle.iconInput} />
 					    <View style={InfoPlanStyle.contentAdd}>
 					    		<View style={InfoPlanStyle.agregadosContenedor}>
 						    		{
@@ -102,7 +102,7 @@ export default class infoPlanComponent extends Component{
 
 				{/*   amigos   */}
 					<View style={InfoPlanStyle.cajaInpunts}>
-				    	<Image source={require('./friends.png')} style={InfoPlanStyle.iconInput} />
+				    	<Image source={require('../images/friends.png')} style={InfoPlanStyle.iconInput} />
 				    	{	
 				    		 
 						     <View style={InfoPlanStyle.contentAdd}>
@@ -113,7 +113,7 @@ export default class infoPlanComponent extends Component{
 								 				return(
 									 				<View key={key} >
 									 					<Image source={{uri:e.photo}} style={InfoPlanStyle.avatar} />
-									 					<Image source={require('./agregado.png')} style={InfoPlanStyle.iconAgregado} />
+									 					<Image source={require('../images/agregado.png')} style={InfoPlanStyle.iconAgregado} />
 									 					<Text style={InfoPlanStyle.textoAgregado} >{e.nombre}</Text>
 									 				</View>
 									 			)
