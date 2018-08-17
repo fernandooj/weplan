@@ -1,18 +1,22 @@
 import {StyleSheet, Dimensions} from 'react-native';
 import { MediaQueryStyleSheet } from "react-native-responsive";
-export const LoginStyle = MediaQueryStyleSheet.create({ 
+export const style = MediaQueryStyleSheet.create({ 
 	container:{
 		flex:1,
-		height:1200
+ 
 	},
 	fondo:{
 		flex: 1,
-		alignItems: 'center'
+		alignItems:'center',
+ 
 		/*justifyContent: 'center', justifica contenido verticalmente */
 	},
 	image:{
 		marginTop:20,
 		marginBottom:40,
+	},
+	familia:{
+		fontFamily:'Futura-CondensedLight',
 	},
 	input:{
 		marginTop:10,
@@ -25,18 +29,24 @@ export const LoginStyle = MediaQueryStyleSheet.create({
 		borderBottomWidth:0,
 		paddingLeft:20,
 		color: '#8F9093',
+		
+		fontSize:17
 	}, 
 	submit:{
 		marginTop:10,
 		width:240,
-		paddingTop:10,
-		paddingBottom:10,
+		paddingTop:8,
+		paddingBottom:8,
 		backgroundColor: 'rgba(62,78,102, .45)',
 		borderRadius: 50,
 	},
 	textSubmit:{
 		textAlign: 'center',
-		color: '#ffffff' 
+		color: '#ffffff',
+		fontSize:20
+	},
+	text:{
+		fontSize:20
 	},
 	logos:{
 		flexDirection: 'row',

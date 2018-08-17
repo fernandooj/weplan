@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, Image, TouchableOpacity, TextInput, ImageBackground, Alert} from 'react-native'
-import {ItemStyle}        from '../item/style'
+import {style}        from '../item/style'
 import axios              from 'axios'
 import TakePhotoComponent from '../takePhoto/takePhotoComponent.js'
 import AgregarAmigosComponent    from '../agregarAmigos/agregarAmigos.js'
@@ -45,33 +45,33 @@ export default class CrearItemComponent extends Component{
   render() {
     const {enviarChat, valorInicial, adjuntarAmigos, asignados, usuariosAsignados, mensajeEnvio} = this.state
     return (
-      <View style={ItemStyle.container}>
-        <View style={ItemStyle.modalIn}>
+      <View style={style.container}>
+        <View style={style.modalIn}>
           {/* icono */}
-          <TouchableOpacity style={ItemStyle.btnIcon}>
-            <Image source={require('../images/item5.png')} style={ItemStyle.icon} />
+          <TouchableOpacity style={style.btnIcon}>
+            <Image source={require('../assets/images/item5.png')} style={style.icon} />
           </TouchableOpacity>
 
           {/* camera */}
-          <TouchableOpacity style={ItemStyle.btnCamera}>
-            <TakePhotoComponent fuente={'../images/item1.png'} ancho={100} alto={100}  
+          <TouchableOpacity style={style.btnCamera}>
+            <TakePhotoComponent fuente={'../assets/images/item1.png'} ancho={100} alto={100}  
                 updateImagen={(imagen) => {this.setState({imagen})}} 
-                style={ItemStyle.camera} 
+                style={style.camera} 
                 border={50} />
           </TouchableOpacity>
 
           {/* rest modal */}
-          <View style={ItemStyle.modal}>
-            {/*<Image source={require('../images/item_2.png')} style={ItemStyle.header} />*/}
-            <View style={ItemStyle.header}></View>
+          <View style={style.modal}>
+            {/*<Image source={require('../assets/images/item_2.png')} style={style.header} />*/}
+            <View style={style.header}></View>
           {/* icono back */}
-            <TouchableOpacity style={ItemStyle.btnBack} onPress={()=>this.props.close(false)}>
-              <Image source={require('../images/item3.png')} style={ItemStyle.back} />
+            <TouchableOpacity style={style.btnBack} onPress={()=>this.props.close(false)}>
+              <Image source={require('../assets/images/item3.png')} style={style.back} />
             </TouchableOpacity>
             <TextInput placeholder='Titulo' 
                 underlineColorAndroid='transparent' 
                 placeholderTextColor="#8F9093" 
-                style={ItemStyle.titulo}
+                style={[style.titulo, style.familia]}
                 onChangeText={(titulo) => this.setState({titulo})}
                 maxLength={30}
              />
@@ -81,49 +81,41 @@ export default class CrearItemComponent extends Component{
               placeholderTextColor="#5664BA" 
               editable = {true}
               multiline = {true}
-              style={ItemStyle.descripcion}
+              style={[style.descripcion, style.familia]}
               onChangeText={(descripcion) => this.setState({descripcion})}
               maxLength={60}
             />
-            <Image source={require('../images/item4.png')} style={ItemStyle.decoracion} />
-            <View style={ItemStyle.valor}>
-              <Text style={ItemStyle.textoValor}>Valor</Text>
+            <Image source={require('../assets/images/item4.png')} style={style.decoracion} />
+            <View style={style.valor}>
+              <Text style={[style.textoValor, style.familia]}>Valor</Text>
 
               <TextInputMask
                 placeholder='Valor'
                 type={'money'}
                 options={{ unit: '$', zeroCents:true, precision:0 }} 
-                style={ItemStyle.inputValor}
+                style={[style.inputValor, style.familia]}
                 underlineColorAndroid='transparent'
                 onChangeText={(valor)=>this.getValor(valor)} 
                 value={valorInicial}
               />
-              {/*<TextInput 
-                placeholder='Valor'
-                keyboardType='numeric'
-                underlineColorAndroid='transparent'
-                placeholderTextColor="#8F9093" 
-                style={ItemStyle.inputValor}
-                onChangeText={(valor) => this.setState({valor})}
-              />*/}
             </View>
 
           {/* Adjuntar Amigos */}
-            {asignados.length==0 &&<Text style={ItemStyle.textoPregunta}>¿Deseas compartir este artículo con algún amigo del plan?</Text>}
+            {asignados.length==0 &&<Text style={[style.textoPregunta, style.familia]}>¿Deseas compartir este artículo con algún amigo del plan?</Text>}
              {
               asignados.length==0
-              ?<TouchableOpacity style={ItemStyle.btnAdjuntar} onPress={()=>this.setState({adjuntarAmigos:true})}>
-                 <Text style={ItemStyle.adjuntar}>Asignar Amigos</Text>
-                 <Text style={ItemStyle.adjuntar2}>></Text>
+              ?<TouchableOpacity style={style.btnAdjuntar} onPress={()=>this.setState({adjuntarAmigos:true})}>
+                 <Text style={[style.adjuntar, style.familia]}>Asignar Amigos</Text>
+                 <Text style={style.adjuntar2}>></Text>
                </TouchableOpacity> 
-              :<View style={ItemStyle.btnAdjuntarExistente} >
-                 <Text style={ItemStyle.adjuntarExistentes}>{asignados.length==1 ?`${asignados.length} Asignado Existente` :`${asignados.length} Asignados Existentes`}</Text>
+              :<View style={style.btnAdjuntarExistente} >
+                 <Text style={style.adjuntarExistentes}>{asignados.length==1 ?`${asignados.length} Asignado Existente` :`${asignados.length} Asignados Existentes`}</Text>
                  <TouchableOpacity onPress={()=>this.setState({adjuntarAmigos:true})}>
-                   <Image source={require('../images/add.png')} style={ItemStyle.addIcon} />
+                   <Image source={require('../assets/images/add.png')} style={style.addIcon} />
                  </TouchableOpacity>
                </View>  
              }
-            <View style={ItemStyle.separador}></View>
+            <View style={style.separador}></View>
             {adjuntarAmigos ?<AgregarAmigosComponent 
               titulo='Asignar Amigos'
               close={(e)=>this.setState({asignados:[], usuariosAsignados:[], adjuntarAmigos:false})} 
@@ -135,50 +127,22 @@ export default class CrearItemComponent extends Component{
 
             {/* Enviar al Chat */}
               <TouchableOpacity 
-                style={[ItemStyle.btnEnviar]} 
+                style={[style.btnEnviar]} 
                 onPress={mensajeEnvio=='Enviar' ?(enviarChat)=>this.setState({enviarChat:!this.state.enviarChat}) :null}>
-              <Text style={ItemStyle.enviar}>Enviar al chat</Text>
+              <Text style={[style.enviar, style.familia]}>Enviar al chat</Text>
               {
                 !enviarChat
-                ?<Image source={require('../images/item6.png')} style={ItemStyle.enviarIcon} />
-                :<Image source={require('../images/item7.png')} style={ItemStyle.enviarIcon} />
+                ?<Image source={require('../assets/images/item6.png')} style={style.enviarIcon} />
+                :<Image source={require('../assets/images/item7.png')} style={style.enviarIcon} />
               }
             </TouchableOpacity>
-
           </View> 
 
-          {/* Adjuntar Amigos  
-          <View style={ItemStyle.valor} >
-             <TouchableOpacity style={ItemStyle.btnAdjuntar} onPress={()=>this.setState({adjuntarAmigos:true})}>
-              <Text style={ItemStyle.adjuntar}>Asignar Amigos</Text>
-            </TouchableOpacity> 
-            {adjuntarAmigos ?<AgregarAmigosComponent 
-              titulo='Asignar Amigos'
-              close={(e)=>this.setState({asignados:[], usuariosAsignados:[], adjuntarAmigos:false})} 
-              updateStateAsignados={(asignados, usuariosAsignados, misUsuarios)=>this.setState({asignados, usuariosAsignados, misUsuarios, adjuntarAmigos:false})}
-                  asignados={this.state.asignados}
-                  usuariosAsignados={this.state.usuariosAsignados}
-                  misUsuarios={this.state.misUsuarios}
-              /> :null }
-            
-            {/* Enviar al Chat 
-            <TouchableOpacity 
-              style={[ItemStyle.btnEnviar, enviarChat && ItemStyle.btnEnviarActive]} 
-              onPress={(enviarChat)=>this.setState({enviarChat:!this.state.enviarChat})}>
-              <Text style={ItemStyle.adjuntar} style={ItemStyle.enviar}>Enviar al chat</Text>
-              {
-                !enviarChat
-                ?<Image source={require('./item6.png')} style={ItemStyle.enviarIcon} />
-                :<Image source={require('./item7.png')} style={ItemStyle.enviarIcon} />
-              }
-            </TouchableOpacity>
-          </View> */}
-
           {/* Guardar */}  
-          <View style={ItemStyle.save} > 
-            <TouchableOpacity style={ItemStyle.btnSave} onPress={this.handleSubmit.bind(this)}>
-             <Image source={require('../images/item8.png')} style={ItemStyle.iconSave} />
-              <Text style={ItemStyle.adjuntar} style={ItemStyle.textSave}>{mensajeEnvio}</Text>
+          <View style={style.save} > 
+            <TouchableOpacity style={style.btnSave} onPress={this.handleSubmit.bind(this)}>
+             <Image source={require('../assets/images/item8.png')} style={style.iconSave} />
+              <Text style={style.adjuntar} style={style.textSave}>{mensajeEnvio}</Text>
             </TouchableOpacity> 
           </View>
         </View>

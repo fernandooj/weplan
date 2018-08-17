@@ -1,12 +1,14 @@
 import {StyleSheet, Dimensions} from 'react-native';
 var screenHeight = Dimensions.get('window');
 
-export const walletStyle = StyleSheet.create({
-	 
+export const style = StyleSheet.create({
 	contenedor:{
 		alignItems: 'center',
 		flex: 1,
 		backgroundColor:"#ffffff",
+	},
+	familia:{
+		fontFamily:'Futura-CondensedLight',
 	},
 	subContenedor:{
 		width:'80%',
@@ -24,9 +26,6 @@ export const walletStyle = StyleSheet.create({
 		borderWidth:6,
 		marginRight:15
 	},
-	contenedorLeft:{
-		// width:'80%'
-	},
 	separador:{
 		borderWidth:2,
 		borderTopColor:'#ffffff',
@@ -36,9 +35,12 @@ export const walletStyle = StyleSheet.create({
 		marginTop:5,
 		marginBottom:5
 	},
+	fechaLugar:{
+		fontSize:20
+	},
 	nombre:{
 		color:'#5664ba',
-		fontSize:19,
+		fontSize:21,
 		width:160,
 	},
 	textoTotal:{

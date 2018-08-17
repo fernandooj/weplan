@@ -1,12 +1,9 @@
 import React, {Component} from 'react'
 import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Alert} from 'react-native'
-import {PagoStyle} from '../pago/style'
+import {style} from '../pago/style'
 import axios from 'axios'
 import CabezeraComponent from '../ajustes/cabezera.js'
 import AbonarComponent   from './abonarComponent.js'
-
- 
- 
 
 export default class pagoDeudaComponent extends Component{
  	state={
@@ -38,32 +35,27 @@ export default class pagoDeudaComponent extends Component{
 		return(
 			<View>
 			{/* ITEM INFORMACION */}
-				<View style={PagoStyle.contenedorItem}>
+				<View style={style.contenedorItem}>
 					<View >
-						<Image source={{uri:item.imagenResize}} style={PagoStyle.image}/>
+						<Image source={{uri:item.imagenResize}} style={style.image}/>
 					</View>
 					<View>	
-						<Text style={PagoStyle.titulo}>{item.titulo}</Text>
-						<Text style={PagoStyle.descripcion}>{item.descripcion}</Text>
-						<Text style={PagoStyle.nombre}>By {item.userId.nombre}</Text>
-						<View style={PagoStyle.contenedorValor}>
-							<Text style={PagoStyle.valorTexto}>Valor</Text>
-							<Text style={PagoStyle.valor}>{'$ '+Number(item.valor).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+						<Text style={[style.titulo, style.familia]}>{item.titulo}</Text>
+						<Text style={[style.descripcion, style.familia]}>{item.descripcion}</Text>
+						<Text style={[style.nombre, style.familia]}>By {item.userId.nombre}</Text>
+						<View style={style.contenedorValor}>
+							<Text style={[style.valorTexto, style.familia]}>Valor</Text>
+							<Text style={[style.valor, style.familia]}>{'$ '+Number(item.valor).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
 						</View>
 					</View>
 				</View>
 
 			{/* SEPARADOR */}
-				<View style={PagoStyle.separador}></View>
+				<View style={style.separador}></View>
 			</View>
 		)
 	}
-	renderPagosHechos(id){
-		 axios.get('x/v1/pag/pago/pagoshechos/'+id)
-	   	.then(res=>{	 
-	   		return <Text>aaf </Text>
-	   	})
-	}
+	 
 	renderAsignados(){
 		let pagos=[];
 		let costoDividirPlan = Math.ceil((this.state.item.valor/(this.state.item.asignados.length+1))/100)*100
@@ -72,27 +64,27 @@ export default class pagoDeudaComponent extends Component{
 			let data = e.data[0].info[0]
 			return(
 	 			<TouchableOpacity  key={key} onPress={()=>this.setState({show:true, userId:e._id, photo:data.photo, nombre:data.nombre, monto:e.deuda})}>
-	 				<View style={PagoStyle.pagoDeudaContenedor}>
-		 				<Image source={{uri: data.photo}} style={PagoStyle.pagoDeudaAvatar} />
-		 				<Text style={PagoStyle.pagoDeudaNombre}>{data.nombre}</Text> 
-		 				<Text style={PagoStyle.pagoDeudaMonto}>{'$ '+Number(deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+	 				<View style={style.pagoDeudaContenedor}>
+		 				<Image source={{uri: data.photo}} style={style.pagoDeudaAvatar} />
+		 				<Text style={[style.pagoDeudaNombre, style.familia]}>{data.nombre}</Text> 
+		 				<Text style={[style.pagoDeudaMonto, style.familia]}>{'$ '+Number(deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
 		 			</View>
 	 				<View>	
 		 				{
 		 					e.data.map((e2, key2)=>{
 		 						if (e2.info[0].monto!==-costoDividirPlan) {
 		 							return(
-			 							<View key={key2} style={PagoStyle.infoAbonoDeuda}>
-			 								<Text style={PagoStyle.textAbonoDeuda}>Abono: </Text>
-			 								<Text style={PagoStyle.textAbonoDeuda}>{e2.info[0].fecha} / </Text>
-			 								<Text style={PagoStyle.textAbonoDeuda}>{'$ '+Number(e2.info[0].monto).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+			 							<View key={key2} style={style.infoAbonoDeuda}>
+			 								<Text style={[style.textAbonoDeuda, style.familia]}>Abono: </Text>
+			 								<Text style={[style.textAbonoDeuda, style.familia]}>{e2.info[0].fecha} / </Text>
+			 								<Text style={[style.textAbonoDeuda, style.familia]}>{'$ '+Number(e2.info[0].monto).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
 			 							</View>
 			 						)
 		 						}
 		 					})
 		 				}
 		 			</View>
-	 				<View style={PagoStyle.separador}></View>
+	 				<View style={style.separador}></View>
 	 			</TouchableOpacity>
 			)
 		})
@@ -113,8 +105,8 @@ export default class pagoDeudaComponent extends Component{
 		var sum = suma.reduce(add, 0);
 		 
 			if (planId.length!==0) {
-				return (<ScrollView style={PagoStyle.container}>
-					<View style={PagoStyle.contentItem}>
+				return (<ScrollView style={style.container}>
+					<View style={style.contentItem}>
 						<CabezeraComponent navigate={navigate} url={'item'} parameter={planId} />
 						{
 					  		show
@@ -130,15 +122,15 @@ export default class pagoDeudaComponent extends Component{
 					  		 />
 					  		:null 
 					  	}
-						<View style={PagoStyle.contenedor}>
+						<View style={style.contenedor}>
 							{this.renderItem()}
 							{this.renderAsignados()}
 							
 						</View>	
 						{
-				    		<View style={PagoStyle.contenedorTotal}>
-				    			<Text style={PagoStyle.textoTotal}>Total</Text>
-				    			<Text style={sum>=0 ?PagoStyle.valueTotal :PagoStyle.valueNoAsignadoTotal}>
+				    		<View style={style.contenedorTotal}>
+				    			<Text style={[style.textoTotal, style.familia]}>Total</Text>
+				    			<Text style={sum>=0 ?[style.valueTotal, style.familia] :[style.valueNoAsignadoTotal, style.familia]}>
 									{'$ '+Number(sum).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
 								</Text>
 				    		</View>

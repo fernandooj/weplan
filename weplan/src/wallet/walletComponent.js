@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, ScrollView, ImageBackground, TouchableOpacity, Image, TextInput} from 'react-native'
-import {walletStyle} from '../wallet/style'
+import {style} from '../wallet/style'
 import axios from 'axios'
 import CabezeraComponent from '../ajustes/cabezera.js'
 
@@ -47,22 +47,22 @@ export default class walletComponent extends Component{
 		if(filteredData.length>0){
 			return filteredData.map((e, key)=>{
 			return  <TouchableOpacity onPress={()=>navigate('costoPlan', e.id )} key={key}>
-					<View style={walletStyle.item}>
-						<Image source={{uri: e.imagen[0]}} style={walletStyle.imagen} />
-						<View style={walletStyle.boxPlan1} >
-							<Text style={walletStyle.nombre}>{e.nombrePlan.length<30 ?e.nombrePlan :e.nombrePlan.substring(0, 30)+' ...'}</Text>
-							<Text style={walletStyle.fechaLugar}>By {e.nombreUsuario} </Text>
-							<View style={walletStyle.item}>	
-								<Text style={walletStyle.textoTotal}>Total</Text>
-								<Text style={e.total>=0 ?walletStyle.pagoDeudaMontoActive :walletStyle.pagoDeudaMonto}>
+					<View style={style.item}>
+						<Image source={{uri: e.imagen[0]}} style={style.imagen} />
+						<View style={style.boxPlan1} >
+							<Text style={[style.nombre, style.familia]}>{e.nombrePlan.length<30 ?e.nombrePlan :e.nombrePlan.substring(0, 30)+' ...'}</Text>
+							<Text style={[style.fechaLugar, style.familia]}>By {e.nombreUsuario} </Text>
+							<View style={style.item}>	
+								<Text style={[style.textoTotal, style.familia]}>Total</Text>
+								<Text style={e.total>=0 ?[style.pagoDeudaMontoActive, style.familia] :[style.pagoDeudaMonto, style.familia]}>
 									{'$ '+Number(e.total).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
 								</Text>
 								 
 							</View>	
 						</View>
-						<Image source={require('../images/back.png')} style={walletStyle.back} />
+						<Image source={require('../assets/images/back.png')} style={style.back} />
 					</View>
-					<View  style={walletStyle.separador}></View>
+					<View  style={style.separador}></View>
 				</TouchableOpacity>
 				})
 		}else{
@@ -72,19 +72,19 @@ export default class walletComponent extends Component{
 	cabezera(){
 		const {navigate} = this.props.navigation
 		return(
-			<View style={walletStyle.contenedorCabezera}> 
-				<TouchableOpacity onPress={()=>navigate('inicio')} style={walletStyle.btnClose} >
-					<Image source={require('../images/back.png')} style={walletStyle.imagenClose} />
+			<View style={style.contenedorCabezera}> 
+				<TouchableOpacity onPress={()=>navigate('inicio')} style={style.btnClose} >
+					<Image source={require('../assets/images/back.png')} style={style.imagenClose} />
 				</TouchableOpacity>
 				<TextInput
-      				style={walletStyle.input}
+      				style={style.input}
 			        onChangeText={this.filteredData.bind(this)}
 			        value={this.state.username}
 			        underlineColorAndroid='transparent'
            			placeholder="Buscar"
            			placeholderTextColor="#8F9093" 
 			    />
-			    <Image source={require('../images/search.png')} style={walletStyle.btnBuscar} />
+			    <Image source={require('../assets/images/search.png')} style={style.btnBuscar} />
 			</View>
 		)
 	}
@@ -94,10 +94,10 @@ export default class walletComponent extends Component{
 		const rows = this.getRow(filteredData)
 		const {navigate} = this.props.navigation
 		return(	 
-			<View style={walletStyle.contenedor}>
+			<View style={style.contenedor}>
 				 
 				<CabezeraComponent navigate={navigate} url={'inicio'} texto='My Wallet'  />
-				<ScrollView style={walletStyle.subContenedor}>
+				<ScrollView style={style.subContenedor}>
 					{rows}	
 				</ScrollView>
 				<FooterComponent navigate={navigate} />		

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, TouchableOpacity, TextInput, Alert, Platform, ImageBackground, ScrollView, AsyncStorage} from 'react-native'
-import {LoginStyle} from '../login/style'
+import {style} from '../login/style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
  
@@ -168,16 +168,16 @@ export default class LoginComponent extends Component{
 		const {num} = this.props.screenProps
 		console.log(num)
 		return(
-				<ImageBackground style={LoginStyle.fondo}  source={num===0 ?require('../../splash0.jpg') :num===1 ?require('../../splash1.jpg') :num===2 ?require('../../splash2.jpg') :num===3 ?require('../../splash3.jpg') :num===4 &&require('../../splash4.jpg')} >
+				<ImageBackground style={style.fondo}  source={num===0 ?require('../../splash0.jpg') :num===1 ?require('../../splash1.jpg') :num===2 ?require('../../splash2.jpg') :num===3 ?require('../../splash3.jpg') :num===4 &&require('../../splash4.jpg')} >
 					<View>
 						<Image
-							style={LoginStyle.image}
+							style={style.image}
 							width={140} // height will be calculated automatically
-							source={require('../images/logo.png')}
+							source={require('../assets/images/logo.png')}
 					   />
 					</View>
 					<TextInput
-				        style={LoginStyle.input}
+				        style={[style.input, style.familia]}
 				        onChangeText={(username) => this.setState({username})}
 				        value={this.state.username}
 				        underlineColorAndroid='transparent'
@@ -186,7 +186,7 @@ export default class LoginComponent extends Component{
 	           			autoCapitalize = 'none'
 				    />
 					<TextInput
-				        style={LoginStyle.input}
+				        style={[style.input, style.familia]}
 				        onChangeText={(password) => this.setState({password})}
 				        value={this.state.password}
 				        underlineColorAndroid='transparent'
@@ -195,34 +195,34 @@ export default class LoginComponent extends Component{
 	           			secureTextEntry
 	           			autoCapitalize = 'none'
 				    />
-				    <TouchableOpacity style={LoginStyle.submit} onPress={this.handleSubmit.bind(this)}>
-				    	<Text style={LoginStyle.textSubmit}>Iniciar Sesión</Text>
+				    <TouchableOpacity style={style.submit} onPress={this.handleSubmit.bind(this)}>
+				    	<Text style={[style.textSubmit, style.familia]}>Iniciar Sesión</Text>
 				    </TouchableOpacity>
-				    <View style={LoginStyle.logos}>
-				    	{/*<Text style={LoginStyle.text}>Recuérdame</Text>*/}
+				    <View style={style.logos}>
+				    	{/*<Text style={style.text}>Recuérdame</Text>*/}
 				    	<TouchableOpacity onPress={()=>navigate('editPassword')}>
-				    		<Text style={LoginStyle.text}>¿Olvidaste tu contraseña?</Text>
+				    		<Text style={[style.text, style.familia]}>¿Olvidaste tu contraseña?</Text>
 				    	</TouchableOpacity>
 				    </View>
-				    <View style={LoginStyle.logos}>
+				    <View style={style.logos}>
 				      <TouchableOpacity onPress={()=>this._signInRedes(1)} >
 				        <Image
-							style={LoginStyle.image}
+							style={style.image}
 							width={60} // height will be calculated automatically
-							source={require('../images/facebook.png')}
+							source={require('../assets/images/facebook.png')}
 					    />
 				      </TouchableOpacity>
 				      <TouchableOpacity onPress={()=>this._signInRedes(2)} >
 				       <Image
-							style={LoginStyle.image}
+							style={style.image}
 							width={60} // height will be calculated automatically
-							source={require('../images/google.png')}
+							source={require('../assets/images/google.png')}
 					    />
 				      </TouchableOpacity>
 				    </View>  
-				    <Text style={LoginStyle.text}>¿Aún no haces parte de Weplan? </Text>	
-				     <TouchableOpacity onPress={()=> navigate('Registro', {tokenPhone:this.state.token})} style={LoginStyle.signup_btn}>
-	 					<Text style={LoginStyle.btnRegistro}>Registrate</Text>
+				    <Text style={[style.text, style.familia]}>¿Aún no haces parte de Weplan? </Text>	
+				     <TouchableOpacity onPress={()=> navigate('Registro', {tokenPhone:this.state.token})} style={style.signup_btn}>
+	 					<Text style={[style.btnRegistro, style.familia]}>Registrate</Text>
 	 				</TouchableOpacity>
 				</ImageBackground>
 		)

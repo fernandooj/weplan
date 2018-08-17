@@ -6,8 +6,10 @@ export const AmigosStyle = MediaQueryStyleSheet.create({
 	contenedor:{
 		alignItems: 'center',
 	},
+	familia:{
+		fontFamily:'Futura-CondensedLight',
+	},
  	subLista:{
-	 
 		flexDirection:'row',
 		alignItems: 'flex-start',
 		marginTop:10
@@ -28,9 +30,9 @@ export const AmigosStyle = MediaQueryStyleSheet.create({
 		borderColor: '#C2E3EE',
 	},
 	textoAvatar:{
-		fontSize:22,
+		fontSize:24,
 		marginLeft:20,
-		marginTop:20
+		marginTop:8
 	},
 	agregado:{
 		position:'absolute',
@@ -75,6 +77,7 @@ export const AmigosStyle = MediaQueryStyleSheet.create({
 		borderColor: '#cccccc',
 		borderBottomWidth:0,
 		paddingLeft:20,
+		fontSize:20,
 		color: '#8F9093',
 		alignItems: 'center',
 	}, 
@@ -130,10 +133,7 @@ export const AmigosStyle = MediaQueryStyleSheet.create({
 			height:35,
 			marginTop:5
 		},
-		text: {
-			color:'#969696',
-			fontSize: 18,	 
-		},
+		 
 		avatar:{
 			height: 50,
 			width: 50,
@@ -145,10 +145,6 @@ export const AmigosStyle = MediaQueryStyleSheet.create({
 			borderRadius: 25,
 			borderWidth: 3,
 		},
-		textoAvatar:{
-			fontSize:18,
-			marginLeft:20,
-			marginTop:10
-		},
+		 
 	}
 })

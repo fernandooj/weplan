@@ -14,7 +14,7 @@ class planServices {
 	}
 	/// con populate
 	getByIdPlanPopulate(_id, callback){
-		planSchema.find({_id}).populate('idUsuario', 'nombre ciudad photo').populate('restricciones').populate('asignados').exec(callback)
+		planSchema.find({_id}).populate('idUsuario', 'nombre ciudad photo calificacion').populate('restricciones').populate('asignados').exec(callback)
 	}
 	getPlanesPublicosDesactivados(idUsuario, callback){
 		idUsuario = mongoose.Types.ObjectId(idUsuario);	
@@ -138,7 +138,22 @@ class planServices {
 		    		area:-1,
 		    		createdAt:-1
 		    	}
-		    }
+		    },
+		    {
+	 			$lookup: {
+	 				from: "users",
+	 				localField: "idUsuario",
+	 				foreignField: "_id",
+	 				as: "UserData"
+	 			}
+	 		},
+	 		{
+	 			$unwind:{
+	 				path:'$UserData',
+	 				preserveNullAndEmptyArrays: true
+	 			}
+	 		},
+	 		 
 		], callback)
 	}
 	getByUserId(asignados, callback){

@@ -23,7 +23,7 @@ export default class nuevoPasswordComponent extends Component{
 					<Image
 						style={EditPasswordStyle.image}
 						width={140} // height will be calculated automatically
-						source={require('../images/logo.png')}
+						source={require('../assets/images/logo.png')}
 				   />
 				</View> 
 				<TextInput

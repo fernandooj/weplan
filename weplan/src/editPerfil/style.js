@@ -2,17 +2,19 @@ import {StyleSheet, Dimensions, PixelRatio} from 'react-native';
 const width = Dimensions.get('window');
 const height = Dimensions.get('window').height;
 import { MediaQueryStyleSheet } from "react-native-responsive";
-export const LoginStyle = MediaQueryStyleSheet.create({ 
+export const style = MediaQueryStyleSheet.create({ 
 	contenedor:{
 		flex: 1,
 		height:height,
 		backgroundColor:'#ffffff',
 	},
+	familia:{
+		fontFamily:'Futura-CondensedLight',
+	},
 	fondo:{
 		flex: 1,
 		backgroundColor:'#ffffff',
 		alignItems: 'center',
-		/*justifyContent: 'center', justifica contenido verticalmente */
 	},
 	image:{
 		marginTop:15,

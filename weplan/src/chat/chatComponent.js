@@ -3,7 +3,7 @@ import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackgro
 import axios from 'axios'
 import SocketIOClient from 'socket.io-client';
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
-import {ChatStyle} from '../chat/style'
+import {style} from '../chat/style'
 import update from 'react-addons-update';
 import moment from 'moment'
 import ImagePicker from 'react-native-image-picker';
@@ -102,25 +102,25 @@ export default class ChatComponent extends Component{
 		const {navigate} = this.props.navigation
 		return(
 			<View>
-				<View style={ChatStyle.cabezera}>
-					<TouchableOpacity onPress={() => navigate('misPlanes')} style={ChatStyle.iconRegresar}>
-						<Text style={ChatStyle.regresar}>&#60;</Text>		
+				<View style={style.cabezera}>
+					<TouchableOpacity onPress={() => navigate('misPlanes')} style={style.iconRegresar}>
+						<Text style={style.regresar}>&#60;</Text>		
 					</TouchableOpacity> 
 					<TouchableOpacity onPress={() => navigate('infoPlan', {plan,id})}>
-						<Text style={ChatStyle.nombrePlan}>{nombrePlan ?nombrePlan.substring(0, 60) :''}</Text>
+						<Text style={[style.nombrePlan, style.familia]}>{nombrePlan ?nombrePlan.substring(0, 60) :''}</Text>
 					</TouchableOpacity>
-					<View style={ChatStyle.iconosHeaderContenedor}>
-						<TouchableOpacity onPress={() => navigate('encuesta', planId)}  style={ChatStyle.iconContenedor}>
-							<Image source={require('../images/preguntar.png')} style={ChatStyle.icon}  />
+					<View style={style.iconosHeaderContenedor}>
+						<TouchableOpacity onPress={() => navigate('encuesta', planId)}  style={style.iconContenedor}>
+							<Image source={require('../assets/images/preguntar.png')} style={style.icon}  />
 						</TouchableOpacity>
-						<TouchableOpacity onPress={() => navigate('item', planId)} style={ChatStyle.iconContenedor}>
-							<Image source={require('../images/cuentas.png')} style={ChatStyle.icon}  />
+						<TouchableOpacity onPress={() => navigate('item', planId)} style={style.iconContenedor}>
+							<Image source={require('../assets/images/cuentas.png')} style={style.icon}  />
 						</TouchableOpacity>
 					</View>
 				</View>
-				<TouchableOpacity onPress={() => navigate('infoPlan', {plan,id})} style={ChatStyle.btnImagenPlan}>
+				<TouchableOpacity onPress={() => navigate('infoPlan', {plan,id})} style={style.btnImagenPlan}>
 					<Image
-						style={ChatStyle.imagen}
+						style={style.imagen}
 						 
 						source={{uri: imagen}}
 				    />	
@@ -135,19 +135,19 @@ export default class ChatComponent extends Component{
 		return mensajes.map((e,key)=>{
 			if (e.tipoChat===1) {
 				return (
-					<View key={key} style={ChatStyle.contenedorBox}>
-						<View style={e.userId== id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]}>
-							<View style={ChatStyle.tituloTipoChat}>
-								<Text style={e.userId== id ?ChatStyle.nombreTipoChat :[ChatStyle.nombreTipoChat, ChatStyle.nombreTipoChatLeft]}>{e.nombre}</Text>
+					<View key={key} style={style.contenedorBox}>
+						<View style={e.userId== id ?style.box :[style.box, style.boxLeft]}>
+							<View style={style.tituloTipoChat}>
+								<Text style={e.userId== id ?[style.nombreTipoChat, style.familia] :[style.nombreTipoChat, style.nombreTipoChatLeft, style.familia]}>{e.nombre}</Text>
 							</View>
-							<View style={ChatStyle.mensajeTipoChat}>
-								<Text style={ChatStyle.mensaje}>{e.mensaje}</Text>
-								<Text style={e.userId== id ?ChatStyle.fecha :[ChatStyle.fecha, ChatStyle.fechaLeft]}>{e.fecha}</Text>
+							<View style={style.mensajeTipoChat}>
+								<Text style={[style.mensaje, style.familia]}>{e.mensaje}</Text>
+								<Text style={e.userId== id ?[style.fecha, style.familia] :[style.fecha, style.fechaLeft, style.familia]}>{e.fecha}</Text>
 							</View>
 						</View>
-						{/*<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', e.userId)} style={e.userId== id ?ChatStyle.btnAvatarC : [ChatStyle.btnAvatarC, ChatStyle.btnAvatarCLeft]}>
+						{/*<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', e.userId)} style={e.userId== id ?style.btnAvatarC : [style.btnAvatarC, style.btnAvatarCLeft]}>
 							<Image
-								style={ChatStyle.photo}
+								style={style.photo}
 								width={45}
 								height={45}
 								source={{uri: e.photo}}
@@ -160,47 +160,47 @@ export default class ChatComponent extends Component{
 				let esperaItem = e.esperaItem.includes(id)
 				let asignadoItem = e.asignadoItem.includes(id)
 				return (
-					<View key={key} style={ChatStyle.contenedorBox}>
-			      		<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?ChatStyle.cBtnAvatarItem : [ChatStyle.cBtnAvatarItem, ChatStyle.cBtnAvatarItemLeft]}>
+					<View key={key} style={style.contenedorBox}>
+			      		<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?style.cBtnAvatarItem : [style.cBtnAvatarItem, style.cBtnAvatarItemLeft]}>
 				      		
 							{/* imagen avatar */}
-							<Image style={ChatStyle.photo}
+							<Image style={style.photo}
 								width={45}
 								height={45}
 								source={{uri: e.photo}}  />
 						</TouchableOpacity>
 					 {/* texto avatar */}
-				      		<View style={e.userId== id ?ChatStyle.boxItem :[ChatStyle.boxItem, ChatStyle.boxLeft]}  >
-								<View style={ChatStyle.tituloTipoChat}>
-									<Text style={e.userId== id ?ChatStyle.cNombreTipoChat :[ChatStyle.cNombreTipoChat, ChatStyle.cNombreTipoChatLeft]}>{e.nombre}</Text>
+				      		<View style={e.userId== id ?style.boxItem :[style.boxItem, style.boxLeft]}  >
+								<View style={style.tituloTipoChat}>
+									<Text style={e.userId== id ?[style.cNombreTipoChat, style.familia] :[style.cNombreTipoChat, style.cNombreTipoChatLeft, style.familia]}>{e.nombre}</Text>
 								</View>
 							</View>
 					   {/* fotografia item */}
 				         <Image source={{uri: e.rutaImagen}}
-				         	style={e.userId== id ?ChatStyle.fotografia :[ChatStyle.fotografia, ChatStyle.fotografiaLeft]}
+				         	style={e.userId== id ?style.fotografia :[style.fotografia, style.fotografiaLeft]}
 				         />
-	  					<View style={e.userId== id ?ChatStyle.boxItem2 :[ChatStyle.boxItem2, ChatStyle.boxLeft]} >
-					         <View style={e.userId== id ?ChatStyle.contenedorItem :[ChatStyle.contenedorItem, ChatStyle.contenedorItemLeft]}>
-					             <Text style={e.userId== id ?ChatStyle.titulo :[ChatStyle.titulo, ChatStyle.tituloLeft]}>{e.titulo}</Text>
+	  					<View style={e.userId== id ?style.boxItem2 :[style.boxItem2, style.boxLeft]} >
+					         <View style={e.userId== id ?style.contenedorItem :[style.contenedorItem, style.contenedorItemLeft]}>
+					             <Text style={e.userId== id ?[style.titulo, style.familia] :[style.titulo, style.tituloLeft, style.familia]}>{e.titulo}</Text>
 					            {
 					            	e.descripcion.length>0
-					            	&&<Text style={e.userId== id ?ChatStyle.descripcion :[ChatStyle.descripcion, ChatStyle.descripcionLeft]}>{e.descripcion}</Text>  
+					            	&&<Text style={e.userId== id ?[style.descripcion, style.familia] :[style.descripcion, style.descripcionLeft, style.familia]}>{e.descripcion}</Text>  
 					            }
-					             <Text style={e.userId== id ?ChatStyle.valor :[ChatStyle.valor, ChatStyle.valorLeft] }>
+					             <Text style={e.userId== id ?[style.valor, style.familia] :[style.valor, style.valorLeft, style.familia] }>
 					             	{'$ '+Number(e.valor).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
 					             </Text>  
 					       	</View>
 					       	{
 					       		(!asignadoItem && !esperaItem &&e.abierto)  && e.userId !== id
-					       		?<View style={e.userId== id ?ChatStyle.contenedorInteres :[ChatStyle.contenedorInteres, ChatStyle.contenedorInteresLeft]}>
-							       	<TouchableOpacity onPress={()=> this.ingresarItem(e.token, e.itemId, e.id, e.titulo, e.rutaImagen, e.userId)} style={ChatStyle.btnInteres} >
-							       		<Image source={require('../images/me_interesa.png')} style={ChatStyle.imagenInteres} />
-							       		<Text style={ChatStyle.textoInteres}>Me Interesa</Text>
+					       		?<View style={e.userId== id ?style.contenedorInteres :[style.contenedorInteres, style.contenedorInteresLeft]}>
+							       	<TouchableOpacity onPress={()=> this.ingresarItem(e.token, e.itemId, e.id, e.titulo, e.rutaImagen, e.userId)} style={style.btnInteres} >
+							       		<Image source={require('../assets/images/me_interesa.png')} style={style.imagenInteres} />
+							       		<Text style={[style.textoInteres, style.familia]}>Me Interesa</Text>
 							       	</TouchableOpacity>
 							      </View> 	
 							      :!asignadoItem && esperaItem
-							      ?<View style={e.userId== id ?ChatStyle.contenedorInteres :[ChatStyle.contenedorInteres, ChatStyle.contenedorInteresLeft]}>
-							      	<Image source={require('../images/espera.png')} style={ChatStyle.imagenEspera} />
+							      ?<View style={e.userId== id ?style.contenedorInteres :[style.contenedorInteres, style.contenedorInteresLeft]}>
+							      	<Image source={require('../assets/images/espera.png')} style={style.imagenEspera} />
 							      </View>
 							      :null
 					       	}
@@ -212,143 +212,143 @@ export default class ChatComponent extends Component{
 				e.respuesta1= e.respuesta1==null ? 0:e.respuesta1  
 				e.respuesta2= e.respuesta2==null ? 0:e.respuesta2  
 				return(
-					<View key={key} style={ChatStyle.contenedorBox}>
-						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?ChatStyle.cBtnAvatarItem : [ChatStyle.cBtnAvatarItem, ChatStyle.cBtnAvatarItemLeft]}>
+					<View key={key} style={style.contenedorBox}>
+						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?style.cBtnAvatarItem : [style.cBtnAvatarItem, style.cBtnAvatarItemLeft]}>
 				      		
 							{/* imagen avatar */}
-							<Image style={ChatStyle.photo}
+							<Image style={style.photo}
 								width={45}
 								height={45}
 								source={{uri: e.photo}}  />
 						</TouchableOpacity>
 					 {/* texto avatar */}
-			      		<View style={e.userId== id ?ChatStyle.boxItem :[ChatStyle.boxItem, ChatStyle.boxLeft]}  >
-							<View style={ChatStyle.tituloTipoChat}>
-								<Text style={e.userId== id ?ChatStyle.cNombreTipoChat :[ChatStyle.cNombreTipoChat, ChatStyle.cNombreTipoChatLeft]}>{e.nombre}</Text>
+			      		<View style={e.userId== id ?style.boxItem :[style.boxItem, style.boxLeft]}  >
+							<View style={style.tituloTipoChat}>
+								<Text style={e.userId== id ?[style.cNombreTipoChat, style.familia] :[style.cNombreTipoChat, style.cNombreTipoChatLeft, style.familia]}>{e.nombre}</Text>
 							</View>
 						</View>
 						 
-						<View style={e.userId== id ?ChatStyle.boxItem2 :[ChatStyle.boxItem2, ChatStyle.boxLeft]}>
-							<View style={ChatStyle.contenedorDescripcion}>
-								<Image source={require('../images/item4.png')} style={ChatStyle.decoracion} />
-								 <Text style={ChatStyle.pDescripcion}>{e.eTitulo}</Text> 
-								<Image source={require('../images/item4.png')} style={ChatStyle.decoracion} />
+						<View style={e.userId== id ?style.boxItem2 :[style.boxItem2, style.boxLeft]}>
+							<View style={style.contenedorDescripcion}>
+								<Image source={require('../assets/images/item4.png')} style={style.decoracion} />
+								 <Text style={[style.pDescripcion, style.familia]}>{e.eTitulo}</Text> 
+								<Image source={require('../assets/images/item4.png')} style={style.decoracion} />
 							</View>
 						</View>						 
 						
-						<View style={e.userId== id ?ChatStyle.boxItem2 :[ChatStyle.boxItem2, ChatStyle.boxLeft]} >
+						<View style={e.userId== id ?style.boxItem2 :[style.boxItem2, style.boxLeft]} >
 							{
 								e.tipoEncuesta==1 
-								?<View style={ChatStyle.contenedorOpciones}>
-								 	<TouchableOpacity onPress={!asignado   ?()=> this.handleSubmitPregunta(e.encuestaId, 1, e.id) :null} style={ChatStyle.btnInteres} >
+								?<View style={style.contenedorOpciones}>
+								 	<TouchableOpacity onPress={!asignado ?()=> this.handleSubmitPregunta(e.encuestaId, 1, e.id) :null} style={style.btnInteres} >
 										{
 											asignado 
-											?<View style={ChatStyle.contenedorRespuesta}>
-												<Image source={{uri:e.pregunta1}} style={ChatStyle.imagenRespuesta} />
-												<Text style={ChatStyle.textoRespuesta}>{e.respuesta1} %</Text>
+											?<View style={style.contenedorRespuesta}>
+												<Image source={{uri:e.pregunta1}} style={style.imagenRespuesta} />
+												<Text style={[style.textoRespuesta, style.familia]}>{e.respuesta1} %</Text>
 											</View> 
-											:<View style={ChatStyle.contenedorRespuesta}>
-												<Image source={{uri:e.pregunta1}} style={ChatStyle.imagenRespuesta} />
-												<Text style={ChatStyle.textoRespuesta}>{e.respuesta1} %</Text>
+											:<View style={style.contenedorRespuesta}>
+												<Image source={{uri:e.pregunta1}} style={style.imagenRespuesta} />
+												<Text style={[style.textoRespuesta, style.familia]}>{e.respuesta1} %</Text>
 											</View> 
 										}
 									</TouchableOpacity>
-									<TouchableOpacity onPress={!asignado  ?()=> this.handleSubmitPregunta(e.encuestaId, 2, e.id) :null} style={ChatStyle.btnInteres} >
+									<TouchableOpacity onPress={!asignado  ?()=> this.handleSubmitPregunta(e.encuestaId, 2, e.id) :null} style={style.btnInteres} >
 										{
 											asignado   
-											?<View style={ChatStyle.contenedorRespuesta}>
-												<Image source={{uri:e.pregunta2}} style={ChatStyle.imagenRespuesta} />
-												<Text style={ChatStyle.textoRespuesta}>{e.respuesta2} %</Text>
+											?<View style={style.contenedorRespuesta}>
+												<Image source={{uri:e.pregunta2}} style={style.imagenRespuesta} />
+												<Text style={[style.textoRespuesta, style.familia]}>{e.respuesta2} %</Text>
 											</View> 
-											:<View style={ChatStyle.contenedorRespuesta}>
-												<Image source={{uri:e.pregunta2}} style={ChatStyle.imagenRespuesta} />
-												<Text style={ChatStyle.textoRespuesta}>{e.respuesta2} %</Text>
+											:<View style={style.contenedorRespuesta}>
+												<Image source={{uri:e.pregunta2}} style={style.imagenRespuesta} />
+												<Text style={[style.textoRespuesta, style.familia]}>{e.respuesta2} %</Text>
 											</View> 
 										}
 									</TouchableOpacity>
 								 </View> 
 								:e.tipoEncuesta==2
-								?<View style={ChatStyle.contenedorOpciones}>
-									<TouchableOpacity onPress={!asignado  ?()=> this.handleSubmitPregunta(e.encuestaId, 1, e.id) :null} style={ChatStyle.btnInteres} >
+								?<View style={style.contenedorOpciones}>
+									<TouchableOpacity onPress={!asignado  ?()=> this.handleSubmitPregunta(e.encuestaId, 1, e.id) :null} style={style.btnInteres} >
 										{
 											asignado   
-											?<View style={ChatStyle.contenedorRespuesta}>
-												<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.pregunta1}</Text></View>
-												<Text style={ChatStyle.textoRespuesta}>{e.respuesta1} %</Text>
+											?<View style={style.contenedorRespuesta}>
+												<View style={style.contenedorPregunta}><Text style={style.textoPregunta}>{e.pregunta1}</Text></View>
+												<Text style={[style.textoRespuesta, style.familia]}>{e.respuesta1} %</Text>
 											</View>
-											:<View style={ChatStyle.contenedorRespuesta}>
-												<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.pregunta1}</Text></View>
-												<Text style={ChatStyle.textoRespuesta}>{e.respuesta1} %</Text>
+											:<View style={style.contenedorRespuesta}>
+												<View style={style.contenedorPregunta}><Text style={style.textoPregunta}>{e.pregunta1}</Text></View>
+												<Text style={[style.textoRespuesta, style.familia]}>{e.respuesta1} %</Text>
 											</View>
 										}
 									</TouchableOpacity>
-									<TouchableOpacity onPress={!asignado  ?()=> this.handleSubmitPregunta(e.encuestaId, 2, e.id) :null} style={ChatStyle.btnInteres} >
+									<TouchableOpacity onPress={!asignado  ?()=> this.handleSubmitPregunta(e.encuestaId, 2, e.id) :null} style={style.btnInteres} >
 								  		{
 											asignado   
-											?<View style={ChatStyle.contenedorRespuesta}>
-												<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.pregunta2}</Text></View>
-												<Text style={ChatStyle.textoRespuesta}>{e.respuesta2} %</Text>
+											?<View style={style.contenedorRespuesta}>
+												<View style={style.contenedorPregunta}><Text style={style.textoPregunta}>{e.pregunta2}</Text></View>
+												<Text style={[style.textoRespuesta, style.familia]}>{e.respuesta2} %</Text>
 											</View>
-											:<View style={ChatStyle.contenedorRespuesta}>
-												<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.pregunta2}</Text></View>
-												<Text style={ChatStyle.textoRespuesta}>{e.respuesta2} %</Text>
+											:<View style={style.contenedorRespuesta}>
+												<View style={style.contenedorPregunta}><Text style={style.textoPregunta}>{e.pregunta2}</Text></View>
+												<Text style={[style.textoRespuesta, style.familia]}>{e.respuesta2} %</Text>
 											</View>
 										}
 									</TouchableOpacity>
 								</View> 
 								:e.tipoEncuesta==3
-								?<View style={ChatStyle.contenedorOpciones}>
-									<TouchableOpacity onPress={!asignado ?()=> this.handleSubmitPregunta(e.encuestaId, 1, e.id) :null} style={ChatStyle.btnInteres} >
+								?<View style={style.contenedorOpciones}>
+									<TouchableOpacity onPress={!asignado ?()=> this.handleSubmitPregunta(e.encuestaId, 1, e.id) :null} style={style.btnInteres} >
 										{
 											asignado 
-											?<View style={ChatStyle.contenedorRespuesta}>
-												<Image source={{uri:e.pregunta1}} style={ChatStyle.imagenRespuesta} />
-												<Text style={ChatStyle.textoRespuesta}>{e.respuesta1} %</Text>
+											?<View style={style.contenedorRespuesta}>
+												<Image source={{uri:e.pregunta1}} style={style.imagenRespuesta} />
+												<Text style={[style.textoRespuesta, style.familia]}>{e.respuesta1} %</Text>
 											</View> 
-											:<View style={ChatStyle.contenedorRespuesta}>
-												<Image source={{uri:e.pregunta1}} style={ChatStyle.imagenRespuesta} />
-												<Text style={ChatStyle.textoRespuesta}>{e.respuesta1} %</Text>
+											:<View style={style.contenedorRespuesta}>
+												<Image source={{uri:e.pregunta1}} style={style.imagenRespuesta} />
+												<Text style={[style.textoRespuesta, style.familia]}>{e.respuesta1} %</Text>
 											</View> 
 										}
 									</TouchableOpacity>
-									<TouchableOpacity onPress={!asignado ?()=> this.handleSubmitPregunta(e.encuestaId, 2, e.id) :null} style={ChatStyle.btnInteres} >
+									<TouchableOpacity onPress={!asignado ?()=> this.handleSubmitPregunta(e.encuestaId, 2, e.id) :null} style={style.btnInteres} >
 								  		{
 											asignado   
-											?<View style={ChatStyle.contenedorRespuesta}>
-												<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.pregunta2}</Text></View>
-												<Text style={ChatStyle.textoRespuesta}>{e.respuesta2} %</Text>
+											?<View style={style.contenedorRespuesta}>
+												<View style={style.contenedorPregunta}><Text style={style.textoPregunta}>{e.pregunta2}</Text></View>
+												<Text style={[style.textoRespuesta, style.familia]}>{e.respuesta2} %</Text>
 											</View>
-											:<View style={ChatStyle.contenedorRespuesta}>
-												<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.pregunta2}</Text></View>
-												<Text style={ChatStyle.textoRespuesta}>{e.respuesta2} %</Text>
+											:<View style={style.contenedorRespuesta}>
+												<View style={style.contenedorPregunta}><Text style={style.textoPregunta}>{e.pregunta2}</Text></View>
+												<Text style={[style.textoRespuesta, style.familia]}>{e.respuesta2} %</Text>
 											</View>
 										}
 									</TouchableOpacity>
 								</View> 
-								:<View style={ChatStyle.contenedorOpciones}>
-									<TouchableOpacity onPress={!asignado ?()=> this.handleSubmitPregunta(e.encuestaId, 1, e.id) :null} style={ChatStyle.btnInteres} >
+								:<View style={style.contenedorOpciones}>
+									<TouchableOpacity onPress={!asignado ?()=> this.handleSubmitPregunta(e.encuestaId, 1, e.id) :null} style={style.btnInteres} >
 										{
 											asignado   
-											?<View style={ChatStyle.contenedorRespuesta}>
-												<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.pregunta1}</Text></View>
-												<Text style={ChatStyle.textoRespuesta}>{e.respuesta1} %</Text>
+											?<View style={style.contenedorRespuesta}>
+												<View style={style.contenedorPregunta}><Text style={style.textoPregunta}>{e.pregunta1}</Text></View>
+												<Text style={[style.textoRespuesta, style.familia]}>{e.respuesta1} %</Text>
 											</View>
-											:<View style={ChatStyle.contenedorRespuesta}>
-												<View style={ChatStyle.contenedorPregunta}><Text style={ChatStyle.textoPregunta}>{e.pregunta1}</Text></View>
-												<Text style={ChatStyle.textoRespuesta}>{e.respuesta1} %</Text>
+											:<View style={style.contenedorRespuesta}>
+												<View style={style.contenedorPregunta}><Text style={style.textoPregunta}>{e.pregunta1}</Text></View>
+												<Text style={[style.textoRespuesta, style.familia]}>{e.respuesta1} %</Text>
 											</View>
 										}
 									</TouchableOpacity>
-									<TouchableOpacity onPress={!asignado ?()=> this.handleSubmitPregunta(e.encuestaId, 2, e.id) :null} style={ChatStyle.btnInteres} >
+									<TouchableOpacity onPress={!asignado ?()=> this.handleSubmitPregunta(e.encuestaId, 2, e.id) :null} style={style.btnInteres} >
 								  		{
 											asignado   
-											?<View style={ChatStyle.contenedorRespuesta}>
-												<Image source={{uri:e.pregunta2}} style={ChatStyle.imagenRespuesta} />
-												<Text style={ChatStyle.textoRespuesta}>{e.respuesta2} %</Text>
+											?<View style={style.contenedorRespuesta}>
+												<Image source={{uri:e.pregunta2}} style={style.imagenRespuesta} />
+												<Text style={[style.textoRespuesta, style.familia]}>{e.respuesta2} %</Text>
 											</View> 
-											:<View style={ChatStyle.contenedorRespuesta}>
-												<Image source={{uri:e.pregunta2}} style={ChatStyle.imagenRespuesta} />
-												<Text style={ChatStyle.textoRespuesta}>{e.respuesta2} %</Text>
+											:<View style={style.contenedorRespuesta}>
+												<Image source={{uri:e.pregunta2}} style={style.imagenRespuesta} />
+												<Text style={[style.textoRespuesta, style.familia]}>{e.respuesta2} %</Text>
 											</View>
 										}
 									</TouchableOpacity>
@@ -360,46 +360,46 @@ export default class ChatComponent extends Component{
 			}else if (e.tipoChat===4) {
 				let estaPlan = planAsignados.includes(e.contactoId) 
 				return (
-					<View key={key} style={ChatStyle.contenedorBox}>
-						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?ChatStyle.cBtnAvatarC : [ChatStyle.cBtnAvatarC, ChatStyle.cBtnAvatarCLeft]}>
+					<View key={key} style={style.contenedorBox}>
+						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?style.cBtnAvatarC : [style.cBtnAvatarC, style.cBtnAvatarCLeft]}>
 							<Image
-								style={ChatStyle.photo}
+								style={style.photo}
 								width={45}
 								height={45}
 								source={{uri: e.photo}}
 						    />
 						</TouchableOpacity>
-						<TouchableOpacity style={e.userId==id ?ChatStyle.cPhotoContainer :[ChatStyle.cPhotoContainer, ChatStyle.cPhotoLeft]} 
+						<TouchableOpacity style={e.userId==id ?style.cPhotoContainer :[style.cPhotoContainer, style.cPhotoLeft]} 
 							onPress={e.contactoId== id ?null :()=> navigate('profile', {userId:e.contactoId, planId:plan})}>
 							<Image
-								style={ChatStyle.cPhoto} 
+								style={style.cPhoto} 
 								width={60}
 								height={60}
 								source={{uri: e.cPhoto}}
 						   	/>
 					   	</TouchableOpacity> 
-						<TouchableOpacity style={e.userId== id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]}
+						<TouchableOpacity style={e.userId== id ?style.box :[style.box, style.boxLeft]}
 							onPress={e.contactoId== id ?null :()=> navigate('profile', {userId:e.contactoId, planId:plan})}>
-							<View style={ChatStyle.tituloTipoChat}>
-								<Text style={e.userId== id ?ChatStyle.cNombreTipoChat :[ChatStyle.cNombreTipoChat, ChatStyle.cNombreTipoChatLeft]}>{e.nombre}</Text>
+							<View style={style.tituloTipoChat}>
+								<Text style={e.userId== id ?[style.cNombreTipoChat, style.familia] :[style.cNombreTipoChat, style.cNombreTipoChatLeft, style.familia]}>{e.nombre}</Text>
 							</View>
-							<View style={ChatStyle.mensajeCChat}>
-								<Text style={e.userId== id ?ChatStyle.cMensaje :[ChatStyle.cMensaje, ChatStyle.cMensajeLeft]}>{e.cNombre}</Text>
-								<Text style={e.userId== id ?ChatStyle.cFecha   :[ChatStyle.cFecha,   ChatStyle.cFechaLeft]}>{e.fecha}</Text>
+							<View style={style.mensajeCChat}>
+								<Text style={e.userId== id ?style.cMensaje :[style.cMensaje, style.cMensajeLeft]}>{e.cNombre}</Text>
+								<Text style={e.userId== id ?style.cFecha   :[style.cFecha,   style.cFechaLeft]}>{e.fecha}</Text>
 							</View>
 							
-							<View style={ChatStyle.botonesContacto}>
+							<View style={style.botonesContacto}>
 								{/*
 									e.esAMigo
 									&&<TouchableOpacity onPress={()=>this.agregarAmigo(e.id, e.contactoId, e.cToken)}>
-										<Text style={ChatStyle.cTextBotones}>Agregar Contacto</Text>
+										<Text style={style.cTextBotones}>Agregar Contacto</Text>
 									</TouchableOpacity>
 								*/}
 								
 								{
 									plan.idUsuario._id === id && !estaPlan && e.contactoId !=id
 									&&<TouchableOpacity onPress={()=>this.agregarUsuarioPlan(e.contactoId, e.id, e.cToken)}>
-										<Text style={ChatStyle.cTextBotones}>Agregar al plan</Text>
+										<Text style={style.cTextBotones}>Agregar al plan</Text>
 									</TouchableOpacity>
 								}
 							</View>
@@ -408,56 +408,49 @@ export default class ChatComponent extends Component{
 				)
 			}else if (e.tipoChat===5) {
 				return (
-					<View key={key} style={ChatStyle.contenedorBox}>
-						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?ChatStyle.cBtnAvatarC : [ChatStyle.cBtnAvatarC, ChatStyle.cBtnAvatarCLeft]}>
+					<View key={key} style={style.contenedorBox}>
+						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?style.cBtnAvatarC : [style.cBtnAvatarC, style.cBtnAvatarCLeft]}>
 							<Image
-								style={ChatStyle.photo}
+								style={style.photo}
 								width={45}
 								height={45}
 								source={{uri: e.photo}}
 						    />
 						</TouchableOpacity>
-						<TouchableOpacity style={e.userId== id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]}  >
-							<View style={ChatStyle.tituloTipoChat}>
-								<Text style={e.userId== id ?ChatStyle.cNombreTipoChat :[ChatStyle.cNombreTipoChat, ChatStyle.cNombreTipoChatLeft]}>{e.nombre}</Text>
+						<TouchableOpacity style={e.userId== id ?style.box :[style.box, style.boxLeft]}  >
+							<View style={style.tituloTipoChat}>
+								<Text style={e.userId== id ?[style.cNombreTipoChat, style.familia] :[style.cNombreTipoChat, style.cNombreTipoChatLeft, style.familia]}>{e.nombre}</Text>
 							</View>
-							<View style={ChatStyle.mensajeCChat}>
+							<View style={style.mensajeCChat}>
 								<TouchableOpacity onPress={()=>this.setState({mapaVisible:true})}>
 									<MapComponent lat={parseFloat(e.lat)} lng={parseFloat(e.lng)} />
 									{this.renderModalAbrirMapa(e.lat, e.lng, e.lugar)}
 								</TouchableOpacity>
 		                 		
-								<Text style={e.userId== id ?ChatStyle.cFecha   :[ChatStyle.cFecha,   ChatStyle.cFechaLeft]}>{e.fecha}</Text>
+								<Text style={e.userId== id ?style.cFecha   :[style.cFecha,   style.cFechaLeft]}>{e.fecha}</Text>
 							</View>
 						</TouchableOpacity>
 					</View>	
 				)	
 			}else if (e.tipoChat===6) {
 				return (
-					<View key={key} style={ChatStyle.contenedorBox}>
-						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?ChatStyle.cBtnAvatarC : [ChatStyle.cBtnAvatarC, ChatStyle.cBtnAvatarCLeft]}>
+					<View key={key} style={style.contenedorBox}>
+						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?style.cBtnAvatarC : [style.cBtnAvatarC, style.cBtnAvatarCLeft]}>
 							<Image
-								style={ChatStyle.photo}
+								style={style.photo}
 								width={45}
 								height={45}
 								source={{uri: e.photo}}
 						    />
 
 						</TouchableOpacity>
-						<TouchableOpacity style={e.userId== id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]}  >
-							<View style={ChatStyle.tituloTipoChat}>
-								<Text style={e.userId== id ?ChatStyle.cNombreTipoChat :[ChatStyle.cNombreTipoChat, ChatStyle.cNombreTipoChatLeft]}>{e.nombre}</Text>
+						<TouchableOpacity style={e.userId== id ?style.box :[style.box, style.boxLeft]}  >
+							<View style={style.tituloTipoChat}>
+								<Text style={e.userId== id ?[style.cNombreTipoChat, style.familia] :[style.cNombreTipoChat, style.cNombreTipoChatLeft, style.familia]}>{e.nombre}</Text>
 							</View>
-							 
-								{/*<Image
-									style={ChatStyle.Iphoto}
-									width='100%'
-									height={150}
-									source={{uri: e.documento,cache:true}}
-							    />*/}
 							    <Lightbox>
 								    <Image
-								      style={ChatStyle.Iphoto}
+								      style={style.Iphoto}
 									width='100%'
 									height={150}
 								      source={{ uri: e.documento }}
@@ -469,29 +462,29 @@ export default class ChatComponent extends Component{
 				)	
 			}else if (e.tipoChat===7) {
 				return (
-					<View key={key} style={ChatStyle.contenedorBox}>
-						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?ChatStyle.cBtnAvatarC : [ChatStyle.cBtnAvatarC, ChatStyle.cBtnAvatarCLeft]}>
+					<View key={key} style={style.contenedorBox}>
+						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?style.cBtnAvatarC : [style.cBtnAvatarC, style.cBtnAvatarCLeft]}>
 							<Image
-								style={ChatStyle.photo}
+								style={style.photo}
 								width={45}
 								height={45}
 								source={{uri: e.photo}}
 						    />
 						</TouchableOpacity>
 						<Image
-							style={e.userId==id ?ChatStyle.cPhoto :[ChatStyle.cPhoto, ChatStyle.cPhotoLeft]} 
+							style={e.userId==id ?style.cPhoto :[style.cPhoto, style.cPhotoLeft]} 
 							width={60}
 							height={60}
 							source={{uri: e.cPhoto}}
 					   />
-						<TouchableOpacity style={e.userId== id ?ChatStyle.box :[ChatStyle.box, ChatStyle.boxLeft]} 
+						<TouchableOpacity style={e.userId== id ?style.box :[style.box, style.boxLeft]} 
 							onPress={()=> this.setState({showPdf:true})} >
-							<View style={ChatStyle.tituloTipoChat}>
-								<Text style={e.userId== id ?ChatStyle.cNombreTipoChat :[ChatStyle.cNombreTipoChat, ChatStyle.cNombreTipoChatLeft]}>{e.nombre}</Text>
+							<View style={style.tituloTipoChat}>
+								<Text style={e.userId== id ?[style.cNombreTipoChat, style.familia] :[style.cNombreTipoChat, style.cNombreTipoChatLeft, style.familia]}>{e.nombre}</Text>
 							</View>
-							<View style={ChatStyle.mensajeCChat}>
-		                  <Text style={e.userId== id ?ChatStyle.cDocumento :[ChatStyle.cDocumento, ChatStyle.cDocumentoLeft]}>{e.documento.slice(70, 100)}</Text>
-								<Text style={e.userId== id ?ChatStyle.cFecha   :[ChatStyle.cFecha,   ChatStyle.cFechaLeft]}>{e.fecha}</Text>
+							<View style={style.mensajeCChat}>
+		                  <Text style={e.userId== id ?style.cDocumento :[style.cDocumento, style.cDocumentoLeft]}>{e.documento.slice(70, 100)}</Text>
+								<Text style={e.userId== id ?style.cFecha   :[style.cFecha,   style.cFechaLeft]}>{e.fecha}</Text>
 							</View>
 						</TouchableOpacity>
 						{
@@ -559,13 +552,13 @@ export default class ChatComponent extends Component{
 	render(){
 		const {adjuntarAmigos, asignados, usuariosAsignados, mapa, qr, planId} = this.state
 		return(
-			<View style={ChatStyle.contenedorGeneral} > 
+			<View style={style.contenedorGeneral} > 
 				{this.renderCabezera()}
 
 			{/* AGREGAR IMAGENES */}
-				<ImageBackground source={require('../images/fondo.png')} style={ChatStyle.fondo}>	
+				<ImageBackground source={require('../assets/images/fondo.png')} style={style.fondo}>	
 					<ScrollView ref="scrollView"
-								style={ChatStyle.contenedorChat} 
+								style={style.contenedorChat} 
 								onContentSizeChange={(width,height) => this.refs.scrollView.scrollTo({y:height})}>
 						{this.renderMensajes()}		
 					</ScrollView>
@@ -574,7 +567,7 @@ export default class ChatComponent extends Component{
 			{/* BOTONES OPCIONES */}
 				{
 					this.state.showOpciones
-					&&<View style={ChatStyle.contenedorOpcionesBotones}>
+					&&<View style={style.contenedorOpcionesBotones}>
 						{this.opciones()}
 					</View>
 				}
@@ -600,13 +593,13 @@ export default class ChatComponent extends Component{
 			{this.renderQr()}
 
 			{/* FOOTER INPUT / ENVIAR */}
-				<View style={ChatStyle.footer}>
-					<View style={ChatStyle.footer1}>
-						<TouchableOpacity onPress={()=>this.setState({showOpciones:!this.state.showOpciones})} style={ChatStyle.opcionesBtn}>
-							<Image source={require('../images/opciones.png')} style={ChatStyle.opciones}  />
+				<View style={style.footer}>
+					<View style={style.footer1}>
+						<TouchableOpacity onPress={()=>this.setState({showOpciones:!this.state.showOpciones})} style={style.opcionesBtn}>
+							<Image source={require('../assets/images/opciones.png')} style={style.opciones}  />
 						</TouchableOpacity>
 						<TextInput
-							style={ChatStyle.textarea}
+							style={style.textarea}
 							onChangeText={(mensaje) => this.setState({mensaje})}
 							value={this.state.mensaje}
 							multiline = {true}
@@ -614,8 +607,8 @@ export default class ChatComponent extends Component{
 							underlineColorAndroid='transparent'
 							ref={input => { this.textInput = input }}
 						/>
-						<TouchableOpacity onPress={this.state.mensaje.length>0 ?() => this.handleSubmit(this) :null}  style={ChatStyle.enviarBtn} >
-							<Image source={require('../images/enviar.png')} style={ChatStyle.enviar}  />
+						<TouchableOpacity onPress={this.state.mensaje.length>0 ?() => this.handleSubmit(this) :null}  style={style.enviarBtn} >
+							<Image source={require('../assets/images/enviar.png')} style={style.enviar}  />
 						</TouchableOpacity>
 					</View>
 				</View>
@@ -638,14 +631,14 @@ export default class ChatComponent extends Component{
   			<QRCodeScanner
 		        onRead={this.infoQr.bind(this)}
 		        topContent={
-		          <Text style={ChatStyle.centerText}>
+		          <Text style={style.centerText}>
 		            Scanea el Qr de tu amigo
 		          </Text>
 		        }
 		        bottomContent={
-		          	<View style={ChatStyle.containerHecho}>
-			    		<TouchableOpacity  style={ChatStyle.btnHecho} onPress={()=>this.setState({modalQr:false})}>
-					    	<Text  style={ChatStyle.hecho}>!Cerrar!</Text>
+		          	<View style={style.containerHecho}>
+			    		<TouchableOpacity  style={style.btnHecho} onPress={()=>this.setState({modalQr:false})}>
+					    	<Text  style={style.hecho}>!Cerrar!</Text>
 					    </TouchableOpacity>
 					</View> 
 		        }
@@ -685,8 +678,8 @@ export default class ChatComponent extends Component{
 		]
 		return opciones.map((e, key)=>{
 			return (
-					<TouchableOpacity key={key} style={ChatStyle.btnIconoOpciones} onPress={e.click}>
-							<Image source={{uri:e.url}} style={ChatStyle.opcionesIconos} /> 	
+					<TouchableOpacity key={key} style={style.btnIconoOpciones} onPress={e.click}>
+							<Image source={{uri:e.url}} style={style.opcionesIconos} /> 	
 					</TouchableOpacity>
 				)
 		})

@@ -66,10 +66,10 @@ export default class RestriccionesPlanComponent extends Component{
 					<Image source={{ uri: e.ruta}} style={CreatePlanStyle.iconRes}/>
 					{
 						e.estado
-						?<Image source={require('../images/deneid1.png')} style={CreatePlanStyle.banRes} />
-						:<Image source={require('../images/deneid2.png')} style={CreatePlanStyle.banRes} />
+						?<Image source={require('../assets/images/deneid1.png')} style={CreatePlanStyle.banRes} />
+						:<Image source={require('../assets/images/deneid2.png')} style={CreatePlanStyle.banRes} />
 					}
-					<Text style={CreatePlanStyle.textoRes}>{e.nombre}</Text>
+					<Text style={[CreatePlanStyle.textoRes, CreatePlanStyle.familia]}>{e.nombre}</Text>
 				</TouchableOpacity>
 			)
 		})
@@ -87,12 +87,12 @@ export default class RestriccionesPlanComponent extends Component{
 		        <ScrollView>
 					<View  style={CreatePlanStyle.contenedorRes}>
 						<View style={CreatePlanStyle.touchRes}>				 
-							<Image source={require('../images/denied.png')} style={CreatePlanStyle.rutaRes} />
-							<Text style={CreatePlanStyle.textoRes}>Restricciones</Text>
+							<Image source={require('../assets/images/denied.png')} style={CreatePlanStyle.rutaRes} />
+							<Text style={[CreatePlanStyle.textoRes, CreatePlanStyle.familia]}>Restricciones</Text>
 						</View>	
 						{this.renderRestricciones()}
 						<TouchableOpacity onPress={() => { this.props.restriccion(this.state.restriccionArray, this.state.restriccionesAsignadas, this.state.restriccion)} } 
-						style={CreatePlanStyle.btnHecho}><Text style={CreatePlanStyle.hecho}>Hecho!</Text></TouchableOpacity>
+						style={CreatePlanStyle.btnHecho}><Text style={[CreatePlanStyle.hecho, CreatePlanStyle.familia]}>Hecho!</Text></TouchableOpacity>
 					</View>
 				</ScrollView>	
 			</Modal>

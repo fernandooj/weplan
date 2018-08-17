@@ -37,10 +37,10 @@ export default class facturacionComponent extends Component{
 		return this.state.pagos.map((e, key)=>{
 			return(
 				<View key={key}>
-					<Text>Metodo: {e.metodo}</Text>
-					<Text>Referencia: {e.referencia}</Text>
-					<Text>Monto: {'$ '+Number(Math.abs(e.monto)).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
-					<Text>Fecha: {e.createdAt}</Text>
+					<Text style={style.familia}>Metodo: {e.metodo}</Text>
+					<Text style={style.familia}>Referencia: {e.referencia}</Text>
+					<Text style={style.familia}>Monto: {'$ '+Number(Math.abs(e.monto)).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+					<Text style={style.familia}>Fecha: {e.createdAt}</Text>
 					<Text style={style.separador}></Text>
 				</View>
 			)
@@ -56,13 +56,13 @@ export default class facturacionComponent extends Component{
 			<View style={style.contenedor}>
 				<CabezeraComponent navigate={navigate} url={'ajustes'} texto='Facturacion'  />
 				<ScrollView style={style.subContenedor}>
-					<Text style={style.titulo}>Realizar Pago</Text>
+					<Text style={[style.titulo, style.familia]}>Realizar Pago</Text>
 					<View style={style.contenedorImagenes}>
 						<Image source={{uri:'http://www.lebrija-santander.gov.co/Ciudadanos/PublishingImages/Paginas/Pagos-en-Linea/logo-pse.PNG'}} style={style.imagen}/>
 						<Image source={{uri:'http://tintalplaza.com/wp-content/uploads/2016/05/AV-villas.jpg'}} style={style.imagen}/>
 					</View>
 					<Text style={style.separador}></Text>
-					<Text style={style.titulo}>Pagos Realizados</Text>
+					<Text style={[style.titulo, style.familia]}>Pagos Realizados</Text>
 					{this.renderPagos()}
 				</ScrollView>
 				<FooterComponent navigate={navigate} />		

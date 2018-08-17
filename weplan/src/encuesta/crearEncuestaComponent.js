@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, Image, TouchableOpacity, TextInput, ImageBackground, Alert} from 'react-native'
-import {EncuestaStyle}        from '../encuesta/style'
+import {style}        from '../encuesta/style'
 import axios                  from 'axios'
 import TakePhotoComponent     from '../takePhoto/takePhotoComponent.js'
 import socket from '../../socket.js'
@@ -39,85 +39,85 @@ export default class CrearEncuestaComponent extends Component{
   render() {
     const {enviarChat, valor, adjuntarAmigos, asignados} = this.state
     return (
-      <View style={EncuestaStyle.container}>
-        <View style={EncuestaStyle.modalIn}>
+      <View style={style.container}>
+        <View style={style.modalIn}>
           {/* icono */}
-          <TouchableOpacity style={EncuestaStyle.btnIcon}>
-            <Image source={require('../images/item5.png')} style={EncuestaStyle.icon} />
+          <TouchableOpacity style={style.btnIcon}>
+            <Image source={require('../assets/images/item5.png')} style={style.icon} />
           </TouchableOpacity>
 
           {/* rest modal */}
-          <View style={EncuestaStyle.modal}>
-            <ImageBackground source={require('../images/item2.png')} style={EncuestaStyle.header}> 
+          <View style={style.modal}>
+            <ImageBackground source={require('../assets/images/item2.png')} style={style.header}> 
               
             {/* ICONO REGRESAR */}
-              <TouchableOpacity style={EncuestaStyle.btnBack} onPress={()=>this.props.close(false)}>
-                <Image source={require('../images/item3.png')} style={EncuestaStyle.back} />
+              <TouchableOpacity style={style.btnBack} onPress={()=>this.props.close(false)}>
+                <Image source={require('../assets/images/item3.png')} style={style.back} />
               </TouchableOpacity>
 
             {/* INPUT TITULO */}
             </ImageBackground>
             
             {/* IMAGEN DECORACION TITULO */}
-            <View style={EncuestaStyle.contenedorDescripcion}>
-              <Image source={require('../images/item4.png')} style={EncuestaStyle.decoracion} />
+            <View style={style.contenedorDescripcion}>
+              <Image source={require('../assets/images/item4.png')} style={style.decoracion} />
               <TextInput 
                 placeholder='Titulo'
                 underlineColorAndroid='transparent' 
                 placeholderTextColor="#5664BA" 
                 editable = {true}
                 multiline = {true}
-                style={EncuestaStyle.descripcion}
+                style={[style.descripcion, style.familia]}
                 onChangeText={(titulo) => this.setState({titulo})}
                 maxLength={30}
               />
-              <Image source={require('../images/item4.png')} style={EncuestaStyle.decoracion} />
+              <Image source={require('../assets/images/item4.png')} style={style.decoracion} />
             </View>
           </View> 
 
         {/* PREGUNTAS */}
-          <View style={EncuestaStyle.valor} >
+          <View style={style.valor} >
 
           {/* PREGUNTA 1 */}
-            <View style={EncuestaStyle.btnPregunta}>
+            <View style={style.btnPregunta}>
               <TextInput 
                 placeholder='Opción 1'
                 underlineColorAndroid='transparent'
                 placeholderTextColor="#8F9093" 
-                style={EncuestaStyle.inputValor}
+                style={[style.inputValor, style.familia]}
                 onChangeText={(pregunta1) => this.setState({pregunta1})}
                 maxLength={17}
               />
-              <TouchableOpacity style={EncuestaStyle.btnCamera} >
+              <TouchableOpacity style={style.btnCamera} >
                 <TakePhotoComponent fuente={'camara.png'} ancho={40} alto={40}  
                   updateImagen={(imagen) => {this.setState({imagen})}} 
-                  style={EncuestaStyle.camera} />
+                  style={style.camera} />
               </TouchableOpacity>
             </View>
  
           {/* PREGUNTA 2 */}
-            <View style={EncuestaStyle.btnPregunta}>
+            <View style={style.btnPregunta}>
               <TextInput 
                 placeholder='Opción 2'
                 underlineColorAndroid='transparent'
                 placeholderTextColor="#8F9093" 
-                style={EncuestaStyle.inputValor}
+                style={[style.inputValor, style.familia]}
                 onChangeText={(pregunta2) => this.setState({pregunta2})}
                 maxLength={17}
               />
-              <TouchableOpacity style={EncuestaStyle.btnCamera} >
+              <TouchableOpacity style={style.btnCamera} >
                 <TakePhotoComponent fuente={'camara.png'} ancho={40} alto={40}  
                   updateImagen={(imagen2) => {this.setState({imagen2})}} 
-                  style={EncuestaStyle.camera} />
+                  style={style.camera} />
               </TouchableOpacity>
             </View>
           </View> 
 
           {/* Guardar */}  
-          <View style={EncuestaStyle.save} > 
-            <TouchableOpacity style={EncuestaStyle.btnSave} onPress={this.state.enviarChat=='Enviar' ?this.handleSubmit.bind(this) :null}>
-             <Image source={require('../images/item8.png')} style={EncuestaStyle.iconSave} />
-              <Text style={EncuestaStyle.adjuntar} style={EncuestaStyle.textSave}>{this.state.enviarChat}</Text>
+          <View style={style.save} > 
+            <TouchableOpacity style={style.btnSave} onPress={this.state.enviarChat=='Enviar' ?this.handleSubmit.bind(this) :null}>
+             <Image source={require('../assets/images/item8.png')} style={style.iconSave} />
+              <Text style={style.adjuntar} style={[style.textSave, style.familia]}>{this.state.enviarChat}</Text>
             </TouchableOpacity> 
           </View>
         </View>

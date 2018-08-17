@@ -51,9 +51,9 @@ export default class MisPlanesComponent extends Component{
 			return filteredData.map((e, key)=>{
 			return  <TouchableOpacity onPress={()=>this.handleSubmit(e.id)} key={key} style={MisPlanesStyle.boxPlan}>
 					<Image source={{uri: e.imagen[0]}} style={MisPlanesStyle.background} />
-					<Text style={MisPlanesStyle.nombre}>{e.nombrePlan.length<27 ?e.nombrePlan :e.nombrePlan.substring(0, 27)+' ...'}</Text>
+					<Text style={[MisPlanesStyle.nombre, MisPlanesStyle.familia]}>{e.nombrePlan.length<27 ?e.nombrePlan :e.nombrePlan.substring(0, 27)+' ...'}</Text>
 					<View style={MisPlanesStyle.boxPlan1} >
-						<Text style={MisPlanesStyle.fechaLugar}>{e.fecha}</Text>
+						<Text style={[MisPlanesStyle.fechaLugar, MisPlanesStyle.familia]}>{e.fecha}</Text>
 						<Text style={e.total>0 ?MisPlanesStyle.debe :[MisPlanesStyle.debe, MisPlanesStyle.noDebe]}></Text>
 					</View>
 				</TouchableOpacity>
@@ -67,7 +67,7 @@ export default class MisPlanesComponent extends Component{
 		return(
 			<View style={MisPlanesStyle.contenedorCabezera}> 
 				<TouchableOpacity onPress={()=>navigate('inicio')} style={MisPlanesStyle.btnClose} >
-					<Image source={require('../images/back.png')} style={MisPlanesStyle.imagenClose} />
+					<Image source={require('../assets/images/back.png')} style={MisPlanesStyle.imagenClose} />
 				</TouchableOpacity>
 				<TextInput
       				style={MisPlanesStyle.input}
@@ -77,7 +77,7 @@ export default class MisPlanesComponent extends Component{
            			placeholder="Buscar"
            			placeholderTextColor="#8F9093" 
 			    />
-			    <Image source={require('../images/search.png')} style={MisPlanesStyle.btnBuscar} />
+			    <Image source={require('../assets/images/search.png')} style={MisPlanesStyle.btnBuscar} />
 			</View>
 		)
 	}
@@ -93,7 +93,7 @@ export default class MisPlanesComponent extends Component{
 				}
 				{
 					this.state.planesAsignados==1
-					?<Image source={require('../images/sinPlanes.png')} style={MisPlanesStyle.sinPlanes} />
+					?<Image source={require('../assets/images/sinPlanes.png')} style={MisPlanesStyle.sinPlanes} />
 					:this.state.planesAsignados==2
 					?<ScrollView showsVerticalScrollIndicator={false}>
 						<View style={MisPlanesStyle.container}>

@@ -3,15 +3,17 @@ var screenWidth = Dimensions.get('window').width;
 var screenHeight = Dimensions.get('window').height;
 
 import { MediaQueryStyleSheet } from "react-native-responsive";
-export const ChatStyle = MediaQueryStyleSheet.create({ 
+export const style = MediaQueryStyleSheet.create({ 
  	contenedorGeneral:{
  		flex:1,
  		backgroundColor:'#f8f7fc'
  	},
+ 	familia:{
+		fontFamily:'Futura-CondensedLight',
+	},
  	contenedorChat:{
  		height:1900,
  		flex:1,
-
  	},
  	////////////////// cabezera
  	cabezera:{
@@ -58,10 +60,12 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 	},
 	nombrePlan:{
 		color:'#ffffff',
-		fontSize:15,
+		fontSize:18,
 		marginLeft:30, 
 		width:150,
 		lineHeight: 17,
+		// borderWidth:1,
+		// borderColor:'red'
 	},
 	regresar:{
 		width:screenWidth/5,
@@ -362,7 +366,7 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 	contenedorInteres:{
   		alignItems: 'flex-end',
 		width:'85%',
- 		marginTop:-35,
+ 		marginTop:-30,
  	},
  	contenedorInteresLeft:{
  		alignItems: 'center',
@@ -443,7 +447,8 @@ export const ChatStyle = MediaQueryStyleSheet.create({
 	pDescripcion:{
 		color:'#5664ba',
 		width:160,
-		textAlign:'center'
+		textAlign:'center',
+		fontSize:20
 	},
 	decoracion:{
 		width:24,

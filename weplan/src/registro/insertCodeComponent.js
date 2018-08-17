@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, Dimensions, TouchableHighlight, TextInput, Alert, ScrollView, ImageBackground} from 'react-native'
-import {LoginStyle} from '../login/style'
+import {style} from '../login/style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
 
@@ -16,16 +16,16 @@ export default class insertCodeComponent extends Component{
 		const {navigate} = this.props.navigation
 		const {codigo} = this.state 
 		return(
-			<ImageBackground style={LoginStyle.fondo} >
+			<ImageBackground style={style.fondo} >
 				<View>
 					<Image
-						style={LoginStyle.image}
+						style={style.image}
 						width={140} // height will be calculated automatically
-						source={require('../images/logo.png')}
+						source={require('../assets/images/logo.png')}
 				   />
 				</View>
 				<TextInput
-			        style={LoginStyle.input}
+			        style={[style.input, style.familia]}
 			        onChangeText={(text) => this.setState({text})}
 			        value={this.state.text}
 			        underlineColorAndroid='transparent'
@@ -34,12 +34,12 @@ export default class insertCodeComponent extends Component{
            			keyboardType='numeric'
            			maxLength={4} 
 			    />			 
-			    <TouchableHighlight  style={LoginStyle.signup_btn} onPress={this.handleSubmit.bind(this)}>
-			    	<Text  style={LoginStyle.textSubmit}>Activar Cuenta</Text>
+			    <TouchableHighlight  style={style.signup_btn} onPress={this.handleSubmit.bind(this)}>
+			    	<Text  style={[style.textSubmit, style.familia]}>Activar Cuenta</Text>
 			    </TouchableHighlight>
 			    {
 			    	codigo==0
-			    	?<Text style={LoginStyle.textAlert}>Codigo Incorrecto</Text>
+			    	?<Text style={[style.textAlert, style.familia]}>Codigo Incorrecto</Text>
 			    	:null
 			    }
 			</ImageBackground>

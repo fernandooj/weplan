@@ -2,13 +2,16 @@ import {StyleSheet, Dimensions} from 'react-native';
 var screenHeight = Dimensions.get('window').height;
 var screenWidth = Dimensions.get('window').width;
 import { MediaQueryStyleSheet } from "react-native-responsive";
-export const EncuestaStyle = MediaQueryStyleSheet.create({ 
+export const style = MediaQueryStyleSheet.create({ 
 	//////////// pagina principal   //////////
 	contentItem: {
 		flex: 1,
 		minHeight:screenHeight,
 		backgroundColor: '#F8F8F8',		 
 	}, 
+	familia:{
+		fontFamily:'Futura-CondensedLight',
+	},
 	subContentItem:{
 		flex: 1,
 		minHeight:screenHeight,
@@ -253,7 +256,7 @@ export const EncuestaStyle = MediaQueryStyleSheet.create({
 		textAlign: 'center',
 		justifyContent: 'center',
 		width:'80%',
-		fontSize:18, 
+		fontSize:25, 
 		color:'#5664BA'
 	},
 	valor:{
@@ -328,7 +331,13 @@ export const EncuestaStyle = MediaQueryStyleSheet.create({
 	},
 	textSave:{
 		marginTop:5,
+		fontSize:20,
 		color:'#ffffff'
+	},
+	pTitulo:{
+		fontSize:20,
+		marginTop:4,
+		marginBottom:4
 	},
 
 	////////////////////////////////////////////////////////////////////////////////////

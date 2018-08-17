@@ -1,12 +1,14 @@
 import {StyleSheet, Dimensions} from 'react-native';
 var screenHeight = Dimensions.get('window');
 import { MediaQueryStyleSheet } from "react-native-responsive";
-export const planes = MediaQueryStyleSheet.create({
-	 
+export const style = MediaQueryStyleSheet.create({
 	contenedor:{
 		alignItems: 'center',
 		flex: 1,
 		backgroundColor:"#ffffff",
+	},
+	familia:{
+		fontFamily:'Futura-CondensedLight',
 	},
 	subContenedor:{
 		width:'80%',

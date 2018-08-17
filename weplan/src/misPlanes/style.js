@@ -5,8 +5,10 @@ import { MediaQueryStyleSheet } from "react-native-responsive";
 export const MisPlanesStyle = MediaQueryStyleSheet.create({
 	contenedor:{
 		flex: 1,
-		alignItems: 'center',
-		 
+		alignItems: 'center', 
+	},
+	familia:{
+		fontFamily:'Futura-CondensedLight',
 	},
 	/////////////////////////////////////////////////////////////////////////// cabezera
 	contenedorCabezera:{
@@ -121,7 +123,7 @@ export const MisPlanesStyle = MediaQueryStyleSheet.create({
 			marginBottom:10
 		},
 		background:{ 
-	 		height: Height/3.5, 
+	 		height: Height/3.3, 
 		},
 
 	}

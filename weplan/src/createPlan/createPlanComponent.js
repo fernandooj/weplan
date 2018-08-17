@@ -6,7 +6,9 @@ import axios from 'axios'
 import DatePicker from 'react-native-datepicker'
 import moment from 'moment'
 import Slideshow from 'react-native-slideshow';
-
+import AlertInput from 'react-native-alert-input';
+import ModalPicker from 'react-native-modal-picker'
+import StarRating from 'react-native-star-rating';
 
 import RestriccionesPlanComponent from './restricciones.js'
 import MapaPlanComponent 		    from './mapa.js'
@@ -14,8 +16,7 @@ import AgregarAmigosComponent    from '../agregarAmigos/agregarAmigos.js'
 import TakePhotoComponent 	  		 from '../takePhoto/takePhotoComponent.js'
 import CabezeraComponent from '../ajustes/cabezera.js'
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
-import AlertInput from 'react-native-alert-input';
-import ModalPicker from 'react-native-modal-picker'
+
 
 const screenWidth = Dimensions.get('window').width;
 const influencia = [
@@ -121,10 +122,10 @@ export default class createPlanComponent extends Component{
 		return(
 			<View style={CreatePlanStyle.tipoPlan}>
 				<TouchableOpacity onPress={() => this.setState({tipoPlan:false, publico:true})} style={CreatePlanStyle.btnModal}> 
-	    			<Text style={CreatePlanStyle.textModal}>CREAR PLAN PÚBLICO</Text>
+	    			<Text style={[CreatePlanStyle.textModal, CreatePlanStyle.familia]}>CREAR PLAN PÚBLICO</Text>
 				</TouchableOpacity>	
 				<TouchableOpacity onPress={() => this.setState({tipoPlan:false, publico:false})} style={CreatePlanStyle.btnModal}> 
-	    			<Text style={CreatePlanStyle.textModal}>CREAR PLAN PRIVADO</Text>
+	    			<Text style={[CreatePlanStyle.textModal, CreatePlanStyle.familia]}>CREAR PLAN PRIVADO</Text>
 				</TouchableOpacity>	
 			</View>
 		)
@@ -136,7 +137,6 @@ export default class createPlanComponent extends Component{
 	render(){
 		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, area, costo} = this.state
 		const {navigate} = this.props.navigation
-		console.log(costo)
 		return (
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} > 
 				{/* si la ubicacion no tiene */}
@@ -153,7 +153,7 @@ export default class createPlanComponent extends Component{
 						<TakePhotoComponent fuente={'cam.png'} ancho={screenWidth} alto={160} updateImagen={(imagen) => {this.setState({imagen})}}   />
 						<View style={CreatePlanStyle.textoCargado2}>
 							<TextInput
-								style={CreatePlanStyle.nombreCargado}
+								style={[CreatePlanStyle.nombreCargado, CreatePlanStyle.familia]}
 								onChangeText={(nombre) => this.setState({nombre,iconCreate:false})}
 								value={nombre}
 								underlineColorAndroid='transparent'
@@ -170,12 +170,24 @@ export default class createPlanComponent extends Component{
 					      onPositionChanged={position => this.setState({ position })} 
 					   />
 					   	<View style={CreatePlanStyle.textoCargado}>
-							<Text style={CreatePlanStyle.nombreCargado}>
-								{cargaPlan.nombre} 
+							<Text style={[CreatePlanStyle.nombreCargado, CreatePlanStyle.familia]}>
+								{cargaPlan.nombre.toUpperCase()} 
 							</Text>
-							<Text  style={CreatePlanStyle.ByCargado}>
+							<Text style={[CreatePlanStyle.ByCargado, CreatePlanStyle.familia]}>
 								Por {cargaPlan.idUsuario.nombre}
 							</Text>
+							<View style={CreatePlanStyle.calificacion}>
+								<StarRating
+							        disabled={false}
+							        maxStars={5}
+							        rating={(cargaPlan.idUsuario.calificacion.reduce((a, b) => a + b, 0))/cargaPlan.idUsuario.calificacion.length}
+							        starSize={14}
+							        style={CreatePlanStyle.rating}
+							        fullStarColor='#ffffff'
+							        emptyStarColor='#ffffff'
+							    />
+							    <Text style={[CreatePlanStyle.votaciones, CreatePlanStyle.familia]}>{cargaPlan.idUsuario.calificacion.length} votaciones</Text>
+							</View>
 						</View>
 					</View>
 				}
@@ -186,7 +198,7 @@ export default class createPlanComponent extends Component{
 						!cargaPlan.descripcion
 						?<View style={CreatePlanStyle.cajaInpunts}>
 							<TextInput
-								style={CreatePlanStyle.textarea}
+								style={[CreatePlanStyle.textarea, CreatePlanStyle.familia]}
 								onChangeText={(descripcion) => this.setState({descripcion})}
 								value={this.state.descripcion}
 								underlineColorAndroid='transparent'
@@ -205,7 +217,7 @@ export default class createPlanComponent extends Component{
 					{
 						!cargaPlan
 						?<View style={CreatePlanStyle.cajaInpunts}>
-					    	<Image source={require('../images/fecha.png')} style={CreatePlanStyle.iconInput} />
+					    	<Image source={require('../assets/images/fecha.png')} style={CreatePlanStyle.iconInput} />
 						   <DatePicker
 						   		minDate={this.state.fechaHoy}
 					    		customStyles={{
@@ -239,7 +251,7 @@ export default class createPlanComponent extends Component{
 						   />
 						</View> 
 						:<View style={CreatePlanStyle.cajaInpunts}>
-							<Image source={require('../images/fecha.png')} style={CreatePlanStyle.iconInput} />
+							<Image source={require('../assets/images/fecha.png')} style={CreatePlanStyle.iconInput} />
 							<Text style={CreatePlanStyle.btnInputs}>{cargaPlan.fechaLugar}</Text>
 						</View>
 					}
@@ -249,13 +261,13 @@ export default class createPlanComponent extends Component{
 					{  
 						!cargaPlan.lat
 						?<View style={CreatePlanStyle.cajaInpunts}>
-				    		<Image source={require('../images/map.png')} style={CreatePlanStyle.iconInput} />
+				    		<Image source={require('../assets/images/map.png')} style={CreatePlanStyle.iconInput} />
 					    	<TouchableOpacity onPress={() => this.setState({mapa:true})}  style={direccion ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>
-					    		<Text style={direccion ?CreatePlanStyle.textos :CreatePlanStyle.textosActivo}>{direccion ?direccion.substr(0,60) :'Ubicación'}</Text>
+					    		<Text style={direccion ?[CreatePlanStyle.textos, CreatePlanStyle.familia] :[CreatePlanStyle.textosActivo, CreatePlanStyle.familia]}>{direccion ?direccion.substr(0,60) :'Ubicación'}</Text>
 					    	</TouchableOpacity>
 						</View>
 					   :<TouchableOpacity onPress={() => this.setState({mapa:true})} style={CreatePlanStyle.cajaInpunts}> 
-			    			<Image source={require('../images/map.png')} style={CreatePlanStyle.iconInput} />
+			    			<Image source={require('../assets/images/map.png')} style={CreatePlanStyle.iconInput} />
 			    			<View style={direccion ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>
 					    		<Text style={[CreatePlanStyle.textosActivo]}>{cargaPlan.lugar}</Text>
 					    	</View>
@@ -274,11 +286,11 @@ export default class createPlanComponent extends Component{
 
 				{/*  restricciones  */}
 					<View style={CreatePlanStyle.cajaInpunts}>
-				    	<Image source={require('../images/denied.png')} style={CreatePlanStyle.iconInput} />
+				    	<Image source={require('../assets/images/denied.png')} style={CreatePlanStyle.iconInput} />
 					    {
 					    	restricciones.length==0
 					    	?<TouchableOpacity onPress={()=>this.setState({ restriccion:true})} style={restricciones.length>0 ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>
-						    	<Text style={restricciones.length>0 ?CreatePlanStyle.textos :CreatePlanStyle.textosActivo}>{restricciones.length>0 ?'tienes: '+restricciones.length+' Restricciones' :'Restricciones'}</Text>
+						    	<Text style={restricciones.length>0 ?[CreatePlanStyle.textos, CreatePlanStyle.familia] :[CreatePlanStyle.textosActivo, CreatePlanStyle.familia]}>{restricciones.length>0 ?'tienes: '+restricciones.length+' Restricciones' :'Restricciones'}</Text>
 						    </TouchableOpacity>
 					    	:<View style={CreatePlanStyle.contentAdd}>
 					    		<View style={CreatePlanStyle.agregadosContenedor}>
@@ -287,7 +299,7 @@ export default class createPlanComponent extends Component{
 						    	{
 						    		!this.props.navigation.state.params
 						    		&&<TouchableOpacity onPress={() => this.setState({restriccion:true})} style={CreatePlanStyle.addBtn}>
-							    		<Image source={require('../images/add.png')} style={CreatePlanStyle.add} />
+							    		<Image source={require('../assets/images/add.png')} style={CreatePlanStyle.add} />
 							    	</TouchableOpacity>
 						    	}
 						    </View>
@@ -309,18 +321,18 @@ export default class createPlanComponent extends Component{
 				{
 					!publico
 					&&<View style={CreatePlanStyle.cajaInpunts}>
-				    	<Image source={require('../images/friends.png')} style={CreatePlanStyle.iconInput} />
+				    	<Image source={require('../assets/images/friends.png')} style={CreatePlanStyle.iconInput} />
 				    	{	
 				    		asignados.length==0
 				    		?<TouchableOpacity onPress={() => this.setState({adjuntarAmigos:true})}>
-						    	<Text style={[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>{asignados.length>0 ?'tienes: '+asignados.length+' Amigos' :' Invitar Amigos'}</Text>
+						    	<Text style={[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input, CreatePlanStyle.familia]}>{asignados.length>0 ?'tienes: '+asignados.length+' Amigos' :' Invitar Amigos'}</Text>
 						    </TouchableOpacity>
 						    :<View style={CreatePlanStyle.contentAdd}>
 						    	<View style={CreatePlanStyle.agregadosContenedor}>
 						    		{this.renderUsuariosAsignados()} 
 						    	</View>
 						    	<TouchableOpacity onPress={() => this.setState({adjuntarAmigos:true})} style={CreatePlanStyle.addBtn}>
-						    		<Image source={require('../images/add.png')} style={CreatePlanStyle.add} />
+						    		<Image source={require('../assets/images/add.png')} style={CreatePlanStyle.add} />
 						    	</TouchableOpacity>
 						    </View>
 				    	}
@@ -342,9 +354,9 @@ export default class createPlanComponent extends Component{
 				{/* Area de influencia  */}
 				{	publico
 					&&<View style={CreatePlanStyle.cajaInpunts}>
-						<Image source={require('../images/area.png')} style={CreatePlanStyle.iconInputArea} />	
+						<Image source={require('../assets/images/area.png')} style={CreatePlanStyle.iconInputArea} />	
 					    <View style={CreatePlanStyle.contenedorArea}>
-					    	<Text style={CreatePlanStyle.costoPlan}>Costo plan: {costo}</Text>
+					    	<Text style={[CreatePlanStyle.costoPlan, CreatePlanStyle.familia]}>Costo plan: {costo}</Text>
 					    	{/*<ModalPicker
 				                data={influencia}
 				                initValue="Area de influencia"
@@ -360,9 +372,9 @@ export default class createPlanComponent extends Component{
 				{/*  Crear Plan  */}
 					{
 						iconCreate
-						?<Image source={require('../images/createDisable.png')} style={CreatePlanStyle.createIconDisable} />
+						?<Image source={require('../assets/images/createDisable.png')} style={CreatePlanStyle.createIconDisable} />
 						:<TouchableOpacity onPress={this.handleSubmit.bind(this)} style={CreatePlanStyle.create}>
-							<Image source={require('../images/create.png')} style={CreatePlanStyle.createIcon} />
+							<Image source={require('../assets/images/create.png')} style={CreatePlanStyle.createIcon} />
 						</TouchableOpacity>
 					}
 			    </View>	
@@ -375,7 +387,7 @@ export default class createPlanComponent extends Component{
  				return(
 	 				<View key={key} >
 	 					<Image source={{uri:e.photo}} style={CreatePlanStyle.avatar} />
-	 					<Image source={require('../images/agregado.png')} style={CreatePlanStyle.iconAgregado} />
+	 					<Image source={require('../assets/images/agregado.png')} style={CreatePlanStyle.iconAgregado} />
 	 					<Text style={CreatePlanStyle.textoAgregado} >{e.nombre}</Text>
 	 				</View>
 	 			)
@@ -388,7 +400,7 @@ export default class createPlanComponent extends Component{
  				return(
 	 				<View key={key} >
 	 					<Image source={{uri:e.ruta}} style={CreatePlanStyle.avatar} />
-	 					<Image source={require('../images/deneid1.png')} style={CreatePlanStyle.banResActiveAdd} />
+	 					<Image source={require('../assets/images/deneid1.png')} style={CreatePlanStyle.banResActiveAdd} />
 	 					 
 	 				</View>
 	 			)

@@ -2,13 +2,16 @@ import {StyleSheet, Dimensions} from 'react-native';
 var screenHeight = Dimensions.get('window').height;
 var screenWidth = Dimensions.get('window').width;
 import { MediaQueryStyleSheet } from "react-native-responsive";
-export const ItemStyle = MediaQueryStyleSheet.create({ 
+export const style = MediaQueryStyleSheet.create({ 
 	//////////// pagina principal   //////////
 	contentItem: {
 		flex: 1,
 		minHeight:screenHeight,
 		backgroundColor: '#F8F8F8',		 
 	}, 
+	familia:{
+		fontFamily:'Futura-CondensedLight',
+	},
 	subContentItem:{
 		flex: 1,
 	 	minHeight:screenHeight,
@@ -65,12 +68,13 @@ export const ItemStyle = MediaQueryStyleSheet.create({
 		backgroundColor:'#94a5f3',
 		padding:5,
 		marginTop:10,
-		width:110,
+		width:100,
 		borderRadius:20,
 		alignItems: 'center',
 	},
 	textCloseItem:{
 		color:'#ffffff',
+		fontSize:15
 	},
 	botonFirst:{
 		borderTopWidth:0
@@ -102,7 +106,7 @@ export const ItemStyle = MediaQueryStyleSheet.create({
 		fontSize:13
 	},
 	tituloItem:{
-		fontSize:16,
+		fontSize:21,
 	},
 	valueItems:{
 		fontSize:22,

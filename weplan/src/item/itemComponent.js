@@ -1,7 +1,7 @@
 
 import React, {Component} from 'react'
 import {View, Text, TouchableOpacity, ScrollView, Image, Alert} from 'react-native'
-import {ItemStyle} from '../item/style'
+import {style} from '../item/style'
  
 import axios from 'axios'
 import CrearItemComponent from './crearItemComponent'
@@ -72,27 +72,27 @@ export default class ItemComponent extends Component{
 		const {render, total}=this.state
 		return (
 			<View>
-				<View style={ItemStyle.headerCollapsable}>
+				<View style={style.headerCollapsable}>
 			    	<TouchableOpacity onPress={()=>this.peticiones(render==1 ?0 :1)}>
-			    		<Text style={ItemStyle.headerText}><Icon name={render==1 ?'angle-down' :'angle-right'} allowFontScaling style={ItemStyle.iconMenu} /> Artículos Pendientes</Text>
+			    		<Text style={[style.headerText, style.familia]}><Icon name={render==1 ?'angle-down' :'angle-right'} allowFontScaling style={style.iconMenu} /> Artículos Pendientes</Text>
 			    	</TouchableOpacity>
 			    	{
 			    	 	render==1
 			    	 	&&this.articulosPendientes()
 			    	}
 			  	</View>
-			  	<View style={ItemStyle.headerCollapsable}>
+			  	<View style={style.headerCollapsable}>
 			    	<TouchableOpacity onPress={()=>this.peticiones(render==2 ?0 :2)}>
-			    		<Text style={ItemStyle.headerText}><Icon name={render==2 ?'angle-down' :'angle-right'} allowFontScaling style={ItemStyle.iconMenu} /> Mis Artículos</Text>
+			    		<Text style={[style.headerText, style.familia]}><Icon name={render==2 ?'angle-down' :'angle-right'} allowFontScaling style={style.iconMenu} /> Mis Artículos</Text>
 			    	</TouchableOpacity>
 			    	{	render==2
 			    		&&<View>
 			    			<View>
 			    				{this.articulosMios()}{this.articulosAsignados()}
 			    			</View>
-				    		<View style={ItemStyle.contenedorTotal}>
-				    			<Text style={ItemStyle.textoTotal}>Total</Text>
-				    			<Text style={total>=0 ?ItemStyle.valueTotal :ItemStyle.valueNoAsignadoTotal}>
+				    		<View style={style.contenedorTotal}>
+				    			<Text style={[style.textoTotal, style.familia]}>Total</Text>
+				    			<Text style={total>=0 ?[style.valueTotal, style.familia] :[style.valueNoAsignadoTotal, style.familia]}>
 									{'$ '+Number(total).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
 								</Text>
 				    		</View>
@@ -100,9 +100,9 @@ export default class ItemComponent extends Component{
 			    	}
 			  	</View>
 
-			  	<View style={[ItemStyle.headerCollapsable, ItemStyle.headerCollapsableFirst]}>
+			  	<View style={[style.headerCollapsable, style.headerCollapsableFirst]}>
 			    	<TouchableOpacity onPress={()=>this.peticiones(render==3 ?0 :3)}>
-			    		<Text style={[ItemStyle.headerText, ItemStyle.headerTextFirst]}><Icon name={render==3 ?'angle-down' :'angle-right'} allowFontScaling style={ItemStyle.iconMenu} /> Artículos Publicados</Text>
+			    		<Text style={[style.headerText, style.headerTextFirst, style.familia]}><Icon name={render==3 ?'angle-down' :'angle-right'} allowFontScaling style={style.iconMenu} /> Artículos Publicados</Text>
 			    	</TouchableOpacity>
 			    	 {
 			    	 	render==3
@@ -115,20 +115,20 @@ export default class ItemComponent extends Component{
 	articulosPendientes(){
 		return this.state.articulosPendientes.map((e, key)=>{
 			return (
-			    <View style={ItemStyle.content} key={key}>
-			  		<TouchableOpacity style={!key==0 ?ItemStyle.filaDeuda: [ItemStyle.filaDeuda, ItemStyle.filaDeuda]}>
-				   		<View style={ItemStyle.contentText}>
-					   		<Text style={ItemStyle.tituloItem}>
+			    <View style={style.content} key={key}>
+			  		<TouchableOpacity style={!key==0 ?style.filaDeuda: [style.filaDeuda, style.filaDeuda]}>
+				   		<View style={style.contentText}>
+					   		<Text style={[style.tituloItem, style.familia]}>
 					   			{e.titulo}  
 					   		</Text>
-				   		 	<Text style={ItemStyle.by}>By {e.nombre}</Text>  
+				   		 	<Text style={[style.by, style.familia]}>By {e.nombre}</Text>  
 				   		</View>	
 				   		<View>
-							<Text style={ItemStyle.valorPositivo}>
+							<Text style={[style.valorPositivo, style.familia]}>
 								{'$ '+Number(e.deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
 							</Text>
-							<TouchableOpacity onPress={()=>this.aceptarItem(e.id, e.token, e.titulo, e.imagen, e.deuda, e.valor)} style={ItemStyle.aceptarPendiente}>
-								<Text>Aceptar</Text>
+							<TouchableOpacity onPress={()=>this.aceptarItem(e.id, e.token, e.titulo, e.imagen, e.deuda, e.valor)} style={style.aceptarPendiente}>
+								<Text style={style.familia}>Aceptar</Text>
 							</TouchableOpacity>
 						</View>
 				   	</TouchableOpacity>
@@ -173,20 +173,20 @@ export default class ItemComponent extends Component{
 	articulosPublicados(){
 		return this.state.articulosPublicados.map((e, key)=>{
 			return (
-			  <View style={ItemStyle.content} key={key}>
-			  		<TouchableOpacity style={!key==0 ?ItemStyle.filaDeuda: [ItemStyle.filaDeuda, ItemStyle.filaDeuda]}>
-				   		<View style={ItemStyle.contentText}>
-					   		<Text style={ItemStyle.tituloItem}>
+			  <View style={style.content} key={key}>
+			  		<TouchableOpacity style={!key==0 ?style.filaDeuda: [style.filaDeuda, style.filaDeuda]}>
+				   		<View style={style.contentText}>
+					   		<Text style={[style.tituloItem, style.familia]}>
 					   			{e.titulo}  
 					   		</Text>
-				   		 	<Text style={ItemStyle.by}>By {e.nombre}</Text>  
+				   		 	<Text style={[style.by, style.familia]}>By {e.nombre}</Text>  
 				   		</View>	
 				   		<View>
-							<Text style={ItemStyle.valorPositivo}>
+							<Text style={[style.valorPositivo, style.familia]}>
 								{'$ '+Number(e.deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
 							</Text>
-							<TouchableOpacity onPress={()=>this.ingresarItem(e.id, e.token, e.titulo, e.imagen, e.deuda, e.valor)} style={ItemStyle.aceptarPendiente}>
-								<Text>Me Interesa</Text>
+							<TouchableOpacity onPress={()=>this.ingresarItem(e.id, e.token, e.titulo, e.imagen, e.deuda, e.valor)} style={style.aceptarPendiente}>
+								<Text style={style.familia}>Me Interesa</Text>
 							</TouchableOpacity>
 						</View>
 				   	</TouchableOpacity>
@@ -217,22 +217,22 @@ export default class ItemComponent extends Component{
 	   const {navigate} = this.props.navigation
 	   	return this.state.pago.map((e, key)=>{
 			return (
-			   <View style={ItemStyle.content} key={key}>
-			   		<View style={!key==0 ?ItemStyle.boton: [ItemStyle.boton, ItemStyle.botonFirst]}>
-				  		<TouchableOpacity style={ItemStyle.infoItem} onPress={()=>navigate('pagoDeuda', {id:e.id, valor:e.deuda, planId:this.state.planId})}>
-					   		<View style={ItemStyle.contentText}>
-						   		<Text style={ItemStyle.tituloItem}>
+			   <View style={style.content} key={key}>
+			   		<View style={!key==0 ?style.boton: [style.boton, style.botonFirst]}>
+				  		<TouchableOpacity style={style.infoItem} onPress={()=>navigate('pagoDeuda', {id:e.id, valor:e.deuda, planId:this.state.planId})}>
+					   		<View style={style.contentText}>
+						   		<Text style={[style.tituloItem, style.familia]}>
 						   			{e.titulo}  
 						   		</Text>
 					   		</View>	
-							<Text style={ItemStyle.valorPositivo}>
+							<Text style={[style.valorPositivo, style.familia]}>
 								{'$ '+Number(e.deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
 							</Text>
 					   	</TouchableOpacity>
 					   	{
 					   		e.abierto
-					   		&&<TouchableOpacity style={ItemStyle.closeItem} onPress={()=>this.cerrarItem(e.id, e.titulo)}>
-						   		<Text style={ItemStyle.textCloseItem}>Cerrar Artículo</Text>
+					   		&&<TouchableOpacity style={style.closeItem} onPress={()=>this.cerrarItem(e.id, e.titulo)}>
+						   		<Text style={[style.textCloseItem, style.familia]}>Cerrar Artículo</Text>
 						   	</TouchableOpacity>
 					   	}
 					</View>
@@ -245,16 +245,16 @@ export default class ItemComponent extends Component{
  
 	   	return this.state.deuda.map((e, key)=>{
 			return (
-			   <View style={ItemStyle.content} key={key}>
-			  		<TouchableOpacity style={!key==0 ?ItemStyle.filaDeuda: [ItemStyle.filaDeuda, ItemStyle.filaDeuda]} 
+			   <View style={style.content} key={key}>
+			  		<TouchableOpacity style={!key==0 ?style.filaDeuda: [style.filaDeuda, style.filaDeuda]} 
 			  			 onPress={()=>navigate('pago', {id:e.id, valor:e.deuda, planId:this.state.planId})}>
-				   		<View style={ItemStyle.contentText}>
-					   		<Text style={ItemStyle.tituloItem}>
+				   		<View style={style.contentText}>
+					   		<Text style={[style.tituloItem, style.familia]}>
 					   			{e.titulo}  
 					   		</Text>
-				   		 	<Text style={ItemStyle.by}>By {e.nombre}</Text>  
+				   		 	<Text style={[style.by, style.familia]}>By {e.nombre}</Text>  
 				   		</View>	
-						<Text style={ItemStyle.valorNegativo}>
+						<Text style={style.valorNegativo}>
 							{'$ '+Number(e.deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
 						</Text>
 				   	</TouchableOpacity>
@@ -269,7 +269,7 @@ export default class ItemComponent extends Component{
 		const {navigate} = this.props.navigation
 		return (
 			<ScrollView>
-				<View  style={ItemStyle.contentItem}>
+				<View  style={style.contentItem}>
 					<CabezeraComponent navigate={navigate} url={'chat'} parameter={this.state.planId} />
 					
 					  	{/*****   show the modal to create component	*****/}
@@ -282,11 +282,11 @@ export default class ItemComponent extends Component{
 						  		 />
 						  		:null 
 						  	}
-						<View style={ItemStyle.subContentItem}>
+						<View style={style.subContentItem}>
 						{/*****   boton para mostrar crear item	*****/}
-						  	<TouchableOpacity onPress={()=>this.setState({show:true})} style={ItemStyle.contenedorNuevo}>
-								<Image source={require('../images/nuevo.png')} style={ItemStyle.btnNuevoGrupo} />
-								<Text style={ItemStyle.CrearItem}>Crear Artículo</Text>
+						  	<TouchableOpacity onPress={()=>this.setState({show:true})} style={style.contenedorNuevo}>
+								<Image source={require('../assets/images/nuevo.png')} style={style.btnNuevoGrupo} />
+								<Text style={[style.CrearItem, style.familia]}>Crear Artículo</Text>
 						  	</TouchableOpacity>
 						  	
 						 	{this.renderAcordeon()}

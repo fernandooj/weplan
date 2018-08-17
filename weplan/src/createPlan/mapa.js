@@ -111,11 +111,11 @@ export default class MapaPlanComponent extends Component{
 		        }}>
 					<View style={CreatePlanStyle.tituloMapa}>
 						<TouchableOpacity onPress={(e)=>{this.props.close(this.state.asignadosEmpty)}}  style={CreatePlanStyle.btnClose} >
-							<Image source={require('../images/back.png')} style={CreatePlanStyle.imagenClose} />
+							<Image source={require('../assets/images/back.png')} style={CreatePlanStyle.imagenClose} />
 						</TouchableOpacity>
 						{
 							!ubicacionDefecto.infoplan || ubicacionDefecto.muestraBtnHecho
-							&&<GooglePlacesAutocomplete
+							?<GooglePlacesAutocomplete
 							placeholder='Buscar'
 							minLength={2} // minimum length of text to search
 							autoFocus={false}
@@ -137,10 +137,10 @@ export default class MapaPlanComponent extends Component{
 							}}
 							styles={{
 									textInputContainer: {
-									width: '100%'
+									width: '100%',
 								},
 									description: {
-									fontWeight: 'bold'
+									fontWeight: 'bold',
 								},
 									predefinedPlacesDescription: {
 									color: '#1faadb'
@@ -160,6 +160,7 @@ export default class MapaPlanComponent extends Component{
 							filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3', 'sublocality']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
 							debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
 						/>
+						:null
 						}
 		          		
 		          	</View>		
@@ -186,6 +187,11 @@ export default class MapaPlanComponent extends Component{
 						  />
 				        </MapView>
 				        {
+				        	!ubicacionDefecto.infoplan || ubicacionDefecto.muestraBtnHecho
+							?<Text style={[CreatePlanStyle.textArrastar, CreatePlanStyle.familia]}>Puedeas presionar y arrastar el marcador a cualquier lugar</Text>
+							:null
+				        }
+				        {
 				        	inputValor
 				        	&&<TextInputMask
 			                  ref="text"
@@ -204,7 +210,7 @@ export default class MapaPlanComponent extends Component{
 					       		<TouchableOpacity 
 					       			onPress={() => { this.props.updateStateX(this.state.x.latitude, this.state.x.longitude, direccion, km, valorInicial)} } 
 									style={CreatePlanStyle.btnHecho}>
-									<Text style={CreatePlanStyle.hecho}>Hecho !</Text>
+									<Text style={[CreatePlanStyle.hecho, CreatePlanStyle.familia]}>Hecho !</Text>
 								</TouchableOpacity>
 							</View>
 							:null

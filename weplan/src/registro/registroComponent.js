@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, Dimensions, TouchableHighlight, TextInput, Alert, ScrollView, ImageBackground} from 'react-native'
-import {LoginStyle} from '../login/style'
+import {style} from '../login/style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
  
@@ -18,16 +18,16 @@ export default class RegistroComponent extends Component{
 	render(){
 		const {codigo} = this.state 
 		return(
-			<ImageBackground style={LoginStyle.fondo}  >
+			<ImageBackground style={style.fondo}  >
 				<View>
 					<Image
-						style={LoginStyle.image}
+						style={style.image}
 						width={140} // height will be calculated automatically
-						source={require('../images/logo.png')}
+						source={require('../assets/images/logo.png')}
 				   />
 				</View>
 				<TextInput
-			        style={LoginStyle.input}
+			        style={[style.input, style.familia]}
 			        onChangeText={(text) => this.setState({text})}
 			        value={this.state.text}
 			        underlineColorAndroid='transparent'
@@ -36,18 +36,18 @@ export default class RegistroComponent extends Component{
            			autoCapitalize = 'none' 
 			    />		
 
-			    <TouchableHighlight  style={LoginStyle.signup_btn} onPress={this.handleSubmit.bind(this)}>
-			    	<Text  style={LoginStyle.textSubmit}>Sign Up</Text>
+			    <TouchableHighlight  style={style.signup_btn} onPress={this.handleSubmit.bind(this)}>
+			    	<Text  style={[style.textSubmit, style.familia]}>Sign Up</Text>
 			    </TouchableHighlight>
 			    {
 			    	codigo==3
-			    	?<Text style={LoginStyle.textAlert}>Este usuario ya existe, pero esta innactivo, te acabamos de enviar un nuevo codigo</Text>
+			    	?<Text style={[style.textAlert, style.familia]}>Este usuario ya existe, pero esta innactivo, te acabamos de enviar un nuevo codigo</Text>
 			    	:codigo==2	
-			    	?<Text style={LoginStyle.textAlert}>Este usuario ya existe</Text>
+			    	?<Text style={[style.textAlert, style.familia]}>Este usuario ya existe</Text>
 			    	:codigo==1	
-			    	?<Text style={LoginStyle.textAlert}>Te hemos enviado un codigo, por favor insertalo</Text>
+			    	?<Text style={[style.textAlert, style.familia]}>Te hemos enviado un codigo, por favor insertalo</Text>
 			    	:codigo==0	
-			    	?<Text style={LoginStyle.textAlert}>Houston, tenemos un problema, no se pudo crear el usuario, intentalo de nuevo</Text>
+			    	?<Text style={[style.textAlert, style.familia]}>Houston, tenemos un problema, no se pudo crear el usuario, intentalo de nuevo</Text>
 			    	:null
 			    }	
 			</ImageBackground>

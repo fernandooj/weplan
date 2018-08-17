@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, ScrollView, ImageBackground, TouchableOpacity, Image, TextInput, Picker} from 'react-native'
-import {perfilStyle} from '../perfil/style'
+import {style} from '../perfil/style'
 import axios from 'axios'
 import CabezeraComponent from '../ajustes/cabezera.js'
 import DatePicker from 'react-native-datepicker'
@@ -71,18 +71,18 @@ export default class perfilComponent extends Component{
 		let b=100
 		if (perfil) {
 			return(
-				<View style={perfilStyle.perfil}>
-					<View style={perfilStyle.contenedorRegistros}>
-						<View style={!imagen ?perfilStyle.avatar2 :perfilStyle.avatar3} >
+				<View style={style.perfil}>
+					<View style={style.contenedorRegistros}>
+						<View style={!imagen ?style.avatar2 :style.avatar3} >
 							<TakePhotoComponent fuente={'camPerfil.png'} border={50} ancho={!imagen ?a :b} alto={!imagen ?a :b} updateImagen={(photo) => {this.setState({photo, imagen:true})}} />
 						</View>
 
 						{
 							!imagen
-							&&<Image source={{uri: photo}} style={perfilStyle.avatar} />
+							&&<Image source={{uri: photo}} style={style.avatar} />
 						}
-							<TouchableOpacity style={perfilStyle.btnQr} onPress={()=>this.setState({qr:true})} > 
-								<Text style={perfilStyle.hecho}>mi codigo Qr</Text> 
+							<TouchableOpacity style={style.btnQr} onPress={()=>this.setState({qr:true})} > 
+								<Text style={[style.hecho, style.familia]}>mi codigo Qr</Text> 
 							</TouchableOpacity> 
 					</View>
 					{
@@ -90,22 +90,22 @@ export default class perfilComponent extends Component{
 						&&<QrComponent num={this.props.screenProps.num} close={()=>this.setState({qr:false})} />
 					}
 
-					<View style={perfilStyle.contenedorRegistros}>
+					<View style={style.contenedorRegistros}>
 						<StarRating
 					        disabled={false}
 					        maxStars={5}
 					        rating={(calificacion.reduce((a, b) => a + b, 0))/calificacion.length}
 					        starSize={28}
 					    />
-					    <Text style={perfilStyle.calificacion}>{calificacion.length}</Text>
+					    <Text style={[style.calificacion, style.familia]}>{calificacion.length}</Text>
 					</View>
 					     
-					<View style={imagen &&perfilStyle.inputs}>
+					<View style={imagen &&style.inputs}>
 					{/* NOMBRE */}
-						<View style={perfilStyle.contenedorRegistros}>
-							<Text style={perfilStyle.atributo}>Nombre</Text>
+						<View style={style.contenedorRegistros}>
+							<Text style={[style.atributo, style.familia]}>Nombre</Text>
 							<TextInput
-						        style={perfilStyle.valor}
+						        style={[style.valor, style.familia]}
 						        onChangeText={(nombre) => this.setState({nombre})}
 						        value={nombre}
 						        underlineColorAndroid='transparent'
@@ -115,31 +115,23 @@ export default class perfilComponent extends Component{
 						</View>
 						 
 					{/* CIUDAD */}
-						<View style={perfilStyle.contenedorRegistros}>
-							<Text style={perfilStyle.atributo}>Ciudad</Text>
-							<View style={perfilStyle.containCiudad}>	
-						    {/*<Picker
-				                style={perfilStyle.inputCiudad}
-						        onValueChange={(ciudad) => this.setState({ciudad})}
-						        selectedValue={this.state.ciudad}
-				              >
-				              <Picker.Item  label={ciudad} value={ciudad} />
-					          {this.ciudad()}
-				             </Picker>*/}
-				             <ModalPicker
+						<View style={style.contenedorRegistros}>
+							<Text style={[style.atributo, style.familia]}>Ciudad</Text>
+							<View style={style.containCiudad}>	
+				            <ModalPicker
 				                data={ciudades}
 				                initValue={ciudad}
 				                color='#8F9093'
 					            font={15}
 				                onChange={(e)=> this.setState({ciudad:e.label})} 
-				                style={perfilStyle.inputCiudad}
+				                style={style.inputCiudad}
 				            />
 				            </View>
 						</View>
 
 					{/* NACIMIENTO */}
-						<View style={perfilStyle.contenedorRegistros}>
-							<Text style={perfilStyle.atributo}>Nacimiento</Text>
+						<View style={style.contenedorRegistros}>
+							<Text style={[style.atributo, style.familia]}>Nacimiento</Text>
 							<DatePicker
 						   		maxDate={this.state.fechaHoy}
 					    		customStyles={{
@@ -161,7 +153,7 @@ export default class perfilComponent extends Component{
 							        } 
 			                    }}
 								date={this.state.nacimiento}
-								style={perfilStyle.date}
+								style={style.date}
 								mode="date"
 								placeholder="Mes / Dia / Año"
 								format="DD-MM-YYYY"
@@ -174,41 +166,29 @@ export default class perfilComponent extends Component{
 						</View>
 
 					{/* GENERO */}
-						<View style={perfilStyle.contenedorRegistros}>
-							<Text style={perfilStyle.atributo}>Genero</Text>
-							<View style={perfilStyle.containCiudad}>
-								{/*<Picker
-										selectedValue={this.state.genero}
-										onValueChange={(genero) => this.setState({genero})}
-										style={perfilStyle.inputCiudad}
-									>
-									<Picker.Item label={sexo==='f' ?'Femenino' :'Masculino'} style={perfilStyle.disabled} value={sexo==='f' ?'Femenino' :'Masculino'}    />
-									{
-										sexo==='m'
-										?<Picker.Item label='Femenino'  value='f' />
-										:<Picker.Item label='Masculino' value='m' />
-									}
-						        </Picker>*/}
+						<View style={style.contenedorRegistros}>
+							<Text style={[style.atributo, style.familia]}>Genero</Text>
+							<View style={style.containCiudad}>
 						        <ModalPicker
 					                data={generos}
 					                initValue={sexo}
 					                color='#8F9093'
 					                font={16}
 					                onChange={(e)=> this.setState({sexo:e.label})} 
-					                style={perfilStyle.datePicker}
+					                style={style.datePicker}
 					            />
 						    </View>	
 						</View>
 					
 					{/* BOTON ENVIAR */}
-					<View style={perfilStyle.containerHecho}>
-						<TouchableOpacity style={perfilStyle.btnHecho} onPress={this.handleSubmit.bind(this)} > 
-							<Text style={perfilStyle.hecho}>Hecho!</Text> 
+					<View style={style.containerHecho}>
+						<TouchableOpacity style={style.btnHecho} onPress={this.handleSubmit.bind(this)} > 
+							<Text style={[style.hecho, style.familia]}>Hecho!</Text> 
 						</TouchableOpacity> 
 					</View>	
 					{
 			    		exitoso
-				    	&&<Text style={perfilStyle.textAlert}>Datos Actualizados</Text>
+				    	&&<Text style={style.textAlert}>Datos Actualizados</Text>
 				    	 
 				    }
 					</View>
@@ -224,9 +204,9 @@ export default class perfilComponent extends Component{
 	render(){
 		const {navigate} = this.props.navigation
 		return(	 
-			<View style={perfilStyle.contenedor}>
+			<View style={style.contenedor}>
 				<CabezeraComponent navigate={navigate} url={'inicio'} texto='Perfil' />
-				<ScrollView style={perfilStyle.subContenedor}>
+				<ScrollView style={style.subContenedor}>
 					{this.renderPerfil()}
 				</ScrollView>	
 			</View> 

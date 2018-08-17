@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, Image, TouchableOpacity, Alert, ScrollView} from 'react-native'
-import {NotiStyle} from '../notificacion/style'
+import {style} from '../notificacion/style'
 import axios from 'axios'
 import CabezeraComponent from '../ajustes/cabezera.js'
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
@@ -29,15 +29,15 @@ export default class notificacionComponent extends Component{
  		return this.state.notificacion.map((e, key)=>{
  			let valor = '$ '+Number(e.valorItem).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
 			return(
- 				<View key={key} style={NotiStyle.subContenedor}>
-	 				<View style={NotiStyle.contenedorNoti2}>
+ 				<View key={key} style={style.subContenedor}>
+	 				<View style={style.contenedorNoti2}>
 	 					<TouchableOpacity onPress={e.tipo==2 ?()=>navigate('chat', e.idTipo) :null } >
-		 					<Image source={e.photo ?{uri:e.photo} :{uri:'https://appweplan.com/public/assets/logo.png'}} style={NotiStyle.avatar} />
+		 					<Image source={e.photo ?{uri:e.photo} :{uri:'https://appweplan.com/public/assets/logo.png'}} style={style.avatar} />
 	 					</TouchableOpacity>
 	 					<View>
 	 						<TouchableOpacity onPress={e.tipo==2 ?()=>navigate('chat', e.idTipo) :null } >
-				 				<Text style={NotiStyle.tituloNoti}>{e.nombre}</Text> 
-				 				<Text style={NotiStyle.textoNotifica}>
+				 				<Text style={[style.tituloNoti, style.familia]}>{e.nombre}</Text> 
+				 				<Text style={[style.textoNotifica, style.familia]}>
 				 					{
 				 						e.tipo==1 ?'Te quiere agregar como amigo' 
 				 						:e.tipo==2 ?`Te agrego al plan: ${e.titulo}` 
@@ -58,7 +58,7 @@ export default class notificacionComponent extends Component{
 				 			</TouchableOpacity>
 			 				{
 								e.activo && e.tipo==14
-								?<View style={NotiStyle.contenedorNoti}>
+								?<View style={style.contenedorNoti}>
 									<StarRating
 								        disabled={false}
 								        maxStars={5}
@@ -68,8 +68,8 @@ export default class notificacionComponent extends Component{
 								    />
 								</View>
 								:e.activo && e.tipo!==14
-								?<View style={NotiStyle.contenedorNoti}> 
-								 <TouchableOpacity  style={NotiStyle.btnNoti} 
+								?<View style={style.contenedorNoti}> 
+								 <TouchableOpacity  style={style.btnNoti} 
 					 					onPress={
 					 						e.tipo==1
 					 						?()=>this.handleSubmit(e.id, e.idTipo, 1, e.token, e.idUser)
@@ -83,7 +83,7 @@ export default class notificacionComponent extends Component{
 					 						?()=>this.handleSubmit(e.id, e.idTipo, 11, e.token, e.idUser, e.valorItem, e.titulo, e.photo)  
 					 						:null  
 					 					}>
-					 					<Text  style={NotiStyle.textoNoti}> 
+					 					<Text  style={style.textoNoti}> 
 					 					{
 					 						e.tipo==1  ? 'Agregar'
 					 						:e.tipo==3 ?'Entrarle'
@@ -93,7 +93,7 @@ export default class notificacionComponent extends Component{
 					 					}
 					 					</Text>
 					 				</TouchableOpacity>
-					 				<TouchableOpacity style={NotiStyle.btnNoti}
+					 				<TouchableOpacity style={style.btnNoti}
 					 					onPress={
 					 						e.tipo==1
 					 						?()=>this.handleCancel(e.id, e.idTipo, 1, null, e.idUser)
@@ -109,28 +109,28 @@ export default class notificacionComponent extends Component{
 
 					 					}
 					 				>
-					 					<Text style={NotiStyle.textoNoti}> Declinar</Text>
+					 					<Text style={[style.textoNoti, style.familia]}> Declinar</Text>
 					 				</TouchableOpacity>
-					 				{/*<Image source={require('./puntos.png')} style={NotiStyle.puntos} />*/}
+					 				{/*<Image source={require('./puntos.png')} style={style.puntos} />*/}
 					 			</View>
 					 			:<View>
 					 			{/* contenedor puntos */}
 					 			{
 					 				e.btnEliminar
-					 				&&<TouchableOpacity style={NotiStyle.eliminarBtn} onPress={()=>this.elimina(e.id)}>
-						 				<Text style={NotiStyle.eliminar}>Eliminar</Text>	
+					 				&&<TouchableOpacity style={style.eliminarBtn} onPress={()=>this.elimina(e.id)}>
+						 				<Text style={[style.eliminar, style.familia]}>Eliminar</Text>	
 						 			</TouchableOpacity>
 					 			}
 					 			
-					 			<TouchableOpacity style={NotiStyle.puntosBtn} onPress={()=>this.muestraBtnEliminar(e.id, e.btnEliminar)}>
-					 				<Image source={require('../images/puntos.png')} style={NotiStyle.puntos} />
+					 			<TouchableOpacity style={style.puntosBtn} onPress={()=>this.muestraBtnEliminar(e.id, e.btnEliminar)}>
+					 				<Image source={require('../assets/images/puntos.png')} style={style.puntos} />
 					 			</TouchableOpacity>
 					 			</View>
 			 				}
 			 				
 			 			</View>
 		 			</View>
-		 			<View style={NotiStyle.separador}></View>
+		 			<View style={style.separador}></View>
 		 		</View>
 			)		  
  		})
@@ -189,9 +189,9 @@ export default class notificacionComponent extends Component{
 	render(){
 		const {navigate} = this.props.navigation
 		return(	
-			<View style={NotiStyle.contenedor}>
+			<View style={style.contenedor}>
 				<CabezeraComponent navigate={navigate} url={'inicio'} texto={'Notificaciones'}  />
-				<ScrollView style={NotiStyle.contenedorPlan}>
+				<ScrollView style={style.contenedorPlan}>
 					{this.renderNotificacion()}
 				</ScrollView>
 				<FooterComponent navigate={navigate} />	

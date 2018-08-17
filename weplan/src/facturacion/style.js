@@ -2,11 +2,13 @@ import {StyleSheet, Dimensions} from 'react-native';
 var screenHeight = Dimensions.get('window');
 
 export const style = StyleSheet.create({
-	 
 	contenedor:{
 		alignItems: 'center',
 		flex: 1,
 		backgroundColor:"#ffffff",
+	},
+	familia:{
+		fontFamily:'Futura-CondensedLight',
 	},
 	subContenedor:{
 		width:'80%',

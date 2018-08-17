@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, Image, TouchableOpacity,  ScrollView,  Alert} from 'react-native'
-import {LoginStyle} from '../editPerfil/style'
+import {style} from '../editPerfil/style'
 //import Image from 'react-native-scalable-image';
 import axios from 'axios';
  
@@ -56,15 +56,15 @@ export default class editPerfilComponent2 extends Component{
 	renderCategoria(){
 		return this.state.categoria.map((e, key)=>{
 			return(
-				<TouchableOpacity key={key} style={LoginStyle.touchRes} 
+				<TouchableOpacity key={key} style={style.touchRes} 
 					onPress={(index)=> {this.updateState(e.id, e.estado); this.updateStateRestriccion(e.id, e.estado)} }>
-					<Image source={{ uri: e.icon}} style={LoginStyle.iconRes} />
+					<Image source={{ uri: e.icon}} style={style.iconRes} />
 					{
 						e.estado
-						?<Image source={require('../images/categoriaCheck.png')} style={LoginStyle.banRes} />
-						:<Image source={require('../images/categoriaCheckDisable.png')} style={LoginStyle.banRes} />
+						?<Image source={require('../assets/images/categoriaCheck.png')} style={style.banRes} />
+						:<Image source={require('../assets/images/categoriaCheckDisable.png')} style={style.banRes} />
 					}
-					<Text style={LoginStyle.textoRes}>{e.nombre}</Text>
+					<Text style={style.textoRes}>{e.nombre}</Text>
 				</TouchableOpacity>
 			)
 		})
@@ -73,30 +73,30 @@ export default class editPerfilComponent2 extends Component{
 		const {activo, qr} = this.state
 		console.log(this.state.restriccionArray.length)
 		return(
-			<ScrollView style={LoginStyle.fondoUltimo}>
+			<ScrollView style={style.fondoUltimo}>
 			{
 				qr
 				&&<QrComponent num={this.props.screenProps.num} close={()=>this.setState({qr:false})} />
 			}
 				
-				<View style={LoginStyle.contenedorRes}>
+				<View style={style.contenedorRes}>
 						<Image
-							style={LoginStyle.image2}
-							source={require('../images/eligePlanTitulo.png')}
+							style={style.image2}
+							source={require('../assets/images/eligePlanTitulo.png')}
 					    />
 			    </View>
-			    <View style={LoginStyle.contenedorCofres}>
+			    <View style={style.contenedorCofres}>
 			    	{this.renderCategoria()}
 			    </View>
 			    
-			    <View style={LoginStyle.contenedorBtnlisto}>
+			    <View style={style.contenedorBtnlisto}>
 			    	{
 			    		this.state.restriccionArray.length<3
-			    		?<TouchableOpacity  style={LoginStyle.estasListoBtn} onPress={this.selecciona.bind(this)}>
-					    	<Text  style={LoginStyle.btnEstasListo}>!Estas Listo!</Text>
+			    		?<TouchableOpacity  style={style.estasListoBtn} onPress={this.selecciona.bind(this)}>
+					    	<Text  style={style.btnEstasListo}>!Estas Listo!</Text>
 					    </TouchableOpacity>
-					    :<TouchableOpacity  style={[LoginStyle.estasListoBtn, LoginStyle.estasListoBtnActivo]} onPress={this.handleSubmit.bind(this)}>
-					    	<Text  style={[LoginStyle.btnEstasListo, LoginStyle.btnEstasListoActivo]}>!Estas Listo!</Text>
+					    :<TouchableOpacity  style={[style.estasListoBtn, style.estasListoBtnActivo]} onPress={this.handleSubmit.bind(this)}>
+					    	<Text  style={[style.btnEstasListo, style.btnEstasListoActivo]}>!Estas Listo!</Text>
 					    </TouchableOpacity>
 			    	}
 				    

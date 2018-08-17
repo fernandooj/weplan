@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Alert} from 'react-native'
-import {PagoStyle} from '../pago/style'
+import {style} from '../pago/style'
 import CabezeraComponent from '../ajustes/cabezera.js'
 import axios from 'axios'
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
@@ -36,32 +36,32 @@ export default class pagoComponent extends Component{
 		return(
 			<View>
 			{/* ITEM INFORMACION */}
-				<View style={PagoStyle.contenedorItem}>
-					<View style={PagoStyle.contenedorImagen}>
-						<Image source={{uri:item.imagenResize}} style={PagoStyle.image}/>
+				<View style={style.contenedorItem}>
+					<View style={style.contenedorImagen}>
+						<Image source={{uri:item.imagenResize}} style={style.image}/>
 					</View>
 					<View>	
-						<Text style={PagoStyle.titulo}>{item.titulo}</Text>
-						<Text style={PagoStyle.descripcion}>{item.descripcion}</Text>
-						<Text style={PagoStyle.nombre}>By {item.userId.nombre}</Text>
-						<View style={PagoStyle.contenedorValor}>
-							<Text style={PagoStyle.valorTexto}>Valor</Text>
-							<Text style={PagoStyle.valor}>{'$ '+Number(item.valor).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+						<Text style={[style.titulo, style.familia]}>{item.titulo}</Text>
+						<Text style={[style.descripcion, style.familia]}>{item.descripcion}</Text>
+						<Text style={[style.nombre, style.familia]}>By {item.userId.nombre}</Text>
+						<View style={style.contenedorValor}>
+							<Text style={[style.valorTexto, style.familia]}>Valor</Text>
+							<Text style={[style.valor, style.familia]}>{'$ '+Number(item.valor).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
 						</View>
 					</View>
 				</View>
 
 			{/* SEPARADOR */}
-				<View style={PagoStyle.separador}></View>
+				<View style={style.separador}></View>
 				
 			{/* DEUDA */}
-				<View style={PagoStyle.contenedorDeuda}>
-					<Text style={PagoStyle.tituloDeuda}>Deuda</Text>
-					<Text style={PagoStyle.valorDeuda}>{'$ '+Number(valor).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+				<View style={style.contenedorDeuda}>
+					<Text style={[style.tituloDeuda, style.familia]}>Deuda</Text>
+					<Text style={[style.valorDeuda, style.familia]}>{'$ '+Number(valor).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
 				</View>
 
 			{/* SEPARADOR */}
-				<View style={PagoStyle.separador}></View>
+				<View style={style.separador}></View>
 				
 			</View>
 		)
@@ -76,14 +76,14 @@ export default class pagoComponent extends Component{
 		return(
 			<View>
 			{/* FORMULARIO PAGAR */}
-				<View style={PagoStyle.contenedorDeuda}>
-					<Text style={PagoStyle.montoTitulo}>Monto de Pago</Text>
+				<View style={style.contenedorDeuda}>
+					<Text style={[style.montoTitulo, style.familia]}>Monto de Pago</Text>
 					<TextInputMask
 	                  ref="text"
 	                  placeholder='Valor a Pagar'
 	                  type={'money'}
 	                  options={{ unit: '$', zeroCents:true, precision:0 }} 
-	                  style={PagoStyle.inputValor}
+	                  style={[style.inputValor, style.familia]}
 	                  underlineColorAndroid='transparent'
 	                  onChangeText={this.getValor.bind(this)} 
 	                  value={this.state.valorInicial}
@@ -91,48 +91,48 @@ export default class pagoComponent extends Component{
 				</View>
 
 			{/* SEPARADOR */}
-				<View style={PagoStyle.separador}></View>
+				<View style={style.separador}></View>
 
 			{/* METODO DE PAGO CC/DEBITO/EFECTIVO */}
-				<Text style={PagoStyle.montoTitulo}>Metodo de Pago</Text>
-				<View style={PagoStyle.metodoContenedor}>
-					{/*<TouchableOpacity onPress={(e)=>this.updateStateMetodo(1)} style={PagoStyle.metodoBtn}>
+				<Text style={[style.montoTitulo, style.familia]}>Metodo de Pago</Text>
+				<View style={style.metodoContenedor}>
+					{/*<TouchableOpacity onPress={(e)=>this.updateStateMetodo(1)} style={style.metodoBtn}>
 						{!cc
-						?<Image source={require('../images/cc.png')} style={PagoStyle.metodoImagen} />
-						:<Image source={require('../images/ccActivo.png')} style={PagoStyle.metodoImagen} />
+						?<Image source={require('../assets/images/cc.png')} style={style.metodoImagen} />
+						:<Image source={require('../assets/images/ccActivo.png')} style={style.metodoImagen} />
 						}
-						<Text>Credito</Text>
+						<Text sytle={style.familia}>Credito</Text>
 					</TouchableOpacity>
-					<TouchableOpacity onPress={(e)=>this.updateStateMetodo(2)} style={PagoStyle.metodoBtn}>
+					<TouchableOpacity onPress={(e)=>this.updateStateMetodo(2)} style={style.metodoBtn}>
 						{!debito
-						?<Image source={require('../images/debito.png')} style={PagoStyle.metodoImagen} />
-						:<Image source={require('../images/debitoActivo.png')} style={PagoStyle.metodoImagen} />
+						?<Image source={require('../assets/images/debito.png')} style={style.metodoImagen} />
+						:<Image source={require('../assets/images/debitoActivo.png')} style={style.metodoImagen} />
 						}
-						<Text>Debito</Text>
+						<Text sytle={style.familia}>Debito</Text>
 					</TouchableOpacity>*/}
-					<TouchableOpacity onPress={(e)=>this.updateStateMetodo(3)} style={PagoStyle.metodoBtn}>
+					<TouchableOpacity onPress={(e)=>this.updateStateMetodo(3)} style={style.metodoBtn}>
 						{!efectivo 
-						?<Image source={require('../images/efectivo.png')} style={PagoStyle.metodoImagen} />
-						:<Image source={require('../images/efectivoActivo.png')} style={PagoStyle.metodoImagen} />
+						?<Image source={require('../assets/images/efectivo.png')} style={style.metodoImagen} />
+						:<Image source={require('../assets/images/efectivoActivo.png')} style={style.metodoImagen} />
 						}
-						<Text>Efectivo</Text>
+						<Text sytle={style.familia}>Efectivo</Text>
 					</TouchableOpacity>
 				</View>
 
 			{/* SEPARADOR */}
-				<View style={PagoStyle.separador}></View>
+				<View style={style.separador}></View>
 
 			{/* INFO METODO DE PAGO */}
 				<TextInput 
 	                placeholder='Información del metodo de pago'
 	                underlineColorAndroid='transparent'
 	                placeholderTextColor="#8F9093" 
-	                style={PagoStyle.inputInformacion}
+	                style={[style.inputInformacion, style.familia]}
 	                onChangeText={(descripcion) => this.setState({descripcion})}
 	            />
 	        {/* ICON PAGAR */}
-	        	<TouchableOpacity onPress={this.handleSubmit.bind(this)} style={PagoStyle.pagarBtn}>
-	        		<Image source={require('../images/iconPagar.png')} style={PagoStyle.pagarImagen} />
+	        	<TouchableOpacity onPress={this.handleSubmit.bind(this)} style={style.pagarBtn}>
+	        		<Image source={require('../assets/images/iconPagar.png')} style={style.pagarImagen} />
 	        	</TouchableOpacity>
 			</View>
 		)
@@ -159,8 +159,8 @@ export default class pagoComponent extends Component{
 				<View>
 					<CabezeraComponent navigate={navigate} url={'item'} parameter={this.state.planId} texto='Pago Deuda'/>
 					<ScrollView>
-						<View style={PagoStyle.contentItem}>		
-							<View style={PagoStyle.contenedor}>
+						<View style={style.contentItem}>		
+							<View style={style.contenedor}>
 								{this.renderItem()}
 								{this.renderPago()}
 							</View>			  

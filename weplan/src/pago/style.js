@@ -2,10 +2,13 @@ import {StyleSheet, Dimensions} from 'react-native';
 var screenWidth = Dimensions.get('window').width;
 var screenHeight = Dimensions.get('window').height;
 import { MediaQueryStyleSheet } from "react-native-responsive";
-export const PagoStyle = MediaQueryStyleSheet.create({ 
+export const style = MediaQueryStyleSheet.create({ 
 	container:{
 		flex:1,
 		height:screenHeight,
+	},
+	familia:{
+		fontFamily:'Futura-CondensedLight',
 	},
 	contentItem:{
 		flex:1,
@@ -146,7 +149,7 @@ export const PagoStyle = MediaQueryStyleSheet.create({
 	},
 	pagoDeudaNombre:{
 		width:'55%',
-		fontSize:18,
+		fontSize:22,
 		marginLeft:12,
 		marginTop:10
 	},
@@ -218,9 +221,9 @@ export const PagoStyle = MediaQueryStyleSheet.create({
 		},
 		pagoDeudaNombre:{
 			width:'50%',
-			fontSize:15,
+			fontSize:20,
 			marginLeft:12,
-			marginTop:10
+			marginTop:7
 		},
 		pagoDeudaMonto:{
 			fontSize:17,

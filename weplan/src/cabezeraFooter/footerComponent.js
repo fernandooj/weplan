@@ -35,23 +35,23 @@ export default class CabezeraComponent extends Component{
 		return(
 			<View style={cabezeraFooterStyle.footer3} >
 				<TouchableOpacity onPress={()=> navigate('inicio')} style={cabezeraFooterStyle.btnFooter3}>
-					<Image source={require('../images/home.png')} style={cabezeraFooterStyle.iconFooter3} />
+					<Image source={require('../assets/images/home.png')} style={cabezeraFooterStyle.iconFooter3} />
 					{/*<Text style={cabezeraFooterStyle.textoFooter3}>Home</Text>*/}
 				</TouchableOpacity>
 				<TouchableOpacity onPress={()=> navigate('wallet')} style={cabezeraFooterStyle.btnFooter3}>
-					<Image source={require('../images/mi_wallet.png')} style={cabezeraFooterStyle.iconFooter3} />
+					<Image source={require('../assets/images/mi_wallet.png')} style={cabezeraFooterStyle.iconFooter3} />
 					{/*<Text style={cabezeraFooterStyle.textoFooter3}>My Wallet</Text>*/}
 				</TouchableOpacity>
 				<TouchableOpacity onPress={()=> navigate('createPlan')} style={[cabezeraFooterStyle.btnFooter3, cabezeraFooterStyle.btnFooter3Create]} >
-					<Image source={require('../images/crear_plan.png')} style={cabezeraFooterStyle.iconFooter3Create} />
+					<Image source={require('../assets/images/crear_plan.png')} style={cabezeraFooterStyle.iconFooter3Create} />
 					{/*<Text style={cabezeraFooterStyle.textoFooter3}>Crear Plan</Text>*/}
 				</TouchableOpacity>
 				<TouchableOpacity onPress={()=> navigate('misPlanes')} style={cabezeraFooterStyle.btnFooter3} >
-					<Image source={require('../images/mis_planes.png')} style={cabezeraFooterStyle.iconFooter3} />
+					<Image source={require('../assets/images/mis_planes.png')} style={cabezeraFooterStyle.iconFooter3} />
 					{/*<Text style={cabezeraFooterStyle.textoFooter3}>Planes</Text>*/} 
 				</TouchableOpacity>
 				<TouchableOpacity onPress={()=> this.updatePerfilNotificacion()} style={cabezeraFooterStyle.btnFooter3} >
-					<Image source={require('../images/notificaciones.png')} style={cabezeraFooterStyle.iconFooter3} />
+					<Image source={require('../assets/images/notificaciones.png')} style={cabezeraFooterStyle.iconFooter3} />
 					{
 						this.state.notificacion
 						&&<Text style={cabezeraFooterStyle.punto}>&#8226;</Text>

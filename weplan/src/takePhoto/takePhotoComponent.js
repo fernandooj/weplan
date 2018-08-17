@@ -61,7 +61,7 @@ export default class TakePhotoComponent extends Component{
 	}
 	render(){
 		const {sinBorder, ancho, alto, anchoDos, altoDos, fuente, fuente2, border} = this.props
-		let ruta = fuente2 ?fuente2 : `${URL}public/images/${fuente}`
+		let ruta = fuente2 ?fuente2 : `${URL}public/assets/images/${fuente}`
 		return (
 			<TouchableOpacity onPress={this.selectPhotoTapped.bind(this)} style={{flex: .4}}>
 				<View>

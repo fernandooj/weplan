@@ -3,7 +3,7 @@ import {View, Text, Image, TouchableOpacity, ScrollView, Alert} from 'react-nati
 import SearchInput, { createFilter } from 'react-native-search-filter';
 import axios from 'axios'
 
-import {AjustesStyle} from '../ajustes/style'
+import {style} from '../ajustes/style'
 import CabezeraComponent 	  from './cabezera.js'
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
 
@@ -46,8 +46,6 @@ export default class ajustesAmigosComponent extends Component{
 					/////////////////////////////////////////////////////////////////////////////////
 				 	console.log(filteredData)
 					this.setState({filteredData, amigosAsignados:res2.data.asignados})
-
-				 
 			})	
 			.catch((err)=>{
 				console.log(err)
@@ -66,12 +64,12 @@ export default class ajustesAmigosComponent extends Component{
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  	renderCabezera(){
  		return(
-			<View style={AjustesStyle.registro}>
-				<TouchableOpacity style={AjustesStyle.btnCabezera} >
-					<Text style={AjustesStyle.textCabezera}>Amigos</Text>
+			<View style={style.registro}>
+				<TouchableOpacity style={style.btnCabezera} >
+					<Text style={[style.textCabezera, style.familia]}>Amigos</Text>
 				</TouchableOpacity>
-				<TouchableOpacity style={[AjustesStyle.btnCabezera, AjustesStyle.btnCabezeraActive]}>
-					<Text style={AjustesStyle.textCabezera}>Explorar</Text>
+				<TouchableOpacity style={[style.btnCabezera, style.btnCabezeraActive]}>
+					<Text style={[style.textCabezera, style.familia]}>Explorar</Text>
 				</TouchableOpacity>
 			</View>
  		)
@@ -83,12 +81,12 @@ export default class ajustesAmigosComponent extends Component{
  	getRow(){
  		const filteredEmails = this.state.filteredData.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
 		return filteredEmails.map((data, key)=>{
-			return  <View style={AjustesStyle.registro} key={key} onPress={()=>this.updateState(data.id, data.estado, data.token)} > 
-						<Image source={{ uri: data.photo}}  style={data.estado ?AjustesStyle.avatarA :AjustesStyle.avatarA2} /> 
-						<Text style={AjustesStyle.textoAvatar}>{data.nombre}</Text>
+			return  <View style={style.registro} key={key} onPress={()=>this.updateState(data.id, data.estado, data.token)} > 
+						<Image source={{ uri: data.photo}}  style={data.estado ?style.avatarA :style.avatarA2} /> 
+						<Text style={style.textoAvatar}>{data.nombre}</Text>
 						
-						<TouchableOpacity style={AjustesStyle.btnHecho} onPress={(e)=>{this.handleSubmit(data.id, data.token)}} > 
-							<Text style={AjustesStyle.hecho}>Agregar</Text>
+						<TouchableOpacity style={style.btnHecho} onPress={(e)=>{this.handleSubmit(data.id, data.token)}} > 
+							<Text style={style.hecho}>Agregar</Text>
 						</TouchableOpacity> 
 				    </View>
 		})
@@ -114,7 +112,7 @@ export default class ajustesAmigosComponent extends Component{
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  	renderAmigos(){
  		return(
- 			<ScrollView style={AjustesStyle.contenedorLista}>
+ 			<ScrollView style={style.contenedorLista}>
 				{this.getRow()}
 			</ScrollView>
  		)	
@@ -132,9 +130,9 @@ export default class ajustesAmigosComponent extends Component{
  		return this.state.amigosAsignados.map((e, key)=>{
  			if (e.estado) {
  				return(
-		 			<View key={key} style={AjustesStyle.registro}>
-		 				 <Image source={{ uri: e.photo}}  style={AjustesStyle.avatarA} /> 
-		 				 <Text style={AjustesStyle.textoAvatar}>{e.nombre}</Text>
+		 			<View key={key} style={style.registro}>
+		 				 <Image source={{ uri: e.photo}}  style={style.avatarA} /> 
+		 				 <Text style={[style.textoAvatar, style.familia]}>{e.nombre}</Text>
 		 			</View>
 		 		)
  			}
@@ -146,15 +144,15 @@ export default class ajustesAmigosComponent extends Component{
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  	renderAmigosGrupos(){
  		return(
- 			<View style={AjustesStyle.lista}>
-				<TouchableOpacity  style={AjustesStyle.registro}>
-					<Image source={require('../images/nuevo.png')} style={AjustesStyle.btnNuevoGrupo} />
+ 			<View style={style.lista}>
+				{/*<TouchableOpacity  style={style.registro}>
+					<Image source={require('../assets/images/nuevo.png')} style={style.btnNuevoGrupo} />
 					<Text>Crear Grupo</Text>
 				</TouchableOpacity>
-				<View style={AjustesStyle.separador}></View>
-				<Text style={AjustesStyle.tituloGrupo}>Grupos</Text>
-				<View style={AjustesStyle.separador}></View>
-				<Text style={AjustesStyle.tituloGrupo}>Amigos</Text>
+				<View style={style.separador}></View>
+				<Text style={style.tituloGrupo}>Grupos</Text>
+				<View style={style.separador}></View>*/}
+				<Text style={[style.tituloGrupo, style.familia]}>Amigos</Text>
 
 				{/*   listar amigos asignados  */}
 					{this.renderAmigosAsignados()}
@@ -167,16 +165,16 @@ export default class ajustesAmigosComponent extends Component{
 		const {show, token} = this.state
 		const {navigate} = this.props.navigation
 		return(
-			<View style={AjustesStyle.contenedorA}>
+			<View style={style.contenedorA}>
 				<CabezeraComponent navigate={navigate} url={'ajustes'} />
 				<ScrollView>
 					{this.renderCabezera()}
-					<View style={AjustesStyle.contenedor}>
-						<View style={AjustesStyle.subContenedorA}>
+					<View style={style.contenedor}>
+						<View style={style.subContenedorA}>
 							{/* buscador  */}
-							<View style={AjustesStyle.contenedorBuscar}>
+							<View style={style.contenedorBuscar}>
 				 				<SearchInput
-			          				style={AjustesStyle.input}
+			          				style={[style.input, style.familia]}
 							        onChangeText={(term) => { this.searchUpdated(term) }} 
 							        value={this.state.username}
 							        underlineColorAndroid='transparent'
@@ -184,9 +182,9 @@ export default class ajustesAmigosComponent extends Component{
 				           			placeholderTextColor="#8F9093" 
 				           			 
 							    />
-							   <Image source={require('../images/search.png')} style={AjustesStyle.btnSearch} />
-							   <TouchableOpacity style={AjustesStyle.btnBuscar} onPress={this.handleSubmit.bind(this)}>
-							   	<Image source={require('../images/agregar.png')} style={AjustesStyle.btnAgregar} />
+							   <Image source={require('../assets/images/search.png')} style={style.btnSearch} />
+							   <TouchableOpacity style={style.btnBuscar} onPress={this.handleSubmit.bind(this)}>
+							   	<Image source={require('../assets/images/agregar.png')} style={style.btnAgregar} />
 							   </TouchableOpacity>
 							</View>
 							{

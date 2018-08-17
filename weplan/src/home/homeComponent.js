@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, Image, TouchableOpacity, ImageBackground, ScrollView, Platform, Keyboard, Dimensions, Alert} from 'react-native'
-import {HomeStyle} from '../home/style'
+import {style} from '../home/style'
 import axios from 'axios'
 import SearchInput, { createFilter } from 'react-native-search-filter';
 
@@ -107,19 +107,27 @@ export default class homeComponent extends Component{
 		return filtered.map((e, key)=>{
 		let data = parseInt(e.dist/1000);
 		data = data.toString()
-		return  <ImageBackground source={{uri : e.imagenResize[0]}} style={HomeStyle.fondo} key={key}>
-				<View style={HomeStyle.footer}>
-					<View style={HomeStyle.footer1}>
-						<Text style={HomeStyle.textFooter1}>{e.nombre}</Text>
-						<TouchableOpacity onPress={() => navigate('createPlan', e._id )} style={HomeStyle.btnIconVer}>
-							<Image source={require('../images/icon4.png')} style={HomeStyle.iconVer} />
+		// let calificacion = e.UserData.calificacion.length
+		let calificacion = (e.UserData.calificacion.reduce((a, b) => a + b, 0))/e.UserData.calificacion.length
+		return  <ImageBackground source={{uri : e.imagenResize[0]}} style={style.fondo} key={key}>
+				<View style={style.footer}>
+					<View style={style.footer1}>
+						<Text style={[style.textFooter1, style.familia]}>{e.nombre.toUpperCase()}</Text>
+						<TouchableOpacity onPress={() => navigate('createPlan', e._id )} style={style.btnIconVer}>
+							<Image source={require('../assets/images/icon4.png')} style={style.iconVer} />
 						</TouchableOpacity>	
 					</View>
-					<Text style={HomeStyle.textFooter2}>{e.descripcion}</Text>
-					<Text style={HomeStyle.textFooter2}>Estas a {parseInt(e.dist)<1000 ?`${parseInt(e.dist)} Metros` :`${data} Kilometros`}</Text>
-					<View style={HomeStyle.footer2}>
-						{/*<Image source={require('../images/icon6.png')} style={HomeStyle.iconFooter} />
-						<Image source={require('../images/icon7.png')} style={HomeStyle.iconFooter} />*/}
+					{e.descripcion &&<Text style={[style.textFooter2, style.familia]}>{e.descripcion}</Text>}
+					
+					<Text style={[style.textFooter2, style.familia]}>Estas a {parseInt(e.dist)<1000 ?`${parseInt(e.dist)} Metros` :`${data} Kilometros`}</Text>
+					<Text style={[style.textFooter2, style.familia]}>{`Por: ${e.UserData.nombre}, ${parseFloat(calificacion).toFixed(0)}*`}</Text>
+					<View style={style.footer2}>
+						<TouchableOpacity onPress={() => this.like(e._id)}>
+							<Image source={require('../assets/images/corazon.png')} style={style.iconFooter} />
+						</TouchableOpacity>
+						<TouchableOpacity onPress={() => navigate('createPlan', e._id )}>
+							<Image source={require('../assets/images/acceder.png')} style={style.iconFooter1} /> 
+						</TouchableOpacity>
 					</View>
 					
 				</View> 
@@ -160,9 +168,9 @@ export default class homeComponent extends Component{
 	render(){
 		const {navigate} = this.props.navigation
 		return(	 
-			<View style={HomeStyle.contenedor}>
+			<View style={style.contenedor}>
 				<CabezeraComponent navigate={navigate} hide={this.state.showBarra ?false :true} term={(term)=>this.searchUpdated(term)} />
-				<ScrollView style={HomeStyle.contenedorPlan} onScroll={this.handleScroll.bind(this)} scrollEventThrottle={16}>
+				<ScrollView style={style.contenedorPlan} onScroll={this.handleScroll.bind(this)} scrollEventThrottle={16}>
 					{this.getRow()}
 				</ScrollView>
 				<FooterComponent navigate={navigate} />

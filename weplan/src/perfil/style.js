@@ -2,15 +2,15 @@ import {StyleSheet, Dimensions} from 'react-native';
 var screenHeight = Dimensions.get('window').height;
 import { MediaQueryStyleSheet } from "react-native-responsive";
 
-export const perfilStyle = MediaQueryStyleSheet.create({
+export const style = MediaQueryStyleSheet.create({
 	contenedor:{
 		alignItems: 'center',
 	},
+	familia:{
+		fontFamily:'Futura-CondensedLight',
+	},
 	subContenedor:{
 		width:'90%',
-	},
-	perfil:{
-		//alignItems: 'center',
 	},
 	avatar: {
 		marginTop:10,

@@ -50,10 +50,10 @@ export default class detallePlanPublicoComponent extends Component{
  			cargaPlan:false,
  			showAlertUbicacion:false,
  			position: 1,
-      	interval: null,
-      	imagenes:[],
-      	tipoPlan:null, //// modal que muestra el tipo del plan
-      	publico:null,  //// determina si el plan va a ser publico o privado
+	      	interval: null,
+	      	imagenes:[],
+	      	tipoPlan:null, //// modal que muestra el tipo del plan
+	      	publico:null,  //// determina si el plan va a ser publico o privado
 		}
 	}
 
@@ -139,12 +139,10 @@ export default class detallePlanPublicoComponent extends Component{
 				}
 
 				<CabezeraComponent navigate={navigate} url={'planesPublicos'} texto='Activar Plan' />
-				 
-					  
 				<TakePhotoComponent fuente={'cam.png'} fuente2={imagen} ancho={screenWidth} alto={160} updateImagen={(imagen) => {this.setState({imagen})}}   />
 				<View style={CreatePlanStyle.textoCargado2}>
 					<TextInput
-						style={CreatePlanStyle.nombreCargado}
+						style={[CreatePlanStyle.nombreCargado, CreatePlanStyle.familia]}
 						onChangeText={(nombre) => this.setState({nombre,iconCreate:false})}
 						value={nombre}
 						underlineColorAndroid='transparent'
@@ -158,7 +156,7 @@ export default class detallePlanPublicoComponent extends Component{
 					{/* Descripcion  */}	
 				 	<View style={CreatePlanStyle.cajaInpunts}>
 						<TextInput
-							style={CreatePlanStyle.textarea}
+							style={[CreatePlanStyle.textarea, CreatePlanStyle.familia]}
 							onChangeText={(descripcion) => this.setState({descripcion})}
 							value={this.state.descripcion}
 							underlineColorAndroid='transparent'
@@ -170,7 +168,7 @@ export default class detallePlanPublicoComponent extends Component{
 					</View>
 				{/* fecha  */}
 				   <View style={CreatePlanStyle.cajaInpunts}>
-				    	<Image source={require('../images/fecha.png')} style={CreatePlanStyle.iconInput} />
+				    	<Image source={require('../assets/images/fecha.png')} style={CreatePlanStyle.iconInput} />
 					   <DatePicker
 				   		minDate={this.state.fechaHoy}
 			    			customStyles={{
@@ -206,9 +204,9 @@ export default class detallePlanPublicoComponent extends Component{
 		 			
 		 			{/*  mapa  */}
 					<View style={CreatePlanStyle.cajaInpunts}>
-			    		<Image source={require('../images/map.png')} style={CreatePlanStyle.iconInput} />
+			    		<Image source={require('../assets/images/map.png')} style={CreatePlanStyle.iconInput} />
 				    	<TouchableOpacity onPress={() => this.setState({mapa:true})}  style={direccion ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>
-				    		<Text style={direccion ?CreatePlanStyle.textos :CreatePlanStyle.textosActivo}>{direccion ?direccion.substr(0,60) :'Ubicación'}</Text>
+				    		<Text style={direccion ?[CreatePlanStyle.textos, CreatePlanStyle.familia] :[CreatePlanStyle.textosActivo, CreatePlanStyle.familia]}>{direccion ?direccion.substr(0,60) :'Ubicación'}</Text>
 				    	</TouchableOpacity>
 					</View>	
 					 
@@ -224,11 +222,11 @@ export default class detallePlanPublicoComponent extends Component{
 
 				{/*  restricciones  */}
 					<View style={CreatePlanStyle.cajaInpunts}>
-				    	<Image source={require('../images/denied.png')} style={CreatePlanStyle.iconInput} />
+				    	<Image source={require('../assets/images/denied.png')} style={CreatePlanStyle.iconInput} />
 					    {
 					    	restricciones.length==0
 					    	?<TouchableOpacity onPress={()=>this.setState({ restriccion:true})} style={restricciones.length>0 ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>
-						    	<Text style={restricciones.length>0 ?CreatePlanStyle.textos :CreatePlanStyle.textosActivo}>{restricciones.length>0 ?'tienes: '+restricciones.length+' Restricciones' :'Restricciones'}</Text>
+						    	<Text style={restricciones.length>0 ?[CreatePlanStyle.textos, CreatePlanStyle.familia] :[CreatePlanStyle.textosActivo, CreatePlanStyle.familia]}>{restricciones.length>0 ?'tienes: '+restricciones.length+' Restricciones' :'Restricciones'}</Text>
 						    </TouchableOpacity>
 					    	:<View style={CreatePlanStyle.contentAdd}>
 					    		<View style={CreatePlanStyle.agregadosContenedor}>
@@ -237,7 +235,7 @@ export default class detallePlanPublicoComponent extends Component{
 						    	{
 						    		!this.props.navigation.state.params
 						    		&&<TouchableOpacity onPress={() => this.setState({restriccion:true})} style={CreatePlanStyle.addBtn}>
-							    		<Image source={require('../images/add.png')} style={CreatePlanStyle.add} />
+							    		<Image source={require('../assets/images/add.png')} style={CreatePlanStyle.add} />
 							    	</TouchableOpacity>
 						    	}
 						    </View>
@@ -260,16 +258,16 @@ export default class detallePlanPublicoComponent extends Component{
 				{/* Area de influencia  */}
 				 
 				<View style={CreatePlanStyle.cajaInpunts}>
-					<Image source={require('../images/area.png')} style={CreatePlanStyle.iconInputArea} />	
+					<Image source={require('../assets/images/area.png')} style={CreatePlanStyle.iconInputArea} />	
 				    <View style={CreatePlanStyle.contenedorArea}>
-				    	<Text style={CreatePlanStyle.costoPlan}>Costo plan: {costo}</Text>
+				    	<Text style={[CreatePlanStyle.costoPlan, CreatePlanStyle.familia]}>Costo plan: {'$ '+Number(costo).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
 		          </View>
 		        </View>
 				
 				
 				{/*  Crear Plan  */}
 					<TouchableOpacity onPress={this.handleSubmit.bind(this)} style={CreatePlanStyle.btnHecho}>
-					   <Text style={CreatePlanStyle.hecho}>Activar</Text>
+					   <Text style={[CreatePlanStyle.hecho, CreatePlanStyle.familia]}>Activar</Text>
 					</TouchableOpacity>
 				 
 			    </View>	
@@ -282,7 +280,7 @@ export default class detallePlanPublicoComponent extends Component{
  				return(
 	 				<View key={key} >
 	 					<Image source={{uri:e.photo}} style={CreatePlanStyle.avatar} />
-	 					<Image source={require('../images/agregado.png')} style={CreatePlanStyle.iconAgregado} />
+	 					<Image source={require('../assets/images/agregado.png')} style={CreatePlanStyle.iconAgregado} />
 	 					<Text style={CreatePlanStyle.textoAgregado} >{e.nombre}</Text>
 	 				</View>
 	 			)
@@ -295,7 +293,7 @@ export default class detallePlanPublicoComponent extends Component{
  				return(
 	 				<View key={key} >
 	 					<Image source={{uri:e.ruta}} style={CreatePlanStyle.avatar} />
-	 					<Image source={require('../images/deneid1.png')} style={CreatePlanStyle.banResActiveAdd} />
+	 					<Image source={require('../assets/images/deneid1.png')} style={CreatePlanStyle.banResActiveAdd} />
 	 					 
 	 				</View>
 	 			)

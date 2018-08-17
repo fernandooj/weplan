@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, Image, TouchableOpacity, AsyncStorage, Modal, Alert, Keyboard} from 'react-native'
-import {AjustesStyle} from '../ajustes/style'
+import {style} from '../ajustes/style'
 import axios from 'axios'
 import CabezeraComponent from './cabezera.js'
 import QRCodeScanner from 'react-native-qrcode-scanner';
@@ -38,11 +38,11 @@ export default class ajustesComponent extends Component{
 		const {navigate} = this.props.navigation
 		if (perfil!==undefined) {
 			return(
-				<TouchableOpacity style={AjustesStyle.perfil} onPress={()=>navigate('perfil')}>
-					<Image source={{uri: perfil.photo}} style={AjustesStyle.avatar} />
-					<Text style={AjustesStyle.username}>{perfil.nombre}</Text>
-					<Text style={AjustesStyle.username}>{perfil.username}</Text>
-					<Text style={AjustesStyle.separador}></Text>
+				<TouchableOpacity style={style.perfil} onPress={()=>navigate('perfil')}>
+					<Image source={{uri: perfil.photo}} style={style.avatar} />
+					<Text style={[style.username, style.familia]}>{perfil.nombre}</Text>
+					<Text style={[style.username, style.familia]}>{perfil.username}</Text>
+					<Text style={style.separador}></Text>
 				</TouchableOpacity>
 			)
 		}else{
@@ -56,12 +56,12 @@ export default class ajustesComponent extends Component{
 		return this.state.menus.map((e, key)=>{
 			return(
 				<View key={key} >
-					<TouchableOpacity style={AjustesStyle.btnMenu} onPress={e.method==1 ?() => navigate(e.value) :e.method==2 ?this.closeSession.bind(this) :this.abrirQr.bind(this)}>
-						<Text>{e.label} </Text>
+					<TouchableOpacity style={style.btnMenu} onPress={e.method==1 ?() => navigate(e.value) :e.method==2 ?this.closeSession.bind(this) :this.abrirQr.bind(this)}>
+						<Text style={style.familia}>{e.label} </Text>
 					</TouchableOpacity>
  
 					{/* SEPARADOR */}
-					<View style={AjustesStyle.separador}></View>
+					<View style={style.separador}></View>
 				</View>
 			)
 		})
@@ -129,14 +129,14 @@ export default class ajustesComponent extends Component{
   			<QRCodeScanner
 		        onRead={this.onSuccess.bind(this)}
 		        topContent={
-		          <Text style={AjustesStyle.centerText}>
-		            Scanea el Qr de tu usuario
+		          <Text style={[style.centerText, style.familia]}>
+		            Scanea el QR de tu amigo
 		          </Text>
 		        }
 		        bottomContent={
-		          <View style={AjustesStyle.containerHecho}>
-	    		<TouchableOpacity  style={AjustesStyle.btnHecho} onPress={()=>this.setState({modalVisible:false})}>
-			    	<Text  style={AjustesStyle.hecho}>!Listo!</Text>
+		          <View style={style.containerHecho}>
+	    		<TouchableOpacity  style={style.btnHecho} onPress={()=>this.setState({modalVisible:false})}>
+			    	<Text  style={[style.hecho, style.familia]}>!Listo!</Text>
 			    </TouchableOpacity>
 			</View> 
 		        }
@@ -148,10 +148,10 @@ export default class ajustesComponent extends Component{
 	render(){
 		const {navigate} = this.props.navigation
 		return(
-			<View style={AjustesStyle.contenedor}>
+			<View style={style.contenedor}>
 				<CabezeraComponent navigate={navigate} url={'inicio'} />
 				{this.renderQr()}		
-				<View style={AjustesStyle.subContenedor}>
+				<View style={style.subContenedor}>
 					{this.renderPerfil()}
 					{this.renderMenu()}
 				</View>	

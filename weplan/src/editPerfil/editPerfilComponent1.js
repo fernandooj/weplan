@@ -1,6 +1,6 @@
 import React, {Component} 						 from 'react'
 import {View, Text, TouchableOpacity, TextInput, CheckBox, Linking, Alert} from 'react-native'
-import {LoginStyle} 							 from '../editPerfil/style'
+import {style} 							 from '../editPerfil/style'
 import Image 									 from 'react-native-scalable-image';
 import axios 									 from 'axios';
 
@@ -37,12 +37,12 @@ export default class editPerfilComponent1 extends Component{
 	render(){
 		console.log(this.state.condiciones)
 		return(
-			<View style={LoginStyle.fondo}>
+			<View style={style.fondo}>
 				 
 	           		<TakePhotoComponent fuente={'foto.png'} ancho={145} alto={10} updateImagen={(photo) => {this.setState({photo})}} />
 	           	 
 		        <TextInput
-			        style={LoginStyle.input}
+			        style={[style.input, style.familia]}
 			        onChangeText={(textPassword) => this.setState({textPassword})}
 			        value={this.state.textPassword}
 			        underlineColorAndroid='transparent'
@@ -51,7 +51,7 @@ export default class editPerfilComponent1 extends Component{
            			secureTextEntry
 			    />	
 			    <TextInput
-			        style={LoginStyle.input}
+			        style={[style.input, style.familia]}
 			        onChangeText={(textPassword1) => this.setState({textPassword1})}
 			        value={this.state.textPassword1}
 			        underlineColorAndroid='transparent'
@@ -59,22 +59,22 @@ export default class editPerfilComponent1 extends Component{
            			placeholderTextColor="#8F9093" 
            			secureTextEntry
 			    />	
-			    <View style={LoginStyle.logos}>
+			    <View style={style.logos}>
 			    	<CheckBox 
 				    	onValueChange={(condiciones) => this.setState({condiciones})}
 				    	value={this.state.condiciones}
 			    	/>
 			    	<TouchableOpacity onPress={()=>{ Linking.openURL('https://appweplan.com')}}>
-			    		<Text style={LoginStyle.textoAcepto}>Acepto los terminos y condiciones</Text>
+			    		<Text style={[style.textoAcepto, style.familia]}>Acepto los terminos y condiciones</Text>
 			    	</TouchableOpacity>
 			    </View>
 			    {
 			    	this.state.condiciones
-			    	?<TouchableOpacity  style={LoginStyle.signup_btn} onPress={this.handleSubmit.bind(this)}>
-				    	<Text  style={LoginStyle.btnRegistro}>Guardar</Text>
+			    	?<TouchableOpacity  style={style.signup_btn} onPress={this.handleSubmit.bind(this)}>
+				    	<Text  style={[style.btnRegistro, style.familia]}>Guardar</Text>
 				    </TouchableOpacity>
-				    :<TouchableOpacity  style={LoginStyle.signup_btn_disabled}>
-				    	<Text  style={LoginStyle.btnRegistroDisabled}>Guardar</Text>
+				    :<TouchableOpacity  style={style.signup_btn_disabled}>
+				    	<Text  style={[style.btnRegistroDisabled, style.familia]}>Guardar</Text>
 				    </TouchableOpacity>
 			    }
 			    

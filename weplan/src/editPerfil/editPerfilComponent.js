@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, Dimensions, TouchableOpacity, TextInput, ScrollView, ImageBackground, Alert, PickerIOS} from 'react-native'
-import {LoginStyle} from '../editPerfil/style'
+import {style} from '../editPerfil/style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
 import ModalPicker from 'react-native-modal-picker'
@@ -154,17 +154,17 @@ export default class editPerfilComponent extends Component{
 	 
 	render(){
 		return(
-			<ScrollView style={LoginStyle.contenedor} >
-			<View style={LoginStyle.fondo} >
+			<ScrollView style={style.contenedor} >
+			<View style={style.fondo} >
 				<View>
 					<Image
-						style={LoginStyle.image}
+						style={style.image}
 						width={140}
-						source={require('../images/logo.png')}
+						source={require('../assets/images/logo.png')}
 				    />
 				</View>
 				<TextInput
-			        style={LoginStyle.input}
+			        style={[style.input, style.familia]}
 			        onChangeText={(textNombre) => this.setState({textNombre})}
 			        value={this.state.textNombre}
 			        underlineColorAndroid='transparent'
@@ -172,14 +172,14 @@ export default class editPerfilComponent extends Component{
            			placeholderTextColor="#8F9093" 
 			    />	
 			    <TextInput
-			        style={LoginStyle.input}
+			        style={[style.input, style.familia]}
 			        onChangeText={(textApellido) => this.setState({textApellido})}
 			        value={this.state.textApellido}
 			        underlineColorAndroid='transparent'
            			placeholder="Apellido"
            			placeholderTextColor="#8F9093" 
 			    />	
-			    <View style={LoginStyle.containCiudad}>	
+			    <View style={style.containCiudad}>	
 			     <View style={{  justifyContent:'space-around' }}>
 				    <ModalPicker
 		                data={this.state.ciudad}
@@ -187,14 +187,14 @@ export default class editPerfilComponent extends Component{
 		                color='#8F9093'
 			            font={15}
 		                onChange={(e)=> this.setState({textCiudad:e.label})} 
-		                style={LoginStyle.datePicker}
+		                style={style.datePicker}
 		            />
 		          </View>
 	            </View>
 	            {
 	            	this.state.email
 	            	?<TextInput
-				        style={LoginStyle.input}
+				        style={[style.input, style.familia]}
 				        onChangeText={(textTelefono) => this.setState({textTelefono})}
 				        value={this.state.textTelefono}
 				        underlineColorAndroid='transparent'
@@ -204,7 +204,7 @@ export default class editPerfilComponent extends Component{
 	           			maxLength={10} 
 				    />	
 				    :<TextInput
-				        style={LoginStyle.input}
+				        style={[style.input, style.familia]}
 				        onChangeText={(textEmail) => this.setState({textEmail})}
 				        value={this.state.textEmail}
 				        underlineColorAndroid='transparent'
@@ -214,8 +214,8 @@ export default class editPerfilComponent extends Component{
 	            }
 			    
 			    
-			    <View style={LoginStyle.date}>
-				    <View style={LoginStyle.containDatePicker}>
+			    <View style={style.date}>
+				    <View style={style.containDatePicker}>
 					{/* DIA */}
 					    <ModalPicker
 			                data={day}
@@ -223,11 +223,11 @@ export default class editPerfilComponent extends Component{
 			                color='#ffffff'
 			                font={16}
 			                onChange={(e)=> this.setState({textDate:e.label})} 
-			                style={LoginStyle.datePicker}
+			                style={style.datePicker}
 			            />
 					    
 			        </View>
-			        <View style={LoginStyle.containDatePicker}>
+			        <View style={style.containDatePicker}>
 			    	{/* MES */}
 			            <ModalPicker
 			                data={month}
@@ -235,10 +235,10 @@ export default class editPerfilComponent extends Component{
 			                color='#ffffff'
 			                font={16}
 			                onChange={(e)=> this.setState({textMonth:e.label})} 
-			                style={LoginStyle.datePicker}
+			                style={style.datePicker}
 			            />
 			        </View>    
-			        <View style={LoginStyle.containDatePickerYear}>   
+			        <View style={style.containDatePickerYear}>   
 			        {/* AÑO */} 
 			            <ModalPicker
 			                data={year}
@@ -246,22 +246,22 @@ export default class editPerfilComponent extends Component{
 			                color='#ffffff'
 			                font={16}
 			                onChange={(e)=> this.setState({textYear:e.label})} 
-			                style={LoginStyle.datePicker}
+			                style={style.datePicker}
 			            />
 			        </View>    
 	            </View>	
-	            <View style={LoginStyle.containDatePickerGenero}> 
+	            <View style={style.containDatePickerGenero}> 
 	            	<ModalPicker
 		                data={genero}
 		                initValue="Genero"
 		                color='#ffffff'
 		                font={16}
 		                onChange={(e)=> this.setState({textGenero:e.label})} 
-		                style={LoginStyle.datePicker}
+		                style={style.datePicker}
 		            />
 		        </View>  
-			    <TouchableOpacity  style={LoginStyle.signup_btn} onPress={this.handleSubmit.bind(this)}>
-			    	<Text  style={LoginStyle.btnRegistro}>Guardar</Text>
+			    <TouchableOpacity  style={style.signup_btn} onPress={this.handleSubmit.bind(this)}>
+			    	<Text  style={[style.btnRegistro, style.familia]}>Guardar</Text>
 			    </TouchableOpacity>
 		    </View>
 		    </ScrollView>

@@ -7,6 +7,9 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		alignItems: 'center',
 		marginTop:20
 	},
+	familia:{
+		fontFamily:'Futura-CondensedLight',
+	},
 	contenedorGeneral:{
 		backgroundColor:'#ffffff'
 	},
@@ -131,13 +134,13 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		height:200
 	},
 	textoCargado:{
-		marginTop:-69,
+		marginTop:-78,
 		backgroundColor:'#rgba(0,0,0,.5)',
 		width:'100%',
 		padding:5,
 	},
 	textoCargado2:{
-		marginTop: Platform.OS === 'android' ?-69 : -40,
+		marginTop: Platform.OS === 'android' ?-78 : -40,
 		backgroundColor:'#rgba(0,0,0,.5)',
 		width:'100%',
 		padding:5,
@@ -146,10 +149,24 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		color:"white",
 		fontSize:25,
 	},
-
 	ByCargado:{
 		color:"white",
-		fontSize:20,
+		fontSize:19,
+	},
+	calificacion:{
+		width:120,
+		flexDirection:'row',
+	},
+	votaciones:{
+		marginTop:-2,
+		marginLeft:15,
+		color:"white",
+	},
+	textModal:{
+		fontSize:20
+	},
+	textArrastar:{
+		color: '#94A5F3',
 	},
 	///////////////////////////////////////
 	/////////////// mapa //////////////////
@@ -327,7 +344,6 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		height:40,
 		width:225,
 		padding:0,
-		
 		color:'#969696'
 	},
 },{
@@ -370,14 +386,14 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 	 		height:30,
 	 	},
 	 	textoCargado:{
-			marginTop:-58,
+			marginTop:-77,
 		},
 		textoCargado2:{
-			marginTop:-58,
+			marginTop:-77,
 		},
 		nombreCargado:{
 			color:'#ffffff',
-			fontSize:15,
+			fontSize:22,
 		},
 	}
 })

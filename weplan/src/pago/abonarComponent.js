@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, Image, TouchableOpacity, TextInput, Alert} from 'react-native'
-import {EncuestaStyle}        from '../encuesta/style'
+import {style}        from '../encuesta/style'
 import axios                  from 'axios'
 import TakePhotoComponent     from '../takePhoto/takePhotoComponent.js'
 import socket from '../../socket.js'
@@ -29,27 +29,27 @@ export default class AbonarComponent extends Component{
   render() {
     const {enviarChat, valor, adjuntarAmigos, asignados, valorInicial} = this.state
     return (
-      <View style={EncuestaStyle.container}>
-        <View style={EncuestaStyle.modalIn}>
+      <View style={style.container}>
+        <View style={style.modalIn}>
          
           {/* rest modal */}
-          <View style={EncuestaStyle.modalAbono}>
+          <View style={style.modalAbono}>
 
             {/* icono back */}
-              <TouchableOpacity style={EncuestaStyle.btnBackAbono} onPress={()=>this.props.updateItems()}>
-                <Image source={require('../images/item3.png')} style={EncuestaStyle.backAbono} />
+              <TouchableOpacity style={style.btnBackAbono} onPress={()=>this.props.updateItems()}>
+                <Image source={require('../assets/images/item3.png')} style={style.backAbono} />
               </TouchableOpacity>
-              <View style={EncuestaStyle.contenedorAbono}>
-                <Image source={{uri:this.props.photo}} style={EncuestaStyle.Avatar} />
-                <Text style={EncuestaStyle.textoAbono}>{this.props.nombre}</Text>
+              <View style={style.contenedorAbono}>
+                <Image source={{uri:this.props.photo}} style={style.Avatar} />
+                <Text style={[style.textoAbono, style.familia]}>{this.props.nombre}</Text>
               </View>
-              <View style={EncuestaStyle.contenedorAbono}>
-                <Text style={EncuestaStyle.textoAbono}>Monto</Text>
+              <View style={style.contenedorAbono}>
+                <Text style={[style.textoAbono, style.familia]}>Monto</Text>
                 <TextInputMask
                   placeholder='Valor'
                   type={'money'}
                   options={{ unit: '$', zeroCents:true, precision:0 }} 
-                  style={EncuestaStyle.descripcionAbono}
+                  style={[style.descripcionAbono, style.familia]}
                   underlineColorAndroid='transparent'
                   onChangeText={this.getValor.bind(this)}
                   value={valorInicial}
@@ -59,9 +59,9 @@ export default class AbonarComponent extends Component{
               
             </View> 
           {/* Guardar */}  
-          <View style={EncuestaStyle.save} > 
-            <TouchableOpacity style={EncuestaStyle.btnSaveAbonar} onPress={this.handleSubmit.bind(this)}>
-              <Text style={EncuestaStyle.adjuntar} style={EncuestaStyle.textSaveAbonar}>Aceptar</Text>
+          <View style={style.save} > 
+            <TouchableOpacity style={style.btnSaveAbonar} onPress={this.handleSubmit.bind(this)}>
+              <Text style={style.adjuntar} style={[style.textSaveAbonar, style.familia]}>Aceptar</Text>
             </TouchableOpacity> 
           </View>
         </View>

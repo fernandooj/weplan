@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, ScrollView, ImageBackground, TouchableOpacity, Image, TextInput} from 'react-native'
-import {planes} from '../planesPublicos/style'
+import {style} from '../planesPublicos/style'
 import axios from 'axios'
 import CabezeraComponent from '../ajustes/cabezera.js'
 
@@ -48,23 +48,23 @@ export default class planesPublicosComponent extends Component{
 		if(filteredData.length>0){
 			return filteredData.map((e, key)=>{
 			return  <TouchableOpacity onPress={()=>navigate('detallePlanPublico', e.id)} key={key}>
-					<View style={planes.item}>
-						<Image source={{uri: e.imagen[0]}} style={planes.imagen} />
-						<View style={planes.boxPlan1} >
-							<Text style={planes.nombre}>{e.nombre.length<30 ?e.nombre :e.nombre.substring(0, 30)+' ...'}</Text>
+					<View style={style.item}>
+						<Image source={{uri: e.imagen[0]}} style={style.imagen} />
+						<View style={style.boxPlan1} >
+							<Text style={[style.nombre, style.familia]}>{e.nombre.length<30 ?e.nombre :e.nombre.substring(0, 30)+' ...'}</Text>
 							 
-							 <View style={planes.item}>	
-								<Text style={planes.textoTotal}>Has Invertido</Text>
+							 <View style={style.item}>	
+								<Text style={[style.textoTotal, style.familia]}>Has Invertido</Text>
 								 
 							</View> 
-							<Text style={planes.pagoDeudaMontoActive}>
+							<Text style={[style.pagoDeudaMontoActive, style.familia]}>
 								{'$ '+Number(Math.abs(e.saldo)).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
 							</Text>	
 							 
 						</View>
-						<Image source={require('../images/back.png')} style={planes.back} />
+						<Image source={require('../assets/images/back.png')} style={style.back} />
 					</View>
-					<View  style={planes.separador}></View>
+					<View  style={style.separador}></View>
 				</TouchableOpacity>
 				})
 		}else{
@@ -74,19 +74,19 @@ export default class planesPublicosComponent extends Component{
 	cabezera(){
 		const {navigate} = this.props.navigation
 		return(
-			<View style={planes.contenedorCabezera}> 
-				<TouchableOpacity onPress={()=>navigate('inicio')} style={planes.btnClose} >
-					<Image source={require('../images/back.png')} style={planes.imagenClose} />
+			<View style={style.contenedorCabezera}> 
+				<TouchableOpacity onPress={()=>navigate('inicio')} style={style.btnClose} >
+					<Image source={require('../assets/images/back.png')} style={style.imagenClose} />
 				</TouchableOpacity>
 				<TextInput
-      				style={planes.input}
+      				style={style.input}
 			        onChangeText={this.filteredData.bind(this)}
 			        value={this.state.username}
 			        underlineColorAndroid='transparent'
            			placeholder="Buscar"
            			placeholderTextColor="#8F9093" 
 			    />
-			    <Image source={require('../images/search.png')} style={planes.btnBuscar} />
+			    <Image source={require('../assets/images/search.png')} style={style.btnBuscar} />
 			</View>
 		)
 	}
@@ -96,10 +96,10 @@ export default class planesPublicosComponent extends Component{
 		const rows = this.getRow(filteredData)
 		const {navigate} = this.props.navigation
 		return(	 
-			<View style={planes.contenedor}>
+			<View style={style.contenedor}>
 				 
 				<CabezeraComponent navigate={navigate} url={'ajustes'} texto='Planes Publicos'  />
-				<ScrollView style={planes.subContenedor}>
+				<ScrollView style={style.subContenedor}>
 					{rows}	
 				</ScrollView>
 				<FooterComponent navigate={navigate} />		

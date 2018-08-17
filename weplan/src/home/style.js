@@ -3,10 +3,13 @@ var screenHeight = Dimensions.get('window').height;
 var screenWidth = Dimensions.get('window').width;
 import { MediaQueryStyleSheet } from "react-native-responsive";
 
-export const HomeStyle = MediaQueryStyleSheet.create({
+export const style = MediaQueryStyleSheet.create({
 	contenedor:{
 		flex: 1,
 		backgroundColor:"#ffffff",
+	},
+	familia:{
+		fontFamily:'Futura-CondensedLight',
 	},
 	contenedorPlan:{
 		flex: .5,	
@@ -63,16 +66,16 @@ export const HomeStyle = MediaQueryStyleSheet.create({
 		width:100
 	},
 	iconVer:{
-	 	width:40,
-	 	height:40,
+	 	width:30,
+	 	height:30,
 	 	marginTop:10,
-	 	marginBottom:10,
+	 	marginBottom:5,
 	},
 
 	textFooter1:{
 		color:'#ffffff',
 		fontSize:17,
-		marginTop:20,
+		marginTop:14,
 		width:'85%'
 	},
 	footer2:{
@@ -80,6 +83,7 @@ export const HomeStyle = MediaQueryStyleSheet.create({
 		alignItems: 'flex-start',
 		flexDirection:'row',
 		justifyContent: 'flex-start',
+		marginTop:3
 	},
 	footer3:{
 		flexWrap: 'wrap', 
@@ -119,7 +123,8 @@ export const HomeStyle = MediaQueryStyleSheet.create({
 
 	textFooter2:{
 		color:'#ffffff',
-		marginTop:0
+		marginTop:0,
+		fontSize:15
 	},
 	textFooter3:{
 		color:'#ffffff',
@@ -127,11 +132,8 @@ export const HomeStyle = MediaQueryStyleSheet.create({
 		marginLeft:10
 	},
 	iconFooter1:{
-		marginLeft:40,
 		width:35,
 	 	height:35,
-	 	marginTop:10,
-	 	marginBottom:10,
 	},
 	iconFooter2:{
 		width:240,
@@ -168,22 +170,19 @@ export const HomeStyle = MediaQueryStyleSheet.create({
 			width:'64%', 
 			height:33,  
 		}, 
-		btnIconVer:{
-			width:100
-		},
-		iconVer:{
-		 	width:30,
-		 	height:30,
-		 	marginTop:20,
-		 	marginBottom:0,
-		},
+		 
 		iconFooter:{
-			width:35,
-		 	height:35,
+			width:25,
+		 	height:25,
 		 	marginTop:0,
-		 	marginBottom:15, 
+		 	marginBottom:10, 
 		 	marginLeft:2,
 		 	marginRight:2
+		},
+		iconFooter1:{
+			width:21,
+		 	height:21,
+		 	marginTop:4,
 		},
 		fondo:{
 			height:screenHeight-(screenHeight/8.1),

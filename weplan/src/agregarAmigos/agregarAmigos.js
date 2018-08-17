@@ -41,8 +41,8 @@ export default class AgregarAmigosComponent extends Component{
 			return  <TouchableOpacity style={AmigosStyle.subLista} key={key} 
 					onPress={(e)=>{this.updateState(data.id, data.estado); this.updateStateAsignados(data.estado, data.id); this.updateStateUsuarios(data.id, data.photo, data.nombre, data.estado, data.token)}} > 
 					<Image source={{ uri: data.photo}}  style={data.estado ?AmigosStyle.avatar :AmigosStyle.avatar2} /> 
-					<Text style={AmigosStyle.textoAvatar}>{data.nombre}</Text>
-					{!data.estado ?<Image source={require('../images/agregado.png')} style={AmigosStyle.agregado}/> :null} 
+					<Text style={[AmigosStyle.textoAvatar, AmigosStyle.familia]}>{data.nombre}</Text>
+					{!data.estado ?<Image source={require('../assets/images/agregado.png')} style={AmigosStyle.agregado}/> :null} 
 			    	</TouchableOpacity>
 				})
 	}
@@ -92,23 +92,23 @@ export default class AgregarAmigosComponent extends Component{
 		        }}>
 				<View style={AmigosStyle.titulo}>
 					<TouchableOpacity onPress={(e)=>{this.props.close()}}  style={AmigosStyle.btnClose} >
-						<Image source={require('../images/back.png')} style={AmigosStyle.imagenClose} />
+						<Image source={require('../assets/images/back.png')} style={AmigosStyle.imagenClose} />
 					</TouchableOpacity>
-					<Image source={require('../images/friends.png')} style={AmigosStyle.imagenTitulo}/>
-	          		<Text style={AmigosStyle.text}>{this.props.titulo}</Text>
+					<Image source={require('../assets/images/friends.png')} style={AmigosStyle.imagenTitulo}/>
+	          		<Text style={[AmigosStyle.text, AmigosStyle.familia]}>{this.props.titulo}</Text>
 	          	</View>	
 
 	  			<View style={AmigosStyle.contenedor}>
 	  				<View style={AmigosStyle.separador}></View>
           			<SearchInput
-          				style={AmigosStyle.input}
+          				style={[AmigosStyle.input, AmigosStyle.familia]}
 				        onChangeText={(term) => { this.searchUpdated(term) }} 
 				        value={this.state.username}
 				        underlineColorAndroid='transparent'
 	           			placeholder="Buscar"
 	           			placeholderTextColor="#8F9093" 
 				    />
-				    <Image source={require('../images/search.png')} style={AmigosStyle.btnBuscar} />
+				    <Image source={require('../assets/images/search.png')} style={AmigosStyle.btnBuscar} />
  				</View>
 				
 					<ScrollView style={AmigosStyle.contenedorLista} showsHorizontalScrollIndicator={false}>

@@ -2,10 +2,13 @@ import {StyleSheet, Dimensions} from 'react-native';
 var screenWidth = Dimensions.get('window').width;
 
 import { MediaQueryStyleSheet } from "react-native-responsive";
-export const NotiStyle = MediaQueryStyleSheet.create({ 
+export const style = MediaQueryStyleSheet.create({ 
 	contenedor:{
 		flex: 1,
 		backgroundColor:"#ffffff",
+	},
+	familia:{
+		fontFamily:'Futura-CondensedLight',
 	},
 	contenedorPlan:{
 		flex: .5,
@@ -74,7 +77,7 @@ export const NotiStyle = MediaQueryStyleSheet.create({
  	},
  	tituloNoti:{
  		marginTop:15,
- 		fontSize:18,
+ 		fontSize:20,
  		marginBottom:5
  	},
  	separador:{
@@ -105,7 +108,7 @@ export const NotiStyle = MediaQueryStyleSheet.create({
 	},
 	eliminar:{
 		color:'#ffffff',
-		fontSize:12
+		fontSize:17
 	}
 
 },{
@@ -125,9 +128,7 @@ export const NotiStyle = MediaQueryStyleSheet.create({
 	 		fontSize:12,
 	 	},
 	 	textoNotifica:{
-	 		color:'#5664ba',
-	 		fontSize:12,
-	 		width:220
+	 		fontSize:18
 	 	},
 	 	puntosBtn:{
 			right:-13
@@ -143,7 +144,7 @@ export const NotiStyle = MediaQueryStyleSheet.create({
 			right:-13
 		},
 		eliminar:{
-			fontSize:10
+			fontSize:14
 		}
 	}
 })

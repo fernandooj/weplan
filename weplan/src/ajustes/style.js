@@ -2,9 +2,12 @@ import {StyleSheet, Dimensions} from 'react-native';
 var screenWidth = Dimensions.get('window').width;
 import { MediaQueryStyleSheet } from "react-native-responsive";
 
-export const AjustesStyle = MediaQueryStyleSheet.create({ 
+export const style = MediaQueryStyleSheet.create({ 
 	contenedor:{
 		alignItems: 'center',
+	},
+	familia:{
+		fontFamily:'Futura-CondensedLight',
 	},
 	subContenedor:{
 		width:'80%'
@@ -26,11 +29,13 @@ export const AjustesStyle = MediaQueryStyleSheet.create({
 		backgroundColor:'#EAEAEA',
 		color:'#9CB7F5', 
 		top:-20,
-		paddingTop:8,
-		paddingBottom:8,
+		paddingTop:0,
+		paddingBottom:0,
 		paddingRight:20,
 		paddingLeft:20,
 		borderRadius:20,
+		fontSize:20,
+		marginBottom:3
 	},
  	btnMenu:{
  		paddingTop:7, 
@@ -187,11 +192,7 @@ export const AjustesStyle = MediaQueryStyleSheet.create({
 },{
 	"@media (max-device-width: 320)": {
 		username:{ 
-			top:-20,
-			paddingTop:6,
-			paddingBottom:6,
-			paddingRight:20,
-			paddingLeft:20,
+
 		},
 		input:{
 			width:230
