@@ -1,22 +1,13 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, Platform} from 'react-native';
 var screenHeight = Dimensions.get('window').height;
 var screenWidth = Dimensions.get('window').width;
 import { MediaQueryStyleSheet } from "react-native-responsive";
-
-export const style = MediaQueryStyleSheet.create({
-	contenedor:{
-		flex: 1,
-		backgroundColor:"#ffffff",
-	},
-	familia:{
-		fontFamily:'Futura-CondensedLight',
-	},
-	contenedorPlan:{
-		flex: .5,	
-	},
+export const cabezeraFooterStyle = MediaQueryStyleSheet.create({
+	 
 	cabezera:{
 		position:'absolute',
 		top:0,
+		marginTop:Platform.OS==='android' ? 0 : 18,
 		width:'100%',
 		zIndex:100,
 		flexWrap: 'wrap', 
@@ -45,50 +36,25 @@ export const style = MediaQueryStyleSheet.create({
 	 	marginLeft:35,
 	 	marginRight:35
 	},
-	hideCabezera:{
-		position:'absolute',
-		top:-100
+	containerBuscador:{
+		flexDirection:'row'
 	},
-	fondo:{
-		height:screenHeight-(screenHeight/9.7),
+	buscador:{
+		width:200,
+		alignItems:'center',
+		paddingLeft:0,
+		fontSize:20
 	},
-	footer:{
-		position:'absolute',
-		bottom:0,
-		width:screenWidth,
-		backgroundColor:"rgba(0,0,0,0.56)",  
-		paddingLeft:20,
-	},
-	footer1:{
-		flexDirection:'row',
-	},
-	btnIconVer:{
-		width:100
-	},
-	iconVer:{
-	 	width:30,
-	 	height:30,
-	 	marginTop:10,
-	 	marginBottom:5,
-	},
-
-	textFooter1:{
-		color:'#ffffff',
-		fontSize:17,
-		marginTop:14,
-		width:'85%'
-	},
-	footer2:{
-		flexWrap: 'wrap', 
-		alignItems: 'flex-start',
-		flexDirection:'row',
-		justifyContent: 'flex-start',
-		marginTop:3
+	closeBtn:{
+		fontSize:20,
+		marginTop:15
 	},
 	footer3:{
-		flexWrap: 'wrap', 
 		backgroundColor:"#ffffff",
+		flexWrap: 'wrap', 
 		alignItems: 'center',
+		flexDirection:'row',
+		justifyContent: 'center',
 	},
 	btnFooter3:{
 		alignItems: 'center',
@@ -109,44 +75,14 @@ export const style = MediaQueryStyleSheet.create({
 		width:'65%', 
 		height:35,  
 	}, 
-	iconFooter:{
-		width:35,
-	 	height:35,
-	 	marginTop:10,
-	 	marginBottom:10, 
-	 	marginLeft:2,
-	 	marginRight:2
-	},
-	textoFooter3:{
-		fontSize:11,
-	},
-
-	textFooter2:{
-		color:'#ffffff',
-		marginTop:0,
-		fontSize:15
-	},
-	textFooter3:{
-		color:'#ffffff',
-		marginTop:20,
-		marginLeft:10
-	},
-	iconFooter1:{
-		width:35,
-	 	height:35,
-	},
-	iconFooter2:{
-		width:240,
-		height:85,
-	},
-	footer3:{
-		flexWrap: 'wrap', 
-		alignItems: 'center',
-		flexDirection:'row',
-		justifyContent: 'center',
-	},	 
+  	punto:{
+  		fontSize:30,
+  		position:'absolute',
+  		bottom:-16,
+  		color:'#00c026'
+  	}
 },{
-	"@media (max-device-width: 320)": {
+	"@media (max-device-width: 380)": {
 		iconHead:{
 		 	width:35,
 		 	height:35,
@@ -170,27 +106,22 @@ export const style = MediaQueryStyleSheet.create({
 			width:'64%', 
 			height:33,  
 		}, 
-		 
+		btnIconVer:{
+			width:100
+		},
+		iconVer:{
+		 	width:30,
+		 	height:30,
+		 	marginTop:20,
+		 	marginBottom:0,
+		},
 		iconFooter:{
-			width:25,
-		 	height:25,
+			width:35,
+		 	height:35,
 		 	marginTop:0,
-		 	marginBottom:10, 
+		 	marginBottom:15, 
 		 	marginLeft:2,
 		 	marginRight:2
-		},
-		iconFooter1:{
-			width:21,
-		 	height:21,
-		 	marginTop:4,
-		},
-		fondo:{
-			height:screenHeight-(screenHeight/8.1),
-		},
-	},
-	"@media (min-device-height: 770)": {
-		fondo:{
-			height:screenHeight-(screenHeight/11.4),
 		},
 	}
 })
