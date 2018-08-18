@@ -2,19 +2,25 @@
 
 let chatSchema = require('../models/chatModel.js');
 let mongoose = require('mongoose')
- 
+let moment = require('moment')
 class chatServices{
 	getByItem(itemId, callback){
 		chatSchema.find({itemId}, callback)
 	}
 	getByPlan(planId, idUsuario, callback){
-		planId = mongoose.Types.ObjectId(planId);	
+		planId = mongoose.Types.ObjectId(planId);
+		// chatSchema.find({}, null, {sort: {_id: -1}}, callback)	
 		chatSchema.aggregate([
+			 
 			{
 	 		   $match:{
 	 		      planId
 	 		   }
 	 		},
+	 		
+	 		
+	 		
+			
 			{
 	 			$lookup: {
 	 				from: "users",
@@ -90,6 +96,7 @@ class chatServices{
 	 				preserveNullAndEmptyArrays: true
 	 			}
 	 		},
+	 		
 	 		{
 	 			$project: {
 	 				///////// info general del chat
@@ -134,13 +141,10 @@ class chatServices{
 	 				},
 	 				totalRepuestas:{
 	 					$cond:[{$gte:['$RespuestaData.valor',0]},1,0]
-	 				},
-	 				
+	 				},		
 	 			}
 	 		},
-	 		{ 
-	 			$sort : { _id : -1 } 
-	 		},
+
 	 		{
 			    $group:{
 			        _id:
@@ -157,6 +161,14 @@ class chatServices{
 			         totalUno:{$sum:"$totalUno"}
 			    }
 			},
+			{ 
+	 			$sort : { _id : -1 } 
+	 		},
+	 
+	 		 { 
+	 			$limit : 10
+	 		},
+			
 	 		 
 		], callback);
 	}
@@ -174,6 +186,7 @@ class chatServices{
 		chat.lat  		 = data.lat
 		chat.lng  		 = data.lng
 		chat.documento   = documento
+		chat.createdAt   = moment().format('YYYY-MM-DD h:mm:ss')
 		chat.save(callback)
 	}
 	// innactiva(_id, callback){

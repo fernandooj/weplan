@@ -424,7 +424,17 @@ export default class createPlanComponent extends Component{
 		 
 		console.log("costo" + costo)
 
-		if (!imagen &&tipo=='pago') {
+		if (!fechaLugar &&tipo=='suscripcion') {
+			Alert.alert(
+			  'La fecha es obligatoria',
+			  '',
+			  [
+			    {text: 'OK', onPress: () => console.log('OK Pressed')},
+			  ],
+			  { cancelable: false }
+			)
+		}
+		else if (!imagen &&tipo=='pago') {
 			Alert.alert(
 			  'La imagen es obligatoria',
 			  '',

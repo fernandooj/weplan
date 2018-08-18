@@ -106,7 +106,7 @@ router.get('/chatPlan/:id', (req, res)=>{
 							esAMigo     : true
 						})
 					})
-					console.log(chat)
+					chat = chat.reverse()
 					res.json({status:'SUCCESS', chat,  plan:plan[0], total:chat.length, planAsignados, code:1}) 
 				}
 			})

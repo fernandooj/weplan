@@ -1,7 +1,7 @@
 'use strict'
 
 let mongoose = require('mongoose')
-let moment = require('moment')
+
 let Schema = mongoose.Schema;
 
  
@@ -18,7 +18,7 @@ let chatSchema = Schema({
 	lat        : String,
 	lng        : String,
 	documento  : String,
-	createdAt  :  {type: String, default: moment().format('YYYY-MM-DD h:mm:ss') },
+	createdAt  : String,
 })
 
 

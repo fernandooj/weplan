@@ -631,14 +631,14 @@ export default class ChatComponent extends Component{
   			<QRCodeScanner
 		        onRead={this.infoQr.bind(this)}
 		        topContent={
-		          <Text style={style.centerText}>
-		            Scanea el Qr de tu amigo
+		          <Text style={[style.centerText, style.familia]}>
+		            Scanea el QR de tu amigo
 		          </Text>
 		        }
 		        bottomContent={
 		          	<View style={style.containerHecho}>
-			    		<TouchableOpacity  style={style.btnHecho} onPress={()=>this.setState({modalQr:false})}>
-					    	<Text  style={style.hecho}>!Cerrar!</Text>
+			    		<TouchableOpacity style={style.btnHecho} onPress={()=>this.setState({modalQr:false})}>
+					    	<Text  style={[style.hecho, style.familia]}>!Cerrar!</Text>
 					    </TouchableOpacity>
 					</View> 
 		        }

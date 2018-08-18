@@ -70,7 +70,7 @@ export default class MisPlanesComponent extends Component{
 					<Image source={require('../assets/images/back.png')} style={MisPlanesStyle.imagenClose} />
 				</TouchableOpacity>
 				<TextInput
-      				style={MisPlanesStyle.input}
+      				style={[MisPlanesStyle.input, MisPlanesStyle.familia]}
 			        onChangeText={this.filteredData.bind(this)}
 			        value={this.state.username}
 			        underlineColorAndroid='transparent'
