@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, Platform} from 'react-native';
 var screenHeight = Dimensions.get('window').height;
 var screenWidth = Dimensions.get('window').width;
 import { MediaQueryStyleSheet } from "react-native-responsive";
@@ -50,7 +50,7 @@ export const style = MediaQueryStyleSheet.create({
 		top:-100
 	},
 	fondo:{
-		height:screenHeight-(screenHeight/9.7),
+		height:Platform.OS==='android' ?screenHeight-(screenHeight/9.7) :screenHeight-(screenHeight/16.7),
 	},
 	footer:{
 		position:'absolute',
@@ -132,8 +132,9 @@ export const style = MediaQueryStyleSheet.create({
 		marginLeft:10
 	},
 	iconFooter1:{
-		width:35,
-	 	height:35,
+		width:28,
+	 	height:28,
+	 	marginTop:15,
 	},
 	iconFooter2:{
 		width:240,

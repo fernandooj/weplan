@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, TouchableOpacity, TextInput, Alert, Platform, ImageBackground, ScrollView, AsyncStorage} from 'react-native'
+import {View, Text, TouchableOpacity, TextInput, Alert, Platform, ImageBackground, ScrollView, AsyncStorage, Keyboard} from 'react-native'
 import {style} from '../login/style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
@@ -184,8 +184,9 @@ export default class LoginComponent extends Component{
 	           			placeholder="Email / Telefono"
 	           			placeholderTextColor="#8F9093" 
 	           			autoCapitalize = 'none'
+	           			 
 				    />
-					<TextInput
+					<TextInput 
 				        style={[style.input, style.familia]}
 				        onChangeText={(password) => this.setState({password})}
 				        value={this.state.password}
@@ -194,6 +195,7 @@ export default class LoginComponent extends Component{
 	           			placeholderTextColor="#8F9093" 
 	           			secureTextEntry
 	           			autoCapitalize = 'none'
+	           			   
 				    />
 				    <TouchableOpacity style={style.submit} onPress={this.handleSubmit.bind(this)}>
 				    	<Text style={[style.textSubmit, style.familia]}>Iniciar Sesión</Text>

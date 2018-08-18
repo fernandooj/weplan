@@ -32,6 +32,7 @@ export default class profileComponent extends Component{
 	componentWillMount(){
 
 		let userId = this.props.navigation.state.params.userId
+
 		// let userId = '5b37d5c226d7c9175c24ddbd'
 		 
 		axios.get(`/x/v1/pla/plan/getbyid/${userId}`) 
@@ -98,7 +99,7 @@ export default class profileComponent extends Component{
 		return(	 
 			<ScrollView >
 				<View style={profileStyle.contenedor}>
-					<CabezeraComponent navigate={navigate} url={'chat'} texto='' parameter={this.props.navigation.state.params.planId._id} /> 
+					<CabezeraComponent navigate={navigate} url={this.props.navigation.state.params.planId ?'chat' :'notificacion'} texto='' parameter={this.props.navigation.state.params.planId ?this.props.navigation.state.params.planId._id :null} /> 
 			 
 					<View style={profileStyle.subContenedor}>
 						{this.renderPerfil()}

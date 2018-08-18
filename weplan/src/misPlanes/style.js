@@ -94,8 +94,8 @@ export const MisPlanesStyle = MediaQueryStyleSheet.create({
 		width:"88%"
 	},
 	sinPlanes:{
-		width:390,
-		height:530,
+		width:400,
+		height:624,
 		marginBottom:10
 	}
 },{

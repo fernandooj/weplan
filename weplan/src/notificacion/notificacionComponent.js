@@ -31,11 +31,11 @@ export default class notificacionComponent extends Component{
 			return(
  				<View key={key} style={style.subContenedor}>
 	 				<View style={style.contenedorNoti2}>
-	 					<TouchableOpacity onPress={e.tipo==2 ?()=>navigate('chat', e.idTipo) :null } >
+	 					<TouchableOpacity onPress={e.tipo==2 ?()=>navigate('chat', e.idTipo) :e.tipo==1 || e.tipo==5 ?()=>navigate('profile', {userId:e.idUser, planId:null}) :null } >
 		 					<Image source={e.photo ?{uri:e.photo} :{uri:'https://appweplan.com/public/assets/logo.png'}} style={style.avatar} />
 	 					</TouchableOpacity>
 	 					<View>
-	 						<TouchableOpacity onPress={e.tipo==2 ?()=>navigate('chat', e.idTipo) :null } >
+	 						<TouchableOpacity onPress={e.tipo==2 ?()=>navigate('chat', e.idTipo) :e.tipo==1 || e.tipo==5 ?()=>navigate('profile', {userId:e.idUser, planId:null}) :null } >
 				 				<Text style={[style.tituloNoti, style.familia]}>{e.nombre}</Text> 
 				 				<Text style={[style.textoNotifica, style.familia]}>
 				 					{

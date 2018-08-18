@@ -17,36 +17,36 @@ export default class planesPublicosComponent extends Component{
 	constructor(props){
 		super(props)
 		this.state={
-			filteredData:[],
-			allList:[]
+			filtroData:[],
+			todoListado:[]
 		}
 	}
 	componentWillMount(){
 		axios.get('/x/v1/pla/plan/planespublicos/innactivos')
 		.then(e=>{
 			console.log(e.data)
-			this.setState({allList:e.data.planes, filteredData:e.data.planes})
+			this.setState({todoListado:e.data.planes, filtroData:e.data.planes})
 		})
 		.catch(res=>{
 			console.log(res)
 		})
 	}
-	filteredData(event){
+	filtroData(event){
 		const regex = new RegExp(event, 'i');
-		const filtered = this.state.allList.filter(function(e){
+		const filtered = this.state.todoListado.filter(function(e){
 			return (e.data[0].info[5].search(regex)> -1)	
 		})
 		if (event.length>0) {
-			this.setState({filteredData:filtered})
+			this.setState({filtroData:filtered})
 		}else{
-			this.setState({filteredData:this.state.allList})
+			this.setState({filtroData:this.state.todoListado})
 		}	
 	}
 	 
-	getRow(filteredData){
+	getRow(filtroData){
 		const {navigate} = this.props.navigation
-		if(filteredData.length>0){
-			return filteredData.map((e, key)=>{
+		if(filtroData.length>0){
+			return filtroData.map((e, key)=>{
 			return  <TouchableOpacity onPress={()=>navigate('detallePlanPublico', e.id)} key={key}>
 					<View style={style.item}>
 						<Image source={{uri: e.imagen[0]}} style={style.imagen} />
@@ -80,7 +80,7 @@ export default class planesPublicosComponent extends Component{
 				</TouchableOpacity>
 				<TextInput
       				style={style.input}
-			        onChangeText={this.filteredData.bind(this)}
+			        onChangeText={this.filtroData.bind(this)}
 			        value={this.state.username}
 			        underlineColorAndroid='transparent'
            			placeholder="Buscar"
@@ -92,8 +92,8 @@ export default class planesPublicosComponent extends Component{
 	}
  
 	render(){
-		const filteredData = this.state.filteredData
-		const rows = this.getRow(filteredData)
+		const filtroData = this.state.filtroData
+		const rows = this.getRow(filtroData)
 		const {navigate} = this.props.navigation
 		return(	 
 			<View style={style.contenedor}>

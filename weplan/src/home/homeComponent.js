@@ -107,8 +107,8 @@ export default class homeComponent extends Component{
 		return filtered.map((e, key)=>{
 		let data = parseInt(e.dist/1000);
 		data = data.toString()
-		// let calificacion = e.UserData.calificacion.length
-		let calificacion = (e.UserData.calificacion.reduce((a, b) => a + b, 0))/e.UserData.calificacion.length
+		let calficaLongitud = e.UserData.calificacion ?e.UserData.calificacion.length: false
+		let calificacion = e.UserData.calificacion ?(e.UserData.calificacion.reduce((a, b) => a + b, 0))/e.UserData.calificacion.length :parseInt(0)
 		return  <ImageBackground source={{uri : e.imagenResize[0]}} style={style.fondo} key={key}>
 				<View style={style.footer}>
 					<View style={style.footer1}>
@@ -120,7 +120,7 @@ export default class homeComponent extends Component{
 					{e.descripcion &&<Text style={[style.textFooter2, style.familia]}>{e.descripcion}</Text>}
 					
 					<Text style={[style.textFooter2, style.familia]}>Estas a {parseInt(e.dist)<1000 ?`${parseInt(e.dist)} Metros` :`${data} Kilometros`}</Text>
-					<Text style={[style.textFooter2, style.familia]}>{`Por: ${e.UserData.nombre}, ${parseFloat(calificacion).toFixed(0)}*`}</Text>
+					<Text style={[style.textFooter2, style.familia]}>{`Por: ${e.UserData.nombre}, ${calficaLongitud ?parseFloat(calificacion).toFixed(0) :''}*`}</Text>
 					<View style={style.footer2}>
 						<TouchableOpacity onPress={() => this.like(e._id)}>
 							<Image source={require('../assets/images/corazon.png')} style={style.iconFooter} />

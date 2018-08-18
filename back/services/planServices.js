@@ -128,7 +128,7 @@ class planServices {
 			        near: { type: "Point", coordinates: [  parseFloat(lng) ,  parseFloat(lat) ] },
 			        distanceField: "dist",
 			      	query: { tipo: "pago", activo:true },
-			        maxDistance: 30000,
+			        maxDistance: 30000000,
 			        num: 5,
 			        spherical: true
 			    }

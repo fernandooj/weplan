@@ -123,6 +123,9 @@ class userServices {
 		newUsuario.estado   = "inactivo"
 		newUsuario.tipo	    = "local"
 		newUsuario.acceso   = user.acceso
+		newUsuario.acceso   = user.acceso
+		newUsuario.categorias = []
+		newUsuario.calificacion = []
 		newUsuario.notificacion = false
 		newUsuario.telefono = user.tipo==2 &&user.username
 		newUsuario.email    = user.tipo==1 &&user.username
@@ -140,6 +143,7 @@ class userServices {
 		newUsuario.tipo	 	  = user.tipo
 		newUsuario.acceso     = user.acceso
 		newUsuario.categorias = []
+		newUsuario.calificacion = []
 		newUsuario.estado     = "activo"
 		newUsuario.save(callback)
 	}
@@ -235,7 +239,6 @@ class userServices {
 		newUsuario.pais     = user.pais
 		newUsuario.token    = randonNumber
 		newUsuario.photo    = ruta
-		newUsuario.categorias = []
 		newUsuario.save(callback);
 	}
 	avatar(id, extension, callback){

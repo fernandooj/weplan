@@ -99,7 +99,7 @@ export const AmigosStyle = MediaQueryStyleSheet.create({
 	btnBuscar:{
 		position:'absolute',
 		top: 18,  
-		right:49, 
+		right:75, 
 		width:25,
 		height:25
  	}, 
@@ -124,7 +124,7 @@ export const AmigosStyle = MediaQueryStyleSheet.create({
  		color:'white'
  	}
 },{
-	"@media (max-device-width: 380)": {
+	"@media (max-device-width: 320)": {
 		contenedorAmigos:{
  			paddingLeft:30,
  		},
@@ -145,6 +145,9 @@ export const AmigosStyle = MediaQueryStyleSheet.create({
 			borderRadius: 25,
 			borderWidth: 3,
 		},
+		btnBuscar:{
+			right:49, 
+		}
 		 
 	}
 })
