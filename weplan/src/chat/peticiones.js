@@ -96,7 +96,7 @@ export const pedirContacto = (usuariosAsignados, planId)=>{
 
 export const pedirMapa = (lat, lng, planId)=>{
 	Alert.alert(
-		'Seguro deseas enviar este mapa',
+		'¿Seguro deseas enviar este mapa?',
 		'',
 	[
 	    {text: 'Mejor despues', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
@@ -109,7 +109,7 @@ export const pedirMapa = (lat, lng, planId)=>{
 const alerta = (info, data, funcion, tipo, planId) =>{
 	console.log(tipo)
 	Alert.alert(
-	  'Seguro deseas enviar',
+	  '¿Seguro deseas enviar?',
 	  info,
 	  [
 	    {text: 'Mejor despues', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},

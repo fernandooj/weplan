@@ -188,7 +188,7 @@ export default class MapaPlanComponent extends Component{
 				        </MapView>
 				        {
 				        	!ubicacionDefecto.infoplan || ubicacionDefecto.muestraBtnHecho
-							?<Text style={[CreatePlanStyle.textArrastar, CreatePlanStyle.familia]}>Puedeas presionar y arrastar el marcador a cualquier lugar</Text>
+							?<Text style={[CreatePlanStyle.textArrastar, CreatePlanStyle.familia]}>Puedes presionar y arrastar el marcador a cualquier lugar</Text>
 							:null
 				        }
 				        {

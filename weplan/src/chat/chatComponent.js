@@ -49,7 +49,7 @@ export default class ChatComponent extends Component{
 
 	componentWillMount(){
 		let planId = this.props.navigation.state.params	
-		// let planId = '5b653497d1bd7e0d78a17a9e'	 
+		// let planId = '5b778d930a0bc679ff059d8b'	 
 		console.log(planId) 
 		this.socket = SocketIOClient(URL);
 		this.socket.on(`chat${planId}`, 	this.onReceivedMessage);
@@ -471,12 +471,12 @@ export default class ChatComponent extends Component{
 								source={{uri: e.photo}}
 						    />
 						</TouchableOpacity>
-						<Image
+						{/*<Image
 							style={e.userId==id ?style.cPhoto :[style.cPhoto, style.cPhotoLeft]} 
 							width={60}
 							height={60}
 							source={{uri: e.cPhoto}}
-					   />
+					   />*/}
 						<TouchableOpacity style={e.userId== id ?style.box :[style.box, style.boxLeft]} 
 							onPress={()=> this.setState({showPdf:true})} >
 							<View style={style.tituloTipoChat}>

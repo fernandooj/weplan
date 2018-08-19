@@ -172,7 +172,8 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 	/////////////// mapa //////////////////
 	///////////////////////////////////////
 	tituloMapa:{
-		flexDirection:'row',
+		flexDirection:'row', 
+		marginTop:Platform.OS==='android' ? 0 : 18,
 	},
 	container: {
 		marginTop:0,

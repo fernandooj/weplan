@@ -14,17 +14,17 @@ export const style = MediaQueryStyleSheet.create({
 	},
 	avatar: {
 		marginTop:10,
-		borderRadius: 75,
-		width: 110,
-		height: 110,
+		borderRadius: 60,
+		width: 120,
+		height: 120,
 		borderColor:'#9CB7F5',
 		borderWidth:7,
 		marginBottom:30
 	},
 	avatar2:{
 		position:'absolute',
-		top:150,
-		left:23,
+		top:70,
+		left:75,
 		zIndex:100,
 	},
 	avatar3:{

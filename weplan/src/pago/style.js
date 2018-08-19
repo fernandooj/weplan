@@ -143,7 +143,7 @@ export const style = MediaQueryStyleSheet.create({
 	pagoDeudaAvatar:{
 		width:50,
 		height:50,
-		borderRadius:35,
+		borderRadius:25,
 		borderWidth: 5,
 		borderColor:'#a5a5a5',
 	},

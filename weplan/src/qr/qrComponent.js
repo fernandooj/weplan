@@ -3,7 +3,7 @@ import {View, Text, TouchableOpacity, Modal, ImageBackground,
 TextInput, CheckBox, Linking, Alert}  from 'react-native'
 import {QrStyle} 					  from '../qr/style'
 import axios 						  from 'axios';
-import QRCode 						  from 'react-qr-code';
+import QRCode from 'react-native-qrcode';
 
  
 
@@ -44,7 +44,13 @@ export default class QrComponent extends Component{
 			        }
 					
 					<View style={QrStyle.qr} >
-						<QRCode value={id} size={180} />
+						{/*<QRCode value={id} size={180} />*/}
+						<QRCode
+				          value={id}
+				          size={180}
+				          bgColor='purple'
+				          fgColor='white'
+				        />
 					</View>
 					<Text style={QrStyle.texto}>Este es tu Código QR unico e irrepetible, úsalo para agregar amigos y únirte a planes !</Text>
 					

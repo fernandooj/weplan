@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, Platform} from 'react-native';
 var screenWidth = Dimensions.get('window').width;
 var screenHeight = Dimensions.get('window').height;
 
@@ -23,6 +23,7 @@ export const style = MediaQueryStyleSheet.create({
 		justifyContent: 'space-between',
 		backgroundColor:"#148dc9",
 		borderWidth: 0,
+		paddingTop:Platform.OS==='android' ?0 :18,
 		borderBottomWidth:2,
 		borderColor:'#4461D8',
 		position:'relative',
@@ -109,7 +110,7 @@ export const style = MediaQueryStyleSheet.create({
 		backgroundColor:'#ffffff',
 		padding:8,
 		left:5,
-		marginTop:-35,
+		marginTop:-55,
 		width:230,
 		borderRadius:35
 	},
@@ -161,7 +162,7 @@ export const style = MediaQueryStyleSheet.create({
 		borderBottomWidth: 0,
 		shadowColor: '#000',
 		shadowOffset: { width: 0, height: 2 },
-		shadowOpacity: 0.7,
+		shadowOpacity: Platform.OS==='android' ?0.7 :0,
 		shadowRadius: 2,
 		//elevation: 3,
 		marginLeft: 15,
@@ -213,7 +214,7 @@ export const style = MediaQueryStyleSheet.create({
 	},
 	photo:{
 		borderWidth:4,
-		borderRadius:35,	
+		borderRadius:22,	
 		borderColor:'#9CB7F5',
 	},
 	photoLeft:{
@@ -227,7 +228,7 @@ export const style = MediaQueryStyleSheet.create({
 		zIndex:0,
 		top:0,
 		left:0,
-		height:screenHeight-175,
+		height:Platform.OS==='android' ?screenHeight-155 :screenHeight-128,
 		marginTop:10,
 		width:screenWidth,
 
@@ -268,7 +269,7 @@ export const style = MediaQueryStyleSheet.create({
 		borderBottomWidth: 0,
 		shadowColor: '#000',
 		shadowOffset: { width: 0, height: 2 },
-		shadowOpacity: 0.7,
+		shadowOpacity: Platform.OS==='android' ?0.7 :0,
 		shadowRadius: 2,
 		marginLeft: 15,
 		marginRight: 15,
@@ -278,9 +279,9 @@ export const style = MediaQueryStyleSheet.create({
 		backgroundColor:'#ffffff',
 		alignSelf: 'flex-end',  
 		shadowOffset: { width: 0, height: 2 },
-		shadowOpacity: 0.7,
+		shadowOpacity: Platform.OS==='android' ?0.7 :0,
 		shadowRadius: 2,
-		//elevation: 3,
+		// elevation: 3,
 		marginLeft: 15,
 		marginRight: 15,
 		width:screenWidth/1.5,		
@@ -303,7 +304,7 @@ export const style = MediaQueryStyleSheet.create({
 		zIndex:100,
 		width:80,
 		height:80,
-		borderRadius:50, 
+		borderRadius:40, 
 		zIndex:1000,
 		borderColor:'#9CB7F5',
 		borderWidth:3,
@@ -712,7 +713,7 @@ export const style = MediaQueryStyleSheet.create({
 		},
 		contenedorOpcionesBotones:{
 			width:205,
-			marginTop:-30,
+			marginTop:-35,
 		},
 		btnIconoOpciones:{
 			padding:3,
@@ -735,6 +736,9 @@ export const style = MediaQueryStyleSheet.create({
 		},
 		descripcion:{
 			fontSize :20
+		},
+		fondo:{
+			height:screenHeight-175,
 		}
 	}
 })

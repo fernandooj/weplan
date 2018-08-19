@@ -42,7 +42,7 @@ export default class ajustesComponent extends Component{
 					<Image source={{uri: perfil.photo}} style={style.avatar} />
 					<Text style={[style.username, style.familia]}>{perfil.nombre}</Text>
 					<Text style={[style.username, style.familia]}>{perfil.username}</Text>
-					<Text style={style.separador}></Text>
+					 
 				</TouchableOpacity>
 			)
 		}else{

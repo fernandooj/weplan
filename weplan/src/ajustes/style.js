@@ -98,8 +98,8 @@ export const style = MediaQueryStyleSheet.create({
  		width:23,
  		height:23,
  		position:'absolute',
- 		right:75,
- 		top:13
+ 		right:115,
+ 		top:10
  	}, 
  	btnBuscar:{
  		height:50
@@ -110,7 +110,7 @@ export const style = MediaQueryStyleSheet.create({
  	},
  	avatarA:{
  		marginTop:10,
-		borderRadius: 75,
+		borderRadius: 30,
 		width: 60,
 		height: 60,
 		borderColor:'#969696',
@@ -125,9 +125,9 @@ export const style = MediaQueryStyleSheet.create({
 		borderWidth:6,
  	},
  	textoAvatar:{
-		fontSize:21,
+		fontSize:28,
 		marginLeft:20,
-		marginTop:20,
+		marginTop:18,
 		width:'55%'
 	},
 	agregado:{
@@ -215,7 +215,7 @@ export const style = MediaQueryStyleSheet.create({
 		},
 		avatar: {
 			marginTop:10,
-			borderRadius: 60,
+			borderRadius: 55,
 			width: 110,
 			height: 110,
 			borderWidth:5,
