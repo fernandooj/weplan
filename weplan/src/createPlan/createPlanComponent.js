@@ -138,7 +138,7 @@ export default class createPlanComponent extends Component{
 		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, area, costo} = this.state
 		const {navigate} = this.props.navigation
 		return (
-			<ScrollView style={CreatePlanStyle.contenedorGeneral} > 
+			<ScrollView style={CreatePlanStyle.contenedorGeneral} keyboardDismissMode='on-drag'> 
 				{/* si la ubicacion no tiene */}
 				{this.renderAlertNombreEvento()}
 				{

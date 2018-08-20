@@ -40,22 +40,16 @@ export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaj
 	    } else {
 	    	 console.log('ios')
 			body = {
-				registration_ids: token,
-				"data": {
-		            "custom_notification": {
-						title: titulo,
-					    body : `${nombre} ${mensaje}`,
-						priority:"high",
-						icon:"ic_notif",
-						color:"#00ACD4",
-						targetScreen: targetScreen,
-						big_picture:photo,
-						picture:photo,
-						image:photo,
-						large_icon: photo,
-						show_in_foreground: true
-		            }
-		        }
+				to: token,
+				notification: {
+		          title: "Simple FCM Client",
+		          body: "Click me to go to detail",
+		          sound: "default"
+		        },
+		        data: {
+		          targetScreen: "detail"
+		        },
+		        priority: 10
     		}
 		}
     	firebaseClient.send(JSON.stringify(body), "notification");

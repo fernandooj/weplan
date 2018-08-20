@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground, Alert, Keyboard, Modal} from 'react-native'
+import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground, Alert, Keyboard, Modal, Dimensions} from 'react-native'
 import axios from 'axios'
 import SocketIOClient from 'socket.io-client';
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
@@ -10,6 +10,7 @@ import ImagePicker from 'react-native-image-picker';
 import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import Lightbox from 'react-native-lightbox';
+import KeyboardListener from 'react-native-keyboard-listener';
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////  ARCHIVOS GENERADOS POR EL EQUIPO  //////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -40,22 +41,23 @@ export default class ChatComponent extends Component{
 			planAsignados:[],
 			asignados:[],
 			misUsuarios:[],
-			mapaVisible: false, ////// muestra el modal del mapa para abrirlo con alguna otra app
-			modalQr: false 		    ////// muestra el modal del QR
+			mapaVisible: false, 		////// muestra el modal del mapa para abrirlo con alguna otra app
+			modalQr: false, 		    ////// muestra el modal del QR
+			showMainFooter:false 		////// en ios, no se muestra el footer cuando se abre el keyboard
 		}
 		this.onReceivedMessage 	   = this.onReceivedMessage.bind(this);
 		this.onReceivedMessagePago = this.onReceivedMessagePago.bind(this);
 	}
 
 	componentWillMount(){
-		let planId = this.props.navigation.state.params	
-		// let planId = '5b778d930a0bc679ff059d8b'	 
+		// let planId = this.props.navigation.state.params	
+		let planId = '5b785fabc0a36c02be57e767'	 
 		console.log(planId) 
 		this.socket = SocketIOClient(URL);
 		this.socket.on(`chat${planId}`, 	this.onReceivedMessage);
 		this.socket.on(`editPago${planId}`, this.onReceivedMessagePago);
 
-
+		 
 		/////////////////	OBTENGO EL PERFIL
 		axios.get('/x/v1/user/profile') 
 		.then((res)=>{
@@ -550,16 +552,20 @@ export default class ChatComponent extends Component{
 	}
 	 
 	render(){
-		const {adjuntarAmigos, asignados, usuariosAsignados, mapa, qr, planId} = this.state
+		const {adjuntarAmigos, asignados, usuariosAsignados, mapa, qr, planId, showMainFooter} = this.state
 		return(
 			<View style={style.contenedorGeneral} > 
 				{this.renderCabezera()}
-
+				<KeyboardListener
+					onWillShow={() => { this.setState({ showMainFooter: true }); }}
+					onWillHide={() => { this.setState({ showMainFooter: false }); }}
+				/>
 			{/* AGREGAR IMAGENES */}
 				<ImageBackground source={require('../assets/images/fondo.png')} style={style.fondo}>	
 					<ScrollView ref="scrollView"
 								style={style.contenedorChat} 
-								onContentSizeChange={(width,height) => this.refs.scrollView.scrollTo({y:height})}>
+								keyboardDismissMode='on-drag'
+								onContentSizeChange={(width,height) => this.refs.scrollView.scrollTo({y:height-Dimensions.get('window').height+150})}>
 						{this.renderMensajes()}		
 					</ScrollView>
 				</ImageBackground>
@@ -593,12 +599,13 @@ export default class ChatComponent extends Component{
 			{this.renderQr()}
 
 			{/* FOOTER INPUT / ENVIAR */}
-				<View style={style.footer}>
+				<View style={showMainFooter ?[style.footer, style.showFooter] :[style.footer]}>
 					<View style={style.footer1}>
 						<TouchableOpacity onPress={()=>this.setState({showOpciones:!this.state.showOpciones})} style={style.opcionesBtn}>
 							<Image source={require('../assets/images/opciones.png')} style={style.opciones}  />
 						</TouchableOpacity>
 						<TextInput
+							onSubmitEditing={Keyboard.dismiss}
 							style={style.textarea}
 							onChangeText={(mensaje) => this.setState({mensaje})}
 							value={this.state.mensaje}
@@ -606,6 +613,7 @@ export default class ChatComponent extends Component{
 							placeholderTextColor="#c9c9c9" 
 							underlineColorAndroid='transparent'
 							ref={input => { this.textInput = input }}
+
 						/>
 						<TouchableOpacity onPress={this.state.mensaje.length>0 ?() => this.handleSubmit(this) :null}  style={style.enviarBtn} >
 							<Image source={require('../assets/images/enviar.png')} style={style.enviar}  />
@@ -615,7 +623,7 @@ export default class ChatComponent extends Component{
 			</View>	
 		)
 	}
-
+ 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////// MODAL CON LA CAMARA DE QR
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

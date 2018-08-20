@@ -82,7 +82,7 @@ export default class homeComponent extends Component{
 	async componentDidMount(){
 	    registerAppListener(this.props.navigation);
 	    FCM.getInitialNotification().then(notif => {
-	      console.log(notif.targetScreen)
+	      console.log(notif)
 	      this.setState({
 	        initNotif: notif
 	      })

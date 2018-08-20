@@ -12,9 +12,17 @@ export const style = MediaQueryStyleSheet.create({
 		fontFamily:'Futura-CondensedLight',
 	},
  	contenedorChat:{
- 		height:1900,
- 		flex:1,
+ 		 
  	},
+ 	fondo:{
+		zIndex:0,
+		top:0,
+		left:0,
+		height:Platform.OS==='android' ?screenHeight-155 :screenHeight-128,
+		marginTop:10,
+		width:screenWidth,
+
+	},
  	////////////////// cabezera
  	cabezera:{
 		flexWrap: 'wrap', 
@@ -64,9 +72,7 @@ export const style = MediaQueryStyleSheet.create({
 		fontSize:18,
 		marginLeft:30, 
 		width:150,
-		lineHeight: 17,
-		// borderWidth:1,
-		// borderColor:'red'
+		lineHeight: 17
 	},
 	regresar:{
 		width:screenWidth/5,
@@ -133,6 +139,9 @@ export const style = MediaQueryStyleSheet.create({
 		backgroundColor:'#EDEDED',
 		paddingTop:10,
 		paddingBottom:10,
+	},
+	showFooter:{
+		bottom:Platform.OS==='android' ?0 :260
 	},
 	footer1:{
 		alignItems: 'flex-start',
@@ -224,15 +233,7 @@ export const style = MediaQueryStyleSheet.create({
 		padding: 20,
 		shadowOffset: { width: 0, height: 2 },
 	},
-	fondo:{
-		zIndex:0,
-		top:0,
-		left:0,
-		height:Platform.OS==='android' ?screenHeight-155 :screenHeight-128,
-		marginTop:10,
-		width:screenWidth,
-
-	},
+	
 
 	////////////////////////////////////////////
 	////////////////// contenedor 2  ==> items
