@@ -83,7 +83,7 @@ export default class notificacionComponent extends Component{
 					 						?()=>this.handleSubmit(e.id, e.idTipo, 11, e.token, e.idUser, e.valorItem, e.titulo, e.photo)  
 					 						:null  
 					 					}>
-					 					<Text  style={style.textoNoti}> 
+					 					<Text  style={[style.textoNoti, style.familia]}> 
 					 					{
 					 						e.tipo==1  ? 'Agregar'
 					 						:e.tipo==3 ?'Entrarle'

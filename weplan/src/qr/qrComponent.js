@@ -1,7 +1,7 @@
 import React, {Component} 			  from 'react'
 import {View, Text, TouchableOpacity, Modal, ImageBackground,
 TextInput, CheckBox, Linking, Alert}  from 'react-native'
-import {QrStyle} 					  from '../qr/style'
+import {style} 					  from '../qr/style'
 import axios 						  from 'axios';
 import QRCode from 'react-native-qrcode';
 
@@ -30,33 +30,33 @@ export default class QrComponent extends Component{
 		console.log(num)
 		return(
 			<Modal
-					style={QrStyle.contenedor}
+					style={style.contenedor}
 					animationType="slide"
 					transparent={false}
 					visible={this.state.modalVisible}
 					onRequestClose={() => {
 						console.log('Modal has been closed.');
 		        }}>
-		        <ImageBackground style={QrStyle.fondo}  source={num===0 ?require('../../splash0.jpg') :num===1 ?require('../../splash1.jpg') :num===2 ?require('../../splash2.jpg') :num===3 ?require('../../splash3.jpg') :num===4 &&require('../../splash4.jpg')} >
+		        <ImageBackground style={style.fondo}  source={num===0 ?require('../../splash0.jpg') :num===1 ?require('../../splash1.jpg') :num===2 ?require('../../splash2.jpg') :num===3 ?require('../../splash3.jpg') :num===4 &&require('../../splash4.jpg')} >
 			        {
 			        	titulo
-			        	&&<Text style={QrStyle.titulo}>Ya eres parte de weplan, Bienvenidos</Text>
+			        	&&<Text style={[style.titulo, style.familia]}>Ya eres parte de weplan, Bienvenidos</Text>
 			        }
 					
-					<View style={QrStyle.qr} >
+					<View style={style.qr} >
 						{/*<QRCode value={id} size={180} />*/}
 						<QRCode
 				          value={id}
-				          size={180}
-				          bgColor='purple'
+				          size={200}
+				          bgColor='black'
 				          fgColor='white'
 				        />
 					</View>
-					<Text style={QrStyle.texto}>Este es tu Código QR unico e irrepetible, úsalo para agregar amigos y únirte a planes !</Text>
+					<Text style={[style.texto, style.familia]}>Este es tu Código QR unico e irrepetible, úsalo para agregar amigos y únirte a planes !</Text>
 					
-					<View style={QrStyle.containerHecho}>
-			    		<TouchableOpacity  style={QrStyle.btnHecho} onPress={()=>this.props.close(planId)}>
-					    	<Text  style={QrStyle.hecho}>!Listo!</Text>
+					<View style={style.containerHecho}>
+			    		<TouchableOpacity  style={style.btnHecho} onPress={()=>this.props.close(planId)}>
+					    	<Text  style={[style.hecho, style.familia]}>!Listo!</Text>
 					    </TouchableOpacity>
 					</View> 
 				 </ImageBackground>

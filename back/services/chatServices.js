@@ -8,19 +8,13 @@ class chatServices{
 		chatSchema.find({itemId}, callback)
 	}
 	getByPlan(planId, idUsuario, callback){
-		planId = mongoose.Types.ObjectId(planId);
-		// chatSchema.find({}, null, {sort: {_id: -1}}, callback)	
+		planId = mongoose.Types.ObjectId(planId);	
 		chatSchema.aggregate([
-			 
 			{
 	 		   $match:{
 	 		      planId
 	 		   }
 	 		},
-	 		
-	 		
-	 		
-			
 			{
 	 			$lookup: {
 	 				from: "users",
@@ -101,7 +95,7 @@ class chatServices{
 	 			$project: {
 	 				///////// info general del chat
 	 				mensaje:1,
-	 				createdAt:'$fecha',
+	 				createdAt:1,
 	 				documento:1,
 	 				lat:1,
 	 				lng:1,

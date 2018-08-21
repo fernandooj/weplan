@@ -39,11 +39,11 @@ export default class RestriccionesPlanComponent extends Component{
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////  GENERO EL ARRAY DE LAS RESTRICCIONESAsignadas //////////////////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	updateStateRestriccion(_id){
-		if (_id) {
+	updateStateRestriccion(_id, estado){
+		if (estado) {
 			this.setState({restriccionArray: this.state.restriccionArray.concat([_id])})
 		}else{
-			this.setState({restriccionArray:this.state.restriccionArray.filter(function(val){return val._id != _id}) })
+			this.setState({restriccionArray:this.state.restriccionArray.filter(function(val){return val != _id}) })
 		}
 	}
 
@@ -51,7 +51,8 @@ export default class RestriccionesPlanComponent extends Component{
 	///////////////////      GENERO UN ARRAY CON LOS rutaOS Y LOS NOMBRES DE LOS ASIGNADOS
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	updateRestriccion(_id, ruta, nombre, estado){
-		if (_id) {
+		
+		if (estado) {
 		  this.setState({restriccionesAsignadas: this.state.restriccionesAsignadas.concat({_id,ruta,nombre})})
 		}else{
 		  this.setState({restriccionesAsignadas:this.state.restriccionesAsignadas.filter(function(val){return val._id != _id}) })
@@ -62,7 +63,7 @@ export default class RestriccionesPlanComponent extends Component{
 		return this.state.restriccion.map((e, key)=>{
 			return(
 				<TouchableOpacity key={key} style={CreatePlanStyle.touchRes} 
-					onPress={(index)=> {this.updateState(e._id, e.estado); this.updateRestriccion(e._id, e.ruta, e.nombre, e.estado); this.updateStateRestriccion(e._id)} }>
+					onPress={(index)=> {this.updateState(e._id, e.estado); this.updateRestriccion(e._id, e.ruta, e.nombre, e.estado); this.updateStateRestriccion(e._id, e.estado)} }>
 					<Image source={{ uri: e.ruta}} style={CreatePlanStyle.iconRes}/>
 					{
 						e.estado
@@ -75,7 +76,6 @@ export default class RestriccionesPlanComponent extends Component{
 		})
 	}
 	render(){
-	 	//console.log(this.state.restriccion)
 		return(
 			<Modal
 		          animationType="slide"

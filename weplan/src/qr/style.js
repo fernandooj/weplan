@@ -2,11 +2,14 @@ import {StyleSheet, Dimensions, PixelRatio} from 'react-native';
 const width = Dimensions.get('window');
 const height = Dimensions.get('window').height;
 import { MediaQueryStyleSheet } from "react-native-responsive";
-export const QrStyle = MediaQueryStyleSheet.create({ 
+export const style = MediaQueryStyleSheet.create({ 
 	contenedor:{
 		flex: 1,
 		height:height,
 		backgroundColor:'#ffffff',
+	},
+	familia:{
+		fontFamily:'Futura-CondensedLight',
 	},
 	fondo:{
 		flex: 1,
@@ -21,7 +24,8 @@ export const QrStyle = MediaQueryStyleSheet.create({
 	},
 	texto:{
 		width:'80%',
-		margin:10
+		margin:10,
+		fontSize:22
 	},
 	qr:{
 		padding:50,
@@ -44,7 +48,8 @@ export const QrStyle = MediaQueryStyleSheet.create({
  		padding:10
  	},
  	hecho:{
- 		color:'white'
+ 		color:'white',
+ 		fontSize:20
  	}
 
 	 

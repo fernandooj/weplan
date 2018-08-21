@@ -18,6 +18,7 @@ export default class MapaPlanComponent extends Component{
 	constructor(props){
 		super(props);
 		this.state={
+			saldo:0,
  			x: {
 		      latitude: 4.597825,
 		      longitude: -74.0755723,
@@ -31,7 +32,7 @@ export default class MapaPlanComponent extends Component{
 	}
 
 	async componentWillMount(){
-			
+		
 		navigator.geolocation.getCurrentPosition(e=>{
 			// console.log(e)
 			let lat = parseFloat(e.coords.latitude)

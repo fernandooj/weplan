@@ -11,6 +11,7 @@ let moment   = require('moment');
 let fecha = moment().format('YYYY-MM-DD-h-mm')
 let itemServices = require('../services/itemServices.js')
 let planServices = require('../services/planServices.js')
+let pagoPublicoServices = require('../services/pagoPublicoServices.js')
 ///////////////////////////////////////////////////////////////////////////
 /*
     CONFIGURACION DATOS TWILIO
@@ -288,7 +289,11 @@ module.exports = function(app, passport){
         if(req.session.usuario===undefined || req.session.usuario.user==null){
             res.json({status:'FAIL', user: 'SIN SESION', code:0 })
         }else{
-            res.json({status:'SUCCESS', user: req.session.usuario, code:1})  
+            pagoPublicoServices.getByidUSer(req.session.usuario.user._id, (err, saldo)=>{
+                if(!err){
+                     res.json({status:'SUCCESS', user: req.session.usuario, saldo, code:1})  
+                }
+            })
         } 
     })
 

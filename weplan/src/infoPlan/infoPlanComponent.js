@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {View, Text, Image, TouchableOpacity, ScrollView, Alert} from 'react-native'
 
-import {InfoPlanStyle} from '../infoPlan/style'
+import {style} from '../infoPlan/style'
 import axios from 'axios'
 import Icon from 'react-native-fa-icons';
 import DatePicker from 'react-native-datepicker'
@@ -30,43 +30,43 @@ export default class infoPlanComponent extends Component{
 		{funcion:()=>finalizar(data._id, navigate, data), texto:'Finalizar Plan', show: id==data.idUsuario._id ?true :false }
 	]
 	return (
-		<ScrollView  style={InfoPlanStyle.contenedorGeneral}>
-			<View style={InfoPlanStyle.contenedor}> 
+		<ScrollView  style={style.contenedorGeneral}>
+			<View style={style.contenedor}> 
 				<CabezeraComponent navigate={navigate} url={'chat'} parameter={data._id}  />
-				<View style={InfoPlanStyle.encabezadoPlan}>
+				<View style={style.encabezadoPlan}>
 				   	<View> 
-				   		<Image source={{uri: data.imagenOriginal[0]}} style={InfoPlanStyle.imagenPlan} />			 
+				   		<Image source={{uri: data.imagenOriginal[0]}} style={style.imagenPlan} />			 
 					</View>
 					<View>
-						<Text style={InfoPlanStyle.titulo}>
+						<Text style={[style.titulo, style.familia]}>
 							{data.nombre} 
 						</Text>
-						<Text  style={InfoPlanStyle.descripcion}>
-							Por {data.descripcion}
+						<Text  style={[style.descripcion, style.familia]}>
+							{data.descripcion}
 						</Text>
-						<Text  style={InfoPlanStyle.autor}>
+						<Text  style={[style.autor, style.familia]}>
 							Por {data.idUsuario.nombre}
 						</Text>
 					</View> 
 				</View>
 					   
-			   <View style={InfoPlanStyle.contenedor} >
+			   <View style={style.contenedor} >
 					{/* Descripcion  */}	
 	 
-						<View style={InfoPlanStyle.cajaInpunts}>
-							<Text style={InfoPlanStyle.textarea}>{data.descripcion}</Text>
+						<View style={style.cajaInpunts}>
+							<Text style={[style.textarea, style.familia]}>{data.descripcion}</Text>
 						</View>
 					
 				{/* fecha  */}
-				  	<View style={InfoPlanStyle.cajaInpunts}>
-						<Image source={require('../assets/images/fecha.png')} style={InfoPlanStyle.iconInput} />
-						<Text style={InfoPlanStyle.btnInputs}>{data.fechaLugar}</Text>
+				  	<View style={style.cajaInpunts}>
+						<Image source={require('../assets/images/fecha.png')} style={style.iconInput} />
+						<Text style={[style.btnInputs, style.familia]}>{data.fechaLugar}</Text>
 					</View>
 
 				{/*  mapa   */}
-					<TouchableOpacity onPress={() => this.setState({mapa:true})} style={InfoPlanStyle.cajaInpunts}> 
-			    		<Image source={require('../assets/images/map.png')} style={InfoPlanStyle.iconInput} />
-				   		<Text style={[InfoPlanStyle.btnInputs]}>{data.lugar}</Text>
+					<TouchableOpacity onPress={() => this.setState({mapa:true})} style={style.cajaInpunts}> 
+			    		<Image source={require('../assets/images/map.png')} style={style.iconInput} />
+				   		<Text style={[style.btnInputs, style.familia]}>{data.lugar}</Text>
 					</TouchableOpacity>
 
 					{
@@ -80,17 +80,17 @@ export default class infoPlanComponent extends Component{
 					
 
 				{/*  restricciones   */}
-					<View style={InfoPlanStyle.cajaInpunts}>
-				    	<Image source={require('../assets/images/denied.png')} style={InfoPlanStyle.iconInput} />
-					    <View style={InfoPlanStyle.contentAdd}>
-					    		<View style={InfoPlanStyle.agregadosContenedor}>
+					<View style={style.cajaInpunts}>
+				    	<Image source={require('../assets/images/denied.png')} style={style.iconInput} />
+					    <View style={style.contentAdd}>
+					    		<View style={style.agregadosContenedor}>
 						    		{
 						    			data.restricciones.map((e, key)=>{
 											if (key<4) {
 												return(
 													<View key={key} >
-														<Image source={{uri:e.ruta}} style={InfoPlanStyle.avatar} />
-														<Icon name='ban' allowFontScaling style={InfoPlanStyle.banResActiveAdd} />
+														<Image source={{uri:e.ruta}} style={style.avatar} />
+														<Icon name='ban' allowFontScaling style={style.banResActiveAdd} />
 													</View>
 												)
 											}
@@ -101,20 +101,20 @@ export default class infoPlanComponent extends Component{
 					</View>
 
 				{/*   amigos   */}
-					<View style={InfoPlanStyle.cajaInpunts}>
-				    	<Image source={require('../assets/images/friends.png')} style={InfoPlanStyle.iconInput} />
+					<View style={style.cajaInpunts}>
+				    	<Image source={require('../assets/images/friends.png')} style={style.iconInput} />
 				    	{	
 				    		 
-						     <View style={InfoPlanStyle.contentAdd}>
-						    	<View style={InfoPlanStyle.agregadosContenedor}>
+						     <View style={style.contentAdd}>
+						    	<View style={style.agregadosContenedor}>
 						    		{
 						    		 	data.asignados.map((e, key)=>{
 								 			if (key<4) {
 								 				return(
 									 				<View key={key} >
-									 					<Image source={{uri:e.photo}} style={InfoPlanStyle.avatar} />
-									 					<Image source={require('../assets/images/agregado.png')} style={InfoPlanStyle.iconAgregado} />
-									 					<Text style={InfoPlanStyle.textoAgregado} >{e.nombre}</Text>
+									 					<Image source={{uri:e.photo}} style={style.avatar} />
+									 					<Image source={require('../assets/images/agregado.png')} style={style.iconAgregado} />
+									 					<Text style={[style.textoAgregado, style.familia]} >{e.nombre}</Text>
 									 				</View>
 									 			)
 								 			}
@@ -131,8 +131,8 @@ export default class infoPlanComponent extends Component{
 					{
 						menus.map((e, key)=>{
 							if(e.show){
-								return (<TouchableOpacity onPress={e.funcion} key={key} style={InfoPlanStyle.botones}>
-										<Text style={key==1 ?InfoPlanStyle.textoBotones :[InfoPlanStyle.textoBotones, InfoPlanStyle.textoBotonesLast]}>{e.texto}</Text>
+								return (<TouchableOpacity onPress={e.funcion} key={key} style={style.botones}>
+										<Text style={key==1 ?[style.textoBotones, style.familia] :[style.textoBotones, style.textoBotonesLast, style.familia]}>{e.texto}</Text>
 									</TouchableOpacity>)
 							}
 							

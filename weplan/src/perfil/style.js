@@ -65,7 +65,6 @@ export const style = MediaQueryStyleSheet.create({
 	},
 	valor:{
 		backgroundColor:'#d6d6d6',
-		color:'#8F9093',
 		paddingTop:10,
 		paddingBottom:10,
 		paddingLeft:12, 

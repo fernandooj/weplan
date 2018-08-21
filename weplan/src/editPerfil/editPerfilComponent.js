@@ -3,7 +3,7 @@ import {View, Text, Dimensions, TouchableOpacity, TextInput, ScrollView, ImageBa
 import {style} from '../editPerfil/style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
-import ModalPicker from 'react-native-modal-picker'
+import ModalSelector from 'react-native-modal-selector'
 
 const day  = [
 	{label:1, key:0},
@@ -153,6 +153,7 @@ export default class editPerfilComponent extends Component{
 	}
 	 
 	render(){
+		const {textApellido, textNombre, ciudad, email, textEmail, textTelefono, textDate} = this.state
 		return(
 			<ScrollView style={style.contenedor} >
 			<View style={style.fondo} >
@@ -166,7 +167,7 @@ export default class editPerfilComponent extends Component{
 				<TextInput
 			        style={[style.input, style.familia]}
 			        onChangeText={(textNombre) => this.setState({textNombre})}
-			        value={this.state.textNombre}
+			        value={textNombre}
 			        underlineColorAndroid='transparent'
            			placeholder="Nombre"
            			placeholderTextColor="#8F9093" 
@@ -174,29 +175,36 @@ export default class editPerfilComponent extends Component{
 			    <TextInput
 			        style={[style.input, style.familia]}
 			        onChangeText={(textApellido) => this.setState({textApellido})}
-			        value={this.state.textApellido}
+			        value={textApellido}
 			        underlineColorAndroid='transparent'
            			placeholder="Apellido"
            			placeholderTextColor="#8F9093" 
 			    />	
 			    <View style={style.containCiudad}>	
 			     <View style={{  justifyContent:'space-around' }}>
-				    <ModalPicker
-		                data={this.state.ciudad}
+				    <ModalSelector
+		                data={ciudad}
 		                initValue="Ciudad"
 		                color='#8F9093'
 			            font={15}
 		                onChange={(e)=> this.setState({textCiudad:e.label})} 
 		                style={style.datePicker}
-		            />
+		                selectStyle={{borderWidth:0}}
+		                cancelTextStyle={style.familia}
+		                sectionTextStyle={style.familia}
+		                selectTextStyle={[style.familia, {color:'#8F9093',textAlign:'left'}]}
+		                optionTextStyle={style.familia}
+		            >
+		            
+                    </ModalSelector>  
 		          </View>
 	            </View>
 	            {
-	            	this.state.email
+	            	email
 	            	?<TextInput
 				        style={[style.input, style.familia]}
 				        onChangeText={(textTelefono) => this.setState({textTelefono})}
-				        value={this.state.textTelefono}
+				        value={textTelefono}
 				        underlineColorAndroid='transparent'
 	           			placeholder="Telefono"
 	           			placeholderTextColor="#8F9093" 
@@ -206,7 +214,7 @@ export default class editPerfilComponent extends Component{
 				    :<TextInput
 				        style={[style.input, style.familia]}
 				        onChangeText={(textEmail) => this.setState({textEmail})}
-				        value={this.state.textEmail}
+				        value={textEmail}
 				        underlineColorAndroid='transparent'
 	           			placeholder="Email"
 	           			placeholderTextColor="#8F9093" 
@@ -217,47 +225,69 @@ export default class editPerfilComponent extends Component{
 			    <View style={style.date}>
 				    <View style={style.containDatePicker}>
 					{/* DIA */}
-					    <ModalPicker
+					    <ModalSelector
 			                data={day}
 			                initValue="Dia"
 			                color='#ffffff'
 			                font={16}
 			                onChange={(e)=> this.setState({textDate:e.label})} 
 			                style={style.datePicker}
-			            />
+			                 selectStyle={{borderWidth:0}}
+			                cancelTextStyle={style.familia}
+			                sectionTextStyle={style.familia}
+			                selectTextStyle={[style.familia, {color:'#ffffff'}]}
+			                optionTextStyle={style.familia}
+			            >
+			            
+	                    </ModalSelector>  
 					    
 			        </View>
 			        <View style={style.containDatePicker}>
 			    	{/* MES */}
-			            <ModalPicker
+			            <ModalSelector
 			                data={month}
 			                initValue="Mes"
 			                color='#ffffff'
 			                font={16}
 			                onChange={(e)=> this.setState({textMonth:e.label})} 
 			                style={style.datePicker}
+			                 selectStyle={{borderWidth:0}}
+			                cancelTextStyle={style.familia}
+			                sectionTextStyle={style.familia}
+			                selectTextStyle={[style.familia, {color:'#ffffff'}]}
+			                optionTextStyle={style.familia}
 			            />
 			        </View>    
 			        <View style={style.containDatePickerYear}>   
 			        {/* AÑO */} 
-			            <ModalPicker
+			            <ModalSelector
 			                data={year}
 			                initValue="Año"
 			                color='#ffffff'
 			                font={16}
 			                onChange={(e)=> this.setState({textYear:e.label})} 
 			                style={style.datePicker}
+			                selectStyle={{borderWidth:0}}
+			                cancelTextStyle={style.familia}
+			                sectionTextStyle={style.familia}
+			                selectTextStyle={[style.familia, {color:'#ffffff'}]}
+			                optionTextStyle={style.familia}
 			            />
 			        </View>    
 	            </View>	
 	            <View style={style.containDatePickerGenero}> 
-	            	<ModalPicker
+	            	<ModalSelector
 		                data={genero}
 		                initValue="Genero"
 		                color='#ffffff'
 		                font={16}
 		                onChange={(e)=> this.setState({textGenero:e.label})} 
 		                style={style.datePicker}
+		                selectStyle={{borderWidth:0}}
+		                cancelTextStyle={style.familia}
+		                sectionTextStyle={style.familia}
+		                selectTextStyle={[style.familia, {color:'#ffffff'}]}
+		                optionTextStyle={style.familia}
 		            />
 		        </View>  
 			    <TouchableOpacity  style={style.signup_btn} onPress={this.handleSubmit.bind(this)}>

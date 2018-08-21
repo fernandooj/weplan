@@ -1,8 +1,11 @@
 import {StyleSheet, Dimensions} from 'react-native';
 var screenHeight = Dimensions.get('window').height;
-export const InfoPlanStyle = StyleSheet.create({ 
+export const style = StyleSheet.create({ 
 	contenedorGeneral:{
 		backgroundColor:'#ffffff'
+	},
+	familia:{
+		fontFamily:'Futura-CondensedLight',
 	},
 	contenedor:{
 		alignItems: 'center',
@@ -216,8 +219,8 @@ export const InfoPlanStyle = StyleSheet.create({
  		right:2
  	},
  	textoAgregado:{
- 		width:40,
- 		fontSize:9,
+ 		width:50,
+ 		fontSize:13,
  		alignItems: 'center',
  	},
  	agregadosContenedor:{

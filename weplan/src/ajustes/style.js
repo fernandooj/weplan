@@ -177,7 +177,8 @@ export const style = MediaQueryStyleSheet.create({
  		width:'30%'
  	},
  	textBack:{
- 		width:'35%'
+ 		width:'35%',
+ 		fontSize:20
  	},
  	separador:{
 		borderWidth:2,

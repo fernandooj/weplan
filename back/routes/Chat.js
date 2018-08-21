@@ -46,18 +46,7 @@ router.get('/chatPlan/:id', (req, res)=>{
 						})
 						asignados.push(e.data[0].info[0].encuestaUserId)
 						let data = e.data[0].info[0]
-						const yaEsAmigo=(id1, id2)=>{
-							amigoUserService.yaSonAmigos(id1, id2, (err, asignados)=>{
-								if (!err) {
-									if (asignados.length==0) {
-										return true
-									}else{
-										return false	
-									} 
-									// console.log(asignados.length)
-								}
-							})
-						}
+						 
 
 						chat.push({
 							id           : e._id.id,
@@ -66,7 +55,7 @@ router.get('/chatPlan/:id', (req, res)=>{
 							photo 		 : data.photo,
 							token 		 : data.token,
 							mensaje 	 : data.mensaje,
-							fecha 	     : data.fecha,
+							fecha 	     : data.fecha.slice(5, -3),
 							documento 	 : data.documento,
 							lat 	 	 : data.lat,
 							lng 	 	 : data.lng,
@@ -102,8 +91,6 @@ router.get('/chatPlan/:id', (req, res)=>{
 							cNombre	    : data.cNombre,
 							cPhoto 	    : data.cPhoto,	
 							cToken 	    : data.cToken,	
-							// esAMigo     : yaEsAmigo(req.session.usuario.user._id, data.contactoId)
-							esAMigo     : true
 						})
 					})
 					chat = chat.reverse()
@@ -142,7 +129,6 @@ router.post('/', (req, res)=>{
 		contactoId:req.body.contactoId,
 		cNombre:req.body.cNombre,
 		cPhoto:req.body.cPhoto,
-		
 	}
 	cliente.publish('chat', JSON.stringify(mensajeJson))
 	chatServices.create(req.body, req.session.usuario.user._id, req.body.tipo, null, (err, chat)=>{

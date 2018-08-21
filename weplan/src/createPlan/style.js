@@ -338,7 +338,7 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		width:240,
 		marginTop:10,
 	 	paddingLeft:15,
-		flexDirection: 'row',
+		 
 	},
 	inputArea:{
 		color: '#8F9093',

@@ -15,7 +15,7 @@ import TakePhotoComponent 	  	  from '../takePhoto/takePhotoComponent.js'
 import CabezeraComponent 		  from '../ajustes/cabezera.js'
 import {sendRemoteNotification}   from '../push/envioNotificacion.js'
 import AlertInput 				  from 'react-native-alert-input';
-import ModalPicker  			  from 'react-native-modal-picker'
+ 
 
 const screenWidth = Dimensions.get('window').width;
 const influencia = [

@@ -97,6 +97,7 @@ export const style = MediaQueryStyleSheet.create({
 		width:'100%',
 		padding:3,
         height:42,
+        color:'#ffffff',
 	},
 	containDatePickerGenero:{
 		backgroundColor:'#8FA8F7',

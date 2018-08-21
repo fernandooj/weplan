@@ -7,7 +7,7 @@ import DatePicker from 'react-native-datepicker'
 import moment from 'moment'
 import Slideshow from 'react-native-slideshow';
 import AlertInput from 'react-native-alert-input';
-import ModalPicker from 'react-native-modal-picker'
+ 
 import StarRating from 'react-native-star-rating';
 
 import RestriccionesPlanComponent from './restricciones.js'
@@ -31,6 +31,8 @@ export default class createPlanComponent extends Component{
 	constructor(props){
 		super(props);
 		this.state={
+			saldo:0,
+			costo:0,
  			textMonth:'Mes',
  			textDate:'Dia',
  			textYear:'Año',
@@ -58,6 +60,15 @@ export default class createPlanComponent extends Component{
 	}
 
 	componentWillMount(){
+		axios.get('/x/v1/pag/pagoPublico/byuser' )
+		.then((e)=>{
+			console.log(e.data.pago[0].saldo)
+			this.setState({saldo:e.data.pago[0].saldo})
+		})
+		.catch(err=>{
+			console.log(err)
+		})
+
 		console.log(this.props.navigation.state.params) 
 		if (this.props.navigation.state.params) {
 			axios.get('/x/v1/pla/plan/'+this.props.navigation.state.params)
@@ -135,8 +146,10 @@ export default class createPlanComponent extends Component{
 	///////////////////////////////////////////////////  	RENDER  	/////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	render(){
-		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, area, costo} = this.state
+		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, area, costo, saldo} = this.state
 		const {navigate} = this.props.navigation
+		console.log(saldo)
+		console.log(costo)
 		return (
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} keyboardDismissMode='on-drag'> 
 				{/* si la ubicacion no tiene */}
@@ -356,7 +369,12 @@ export default class createPlanComponent extends Component{
 					&&<View style={CreatePlanStyle.cajaInpunts}>
 						<Image source={require('../assets/images/area.png')} style={CreatePlanStyle.iconInputArea} />	
 					    <View style={CreatePlanStyle.contenedorArea}>
-					    	<Text style={[CreatePlanStyle.costoPlan, CreatePlanStyle.familia]}>Costo plan: {costo}</Text>
+					    	<View>
+					    		<Text style={[CreatePlanStyle.costoPlan, CreatePlanStyle.familia]}>Saldo Actual: {'$ '+Number(saldo-costo).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+					    	</View>
+					    	<View>
+					    		<Text style={[CreatePlanStyle.costoPlan, CreatePlanStyle.familia]}>Costo plan: {'$ '+Number(costo).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+					    	</View>
 					    	{/*<ModalPicker
 				                data={influencia}
 				                initValue="Area de influencia"

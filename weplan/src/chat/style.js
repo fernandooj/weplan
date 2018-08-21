@@ -116,7 +116,7 @@ export const style = MediaQueryStyleSheet.create({
 		backgroundColor:'#ffffff',
 		padding:8,
 		left:5,
-		marginTop:-55,
+		marginTop:Platform.OS==='android' ?-55 :-75,
 		width:230,
 		borderRadius:35
 	},
@@ -185,7 +185,9 @@ export const style = MediaQueryStyleSheet.create({
 	},
 	fecha:{
 		alignSelf: 'flex-start',
-		color:'#acacac'
+		color:'#acacac',
+		padding:5,
+		paddingLeft:10
 	},
 	fechaLeft:{
 		alignSelf: 'flex-end',
@@ -559,13 +561,22 @@ export const style = MediaQueryStyleSheet.create({
 		alignSelf: 'flex-end',
 		color:'#636363',
 		marginTop:-30,
+		marginBottom:5,
 		marginRight:18,
 	},
 	cFechaLeft:{
-		alignSelf: 'flex-start',
+		alignSelf: 'flex-end',
 		paddingRight:15,
 		marginLeft:18,
 	},
+	fechaMapa:{
+		alignSelf: 'flex-start',
+		backgroundColor:'#afc4f0',
+		width:'100%',
+		color:'#636363',
+		padding:7
+	},
+	
 	botonesContacto:{
 		flexDirection : 'row',
 		justifyContent: 'space-between',
@@ -628,7 +639,7 @@ export const style = MediaQueryStyleSheet.create({
 		color:'#ffffff',
 		fontSize:17,
 		paddingTop:8,
-		paddingBottom:32,
+		paddingBottom:1,
 		marginRight:18,
 	},
 	cDocumentoLeft:{

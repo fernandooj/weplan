@@ -5,7 +5,7 @@ import axios from 'axios'
 import CabezeraComponent from '../ajustes/cabezera.js'
 import DatePicker from 'react-native-datepicker'
 import moment from 'moment' 
-import ModalPicker from 'react-native-modal-picker'
+import ModalSelector from 'react-native-modal-selector'
 import StarRating from 'react-native-star-rating';
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////  ARCHIVOS GENERADOS POR EL EQUIPO  //////////////////////////////////////////
@@ -35,17 +35,18 @@ export default class perfilComponent extends Component{
 			imagen:false,
 			exitoso:false,
 			qr:false,
+			saldo:0,
 		}
 	}
 	componentWillMount(){
 		/////////////////	OBTENGO EL PERFIL
 		axios.get('/x/v1/user/profile') 
 		.then((res)=>{
-			console.log(res.data.user.user.calificacion.length)
+			console.log(res.data.user)
 			let ciudad = res.data.user.user.ciudad ? res.data.user.user.ciudad :'Ciudad'
 			let sexo = res.data.user.user.sexo ? res.data.user.user.sexo :'Genero'
 			this.setState({nombre: res.data.user.user.nombre, apellido: res.data.user.user.apellido, ciudad, photo:res.data.user.user.photo, 
-				nacimiento:res.data.user.user.nacimiento, sexo, id: res.data.user.user._id, calificacion: res.data.user.user.calificacion})
+				nacimiento:res.data.user.user.nacimiento, sexo, id: res.data.user.user._id, calificacion: res.data.user.user.calificacion, saldo:res.data.saldo})
 		})
 		.catch((err)=>{
 			console.log(err)
@@ -64,7 +65,7 @@ export default class perfilComponent extends Component{
 	 
 	 
  	renderPerfil(){
-		const {perfil, imagen, ciudad, ciudades, sexo, photo, exitoso, nombre, qr, calificacion} = this.state
+		const {perfil, imagen, ciudad, ciudades, sexo, photo, exitoso, nombre, qr, calificacion, saldo} = this.state
 		const {navigate} = this.props.navigation
 		console.log(ciudad)
 		let a=60
@@ -118,14 +119,23 @@ export default class perfilComponent extends Component{
 						<View style={style.contenedorRegistros}>
 							<Text style={[style.atributo, style.familia]}>Ciudad</Text>
 							<View style={style.containCiudad}>	
-				            <ModalPicker
+				            <ModalSelector
 				                data={ciudades}
 				                initValue={ciudad}
 				                color='#8F9093'
 					            font={15}
 				                onChange={(e)=> this.setState({ciudad:e.label})} 
 				                style={style.inputCiudad}
-				            />
+			                 	cancelTextStyle={style.familia}
+				                sectionTextStyle={style.familia}
+				                selectTextStyle={style.familia}
+				                optionTextStyle={style.familia}
+				            >
+				            <TextInput
+		                        style={style.familia}
+		                        editable={false}
+		                        value={ciudad} />
+		                     </ModalSelector>    
 				            </View>
 						</View>
 
@@ -169,16 +179,36 @@ export default class perfilComponent extends Component{
 						<View style={style.contenedorRegistros}>
 							<Text style={[style.atributo, style.familia]}>Genero</Text>
 							<View style={style.containCiudad}>
-						        <ModalPicker
+						        <ModalSelector
 					                data={generos}
 					                initValue={sexo}
 					                color='#8F9093'
 					                font={16}
 					                onChange={(e)=> this.setState({sexo:e.label})} 
 					                style={style.datePicker}
-					            />
+					                cancelTextStyle={style.familia}
+					                sectionTextStyle={style.familia}
+					                selectTextStyle={style.familia}
+					                optionTextStyle={style.familia}
+					            >
+					            <TextInput
+			                        style={style.familia}
+			                        editable={false}
+			                        value={sexo} />
+			                    </ModalSelector>    
 						    </View>	
 						</View>
+
+					{/* SALDO */}
+					<View style={style.contenedorRegistros}>
+						<Text style={[style.atributo, style.familia]}>Saldo</Text>
+						<View style={style.containCiudad}>
+					         
+						    <TouchableOpacity>
+						    	<Text  style={[style.valor, style.familia]}>{saldo}</Text>
+						    </TouchableOpacity>   
+					    </View>	
+					</View>
 					
 					{/* BOTON ENVIAR */}
 					<View style={style.containerHecho}>
@@ -205,7 +235,7 @@ export default class perfilComponent extends Component{
 		const {navigate} = this.props.navigation
 		return(	 
 			<View style={style.contenedor}>
-				<CabezeraComponent navigate={navigate} url={'inicio'} texto='Perfil' />
+				<CabezeraComponent navigate={navigate} url={'ajustes'} texto='Perfil' />
 				<ScrollView style={style.subContenedor}>
 					{this.renderPerfil()}
 				</ScrollView>	

@@ -42,7 +42,7 @@ export default class CabezeraComponent extends Component{
 				<Animated.View style={[cabezeraFooterStyle.cabezera, {opacity: this.state.opacity, top:this.state.top}]}>	
 					<View style={cabezeraFooterStyle.containerBuscador}>
 						<SearchInput
-							style={cabezeraFooterStyle.buscador}
+							style={[cabezeraFooterStyle.buscador, cabezeraFooterStyle.familia]}
 							onChangeText={(term) => this.props.term(term)}
 							value={term}
 							underlineColorAndroid='transparent'

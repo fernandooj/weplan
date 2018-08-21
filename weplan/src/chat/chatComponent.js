@@ -50,8 +50,8 @@ export default class ChatComponent extends Component{
 	}
 
 	componentWillMount(){
-		// let planId = this.props.navigation.state.params	
-		let planId = '5b785fabc0a36c02be57e767'	 
+		let planId = this.props.navigation.state.params	
+		// let planId = '5b785fabc0a36c02be57e767'	 
 		console.log(planId) 
 		this.socket = SocketIOClient(URL);
 		this.socket.on(`chat${planId}`, 	this.onReceivedMessage);
@@ -206,6 +206,7 @@ export default class ChatComponent extends Component{
 							      </View>
 							      :null
 					       	}
+					    <Text style={e.userId== id ?[style.fecha, style.familia] :[style.fecha, style.fechaLeft, style.familia]}>{e.fecha}</Text>
 			      		</View>
 		     		</View>
 				)
@@ -355,7 +356,8 @@ export default class ChatComponent extends Component{
 										}
 									</TouchableOpacity>
 								</View> 
-							}	
+							}
+							<Text style={e.userId== id ?[style.fecha, style.familia] :[style.fecha, style.fechaLeft, style.familia]}>{e.fecha}</Text>	
 						</View>
 					</View>
 				)
@@ -387,7 +389,7 @@ export default class ChatComponent extends Component{
 							</View>
 							<View style={style.mensajeCChat}>
 								<Text style={e.userId== id ?style.cMensaje :[style.cMensaje, style.cMensajeLeft]}>{e.cNombre}</Text>
-								<Text style={e.userId== id ?style.cFecha   :[style.cFecha,   style.cFechaLeft]}>{e.fecha}</Text>
+								<Text style={e.userId== id ?[style.cFecha, style.familia]   :[style.cFecha, style.cFechaLeft, style.familia]}>{e.fecha}</Text>
 							</View>
 							
 							<View style={style.botonesContacto}>
@@ -428,9 +430,9 @@ export default class ChatComponent extends Component{
 									<MapComponent lat={parseFloat(e.lat)} lng={parseFloat(e.lng)} />
 									{this.renderModalAbrirMapa(e.lat, e.lng, e.lugar)}
 								</TouchableOpacity>
-		                 		
-								<Text style={e.userId== id ?style.cFecha   :[style.cFecha,   style.cFechaLeft]}>{e.fecha}</Text>
+								<Text style={e.userId== id ?[style.fechaMapa, style.familia] :[style.fechaMapa, style.fechaLeft, style.familia]}>{e.fecha}</Text>
 							</View>
+
 						</TouchableOpacity>
 					</View>	
 				)	
@@ -452,13 +454,13 @@ export default class ChatComponent extends Component{
 							</View>
 							    <Lightbox>
 								    <Image
-								      style={style.Iphoto}
-									width='100%'
-									height={150}
-								      source={{ uri: e.documento }}
+								    	style={style.Iphoto}
+										width='100%'
+										height={300}
+								      	source={{ uri: e.documento }}
 								    />
 								  </Lightbox>
-
+						<Text style={e.userId== id ?[style.fechaMapa, style.familia] :[style.fechaMapa, style.fechaLeft, style.familia]}>{e.fecha}</Text>
 						</TouchableOpacity>
 					</View>	
 				)	
@@ -485,9 +487,10 @@ export default class ChatComponent extends Component{
 								<Text style={e.userId== id ?[style.cNombreTipoChat, style.familia] :[style.cNombreTipoChat, style.cNombreTipoChatLeft, style.familia]}>{e.nombre}</Text>
 							</View>
 							<View style={style.mensajeCChat}>
-		                  <Text style={e.userId== id ?style.cDocumento :[style.cDocumento, style.cDocumentoLeft]}>{e.documento.slice(70, 100)}</Text>
-								<Text style={e.userId== id ?style.cFecha   :[style.cFecha,   style.cFechaLeft]}>{e.fecha}</Text>
+		                  		<Text style={e.userId== id ?style.cDocumento :[style.cDocumento, style.cDocumentoLeft]}>{e.documento.slice(70, 100)}</Text>
+								<Text style={e.userId== id ?[style.fechaMapa, style.familia] :[style.fechaMapa, style.fechaLeft, style.familia]}>{e.fecha}</Text> 
 							</View>
+
 						</TouchableOpacity>
 						{
 							showPdf
