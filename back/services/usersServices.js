@@ -22,6 +22,20 @@ class userServices {
 			    }
 			},
 			{
+				$lookup:{
+					from:"likes",
+					localField:"_id",
+					foreignField:"userId",
+					as:"LikesData"
+				}
+			}, 
+			{
+			    $unwind:{
+			        path:"$LikesData",
+			        preserveNullAndEmptyArrays:true
+			    }
+			},
+			{
 			$project:{
 			        _id:1,
 			        username:1,
@@ -31,6 +45,7 @@ class userServices {
 			        telefono:1,
 			        estado:1,
 			        monto:"$PagoData.monto",
+			        likes:"$LikesData.monto",
 			    }
 			},
 			{ 
@@ -41,6 +56,7 @@ class userServices {
 			       _id : '$_id',
 			       saldo: { $sum: "$monto"}, 
 			       count: { $sum: 1 },  
+			       likes: { $sum: 1 },  
 			       data: {
 			       	$addToSet: {info:[{photo:'$photo', nombre:'$nombre', username:'$username', ciudad:'$ciudad', telefono:'$telefono', estado:'$estado'}]},
 			       }
@@ -48,50 +64,7 @@ class userServices {
 			},
 		], callback)
 	}
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////   INSERTO UN NUEVO PAGO
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	// insertPago(data, activo, callback){
-	// 	User.findOneAndUpdate(
-	// 	   { _id: data.userId},
-	// 	    { 
-	// 	   		$push: { 
-	// 	   			pago: {
-	// 	   				monto:data.monto,
-	// 	   				referencia:data.referencia,
-	// 	   				metodo:data.metodo,
-	// 	   				descripcion:data.descripcion,
-	// 	   				activo,
-	// 	   			} 
-	// 	   		} 
-	// 	    }
-	// 	).exec(callback)
-	// }
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	/////////////////   INSERTO UN PAGO NEGATIVO POR CADA VEZ QUE SE ACTIVA UN PLAN 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	// descuentaPago(data, _id, activo, callback){
-	// 	User.findOneAndUpdate(
-	// 	   { _id},
-	// 	    { 
-	// 	   		$push: { 
-	// 	   			pago: {
-	// 	   				monto: -Math.abs(data.monto),
-	// 	   				referencia:data.referencia,
-	// 	   				metodo:data.metodo,
-	// 	   				descripcion:data.descripcion,
-	// 	   				planId:data.planId,
-	// 	   				activo,
-	// 	   			} 
-	// 	   		} 
-	// 	    }
-	// 	).exec(callback)
-	// }
-	// editoSaldo(_id, saldo, callback){
-	// 	User.findByIdAndUpdate(_id, {$set:{
-	// 		'saldo':saldo
-	// 	}}, callback );	
-	// }
+	 
 	getEmail(user, callback){
 		User.findOne({'username':user.username}, callback)
 	}

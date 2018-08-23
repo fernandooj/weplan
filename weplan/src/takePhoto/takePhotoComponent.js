@@ -22,18 +22,22 @@ export default class TakePhotoComponent extends Component{
 	}
 	selectPhotoTapped() {
 		const options = {
-		  quality: 1.0,
-		  maxWidth: 500,
-		  maxHeight: 500,
-		  storageOptions: {
-		    skipBackup: true
-		  }
+			title:'',
+			cancelButtonTitle:'Cancelar',
+			takePhotoButtonTitle:'Tomar Foto',
+			chooseFromLibraryButtonTitle:'Buscar en imagenes',
+			quality: 1.0,
+			maxWidth: 500,
+			maxHeight: 500,
+			storageOptions: {
+				skipBackup: true
+			}
 		};
 
 
 		ImagePicker.showImagePicker(options, (response) => {
 		  console.log('Response = ', response);
-
+		  alert(JSON.stringify(response.uri) )
 		  if (response.didCancel) {
 		    console.log('User cancelled photo picker');
 		  }
@@ -46,9 +50,9 @@ export default class TakePhotoComponent extends Component{
 		  else {
 		    let source = { uri: response.uri };
 		    var imagen = {
-			    uri: response.uri,
-			    type: response.type,
-			    name: response.fileName,
+			    uri:  response.uri,
+			    type: response.type ?response.type :'image/jpeg',
+			    name: response.fileName ?response.fileName :'imagen.jpg',
 			    path: response.path
 			};
 			this.props.updateImagen(imagen)

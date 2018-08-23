@@ -181,7 +181,6 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 	},
 	map: {
 		marginTop:0,
-		height: 455, 
 		width: '100%',
 	},
 	btnClose:{

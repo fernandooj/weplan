@@ -54,7 +54,7 @@ export const style = MediaQueryStyleSheet.create({
 	date:{
 		borderWidth: 0,
 		alignItems: 'center',
-		width:230,
+		width:210,
 		height:40,
 		backgroundColor: '#d6d6d6',
 		borderRadius: 50,
@@ -64,7 +64,7 @@ export const style = MediaQueryStyleSheet.create({
 		
 	},
 	valor:{
-		backgroundColor:'#d6d6d6',
+ 
 		paddingTop:10,
 		paddingBottom:10,
 		paddingLeft:12, 
@@ -76,7 +76,7 @@ export const style = MediaQueryStyleSheet.create({
 	containCiudad:{
 		backgroundColor:'#d6d6d6',
 		borderRadius:50,
-		width:230,
+		width:210,
 	 
 		height:40,
 		paddingLeft:10,
@@ -84,6 +84,7 @@ export const style = MediaQueryStyleSheet.create({
 	},
 	inputCiudad:{
 		height:40,
+		padding:10
 	},
 	disabled:{
 		color:'red'

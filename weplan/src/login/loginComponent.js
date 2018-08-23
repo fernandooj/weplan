@@ -182,8 +182,9 @@ export default class LoginComponent extends Component{
 				        value={this.state.username}
 				        underlineColorAndroid='transparent'
 	           			placeholder="Email / Telefono"
-	           			placeholderTextColor="#8F9093" 
+	           			placeholderTextColor='#8F9093' 
 	           			autoCapitalize = 'none'
+	           			keyboardType='email-address'
 	           			 
 				    />
 					<TextInput 

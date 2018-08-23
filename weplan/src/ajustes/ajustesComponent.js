@@ -10,8 +10,8 @@ export default class ajustesComponent extends Component{
 	state={
 		menus:[
 			{method:1, label:'Amigos', 		 	value:'ajustesAmigos', },
-			{method:1, label:'Planes Publicos', value:'planesPublicos', },
-			{method:1, label:'Facturacion', 	value:'facturacion'},
+			{method:1, label:'Planes Públicos', value:'planesPublicos', },
+			{method:1, label:'Facturación', 	value:'facturacion'},
 			{method:3, label:'QR', 		 		value:'abrirQr', },
 			{method:1, label:'Privacidad',  	value:'privacidad'},
 			{method:1, label:'General', 	 	value:'general'},

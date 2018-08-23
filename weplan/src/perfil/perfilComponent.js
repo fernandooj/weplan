@@ -42,7 +42,7 @@ export default class perfilComponent extends Component{
 		/////////////////	OBTENGO EL PERFIL
 		axios.get('/x/v1/user/profile') 
 		.then((res)=>{
-			console.log(res.data.user)
+			console.log(res.data)
 			let ciudad = res.data.user.user.ciudad ? res.data.user.user.ciudad :'Ciudad'
 			let sexo = res.data.user.user.sexo ? res.data.user.user.sexo :'Genero'
 			this.setState({nombre: res.data.user.user.nombre, apellido: res.data.user.user.apellido, ciudad, photo:res.data.user.user.photo, 
@@ -105,14 +105,16 @@ export default class perfilComponent extends Component{
 					{/* NOMBRE */}
 						<View style={style.contenedorRegistros}>
 							<Text style={[style.atributo, style.familia]}>Nombre</Text>
-							<TextInput
-						        style={[style.valor, style.familia]}
-						        onChangeText={(nombre) => this.setState({nombre})}
-						        value={nombre}
-						        underlineColorAndroid='transparent'
-			           			placeholder="Nombre"
-			           			placeholderTextColor="#8F9093" 
-						    />	
+							<View style={style.containCiudad}>	
+								<TextInput
+							        style={[style.valor, style.familia]}
+							        onChangeText={(nombre) => this.setState({nombre})}
+							        value={nombre}
+							        underlineColorAndroid='transparent'
+				           			placeholder="Nombre"
+				           			placeholderTextColor="#8F9093" 
+							    />	
+							</View>
 						</View>
 						 
 					{/* CIUDAD */}
@@ -176,36 +178,35 @@ export default class perfilComponent extends Component{
 						</View>
 
 					{/* GENERO */}
-						<View style={style.contenedorRegistros}>
-							<Text style={[style.atributo, style.familia]}>Genero</Text>
-							<View style={style.containCiudad}>
-						        <ModalSelector
-					                data={generos}
-					                initValue={sexo}
-					                color='#8F9093'
-					                font={16}
-					                onChange={(e)=> this.setState({sexo:e.label})} 
-					                style={style.datePicker}
-					                cancelTextStyle={style.familia}
-					                sectionTextStyle={style.familia}
-					                selectTextStyle={style.familia}
-					                optionTextStyle={style.familia}
-					            >
-					            <TextInput
-			                        style={style.familia}
-			                        editable={false}
-			                        value={sexo} />
-			                    </ModalSelector>    
-						    </View>	
-						</View>
+					<View style={style.contenedorRegistros}>
+						<Text style={[style.atributo, style.familia]}>Genero</Text>
+						<View style={style.containCiudad}>
+					        <ModalSelector
+				                data={generos}
+				                initValue={sexo}
+				                color='#8F9093'
+				                font={16}
+				                onChange={(e)=> this.setState({sexo:e.label})} 
+				                style={style.inputCiudad}
+				                cancelTextStyle={style.familia}
+				                sectionTextStyle={style.familia}
+				                selectTextStyle={style.familia}
+				                optionTextStyle={style.familia}
+				            >
+				            <TextInput
+		                        style={style.familia}
+		                        editable={false}
+		                        value={sexo} />
+		                    </ModalSelector>    
+					    </View>	
+					</View>
 
 					{/* SALDO */}
 					<View style={style.contenedorRegistros}>
 						<Text style={[style.atributo, style.familia]}>Saldo</Text>
 						<View style={style.containCiudad}>
-					         
 						    <TouchableOpacity>
-						    	<Text  style={[style.valor, style.familia]}>{saldo}</Text>
+						    	<Text  style={[style.valor, style.familia]}>{'$ '+Number(saldo).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
 						    </TouchableOpacity>   
 					    </View>	
 					</View>

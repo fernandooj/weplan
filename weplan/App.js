@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {
   Animated,
-  Easing, StyleSheet, Text, View, Image, Dimensions
+  Easing, StyleSheet, Text, View, Image, Dimensions, ImageBackground
 } from 'react-native'
 import axios                  from 'axios' 
 import { StackNavigator } from 'react-navigation'
@@ -44,7 +44,6 @@ export const URL = 'https://appweplan.com/';
 axios.defaults.baseURL = URL;
 
  
-
 
 
 const win = Dimensions.get('window');
@@ -140,11 +139,9 @@ export default class App extends Component<{}> {
     const {google, local} = this.state
     if (local==null) {
       return (
-         <Image 
-           style={styles.image}
-           resizeMode={'contain'}  
-           source={num===0 ?require('./splash0.jpg') :num===1 ?require('./splash1.jpg') :num===2 ?require('./splash2.jpg') :num===3 ?require('./splash3.jpg') :num===4 &&require('./splash4.jpg')}
-          />
+         <ImageBackground source={num===0 ?require('./splash0.jpg') :num===1 ?require('./splash1.jpg') :num===2 ?require('./splash2.jpg') :num===3 ?require('./splash3.jpg') :num===4 &&require('./splash4.jpg')} style={styles.image}>   
+           
+          </ImageBackground>
           )
     }else if(local==1){
       return (
@@ -161,7 +158,6 @@ export default class App extends Component<{}> {
 const styles = StyleSheet.create({
     image: {
         flex: 1,
-        
         width: win.width,
         height: win.height,
     }

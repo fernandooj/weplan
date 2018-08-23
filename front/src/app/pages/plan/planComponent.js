@@ -64,6 +64,18 @@ class PlanComponent extends React.Component {
       sorter: (a, b) => a.nombre.length - b.nombre.length,
       sortOrder: sortedInfo.columnKey === 'nombre' && sortedInfo.order,
     }, {
+      title: 'Likes',
+      dataIndex: 'likes',
+      key: 'likes',
+    }, {
+      title: 'Tipo',
+      dataIndex: 'tipo',
+      key: 'tipo',
+    },, {
+      title: 'Area',
+      dataIndex: 'area',
+      key: 'area',
+    }, {
       title: 'Total Planes Creados',
       dataIndex: 'planPadre',
       key: 'planPadre',

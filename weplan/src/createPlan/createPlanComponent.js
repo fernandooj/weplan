@@ -62,8 +62,8 @@ export default class createPlanComponent extends Component{
 	componentWillMount(){
 		axios.get('/x/v1/pag/pagoPublico/byuser' )
 		.then((e)=>{
-			console.log(e.data.pago[0].saldo)
-			this.setState({saldo:e.data.pago[0].saldo})
+	 		console.log(e.data)
+			this.setState({saldo:e.data.saldo})
 		})
 		.catch(err=>{
 			console.log(err)
@@ -146,10 +146,10 @@ export default class createPlanComponent extends Component{
 	///////////////////////////////////////////////////  	RENDER  	/////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	render(){
-		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, area, costo, saldo} = this.state
+		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, area, costo, saldo, lat, lng} = this.state
 		const {navigate} = this.props.navigation
-		console.log(saldo)
-		console.log(costo)
+ 		console.log(saldo)
+ 		console.log(costo)
 		return (
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} keyboardDismissMode='on-drag'> 
 				{/* si la ubicacion no tiene */}
@@ -293,6 +293,7 @@ export default class createPlanComponent extends Component{
 							close={()=> this.setState({mapa:false})} 						   			/////////   cierro el modal
 							updateStateX={(lat,lng, direccion, area, costo)=>this.updateStateX(lat, lng, direccion, area, costo)}  /////////	me devuelve la posicion del marcador 
 							ubicacionDefecto={cargaPlan.loc ?{infoplan:true, lat:parseFloat(cargaPlan.loc.coordinates[1]), lng:parseFloat(cargaPlan.loc.coordinates[0])} :{infoplan:false, muestraBtnHecho:true}}
+							guardaUbicacion={{lat, lng, direccion}}
 						/> 
 					}
 				
@@ -428,7 +429,7 @@ export default class createPlanComponent extends Component{
 	handleSubmit(){
 		const {navigate} = this.props.navigation
 		let {nombre, descripcion, fechaLugar, lat, lng, asignados, usuariosAsignados, restricciones, imagen, tipo, cargaPlan, planPadre, direccion, area, publico, costo} = this.state
-
+		// alert(JSON.stringify(imagen))
 		nombre 		= cargaPlan.nombre ?cargaPlan.nombre :nombre
 		descripcion = cargaPlan.descripcion ?cargaPlan.descripcion :descripcion
 		lat 		= cargaPlan.lat ?cargaPlan.lat :lat

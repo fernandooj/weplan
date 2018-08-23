@@ -13,7 +13,8 @@ export default class pagoComponent extends Component{
  		debito:false,
  		efectivo:true,
  		valor:0,
- 		metodo:3
+ 		metodo:3,
+ 		monto:0
  	}
 	componentWillMount(){
 	 	let itemId = this.props.navigation.state.params.id
@@ -73,6 +74,7 @@ export default class pagoComponent extends Component{
 	}
 	renderPago(){
 		const {cc, debito, efectivo} = this.state
+		console.log(this.state.monto)
 		return(
 			<View>
 			{/* FORMULARIO PAGAR */}
@@ -196,6 +198,15 @@ export default class pagoComponent extends Component{
 			  ],
 			  { cancelable: false }
 			)
+		}else if(monto==0){
+			Alert.alert(
+			  'Inserta algún monto',
+			  '',
+			  [
+			    {text: 'OK', onPress: () => console.log('OK Pressed')},
+			  ],
+			  { cancelable: false }
+			)
 		}else{
 			axios.post('x/v1/pag/pago', {monto, metodo, descripcion, itemId, planId, abono:true, userId:null, userItem:item.userId._id})
 			.then(e=>{
@@ -208,7 +219,7 @@ export default class pagoComponent extends Component{
 					
 					Alert.alert(
 					  'tu pago fue actualizado',
-					   metodo==3 &&'Se ha enviado una notificacion al dueño del item',
+					   metodo==3 &&'Se ha enviado una notificación al dueño del articulo',
 					  [
 					    {text: 'OK', onPress: () => navigate('item', planId)},
 					  ],

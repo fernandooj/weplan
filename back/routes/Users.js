@@ -285,13 +285,14 @@ module.exports = function(app, passport){
     */
     ///////////////////////////////////////////////////////////////////////////
     app.get('/x/v1/user/profile', function(req, res){
-         
         if(req.session.usuario===undefined || req.session.usuario.user==null){
             res.json({status:'FAIL', user: 'SIN SESION', code:0 })
         }else{
             pagoPublicoServices.getByidUSer(req.session.usuario.user._id, (err, saldo)=>{
                 if(!err){
-                     res.json({status:'SUCCESS', user: req.session.usuario, saldo, code:1})  
+                    
+                    saldo = saldo.length===0 ?0 :saldo[0].saldo
+                    res.json({status:'SUCCESS', user: req.session.usuario, saldo, code:1})  
                 }
             })
         } 
@@ -334,6 +335,7 @@ module.exports = function(app, passport){
                                 nombre:data.nombre,
                                 cedula:data.cedula,
                                 telefono:data.telefono,
+                                likes:e.likes,
                                 username:data.username,
                             }
                         })
@@ -544,13 +546,13 @@ module.exports = function(app, passport){
     app.put('/x/v1/user/update/:_id', function(req, res, next){
         let ruta = null
         let fullUrl = null
-        console.log(req.body)
+        console.log(req.files)
         if (req.files) {
             if (req.files.imagen!=undefined) {
                 let extension = req.files.imagen.name.split('.').pop()
                 let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
                 fullUrl = '../../front/docs/public/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
-                ruta = req.protocol+'://'+req.get('Host') + '/public/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
+                ruta = req.protocol+'s://'+req.get('Host') + '/public/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
                 fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))   
             }        
         }else{

@@ -99,6 +99,10 @@ class UsuarioComponent extends React.Component {
       dataIndex: 'ciudad',
       key: 'ciudad',
     }, {
+      title: 'Likes',
+      dataIndex: 'likes',
+      key: 'likes',
+    }, {
       title: 'telefono',
       dataIndex: 'telefono',
       key: 'telefono',

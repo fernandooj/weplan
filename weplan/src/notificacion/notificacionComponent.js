@@ -40,12 +40,12 @@ export default class notificacionComponent extends Component{
 				 				<Text style={[style.textoNotifica, style.familia]}>
 				 					{
 				 						e.tipo==1 ?'Te quiere agregar como amigo' 
-				 						:e.tipo==2 ?`Te agrego al plan: ${e.titulo}` 
-				 						:e.tipo==3 ?`Te agrego al item: ${e.titulo}. El valor para entrar es: ${valor}`
+				 						:e.tipo==2 ?`Te agregó al plan: ${e.titulo}` 
+				 						:e.tipo==3 ?`Te agregó al item: ${e.titulo}. El valor para entrar es: ${valor}`
 				 						:e.tipo==4 ?`Quiere acceder al item: ${e.titulo}. El valor para entrar es: ${valor}`
 				 						:e.tipo==5 ?`Aceptó ser tu amigo`
 				 						:e.tipo==6 ?`Aceptó ser parte del item: ${e.titulo}`
-				 						:e.tipo==7 ?`Te agrego al item: ${e.titulo}`
+				 						:e.tipo==7 ?`Te agregó al item: ${e.titulo}`
 				 						:e.tipo==8 ?`Se salio del plan: ${e.titulo}`
 				 						:e.tipo==9 ?`No le entro al item: ${e.titulo}`
 				 						:e.tipo==10 ?`Te abono en efectivo: ${e.titulo}`
@@ -142,13 +142,13 @@ export default class notificacionComponent extends Component{
 			if (e.data.code==1) {
 				this.updateStado(idNotificacion)
 				if (tipo==1) {
-					sendRemoteNotification(tipo, token, 'Home', 'Aceptó ser tu amigo',  ', te agrego como amigo', null)
+					sendRemoteNotification(tipo, token, 'Home', 'Aceptó ser tu amigo',  ', te agregó como amigo', null)
 				}
 				if (tipo==3) {
 					sendRemoteNotification(tipo, token, 'Home', `Aceptaron tu item ${titulo}`,  ', esta dentro de tu item', imagen)
 				}
 				else if (tipo==4) {
-					sendRemoteNotification(tipo, token, 'Home', 'Estas dentro de un item',  `, te agrego al item ${titulo}`, imagen)
+					sendRemoteNotification(tipo, token, 'Home', 'Estas dentro de un item',  `, te agregó al item ${titulo}`, imagen)
 				}
 				else if (tipo==11) {
 					sendRemoteNotification(tipo, token, 'Home', 'Aceptaron tu pago',  `, Acepto tu pago por: ${titulo} `, imagen)

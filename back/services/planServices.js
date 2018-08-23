@@ -84,6 +84,20 @@ class planServices {
 		 				as: "PlanData"
 		 			}
 		 		},
+		 		{
+		 			$lookup: {
+		 				from: "likes",
+		 				localField: "_id",
+		 				foreignField: "planId",
+		 				as: "LikeData"
+		 			}
+		 		},
+		 		{
+				    $unwind:{
+				        path:"$LikeData",
+				        preserveNullAndEmptyArrays:true
+				    }
+				},
 			    {
 	 			$project:{
 		 				_id:1,
@@ -92,9 +106,20 @@ class planServices {
 		 				area:1,
 		 				lugar:1,
 		 				activo:1,
+		 				likes:"$LikeData._id",
 		 				planPadre:{ $size: "$PlanData._id" },
 		 			},
 		 		},
+		 		{
+			    	$group:{
+				        _id:'$_id',
+				        data: {
+	                        $addToSet: {info:[{nombre:"$nombre", tipo:"$tipo", area:'$area', lugar:'$lugar', activo:'$activo'}]}
+                    	},
+			        	count:{ $sum :1},
+			        	likes:{ $sum :1}
+			    	}
+				}
 			], callback)
 		}else{
 			planSchema.aggregate([
@@ -106,6 +131,28 @@ class planServices {
 		 				as: "PlanData"
 		 			}
 		 		},
+			     {
+		 			$lookup: {
+		 				from: "plans",
+		 				localField: "_id",
+		 				foreignField: "planPadre",
+		 				as: "PlanData"
+		 			}
+		 		},
+		 		{
+		 			$lookup: {
+		 				from: "likes",
+		 				localField: "_id",
+		 				foreignField: "planId",
+		 				as: "LikeData"
+		 			}
+		 		},
+		 		{
+				    $unwind:{
+				        path:"$LikeData",
+				        preserveNullAndEmptyArrays:true
+				    }
+				},
 			    {
 	 			$project:{
 		 				_id:1,
@@ -114,9 +161,21 @@ class planServices {
 		 				area:1,
 		 				lugar:1,
 		 				activo:1,
+		 				likes:"$LikeData._id",
 		 				planPadre:{ $size: "$PlanData._id" },
 		 			},
 		 		},
+		 		{
+			    	$group:{
+				        _id:'$_id',
+				        data: {
+	                        $addToSet: {info:[{nombre:"$nombre", tipo:"$tipo", area:'$area', lugar:'$lugar', activo:'$activo'}]}
+                    	},
+			        	count:{ $sum :1},
+			        	likes:{ $sum :1}
+			        	 
+			    	}
+				}
 			], callback)
 		}
 	}

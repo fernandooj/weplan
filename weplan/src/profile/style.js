@@ -17,7 +17,7 @@ export const profileStyle = MediaQueryStyleSheet.create({
         alignItems: 'center',
 	},
 	imagen:{
-		borderRadius: 40,
+		borderRadius: 30,
 		width: 60,
 		height: 60,
 		borderColor:'#9CB7F5',

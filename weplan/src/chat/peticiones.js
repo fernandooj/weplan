@@ -8,21 +8,25 @@ import moment from 'moment'
 export const pedirImagen = (planId) =>{
 	console.log(planId)
 	const options = {
-		  quality: 1.0,
-		  maxWidth: 500,
-		  maxHeight: 500,
-		  storageOptions: {
-		    skipBackup: true
-		  }
-		};
+		title:'',
+		cancelButtonTitle:'Cancelar',
+		takePhotoButtonTitle:'Tomar Foto',
+		chooseFromLibraryButtonTitle:'Buscar en imagenes',
+		quality: 1.0,
+		maxWidth: 500,
+		maxHeight: 500,
+		storageOptions: {
+			skipBackup: true
+		}
+	};
 	ImagePicker.showImagePicker(options, (res) => {
 	  console.log('res = ', res);
 		if (res.uri) {
 		    let source = { uri: res.uri };
-		    let imagen = {
-			    uri: res.uri,
-			    type: res.type,
-			    name: res.fileName,
+		    var imagen = {
+			    uri:  res.uri,
+			    type: res.type ?res.type :'image/jpeg',
+			    name: res.fileName ?res.fileName :'imagen.jpg',
 			    path: res.path
 			};
 			alerta(res.fileName, imagen, subirImagen, 6, planId )	 

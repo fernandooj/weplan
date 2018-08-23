@@ -28,6 +28,7 @@ let abonoRutas= require('./routes/Abono.js');
 let notificacionRutas= require('./routes/Notificacion.js');
 let ciudadRutas= require('./routes/Ciudad.js');
 let pagoPublicoRutas= require('./routes/PagoPublico.js');
+let likeRutas= require('./routes/like.js');
 
 const path          = require('path');
 
@@ -127,6 +128,7 @@ app.use('/x/v1/res/respuesta', respuestaRutas)
 app.use('/x/v1/not/notificacion', notificacionRutas)
 app.use('/x/v1/ciu/ciudad', ciudadRutas)
 app.use('/x/v1/pag/pagopublico', pagoPublicoRutas)
+app.use('/x/v1/lik/like', likeRutas)
 
 require('./routes/Users.js')(app, passport);
 

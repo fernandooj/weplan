@@ -25,11 +25,12 @@ router.get('/', (req, res)=>{
 //////////////////////	 	GET BY USER/PAGO 	
 ///////////////////////////////////////////////////////////////////////////////////////////////
 router.get('/byuser', (req, res)=>{
-	pagoPublicoServices.getByidUSer(req.session.usuario.user._id, (err, pago)=>{
+	pagoPublicoServices.getByidUSer(req.session.usuario.user._id, (err, saldo)=>{
 		if(err){
 			res.json({ status: 'FAIL', mensaje:err, code:0});
 		}else{
-			res.json({ status: 'SUCCESS', pago, code:1});				
+			saldo = saldo.length===0 ?0 :saldo[0].saldo
+			res.json({ status: 'SUCCESS', saldo, code:1});				
 		}
 	})
 })
@@ -71,8 +72,5 @@ router.post('/', (req, res)=>{
 		}
 	})
 })
-
- 
-
 
 module.exports = router

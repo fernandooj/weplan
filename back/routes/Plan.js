@@ -43,6 +43,21 @@ router.get('/planesPublicos/', (req, res)=>{
 		if (err) {
 			res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
 		}else{
+			console.log(plan)
+			plan = plan.map(e=>{
+                let data = e.data[0].info[0]
+                return{
+                    _id:e._id,
+                    nombre:data.nombre,
+                    tipo:data.tipo,
+                    area:data.area,
+                    lugar:data.lugar,
+                    activo:data.activo,
+                    likes:e.likes,
+                    planPadre:data.planPadre,
+                }
+            })
+			
 			res.json({ status: 'SUCCESS', plan, code:1 });	
 		}
 	})
@@ -254,6 +269,7 @@ router.put('/web', (req, res)=>{
 /////// MODIFICO LAS IMAGENES SI SE ENVIAN DESDE LA APP / SOLO ACEPTA UNA IMAGEN
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.put('/', (req, res)=>{
+	console.log(req.files)
 	let url = `${req.protocol}s://${req.get('Host')}/public/uploads/`
 	let rutaImagenOriginal  = [] 
 	let rutaImagenResize    = [] 
