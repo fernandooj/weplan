@@ -33,7 +33,10 @@ export default class walletComponent extends Component{
 				if (e._id.userItemId===id) {
 					return e
 				}else{
-					return e.data[0].info[11]===id
+					return e.data.map(e2=>{
+						return e2.info[11]===id
+
+					})
 				}
 			})
 			console.log(result)

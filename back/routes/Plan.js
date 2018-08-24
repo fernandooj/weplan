@@ -554,17 +554,20 @@ router.get('/suma/totales/plan', (req, res)=>{
 			// 	if (e._id.abono!==false && e.data[0].info[9]===true) {e.total=Math.abs(e.total)-Math.abs(Math.ceil((e.data[0].info[7]/(e.data[0].info[10]+1))/100)*100) }
 			// 	return e
 			// })
-			// let id = req.session.usuario.user._id.toString()
-			// let getUserpays = abonoTrue.filter(e=>{
-			// 	console.log(e._id.userItemId+'+') 
-			// 	console.log(id+'-') 
-			// 	let id2 = e._id.userItemId.toString()
-			// 	if (id2===id) {
-			// 		return e
-			// 	}else{
-			// 		return e.data[0].info[11].toString()===id
-			// 	}
-			// })
+			let id = req.session.usuario.user._id
+			let getUserpays = abonoTrue.filter(e=>{
+				console.log(e._id.userItemId+'+') 
+				console.log(id+'-') 
+				let id2 = e._id.userItemId
+				if (id2===id) {
+					return e
+				}else{
+					return e.data.map(e2=>{
+						return e2.info[11]
+
+					})
+				}
+			})
 
 			// let data1 = abonoTrue.filter(e=>{
 			// 	if(e.data[0].info[5]==req.session.usuario.user._id) 
@@ -604,7 +607,7 @@ router.get('/suma/totales/plan', (req, res)=>{
 
 			// let result = Object.keys(map).map(id => map[id]);
 
-			res.json({status: 'SUCCESS', result:abonoTrue, userId:req.session.usuario.user._id, code:1 })
+			res.json({status: 'SUCCESS', result:getUserpays, userId:req.session.usuario.user._id, code:1 })
 		}
 	})
 })
