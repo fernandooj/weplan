@@ -562,21 +562,14 @@ const add = (a, b)=>{
 /////// OBTENGO LOS TOTALES DE CADA PLAN
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.get('/suma/totales/plan', (req, res)=>{
-	 
 	planServices.sumaPlan(req.session.usuario.user._id, (err, pago)=>{
 		if(err){
 			res.json({status: 'FAIL', err, code:0})
 		}else{
-			
-	 
 			let abonoTrue = pago.filter(e=>{
 				if (e._id.abono!==false && e.data[0].info[9]===true &&e._id.userItemId!==undefined) return e
 				// if (e._id.abono!==false && e.data[0].info[9]===true) return e
 			})
-			// let abonoTrue = pago.filter(e=>{
-			// 	if (e._id.abono!==false && e.data[0].info[9]===true) {e.total=Math.abs(e.total)-Math.abs(Math.ceil((e.data[0].info[7]/(e.data[0].info[10]+1))/100)*100) }
-			// 	return e
-			// })
 			let id = req.session.usuario.user._id
 			let suma=[]
 			let getUserpays = abonoTrue.map(e=>{
@@ -603,55 +596,53 @@ router.get('/suma/totales/plan', (req, res)=>{
 					}
 				}
 			})
-
-			
-			// meDeben.filter(e=>{
-			// 	suma.push(e.total)
-			// })
-			// debo.filter(e=>{
-			// 	suma1.push(e.total)
-			// })
-			// let sum = suma.reduce(add, 0);
-
-			// let data1 = abonoTrue.filter(e=>{
-			// 	if(e.data[0].info[5]==req.session.usuario.user._id) 
-			// 		{e.total=e.data[0].info[7]-e.total} else{}
-			// 		// {e.total=e.data[0].info[7]-e.total}
-			// 	return e
-			// })
-			// let data2 = data1.filter(e=>{
-			// 	if(e.data[0].info[5]==req.session.usuario.user._id) 
-			// 		{e.total=e.data[0].info[7]-e.total} 
-			// 		// {e.total=e.data[0].info[7]-e.total}
-			// 	return e
-			// })
-
-	 	// 	let data = data1.map(e=>{
-
-			// 	return{
-			// 		id:e._id.id,
-			// 		nombrePlan:e.data[0].info[4],
-			// 		nombreUsuario:e.data[0].info[1],
-			// 		imagen:e.data[0].info[3],
-			// 		fecha:e.data[0].info[8],
-			// 		total: e.total
-			// 		// total: e.total- -Math.abs((Math.ceil((e.data[0].info[7]/(e.data[0].info[10]+1))/100)*100)) 
-			// 		// total: -Math.abs((Math.ceil((e.data[0].info[7]/(e.data[0].info[10]+1))/100)*100)) 
-			// 	}
-			// })
-
-			// let map = data.reduce((prev, next) =>{
-			//   if (next.id in prev) {
-			//     prev[next.id].total += next.total;
-			//   } else {
-			//      prev[next.id] = next;
-			//   }
-			//   return prev;
-			// }, {});
-
-			// let result = Object.keys(map).map(id => map[id]);
-
 			res.json({status: 'SUCCESS', result:getUserpays, code:1 })
+		}
+	})
+})
+
+
+router.get('/suma/totales/miplan', (req, res)=>{
+	 
+	planServices.sumaPlan2(req.session.usuario.user._id, (err, pago)=>{
+		if(err){
+			res.json({status: 'FAIL', err, code:0})
+		}else{
+			
+	 
+			let abonoTrue = pago.filter(e=>{
+				if (e._id.abono!==false && e.data[0].info[9]==true) return e
+			})
+
+			let data1 = abonoTrue.filter(e=>{
+				if(e.data[0].info[5]!=req.session.usuario.user._id) {e.total=e.total-e.data[0].info[7]}
+				return e
+			})
+	 		let data = data1.map(e=>{
+
+				return{
+					id:e._id.id,
+					nombrePlan:e.data[0].info[4],
+					nombreUsuario:e.data[0].info[1],
+					imagen:e.data[0].info[3],
+					fecha:e.data[0].info[8],
+					total: e.total
+					// total: e.total- -Math.abs((Math.ceil((e.data[0].info[7]/(e.data[0].info[10]+1))/100)*100)) 
+				}
+			})
+
+			let map = data.reduce((prev, next) =>{
+			  if (next.id in prev) {
+			    prev[next.id].total += next.total;
+			  } else {
+			     prev[next.id] = next;
+			  }
+			  return prev;
+			}, {});
+
+			let result = Object.keys(map).map(id => map[id]);
+
+			res.json({result})
 		}
 	})
 })
