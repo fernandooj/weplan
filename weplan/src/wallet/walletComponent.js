@@ -25,22 +25,7 @@ export default class walletComponent extends Component{
 		axios.get('/x/v1/pla/plan/suma/totales/plan')
 		.then(e=>{
 			console.log(e.data.result)
-			let id = e.data.userId
-			let result = e.data.result.filter(e=>{
-				// console.log(e._id.userItemId+'+') 
-				// console.log(id+'-') 
-				 
-				if (e._id.userItemId===id) {
-					return e
-				}else{
-					return e.data.map(e2=>{
-						return e2.info[11]===id
-
-					})
-				}
-			})
-			console.log(result)
-			// this.setState({allList:e.data.result, filteredData:e.data.result})
+			this.setState({allList:e.data.result, filteredData:e.data.result})
 		})
 		.catch(res=>{
 			console.log(res)
