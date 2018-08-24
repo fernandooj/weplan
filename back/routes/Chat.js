@@ -21,16 +21,19 @@ router.get('/chatPlan/:id', (req, res)=>{
 		if (err) {
 			console.log(err)
 		}else{
+			 
 			chatServices.getByPlan(req.params.id, req.session.usuario.user._id, (err2, chatInfo)=>{
 				if (err2) {
 					res.json({status:'FAIL', err, code:0})   
 				}else{
 					let planAsignados = []
 					let chat = []
-					plan[0].asignados.filter(e=>{
-						planAsignados.push(e._id)
-						 
-					}) 
+					if (plan[0]) {
+						plan[0].asignados.filter(e=>{
+							planAsignados.push(e._id)
+						}) 
+					}
+					
  			
 					chatInfo.map(e=>{	 
 

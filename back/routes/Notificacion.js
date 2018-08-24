@@ -195,18 +195,23 @@ const verificaItemAbierto=(usuario, idTipo, id, res, req)=>{
 			if (item[0].abierto) {
 				//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				////////////////////////////// 		edito el chat con el nuevo valor 
-				let longitud;
-				if (item[0].asignados.length===0) {
-					longitud=3
-				}else{
-					longitud=2
-				}
+				// let longitud;
+				// if (item[0].asignados.length===0) {
+				// 	longitud=3
+				// }else{
+				// 	longitud=3
+				// }
+				// console.log('++++++')
+				// console.log(item[0])
+				// console.log(item[0].asignados.length)
+				// console.log(Math.ceil((item[0].valor/(item[0].asignados.length+longitud))/100)*100)
+				// console.log('++++++')
 				chatServices.getByItem(item[0]._id, (err, chat)=>{
 					if (!err) {
 						let mensajeJson={
 							id:chat[0]._id,
 							planId:item[0].planId,
-							valor:Math.ceil((item[0].valor/(item[0].asignados.length+longitud))/100)*100,
+							valor:Math.ceil((item[0].valor/(item[0].asignados.length+3))/100)*100,
 						}
 						cliente.publish('editaPago', JSON.stringify(mensajeJson))
 					}

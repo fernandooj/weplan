@@ -37,7 +37,7 @@ export default class TakePhotoComponent extends Component{
 
 		ImagePicker.showImagePicker(options, (response) => {
 		  console.log('Response = ', response);
-		  alert(JSON.stringify(response.uri) )
+		   
 		  if (response.didCancel) {
 		    console.log('User cancelled photo picker');
 		  }

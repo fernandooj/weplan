@@ -76,7 +76,7 @@ const NavigationApp = StackNavigator({
 },{ headerMode: 'none' })
  
 const NavigationAppLogin = StackNavigator({  
-    Home:          {screen: homeComponent}, 
+    Home:          {screen: walletComponent}, 
     Login:         {screen: LoginComponent },
     Registro:      {screen: RegistroComponent },
     insertCode:    {screen: insertCodeComponent },

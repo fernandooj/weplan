@@ -358,8 +358,14 @@ class planServices {
 			        monto: '$PagoData.monto',
 			        abono: '$PagoData.abono',
 			        userId: '$PagoData.userId',
+			        pagoId: '$PagoData._id',
 			    }
 			},
+			// {
+		 //    	$match:{
+		 //    		userId:idUsuario
+		 //    	},
+		 //    },
 			{
 			    $group:{
 			        _id:
@@ -367,13 +373,17 @@ class planServices {
 				        	id:'$_id',
 				        	idItem: '$itemId',
 				        	abono:  "$abono",
+				        	userItemId:  "$userItemId",
+				        	 
 				        },
 			        data: {
-                        $addToSet: {info:["$idUsuario", "$nombreUsuario", '$abono', '$imagenResize', '$nombre', '$userItemId',  '$itemTitulo', '$valorItem', '$fechaLugar', '$activo', '$asignadosItem']}
+                        $addToSet: {info:["$idUsuario", "$nombreUsuario", '$abono', '$imagenResize', '$nombre', '$userItemId',  '$itemTitulo', '$valorItem', '$fechaLugar', '$activo', '$asignadosItem', '$userId', "$monto", "$pagoId"]}
                     },
-			        total:{ $sum :'$monto'}
+			        total:{ $sum :'$monto'},
+			        count:{ $sum :1}
 			    }
-			}
+			},
+			
 		], callback);
  	}
 
