@@ -259,6 +259,7 @@ class userServices {
 			        _id:1,
 			        nombre:1,
 			        photo:1,
+			        tokenPhone:1,
 			        pagoId:"$PagoData._id",
 			        monto:"$PagoData.monto",
 	 				itemId:"$PagoData.itemId",
@@ -281,7 +282,7 @@ class userServices {
 			       deuda: { $sum: "$monto"}, 
 			       count: { $sum: 1 }, // for no. of documents count
 			       data: {
-			       	$addToSet: {info:[{monto:'$monto', photo:'$photo', nombre:'$nombre', fecha:'$fecha', }]},
+			       	$addToSet: {info:[{monto:'$monto', photo:'$photo', nombre:'$nombre', fecha:'$fecha', token:'$tokenPhone' }]},
 			       }
 			    } 
 			},

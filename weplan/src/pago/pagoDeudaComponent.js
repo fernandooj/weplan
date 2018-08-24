@@ -63,7 +63,7 @@ export default class pagoDeudaComponent extends Component{
 			let deuda = e.deuda===costoDividirPlan ?costoDividirPlan :e.deuda
 			let data = e.data[0].info[0]
 			return(
-	 			<TouchableOpacity  key={key} onPress={()=>this.setState({show:true, userId:e._id, photo:data.photo, nombre:data.nombre, monto:e.deuda})}>
+	 			<TouchableOpacity  key={key} onPress={()=>this.setState({show:true, userId:e._id, photo:data.photo, nombre:data.nombre, monto:e.deuda, token:data.token})}>
 	 				<View style={style.pagoDeudaContenedor}>
 		 				<Image source={{uri: data.photo}} style={style.pagoDeudaAvatar} />
 		 				<Text style={[style.pagoDeudaNombre, style.familia]}>{data.nombre}</Text> 
@@ -92,7 +92,7 @@ export default class pagoDeudaComponent extends Component{
  
   	render() {
   		const {navigate} = this.props.navigation
-  		const {show, monto, photo, nombre, itemId, userId, usuarios, planId} = this.state
+  		const {show, monto, photo, nombre, itemId, userId, usuarios, planId, token, item} = this.state
  		let costoDividirPlan = Math.ceil((this.state.item.valor/(this.state.item.asignados.length+1))/100)*100
  		console.log(userId)
 		const add = (a, b)=>{
@@ -103,45 +103,45 @@ export default class pagoDeudaComponent extends Component{
 			suma.push(e.deuda===costoDividirPlan ?costoDividirPlan :e.deuda)
 		})
 		var sum = suma.reduce(add, 0);
-		 
-			if (planId.length!==0) {
-				return (<ScrollView style={style.container}>
-					<View style={style.contentItem}>
-						<CabezeraComponent navigate={navigate} url={'item'} parameter={planId} />
-						{
-					  		show
-					  		?<AbonarComponent
-					  			photo={photo}
-					  			nombre={nombre}
-					  			valor={monto}
-					  			itemId={itemId}
-					  			planId={planId}
-					  			userId={userId}
-					  			updateItems={(id, monto)=>this.updateItems(id, monto)}
-					  			close={()=>this.setState({show:false})}
-					  		 />
-					  		:null 
-					  	}
-						<View style={style.contenedor}>
-							{this.renderItem()}
-							{this.renderAsignados()}
-							
-						</View>	
-						{
-				    		<View style={style.contenedorTotal}>
-				    			<Text style={[style.textoTotal, style.familia]}>Total</Text>
-				    			<Text style={sum>=0 ?[style.valueTotal, style.familia] :[style.valueNoAsignadoTotal, style.familia]}>
-									{'$ '+Number(sum).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
-								</Text>
-				    		</View>
-				    	}		  
-					</View>
-				</ScrollView>)
-			}else{
-				return <Text></Text>
-			}
-			
-		 
+		if (planId.length!==0) {
+			return (<ScrollView style={style.container}>
+				<View style={style.contentItem}>
+					<CabezeraComponent navigate={navigate} url={'item'} parameter={planId} />
+					{
+				  		show
+				  		?<AbonarComponent
+				  			photo={photo}
+				  			nombre={nombre}
+				  			valor={monto}
+				  			itemId={itemId}
+				  			planId={planId}
+				  			userId={userId}
+				  			token={token}
+				  			imagen={item.imagenResize}
+				  			titulo={item.titulo}
+				  			updateItems={(id, monto)=>this.updateItems(id, monto)}
+				  			close={()=>this.setState({show:false})}
+				  		 />
+				  		:null 
+				  	}
+					<View style={style.contenedor}>
+						{this.renderItem()}
+						{this.renderAsignados()}
+						
+					</View>	
+					{
+			    		<View style={style.contenedorTotal}>
+			    			<Text style={[style.textoTotal, style.familia]}>Total</Text>
+			    			<Text style={sum>=0 ?[style.valueTotal, style.familia] :[style.valueNoAsignadoTotal, style.familia]}>
+								{'$ '+Number(sum).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
+							</Text>
+			    		</View>
+			    	}		  
+				</View>
+			</ScrollView>)
+		}else{
+			return <Text></Text>
+		}
 	}
 	updateItems(id, monto){
 		console.log({id, monto})

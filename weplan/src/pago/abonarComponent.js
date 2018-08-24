@@ -5,7 +5,7 @@ import axios                  from 'axios'
 import TakePhotoComponent     from '../takePhoto/takePhotoComponent.js'
 import socket from '../../socket.js'
 import { TextInputMask } from 'react-native-masked-text'
-
+import {sendRemoteNotification} from '../push/envioNotificacion.js'
 export default class AbonarComponent extends Component{
   constructor(props) {
     super(props);
@@ -44,7 +44,7 @@ export default class AbonarComponent extends Component{
                 <Text style={[style.textoAbono, style.familia]}>{this.props.nombre}</Text>
               </View>
               <View style={style.contenedorAbono}>
-                <Text style={[style.textoAbono, style.familia]}>Monto</Text>
+                <Text style={[style.textoMonto, style.familia]}>Monto</Text>
                 <TextInputMask
                   placeholder='Valor'
                   type={'money'}
@@ -72,9 +72,9 @@ export default class AbonarComponent extends Component{
  
   handleSubmit(){
     const {monto} = this.state
-    let {userId, itemId, valor, planId} = this.props
+    let {userId, itemId, valor, planId, token, titulo, imagen} = this.props
     valor = Math.abs(valor)
-    console.log({userId, itemId, valor})
+    console.log({userId, itemId, valor, token})
     if (monto> valor) {
       Alert.alert(
         'El monto no puede ser mayor a tu deuda',
@@ -94,15 +94,16 @@ export default class AbonarComponent extends Component{
         { cancelable: false }
       )
     } else{
-      axios.post('x/v1/pag/pago', {monto, metodo:2, estado:1, itemId, planId, descripcion:'abono de parte del dueño del item', userId, abono:true})
+      axios.post('x/v1/pag/pago', {monto, metodo:2, estado:1, itemId, planId, descripcion:'abono de parte del dueño del item', userId, userItem:userId, abono:true})
       .then(e=>{
         console.log(e.data)
         if (e.data.code==1) {
+          sendRemoteNotification(12, token, 'notificacion', 'Han hecho un abono', `, Te abono ${monto}, en ${titulo}`, imagen)
           Alert.alert(
             'Tu pago fue actualizado',
             '',
             [  
-              {text: 'OK', onPress: () => this.props.updateItems(userId, 0)},
+              {text: 'OK', onPress: () => this.props.updateItems(userId, monto)},
             ],
             { cancelable: false }
           )

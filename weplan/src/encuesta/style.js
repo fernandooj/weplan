@@ -367,10 +367,16 @@ export const style = MediaQueryStyleSheet.create({
 		height:50,
 		borderRadius:25,
 		borderWidth: 5,
+		margin:10,
 		borderColor:'#a5a5a5',
 	},
 	textoAbono:{
-		fontSize:20,
+		fontSize:22,
+		marginTop:25,
+		marginLeft:10
+	},
+	textoMonto:{
+		fontSize:23,
 		marginTop:10,
 		marginLeft:10
 	},
@@ -378,8 +384,9 @@ export const style = MediaQueryStyleSheet.create({
 		width:'60%',
 		backgroundColor:'#dbe4f2',
 		borderRadius:25,
-		fontSize:20,
+		fontSize:23,
 		padding:5,
+		paddingLeft:15,
 		marginTop:6,
 		marginLeft:10,
 		color:'grey'
@@ -399,9 +406,9 @@ export const style = MediaQueryStyleSheet.create({
 		borderColor:'#5664BA'
 	},
 	textSaveAbonar:{
-		width:'50%',
+		width:'30%',
 		alignItems: 'center',
-		fontSize:16
+		fontSize:20
 	}
 },{
 	"@media (max-device-width: 320)": {

@@ -570,14 +570,14 @@ router.get('/suma/totales/plan', (req, res)=>{
 						id:e._id.id,
 						nombrePlan:e.data[0].info[4],
 						imagen:e.data[0].info[3],
-						total:e.total
+						total:e.total-Math.abs((Math.ceil((e.data[0].info[7]/(e.data[0].info[10]+1))/100)*100))
 					}
 				}else{
 					return {
 						id:e._id.id,
 						nombrePlan:e.data[0].info[4],
 						imagen:e.data[0].info[3],
-						total:suma.reduce(add, 0)
+						total:suma.reduce(add, 0)-Math.abs((Math.ceil((e.data[0].info[7]/(e.data[0].info[10]+1))/100)*100))
 					}
 				}
 			})

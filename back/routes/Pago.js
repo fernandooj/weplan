@@ -136,6 +136,7 @@ const sumaTodos = (req, res, pago) =>{
 router.post('/', (req, res)=>{
 	let id = req.body.userId==null ?req.session.usuario.user._id :req.body.userId
 	let activo = req.body.metodo==3 ?false :true
+	let activoNotificacion = req.body.metodo==3 ?true :false
 	let mensajeJson={
 		userId:req.body.userItem,
 		notificacion:true,
@@ -152,7 +153,7 @@ router.post('/', (req, res)=>{
 					if(err){
 						res.json({err})
 					}else{
-						creaNotificacion(req.session.usuario.user._id, req.body.userItem, pago._id, res)
+						creaNotificacion(req.session.usuario.user._id, req.body.userItem, pago._id, activoNotificacion, res)
 						//res.json({ status: 'SUCCESS', mensaje: pago, total:pago.length, code:1 });					
 					}
 				})
@@ -171,8 +172,8 @@ router.post('/', (req, res)=>{
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///// 			cuando se crea el pago envio la notificacion
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const creaNotificacion = (SessionId, userId, pagoId, res)=>{ 	
-	notificacionService.create(SessionId, userId, 10, pagoId, true, (err, notificacion)=>{
+const creaNotificacion = (SessionId, userId, pagoId, activo, res)=>{ 	
+	notificacionService.create(SessionId, userId, 10, pagoId, activo, (err, notificacion)=>{
 		if (err) {
 			res.json({status:'FAIL', err, code:0})   
 		}else{
