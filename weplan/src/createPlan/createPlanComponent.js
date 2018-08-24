@@ -231,7 +231,7 @@ export default class createPlanComponent extends Component{
 						!cargaPlan
 						?<View style={CreatePlanStyle.cajaInpunts}>
 					    	<Image source={require('../assets/images/fecha.png')} style={CreatePlanStyle.iconInput} />
-						   <DatePicker
+						    <DatePicker
 						   		minDate={this.state.fechaHoy}
 					    		customStyles={{
 			                        dateInput: {
@@ -407,7 +407,7 @@ export default class createPlanComponent extends Component{
 	 				<View key={key} >
 	 					<Image source={{uri:e.photo}} style={CreatePlanStyle.avatar} />
 	 					<Image source={require('../assets/images/agregado.png')} style={CreatePlanStyle.iconAgregado} />
-	 					<Text style={CreatePlanStyle.textoAgregado} >{e.nombre}</Text>
+	 					<Text style={CreatePlanStyle.textoAgregado, CreatePlanStyle.familia} >{e.nombre}</Text>
 	 				</View>
 	 			)
  			}
@@ -420,7 +420,6 @@ export default class createPlanComponent extends Component{
 	 				<View key={key} >
 	 					<Image source={{uri:e.ruta}} style={CreatePlanStyle.avatar} />
 	 					<Image source={require('../assets/images/deneid1.png')} style={CreatePlanStyle.banResActiveAdd} />
-	 					 
 	 				</View>
 	 			)
  			}

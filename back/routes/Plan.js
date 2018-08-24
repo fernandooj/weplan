@@ -185,6 +185,28 @@ router.get('/getbyUserId/misPlanes/populate', (req, res)=>{
 })
 
  
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////// EDITO 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+router.put('/editar', (req, res)=>{
+	if(req.session.usuario===undefined || req.session.usuario.user==null){
+        res.json({status:'FAIL', user: 'SIN SESION', code:0 })
+    }else{
+    	ipLocator.getDomainOrIPDetails(ip.address(),'json',  (err, data)=> {
+			let lat = req.body.lat ?req.body.lat :data.lat
+			let lon = req.body.lng ?req.body.lng :data.lon
+
+	    	planServices.editar(req.body, req.body.planId, lat, lon, (err, plan)=>{
+	    		console.log(err)
+				if(err){
+					res.json({err})
+				}else{ 
+					res.json({ status: 'SUCCESS', message: plan, code:1 });	
+				}
+			})
+		})
+    }
+})
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////// INSERTO UN PLAN

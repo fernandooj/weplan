@@ -89,7 +89,6 @@ export const style = StyleSheet.create({
 	},
 	btnInputs:{
 		borderWidth: 0,
-		alignItems: 'center',
 		marginTop:10,
 		width:240,
 		height:40,
@@ -97,6 +96,11 @@ export const style = StyleSheet.create({
 		borderRadius: 50,
 		paddingLeft:20,
 		paddingTop:10,
+	},
+	btnInputs2:{
+		paddingTop:0
+	},
+	textos:{
 		color:'#969696'
 	},
 	btnColor2Input:{
@@ -202,6 +206,12 @@ export const style = StyleSheet.create({
  	hecho:{
  		color:'white'
  	},
+ 	exitoso:{
+ 		color:'#7585eb',
+		padding:20,
+		paddingTop:0,
+		textAlign: 'center',
+ 	},
 	//////////////////////////////////////////////////
 	////////// elementos agregados
 	/////////////////////////////////////////////////
@@ -216,18 +226,18 @@ export const style = StyleSheet.create({
  		height:20,
  		position:'absolute',
  		top:25,
- 		right:2
+ 		right:10
  	},
  	textoAgregado:{
- 		width:50,
+ 		width:52,
  		fontSize:13,
  		alignItems: 'center',
  	},
  	agregadosContenedor:{
- 		minWidth:'55%',
+ 		minWidth:'50%',
  		flexDirection:'row',
  	},
- 	addBtn:{
+  	addBtn:{
  		width:40,
  		height:40,
  		alignSelf: 'flex-end', 
@@ -237,15 +247,12 @@ export const style = StyleSheet.create({
  		height:40,
  	},
  	banResActiveAdd:{
- 		color:'#FF5959',
- 		fontSize:30,
  		position:'absolute',
- 		top:17,
- 		right:4
+ 		top:21,
+ 		right:6,
+ 		width:20,
+ 		height:20
  	},
-	//////////////////////////////////////////////////
-	////////// elementos agregados
-	/////////////////////////////////////////////////
 	botones:{
 		width:'100%',
 		padding:10,

@@ -239,6 +239,22 @@ class planServices {
 		plan.planPadre       = planData.planPadre	
 		plan.save(callback)
 	}
+
+	editar(planData, idPlan, lat, lng, callback){
+		let loc = {'type':'Point', "coordinates": [parseFloat(lng), parseFloat(lat)] }
+		planSchema.findByIdAndUpdate(idPlan, {$set: {
+			"nombre" 		: planData.nombre,	
+			"descripcion"	: planData.descripcion,	
+			"fechaLugar" 	: planData.fechaLugar,
+			"loc" 			: loc,
+			"lugar" 		: planData.lugar,
+			"area" 			: planData.area,
+			"restricciones" : planData.restricciones,			
+			"asignados" 	: planData.asignados,		
+			"categorias"    : planData.categorias	
+		 }}, callback);	
+	}
+
 	uploadImage(id, imagenOriginal, imagenResize, imagenMiniatura, callback){
 		planSchema.findByIdAndUpdate(id, {$set: {
 	        'imagenOriginal': imagenOriginal,
