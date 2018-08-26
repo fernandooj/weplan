@@ -365,15 +365,21 @@ router.put('/cambiarestado', (req,res)=>{
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.put('/insertar/:planId', (req,res)=>{
 	let mensajeJson={
-			userId:req.body.id,
-			notificacion:true,
-		}
-		cliente.publish('notificacion', JSON.stringify(mensajeJson))
+		userId:req.body.id,
+		notificacion:true,
+	}
+	cliente.publish('notificacion', JSON.stringify(mensajeJson))
 	planServices.getByIdPlan(req.params.planId, (err, plan)=>{
 		if(err) {
 			console.log(err)
 		}else{
-			agregarUsuarioPlan(req, res, plan[0].asignados)
+			try {
+				agregarUsuarioPlan(req, res, plan[0].asignados)
+			} catch(e) {
+				// statements
+				console.log(e);
+			}
+			
 		}
 	})
 })
