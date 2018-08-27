@@ -24,7 +24,7 @@ export default class MisPlanesComponent extends Component{
 	}
 	componentWillMount(){
 		Keyboard.dismiss()
-		axios.get('/x/v1/pla/plan/suma/totales/miplan')
+		axios.get('/x/v1/pla/plan/suma/totales/plan')
 		.then(e=>{
 			console.log(e.data.result)
 			let filteredData = e.data.result

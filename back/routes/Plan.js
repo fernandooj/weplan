@@ -101,22 +101,25 @@ router.get('/:pago', (req, res)=>{
 /////// OBTENGO LOS PLANES DEL HOME, LOS QUE ESTAN MAS CERCA DEL USUARIO, DEPENDIENDO DE LA UBICACION Y DEL AREA DE INFLUENCIA
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.get(`/pago/:lat/:lon`, (req,res)=>{
-	ipLocator.getDomainOrIPDetails(ip.address(),'json', function (err, data) {
-	  let lat = req.params.lat ?req.params.lat :data.lat
-	  let lon = req.params.lon ?req.params.lon :data.lon
+	// ipLocator.getDomainOrIPDetails(ip.address(),'json', function (err, data) {
+	//   // let lat = req.params.lat ?req.params.lat :data.lat
+	//   // let lon = req.params.lon ?req.params.lon :data.lon
+	//    console.log('ip.address()')
+ // 	})
  
-	  planServices.getByPagoLatLng(lat, lon, (err, planes)=>{
-			if (err) {
-				res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
-			}else{
-				planes = planes.filter(e=>{
-					return (e.dist<e.area)	
-				})
-				
-				res.json({ status: 'SUCCESS', planes, code:1 });	
-			}
-		})
+	let lat = req.params.lat!=='undefined' ?req.params.lat :4.597825
+	let lon = req.params.lon!=='undefined' ?req.params.lon :-74.0755723
+	planServices.getByPagoLatLng(lat, lon, (err, planes)=>{
+		if (err) {
+			res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
+		}else{
+			planes = planes.filter(e=>{
+				return (e.dist<e.area)	
+			})
+			res.json({ status: 'SUCCESS', planes, code:1 });	
+		}
 	})
+	
 })
 
 
@@ -365,21 +368,15 @@ router.put('/cambiarestado', (req,res)=>{
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.put('/insertar/:planId', (req,res)=>{
 	let mensajeJson={
-		userId:req.body.id,
-		notificacion:true,
-	}
-	cliente.publish('notificacion', JSON.stringify(mensajeJson))
+			userId:req.body.id,
+			notificacion:true,
+		}
+		cliente.publish('notificacion', JSON.stringify(mensajeJson))
 	planServices.getByIdPlan(req.params.planId, (err, plan)=>{
 		if(err) {
 			console.log(err)
 		}else{
-			try {
-				agregarUsuarioPlan(req, res, plan[0].asignados)
-			} catch(e) {
-				// statements
-				console.log(e);
-			}
-			
+			agregarUsuarioPlan(req, res, plan[0].asignados)
 		}
 	})
 })

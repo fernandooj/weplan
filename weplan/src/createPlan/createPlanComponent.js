@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Picker, Alert, Dimensions} from 'react-native'
+import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Picker, Alert, Dimensions, Platform} from 'react-native'
 
 import {CreatePlanStyle} from '../createPlan/style'
 import axios from 'axios'
@@ -52,10 +52,10 @@ export default class createPlanComponent extends Component{
  			cargaPlan:false,
  			showAlertUbicacion:false,
  			position: 1,
-	      	interval: null,
-	      	imagenes:[],
-	      	tipoPlan:null, //// modal que muestra el tipo del plan
-	      	publico:null,  //// determina si el plan va a ser publico o privado
+      	interval: null,
+      	imagenes:[],
+      	showTipo:false, //// modal que muestra el tipo del plan
+      	publico:false,  //// determina si el plan va a ser publico o privado
 		}
 	}
 
@@ -129,7 +129,7 @@ export default class createPlanComponent extends Component{
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////   	MUESTRA EL MODAL PARA EL TIPO DE PLAN
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	tipoMapa(){
+	/*tipoMapa(){
 		return(
 			<View style={CreatePlanStyle.tipoPlan}>
 				<TouchableOpacity onPress={() => this.setState({tipoPlan:false, publico:true})} style={CreatePlanStyle.btnModal}> 
@@ -140,26 +140,57 @@ export default class createPlanComponent extends Component{
 				</TouchableOpacity>	
 			</View>
 		)
-	}
+	}*/
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////  	RENDER  	/////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	render(){
-		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, area, costo, saldo, lat, lng} = this.state
+		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, area, costo, saldo, lat, lng, showTipo} = this.state
 		const {navigate} = this.props.navigation
- 		console.log(saldo)
- 		console.log(costo)
+ 
 		return (
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} keyboardDismissMode='on-drag'> 
 				{/* si la ubicacion no tiene */}
 				{this.renderAlertNombreEvento()}
-				{
+				{/*
 					tipoPlan
 					&&this.tipoMapa()
+				*/}
+				{
+					cargaPlan
+					?<CabezeraComponent navigate={navigate} url={'inicio'} parameter={this.state.planId}  />
+					:<View style={ Platform.OS==='android' ?CreatePlanStyle.contenedorBack :[{marginTop:22}, CreatePlanStyle.contenedorBack]}>
+						<TouchableOpacity onPress={()=> navigate('inicio')} style={CreatePlanStyle.btnBack}>
+							<Image source={require('../assets/images/back.png')} style={CreatePlanStyle.imgBack} />
+						</TouchableOpacity>
+						<TouchableOpacity style={[CreatePlanStyle.contenedorTextBack]} onPress={() => this.setState({ showTipo:!this.state.showTipo})}>
+							<Text style={[CreatePlanStyle.textBack, CreatePlanStyle.familia]}>Click para cambiar tipo plan</Text>
+						</TouchableOpacity>
+				   </View>
 				}
+				
 
-				<CabezeraComponent navigate={navigate} url={'inicio'} parameter={this.state.planId} texto={publico==true ?'Plan publico' :publico==false&&'plan privado'} />
+				
+			   {
+			   	showTipo
+			    &&<View style={CreatePlanStyle.contenedorCambioTipo}>
+				   	<View style={CreatePlanStyle.triangulo}></View>
+				   	<TouchableOpacity style={CreatePlanStyle.btnCambioTipo} onPress={() => this.setState({publico:false, showTipo:false})}>
+				   		<Text style={[CreatePlanStyle.familia, CreatePlanStyle.textoCambio]}>Plan Privado</Text>
+				   		{
+				   			!publico &&<Image source={require('../assets/images/tipoPlan.png')} style={CreatePlanStyle.imgCambio} />
+				   		}
+				   	</TouchableOpacity>
+				   	<TouchableOpacity style={CreatePlanStyle.btnCambioTipo2} onPress={() => this.setState({publico:true, showTipo:false})}>	
+				   		<Text style={[CreatePlanStyle.familia, CreatePlanStyle.textoCambio]}>Plan Publico</Text>
+				   		{
+				   			publico &&<Image source={require('../assets/images/tipoPlan.png')} style={CreatePlanStyle.imgCambio} />
+				   		}
+				   	</TouchableOpacity>
+				   </View>
+			   }
+			   
 				{
 					!cargaPlan
 					?<View style={imagen ?CreatePlanStyle.encabezadoPlan2 :CreatePlanStyle.encabezadoPlan}>
@@ -170,7 +201,7 @@ export default class createPlanComponent extends Component{
 								onChangeText={(nombre) => this.setState({nombre,iconCreate:false})}
 								value={nombre}
 								underlineColorAndroid='transparent'
-								placeholder="NOMBRE DE TU PLAN"
+								placeholder="INSERTA EL NOMBRE DE TU PLAN"
 								placeholderTextColor="#ffffff" 
 								maxLength={30}
 						    />

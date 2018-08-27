@@ -40,11 +40,11 @@ export default class homeComponent extends Component{
 	}
 	
 	getPlans(lat, lng){
+		console.log(lat)
 		axios.get(`/x/v1/pla/plan/pago/${lat}/${lng}`)
 		.then(e=>{
 			console.log(e.data)
 			if (e.data.code===1) {
-				// this.setState({planes:e.data.planes})
 				this.setState({filteredData: e.data.planes})
 			}
 		})
@@ -52,9 +52,9 @@ export default class homeComponent extends Component{
 			console.log(err)
 		})
 	}
-	async componentWillMount(){
+	componentWillMount(){
 		Keyboard.dismiss()
-		navigator.geolocation.getCurrentPosition(e=>{
+		navigator.geolocation.getCurrentPosition((e)=>{
 			console.log(e)
 			let lat =parseFloat(e.coords.latitude)
 			let lng = parseFloat(e.coords.longitude)
@@ -76,9 +76,10 @@ export default class homeComponent extends Component{
 			this.setState({lat, lng})
 			this.getPlans(lat, lng)
 		},
-		(error) => this.getPlans(null, null),
+		(error) => this.getPlans(undefined, undefined),
 		{enableHighAccuracy: true, timeout:5000, maximumAge:0})
       )
+
 	}
 	componentWillUnmont(){
 		navigator.geolocation.clearWatch(this.watchID)

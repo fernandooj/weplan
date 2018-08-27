@@ -44,7 +44,7 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 	encabezadoPlan:{
 		alignItems: 'center',
 		backgroundColor:'#F2F4F4',
-		paddingTop: 30,
+		paddingTop: 20,
 		paddingBottom: 0,
 	},
 	iconCamera:{
@@ -125,7 +125,6 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 	},
 	encabezadoPlan2:{
 		alignItems: 'center',
- 
 		paddingTop: 0,
 		paddingBottom: 12,
 	},
@@ -346,6 +345,89 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		padding:0,
 		color:'#969696'
 	},
+	//////////////////////////////////////////////////////////////////////////////////
+ 	////////////////////////////	CABEZERA   //////////////////////////////////////
+ 	contenedorBack:{
+ 		flexDirection:'row',
+ 		backgroundColor:'#dadede',
+ 		width:screenWidth,
+ 		padding:10,
+ 	},
+ 	imgBack:{
+ 		width:18,
+ 		height:20
+ 	},
+ 	btnBack:{
+ 		width:'25%',
+ 		marginLeft:20
+ 	},
+ 	btnEdit:{
+ 		width:'30%'
+ 	},
+ 	contenedorTextBack:{
+		width:'55%',
+ 	},
+ 	textBack:{
+ 		fontSize:20
+ 	},
+ 	separador:{
+		borderWidth:2,
+		borderTopColor:'#ffffff',
+		borderBottomColor:'#CACACA',
+		borderLeftColor:'#f8f8f8',
+		borderRightColor:'#f8f8f8',
+		marginTop:5,
+		marginBottom:5
+	},
+	contenedorCambioTipo:{		
+		alignItems : 'center',
+		position:'absolute',
+		top:50,
+		zIndex:100,
+		width:'100%'
+	},
+	btnCambioTipo:{
+		backgroundColor:'#dadede',
+		flexDirection : 'row',
+		width:'80%',
+		borderTopLeftRadius: 20 , 
+		borderTopRightRadius:20 , 
+		borderBottomLeftRadius: 0,  
+		borderBottomRightRadius: 0, 
+		padding:10,
+	},
+	btnCambioTipo2:{
+		backgroundColor:'#dadede',
+		width:'80%',
+		flexDirection : 'row',
+		borderTopLeftRadius: 0 , 
+		borderTopRightRadius:0 , 
+		borderBottomLeftRadius: 20,  
+		borderBottomRightRadius:20, 
+		padding:10
+	},
+	textoCambio:{
+		fontSize:20,
+		width:'70%',
+		paddingLeft:70
+	},
+	imgCambio:{
+		width:20,
+		height:20,
+		top:3
+	},
+	triangulo:{
+		width: 0,
+	    height: 0,
+	    backgroundColor: 'transparent',
+	    borderStyle: 'solid',
+	    borderLeftWidth: 10,
+	    borderRightWidth: 10,
+	    borderBottomWidth: 20,
+	    borderLeftColor: 'transparent',
+	    borderRightColor: 'transparent',
+	    borderBottomColor: '#dadede'
+	}
 },{
 	"@media (max-device-width: 320)": {
 		textarea:{
