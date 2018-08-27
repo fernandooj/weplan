@@ -6,7 +6,7 @@ import SearchInput, { createFilter } from 'react-native-search-filter';
 
 import CabezeraComponent from '../cabezeraFooter/cabezeraComponent'
 import FooterComponent 	 from '../cabezeraFooter/footerComponent'
-
+import LocationServicesDialogBox from "react-native-android-location-services-dialog-box"
 
 import FCM, {NotificationActionType} from "react-native-fcm";
 import {registerKilledListener, registerAppListener} from "../push/Listeners";
@@ -54,35 +54,49 @@ export default class homeComponent extends Component{
 	}
 	componentWillMount(){
 		Keyboard.dismiss()
-		navigator.geolocation.getCurrentPosition((e)=>{
-			console.log(e)
-			let lat =parseFloat(e.coords.latitude)
-			let lng = parseFloat(e.coords.longitude)
-			 
-			this.setState({lat, lng})
-			this.getPlans(lat, lng)
-			// Alert.alert(
-			//   `lat: ${lat}`,
-			//  `lng: ${lng}`,
-			//   [
-			//     {text: 'OK', onPress: () => console.log('OK Pressed')},
-			//   ],
-			//   { cancelable: false }
-			// )
-		}, (error)=>this.watchID = navigator.geolocation.watchPosition(e=>{
-			let lat =parseFloat(e.coords.latitude)
-			let lng = parseFloat(e.coords.longitude)
-			 
-			this.setState({lat, lng})
-			this.getPlans(lat, lng)
-		},
-		(error) => this.getPlans(undefined, undefined),
-		{enableHighAccuracy: true, timeout:5000, maximumAge:0})
-      )
+		LocationServicesDialogBox.checkLocationServicesIsEnabled({
+		  message: "Activar Ubicación",
+		  ok: "SI",
+		  cancel: "NO"
+		})
+		.then(function(success) {
+		  	navigator.geolocation.getCurrentPosition((e)=>{
+				console.log(e)
+				let lat =parseFloat(e.coords.latitude)
+				let lng = parseFloat(e.coords.longitude)
+				 
+				this.setState({lat, lng})
+				this.getPlans(lat, lng)
+			}, (error)=>this.watchID = navigator.geolocation.watchPosition(e=>{
+				let lat =parseFloat(e.coords.latitude)
+				let lng = parseFloat(e.coords.longitude)
+				 
+				this.setState({lat, lng})
+				this.getPlans(lat, lng)
+			},
+			(error) => this.getPlans(undefined, undefined),
+			{enableHighAccuracy: true, timeout:5000, maximumAge:0})
+	      )
+		}).catch((error) => {
+		  console.log(error); // error.message => "disabled"
+		  	axios.get(`/x/v1/pla/plan/pago/${undefined}/${undefined}`)
+			.then(e=>{
+				console.log(e.data)
+				if (e.data.code===1) {
+					this.setState({filteredData: e.data.planes})
+				}
+			})
+			.catch(err=>{
+				console.log(err)
+			})
+		});
+
+		
 
 	}
 	componentWillUnmont(){
 		navigator.geolocation.clearWatch(this.watchID)
+		//LocationServicesDialogBox.stopListener();
 	}
 	async componentDidMount(){
 	    registerAppListener(this.props.navigation);
