@@ -205,6 +205,16 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		borderRadius:20,
 		padding:7
 	},
+	contenedorMarker:{
+		position:'absolute',
+		zIndex:100,
+		top:180,
+		left:'50%'
+	},
+	marker: {
+		height: 38,
+		width: 30
+	},
 	///////////////////////////////////////
 	////////// restricciones //////////////
 	///////////////////////////////////////
@@ -437,7 +447,7 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 			width:'80%'
 		},
 		map: {
-			height: 340, 
+			height: 310, 
 		},
 		rutaRes:{
 			width:40,

@@ -42,7 +42,6 @@ export default class encuestaComponent extends Component{
 	}
 	renderAcordeon() {
 		const {render, total}=this.state
-		console.log(this.state.encuestasPublicadas)
 		return (
 			<View>
 				<View style={style.headerCollapsable}>

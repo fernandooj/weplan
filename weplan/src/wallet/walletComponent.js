@@ -42,6 +42,7 @@ export default class walletComponent extends Component{
 			this.setState({filteredData:this.state.allList})
 		}	
 	}
+	
 	getRow(filteredData){
 		const {navigate} = this.props.navigation
 		if(filteredData.length>0){

@@ -1,9 +1,18 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, TextInput, Platform} from 'react-native'
+import {View, Text, Image, TouchableOpacity, TextInput, Platform, BackHandler} from 'react-native'
 import {style} from '../ajustes/style'
 import axios from 'axios'
 
 export default class CabezeraComponent extends Component{
+	componentDidMount() {
+	    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+	}
+	handleBackPress = () => {
+		const {navigate, show, url, parameter, texto, margin} = this.props
+	    navigate(url, parameter)
+	    return true;
+  	}
+
 	render(){
 		const {navigate, show, url, parameter, texto, margin} = this.props
 		return(	  

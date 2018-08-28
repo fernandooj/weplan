@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground, Alert, Keyboard, Modal, Dimensions} from 'react-native'
+import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground, Alert, Keyboard, Modal, Dimensions, BackHandler} from 'react-native'
 import axios from 'axios'
 import SocketIOClient from 'socket.io-client';
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
@@ -51,7 +51,7 @@ export default class ChatComponent extends Component{
 
 	componentWillMount(){
 		let planId = this.props.navigation.state.params	
-		// let planId = '5b7bb9703fdcaa2db9cbd744'	 
+		// let planId = '5b7b7ddc272b0d29918c46e3'	 
 		console.log(planId) 
 		this.socket = SocketIOClient(URL);
 		this.socket.on(`chat${planId}`, 	this.onReceivedMessage);
@@ -80,7 +80,14 @@ export default class ChatComponent extends Component{
 			console.log(err)
 		})
 	}
-	 
+	componentDidMount() {
+	    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+	}
+	handleBackPress = () => {
+		const {navigate} = this.props.navigation
+	    navigate('misPlanes')
+	    return true;
+  	}
 	onReceivedMessage(messages) {
 		console.log(messages)
 	 	this.setState({
@@ -139,9 +146,13 @@ export default class ChatComponent extends Component{
 				return (
 					<View key={key} style={style.contenedorBox}>
 						<View style={e.userId== id ?style.box :[style.box, style.boxLeft]}>
-							<View style={style.tituloTipoChat}>
-								<Text style={e.userId== id ?[style.nombreTipoChat, style.familia] :[style.nombreTipoChat, style.nombreTipoChatLeft, style.familia]}>{e.nombre}</Text>
-							</View>
+							{
+								e.userId!==id
+								&&<View style={style.tituloTipoChat}>
+									<Text style={e.userId== id ?[style.nombreTipoChat, style.familia] :[style.nombreTipoChat, style.nombreTipoChatLeft, style.familia]}>{e.nombre}</Text>
+								</View>
+							}
+							
 							<View style={style.mensajeTipoChat}>
 								<Text style={[style.mensaje, style.familia]}>{e.mensaje}</Text>
 								<Text style={e.userId== id ?[style.fecha, style.familia] :[style.fecha, style.fechaLeft, style.familia]}>{e.fecha}</Text>
@@ -163,30 +174,38 @@ export default class ChatComponent extends Component{
 				let asignadoItem = e.asignadoItem.includes(id)
 				return (
 					<View key={key} style={style.contenedorBox}>
-			      		<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?style.cBtnAvatarItem : [style.cBtnAvatarItem, style.cBtnAvatarItemLeft]}>
-				      		
-							{/* imagen avatar */}
-							<Image style={style.photo}
-								width={45}
-								height={45}
-								source={{uri: e.photo}}  />
-						</TouchableOpacity>
-					 {/* texto avatar */}
-				      		<View style={e.userId== id ?style.boxItem :[style.boxItem, style.boxLeft]}  >
+						{
+							e.userId!==id
+				      		&&<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?style.cBtnAvatarItem : [style.cBtnAvatarItem, style.cBtnAvatarItemLeft]}>
+					      		
+								{/* imagen avatar */}
+								<Image style={style.photo}
+									width={45}
+									height={45}
+									source={{uri: e.photo}}  />
+							</TouchableOpacity>
+						}
+						 {/* texto avatar */}
+						{
+							e.userId!==id
+				      		&&<View style={e.userId== id ?style.boxItem :[style.boxItem, style.boxLeft]}  >
 								<View style={style.tituloTipoChat}>
 									<Text style={e.userId== id ?[style.cNombreTipoChat, style.familia] :[style.cNombreTipoChat, style.cNombreTipoChatLeft, style.familia]}>{e.nombre}</Text>
 								</View>
 							</View>
+						}
+					
+				      		
 					   {/* fotografia item */}
 				         <Image source={{uri: e.rutaImagen}}
-				         	style={e.userId== id ?style.fotografia :[style.fotografia, style.fotografiaLeft]}
+				         	style={e.userId== id ?[style.fotografia, {top:22}] :[style.fotografia, style.fotografiaLeft]}
 				         />
 	  					<View style={e.userId== id ?style.boxItem2 :[style.boxItem2, style.boxLeft]} >
 					         <View style={e.userId== id ?style.contenedorItem :[style.contenedorItem, style.contenedorItemLeft]}>
 					             <Text style={e.userId== id ?[style.titulo, style.familia] :[style.titulo, style.tituloLeft, style.familia]}>{e.titulo}</Text>
 					            {
 					            	e.descripcion.length>0
-					            	&&<Text style={e.userId== id ?[style.descripcion, style.familia] :[style.descripcion, style.descripcionLeft, style.familia]}>{e.descripcion}</Text>  
+					            	&&<Text style={e.userId== id ?[style.descripcion, style.familia] :[style.descripcion, style.descripcionLeft, style.familia]}>{e.descripcion.substring(0, 40)}</Text>  
 					            }
 					             <Text style={e.userId== id ?[style.valor, style.familia] :[style.valor, style.valorLeft, style.familia] }>
 					             	{'$ '+Number(e.valor).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
@@ -216,7 +235,9 @@ export default class ChatComponent extends Component{
 				e.respuesta2= e.respuesta2==null ? 0:e.respuesta2  
 				return(
 					<View key={key} style={style.contenedorBox}>
-						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?style.cBtnAvatarItem : [style.cBtnAvatarItem, style.cBtnAvatarItemLeft]}>
+					{
+						e.userId!==id
+							&&<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?style.cBtnAvatarItem : [style.cBtnAvatarItem, style.cBtnAvatarItemLeft]}>
 				      		
 							{/* imagen avatar */}
 							<Image style={style.photo}
@@ -224,22 +245,26 @@ export default class ChatComponent extends Component{
 								height={45}
 								source={{uri: e.photo}}  />
 						</TouchableOpacity>
-					 {/* texto avatar */}
-			      		<View style={e.userId== id ?style.boxItem :[style.boxItem, style.boxLeft]}  >
+					}
+						
+					{/* texto avatar */}
+					{
+					 	e.userId!==id
+							&&<View style={e.userId== id ?style.boxItem :[style.boxItem, style.boxLeft]}  >
 							<View style={style.tituloTipoChat}>
 								<Text style={e.userId== id ?[style.cNombreTipoChat, style.familia] :[style.cNombreTipoChat, style.cNombreTipoChatLeft, style.familia]}>{e.nombre}</Text>
 							</View>
 						</View>
-						 
-						<View style={e.userId== id ?style.boxItem2 :[style.boxItem2, style.boxLeft]}>
+					}
+						<View style={e.userId== id ?style.boxItem2 :[style.boxItem2, style.boxLeft]} > 
 							<View style={style.contenedorDescripcion}>
 								<Image source={require('../assets/images/item4.png')} style={style.decoracion} />
 								 <Text style={[style.pDescripcion, style.familia]}>{e.eTitulo}</Text> 
 								<Image source={require('../assets/images/item4.png')} style={style.decoracion} />
 							</View>
-						</View>						 
+						 				 
 						
-						<View style={e.userId== id ?style.boxItem2 :[style.boxItem2, style.boxLeft]} >
+						
 							{
 								e.tipoEncuesta==1 
 								?<View style={style.contenedorOpciones}>
@@ -276,11 +301,11 @@ export default class ChatComponent extends Component{
 										{
 											asignado   
 											?<View style={style.contenedorRespuesta}>
-												<View style={style.contenedorPregunta}><Text style={style.textoPregunta}>{e.pregunta1}</Text></View>
+												<View style={style.contenedorPregunta}><Text style={[style.textoPregunta, style.familia]}>{e.pregunta1}</Text></View>
 												<Text style={[style.textoRespuesta, style.familia]}>{e.respuesta1} %</Text>
 											</View>
 											:<View style={style.contenedorRespuesta}>
-												<View style={style.contenedorPregunta}><Text style={style.textoPregunta}>{e.pregunta1}</Text></View>
+												<View style={style.contenedorPregunta}><Text style={[style.textoPregunta, style.familia]}>{e.pregunta1}</Text></View>
 												<Text style={[style.textoRespuesta, style.familia]}>{e.respuesta1} %</Text>
 											</View>
 										}
@@ -289,11 +314,11 @@ export default class ChatComponent extends Component{
 								  		{
 											asignado   
 											?<View style={style.contenedorRespuesta}>
-												<View style={style.contenedorPregunta}><Text style={style.textoPregunta}>{e.pregunta2}</Text></View>
+												<View style={style.contenedorPregunta}><Text style={[style.textoPregunta, style.familia]}>{e.pregunta2}</Text></View>
 												<Text style={[style.textoRespuesta, style.familia]}>{e.respuesta2} %</Text>
 											</View>
 											:<View style={style.contenedorRespuesta}>
-												<View style={style.contenedorPregunta}><Text style={style.textoPregunta}>{e.pregunta2}</Text></View>
+												<View style={style.contenedorPregunta}><Text style={[style.textoPregunta, style.familia]}>{e.pregunta2}</Text></View>
 												<Text style={[style.textoRespuesta, style.familia]}>{e.respuesta2} %</Text>
 											</View>
 										}
@@ -318,11 +343,11 @@ export default class ChatComponent extends Component{
 								  		{
 											asignado   
 											?<View style={style.contenedorRespuesta}>
-												<View style={style.contenedorPregunta}><Text style={style.textoPregunta}>{e.pregunta2}</Text></View>
+												<View style={style.contenedorPregunta}><Text style={[style.textoPregunta, style.familia]}>{e.pregunta2}</Text></View>
 												<Text style={[style.textoRespuesta, style.familia]}>{e.respuesta2} %</Text>
 											</View>
 											:<View style={style.contenedorRespuesta}>
-												<View style={style.contenedorPregunta}><Text style={style.textoPregunta}>{e.pregunta2}</Text></View>
+												<View style={style.contenedorPregunta}><Text style={[style.textoPregunta, style.familia]}>{e.pregunta2}</Text></View>
 												<Text style={[style.textoRespuesta, style.familia]}>{e.respuesta2} %</Text>
 											</View>
 										}
@@ -333,11 +358,11 @@ export default class ChatComponent extends Component{
 										{
 											asignado   
 											?<View style={style.contenedorRespuesta}>
-												<View style={style.contenedorPregunta}><Text style={style.textoPregunta}>{e.pregunta1}</Text></View>
+												<View style={style.contenedorPregunta}><Text style={[style.textoPregunta, style.familia]}>{e.pregunta1}</Text></View>
 												<Text style={[style.textoRespuesta, style.familia]}>{e.respuesta1} %</Text>
 											</View>
 											:<View style={style.contenedorRespuesta}>
-												<View style={style.contenedorPregunta}><Text style={style.textoPregunta}>{e.pregunta1}</Text></View>
+												<View style={style.contenedorPregunta}><Text style={[style.textoPregunta, style.familia]}>{e.pregunta1}</Text></View>
 												<Text style={[style.textoRespuesta, style.familia]}>{e.respuesta1} %</Text>
 											</View>
 										}
@@ -365,7 +390,9 @@ export default class ChatComponent extends Component{
 				let estaPlan = planAsignados.includes(e.contactoId) 
 				return (
 					<View key={key} style={style.contenedorBox}>
-						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?style.cBtnAvatarC : [style.cBtnAvatarC, style.cBtnAvatarCLeft]}>
+					{
+					 	e.userId!==id
+						&&<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?style.cBtnAvatarC : [style.cBtnAvatarC, style.cBtnAvatarCLeft]}>
 							<Image
 								style={style.photo}
 								width={45}
@@ -373,7 +400,8 @@ export default class ChatComponent extends Component{
 								source={{uri: e.photo}}
 						    />
 						</TouchableOpacity>
-						<TouchableOpacity style={e.userId==id ?style.cPhotoContainer :[style.cPhotoContainer, style.cPhotoLeft]} 
+					}
+						<TouchableOpacity style={e.userId==id ?[style.cPhotoContainer, {top:0}] :[style.cPhotoContainer, style.cPhotoLeft]} 
 							onPress={e.contactoId== id ?null :()=> navigate('profile', {userId:e.contactoId, planId:plan})}>
 							<Image
 								style={style.cPhoto} 
@@ -384,11 +412,14 @@ export default class ChatComponent extends Component{
 					   	</TouchableOpacity> 
 						<TouchableOpacity style={e.userId== id ?style.box :[style.box, style.boxLeft]}
 							onPress={e.contactoId== id ?null :()=> navigate('profile', {userId:e.contactoId, planId:plan})}>
-							<View style={style.tituloTipoChat}>
-								<Text style={e.userId== id ?[style.cNombreTipoChat, style.familia] :[style.cNombreTipoChat, style.cNombreTipoChatLeft, style.familia]}>{e.nombre}</Text>
-							</View>
+							{
+								e.userId!==id
+								&&<View style={style.tituloTipoChat}>
+									<Text style={e.userId== id ?[style.cNombreTipoChat, style.familia] :[style.cNombreTipoChat, style.cNombreTipoChatLeft, style.familia]}>{e.nombre}</Text>
+								</View>
+							}
 							<View style={style.mensajeCChat}>
-								<Text style={e.userId== id ?style.cMensaje :[style.cMensaje, style.cMensajeLeft]}>{e.cNombre}</Text>
+								<Text style={e.userId== id ?[style.cMensaje, style.familia] :[style.cMensaje, style.cMensajeLeft, style.familia]}>{e.cNombre}</Text>
 								<Text style={e.userId== id ?[style.cFecha, style.familia]   :[style.cFecha, style.cFechaLeft, style.familia]}>{e.fecha}</Text>
 							</View>
 							
@@ -413,18 +444,25 @@ export default class ChatComponent extends Component{
 			}else if (e.tipoChat===5) {
 				return (
 					<View key={key} style={style.contenedorBox}>
-						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?style.cBtnAvatarC : [style.cBtnAvatarC, style.cBtnAvatarCLeft]}>
-							<Image
-								style={style.photo}
-								width={45}
-								height={45}
-								source={{uri: e.photo}}
-						    />
-						</TouchableOpacity>
+						{	
+							e.userId!==id
+							&&<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?style.cBtnAvatarC : [style.cBtnAvatarC, style.cBtnAvatarCLeft]}>
+								<Image
+									style={style.photo}
+									width={45}
+									height={45}
+									source={{uri: e.photo}}
+							    />
+							</TouchableOpacity>
+						}
+						
 						<TouchableOpacity style={e.userId== id ?style.box :[style.box, style.boxLeft]}  >
-							<View style={style.tituloTipoChat}>
-								<Text style={e.userId== id ?[style.cNombreTipoChat, style.familia] :[style.cNombreTipoChat, style.cNombreTipoChatLeft, style.familia]}>{e.nombre}</Text>
-							</View>
+							{	
+								e.userId!==id
+								&&<View style={style.tituloTipoChat}>
+									<Text style={e.userId== id ?[style.cNombreTipoChat, style.familia] :[style.cNombreTipoChat, style.cNombreTipoChatLeft, style.familia]}>{e.nombre}</Text>
+								</View>
+							}
 							<View style={style.mensajeCChat}>
 								<TouchableOpacity onPress={()=>this.setState({mapaVisible:true})}>
 									<MapComponent lat={parseFloat(e.lat)} lng={parseFloat(e.lng)} />
@@ -439,27 +477,32 @@ export default class ChatComponent extends Component{
 			}else if (e.tipoChat===6) {
 				return (
 					<View key={key} style={style.contenedorBox}>
-						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?style.cBtnAvatarC : [style.cBtnAvatarC, style.cBtnAvatarCLeft]}>
-							<Image
-								style={style.photo}
-								width={45}
-								height={45}
-								source={{uri: e.photo}}
-						    />
-
-						</TouchableOpacity>
-						<TouchableOpacity style={e.userId== id ?style.box :[style.box, style.boxLeft]}  >
-							<View style={style.tituloTipoChat}>
+						{	
+							e.userId!==id
+							&&<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?style.cBtnAvatarC : [style.cBtnAvatarC, style.cBtnAvatarCLeft]}>
+								<Image
+									style={style.photo}
+									width={45}
+									height={45}
+									source={{uri: e.photo}}
+							    />
+							</TouchableOpacity>
+						}
+						<TouchableOpacity style={e.userId== id ?style.box :[style.box, style.boxLeft]}>
+						{	
+							e.userId!==id
+							&&<View style={style.tituloTipoChat}>
 								<Text style={e.userId== id ?[style.cNombreTipoChat, style.familia] :[style.cNombreTipoChat, style.cNombreTipoChatLeft, style.familia]}>{e.nombre}</Text>
 							</View>
-							    <Lightbox>
-								    <Image
-								    	style={style.Iphoto}
-										width='100%'
-										height={300}
-								      	source={{ uri: e.documento }}
-								    />
-								  </Lightbox>
+						}	
+						    <Lightbox>
+							    <Image
+							    	style={style.Iphoto}
+									width='100%'
+									height={300}
+							      	source={{ uri: e.documento }}
+							    />
+							</Lightbox>
 						<Text style={e.userId== id ?[style.fechaMapa, style.familia] :[style.fechaMapa, style.fechaLeft, style.familia]}>{e.fecha}</Text>
 						</TouchableOpacity>
 					</View>	
@@ -467,14 +510,17 @@ export default class ChatComponent extends Component{
 			}else if (e.tipoChat===7) {
 				return (
 					<View key={key} style={style.contenedorBox}>
-						<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?style.cBtnAvatarC : [style.cBtnAvatarC, style.cBtnAvatarCLeft]}>
-							<Image
-								style={style.photo}
-								width={45}
-								height={45}
-								source={{uri: e.photo}}
-						    />
-						</TouchableOpacity>
+						{	
+							e.userId!==id
+							&&<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?style.cBtnAvatarC : [style.cBtnAvatarC, style.cBtnAvatarCLeft]}>
+								<Image
+									style={style.photo}
+									width={45}
+									height={45}
+									source={{uri: e.photo}}
+							    />
+							</TouchableOpacity>
+						}
 						{/*<Image
 							style={e.userId==id ?style.cPhoto :[style.cPhoto, style.cPhotoLeft]} 
 							width={60}
@@ -483,11 +529,14 @@ export default class ChatComponent extends Component{
 					   />*/}
 						<TouchableOpacity style={e.userId== id ?style.box :[style.box, style.boxLeft]} 
 							onPress={()=> this.setState({showPdf:true})} >
-							<View style={style.tituloTipoChat}>
-								<Text style={e.userId== id ?[style.cNombreTipoChat, style.familia] :[style.cNombreTipoChat, style.cNombreTipoChatLeft, style.familia]}>{e.nombre}</Text>
-							</View>
+							{	
+								e.userId!==id
+								&&<View style={style.tituloTipoChat}>
+									<Text style={e.userId== id ?[style.cNombreTipoChat, style.familia] :[style.cNombreTipoChat, style.cNombreTipoChatLeft, style.familia]}>{e.nombre}</Text>
+								</View>
+							}
 							<View style={style.mensajeCChat}>
-		                  		<Text style={e.userId== id ?style.cDocumento :[style.cDocumento, style.cDocumentoLeft]}>{e.documento.slice(70, 100)}</Text>
+		                  		<Text style={e.userId== id ?[style.cDocumento, style.familia] :[style.cDocumento, style.cDocumentoLeft, style.familia]}>{e.documento.slice(70, 100)}</Text>
 								<Text style={e.userId== id ?[style.fechaMapa, style.familia] :[style.fechaMapa, style.fechaLeft, style.familia]}>{e.fecha}</Text> 
 							</View>
 
@@ -556,12 +605,15 @@ export default class ChatComponent extends Component{
 	 
 	render(){
 		const {adjuntarAmigos, asignados, usuariosAsignados, mapa, qr, planId, showMainFooter} = this.state
+		console.log(showMainFooter)
 		return(
 			<View style={style.contenedorGeneral} > 
 				{this.renderCabezera()}
 				<KeyboardListener
 					onWillShow={() => { this.setState({ showMainFooter: true }); }}
+					onDidShow={() => { this.setState({ showMainFooter: true }); }}
 					onWillHide={() => { this.setState({ showMainFooter: false }); }}
+					onDidHide={() => { this.setState({ showMainFooter: false }); }}
 				/>
 			{/* AGREGAR IMAGENES */}
 				<ImageBackground source={require('../assets/images/fondo.png')} style={style.fondo}>	
@@ -576,7 +628,7 @@ export default class ChatComponent extends Component{
 			{/* BOTONES OPCIONES */}
 				{
 					this.state.showOpciones
-					&&<View style={style.contenedorOpcionesBotones}>
+					&&<View style={[style.contenedorOpcionesBotones, {marginTop:showMainFooter ?-300 :-55} ]}>
 						{this.opciones()}
 					</View>
 				}
@@ -596,6 +648,7 @@ export default class ChatComponent extends Component{
 							close={()=> this.setState({mapa:false})} 						   			/////////   cierro el modal
 							updateStateX={(lat,lng, direccion)=>{this.setState({mapa:false, showOpciones:false});pedirMapa(lat,lng, this.state.planId) }}// devuelve la posicion del marcador 
 							ubicacionDefecto={{infoplan:false}}
+							guardaUbicacion={{lat:null, lng:null, direccion:null}}
 						/> }	
 
 

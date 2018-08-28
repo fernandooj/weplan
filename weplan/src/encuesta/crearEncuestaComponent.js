@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, TextInput, ImageBackground, Alert} from 'react-native'
+import {View, Text, Image, TouchableOpacity, TextInput, ImageBackground, Alert, BackHandler} from 'react-native'
 import {style}        from '../encuesta/style'
 import axios                  from 'axios'
 import TakePhotoComponent     from '../takePhoto/takePhotoComponent.js'
@@ -34,6 +34,13 @@ export default class CrearEncuestaComponent extends Component{
     .catch((err)=>{
       console.log(err)
     })
+  }
+  componentDidMount() {
+      BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+  }
+  handleBackPress = () => {
+    this.props.close(false)
+    return true;
   }
 
   render() {

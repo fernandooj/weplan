@@ -6,7 +6,7 @@ import SearchInput, { createFilter } from 'react-native-search-filter';
 
 import CabezeraComponent from '../cabezeraFooter/cabezeraComponent'
 import FooterComponent 	 from '../cabezeraFooter/footerComponent'
-import LocationServicesDialogBox from "react-native-android-location-services-dialog-box"
+import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 
 import FCM, {NotificationActionType} from "react-native-fcm";
 import {registerKilledListener, registerAppListener} from "../push/Listeners";
@@ -40,11 +40,11 @@ export default class homeComponent extends Component{
 	}
 	
 	getPlans(lat, lng){
-		console.log(lat)
 		axios.get(`/x/v1/pla/plan/pago/${lat}/${lng}`)
 		.then(e=>{
 			console.log(e.data)
 			if (e.data.code===1) {
+				// this.setState({planes:e.data.planes})
 				this.setState({filteredData: e.data.planes})
 			}
 		})
@@ -52,51 +52,56 @@ export default class homeComponent extends Component{
 			console.log(err)
 		})
 	}
-	componentWillMount(){
-		Keyboard.dismiss()
-		LocationServicesDialogBox.checkLocationServicesIsEnabled({
-		  message: "Activar Ubicación",
-		  ok: "SI",
-		  cancel: "NO"
-		})
-		.then(function(success) {
-		  	navigator.geolocation.getCurrentPosition((e)=>{
-				console.log(e)
-				let lat =parseFloat(e.coords.latitude)
-				let lng = parseFloat(e.coords.longitude)
-				 
-				this.setState({lat, lng})
-				this.getPlans(lat, lng)
-			}, (error)=>this.watchID = navigator.geolocation.watchPosition(e=>{
-				let lat =parseFloat(e.coords.latitude)
-				let lng = parseFloat(e.coords.longitude)
-				 
-				this.setState({lat, lng})
-				this.getPlans(lat, lng)
-			},
+	async componentWillMount(){
+		RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({interval: 10000, fastInterval: 5000})
+	  .then(data => {
+	  	console.log(data)
+	    // The user has accepted to enable the location services
+	    // data can be :
+	    //  - "already-enabled" if the location services has been already enabled
+	    //  - "enabled" if user has clicked on OK button in the popup
+	    navigator.geolocation.getCurrentPosition(e=>{
+			console.log(e)
+			let lat =parseFloat(e.coords.latitude)
+			let lng = parseFloat(e.coords.longitude)
+			 
+			this.setState({lat, lng})
+			this.getPlans(lat, lng)
+		}, 
+			(error)=>this.watchID = navigator.geolocation.watchPosition(e=>{
+			let lat =parseFloat(e.coords.latitude)
+			let lng = parseFloat(e.coords.longitude)
+			 
+			this.setState({lat, lng})
+			this.getPlans(lat, lng)
+		},
 			(error) => this.getPlans(undefined, undefined),
 			{enableHighAccuracy: true, timeout:5000, maximumAge:0})
-	      )
-		}).catch((error) => {
-		  console.log(error); // error.message => "disabled"
-		  	axios.get(`/x/v1/pla/plan/pago/${undefined}/${undefined}`)
-			.then(e=>{
-				console.log(e.data)
-				if (e.data.code===1) {
-					this.setState({filteredData: e.data.planes})
-				}
-			})
-			.catch(err=>{
-				console.log(err)
-			})
-		});
+      	)
+	  }).catch(err => {
+	  	console.log(err)
+	  	axios.get(`/x/v1/pla/plan/pago/${undefined}/${undefined}`)
+		.then(e=>{
+			if (e.data.code===1) {
+				this.setState({filteredData: e.data.planes})
+			}
+		})
+		.catch(err=>{
+			console.log(err)
+		})
+	    // The user has not accepted to enable the location services or something went wrong during the process
+	    // "err" : { "code" : "ERR00|ERR01|ERR02", "message" : "message"}
+	    // codes : 
+	    //  - ERR00 : The user has clicked on Cancel button in the popup
+	    //  - ERR01 : If the Settings change are unavailable
+	    //  - ERR02 : If the popup has failed to open
+	  });
 
+		Keyboard.dismiss()
 		
-
 	}
 	componentWillUnmont(){
 		navigator.geolocation.clearWatch(this.watchID)
-		//LocationServicesDialogBox.stopListener();
 	}
 	async componentDidMount(){
 	    registerAppListener(this.props.navigation);

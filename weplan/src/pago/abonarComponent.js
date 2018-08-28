@@ -1,6 +1,6 @@
-import React, {Component} from 'react'
+import React, {Component}     from 'react'
 import {View, Text, Image, TouchableOpacity, TextInput, Alert} from 'react-native'
-import {style}        from '../encuesta/style'
+import {style}                from '../encuesta/style'
 import axios                  from 'axios'
 import TakePhotoComponent     from '../takePhoto/takePhotoComponent.js'
 import socket from '../../socket.js'
@@ -17,9 +17,6 @@ export default class AbonarComponent extends Component{
       adjuntarAmigos:false,
       asignados:[]
     }  
-  }
-  componentWillMount(){
-     console.log(this.props)
   }
   getValor(e){
     e = e.substr(1)

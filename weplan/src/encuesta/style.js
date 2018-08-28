@@ -406,7 +406,7 @@ export const style = MediaQueryStyleSheet.create({
 		borderColor:'#5664BA'
 	},
 	textSaveAbonar:{
-		width:'30%',
+		width:'35%',
 		alignItems: 'center',
 		fontSize:20
 	}

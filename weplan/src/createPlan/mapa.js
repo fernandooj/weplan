@@ -19,8 +19,14 @@ export default class MapaPlanComponent extends Component{
 		this.state={
 			saldo:0,
  			x: {
-		      latitude: 4.597825,
-		      longitude: -74.0755723,
+				latitude: 4.597825,
+				longitude: -74.0755723,
+				latitudeDelta: 0.015,
+				longitudeDelta: 0.0121,
+		    },
+		    marker: {
+				latitude: 4.597825,
+				longitude: -74.0755723,
 		    },
 		    km:this.props.ubicacionDefecto.area ?this.props.ubicacionDefecto.area :0,
 		    latitudeDelta: 0.015,
@@ -123,7 +129,7 @@ export default class MapaPlanComponent extends Component{
 									let latitude = details.geometry.location.lat;
 									let longitude = details.geometry.location.lng;
 									let direccion = details.formatted_address;
-									this.setState({direccion, x:{latitude, longitude}})
+									this.setState({direccion, x:{latitude, longitude, latitudeDelta: 0.015, longitudeDelta: 0.0121}})
 								}}
 								getDefaultValue={() => ''}
 								query={{
@@ -161,17 +167,21 @@ export default class MapaPlanComponent extends Component{
 			          	</View>		
 		      			<ScrollView style ={CreatePlanStyle.container}>
 					        <MapView
-					          style={CreatePlanStyle.map, {height:showKeyboard ?250:455}}
+					          style={CreatePlanStyle.map, {height:showKeyboard ?250:405}}
 					          initialRegion={{
 					            latitude:  ubicacionDefecto.infoplan ?ubicacionDefecto.lat :guardaUbicacion.lat ?guardaUbicacion.lat :this.state.x.latitude,
 					            longitude: ubicacionDefecto.infoplan ?ubicacionDefecto.lng :guardaUbicacion.lng ?guardaUbicacion.lng :this.state.x.longitude,
-					            latitudeDelta: latitudeDelta,
-					            longitudeDelta: longitudeDelta,
+					            latitudeDelta: this.state.x.latitudeDelta,
+					            longitudeDelta: this.state.x.longitudeDelta,
 					          }}
+					          // region={this.state.x}
+					          onRegionChange={(e)=>this.onRegionChange(e)}
+					          // onRegionChangeComplete={(e)=>this.onRegionChange(e)}
 					        >
 					          <Marker draggable
 							    coordinate={ubicacionDefecto.infoplan ?{latitude:this.props.ubicacionDefecto.lat, longitude:this.props.ubicacionDefecto.lng}  :guardaUbicacion.lat ?{latitude:this.props.guardaUbicacion.lat, longitude:this.props.guardaUbicacion.lng} :this.state.x}
-							    onDragEnd={(e) => {this.setState({ x: e.nativeEvent.coordinate }); console.log(e.nativeEvent.coordinate)}}
+
+							    //onDragEnd={(e) => {this.setState({ x: e.nativeEvent.coordinate }); console.log(e.nativeEvent.coordinate)}}
 							  />
 							  <Circle 
 							  	radius={km}
@@ -181,11 +191,11 @@ export default class MapaPlanComponent extends Component{
 	                			fillColor = { 'rgba(100,100,100,.2)' }
 							  />
 					        </MapView>
-					        {
+					        {/*
 					        	!ubicacionDefecto.infoplan || ubicacionDefecto.muestraBtnHecho
 								?<Text style={[CreatePlanStyle.textArrastar, CreatePlanStyle.familia]}>Puedes presionar y arrastar el marcador a cualquier lugar</Text>
 								:null
-					        }
+					        */}
 					        {
 					        	inputValor
 					        	&&<TextInputMask
@@ -217,8 +227,15 @@ export default class MapaPlanComponent extends Component{
 			)
 		}else{
 			return(<Text></Text>)
+		}	
+	}
+	onRegionChange(x) {
+		console.log(x)
+		if (x) {
+			this.setState({x});
 		}
-		
+	  	
+	  	// this.setState({ marker:{latitude:e.latitude, longitude: e.longitude} });
 	}
 	getValor(e){
 	    e = e.substr(1)

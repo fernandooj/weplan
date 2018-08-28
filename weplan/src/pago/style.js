@@ -42,6 +42,7 @@ export const style = MediaQueryStyleSheet.create({
 	descripcion:{
 		fontSize:18,
 		color:'#8796F4',
+		width:'75%'
 	},
 	valor:{
 		color:'#969696',
