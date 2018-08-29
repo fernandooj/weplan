@@ -78,7 +78,7 @@ export default class pagoDeudaComponent extends Component{
 				token: e.data[0].info[0].token
 			}
 		})
-		nuevaData.push({id:item.userId._id, deuda:suma })
+		nuevaData.push({id:item.userId._id, deuda:suma, token:null })
 		this.setState({usuarios, nuevaData})
 	}
 	editarDeuda(id){
@@ -211,6 +211,8 @@ export default class pagoDeudaComponent extends Component{
 	}
 	enviarEdicion(){
 		const {nuevaData, itemId, usuarios, imagenResize, item} = this.state
+		
+
 		axios.put('x/v1/pag/pago', {data: nuevaData, itemId:itemId })
 		.then(e=>{
 			console.log(e.data)
@@ -219,11 +221,12 @@ export default class pagoDeudaComponent extends Component{
 				nuevaData.map(e=>{
 					sendRemoteNotification(15, e.token, 'notificacion', `pago editado a ${Math.abs(e.deuda)}`, `, edito el pago del item ${item.titulo}`, item.imagenResize)
 				})
-				let usuarios = usuarios.filter(e=>{
+				let users = usuarios.filter(e=>{
 					e.estado=false
 					return e
 				})
-				this.setState({editCosto:false, usuarios})
+				console.log(usuarios)
+				this.setState({editCosto:false, usuarios:users})
 			}
 		})
 		.catch(err=>{

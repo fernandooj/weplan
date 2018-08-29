@@ -184,7 +184,7 @@ export default class ajustesComponent extends Component{
 
 const saveInfo = async (userInfo)=>{
 	try {
-	    await AsyncStorage.setItem('userInfo', '0');
+	    await AsyncStorage.setItem('userInfoId', '0');
 	} catch (error) {
 	   console.log(error)
 	}

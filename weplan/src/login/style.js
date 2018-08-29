@@ -96,6 +96,14 @@ export const style = MediaQueryStyleSheet.create({
 		textAlign: 'center', 
 		fontSize:17
 	},
+	BtniconPass:{
+		position:'relative',
+		top:-29,
+		left:85
+	},
+	iconPass:{
+		fontSize:16
+	}
 
 },{
 	"@media (max-device-width: 380)": {

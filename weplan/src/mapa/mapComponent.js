@@ -23,6 +23,7 @@ class MapComponent extends Component{
 		            longitudeDelta: 0.0121,
 		          }}
 		        >
+		        	<Marker coordinate={{latitude:this.props.lat, longitude:this.props.lng}} />
 		        </MapView>
 		    </View>   
 		)
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
     },
     map: {
        	height: 200,
-        width:Dimensions.get('window').width,
+        width:'100%', /// ancho del mapa en el chat cuando es tipo mapa
     },
      
 });

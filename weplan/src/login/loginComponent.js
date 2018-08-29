@@ -3,7 +3,7 @@ import {View, Text, TouchableOpacity, TextInput, Alert, Platform, ImageBackgroun
 import {style} from '../login/style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
- 
+import Icon from 'react-native-fa-icons';
 //import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
 import {FBLogin, FBLoginManager} from 'react-native-facebook-login';
 import FCM, {NotificationActionType} from "react-native-fcm";
@@ -16,6 +16,7 @@ export default class LoginComponent extends Component{
 		this.state = {
 			facebook:null,
 			google:null,
+			showPassword:false,
 			token: "",
 		};
 	}
@@ -165,6 +166,7 @@ export default class LoginComponent extends Component{
 	
 	render(){
 		const {navigate} = this.props.navigation
+		const {showPassword} = this.state
 		const {num} = this.props.screenProps
 		console.log(num)
 		return(
@@ -194,10 +196,12 @@ export default class LoginComponent extends Component{
 				        underlineColorAndroid='transparent'
 	           			placeholder="Contraseña"
 	           			placeholderTextColor="#8F9093" 
-	           			secureTextEntry
+	           			secureTextEntry={showPassword ?false :true}
 	           			autoCapitalize = 'none'
-	           			   
 				    />
+				    <TouchableOpacity onPress={()=>this.setState({showPassword:!this.state.showPassword})} style={style.BtniconPass}> 
+				    	 <Icon name={showPassword ?'eye-slash' :'eye'} allowFontScaling style={style.iconPass} />
+				    </TouchableOpacity>
 				    <TouchableOpacity style={style.submit} onPress={this.handleSubmit.bind(this)}>
 				    	<Text style={[style.textSubmit, style.familia]}>Iniciar Sesión</Text>
 				    </TouchableOpacity>

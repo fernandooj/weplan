@@ -97,7 +97,7 @@ export const style = MediaQueryStyleSheet.create({
 		width:'100%',
 		padding:3,
         height:42,
-        color:'#ffffff',
+ 
 	},
 	containDatePickerGenero:{
 		backgroundColor:'#8FA8F7',
@@ -254,6 +254,14 @@ export const style = MediaQueryStyleSheet.create({
 		width:30,
 		height:30
 	},
+	BtniconPass:{
+		position:'relative',
+		top:-29,
+		left:85
+	},
+	iconPass:{
+		fontSize:16
+	}
 },{
 	"@media (max-device-width: 320)": {
 		touchRes:{

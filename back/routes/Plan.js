@@ -224,9 +224,9 @@ router.post('/', function(req, res){
 		// 	let lat = req.body.lat ?req.body.lat :data.lat
 		// 	let lon = req.body.lng ?req.body.lng :data.lon
 		// })
-		let lat = req.body.lat==='undefined' || req.body.lat!=='null' ?4.597825 :req.body.lat 
-		let lon = req.body.lng==='undefined' || req.body.lat!=='null' ?-74.0755723 :req.body.lng
-		console.log(lat)
+		let lat = req.body.lat==='undefined' || req.body.lat==='null' ?4.597825    :req.body.lat 
+		let lon = req.body.lng==='undefined' || req.body.lng==='null' ?-74.0755723 :req.body.lng
+		
 	    	planServices.create(req.body, req.session.usuario.user._id, lat, lon, (err, plan)=>{
 	    		console.log(err)
 				if(err){
@@ -604,7 +604,7 @@ router.get('/suma/totales/plan', (req, res)=>{
 					}
 				}
 			})
-			res.json({status: 'SUCCESS', result:abonoTrue, code:1 })
+			res.json({status: 'SUCCESS', result:getUserpays, code:1 })
 		}
 	})
 })
@@ -627,7 +627,6 @@ router.get('/suma/totales/miplan', (req, res)=>{
 				return e
 			})
 	 		let data = data1.map(e=>{
-
 				return{
 					id:e._id.id,
 					nombrePlan:e.data[0].info[4],
@@ -635,7 +634,6 @@ router.get('/suma/totales/miplan', (req, res)=>{
 					imagen:e.data[0].info[3],
 					fecha:e.data[0].info[8],
 					total: e.total
-					// total: e.total- -Math.abs((Math.ceil((e.data[0].info[7]/(e.data[0].info[10]+1))/100)*100)) 
 				}
 			})
 

@@ -298,6 +298,15 @@ module.exports = function(app, passport){
         } 
     })
 
+     app.get('/x/v1/user/profile/:userId', function(req, res){
+        userServices.getOneUser(req.params.userId, (err, user)=>{
+             if(!err){
+                req.session.usuario = {user:user}
+                res.json({status:'SUCCESS',  user, code:1})  
+            }
+        })
+    })
+
     ///////////////////////////////////////////////////////////////////////////
     /*
     busco al usuario logueado, esto es por que desde el admin actualizo la info,

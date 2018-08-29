@@ -3,7 +3,7 @@ import {View, Text, Dimensions, TouchableHighlight, TextInput, Alert, ScrollView
 import {style} from '../login/style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
-
+import CabezeraComponent from '../ajustes/cabezera.js'
 
 export default class insertCodeComponent extends Component{
 	constructor(props) {
@@ -17,6 +17,7 @@ export default class insertCodeComponent extends Component{
 		const {codigo} = this.state 
 		return(
 			<ImageBackground style={style.fondo} >
+				<CabezeraComponent navigate={navigate} url={'Registro'} texto='Insertar Codigo'  />
 				<View>
 					<Image
 						style={style.image}

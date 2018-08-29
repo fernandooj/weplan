@@ -3,7 +3,7 @@ import {View, Text, TouchableOpacity, TextInput, CheckBox, Linking, Alert} from 
 import {style} 							 from '../editPerfil/style'
 import Image 									 from 'react-native-scalable-image';
 import axios 									 from 'axios';
-
+import Icon from 'react-native-fa-icons';
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////  ARCHIVOS GENERADOS POR EL EQUIPO  //////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -25,7 +25,7 @@ export default class editPerfilComponent1 extends Component{
 	componentWillMount(){
 		axios.get('/x/v1/user/profile') 
 		.then((res)=>{
-			console.log(res.data.user.user._id)
+			console.log(res.data.user)
 			let id = res.data.user.user._id
 			this.setState({id})
 		})
@@ -35,34 +35,35 @@ export default class editPerfilComponent1 extends Component{
 	}
 	 
 	render(){
-		console.log(this.state.condiciones)
+		const {showPassword, textPassword, textPassword1, condiciones} = this.state
 		return(
-			<View style={style.fondo}>
-				 
-	           		<TakePhotoComponent fuente={'foto.png'} ancho={145} alto={10} updateImagen={(photo) => {this.setState({photo})}} />
-	           	 
+			<View style={style.fondo}> 
+	           	<TakePhotoComponent fuente={'foto.png'} ancho={140} alto={10} updateImagen={(photo) => {this.setState({photo})}} border={80} />
 		        <TextInput
 			        style={[style.input, style.familia]}
 			        onChangeText={(textPassword) => this.setState({textPassword})}
-			        value={this.state.textPassword}
+			        value={textPassword}
 			        underlineColorAndroid='transparent'
            			placeholder="Contraseña"
            			placeholderTextColor="#8F9093" 
-           			secureTextEntry
+           			secureTextEntry={showPassword ?false :true}
 			    />	
+		     	<TouchableOpacity onPress={()=>this.setState({showPassword:!this.state.showPassword})} style={style.BtniconPass}> 
+			    	<Icon name={showPassword ?'eye-slash' :'eye'} allowFontScaling style={style.iconPass} />
+			    </TouchableOpacity>
 			    <TextInput
 			        style={[style.input, style.familia]}
 			        onChangeText={(textPassword1) => this.setState({textPassword1})}
-			        value={this.state.textPassword1}
+			        value={textPassword1}
 			        underlineColorAndroid='transparent'
            			placeholder="Repetir Contraseña"
            			placeholderTextColor="#8F9093" 
-           			secureTextEntry
+           			secureTextEntry={showPassword ?false :true}
 			    />	
 			    <View style={style.logos}>
 			    	<CheckBox 
 				    	onValueChange={(condiciones) => this.setState({condiciones})}
-				    	value={this.state.condiciones}
+				    	value={condiciones}
 			    	/>
 			    	<TouchableOpacity onPress={()=>{ Linking.openURL('https://appweplan.com')}}>
 			    		<Text style={[style.textoAcepto, style.familia]}>Acepto los terminos y condiciones</Text>

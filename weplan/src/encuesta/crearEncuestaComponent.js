@@ -96,7 +96,7 @@ export default class CrearEncuestaComponent extends Component{
                 maxLength={17}
               />
               <TouchableOpacity style={style.btnCamera} >
-                <TakePhotoComponent fuente={'camara.png'} ancho={40} alto={40}  
+                <TakePhotoComponent fuente={'camara.png'} ancho={40} alto={40} border={20}
                   updateImagen={(imagen) => {this.setState({imagen})}} 
                   style={style.camera} />
               </TouchableOpacity>
@@ -113,7 +113,7 @@ export default class CrearEncuestaComponent extends Component{
                 maxLength={17}
               />
               <TouchableOpacity style={style.btnCamera} >
-                <TakePhotoComponent fuente={'camara.png'} ancho={40} alto={40}  
+                <TakePhotoComponent fuente={'camara.png'} ancho={40} alto={40} border={20}
                   updateImagen={(imagen2) => {this.setState({imagen2})}} 
                   style={style.camera} />
               </TouchableOpacity>

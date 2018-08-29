@@ -78,7 +78,7 @@ class userServices {
 		User.find({ 'estado' :  'activo', 'acceso':'suscriptor' }, callback)
 	}
 	getOneUser(_id,callback){
-		User.findOne({_id},{nombre:1, photo:1, ciudad:1, tokenPhone:1, calificacion:1, saldo:1}, callback)
+		User.findOne({_id},{nombre:1, photo:1, ciudad:1, tokenPhone:1, calificacion:1, email:1}, callback)
 	}
 	rating(_id, rating, callback){
 		User.findOne({_id}, function(err, user){

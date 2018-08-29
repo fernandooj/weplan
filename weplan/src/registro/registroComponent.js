@@ -3,7 +3,7 @@ import {View, Text, Dimensions, TouchableHighlight, TextInput, Alert, ScrollView
 import {style} from '../login/style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
- 
+import CabezeraComponent from '../ajustes/cabezera.js'
  
 
 export default class RegistroComponent extends Component{
@@ -17,8 +17,10 @@ export default class RegistroComponent extends Component{
 
 	render(){
 		const {codigo} = this.state 
+		const {navigate} = this.props.navigation
 		return(
 			<ImageBackground style={style.fondo}  >
+				<CabezeraComponent navigate={navigate} url={'Login'} texto='Registro'  />
 				<View>
 					<Image
 						style={style.image}

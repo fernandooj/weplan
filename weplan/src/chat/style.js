@@ -152,7 +152,7 @@ export const style = MediaQueryStyleSheet.create({
 		width:'60%',
 		height:35,
 		color:'#969696',
-		paddingTop:0,
+		paddingTop:5,
 		paddingLeft:20,
 		paddingBottom:0,
 		borderWidth: 0,

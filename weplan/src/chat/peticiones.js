@@ -70,22 +70,6 @@ export const pedirPdf = (planId) =>{
 			      console.log(err)
 			    })
    			}
-   			
-
-   //  	if (error) {
-   //  		console.log(error)
-   //  	}else{
-   //  		let imagen = {
-			//     uri: res.uri,
-			//     type: res.type,
-			//     name: res.fileName,
-			//     path: res.uri
-			// };
-			// if (imagen!==null){
-			// 	console.log(res.fileName)
-			// 	alerta(res.fileName, imagen, subirDocumento, 7, planId )
-			// }
-   //  	}
    });	
 }
  
@@ -99,28 +83,32 @@ export const pedirContacto = (usuariosAsignados, planId)=>{
 }
 
 export const pedirMapa = (lat, lng, planId)=>{
-	Alert.alert(
-		'¿Seguro deseas enviar este mapa?',
-		'',
-	[
-	    {text: 'Mejor despues', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-	    {text: 'Enviar', onPress: () => handleSubmitMap(lat, lng, 5, planId)},
-	],
-		{ cancelable: false }
-	)
+	setTimeout(function(){ 
+		Alert.alert(
+			'¿Seguro deseas enviar este mapa?',
+			'',
+		[
+		    {text: 'Mejor despues', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+		    {text: 'Enviar', onPress: () => handleSubmitMap(lat, lng, 5, planId)},
+		],
+			{ cancelable: false }
+		)
+	}, 600);
+	
  }
 
 const alerta = (info, data, funcion, tipo, planId) =>{
-	console.log(tipo)
-	Alert.alert(
-	  '¿Seguro deseas enviar?',
-	  info,
-	  [
-	    {text: 'Mejor despues', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-	    {text: 'Enviar', onPress: () => funcion(data, tipo, planId)},
-	  ],
-	  { cancelable: false }
-	);
+	setTimeout(function(){ 
+		Alert.alert(
+		  '¿Seguro deseas enviar?',
+		  info,
+		  [
+		    {text: 'Mejor despues', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+		    {text: 'Enviar', onPress: () => funcion(data, tipo, planId)},
+		  ],
+		  { cancelable: false }
+		);
+	}, 600);
 }
 
 const subirContacto=(usuariosAsignados, tipo, planId)=>{

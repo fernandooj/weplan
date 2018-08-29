@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground, Alert, Keyboard, Modal, Dimensions, BackHandler} from 'react-native'
+import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground, Alert, Keyboard, Modal, Dimensions, BackHandler, Platform} from 'react-native'
 import axios from 'axios'
 import SocketIOClient from 'socket.io-client';
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
@@ -628,7 +628,7 @@ export default class ChatComponent extends Component{
 			{/* BOTONES OPCIONES */}
 				{
 					this.state.showOpciones
-					&&<View style={[style.contenedorOpcionesBotones, {marginTop:showMainFooter ?-300 :-55} ]}>
+					&&<View style={[style.contenedorOpcionesBotones, {marginTop:showMainFooter ?-300 :Platform.OS==='android' ?-55 :-75} ]}>
 						{this.opciones()}
 					</View>
 				}
