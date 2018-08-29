@@ -52,7 +52,8 @@ export default class notificacionComponent extends Component{
 				 						:e.tipo==11 ?`Tu abono de: ${e.titulo}, fue Aprobado`
 				 						:e.tipo==12 ?`Tu abono de: ${e.titulo}, fue Rechazado`
 				 						:e.tipo==13 ?`Cerro el plan: ${e.titulo}`
-				 						:e.tipo==14 &&`Califica el plan: ${e.titulo}`
+				 						:e.tipo==14 ?`Califica el plan: ${e.titulo}`
+				 						:e.tipo==15 &&`el costo del item ${e.titulo} cambio`
 				 					}
 				 				</Text>
 				 			</TouchableOpacity>

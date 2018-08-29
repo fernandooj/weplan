@@ -202,18 +202,21 @@ const verificaItemAbierto=(usuario, idTipo, id, res, req)=>{
 				// 	longitud=3
 				// }
 				// console.log('++++++')
-				// console.log(item[0])
+				
 				// console.log(item[0].asignados.length)
 				// console.log(Math.ceil((item[0].valor/(item[0].asignados.length+longitud))/100)*100)
 				// console.log('++++++')
 				chatServices.getByItem(item[0]._id, (err, chat)=>{
+
 					if (!err) {
-						let mensajeJson={
-							id:chat[0]._id,
-							planId:item[0].planId,
-							valor:Math.ceil((item[0].valor/(item[0].asignados.length+3))/100)*100,
+						if (chat.length>0) {
+							let mensajeJson={
+								id:chat[0]._id ?chat[0]._id :null, 
+								planId:item[0].planId,
+								valor:Math.ceil((item[0].valor/(item[0].asignados.length+3))/100)*100,
+							}
+							cliente.publish('editaPago', JSON.stringify(mensajeJson))
 						}
-						cliente.publish('editaPago', JSON.stringify(mensajeJson))
 					}
 				})
 				//////////////////////////////////////////////////////////////////////////////////////////////////////////////

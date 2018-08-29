@@ -53,26 +53,35 @@ router.get('/:user', (req, res)=>{
 					if (err) {
 						res.json({err, code:0})
 					}else{
+						let data;
+						let data1;
 						pago = pago.map(e=>{
-							let data = e.data[0].info[0]
+							data = e.data[0].info[0]
+							data1 = e
+							let deuda = e.data.filter(e2=>{
+								if (e2.info[0].userIdPago==req.session.usuario.user._id){
+									return e2.info[0].monto	
+								}
+							}) 
 							return{
 								id:e._id,
 								titulo:data.titulo,
 								idUsuario:data.userId,
 								valor:data.valor,
-								deuda2:e.deuda,
-		 						deuda:e.deuda===(Math.ceil((data.valor/(data.asignados.length+1))/100)*100) ?0 :e.deuda-(Math.ceil((data.valor/(data.asignados.length+1))/100)*100),
-		 						
+								count:e.count,
+								deuda:e.deuda-deuda[0].info[0].monto,
+								deuda1:e.deuda,
 		 						abierto:data.abierto,
 							}
 						})
 						deuda = deuda.map(e=>{
+							data = e.data[0].info[0]
 							return{
 								id:e._id,
-								titulo:e.data[0].info[0].titulo,
-								idUsuario:e.data[0].info[0].userId,
-								valor:e.data[0].info[0].valor,
-								nombre:e.data[0].info[0].nombre,
+								titulo:data.titulo,
+								idUsuario:data.userId,
+								valor:data.valor,
+								nombre:data.nombre,
 		 						deuda:e.deuda
 							}
 						})

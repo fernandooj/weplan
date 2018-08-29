@@ -195,10 +195,12 @@ router.put('/editar', (req, res)=>{
 	if(req.session.usuario===undefined || req.session.usuario.user==null){
         res.json({status:'FAIL', user: 'SIN SESION', code:0 })
     }else{
-    	ipLocator.getDomainOrIPDetails(ip.address(),'json',  (err, data)=> {
-			let lat = req.body.lat ?req.body.lat :data.lat
-			let lon = req.body.lng ?req.body.lng :data.lon
-
+  //   	ipLocator.getDomainOrIPDetails(ip.address(),'json',  (err, data)=> {
+		// 	let lat = req.body.lat ?req.body.lat :data.lat
+		// 	let lon = req.body.lng ?req.body.lng :data.lon
+		// })
+		let lat = req.body.lat!=='undefined' ?req.body.lat :4.597825
+		let lon = req.body.lng!=='undefined' ?req.body.lng :-74.0755723
 	    	planServices.editar(req.body, req.body.planId, lat, lon, (err, plan)=>{
 	    		console.log(err)
 				if(err){
@@ -207,7 +209,7 @@ router.put('/editar', (req, res)=>{
 					res.json({ status: 'SUCCESS', message: plan, code:1 });	
 				}
 			})
-		})
+		
     }
 })
 
@@ -218,10 +220,13 @@ router.post('/', function(req, res){
 	if(req.session.usuario===undefined || req.session.usuario.user==null){
         res.json({status:'FAIL', user: 'SIN SESION', code:0 })
     }else{
-    	ipLocator.getDomainOrIPDetails(ip.address(),'json', function (err, data) {
-			let lat = req.body.lat ?req.body.lat :data.lat
-			let lon = req.body.lng ?req.body.lng :data.lon
-
+  //   	ipLocator.getDomainOrIPDetails(ip.address(),'json', function (err, data) {
+		// 	let lat = req.body.lat ?req.body.lat :data.lat
+		// 	let lon = req.body.lng ?req.body.lng :data.lon
+		// })
+		let lat = req.body.lat==='undefined' || req.body.lat!=='null' ?4.597825 :req.body.lat 
+		let lon = req.body.lng==='undefined' || req.body.lat!=='null' ?-74.0755723 :req.body.lng
+		console.log(lat)
 	    	planServices.create(req.body, req.session.usuario.user._id, lat, lon, (err, plan)=>{
 	    		console.log(err)
 				if(err){
@@ -244,7 +249,7 @@ router.post('/', function(req, res){
 					}
 				}
 			})
-		})
+		
     }
 })
 

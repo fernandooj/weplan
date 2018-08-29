@@ -26,7 +26,7 @@ export default class ItemComponent extends Component{
 	}
 	componentWillMount(){
 		let planId = this.props.navigation.state.params	
-		// let planId = '5b479935a767c75dcd41452c'	
+		// let planId = '5b7b7ddc272b0d29918c46e3'	
 		console.log(planId)
 		this.setState({planId})
  

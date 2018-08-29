@@ -1,17 +1,20 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Alert} from 'react-native'
+import {View, Text, Image, TouchableHighlight, TextInput, ScrollView, Alert} from 'react-native'
 import {style} from '../pago/style'
 import axios from 'axios'
 import CabezeraComponent from '../ajustes/cabezera.js'
 import AbonarComponent   from './abonarComponent.js'
-
+import {sendRemoteNotification} from '../push/envioNotificacion.js'
+import { TextInputMask } from 'react-native-masked-text' 
 export default class pagoDeudaComponent extends Component{
  	state={
  		item:{asignados:[], userId:{}},
  		valor:0,
  		show:false,
+ 		editCosto:false,
  		usuarios:[],
- 		planId:''
+ 		planId:'',
+ 		valorInicial:null
  	}
 	componentWillMount(){
  
@@ -55,24 +58,82 @@ export default class pagoDeudaComponent extends Component{
 			</View>
 		)
 	}
-	 
+	getValor(valor, id){
+		const {item, idPerfil} = this.state
+	    valor = valor.substr(1)
+	    valor = valor.replace(/[^0-9]/g, '')    
+	    this.setState({editCosto:true, valorInicial:valor, monto:Number(valor)})
+	    valor = -Math.abs(Number(valor))
+	    let usuariosAsignados = Math.ceil((item.valor/(item.asignados.length))/100)*100 /// saco el divido de los usuarios que estan asignados
+	    let costoPago  		  = Math.ceil((valor/(this.state.item.asignados.length))/100)*100 //// divido el costo del pago entre los usuarios asignados
+	    let suma = usuariosAsignados + costoPago
+	    let usuarios = this.state.usuarios.filter(e=>{
+			if (e._id==id) {e.deuda= valor}else{e.deuda=-Math.abs(suma)}
+			return e
+		})
+		let nuevaData = usuarios.map(e=>{
+			return {
+				id:e._id,
+				deuda:e.deuda,
+				token: e.data[0].info[0].token
+			}
+		})
+		nuevaData.push({id:item.userId._id, deuda:suma })
+		this.setState({usuarios, nuevaData})
+	}
+	editarDeuda(id){
+		if (!this.state.item.abierto) {
+			Alert.alert(
+			  'No puedes editar los costos por que el item ya se cerro',
+			  '',
+			  [
+			    {text: 'OK', onPress: () => console.log('OK Pressed')},
+			  ],
+			  { cancelable: false }
+			)
+		}else{
+			let usuarios = this.state.usuarios.filter(e=>{
+				if (e._id==id) {e.estado=true}else{e.estado=false}
+				return e
+			})
+			this.setState({usuarios, valorInicial:null})
+		}
+		
+	}
 	renderAsignados(){
 		let pagos=[];
 		let costoDividirPlan = Math.ceil((this.state.item.valor/(this.state.item.asignados.length+1))/100)*100
-		return this.state.usuarios.map((e, key)=>{
-			let deuda = e.deuda===costoDividirPlan ?costoDividirPlan :e.deuda
-			let data = e.data[0].info[0]
+		const {usuarios, valorInicial, editCosto} = this.state
+		return usuarios.map((e, key)=>{
+			
+			let deuda = editCosto ?e.deuda===costoDividirPlan ?costoDividirPlan :e.deuda :e.deuda
+			let data  = e.data[0].info[0]
 			return(
-	 			<TouchableOpacity  key={key} onPress={()=>this.setState({show:true, userId:e._id, photo:data.photo, nombre:data.nombre, monto:e.deuda, token:data.token})}>
+	 			<TouchableHighlight  key={key} onLongPress={()=>this.editarDeuda(e._id)} onPress={()=>this.setState({show:true, userId:e._id, photo:data.photo, nombre:data.nombre, monto:e.deuda, token:data.token})}>
+	 				<View>
 	 				<View style={style.pagoDeudaContenedor}>
 		 				<Image source={{uri: data.photo}} style={style.pagoDeudaAvatar} />
 		 				<Text style={[style.pagoDeudaNombre, style.familia]}>{data.nombre}</Text> 
-		 				<Text style={[style.pagoDeudaMonto, style.familia]}>{'$ '+Number(deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+		 				{
+		 					!e.estado
+		 					?<Text style={[style.pagoDeudaMonto, style.familia]}>{'$ '+Number(deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+		 					:<TextInputMask
+			                  ref="text"
+			                  placeholder='Valor a Pagar'
+			                  type={'money'}
+			                  options={{ unit: '$', zeroCents:true, precision:0 }} 
+			                  style={[style.inputValorEdit, style.familia]}
+			                  underlineColorAndroid='transparent'
+			                  onChangeText={(data)=>this.getValor(data, e._id)} 
+			                  value={valorInicial ?valorInicial :deuda}
+			                />
+		 				}
+		 				
 		 			</View>
 	 				<View>	
 		 				{
 		 					e.data.map((e2, key2)=>{
-		 						if (e2.info[0].monto!==-costoDividirPlan) {
+		 						if (e2.info[0].monto!==-deuda && e2.info[0].monto!==deuda ) {
 		 							return(
 			 							<View key={key2} style={style.infoAbonoDeuda}>
 			 								<Text style={[style.textAbonoDeuda, style.familia]}>Abono: </Text>
@@ -85,16 +146,16 @@ export default class pagoDeudaComponent extends Component{
 		 				}
 		 			</View>
 	 				<View style={style.separador}></View>
-	 			</TouchableOpacity>
+	 				</View>
+	 			</TouchableHighlight>
 			)
 		})
 	}
  
   	render() {
   		const {navigate} = this.props.navigation
-  		const {show, monto, photo, nombre, itemId, userId, usuarios, planId, token, item} = this.state
+  		const {show, monto, photo, nombre, itemId, userId, usuarios, planId, token, item, editCosto} = this.state
  		let costoDividirPlan = Math.ceil((this.state.item.valor/(this.state.item.asignados.length+1))/100)*100
- 		console.log(userId)
 		const add = (a, b)=>{
  			return a + b;
 		}
@@ -130,22 +191,48 @@ export default class pagoDeudaComponent extends Component{
 						
 					</View>	
 					{
-			    		<View style={style.contenedorTotal}>
-			    			<Text style={[style.textoTotal, style.familia]}>Total</Text>
-			    			<Text style={sum>=0 ?[style.valueTotal, style.familia] :[style.valueNoAsignadoTotal, style.familia]}>
-								{'$ '+Number(sum).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
-							</Text>
-			    		</View>
-			    	}		  
+						editCosto
+						&&<TouchableHighlight onPress={() => this.enviarEdicion() } style={style.btnHecho}>
+							<Text style={[style.hecho, style.familia]}>Guardar !</Text>
+						</TouchableHighlight>
+					}
+		    		<View style={style.contenedorTotal}>
+		    			<Text style={[style.textoTotal, style.familia]}>Total</Text>
+		    			<Text style={sum>=0 ?[style.valueTotal, style.familia] :[style.valueNoAsignadoTotal, style.familia]}>
+							{'$ '+Number(sum).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
+						</Text>
+		    		</View>
+			    			  
 				</View>
 			</ScrollView>)
 		}else{
 			return <Text></Text>
 		}
 	}
+	enviarEdicion(){
+		const {nuevaData, itemId, usuarios, imagenResize, item} = this.state
+		axios.put('x/v1/pag/pago', {data: nuevaData, itemId:itemId })
+		.then(e=>{
+			console.log(e.data)
+			if (e.data.code===1) {
+
+				nuevaData.map(e=>{
+					sendRemoteNotification(15, e.token, 'notificacion', `pago editado a ${Math.abs(e.deuda)}`, `, edito el pago del item ${item.titulo}`, item.imagenResize)
+				})
+				let usuarios = usuarios.filter(e=>{
+					e.estado=false
+					return e
+				})
+				this.setState({editCosto:false, usuarios})
+			}
+		})
+		.catch(err=>{
+			console.log(err)
+		})
+		
+		
+	}
 	updateItems(id, monto){
-		console.log({id, monto})
-		console.log(parseInt(monto))
 		let usuarios = this.state.usuarios.filter(e=>{
 			if(e._id==id) {e.deuda=parseInt(e.deuda)+parseInt(monto)}
 			return e   

@@ -47,6 +47,7 @@ module.exports = mongoose.model('Notificacion', notificacionSchema)
 /// tipo 12  ==> notificacion cuando el dueño del item hizo un abono 
 /// tipo 13  ==> notificacion cuando se cerro el plan
 /// tipo 14  ==> notificacion cuando se quiere calificar un item
+/// tipo 15  ==> notificacion cuando se edito el costo de un item
 
 /// activo ===> queda la notificacion en estado innactivo si es false no muestra los botones
 /// eliminado ===> elimina la notificacion del front, pero aca se sigue viendo

@@ -60,6 +60,16 @@ class pagoServices{
             'updatedAt': moment().format('YYYY-MM-DD h:mm:ss')
     	}}, callback);
 	}
+
+ 	//////////////////////////////////////////////////////////////////////////////////////////
+	////////   EDITO EL PAGO DE TODOS LOS USUARIOS POR EL IDUSER Y EL ITEM
+	//////////////////////////////////////////////////////////////////////////////////////////
+	editByItemAndUser(userId, itemId, monto, callback){
+		pagoSchema.findOneAndUpdate({itemId, userId}, {$set: {
+            'monto': monto,
+            'updatedAt': moment().format('YYYY-MM-DD h:mm:ss')
+    	}}, callback);
+	}
 	activa(_id, callback){
 		pagoSchema.findOneAndUpdate({_id}, {$set: {
             'activo': true,

@@ -119,7 +119,7 @@ class itemServices {
 			       deuda: { $sum: "$montos"}, 
 			       count: { $sum: 1 }, // for no. of documents count
 			       data: {
-			       	$addToSet: {info:[{titulo:'$titulo', userId:'$userId', abierto:'$abierto', asignados:'$asignados', valor:'$valor'}]},
+			       	$addToSet: {info:[{titulo:'$titulo', userId:'$userId', abierto:'$abierto', asignados:'$asignados', valor:'$valor', monto:"$montos", userIdPago:'$userIdPago' }]},
 			       }
 			    } 
 			},

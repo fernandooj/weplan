@@ -144,7 +144,6 @@ router.post('/', (req, res)=>{
 	cliente.publish('notificacion', JSON.stringify(mensajeJson))
 
 	itemServices.getById(req.body.itemId, (err, item)=>{
-		console.log(item[0].abierto)
 		if (!err) {
 			if (item[0].abierto==true) {
 				res.json({ status: 'FAIL', mensaje:'el item esta abierto', code:2 });		
@@ -153,7 +152,7 @@ router.post('/', (req, res)=>{
 					if(err){
 						res.json({err})
 					}else{
-						creaNotificacion(req.session.usuario.user._id, req.body.userItem, pago._id, activoNotificacion, res)
+						creaNotificacion(req.session.usuario.user._id, req.body.userItem, pago._id, activoNotificacion, 10, res)
 						//res.json({ status: 'SUCCESS', mensaje: pago, total:pago.length, code:1 });					
 					}
 				})
@@ -162,27 +161,39 @@ router.post('/', (req, res)=>{
 	})
 })
 
-
- 
-
-
-
+//////////////////////////////////////////////////////////////////////////////////////////
+////////  EDITO EL PAGO 
+//////////////////////////////////////////////////////////////////////////////////////////
+router.put('/', (req, res)=>{
+	let mensajeJson= {}
+	req.body.data.map(e=>{
+		mensajeJson={
+			userId:e.id,
+			notificacion:true,
+		}
+		cliente.publish('notificacion', JSON.stringify(mensajeJson))
+		pagoServices.editByItemAndUser(e.id, req.body.itemId, e.deuda, (err, pago)=>{
+			if (!err) {
+				creaNotificacion(req.session.usuario.user._id, e.id, req.body.itemId, false, 15, res)
+			}	 
+		})
+	})
+	res.json({status:'SUCCESS', code:1}) 
+})
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///// 			cuando se crea el pago envio la notificacion
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const creaNotificacion = (SessionId, userId, pagoId, activo, res)=>{ 	
-	notificacionService.create(SessionId, userId, 10, pagoId, activo, (err, notificacion)=>{
+const creaNotificacion = (SessionId, userId, pagoId, activo, tipoNotificacion, res)=>{ 	
+	notificacionService.create(SessionId, userId, tipoNotificacion, pagoId, activo, (err, notificacion)=>{
 		if (err) {
 			res.json({status:'FAIL', err, code:0})   
 		}else{
-			res.json({status:'SUCCESS',  notificacion, code:1})    
+			tipoNotificacion===10 &&res.json({status:'SUCCESS',  notificacion, code:1})    
 		}
 	})
 }
- 
-
 
 
 module.exports = router

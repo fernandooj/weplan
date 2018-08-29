@@ -104,6 +104,15 @@ export const style = MediaQueryStyleSheet.create({
 		paddingLeft:10,
 		width:'50%'
 	},
+	inputValorEdit:{
+		color:'#969696',
+		backgroundColor:'#dbe4f2',
+		borderRadius:15,
+		padding:2,
+		paddingLeft:10,
+		fontSize:15,
+		// height:40
+	},
 	metodoContenedor:{
 		flexDirection:'row',
 		alignItems: 'center',
@@ -172,7 +181,18 @@ export const style = MediaQueryStyleSheet.create({
 	textAbonoDeuda:{
 		fontSize:12
 	},
-
+	btnHecho:{
+ 		width:'40%',
+ 		alignItems: 'center',
+ 		backgroundColor:'#94A5F3',
+ 		borderRadius:10,
+ 		padding:10,
+ 		marginTop:20,
+ 		marginBottom:20,
+ 	},
+ 	hecho:{
+ 		color:'white'
+ 	},
 
 	////////////////////////////////////////////////////////////////////////////////////
 	////////////////// 		contenedor total
