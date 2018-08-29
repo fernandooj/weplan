@@ -662,7 +662,7 @@ export default class ChatComponent extends Component{
 						</TouchableOpacity>
 						<TextInput
 							onSubmitEditing={Keyboard.dismiss}
-							style={style.textarea}
+							style={[style.textarea, style.familia]}
 							onChangeText={(mensaje) => this.setState({mensaje})}
 							value={this.state.mensaje}
 							multiline = {true}
@@ -833,7 +833,7 @@ export default class ChatComponent extends Component{
 	////// ENVIO EL MENSAJE DEL CHAT 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	handleSubmit(){
-		Keyboard.dismiss()
+		// Keyboard.dismiss()
 		const fecha = moment().format('h:mm')
 		const {planId, mensaje, id, photo} = this.state
 		this.textInput.clear()

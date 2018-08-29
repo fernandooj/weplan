@@ -52,10 +52,10 @@ export default class createPlanComponent extends Component{
  			cargaPlan:false,
  			showAlertUbicacion:false,
  			position: 1,
-      	interval: null,
-      	imagenes:[],
-      	showTipo:false, //// modal que muestra el tipo del plan
-      	publico:false,  //// determina si el plan va a ser publico o privado
+	      	interval: null,
+	      	imagenes:[],
+	      	showTipo:false, //// modal que muestra el tipo del plan
+	      	publico:false,  //// determina si el plan va a ser publico o privado
 		}
 	}
 
@@ -471,7 +471,7 @@ export default class createPlanComponent extends Component{
 		area        = cargaPlan ?cargaPlan.area :area
 		let activo  = publico ? false : true
 		 
-		console.log("costo" + costo)
+		this.setState({iconCreate:true})
 
 		if (!fechaLugar &&tipo=='suscripcion') {
 			Alert.alert(
@@ -555,12 +555,13 @@ export default class createPlanComponent extends Component{
 						})
 						.catch((err)=>{
 							console.log(err)
+							this.setState({iconCreate:false})
 						})
 					}
-
+					this.setState({iconCreate:false})
 				})
 				.catch(err=>{
-					alert('error intenta nuevamente')
+					this.setState({iconCreate:false})
 					console.log(err)
 				})
 			}else{
@@ -583,7 +584,8 @@ export default class createPlanComponent extends Component{
 	activarPlan(costo, navigate, id){
 		axios.get('/x/v1/pag/pagopublico/byuser')  
 		.then((res)=>{
-		if (res.data.pago[0].saldo<costo) {
+		console.log(res.data)
+		if (res.data.saldo<costo) {
 				Alert.alert(
 					`Tu saldo es insuficiente`,
 					'',
@@ -598,7 +600,7 @@ export default class createPlanComponent extends Component{
 				axios.put('/x/v1/pla/plan/cambiarestado', {id, activo:true})
 				.then(data=>{
 					if(data.data.code==1){
-						axios.post('/x/v1/pag/pagopublico', {monto:-Math.abs(costo), planId:id, userId:res.data.pago[0]._id})
+						axios.post('/x/v1/pag/pagopublico', {monto:-Math.abs(costo), planId:id})
 						.then(res2=>{
 							if (res2.data.code==1) {
 								Alert.alert(

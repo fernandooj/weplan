@@ -64,7 +64,7 @@ router.get('/listbyuser', (req, res)=>{
 //////////////////////////////////////////////////////////////////////////////////////////
 router.post('/', (req, res)=>{ 
  	let activo = true
-	pagoPublicoServices.create(req.body, activo, (err, pago)=>{
+	pagoPublicoServices.create(req.body, req.session.usuario.user._id, activo, (err, pago)=>{
 		if(err){
 			res.json({ status: 'FAIL', mensaje:err, code:0});	
 		}else{

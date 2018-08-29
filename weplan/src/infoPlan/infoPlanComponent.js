@@ -356,10 +356,10 @@ export default class infoPlanComponent extends Component{
 }	
 const finalizar = (id, navigate, data)=>{
 	Alert.alert(
-		'Opss!! estas a punto de finalizar este plan',
-		'estas seguro, despues no podras abrirlo',
+		'Opss!! Vas a finalizar este plan',
+		'¿estas seguro? Después no podras abrirlo',
 	[
-		{text: 'Mejor despues', onPress: () => console.log('OK Pressed')},
+		{text: 'Mejor después', onPress: () => console.log('OK Pressed')},
 		{text: 'Si, Finalizar', onPress: () => handleFinalizar(id, navigate, data)},
 	],
 		{ cancelable: false }

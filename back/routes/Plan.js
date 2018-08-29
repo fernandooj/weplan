@@ -604,7 +604,7 @@ router.get('/suma/totales/plan', (req, res)=>{
 					}
 				}
 			})
-			res.json({status: 'SUCCESS', result:getUserpays, code:1 })
+			res.json({status: 'SUCCESS', result:abonoTrue, code:1 })
 		}
 	})
 })

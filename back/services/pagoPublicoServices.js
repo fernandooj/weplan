@@ -81,15 +81,15 @@ class pagoPublicoServices{
  	//////////////////////////////////////////////////////////////////////////////////////////
 	////////   GUARDO EL PAGO
 	//////////////////////////////////////////////////////////////////////////////////////////
-	create(data, activo, callback){
-		console.log(data)
+	create(data, userId, activo, callback){
+ 
 		let pago = new pagoPublicoSchema();
 		pago.monto  	  = data.monto
 		pago.referencia   = data.referencia
 		pago.metodo  	  = data.metodo
 		pago.descripcion  = data.descripcion
 		pago.activo  	  = activo
-		pago.userId  	  = data.userId 
+		pago.userId  	  = userId 
 		pago.planId  	  = data.planId 
 		pago.save(callback)
 	}
