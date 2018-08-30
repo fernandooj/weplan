@@ -16,13 +16,13 @@ let planServices = require('../services/planServices.js')
 let respuestaServices = require('../services/respuestaServices.js');
 let amigoUserService = require('../services/amigoUserServices.js');
 
-router.get('/chatPlan/:id', (req, res)=>{
+router.get('/chatPlan/:id/:limit', (req, res)=>{
 	planServices.getByIdPlanPopulate(req.params.id, (err, plan)=>{
 		if (err) {
 			console.log(err)
 		}else{
 			 
-			chatServices.getByPlan(req.params.id, req.session.usuario.user._id, (err2, chatInfo)=>{
+			chatServices.getByPlan(req.params.id, req.session.usuario.user._id, parseInt(req.params.limit), (err2, chatInfo)=>{
 				if (err2) {
 					res.json({status:'FAIL', err, code:0})   
 				}else{

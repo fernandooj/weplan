@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground, Alert, Keyboard, Modal, Dimensions, BackHandler, Platform} from 'react-native'
+import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground, Alert, Keyboard, Modal, Dimensions, BackHandler, Platform, ActivityIndicator} from 'react-native'
 import axios from 'axios'
 import SocketIOClient from 'socket.io-client';
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
@@ -42,7 +42,9 @@ export default class ChatComponent extends Component{
 			asignados:[],
 			misUsuarios:[],
 			mapaVisible: false, 		////// muestra el modal del mapa para abrirlo con alguna otra app
-			modalQr: false, 		    ////// muestra el modal del QR
+			scroll: 	 0, 		    ////// esto resuelve el bug de ir a bottom por parte del scroll 
+			scrollState: false, 		 ////// esto resuelve el bug de ir a bottom por parte del scroll 
+			modalQr: 	 false, 	    ////// muestra el modal del QR
 			showMainFooter:false 		////// en ios, no se muestra el footer cuando se abre el keyboard
 		}
 		this.onReceivedMessage 	   = this.onReceivedMessage.bind(this);
@@ -52,29 +54,31 @@ export default class ChatComponent extends Component{
 	componentWillMount(){
 		let planId = this.props.navigation.state.params	
 		// let planId = '5b7b7ddc272b0d29918c46e3'	 
-		console.log(planId) 
+		console.log(Dimensions.get('window').height) 
 		this.socket = SocketIOClient(URL);
 		this.socket.on(`chat${planId}`, 	this.onReceivedMessage);
 		this.socket.on(`editPago${planId}`, this.onReceivedMessagePago);
+		this.setState({showIndicador:true})
+  
 
-		 
+
 		/////////////////	OBTENGO EL PERFIL
 		axios.get('/x/v1/user/profile') 
 		.then((res)=>{
 			let id = res.data.user.user._id
 			let photo = res.data.user.user.photo
 			let nombre = res.data.user.user.nombre
-			this.setState({id, photo, nombre})
+			this.setState({id, photo, nombre, showIndicador:false})
 		})
 		.catch((err)=>{
 			console.log(err)
 		})
 
 		/////////////////	OBTENGO TODOS LOS MENSAJES Y EL PLAN
-		axios.get(`/x/v1/cha/chat/chatPlan/${planId}`)
+		axios.get(`/x/v1/cha/chat/chatPlan/${planId}/${10}`)
 		.then(e=>{
  			console.log(e.data)
-			this.setState({mensajes:e.data.chat, planId, imagen: e.data.plan.imagenResize[0], nombrePlan: e.data.plan.nombre, planId, planAsignados:e.data.planAsignados, plan:e.data.plan})
+			this.setState({mensajes:e.data.chat, planId, scrollState:1, limite:10, imagen: e.data.plan.imagenResize[0], nombrePlan: e.data.plan.nombre, planId, planAsignados:e.data.planAsignados, plan:e.data.plan})
 		})
 		.catch(err=>{
 			console.log(err)
@@ -82,6 +86,8 @@ export default class ChatComponent extends Component{
 	}
 	componentDidMount() {
 	    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+	   	
+ 
 	}
 	handleBackPress = () => {
 		const {navigate} = this.props.navigation
@@ -574,8 +580,6 @@ export default class ChatComponent extends Component{
 		})
 	}
 
-
-
 	renderModalAbrirMapa(lat, lng, lugar){
 		return(
 			<Popup
@@ -602,10 +606,39 @@ export default class ChatComponent extends Component{
 			/>
 		)	
 	}
-	 
+	handleScroll(event) {	
+		if(event.nativeEvent.contentOffset.y===0){
+			let limite = this.state.limite + 10
+ 
+			this.setState({showIndicador:true, scroll2:this.state.scroll})
+			axios.get(`/x/v1/cha/chat/chatPlan/${this.state.planId}/${limite}`)
+			.then(e=>{
+	 			if (e.data.code==1) {
+	 				this.setState({mensajes:e.data.chat, limite, scrollState:2, showIndicador:false})
+	 			}
+				
+			})
+			.catch(err=>{
+				console.log(err)
+			})
+		}
+	}
+	componentDidUpdate(){
+		const {scrollState,scroll, scroll2 } = this.state
+		console.log({scroll, scroll2})
+		if (this.scrollView && scrollState===1 && scroll2===undefined) {
+			this.scrollView.scrollTo({x:0, y:scroll-Dimensions.get('window').height+150, animated:true}) 
+		}
+		
+		if (this.scrollView && scrollState===2) {	
+			this.scrollView.scrollTo({x:0, y:scroll-scroll2, animated:true}) 
+		}
+		
+	}
+ 
 	render(){
-		const {adjuntarAmigos, asignados, usuariosAsignados, mapa, qr, planId, showMainFooter} = this.state
-		console.log(showMainFooter)
+		const {adjuntarAmigos, asignados, usuariosAsignados, mapa, qr, planId, showMainFooter, showIndicador, scroll, scroll2, scrollState} = this.state
+ 
 		return(
 			<View style={style.contenedorGeneral} > 
 				{this.renderCabezera()}
@@ -616,11 +649,21 @@ export default class ChatComponent extends Component{
 					onDidHide={() => { this.setState({ showMainFooter: false }); }}
 				/>
 			{/* AGREGAR IMAGENES */}
-				<ImageBackground source={require('../assets/images/fondo.png')} style={style.fondo}>	
-					<ScrollView ref="scrollView"
+				{
+				 	showIndicador
+				 	&&<ActivityIndicator size="small" color="#148dc9" style={style.indicador} />
+				}
+				 <ImageBackground source={require('../assets/images/fondo.png')} style={style.fondo}>	
+					<ScrollView ref={scroll => { this.scrollView = scroll }}
 								style={style.contenedorChat} 
 								keyboardDismissMode='on-drag'
-								onContentSizeChange={(width,height) => this.refs.scrollView.scrollTo({y:height-Dimensions.get('window').height+150})}>
+								onScroll={this.handleScroll.bind(this)}
+								// onContentSizeChange={(width,height) => this.refs.scrollView.scrollTo({x:0, y: scroll ?height-Dimensions.get('window').height+150 :null, animated:true})}
+								onContentSizeChange={(width,height) => {
+									this.setState({scroll:height}); 
+									// this.scrollView.scrollTo({x:0, y:height-Dimensions.get('window').height+150, animated:true}) 
+								}}
+							>
 						{this.renderMensajes()}		
 					</ScrollView>
 				</ImageBackground>
@@ -692,22 +735,21 @@ export default class ChatComponent extends Component{
 				onRequestClose={() => {
 					console.log('Modal has been closed.');
 	        }}>
-  			<QRCodeScanner
-		        onRead={this.infoQr.bind(this)}
-		        topContent={
-		          <Text style={[style.centerText, style.familia]}>
-		            Scanea el QR de tu amigo
-		          </Text>
-		        }
-		        bottomContent={
-		          	<View style={style.containerHecho}>
-			    		<TouchableOpacity style={style.btnHecho} onPress={()=>this.setState({modalQr:false})}>
-					    	<Text  style={[style.hecho, style.familia]}>!Cerrar!</Text>
-					    </TouchableOpacity>
-					</View> 
-		        }
-		    />
-		    
+	  			<QRCodeScanner
+			        onRead={this.infoQr.bind(this)}
+			        topContent={
+			          <Text style={[style.centerText, style.familia]}>
+			            Scanea el QR de tu amigo
+			          </Text>
+			        }
+			        bottomContent={
+			          	<View style={style.containerHecho}>
+				    		<TouchableOpacity style={style.btnHecho} onPress={()=>this.setState({modalQr:false})}>
+						    	<Text  style={[style.hecho, style.familia]}>!Cerrar!</Text>
+						    </TouchableOpacity>
+						</View> 
+			        }
+			    />
 		    </Modal>
   		)
   	}
@@ -815,6 +857,7 @@ export default class ChatComponent extends Component{
 	////// ENVIO LA RESPUESTA EN LAS ENCUESTAS
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	handleSubmitPregunta(idEncuesta, valor, idChat){
+
 		axios.post('/x/v1/res/respuesta', {valor, idEncuesta, idChat})
 		.then(res=>{
 	 
@@ -833,6 +876,7 @@ export default class ChatComponent extends Component{
 	////// ENVIO EL MENSAJE DEL CHAT 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	handleSubmit(){
+
 		// Keyboard.dismiss()
 		const fecha = moment().format('h:mm')
 		const {planId, mensaje, id, photo} = this.state

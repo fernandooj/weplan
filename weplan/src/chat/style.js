@@ -82,7 +82,12 @@ export const style = MediaQueryStyleSheet.create({
 	iconosHeaderContenedor:{
 		flexDirection:'row',
 	},
- 
+ 	indicador:{
+ 		position:'absolute',
+ 		top:70,
+ 		zIndex:100,
+ 		left:'50%'
+ 	},
 	///////////////////////////////////////////////////////////////
 	//////////////		OPCIONES
 	///////////////////////////////////////////////////////////////

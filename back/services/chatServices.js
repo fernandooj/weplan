@@ -7,7 +7,7 @@ class chatServices{
 	getByItem(itemId, callback){
 		chatSchema.find({itemId}, callback)
 	}
-	getByPlan(planId, idUsuario, callback){
+	getByPlan(planId, idUsuario, limite, callback){
 		planId = mongoose.Types.ObjectId(planId);	
 		chatSchema.aggregate([
 			{
@@ -160,7 +160,7 @@ class chatServices{
 	 		},
 	 
 	 		 { 
-	 			$limit : 10
+	 			$limit : limite
 	 		},
 			
 	 		 
