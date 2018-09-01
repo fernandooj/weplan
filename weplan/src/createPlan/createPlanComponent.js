@@ -19,13 +19,7 @@ import {sendRemoteNotification} from '../push/envioNotificacion.js'
 
 
 const screenWidth = Dimensions.get('window').width;
-const influencia = [
-	{label:'1 Km',  key:1000},
-	{label:'5 km',  key:5000},
-	{label:'7 km',  key:7000},
-	{label:'15 km', key:15000},
-	{label:'30 km', key:30000}
-]
+ 
 
 export default class createPlanComponent extends Component{
 	constructor(props){
@@ -42,7 +36,6 @@ export default class createPlanComponent extends Component{
  			restricciones:[],
  			restriccionesAsignadas:[],
  			misUsuarios:[],
- 			misRestricciones:[],
  			imagen:null,
  			adjuntarAmigos:false,
  			mapa:false,
@@ -352,10 +345,9 @@ export default class createPlanComponent extends Component{
 						{
 							restriccion 
 							?<RestriccionesPlanComponent  
-							    restriccion={(restricciones, restriccionesAsignadas, misRestricciones)=>this.setState({restricciones, restriccionesAsignadas, misRestricciones, restriccion:false})}
-							    restricciones={this.state.restricciones}
+							    restriccion={(restricciones, restriccionesAsignadas)=>this.setState({restricciones, restriccionesAsignadas, restriccion:false})}
+							    arrayRestricciones={this.state.restricciones}
 							    restriccionesAsignadas={this.state.restriccionesAsignadas}
-							    misRestricciones={this.state.misRestricciones}
 						    />
 						     
 						    :null

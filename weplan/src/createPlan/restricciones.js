@@ -7,18 +7,29 @@ export default class RestriccionesPlanComponent extends Component{
 	constructor(props){
 		super(props);
 		this.state={
-		    restriccionArray:[],
+		    arrayRestricciones:[],
 		    restriccion:[],
 		    restriccionesAsignadas:[],
 		    modalVisible:true
 		}
 	}
 	componentWillMount(){
- 
- 		if (this.props.misRestricciones.length>1 ) {
-			this.setState({restriccion:this.props.misRestricciones, restriccionArray:this.props.restricciones, restriccionesAsignadas:this.props.restriccionesAsignadas})
+		const {arrayRestricciones, restriccionesAsignadas} = this.props
+ 		if (restriccionesAsignadas.length>0 ) {
+ 			axios.get('x/v1/res/restriccion')
+		 	.then(res=>{
+		 		let n = res.data.restriccion.filter(e=>{
+	 				return restriccionesAsignadas.filter(e2=>{
+	 					if (e._id==e2._id) e.estado = true
+	 						return e
+	 				})
+	 			})
+		 		 
+	 			this.setState({restriccion:n, arrayRestricciones:arrayRestricciones, restriccionesAsignadas:restriccionesAsignadas})
+		 	})
+			
 		}
-		if (this.props.misRestricciones.length === 0) {
+		if (this.props.restriccionesAsignadas.length === 0) {
 			axios.get('x/v1/res/restriccion')
 		 	.then(e=>{
 		 		let restriccion = e.data.restriccion.map(e=>{
@@ -33,7 +44,7 @@ export default class RestriccionesPlanComponent extends Component{
 		 	.catch(err=>{
 		 		console.log(e.err)
 		 	})
-		 } 
+		} 
 	}
 	 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -41,19 +52,18 @@ export default class RestriccionesPlanComponent extends Component{
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	updateStateRestriccion(_id, estado){
 		if (estado) {
-			this.setState({restriccionArray: this.state.restriccionArray.concat([_id])})
+			this.setState({arrayRestricciones: this.state.arrayRestricciones.concat([_id])})
 		}else{
-			this.setState({restriccionArray:this.state.restriccionArray.filter(function(val){return val != _id}) })
+			this.setState({arrayRestricciones:this.state.arrayRestricciones.filter(function(val){return val != _id}) })
 		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////      GENERO UN ARRAY CON LOS rutaOS Y LOS NOMBRES DE LOS ASIGNADOS
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	updateRestriccion(_id, ruta, nombre, estado){
-		
+	updateRestriccion(_id, estado, data){
 		if (estado) {
-		  this.setState({restriccionesAsignadas: this.state.restriccionesAsignadas.concat({_id,ruta,nombre})})
+		  this.setState({restriccionesAsignadas: this.state.restriccionesAsignadas.concat(data)})
 		}else{
 		  this.setState({restriccionesAsignadas:this.state.restriccionesAsignadas.filter(function(val){return val._id != _id}) })
 		}
@@ -63,7 +73,7 @@ export default class RestriccionesPlanComponent extends Component{
 		return this.state.restriccion.map((e, key)=>{
 			return(
 				<TouchableOpacity key={key} style={CreatePlanStyle.touchRes} 
-					onPress={(index)=> {this.updateState(e._id, e.estado); this.updateRestriccion(e._id, e.ruta, e.nombre, e.estado); this.updateStateRestriccion(e._id, e.estado)} }>
+					onPress={(index)=> {this.updateState(e._id, e.estado); this.updateRestriccion(e._id, e.estado, e); this.updateStateRestriccion(e._id, e.estado)} }>
 					<Image source={{ uri: e.ruta}} style={CreatePlanStyle.iconRes}/>
 					{
 						e.estado
@@ -91,7 +101,7 @@ export default class RestriccionesPlanComponent extends Component{
 							<Text style={[CreatePlanStyle.textoRes, CreatePlanStyle.familia]}>Restricciones</Text>
 						</View>	
 						{this.renderRestricciones()}
-						<TouchableOpacity onPress={() => { this.props.restriccion(this.state.restriccionArray, this.state.restriccionesAsignadas, this.state.restriccion)} } 
+						<TouchableOpacity onPress={() => { this.props.restriccion(this.state.arrayRestricciones, this.state.restriccionesAsignadas)} } 
 						style={CreatePlanStyle.btnHecho}><Text style={[CreatePlanStyle.hecho, CreatePlanStyle.familia]}>Hecho!</Text></TouchableOpacity>
 					</View>
 				</ScrollView>	

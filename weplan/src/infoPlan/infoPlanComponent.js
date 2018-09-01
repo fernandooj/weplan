@@ -31,16 +31,22 @@ export default class infoPlanComponent extends Component{
 	  		fechaLugar:this.props.navigation.state.params.plan.fechaLugar,
 	  		loc:this.props.navigation.state.params.plan.loc,
 	  		lugar:this.props.navigation.state.params.plan.lugar,
-	  		restricciones:this.props.navigation.state.params.plan.restricciones,
+	  		restricciones:[],
 	  		restriccionesAsignadas:this.props.navigation.state.params.plan.restricciones,
 	  		asignados:this.props.navigation.state.params.plan.asignados,
 	  		usuariosAsignados:this.props.navigation.state.params.plan.asignados,
 	  		notificaciones:this.props.navigation.state.params.plan.notificaciones,
-	  		misRestricciones:[],
 	  		misUsuarios:[],
 	  		fechaHoy:moment().format('YYYY-MM-DD h:mm'),
 	  	}
 	}
+	componentWillMount(){
+ 		let restricciones = []
+ 		this.props.navigation.state.params.plan.restricciones.map(e=>{
+ 			restricciones.push(e._id)
+ 		})
+ 		this.setState({restricciones})
+ 	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////  ACTUALIZA LA UBICACION //////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -102,7 +108,7 @@ export default class infoPlanComponent extends Component{
  	}
 	render(){
 	let data = this.props.navigation.state.params.plan
-	console.log(data)
+	 
 	let id   = this.props.navigation.state.params.id
  	let permiteEditar = id==data.idUsuario._id ?true :false;
 	let {navigate} = this.props.navigation
@@ -113,7 +119,9 @@ export default class infoPlanComponent extends Component{
 	})
 	 
 	let notificacionActiva = notifica.includes(id)
-	console.log(notifica)
+	console.log('+++++++++++++++++++++++++++++++')
+	console.log(this.state.restriccionesAsignadas)
+	console.log(this.state.restricciones)
 	let menus = [
 		{funcion:()=>this.silenciar(id), texto:'Silenciar Plan', show: notificacionActiva ?true :false },
 		{funcion:()=>this.cancelarSilenciar(id), texto:'Cancelar Silenciar Plan', show: notificacionActiva ?false :true },
@@ -268,10 +276,10 @@ export default class infoPlanComponent extends Component{
 					{
 						restriccion 
 						?<RestriccionesPlanComponent  
-						    restriccion={(restricciones, restriccionesAsignadas, misRestricciones)=>this.setState({restricciones, restriccionesAsignadas, misRestricciones, restriccion:false})}
-						    restricciones={this.state.restricciones}
+						    restriccion={(restricciones, restriccionesAsignadas)=>this.setState({restricciones, restriccionesAsignadas, restriccion:false})}
+						    arrayRestricciones={this.state.restricciones}
 						    restriccionesAsignadas={this.state.restriccionesAsignadas}
-						    misRestricciones={this.state.misRestricciones}
+						    
 					    />
 					     
 					    :null
@@ -285,7 +293,7 @@ export default class infoPlanComponent extends Component{
 				    	{	
 				    		asignados.length==0
 				    		?<TouchableOpacity onPress={() => this.setState({adjuntarAmigos:true})}>
-						    	<Text style={[style.btnInputs,style.btnColor2Input, style.familia]}>{asignados.length>0 ?'tienes: '+asignados.length+' Amigos' :' Invitar Amigos'}</Text>
+						    	<Text style={[style.btnInputs, style.btnColor2Input, style.familia]}>{asignados.length>0 ?'tienes: '+asignados.length+' Amigos' :' Invitar Amigos'}</Text>
 						    </TouchableOpacity>
 						    :<View style={style.contentAdd}>
 						    	<View style={style.agregadosContenedor}>
@@ -300,7 +308,6 @@ export default class infoPlanComponent extends Component{
 							    		<Image source={require('../assets/images/add.png')} style={style.add} />
 							    	</TouchableOpacity>
 						    	}
-						    	
 						    </View>
 				    	}
 				    	{
