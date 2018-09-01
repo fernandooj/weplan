@@ -535,7 +535,7 @@ export default class createPlanComponent extends Component{
 							console.log(res.data)
 							if(res.data.status=="SUCCESS"){
 							usuariosAsignados.map(e=>{
-								sendRemoteNotification(2, e.token, 'misPlanes', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, res.data.rutaImagenResize[0])
+								sendRemoteNotification(2, e.token, 'chat', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, res.data.rutaImagenResize[0], id)
 							})
 								if (!publico) {
 									navigate('chat', id)
@@ -570,7 +570,7 @@ export default class createPlanComponent extends Component{
 					if(e.data.code==1){	
 						let id = e.data.message._id;
 						usuariosAsignados.map(e=>{
-							sendRemoteNotification(2, e.token, 'misPlanes', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, imagen)
+							sendRemoteNotification(2, e.token, 'chat', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, imagen, id)
 						})
 						navigate('chat', id)
 					}

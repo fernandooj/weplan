@@ -11,6 +11,7 @@ import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import Lightbox from 'react-native-lightbox';
 import KeyboardListener from 'react-native-keyboard-listener';
+ 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////  ARCHIVOS GENERADOS POR EL EQUIPO  //////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -29,6 +30,7 @@ export default class ChatComponent extends Component{
 		super(props)
 		this.state={
 			mensajes: [],
+			nuevosMensajes: [],
 			mensaje:'',
 			nombrePlan:'',
 			lat:'',
@@ -53,14 +55,14 @@ export default class ChatComponent extends Component{
 
 	componentWillMount(){
 		let planId = this.props.navigation.state.params	
-		// let planId = '5b7b7ddc272b0d29918c46e3'	 
-		console.log(Dimensions.get('window').height) 
+		// let planId = '5b86855f9f0c7b0f64df5b18'	 
+		console.log(this.props.navigation.state.params)
+		console.log(planId)
 		this.socket = SocketIOClient(URL);
 		this.socket.on(`chat${planId}`, 	this.onReceivedMessage);
 		this.socket.on(`editPago${planId}`, this.onReceivedMessagePago);
 		this.setState({showIndicador:true})
   
-
 
 		/////////////////	OBTENGO EL PERFIL
 		axios.get('/x/v1/user/profile') 
@@ -78,7 +80,7 @@ export default class ChatComponent extends Component{
 		axios.get(`/x/v1/cha/chat/chatPlan/${planId}/${10}`)
 		.then(e=>{
  			console.log(e.data)
-			this.setState({mensajes:e.data.chat, planId, scrollState:1, limite:10, imagen: e.data.plan.imagenResize[0], nombrePlan: e.data.plan.nombre, planId, planAsignados:e.data.planAsignados, plan:e.data.plan})
+			this.setState({mensajes:e.data.chat, planId, scrollState:1, limite:10, imagen: e.data.plan.imagenResize[0], nombrePlan: e.data.plan.nombre, planId, planAsignados:e.data.planAsignados, notificaciones:e.data.plan.notificaciones, plan:e.data.plan})
 		})
 		.catch(err=>{
 			console.log(err)
@@ -608,37 +610,58 @@ export default class ChatComponent extends Component{
 	}
 	handleScroll(event) {	
 		if(event.nativeEvent.contentOffset.y===0){
-			let limite = this.state.limite + 10
- 
+			let limite = this.state.limite + 30
 			this.setState({showIndicador:true, scroll2:this.state.scroll})
 			axios.get(`/x/v1/cha/chat/chatPlan/${this.state.planId}/${limite}`)
 			.then(e=>{
-	 			if (e.data.code==1) {
-	 				this.setState({mensajes:e.data.chat, limite, scrollState:2, showIndicador:false})
-	 			}
-				
+	 			 
+	 				// let mensajes = [...e.data.chat, ...this.state.mensajes]
+	 				// console.log('---------')
+	 				// console.log(e.data.chat)
+	 				// console.log(this.state.mensajes)
+	 				// console.log(mensajes)
+	 				// console.log('---------')
+
+ 
+ 					// e.data.chat.map(e=>{
+						// 	this.setState({
+						// 	mensajes: update(this.state.mensajes, {$push: [e]})
+						// })
+ 					// })
+
+					// this.setState({
+					//   mensajes: update(this.state.mensajes, {$unshift: [e.data.chat[0]]}),
+					//   limite, scrollState:2, showIndicador:false
+					// })
+ 
+	 				// this.setState({limite, scrollState:2, showIndicador:false})
+
+	 				this.setState({mensajes:e.data.chat, scrollState:2, showIndicador:false})
 			})
 			.catch(err=>{
 				console.log(err)
 			})
 		}
 	}
+   
 	componentDidUpdate(){
-		const {scrollState,scroll, scroll2 } = this.state
-		console.log({scroll, scroll2})
+		const {scrollState, scroll, scroll2, showMainFooter, mensajes } = this.state
 		if (this.scrollView && scrollState===1 && scroll2===undefined) {
 			this.scrollView.scrollTo({x:0, y:scroll-Dimensions.get('window').height+150, animated:true}) 
 		}
 		
-		if (this.scrollView && scrollState===2) {	
+		if (this.scrollView && scrollState===2 ) {	
 			this.scrollView.scrollTo({x:0, y:scroll-scroll2, animated:true}) 
+			
 		}
-		
+		if (showMainFooter) {
+			this.scrollView.scrollTo({x:0, y:this.state.scroll-Dimensions.get('window').height+700, animated:true}) 
+		}
 	}
  
 	render(){
-		const {adjuntarAmigos, asignados, usuariosAsignados, mapa, qr, planId, showMainFooter, showIndicador, scroll, scroll2, scrollState} = this.state
- 
+		const {adjuntarAmigos, asignados, usuariosAsignados, mapa, qr, planId, showMainFooter, showIndicador, scroll, scroll2, scrollState, notificaciones, imagen, nombrePlan} = this.state
+ 		console.log(this.state.mensajes)
 		return(
 			<View style={style.contenedorGeneral} > 
 				{this.renderCabezera()}
@@ -653,17 +676,12 @@ export default class ChatComponent extends Component{
 				 	showIndicador
 				 	&&<ActivityIndicator size="small" color="#148dc9" style={style.indicador} />
 				}
-				 <ImageBackground source={require('../assets/images/fondo.png')} style={style.fondo}>	
+				 <ImageBackground source={require('../assets/images/fondo.png')} style={showMainFooter ?style.fondoCorto :style.fondo }>	
 					<ScrollView ref={scroll => { this.scrollView = scroll }}
 								style={style.contenedorChat} 
-								keyboardDismissMode='on-drag'
+								//keyboardDismissMode='on-drag'
 								onScroll={this.handleScroll.bind(this)}
-								// onContentSizeChange={(width,height) => this.refs.scrollView.scrollTo({x:0, y: scroll ?height-Dimensions.get('window').height+150 :null, animated:true})}
-								onContentSizeChange={(width,height) => {
-									this.setState({scroll:height}); 
-									// this.scrollView.scrollTo({x:0, y:height-Dimensions.get('window').height+150, animated:true}) 
-								}}
-							>
+								onContentSizeChange={(width,height) => {this.setState({scroll:height}); }}>
 						{this.renderMensajes()}		
 					</ScrollView>
 				</ImageBackground>
@@ -680,7 +698,7 @@ export default class ChatComponent extends Component{
 				{adjuntarAmigos &&<AgregarAmigosComponent 
 					                titulo='Enviar Contacto'
 					                close={(e)=>this.setState({asignados:[], usuariosAsignados:[], adjuntarAmigos:false})} 
-					                updateStateAsignados={(asignados, usuariosAsignados, misUsuarios)=>{this.setState({adjuntarAmigos:false, showOpciones:false});pedirContacto(usuariosAsignados, this.state.planId)}}
+					                updateStateAsignados={(asignados, usuariosAsignados, misUsuarios)=>{this.setState({adjuntarAmigos:false, showOpciones:false});pedirContacto(usuariosAsignados, planId, notificaciones, imagen, nombrePlan)}}
 					                //updateStateAsignados={(asignados, usuariosAsignados, misUsuarios)=>this.setState({asignados, usuariosAsignados, misUsuarios, adjuntarAmigos:false})}
 					                asignados={this.state.asignados}
 								    usuariosAsignados={this.state.usuariosAsignados}
@@ -689,7 +707,7 @@ export default class ChatComponent extends Component{
 
 			{mapa &&<MapaPlanComponent 
 							close={()=> this.setState({mapa:false})} 						   			/////////   cierro el modal
-							updateStateX={(lat,lng, direccion)=>{this.setState({mapa:false, showOpciones:false});pedirMapa(lat,lng, this.state.planId) }}// devuelve la posicion del marcador 
+							updateStateX={(lat,lng, direccion)=>{this.setState({mapa:false, showOpciones:false});pedirMapa(lat,lng,planId, notificaciones, imagen, nombrePlan)}}// devuelve la posicion del marcador 
 							ubicacionDefecto={{infoplan:false}}
 							guardaUbicacion={{lat:null, lng:null, direccion:null}}
 						/> }	
@@ -774,12 +792,12 @@ export default class ChatComponent extends Component{
 	/////// RENDER LAS OPCIONES
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	opciones(){
-		const {planId, asignados, usuariosAsignados} = this.state
+		const {planId, notificaciones, imagen, nombrePlan} = this.state
 		let opciones=[
-			{url:`${URL}public/img/opcion_1.png`, click:()=>{pedirImagen(planId); this.setState({showOpciones:false})}},
+			{url:`${URL}public/img/opcion_1.png`, click:()=>{pedirImagen(planId, notificaciones, imagen, nombrePlan); this.setState({showOpciones:false})}},
 			{url:`${URL}public/img/opcion_2.png`, click:()=>this.setState({mapa:true})},
 			{url:`${URL}public/img/opcion_3.png`, click:()=>this.setState({adjuntarAmigos:true})},
-			{url:`${URL}public/img/opcion_4.png`, click:()=>{pedirPdf(planId); this.setState({showOpciones:false})}},
+			{url:`${URL}public/img/opcion_4.png`, click:()=>{pedirPdf(planId, notificaciones, imagen, nombrePlan); this.setState({showOpciones:false})}},
 			{url:`${URL}public/img/opcion_5.png`, click:()=>this.setState({modalQr:true})}
 		]
 		return opciones.map((e, key)=>{
@@ -857,7 +875,6 @@ export default class ChatComponent extends Component{
 	////// ENVIO LA RESPUESTA EN LAS ENCUESTAS
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	handleSubmitPregunta(idEncuesta, valor, idChat){
-
 		axios.post('/x/v1/res/respuesta', {valor, idEncuesta, idChat})
 		.then(res=>{
 	 
@@ -866,6 +883,7 @@ export default class ChatComponent extends Component{
 				return e
 			})
 			this.setState({mensajes})
+			
 		})
 		.catch(err=>{
 			console.log(err)
@@ -876,14 +894,21 @@ export default class ChatComponent extends Component{
 	////// ENVIO EL MENSAJE DEL CHAT 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	handleSubmit(){
-
 		// Keyboard.dismiss()
+		const {planId, mensaje, id, photo, notificaciones, nombrePlan, imagen} = this.state
+		console.log(notificaciones)
+		notificaciones.map(e=>{
+			sendRemoteNotification(15, e.tokenPhone, 'chat', `${nombrePlan}`,  `: ${mensaje}`, imagen, planId)
+		})
+		
 		const fecha = moment().format('h:mm')
-		const {planId, mensaje, id, photo} = this.state
+
 		this.textInput.clear()
 		axios.post('/x/v1/cha/chat', {planId, mensaje, fecha, tipo:1})
 		.then((res)=>{
-			console.log(res.data)
+			if (res.data.code==1) {
+
+			}
 		})
 		.catch((err)=>{
 			console.log(err)

@@ -98,6 +98,11 @@ export const MisPlanesStyle = MediaQueryStyleSheet.create({
 		width:350,
 		height:530,
 		marginBottom:10
+	},
+	footer:{
+		position : 'absolute',
+		bottom:0,
+		zIndex:100
 	}
 },{
 	"@media (max-device-width: 320)": {

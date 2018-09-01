@@ -103,17 +103,19 @@ export default class homeComponent extends Component{
 		navigator.geolocation.clearWatch(this.watchID)
 	}
 	async componentDidMount(){
-	    registerAppListener(this.props.navigation);
+		const {navigation} = this.props
+	    registerAppListener(navigation);
 	    FCM.getInitialNotification().then(notif => {
-	      console.log(notif)
-	      this.setState({
-	        initNotif: notif
-	      })
-	      if(notif && notif.targetScreen === 'detail'){
-	        setTimeout(()=>{
-	          this.props.navigation.navigate('Detail')
-	        }, 500)
-	      }
+	    	
+	     	console.log({props:this.props, notif})
+			this.setState({
+				initNotif: notif
+			})
+
+			if(notif.parameter && navigation.state.routeName=='Home'){
+				let id = notif.parameter
+				this.props.navigation.navigate(notif.targetScreen, id)
+			}
 	    });
 
 	    try{
@@ -197,7 +199,6 @@ export default class homeComponent extends Component{
 	updatePlanes(){
 		axios.get(`/x/v1/pla/plan/pago/${this.state.lat}/${this.state.lng}`)
 		.then(e=>{
-			console.log(e.data)
 			this.setState({planes:e.data.planes})
 		})
 		.catch(err=>{
@@ -215,9 +216,9 @@ export default class homeComponent extends Component{
 				console.log(err)
 			})
 		}
-		if(event.nativeEvent.contentOffset.y>20){
+		if(event.nativeEvent.contentOffset.y>10){
 			this.setState({showBarra:false})
-		}else if(event.nativeEvent.contentOffset.y<90){
+		}else if(event.nativeEvent.contentOffset.y<30){
 			this.setState({showBarra:true})
 		}
 	}

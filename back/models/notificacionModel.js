@@ -48,6 +48,13 @@ module.exports = mongoose.model('Notificacion', notificacionSchema)
 /// tipo 13  ==> notificacion cuando se cerro el plan
 /// tipo 14  ==> notificacion cuando se quiere calificar un item
 /// tipo 15  ==> notificacion cuando se edito el costo de un item
+/// tipo 16  ==> notificacion cuando se envio un mensaje al chat
+/// tipo 17  ==> notificacion cuando se envia una imagen al chat
+/// tipo 17  ==> notificacion cuando se envio un mapa al chat
+/// tipo 17  ==> notificacion cuando se envia un contacto al chat
+/// tipo 17  ==> notificacion cuando se envia un documento al chat
+/// tipo 17  ==> notificacion cuando se envia una encuensta al chat
+/// tipo 17  ==> notificacion cuando se envia un articulo al chat
 
 /// activo ===> queda la notificacion en estado innactivo si es false no muestra los botones
 /// eliminado ===> elimina la notificacion del front, pero aca se sigue viendo

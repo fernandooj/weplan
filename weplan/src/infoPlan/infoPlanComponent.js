@@ -35,6 +35,7 @@ export default class infoPlanComponent extends Component{
 	  		restriccionesAsignadas:this.props.navigation.state.params.plan.restricciones,
 	  		asignados:this.props.navigation.state.params.plan.asignados,
 	  		usuariosAsignados:this.props.navigation.state.params.plan.asignados,
+	  		notificaciones:this.props.navigation.state.params.plan.notificaciones,
 	  		misRestricciones:[],
 	  		misUsuarios:[],
 	  		fechaHoy:moment().format('YYYY-MM-DD h:mm'),
@@ -105,12 +106,21 @@ export default class infoPlanComponent extends Component{
 	let id   = this.props.navigation.state.params.id
  	let permiteEditar = id==data.idUsuario._id ?true :false;
 	let {navigate} = this.props.navigation
+
+	let notifica = []
+	this.state.notificaciones.map(e=>{
+		notifica.push(e._id)
+	})
+	 
+	let notificacionActiva = notifica.includes(id)
+	console.log(notifica)
 	let menus = [
+		{funcion:()=>this.silenciar(id), texto:'Silenciar Plan', show: notificacionActiva ?true :false },
+		{funcion:()=>this.cancelarSilenciar(id), texto:'Cancelar Silenciar Plan', show: notificacionActiva ?false :true },
 		{funcion:()=>salir(data._id, navigate), texto:'Salir del Plan', show: id==data.idUsuario._id ?false :true },
 		{funcion:()=>finalizar(data._id, navigate, data), texto:'Finalizar Plan', show: id==data.idUsuario._id ?true :false }
 	]
 	const {nombre, descripcion, fechaLugar, lat, lng, direccion, mapa, loc, lugar, restricciones, restriccion, asignados, adjuntarAmigos, exitoso} = this.state
-	console.log(this.state.misRestricciones)
 	return (
 		<ScrollView  style={style.contenedorGeneral}>
 			{/* si la ubicacion no tiene */}
@@ -353,6 +363,40 @@ export default class infoPlanComponent extends Component{
 			console.log(err)
 		})
 	}
+	silenciar(id){
+		const {notificaciones, planId} = this.state
+		let data = notificaciones.filter(e=>{return e._id !==id})
+		let newData = []
+		data.map(e=>{
+			newData.push(e._id)
+		})
+		axios.put('x/v1/pla/plan/silenciar', {data:newData, planId:planId})
+		.then(res=>{
+			console.log(res.data)
+			if (res.data.code==1) {
+				this.setState({notificaciones:data})
+			}
+		})
+	}
+	cancelarSilenciar(id){
+		const {notificaciones, planId} = this.state
+		let data = {_id:id, tokenPhone:null}
+		data = [data, ...notificaciones]
+		
+
+		let newData = []
+		data.map(e=>{
+			newData.push(e._id)
+		})
+		console.log(newData)
+		axios.put('x/v1/pla/plan/silenciar', {data:newData, planId:planId})
+		.then(res=>{
+			console.log(res.data)
+			if (res.data.code==1) {
+				this.setState({notificaciones:data})
+			}
+		})
+	}
 }	
 const finalizar = (id, navigate, data)=>{
 	Alert.alert(
@@ -365,6 +409,8 @@ const finalizar = (id, navigate, data)=>{
 		{ cancelable: false }
 	)
 }		
+
+
 
 const handleFinalizar = (id, navigate, data)=>{
 	axios.put('x/v1/pla/plan/finalizar', {id, planPadre:data.planPadre})

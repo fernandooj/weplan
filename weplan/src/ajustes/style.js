@@ -226,7 +226,7 @@ export const style = MediaQueryStyleSheet.create({
 	 		paddingBottom:4,
 	 	},
 	 	perfil:{
-		 	marginBottom:-39
+		 	marginBottom:-19
 		},
 	}
 })

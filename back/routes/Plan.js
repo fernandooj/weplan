@@ -213,6 +213,21 @@ router.put('/editar', (req, res)=>{
     }
 })
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////// SILENCIAR / CANCELO SILENCIAR PLAN 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+router.put('/silenciar', (req, res)=>{
+	planServices.silenciar(req.body.data, req.body.planId, (err, plan)=>{
+		if(err){
+			res.json({err})
+		}else{ 
+			res.json({ status: 'SUCCESS', plan, code:1 });	
+		}
+	}) 
+})
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////// INSERTO UN PLAN
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -224,32 +239,31 @@ router.post('/', function(req, res){
 		// 	let lat = req.body.lat ?req.body.lat :data.lat
 		// 	let lon = req.body.lng ?req.body.lng :data.lon
 		// })
-		let lat = req.body.lat==='undefined' || req.body.lat==='null' ?4.597825    :req.body.lat 
-		let lon = req.body.lng==='undefined' || req.body.lng==='null' ?-74.0755723 :req.body.lng
-		
-	    	planServices.create(req.body, req.session.usuario.user._id, lat, lon, (err, plan)=>{
-	    		console.log(err)
-				if(err){
-					res.json({err})
-				}else{
-					if (req.body.planPadre) {
-							req.body.asignados.map(e=>{
-								let mensajeJson={
-									userId:e,
-									notificacion:true,
-								}
-								cliente.publish('notificacion', JSON.stringify(mensajeJson))
-								notificacionService.create(req.session.usuario.user._id, e, 2, plan._id, false, (err, notificacion)=>{
-									console.log(notificacion)
-								})
+		let lat = req.body.lat==='undefined' || req.body.lat==='null' || req.body.lat===undefined ?4.597825    :req.body.lat 
+		let lon = req.body.lng==='undefined' || req.body.lng==='null' || req.body.lng===undefined ?-74.0755723 :req.body.lng
+		let notificaciones = req.body.asignados ?req.body.asignados.concat(req.session.usuario.user._id) :null
+    	planServices.create(req.body, req.session.usuario.user._id, lat, lon, notificaciones, (err, plan)=>{
+    		console.log(err)
+			if(err){
+				res.json({err})
+			}else{
+				if (req.body.planPadre) {
+						req.body.asignados.map(e=>{
+							let mensajeJson={
+								userId:e,
+								notificacion:true,
+							}
+							cliente.publish('notificacion', JSON.stringify(mensajeJson))
+							notificacionService.create(req.session.usuario.user._id, e, 2, plan._id, false, (err, notificacion)=>{
+								console.log(notificacion)
 							})
-						res.json({status:'SUCCESS', message: plan, code:1})  
-					}else{
-						res.json({ status: 'SUCCESS', message: plan, code:1 });	
-					}
+						})
+					res.json({status:'SUCCESS', message: plan, code:1})  
+				}else{
+					res.json({ status: 'SUCCESS', message: plan, code:1 });	
 				}
-			})
-		
+			}
+		})	
     }
 })
 

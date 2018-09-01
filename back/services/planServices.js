@@ -14,7 +14,7 @@ class planServices {
 	}
 	/// con populate
 	getByIdPlanPopulate(_id, callback){
-		planSchema.find({_id}).populate('idUsuario', 'nombre ciudad photo calificacion').populate('restricciones').populate('asignados').exec(callback)
+		planSchema.find({_id}).populate('idUsuario', 'nombre ciudad photo calificacion').populate('restricciones').populate('asignados').populate('notificaciones', 'tokenPhone').exec(callback)
 	}
 	getPlanesPublicosDesactivados(idUsuario, callback){
 		idUsuario = mongoose.Types.ObjectId(idUsuario);	
@@ -67,7 +67,7 @@ class planServices {
 	}
 
 	getPublicos(idUsuario, acceso, callback){
-		console.log(idUsuario)
+		console.log(idUsuario) 
 		idUsuario = mongoose.Types.ObjectId(idUsuario);	
 		if (acceso==='suscriptor') {
 			planSchema.aggregate([
@@ -218,7 +218,7 @@ class planServices {
 	getByUserId(asignados, callback){
 		planSchema.find({$or:[{'asignados':asignados, activo:true},{'idUsuario':asignados, activo:true}]}, null, {sort: {_id: -1}}).populate('idUsuario', 'nombre ciudad photo').populate('asignados', 'nombre ciudad photo').exec(callback)
 	}
-	create(planData, id, lat, lng, callback){
+	create(planData, id, lat, lng, notificaciones, callback){
 		let loc = {'type':'Point', "coordinates": [parseFloat(lng), parseFloat(lat)] }
 		let plan 			 = new planSchema();
 		plan.tipo 		     = planData.tipo	
@@ -232,8 +232,9 @@ class planServices {
 		plan.area 			 = planData.area	
 		plan.lugar 			 = planData.lugar	
 		plan.asignados 		 = planData.asignados	
+		plan.notificaciones  = notificaciones	
 		plan.imagenOriginal  = planData.imagenOriginal	
-		plan.imagenResize 	 = planData.imagenResize	
+		plan.imagenResize 	 = planData.imagenResize		
 		plan.imagenMiniatura = planData.imagenMiniatura	
 		plan.categorias      = planData.categorias	
 		plan.planPadre       = planData.planPadre	
@@ -253,6 +254,13 @@ class planServices {
 			"asignados" 	: planData.asignados,		
 			"categorias"    : planData.categorias	
 		 }}, callback);	
+	}
+
+	silenciar(notificaciones, _id, callback){
+		console.log({notificaciones, _id})
+		planSchema.findByIdAndUpdate(_id, {$set: {
+			"notificaciones"  : notificaciones,	
+		}}, callback);	
 	}
 
 	uploadImage(id, imagenOriginal, imagenResize, imagenMiniatura, callback){

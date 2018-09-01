@@ -21,7 +21,9 @@ export const style = MediaQueryStyleSheet.create({
 		height:Platform.OS==='android' ?screenHeight-155 :screenHeight-128,
 		marginTop:10,
 		width:screenWidth,
-
+	},
+	fondoCorto:{
+		height:Platform.OS==='android' ?screenHeight-395 :screenHeight-128,
 	},
  	////////////////// cabezera
  	cabezera:{

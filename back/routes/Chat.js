@@ -33,8 +33,6 @@ router.get('/chatPlan/:id/:limit', (req, res)=>{
 							planAsignados.push(e._id)
 						}) 
 					}
-					
- 			
 					chatInfo.map(e=>{	 
 
 						let porcentaje1 = (e.totalUno*100)/e.totalRepuestas
@@ -96,7 +94,12 @@ router.get('/chatPlan/:id/:limit', (req, res)=>{
 							cToken 	    : data.cToken,	
 						})
 					})
+					// if (chat.length>=10) {
+					// 	chat = chat.slice(req.params.limit-10, req.params.limit);
+					// }
 					chat = chat.reverse()
+					
+					 
 					res.json({status:'SUCCESS', chat,  plan:plan[0], total:chat.length, planAsignados, code:1}) 
 				}
 			})

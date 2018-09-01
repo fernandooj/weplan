@@ -102,8 +102,9 @@ export default class MisPlanesComponent extends Component{
 					</ScrollView>
 					:<View></View>
 				}
-				
-				<FooterComponent navigate={navigate} />	
+				<View style={MisPlanesStyle.footer}>
+					<FooterComponent navigate={navigate} />	
+				</View>
 			</View> 
 		)
 	}

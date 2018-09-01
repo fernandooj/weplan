@@ -6,7 +6,7 @@ import axios from 'axios'
 //////////////	tipo 1==> quiere ser amigo, tipo 2 ==> acepta ser amigo	, tipo 3 ==> quiere acceder a un item, tipo 4 ==> Aceptaron a un usuario dentro de un item						
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaje, imagen)=> {
+export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaje, imagen, parameter)=> {
 
 	axios.get('/x/v1/user/profile') 
 	.then((res)=>{
@@ -20,9 +20,7 @@ export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaj
 	        "to": token,
 	      	"data": {
 	            "custom_notification": {
-					//title: tipo==1 ?'Tienes una solicitud de amistad' :tipo==2 ?'Te aceptaron como amigo' :tipo==3 ?'Un usuario quiere acceder a un item' :tipo==4 ?'te han aceptado en el item' :null,
 					title: titulo,
-					//body : tipo==1 ?`${nombre}, quiere agregarte como amigo` :tipo==2 ?`${nombre}, acepto tu solicitud` :tipo==3 ?`${nombre}, te incluyo en el item` :null,
 					body : `${nombre} ${mensaje}`,
 					priority:"high",
 					icon:"ic_notif",
@@ -32,6 +30,8 @@ export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaj
 					picture:imagen,
 					image:imagen,
 					large_icon: imagen,
+					sound: "default",
+					parameter,
 					show_in_foreground: true
 	            }
 	        },
@@ -42,9 +42,19 @@ export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaj
 			body = {
 				to: token,
 				notification: {
-		          title: "Simple FCM Client",
-		          body: "Click me to go to detail",
-		          sound: "default"
+		          title: titulo,
+					//body : tipo==1 ?`${nombre}, quiere agregarte como amigo` :tipo==2 ?`${nombre}, acepto tu solicitud` :tipo==3 ?`${nombre}, te incluyo en el item` :null,
+					body : `${nombre} ${mensaje}`,
+					priority:"high",
+					icon:"ic_notif",
+					targetScreen:targetScreen,
+					color:"#00ACD4",
+					big_picture:imagen,
+					picture:imagen,
+					image:imagen,
+					large_icon: imagen,
+					sound: "default",
+					show_in_foreground: true
 		        },
 		        data: {
 		          targetScreen: "detail"

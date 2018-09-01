@@ -31,6 +31,7 @@ let planSchema = mongoose.Schema({
 	fechaLugar     :  { type: String}, 
 	loc 		   :  geoSchema,
 	lugar          :  { type: String},
+	notificaciones : [{ type: Schema.Types.ObjectId, ref:'User'}],  //// son los usuarios que se les va a enviar notificaciones
 	asignados      : [{ type: Schema.Types.ObjectId, ref:'User'}],
 	categorias     : [{ type: Schema.Types.ObjectId, ref:'CategoriaPlan'}],
 	planPadre      :  { type: Schema.Types.ObjectId, ref:'Plan'},
