@@ -73,7 +73,17 @@ export const style = MediaQueryStyleSheet.create({
 	activarTxt:{
 		color:'#ffffff',
 		fontSize:12
-	} 
+	},
+	sinPlanes:{
+		width:350,
+		height:530,
+		marginBottom:10
+	},
+	footer:{
+		position : 'absolute',
+		bottom:0,
+		zIndex:100
+	}
 },{
 	"@media (max-device-width: 320)": {
 		nombre:{
@@ -88,9 +98,19 @@ export const style = MediaQueryStyleSheet.create({
 		},
 		pagoDeudaMontoActive:{
 			width:100
-		}
-		 
-	}
+		},
+		sinPlanes:{
+			width:320,
+			height:430,
+			marginBottom:10
+		},
+	},
+	"@media (min-device-height: 710)": {
+		sinPlanes:{
+			width:470,
+			height:597,
+		},
+	},
 })
 
 

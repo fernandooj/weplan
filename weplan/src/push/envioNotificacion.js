@@ -42,8 +42,7 @@ export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaj
 			body = {
 				to: token,
 				notification: {
-		          title: titulo,
-					//body : tipo==1 ?`${nombre}, quiere agregarte como amigo` :tipo==2 ?`${nombre}, acepto tu solicitud` :tipo==3 ?`${nombre}, te incluyo en el item` :null,
+		          	title: titulo,
 					body : `${nombre} ${mensaje}`,
 					priority:"high",
 					icon:"ic_notif",
@@ -54,6 +53,7 @@ export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaj
 					image:imagen,
 					large_icon: imagen,
 					sound: "default",
+					parameter,
 					show_in_foreground: true
 		        },
 		        data: {

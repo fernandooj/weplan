@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {
   Animated,
-  Easing, StyleSheet, Text, View, Image, Dimensions, ImageBackground
+  Easing, StyleSheet, Text, View, Image, Dimensions, ImageBackground, AsyncStorage
 } from 'react-native'
 import axios                  from 'axios' 
 import { StackNavigator } from 'react-navigation'
@@ -73,7 +73,11 @@ const NavigationApp = StackNavigator({
     insertCode2:   {screen: insertCodeComponent2 },
     nuevoPassword: {screen: nuevoPasswordComponent },
     infoPlan:      {screen: infoPlanComponent },
-},{ headerMode: 'none' })
+},{ headerMode: 'none', 
+    navigationOptions: {
+      gesturesEnabled: false
+   }
+})
  
 const NavigationAppLogin = StackNavigator({  
     Home:          {screen: homeComponent}, 
@@ -106,7 +110,11 @@ const NavigationAppLogin = StackNavigator({
     planesPublicos:{screen: planesPublicosComponent },
     facturacion:   {screen: facturacionComponent },
     detallePlanPublico:{screen: detallePlanPublicoComponent },
-},{ headerMode: 'none'})
+},{ headerMode: 'none', 
+    navigationOptions: {
+      gesturesEnabled: false
+   }
+})
 
 
  
@@ -118,21 +126,40 @@ export default class App extends Component<{}> {
        local:null
     };
   }
-  componentWillMount() {
-    var num = Math.floor(Math.random() * 5);
-    this.setState({num})
-    axios.get('/x/v1/user/profile/')
-    .then((res)=>{
- 
-      if(res.data.code==1){
-        this.setState({local:1})
-      }else{
-        this.setState({local:2})
-      }
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
+  componentWillMount = async()=> {
+   let userInfoId = await AsyncStorage.getItem('userInfoId');
+   userInfoId = userInfoId.slice(1, -1)
+   console.log(userInfoId) 
+   var num = Math.floor(Math.random() * 5);
+   this.setState({num})
+   
+   if (userInfoId===null || userInfoId==='0') {
+      axios.get('/x/v1/user/profile/')
+      .then((res)=>{
+         if(res.data.code==1){
+           this.setState({local:1})
+         }else{
+           this.setState({local:2})
+         }
+       })
+      .catch((err)=>{
+         console.log(err)
+      })
+   }else{
+      axios.get(`/x/v1/user/profile/${userInfoId}`)
+      .then((res)=>{
+         console.log(res.data)
+         if(res.data.code==1){
+           this.setState({local:1})
+         }else{
+           this.setState({local:2})
+         }
+      })
+      .catch((err)=>{
+         console.log(err)
+      })
+   }
+  
   }
   render() {
     const {num} = this.state

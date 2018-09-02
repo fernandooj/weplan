@@ -33,13 +33,13 @@ export default class MapaPlanComponent extends Component{
 			longitudeDelta: 0.0121,
 		    modalVisible:true,
 		    mapaCargado:false,
-		    showKeyboard:false
+		    showKeyboard:false,
+		    valorInicial:0
 		}
 		
 	}
 
-	async componentWillMount(){
-		
+	async componentWillMount(){	
 		navigator.geolocation.getCurrentPosition(e=>{
 			// console.log(e)
 			let lat = parseFloat(e.coords.latitude)
@@ -92,6 +92,7 @@ export default class MapaPlanComponent extends Component{
 		const {ubicacionDefecto, inputValor, planPublico, guardaUbicacion} = this.props
 		const {valorInicial, km, latitudeDelta, longitudeDelta, mapaCargado, showKeyboard} = this.state
 		let direccion = guardaUbicacion.direccion ?guardaUbicacion.direccion :this.state.direccion
+		console.log(guardaUbicacion)
 		if (mapaCargado) {
 			return(
 				<View>
@@ -170,7 +171,12 @@ export default class MapaPlanComponent extends Component{
 					          //   latitudeDelta: this.state.x.latitudeDelta,
 					          //   longitudeDelta: this.state.x.longitudeDelta,
 					          // }}
-					          region={this.state.x}
+					          region={{
+					          	latitude:  ubicacionDefecto.infoplan ?ubicacionDefecto.lat :guardaUbicacion.lat ?guardaUbicacion.lat :this.state.x.latitude,
+					            longitude: ubicacionDefecto.infoplan ?ubicacionDefecto.lng :guardaUbicacion.lng ?guardaUbicacion.lng :this.state.x.longitude,
+					            latitudeDelta: this.state.x.latitudeDelta,
+					            longitudeDelta: this.state.x.longitudeDelta,
+					          }}
 					          // onRegionChange={(e)=>this.onRegionChange(e)}
 					          onRegionChangeComplete={(e)=>this.onRegionChange(e)}
 					        >

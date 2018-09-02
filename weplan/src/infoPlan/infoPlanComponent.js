@@ -226,32 +226,33 @@ export default class infoPlanComponent extends Component{
 						}
 						
 					</View>
-
-					{  
-						permiteEditar
-						?<View style={style.cajaInpunts}>
-				    		<Image source={require('../assets/images/map.png')} style={style.iconInput} />
-					    	<TouchableOpacity onPress={() => this.setState({mapa:true})}  style={direccion ?style.btnInputs :[style.btnInputs]}>
-					    		<Text style={direccion ?[style.textos, style.familia] :[style.textosActivo, style.familia]}>{direccion ?direccion.substr(0,60) :'Ubicación'}</Text>
-					    	</TouchableOpacity>
-						</View>
-					   :<TouchableOpacity onPress={() => this.setState({mapa:true})} style={style.cajaInpunts}> 
-			    			<Image source={require('../assets/images/map.png')} style={style.iconInput} />
-			    			<View style={direccion ?style.btnInputs :[style.btnInputs]}>
-					    		<Text style={[style.textosActivo]}>{lugar}</Text>
-					    	</View>
-			    			
-						</TouchableOpacity>	
-					}
-					{
-						mapa &&<MapaPlanComponent 
-							inputValor= {false}
-							close={()=> this.setState({mapa:false})} 						   			/////////   cierro el modal
-							updateStateX={(lat,lng, direccion, area, costo)=>this.updateStateX(lat, lng, direccion, area, costo)}  /////////	me devuelve la posicion del marcador 
-							ubicacionDefecto={!permiteEditar ?{infoplan:true, lat:parseFloat(loc.coordinates[1]), lng:parseFloat(loc.coordinates[0])} :{infoplan:false, muestraBtnHecho:true}}
-							guardaUbicacion={{lat, lng, direccion}}
-						/> 
-					}
+					
+				{/*  restricciones   */}
+				{  
+					permiteEditar
+					?<View style={style.cajaInpunts}>
+			    		<Image source={require('../assets/images/map.png')} style={style.iconInput} />
+				    	<TouchableOpacity onPress={() => this.setState({mapa:true})}  style={direccion ?style.btnInputs :[style.btnInputs]}>
+				    		<Text style={direccion ?[style.textos, style.familia] :[style.textosActivo, style.familia]}>{direccion ?direccion.substr(0,60) :'Ubicación'}</Text>
+				    	</TouchableOpacity>
+					</View>
+				   :<TouchableOpacity onPress={() => this.setState({mapa:true})} style={style.cajaInpunts}> 
+		    			<Image source={require('../assets/images/map.png')} style={style.iconInput} />
+		    			<View style={direccion ?style.btnInputs :[style.btnInputs]}>
+				    		<Text style={[style.textosActivo]}>{lugar}</Text>
+				    	</View>
+		    			
+					</TouchableOpacity>	
+				}
+				{
+					mapa &&<MapaPlanComponent 
+						inputValor= {false}
+						close={()=> this.setState({mapa:false})} 						   			/////////   cierro el modal
+						updateStateX={(lat,lng, direccion, area, costo)=>this.updateStateX(lat, lng, direccion, area, costo)}  /////////	me devuelve la posicion del marcador 
+						ubicacionDefecto={!permiteEditar ?{infoplan:true, lat:parseFloat(loc.coordinates[1]), lng:parseFloat(loc.coordinates[0])} :{infoplan:false, muestraBtnHecho:true}}
+						guardaUbicacion={{lat, lng, direccion}}
+					/> 
+				}
 				 
 					
 

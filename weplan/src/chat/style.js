@@ -687,10 +687,8 @@ export const style = MediaQueryStyleSheet.create({
 			lineHeight: 17,
 		},
 		iconContenedor:{	
-			width:60,
-			height:60,
 			bottom:-5,
-			marginRight:-10
+ 
 		},
 		icon:{
 			width:35,
@@ -738,6 +736,9 @@ export const style = MediaQueryStyleSheet.create({
 			width:205,
 			marginTop:-55,
 		},
+		contenedorOpcionesBotonesShow:{
+			marginTop:-45,
+		},
 		btnIconoOpciones:{
 			padding:3,
 			width:28,
@@ -762,6 +763,22 @@ export const style = MediaQueryStyleSheet.create({
 		},
 		fondo:{
 			height:screenHeight-145,
+		}
+	},
+	"@media (device-height: 812)": {
+		footer:{
+			bottom:Platform.OS==='android' ?0 :20,
+		},
+		fondo:{
+			height:Platform.OS==='android' ?screenHeight-155 :screenHeight-160,
+		},
+		cabezera:{
+			// marginTop:Platform.OS==='android' ?0 :32,
+			paddingTop:Platform.OS==='android' ?0 :30,
+		},
+		btnImagenPlan:{	
+			top:Platform.OS==='android' ?15 :30,
+			left:25
 		}
 	}
 })

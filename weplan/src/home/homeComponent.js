@@ -52,6 +52,7 @@ export default class homeComponent extends Component{
 		})
 	}
 	async componentWillMount(){
+		console.log(Platform.Version)
 		if (Platform.OS==='android') {
 			RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({interval: 10000, fastInterval: 5000})
 		   .then(data => {
@@ -112,7 +113,7 @@ export default class homeComponent extends Component{
 				initNotif: notif
 			})
 
-			if(notif.parameter && navigation.state.routeName=='Home'){
+			if(notif && navigation.state.routeName=='Home'){
 				let id = notif.parameter
 				this.props.navigation.navigate(notif.targetScreen, id)
 			}

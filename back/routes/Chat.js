@@ -26,12 +26,16 @@ router.get('/chatPlan/:id/:limit', (req, res)=>{
 				if (err2) {
 					res.json({status:'FAIL', err, code:0})   
 				}else{
+					console.log(plan[0])
 					let planAsignados = []
 					let chat = []
 					if (plan[0]) {
-						plan[0].asignados.filter(e=>{
-							planAsignados.push(e._id)
-						}) 
+						if (plan[0].asignados.length>0) {
+							plan[0].asignados.filter(e=>{
+								planAsignados.push(e._id)
+							}) 
+						}
+						
 					}
 					chatInfo.map(e=>{	 
 
@@ -137,6 +141,9 @@ router.post('/', (req, res)=>{
 		cPhoto:req.body.cPhoto,
 	}
 	cliente.publish('chat', JSON.stringify(mensajeJson))
+	console.log('-------')
+	console.log(req.body)
+	console.log('-------')
 	chatServices.create(req.body, req.session.usuario.user._id, req.body.tipo, null, (err, chat)=>{
 		console.log('chat')
 		if (err) {

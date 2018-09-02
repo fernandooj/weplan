@@ -2,7 +2,7 @@ import {StyleSheet, Dimensions, Platform} from 'react-native';
 var screenHeight = Dimensions.get('window').height;
 var screenWidth = Dimensions.get('window').width;
 import { MediaQueryStyleSheet } from "react-native-responsive";
-
+ 
 export const style = MediaQueryStyleSheet.create({
 	contenedor:{
 		flex: 1,
@@ -171,7 +171,6 @@ export const style = MediaQueryStyleSheet.create({
 			width:'64%', 
 			height:33,  
 		}, 
-		 
 		iconFooter:{
 			width:25,
 		 	height:25,
@@ -192,6 +191,11 @@ export const style = MediaQueryStyleSheet.create({
 	"@media (min-device-height: 770)": {
 		fondo:{
 			height:screenHeight-(screenHeight/11.4),
+		},
+	},
+	"@media (device-height: 812)": {
+		fondo:{
+			height:Platform.OS==='android' ?screenHeight-(screenHeight/9.7) :screenHeight-(screenHeight/16.4),
 		},
 	}
 })

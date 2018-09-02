@@ -99,10 +99,23 @@ export default class planesPublicosComponent extends Component{
 			<View style={style.contenedor}>
 				 
 				<CabezeraComponent navigate={navigate} url={'ajustes'} texto='Planes Publicos'  />
-				<ScrollView style={style.subContenedor}>
+				{
+					filtroData.length==0
+					?<Image source={require('../assets/images/sinPlanes.png')} style={style.sinPlanes} />
+					:filtroData.length>0
+					?<ScrollView showsVerticalScrollIndicator={false}>
+						<View style={style.subContenedor}>
+						{rows}
+						</View>	
+					</ScrollView>
+					:<View></View>
+				}
+				{/*<ScrollView style={style.subContenedor}>
 					{rows}	
-				</ScrollView>
-				<FooterComponent navigate={navigate} />		
+				</ScrollView>*/}
+				<View style={style.footer}>
+					<FooterComponent navigate={navigate} />	
+				</View>	
 			</View> 
 		)
 	}

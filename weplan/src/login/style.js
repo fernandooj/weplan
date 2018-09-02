@@ -3,13 +3,15 @@ import { MediaQueryStyleSheet } from "react-native-responsive";
 export const style = MediaQueryStyleSheet.create({ 
 	container:{
 		flex:1,
- 
 	},
 	fondo:{
 		flex: 1,
 		alignItems:'center',
- 
-		/*justifyContent: 'center', justifica contenido verticalmente */
+	},
+	fondoLogin:{
+		flex: 1,
+		alignItems:'center',
+		justifyContent: 'center', /*justifica contenido verticalmente */
 	},
 	image:{
 		marginTop:20,
@@ -107,32 +109,32 @@ export const style = MediaQueryStyleSheet.create({
 
 },{
 	"@media (max-device-width: 380)": {
- 			image:{
-				marginTop:0,
-				marginBottom:0,
-			},
-			facebook:{
-				fontSize:20,
-				paddingTop:17,
-				paddingBottom:7,
-				paddingLeft:21,
-				paddingRight:14,
-				borderRadius: 50,
-				borderWidth: 5,
-				marginRight:20,
-			},
-			google:{
-				fontSize:20,
-				paddingTop:15,
-				paddingBottom:10,
-				paddingLeft:18,
-				paddingRight:11,
-				borderRadius: 50,
-				borderWidth: 3,
- 
-			},
- 		}
- 	})
+		image:{
+			marginTop:0,
+			marginBottom:0,
+		},
+		facebook:{
+			fontSize:20,
+			paddingTop:17,
+			paddingBottom:7,
+			paddingLeft:21,
+			paddingRight:14,
+			borderRadius: 50,
+			borderWidth: 5,
+			marginRight:20,
+		},
+		google:{
+			fontSize:20,
+			paddingTop:15,
+			paddingBottom:10,
+			paddingLeft:18,
+			paddingRight:11,
+			borderRadius: 50,
+			borderWidth: 3,
+
+		},
+	}
+})
 
 
 

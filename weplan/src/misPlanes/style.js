@@ -2,7 +2,7 @@ import {StyleSheet, Dimensions, Platform} from 'react-native';
 const Height = Dimensions.get('window').height;
 const Width = Dimensions.get('window').width;
 import { MediaQueryStyleSheet } from "react-native-responsive";
-console.log(Height)
+ 
 export const MisPlanesStyle = MediaQueryStyleSheet.create({
 	contenedor:{
 		flex: 1,
@@ -136,6 +136,11 @@ export const MisPlanesStyle = MediaQueryStyleSheet.create({
 		sinPlanes:{
 			width:470,
 			height:597,
+		},
+	},
+	"@media (device-height: 812)": {
+		contenedorCabezera:{
+			marginTop:Platform.OS==='android' ?5 :23,
 		},
 	}
 })

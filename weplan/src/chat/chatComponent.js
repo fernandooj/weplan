@@ -55,7 +55,7 @@ export default class ChatComponent extends Component{
 
 	componentWillMount(){
 		let planId = this.props.navigation.state.params	
-		// let planId = '5b898380cc580714ffc2a4dd'	 
+		// let planId = '5b8b54be02e37b1e83c23520'	 
 		console.log(this.props.navigation.state.params)
 		console.log(planId)
 		this.socket = SocketIOClient(URL);
@@ -660,8 +660,8 @@ export default class ChatComponent extends Component{
 	}
  
 	render(){
-		const {adjuntarAmigos, asignados, usuariosAsignados, mapa, qr, planId, showMainFooter, showIndicador, scroll, scroll2, scrollState, notificaciones, imagen, nombrePlan} = this.state
- 		console.log(this.state.mensajes)
+		const {adjuntarAmigos, asignados, usuariosAsignados, mapa, qr, planId, showMainFooter, showIndicador, scroll, scroll2, scrollState, notificaciones, imagen, nombrePlan, id} = this.state
+ 		console.log(showMainFooter)
 		return(
 			<View style={style.contenedorGeneral} > 
 				{this.renderCabezera()}
@@ -689,7 +689,7 @@ export default class ChatComponent extends Component{
 			{/* BOTONES OPCIONES */}
 				{
 					this.state.showOpciones
-					&&<View style={[style.contenedorOpcionesBotones, {marginTop:showMainFooter ?-300 :Platform.OS==='android' ?-55 :-75} ]}>
+					&&<View style={showMainFooter ?[style.contenedorOpcionesBotones, style.contenedorOpcionesBotonesShow] : [style.contenedorOpcionesBotones]}>
 						{this.opciones()}
 					</View>
 				}
@@ -698,7 +698,7 @@ export default class ChatComponent extends Component{
 				{adjuntarAmigos &&<AgregarAmigosComponent 
 					                titulo='Enviar Contacto'
 					                close={(e)=>this.setState({asignados:[], usuariosAsignados:[], adjuntarAmigos:false})} 
-					                updateStateAsignados={(asignados, usuariosAsignados, misUsuarios)=>{this.setState({adjuntarAmigos:false, showOpciones:false});pedirContacto(usuariosAsignados, planId, notificaciones, imagen, nombrePlan)}}
+					                updateStateAsignados={(asignados, usuariosAsignados, misUsuarios)=>{this.setState({adjuntarAmigos:false, showOpciones:false});pedirContacto(usuariosAsignados, planId, notificaciones, imagen, nombrePlan, id)}}
 					                //updateStateAsignados={(asignados, usuariosAsignados, misUsuarios)=>this.setState({asignados, usuariosAsignados, misUsuarios, adjuntarAmigos:false})}
 					                asignados={this.state.asignados}
 								    usuariosAsignados={this.state.usuariosAsignados}
@@ -707,7 +707,7 @@ export default class ChatComponent extends Component{
 
 			{mapa &&<MapaPlanComponent 
 							close={()=> this.setState({mapa:false})} 						   			/////////   cierro el modal
-							updateStateX={(lat,lng, direccion)=>{this.setState({mapa:false, showOpciones:false});pedirMapa(lat,lng,planId, notificaciones, imagen, nombrePlan)}}// devuelve la posicion del marcador 
+							updateStateX={(lat,lng, direccion)=>{this.setState({mapa:false, showOpciones:false});pedirMapa(lat,lng,planId, notificaciones, imagen, nombrePlan, id)}}// devuelve la posicion del marcador 
 							ubicacionDefecto={{infoplan:false}}
 							guardaUbicacion={{lat:null, lng:null, direccion:null}}
 						/> }	
@@ -792,12 +792,12 @@ export default class ChatComponent extends Component{
 	/////// RENDER LAS OPCIONES
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	opciones(){
-		const {planId, notificaciones, imagen, nombrePlan} = this.state
+		const {planId, notificaciones, imagen, nombrePlan, id} = this.state
 		let opciones=[
-			{url:`${URL}public/img/opcion_1.png`, click:()=>{pedirImagen(planId, notificaciones, imagen, nombrePlan); this.setState({showOpciones:false})}},
+			{url:`${URL}public/img/opcion_1.png`, click:()=>{pedirImagen(planId, notificaciones, imagen, nombrePlan, id); this.setState({showOpciones:false})}},
 			{url:`${URL}public/img/opcion_2.png`, click:()=>this.setState({mapa:true})},
 			{url:`${URL}public/img/opcion_3.png`, click:()=>this.setState({adjuntarAmigos:true})},
-			{url:`${URL}public/img/opcion_4.png`, click:()=>{pedirPdf(planId, notificaciones, imagen, nombrePlan); this.setState({showOpciones:false})}},
+			{url:`${URL}public/img/opcion_4.png`, click:()=>{pedirPdf(planId, notificaciones, imagen, nombrePlan, id); this.setState({showOpciones:false})}},
 			{url:`${URL}public/img/opcion_5.png`, click:()=>this.setState({modalQr:true})}
 		]
 		return opciones.map((e, key)=>{
@@ -896,8 +896,10 @@ export default class ChatComponent extends Component{
 	handleSubmit(){
 		// Keyboard.dismiss()
 		const {planId, mensaje, id, photo, notificaciones, nombrePlan, imagen} = this.state
-		console.log(notificaciones)
-		notificaciones.map(e=>{
+		let nuevaNotificacion = notificaciones.filter(e=>{
+			return e._id!==id
+		}) 
+		nuevaNotificacion.map(e=>{
 			sendRemoteNotification(15, e.tokenPhone, 'chat', `${nombrePlan}`,  `: ${mensaje}`, imagen, planId)
 		})
 		

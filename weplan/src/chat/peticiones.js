@@ -6,8 +6,8 @@ import {sendRemoteNotification} from '../push/envioNotificacion.js'
 import axios from 'axios'
 import moment from 'moment'
 
-export const pedirImagen = (planId, notificaciones, imagen, nombrePlan) =>{
-	console.log(planId)
+export const pedirImagen = (planId, notificaciones, imagen, nombrePlan, id) =>{
+ 
 	const options = {
 		title:'',
 		cancelButtonTitle:'Cancelar',
@@ -30,12 +30,12 @@ export const pedirImagen = (planId, notificaciones, imagen, nombrePlan) =>{
 			    name: res.fileName ?res.fileName :'imagen.jpg',
 			    path: res.path
 			};
-			alerta(res.fileName, imagen, subirImagen, 6, planId, notificaciones, imagen, nombrePlan )	 
+			alerta(res.fileName, imagen, subirImagen, 6, planId, notificaciones, imagen, nombrePlan, id )	 
 		}
 	});
 }
 
-export const pedirPdf = (planId, notificaciones, imagen2, nombrePlan) =>{
+export const pedirPdf = (planId, notificaciones, imagen2, nombrePlan, id) =>{
 	let imagen = null;
 	DocumentPicker.show({
       	filetype: [DocumentPickerUtil.pdf()],
@@ -66,7 +66,10 @@ export const pedirPdf = (planId, notificaciones, imagen2, nombrePlan) =>{
 			      if(res.data.code!==1){ 
 			        alertaError()
 			      }else{
-			      	notificaciones.map(e=>{
+			      	let nuevaNotificacion = notificaciones.filter(e=>{
+						return e._id!==id
+					})
+			      	nuevaNotificacion.map(e=>{
 						sendRemoteNotification(15, e.tokenPhone, 'chat', `${nombrePlan}`,  `: a enviado el documento: ${res.filename}`, imagen2, planId)
 					})
 			      }
@@ -78,23 +81,23 @@ export const pedirPdf = (planId, notificaciones, imagen2, nombrePlan) =>{
    });	
 }
  
-export const pedirContacto = (usuariosAsignados, planId, notificaciones, imagen, nombrePlan)=>{	
+export const pedirContacto = (usuariosAsignados, planId, notificaciones, imagen, nombrePlan, id)=>{	
 	console.log(usuariosAsignados)
 	let data = []
 	usuariosAsignados.filter(e=>{
 		data.push(e.nombre)
 	})
-	alerta(data.join(), usuariosAsignados, subirContacto, 4, planId, notificaciones, imagen, nombrePlan )
+	alerta(data.join(), usuariosAsignados, subirContacto, 4, planId, notificaciones, imagen, nombrePlan, id )
 }
 
-export const pedirMapa = (lat, lng, planId, notificaciones, imagen, nombrePlan)=>{
+export const pedirMapa = (lat, lng, planId, notificaciones, imagen, nombrePlan, id)=>{
 	setTimeout(function(){ 
 		Alert.alert(
 			'¿Seguro deseas enviar este mapa?',
 			'',
 		[
 		    {text: 'Mejor despues', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-		    {text: 'Enviar', onPress: () => handleSubmitMap(lat, lng, 5, planId,  notificaciones, imagen, nombrePlan)},
+		    {text: 'Enviar', onPress: () => handleSubmitMap(lat, lng, 5, planId,  notificaciones, imagen, nombrePlan, id)},
 		],
 			{ cancelable: false }
 		)
@@ -102,32 +105,35 @@ export const pedirMapa = (lat, lng, planId, notificaciones, imagen, nombrePlan)=
 	
  }
 
-const alerta = (info, data, funcion, tipo, planId, notificaciones, imagen, nombrePlan) =>{
+const alerta = (info, data, funcion, tipo, planId, notificaciones, imagen, nombrePlan, id) =>{
 	setTimeout(function(){ 
 		Alert.alert(
 		  '¿Seguro deseas enviar?',
 		  info,
 		  [
 		    {text: 'Mejor despues', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-		    {text: 'Enviar', onPress: () => funcion(data, tipo, planId, notificaciones, imagen, nombrePlan)},
+		    {text: 'Enviar', onPress: () => funcion(data, tipo, planId, notificaciones, imagen, nombrePlan, id)},
 		  ],
 		  { cancelable: false }
 		);
 	}, 600);
 }
 
-const subirContacto=(usuariosAsignados, tipo, planId, notificaciones, imagen2, nombrePlan)=>{
+const subirContacto=(usuariosAsignados, tipo, planId, notificaciones, imagen2, nombrePlan, id)=>{
 	const fecha = moment().format('h:mm')
-	console.log(planId)
+ 
 	usuariosAsignados.map(e=>{
-		axios.post('/x/v1/cha/chat/', {contactoId:e.id, cNombre:e.nombre, cPhoto:e.photo, tipo, fecha, planId})
+		axios.post('/x/v1/cha/chat/', {contactoId:e._id, cNombre:e.nombre, cPhoto:e.photo, tipo, fecha, planId})
 	    .then(res=>{  
 	     	console.log(res.data)     
 	     	if(res.data.code!==1){ 
 		        alertaError()
 		    }
 		    else{
-		    	notificaciones.map(e2=>{
+		    	let nuevaNotificacion = notificaciones.filter(e=>{
+					return e._id!==id
+				})
+		    	nuevaNotificacion.map(e2=>{
 					sendRemoteNotification(15, e2.tokenPhone, 'chat', `${nombrePlan}`,  `: a enviado el contacto: ${e.nombre} `, imagen2, planId)
 				})
 		    }
@@ -138,14 +144,17 @@ const subirContacto=(usuariosAsignados, tipo, planId, notificaciones, imagen2, n
 	}) 
 }
 
-const handleSubmitMap = (lat, lng, tipo, planId,  notificaciones, imagen2, nombrePlan) =>{
+const handleSubmitMap = (lat, lng, tipo, planId,  notificaciones, imagen2, nombrePlan, id) =>{
 	axios.post('/x/v1/cha/chat/', {lat, lng, tipo, planId})
     .then(res=>{  
       	console.log(res.data)     
       	if(res.data.code!==1){ 
 	        alertaError()
 	    }else{
-	    	notificaciones.map(e=>{
+	    	let nuevaNotificacion = notificaciones.filter(e=>{
+				return e._id!==id
+			})
+	    	nuevaNotificacion.map(e=>{
 				sendRemoteNotification(15, e.tokenPhone, 'chat', `${nombrePlan}`,  `: a enviado una ubicación`, imagen2, planId)
 			})
 	    }
@@ -157,7 +166,7 @@ const handleSubmitMap = (lat, lng, tipo, planId,  notificaciones, imagen2, nombr
 
 
 
-const subirImagen = (imagen, tipo, planId, notificaciones, imagen2, nombrePlan)=>{
+const subirImagen = (imagen, tipo, planId, notificaciones, imagen2, nombrePlan, id)=>{
 	let data = new FormData();
 	data.append('imagen', imagen);
 	data.append('tipo', tipo);
@@ -176,7 +185,10 @@ const subirImagen = (imagen, tipo, planId, notificaciones, imagen2, nombrePlan)=
       if(res.data.code!==1){ 
         alertaError()
       }else{
-      	notificaciones.map(e=>{
+      	let nuevaNotificacion = notificaciones.filter(e=>{
+			return e._id!==id
+		})
+      	nuevaNotificacion.map(e=>{
 			sendRemoteNotification(15, e.tokenPhone, 'chat', `${nombrePlan}`,  `: a enviado una imagen`, imagen2, planId)
 		})
       }

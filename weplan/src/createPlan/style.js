@@ -487,5 +487,11 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 			color:'#ffffff',
 			fontSize:22,
 		},
+	},
+	"@media (min-device-height: 811)": {
+		contenedorBack:{
+			top:Platform.OS==='android' ?0 :10,
+			marginBottom:Platform.OS==='android' ?0 :10
+		}
 	}
 })

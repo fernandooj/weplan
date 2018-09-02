@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, Platform} from 'react-native';
 var screenWidth = Dimensions.get('window').width;
 import { MediaQueryStyleSheet } from "react-native-responsive";
 
@@ -228,5 +228,11 @@ export const style = MediaQueryStyleSheet.create({
 	 	perfil:{
 		 	marginBottom:-19
 		},
+	},
+	"@media (min-device-height: 811)": {
+		contenedorBack:{
+			top:Platform.OS==='android' ?0 :10,
+			marginBottom:Platform.OS==='android' ?0 :10
+		}
 	}
 })

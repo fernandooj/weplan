@@ -96,11 +96,25 @@ export default class createPlanComponent extends Component{
 	/////////////////////////////////////////////////  ACTUALIZA LA UBICACION //////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	updateStateX(lat,lng, direccion, area, costo){
-		if (direccion) {
-			this.setState({lat,lng, area, costo, direccion, mapa:false})
+		console.log("----")
+		console.log(costo)
+		if (costo<2000 && this.state.publico) {
+			Alert.alert(
+			  'El costo debe ser mayor a $2.000',
+			  '',
+			  [
+			    {text: 'OK', onPress: () => {console.log('OK Pressed'); this.setState({iconCreate:false})}},
+			  ],
+			  { cancelable: false }
+			)
+
 		}else{
-			let direccion1 = lat+','+lng 
-			this.setState({lat,lng, area, costo, direccion:'', mapa:false, showAlertUbicacion:true})
+			if (direccion) {
+				this.setState({lat,lng, area, costo, direccion, mapa:false})
+			}else{
+				let direccion1 = lat+','+lng 
+				this.setState({lat,lng, area, costo, direccion:'', mapa:false, showAlertUbicacion:true})
+			}
 		}
 	}
 
@@ -470,7 +484,7 @@ export default class createPlanComponent extends Component{
 			  'La fecha es obligatoria',
 			  '',
 			  [
-			    {text: 'OK', onPress: () => console.log('OK Pressed')},
+			    {text: 'OK', onPress: () => {console.log('OK Pressed'); this.setState({iconCreate:false})}},
 			  ],
 			  { cancelable: false }
 			)
@@ -480,7 +494,7 @@ export default class createPlanComponent extends Component{
 			  'La imagen es obligatoria',
 			  '',
 			  [
-			    {text: 'OK', onPress: () => console.log('OK Pressed')},
+			     {text: 'OK', onPress: () => {console.log('OK Pressed'); this.setState({iconCreate:false})}},
 			  ],
 			  { cancelable: false }
 			)
@@ -490,7 +504,7 @@ export default class createPlanComponent extends Component{
 			  'Selecciona un lugar',
 			  '',
 			  [
-			    {text: 'OK', onPress: () => console.log('OK Pressed')},
+			     {text: 'OK', onPress: () => {console.log('OK Pressed'); this.setState({iconCreate:false})}},
 			  ],
 			  { cancelable: false }
 			)
@@ -500,7 +514,7 @@ export default class createPlanComponent extends Component{
 			  'El area no puede ser vacia',
 			  '',
 			  [
-			    {text: 'OK', onPress: () => console.log('OK Pressed')},
+			     {text: 'OK', onPress: () => {console.log('OK Pressed'); this.setState({iconCreate:false})}},
 			  ],
 			  { cancelable: false }
 			)
