@@ -14,7 +14,7 @@ class planServices {
 	}
 	/// con populate
 	getByIdPlanPopulate(_id, callback){
-		planSchema.find({_id}).populate('idUsuario', 'nombre ciudad photo calificacion').populate('restricciones').populate('asignados').populate('notificaciones', 'tokenPhone').exec(callback)
+		planSchema.find({_id}).populate('idUsuario', 'nombre ciudad photo calificacion').populate('restricciones').populate('asignados', 'username photo nombre token estado').populate('notificaciones', 'tokenPhone').exec(callback)
 	}
 	getPlanesPublicosDesactivados(idUsuario, callback){
 		idUsuario = mongoose.Types.ObjectId(idUsuario);	

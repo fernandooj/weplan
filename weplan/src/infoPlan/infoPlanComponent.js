@@ -25,27 +25,34 @@ export default class infoPlanComponent extends Component{
 	  		restriccion:false,
 	  		adjuntarAmigos:false,
 	  		exitoso:false,
-	  		planId:this.props.navigation.state.params.plan._id,
-	  		nombre:this.props.navigation.state.params.plan.nombre,
-	  		descripcion:this.props.navigation.state.params.plan.descripcion,
-	  		fechaLugar:this.props.navigation.state.params.plan.fechaLugar,
-	  		loc:this.props.navigation.state.params.plan.loc,
-	  		lugar:this.props.navigation.state.params.plan.lugar,
+	  		planId:'',
+	  		nombre:'',
+	  		descripcion:'',
+	  		fechaLugar:'',
+	  		loc:'',
+	  		lugar:'',
 	  		restricciones:[],
-	  		restriccionesAsignadas:this.props.navigation.state.params.plan.restricciones,
-	  		asignados:this.props.navigation.state.params.plan.asignados,
-	  		usuariosAsignados:this.props.navigation.state.params.plan.asignados,
-	  		notificaciones:this.props.navigation.state.params.plan.notificaciones,
+	  		restriccionesAsignadas:[],
+	  		asignados:[],
+	  		usuariosAsignados:[],
+	  		notificaciones:'',
 	  		misUsuarios:[],
 	  		fechaHoy:moment().format('YYYY-MM-DD h:mm'),
 	  	}
 	}
 	componentWillMount(){
- 		let restricciones = []
- 		this.props.navigation.state.params.plan.restricciones.map(e=>{
- 			restricciones.push(e._id)
+ 		let restricciones1 = []
+ 		let asignados1 = []
+ 		const {restricciones, asignados, loc, planId, nombre, descripcion, fechaLugar, lugar, notificaciones, _id} = this.props.navigation.state.params.plan
+ 	 
+ 		restricciones.map(e=>{
+ 			restricciones1.push(e._id)
  		})
- 		this.setState({restricciones})
+ 		asignados.map(e=>{
+ 			asignados1.push(e._id)
+ 		})
+ 		 
+ 		this.setState({restricciones:restricciones1, asignados:asignados1, planId:_id, restriccionesAsignadas:restricciones, usuariosAsignados:asignados, lat:loc.coordinates[1], lng:loc.coordinates[0], loc, nombre, descripcion, fechaLugar, lugar, notificaciones})
  	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////  ACTUALIZA LA UBICACION //////////////////////////////////////////////////////////////////////////
@@ -84,7 +91,6 @@ export default class infoPlanComponent extends Component{
 	 				<View key={key} >
 	 					<Image source={{uri:e.ruta}} style={style.avatar} />
 	 					<Image source={require('../assets/images/deneid1.png')} style={style.banResActiveAdd} />
-	 					 
 	 				</View>
 	 			)
  			}
@@ -108,20 +114,16 @@ export default class infoPlanComponent extends Component{
  	}
 	render(){
 	let data = this.props.navigation.state.params.plan
-	 
 	let id   = this.props.navigation.state.params.id
  	let permiteEditar = id==data.idUsuario._id ?true :false;
 	let {navigate} = this.props.navigation
-
+	console.log(data)
 	let notifica = []
 	this.state.notificaciones.map(e=>{
 		notifica.push(e._id)
 	})
 	 
 	let notificacionActiva = notifica.includes(id)
-	console.log('+++++++++++++++++++++++++++++++')
-	console.log(this.state.restriccionesAsignadas)
-	console.log(this.state.restricciones)
 	let menus = [
 		{funcion:()=>this.silenciar(id), texto:'Silenciar Plan', show: notificacionActiva ?true :false },
 		{funcion:()=>this.cancelarSilenciar(id), texto:'Cancelar Silenciar Plan', show: notificacionActiva ?false :true },
@@ -315,10 +317,10 @@ export default class infoPlanComponent extends Component{
 				    		?<AgregarAmigosComponent 
 				                titulo='Asignar Amigos'
 				                close={(e)=>this.setState({asignados:[], usuariosAsignados:[], adjuntarAmigos:false})} 
-				                updateStateAsignados={(asignados, usuariosAsignados, misUsuarios)=>this.setState({asignados, usuariosAsignados, misUsuarios, adjuntarAmigos:false})}
+				                updateStateAsignados={(asignados, usuariosAsignados)=>this.setState({asignados, usuariosAsignados, adjuntarAmigos:false})}
 				                asignados={this.state.asignados}
 							    usuariosAsignados={this.state.usuariosAsignados}
-							    misUsuarios={this.state.misUsuarios}
+							    
 				            /> 
 				            :null 
 				        } 
