@@ -247,6 +247,10 @@ export const style = MediaQueryStyleSheet.create({
  		width:40,
  		height:40,
  	},
+ 	add2:{
+ 		width:36,
+ 		height:30,
+ 	},
  	banResActiveAdd:{
  		position:'absolute',
  		top:21,

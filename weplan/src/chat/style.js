@@ -662,10 +662,12 @@ export const style = MediaQueryStyleSheet.create({
 	////////////////// contenedor 6  ==> imagenes
 	////////////////////////////////////////////
 	Iphoto:{
+		width:'100%',
+		height:300,	
 		borderWidth:4,
 		borderRadius:0,	
 		borderColor:'#9CB7F5',
-	}
+	},
 },{
 	"@media (max-device-width: 320)": {
 		btnImagenPlan:{

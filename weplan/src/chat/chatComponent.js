@@ -503,14 +503,20 @@ export default class ChatComponent extends Component{
 								<Text style={e.userId== id ?[style.cNombreTipoChat, style.familia] :[style.cNombreTipoChat, style.cNombreTipoChatLeft, style.familia]}>{e.nombre}</Text>
 							</View>
 						}	
-						    <Lightbox>
-							    <Image
-							    	style={style.Iphoto}
-									width='100%'
-									height={300}
-							      	source={{ uri: e.documento }}
-							    />
-							</Lightbox>
+						     
+							<Lightbox 
+						      renderContent={() => (
+						        <Image 
+						          	source={{ uri: e.documento }}
+						         	style={{ width: "100%", height:600}}
+						         />
+						       )}
+						    >
+							  <Image
+							   	source={{ uri: e.documento }}
+							    style={style.Iphoto}
+							  />
+							 </Lightbox>	
 						<Text style={e.userId== id ?[style.fechaMapa, style.familia] :[style.fechaMapa, style.fechaLeft, style.familia]}>{e.fecha}</Text>
 						</TouchableOpacity>
 					</View>	

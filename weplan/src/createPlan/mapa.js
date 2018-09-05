@@ -24,6 +24,7 @@ export default class MapaPlanComponent extends Component{
 				latitudeDelta: 0.015,
 				longitudeDelta: 0.0121,
 		    },
+		    buscador:false,
 		    marker: {
 				latitude: 4.597825,
 				longitude: -74.0755723,
@@ -87,12 +88,19 @@ export default class MapaPlanComponent extends Component{
 		Keyboard.dismiss()
 		clearInterval(this.state.interval);
 	}
-
+	setUbicacion(data, details){
+		console.log(data, details)
+		let latitude = details.geometry.location.lat;
+		let longitude = details.geometry.location.lng;
+		let direccion = details.formatted_address;
+ 		this.setState({buscador:true})
+		this.setState({direccion, x:{latitude, longitude, latitudeDelta: 0.015, longitudeDelta: 0.0121}})
+	}
 	render(){
 		const {ubicacionDefecto, inputValor, planPublico, guardaUbicacion} = this.props
-		const {valorInicial, km, latitudeDelta, longitudeDelta, mapaCargado, showKeyboard} = this.state
+		const {valorInicial, km, latitudeDelta, longitudeDelta, mapaCargado, showKeyboard, buscador} = this.state
 		let direccion = guardaUbicacion.direccion ?guardaUbicacion.direccion :this.state.direccion
-		console.log(guardaUbicacion)
+		console.log(buscador)
 		if (mapaCargado) {
 			return(
 				<View>
@@ -121,13 +129,9 @@ export default class MapaPlanComponent extends Component{
 								listViewDisplayed='auto'    // true/false/undefined
 								fetchDetails={true}
 								renderDescription={row => row.description} // custom description render
-								onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-									console.log(details.formatted_address)
-									let latitude = details.geometry.location.lat;
-									let longitude = details.geometry.location.lng;
-									let direccion = details.formatted_address;
-									this.setState({direccion, x:{latitude, longitude, latitudeDelta: 0.015, longitudeDelta: 0.0121}})
-								}}
+								onPress={(data, details = null) => {this.setUbicacion(data,details)}}// 'details' is provided when fetchDetails = true
+									
+								
 								getDefaultValue={() => ''}
 								query={{
 									key: 'AIzaSyCn_XO2J1yIl7I3UMy7hL6-0QmFJAOwIz8',
@@ -163,36 +167,55 @@ export default class MapaPlanComponent extends Component{
 			          		
 			          	</View>		
 		      			<ScrollView style ={CreatePlanStyle.container}>
-					        <MapView
-					          style={CreatePlanStyle.map, {height:showKeyboard ?250:405}}
-					          // initialRegion={{
-					          //   latitude:  ubicacionDefecto.infoplan ?ubicacionDefecto.lat :guardaUbicacion.lat ?guardaUbicacion.lat :this.state.x.latitude,
-					          //   longitude: ubicacionDefecto.infoplan ?ubicacionDefecto.lng :guardaUbicacion.lng ?guardaUbicacion.lng :this.state.x.longitude,
-					          //   latitudeDelta: this.state.x.latitudeDelta,
-					          //   longitudeDelta: this.state.x.longitudeDelta,
-					          // }}
-					          region={{
-					          	latitude:  ubicacionDefecto.infoplan ?ubicacionDefecto.lat :guardaUbicacion.lat ?guardaUbicacion.lat :this.state.x.latitude,
-					            longitude: ubicacionDefecto.infoplan ?ubicacionDefecto.lng :guardaUbicacion.lng ?guardaUbicacion.lng :this.state.x.longitude,
-					            latitudeDelta: this.state.x.latitudeDelta,
-					            longitudeDelta: this.state.x.longitudeDelta,
-					          }}
-					          // onRegionChange={(e)=>this.onRegionChange(e)}
-					          onRegionChangeComplete={(e)=>this.onRegionChange(e)}
-					        >
-					          <Marker draggable
-							    coordinate={ubicacionDefecto.infoplan ?{latitude:this.props.ubicacionDefecto.lat, longitude:this.props.ubicacionDefecto.lng}  :guardaUbicacion.lat ?{latitude:this.props.guardaUbicacion.lat, longitude:this.props.guardaUbicacion.lng} :this.state.x}
+		      				{
+		      					buscador
+		      					?<MapView
+						          style={CreatePlanStyle.map, {height:showKeyboard ?250:405}}
+						          region={{
+						            latitude:  ubicacionDefecto.infoplan ?ubicacionDefecto.lat :guardaUbicacion.lat ?guardaUbicacion.lat :this.state.x.latitude,
+						            longitude: ubicacionDefecto.infoplan ?ubicacionDefecto.lng :guardaUbicacion.lng ?guardaUbicacion.lng :this.state.x.longitude,
+						            latitudeDelta: this.state.x.latitudeDelta,
+						            longitudeDelta: this.state.x.longitudeDelta,
+						          }}
+					          		onRegionChange={(e)=>this.onRegionChange(e)}
+						        	> 
+						        <Marker
+								    coordinate={ubicacionDefecto.infoplan ?{latitude:this.props.ubicacionDefecto.lat, longitude:this.props.ubicacionDefecto.lng}  :guardaUbicacion.lat ?{latitude:this.props.guardaUbicacion.lat, longitude:this.props.guardaUbicacion.lng} :this.state.x}
 
-							    //onDragEnd={(e) => {this.setState({ x: e.nativeEvent.coordinate }); console.log(e.nativeEvent.coordinate)}}
-							  />
-							  <Circle 
-							  	radius={km}
-							  	center={{latitude:ubicacionDefecto.infoplan ?ubicacionDefecto.lat :this.state.x.latitude, 
-							  		longitude: ubicacionDefecto.infoplan ?ubicacionDefecto.lng : this.state.x.longitude}}
-							  	strokeColor = { '#1a66ff' }
-	                			fillColor = { 'rgba(100,100,100,.2)' }
-							  />
-					        </MapView>
+								    //onDragEnd={(e) => {this.setState({ x: e.nativeEvent.coordinate }); console.log(e.nativeEvent.coordinate)}}
+								  />
+								  <Circle 
+								  	radius={km}
+								  	center={{latitude:ubicacionDefecto.infoplan ?ubicacionDefecto.lat :this.state.x.latitude, 
+								  		longitude: ubicacionDefecto.infoplan ?ubicacionDefecto.lng : this.state.x.longitude}}
+								  	strokeColor = { '#1a66ff' }
+		                			fillColor = { 'rgba(100,100,100,.2)' }
+								  />
+						        </MapView>
+					        	:<MapView
+						          style={CreatePlanStyle.map, {height:showKeyboard ?250:405}}
+						          initialRegion={{
+						            latitude:  ubicacionDefecto.infoplan ?ubicacionDefecto.lat :guardaUbicacion.lat ?guardaUbicacion.lat :this.state.x.latitude,
+						            longitude: ubicacionDefecto.infoplan ?ubicacionDefecto.lng :guardaUbicacion.lng ?guardaUbicacion.lng :this.state.x.longitude,
+						            latitudeDelta: this.state.x.latitudeDelta,
+						            longitudeDelta: this.state.x.longitudeDelta,
+						          }}
+					          		onRegionChange={(e)=>this.onRegionChange(e)}
+						        	> 
+						        <Marker
+								    coordinate={ubicacionDefecto.infoplan ?{latitude:this.props.ubicacionDefecto.lat, longitude:this.props.ubicacionDefecto.lng}  :guardaUbicacion.lat ?{latitude:this.props.guardaUbicacion.lat, longitude:this.props.guardaUbicacion.lng} :this.state.x}
+								  />
+								  <Circle 
+								  	radius={km}
+								  	center={{latitude:ubicacionDefecto.infoplan ?ubicacionDefecto.lat :this.state.x.latitude, 
+								  		longitude: ubicacionDefecto.infoplan ?ubicacionDefecto.lng : this.state.x.longitude}}
+								  	strokeColor = { '#1a66ff' }
+		                			fillColor = { 'rgba(100,100,100,.2)' }
+								  />
+						        </MapView>
+			      				}
+					        
+					         
 					        {
 					        	inputValor
 					        	&&<TextInputMask
@@ -227,7 +250,7 @@ export default class MapaPlanComponent extends Component{
 		}	
 	}
 	onRegionChange(x) {
-		this.setState({x});
+		this.setState({x, buscador:false});
 	  	// this.setState({ marker:{latitude:e.latitude, longitude: e.longitude} });
 	}
 	getValor(e){

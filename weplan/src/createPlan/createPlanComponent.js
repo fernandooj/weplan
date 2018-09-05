@@ -45,6 +45,7 @@ export default class createPlanComponent extends Component{
  			cargaPlan:false,
  			showAlertUbicacion:false,
  			position: 1,
+ 			nombre:'',
 	      	interval: null,
 	      	imagenes:[],
 	      	showTipo:false, //// modal que muestra el tipo del plan
@@ -96,8 +97,6 @@ export default class createPlanComponent extends Component{
 	/////////////////////////////////////////////////  ACTUALIZA LA UBICACION //////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	updateStateX(lat,lng, direccion, area, costo){
-		console.log("----")
-		console.log(costo)
 		if (costo<2000 && this.state.publico) {
 			Alert.alert(
 			  'El costo debe ser mayor a $2.000',
@@ -149,6 +148,14 @@ export default class createPlanComponent extends Component{
 		)
 	}*/
 
+	getRandomColor() {
+	  var letters = '0123456789ABCDEF';
+	  var color = '#';
+	  for (var i = 0; i < 6; i++) {
+	    color += letters[Math.floor(Math.random() * 16)];
+	  }
+	  return color;
+	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////  	RENDER  	/////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -205,7 +212,7 @@ export default class createPlanComponent extends Component{
 						<View style={CreatePlanStyle.textoCargado2}>
 							<TextInput
 								style={[CreatePlanStyle.nombreCargado, CreatePlanStyle.familia]}
-								onChangeText={(nombre) => this.setState({nombre,iconCreate:false})}
+								onChangeText={(nombre) => this.setState({nombre})}
 								value={nombre}
 								underlineColorAndroid='transparent'
 								placeholder="INSERTA EL NOMBRE DE TU PLAN"
@@ -221,7 +228,7 @@ export default class createPlanComponent extends Component{
 					      onPositionChanged={position => this.setState({ position })} 
 					   />
 					   	<View style={CreatePlanStyle.textoCargado}>
-							<Text style={[CreatePlanStyle.nombreCargado, CreatePlanStyle.familia]}>
+							<Text style={[CreatePlanStyle.nombreCargado, CreatePlanStyle.familia, {color:this.getRandomColor()}]}>
 								{cargaPlan.nombre.toUpperCase()} 
 							</Text>
 							<Text style={[CreatePlanStyle.ByCargado, CreatePlanStyle.familia]}>
@@ -256,7 +263,7 @@ export default class createPlanComponent extends Component{
 								placeholder="descripcion"
 								placeholderTextColor="#c9c9c9" 
 								multiline={true}
-								maxLength={60}
+								maxLength={100}
 							/>
 						</View>
 						:<View style={CreatePlanStyle.cajaInpunts}>
@@ -350,8 +357,11 @@ export default class createPlanComponent extends Component{
 						    	</View>
 						    	{
 						    		!this.props.navigation.state.params
-						    		&&<TouchableOpacity onPress={() => this.setState({restriccion:true})} style={CreatePlanStyle.addBtn}>
+						    		?<TouchableOpacity onPress={() => this.setState({restriccion:true})} style={CreatePlanStyle.addBtn}>
 							    		<Image source={require('../assets/images/add.png')} style={CreatePlanStyle.add} />
+							    	</TouchableOpacity>
+							    	:<TouchableOpacity onPress={() => this.setState({restriccion:true})} style={CreatePlanStyle.addBtn}>
+							    		<Image source={require('../assets/images/dots.png')} style={CreatePlanStyle.add2} />
 							    	</TouchableOpacity>
 						    	}
 						    </View>
@@ -362,6 +372,7 @@ export default class createPlanComponent extends Component{
 							    restriccion={(restricciones, restriccionesAsignadas)=>this.setState({restricciones, restriccionesAsignadas, restriccion:false})}
 							    arrayRestricciones={this.state.restricciones}
 							    restriccionesAsignadas={this.state.restriccionesAsignadas}
+							    noEdit={this.props.navigation.state.params ?false :true}
 						    />
 						     
 						    :null
@@ -427,7 +438,7 @@ export default class createPlanComponent extends Component{
 				
 				{/*  Crear Plan  */}
 					{
-						iconCreate
+						nombre.length==0 && !cargaPlan
 						?<Image source={require('../assets/images/createDisable.png')} style={CreatePlanStyle.createIconDisable} />
 						:<TouchableOpacity onPress={this.handleSubmit.bind(this)} style={CreatePlanStyle.create}>
 							<Image source={require('../assets/images/create.png')} style={CreatePlanStyle.createIcon} />

@@ -124,20 +124,17 @@ export default class perfilComponent extends Component{
 				            <ModalSelector
 				                data={ciudades}
 				                initValue={ciudad}
-				                color='#8F9093'
+				                
 					            font={15}
 				                onChange={(e)=> this.setState({ciudad:e.label})} 
 				                style={style.inputCiudad}
 			                 	cancelTextStyle={style.familia}
 				                sectionTextStyle={style.familia}
-				                selectTextStyle={style.familia}
+				                selectTextStyle={[style.familia, {color:'#8F9093',textAlign:'left'}]}
 				                optionTextStyle={style.familia}
-				            >
-				            <TextInput
-		                        style={style.familia}
-		                        editable={false}
-		                        value={ciudad} />
-		                     </ModalSelector>    
+				            />
+				             
+		                        
 				            </View>
 						</View>
 
@@ -190,14 +187,9 @@ export default class perfilComponent extends Component{
 				                style={style.inputCiudad}
 				                cancelTextStyle={style.familia}
 				                sectionTextStyle={style.familia}
-				                selectTextStyle={style.familia}
+				                selectTextStyle={[style.familia, {color:'#8F9093',textAlign:'left'}]}
 				                optionTextStyle={style.familia}
-				            >
-				            <TextInput
-		                        style={style.familia}
-		                        editable={false}
-		                        value={sexo} />
-		                    </ModalSelector>    
+				            />    
 					    </View>	
 					</View>
 
@@ -210,18 +202,18 @@ export default class perfilComponent extends Component{
 						    </TouchableOpacity>   
 					    </View>	
 					</View>
-					
-					{/* BOTON ENVIAR */}
-					<View style={style.containerHecho}>
-						<TouchableOpacity style={style.btnHecho} onPress={this.handleSubmit.bind(this)} > 
-							<Text style={[style.hecho, style.familia]}>Hecho!</Text> 
-						</TouchableOpacity> 
-					</View>	
 					{
 			    		exitoso
 				    	&&<Text style={style.textAlert}>Datos Actualizados</Text>
 				    	 
 				    }
+					{/* BOTON ENVIAR */}
+					<View style={style.containerHecho}>
+						<TouchableOpacity style={style.btnHecho} onPress={this.handleSubmit.bind(this)} > 
+							<Text style={[style.hecho, style.familia]}>Editar!</Text> 
+						</TouchableOpacity> 
+					</View>	
+					
 					</View>
 				</View>
 			)
@@ -236,8 +228,9 @@ export default class perfilComponent extends Component{
 		const {navigate} = this.props.navigation
 		return(	 
 			<View style={style.contenedor}>
+			<ScrollView style={style.subContenedor}>
 				<CabezeraComponent navigate={navigate} url={'ajustes'} texto='Perfil' />
-				<ScrollView style={style.subContenedor}>
+				
 					{this.renderPerfil()}
 				</ScrollView>	
 			</View> 
@@ -266,6 +259,9 @@ export default class perfilComponent extends Component{
 			.then((res)=>{
 				if(res.data.status=="SUCCESS"){
 					this.setState({exitoso:true})
+					setTimeout(()=>{
+						this.setState({exitoso:false})
+					},2000)
 				}
 			})
 			.catch((err)=>{
@@ -276,6 +272,9 @@ export default class perfilComponent extends Component{
 			.then((res)=>{
 				if(res.data.status=="SUCCESS"){
 					this.setState({exitoso:true})
+						setTimeout(()=>{
+						this.setState({exitoso:false})
+					},2000)
 				}
 			})
 			.catch((err)=>{

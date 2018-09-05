@@ -7,10 +7,10 @@ export const style = MediaQueryStyleSheet.create({
 		alignItems: 'center',
 	},
 	familia:{
-		fontFamily:'Futura-CondensedLight',
+		fontFamily:'Futura-CondensedLight', 
 	},
 	subContenedor:{
-		width:'90%',
+		width:'100%',
 	},
 	avatar: {
 		marginTop:10,
@@ -29,7 +29,9 @@ export const style = MediaQueryStyleSheet.create({
 	},
 	avatar3:{
 		marginTop:20,
-	 
+	},
+	perfil:{
+		marginHorizontal:10
 	},
 	contenedorRegistros:{
 		flexDirection:'row',
@@ -77,14 +79,13 @@ export const style = MediaQueryStyleSheet.create({
 		backgroundColor:'#d6d6d6',
 		borderRadius:50,
 		width:210,
-	 
+	 	borderWidth:0,
 		height:40,
 		paddingLeft:10,
 
 	},
 	inputCiudad:{
-		height:40,
-		padding:10
+		height:30,
 	},
 	disabled:{
 		color:'red'

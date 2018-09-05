@@ -77,11 +77,17 @@ export const profileStyle = MediaQueryStyleSheet.create({
 		marginTop:10
 	},
 	agregarBtn:{
-		 marginTop:20
+		flexDirection:'row',
+		marginTop:20,
 	},	
 	agregar:{
-		width:180,
-		height:90
+		width:50,
+		height:50,
+		top:12,
+	},
+	sinPlanes:{
+		marginVertical:20,
+		fontSize:20
 	}
 	 
 },{

@@ -104,11 +104,17 @@ export default class profileComponent extends Component{
 					<View style={profileStyle.subContenedor}>
 						{this.renderPerfil()}
 						<Text  style={profileStyle.planesTitulo}>Planes en común</Text>
-				 		{this.renderPlanes()}
+
+				 		{
+				 			this.state.planesComun.length==0
+				 			?<Text style={profileStyle.sinPlanes}>No tienen planes en común</Text>
+				 			:this.renderPlanes()
+				 		}
 				 		<View style={profileStyle.perfil}>
 					 		{
 								this.state.esAmigo==='no'
 								?<TouchableOpacity onPress={()=>this.handleSubmit()} style={profileStyle.agregarBtn}>
+									<Text style={profileStyle.sinPlanes}>Agregar como amigo</Text>
 									<Image source={require('../assets/images/agregar.png')} style={profileStyle.agregar}/>
 								</TouchableOpacity>
 								:this.state.esAmigo==='siEsperando'

@@ -7,7 +7,7 @@ import Icon from 'react-native-fa-icons';
 import DatePicker from 'react-native-datepicker'
 import moment from 'moment'
 import AlertInput from 'react-native-alert-input';
-
+import Lightbox from 'react-native-lightbox';
 
 import RestriccionesPlanComponent from '../createPlan/restricciones.js'
 import MapaPlanComponent 		  from '../createPlan/mapa.js'
@@ -138,8 +138,20 @@ export default class infoPlanComponent extends Component{
 			<View style={style.contenedor}> 
 				<CabezeraComponent navigate={navigate} url={'chat'} parameter={data._id}  />
 				<View style={style.encabezadoPlan}>
-				   	<View> 
-				   		<Image source={{uri: data.imagenOriginal[0]}} style={style.imagenPlan} />			 
+				   	<View>
+				   	<Lightbox 
+					      renderContent={() => (
+					        <Image 
+					          source={{uri: data.imagenOriginal[0] }}
+					          style={{ width: "100%", height:400}}
+					         />
+					       )}
+					   >
+					  <Image
+					    source={{ uri: data.imagenOriginal[0]  }}
+					    style={style.imagenPlan}
+					  />
+					  </Lightbox>		 
 					</View>
 					<View>
 					{
@@ -308,7 +320,7 @@ export default class infoPlanComponent extends Component{
 							    		<Image source={require('../assets/images/add.png')} style={style.add} />
 							    	</TouchableOpacity>
 							    	:<TouchableOpacity onPress={() => this.setState({adjuntarAmigos:true})} style={style.addBtn}>
-							    		<Image source={require('../assets/images/add.png')} style={style.add} />
+							    		<Image source={require('../assets/images/dots.png')} style={style.add2} />
 							    	</TouchableOpacity>
 						    	}
 						    </View>
@@ -316,6 +328,7 @@ export default class infoPlanComponent extends Component{
 				    	{
 				    		adjuntarAmigos 
 				    		?<AgregarAmigosComponent 
+				    			noEdita={permiteEditar?false:true}
 				                titulo='Asignar Amigos'
 				                close={(e)=>this.setState({asignados:[], usuariosAsignados:[], adjuntarAmigos:false})} 
 				                updateStateAsignados={(asignados, usuariosAsignados)=>this.setState({asignados, usuariosAsignados, adjuntarAmigos:false})}
@@ -362,6 +375,10 @@ export default class infoPlanComponent extends Component{
 			console.log(e.data)
 			if(e.data.code==1){	
 				this.setState({exitoso:true})
+				setTimeout(()=>{
+					this.setState({exitoso:false})
+				},2000)
+				
 				// let id = e.data.message._id;
 				// usuariosAsignados.map(e=>{
 				// 	sendRemoteNotification(2, e.token, 'misPlanes', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, imagen)

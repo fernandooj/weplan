@@ -93,7 +93,7 @@ export const pedirContacto = (usuariosAsignados, planId, notificaciones, imagen,
 export const pedirMapa = (lat, lng, planId, notificaciones, imagen, nombrePlan, id)=>{
 	setTimeout(function(){ 
 		Alert.alert(
-			'¿Seguro deseas enviar este mapa?',
+			'Esta seguro que desea enviar su ubicación?',
 			'',
 		[
 		    {text: 'Mejor despues', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},

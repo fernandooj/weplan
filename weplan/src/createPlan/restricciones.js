@@ -73,7 +73,7 @@ export default class RestriccionesPlanComponent extends Component{
 		return this.state.restriccion.map((e, key)=>{
 			return(
 				<TouchableOpacity key={key} style={CreatePlanStyle.touchRes} 
-					onPress={(index)=> {this.updateState(e._id, e.estado); this.updateRestriccion(e._id, e.estado, e); this.updateStateRestriccion(e._id, e.estado)} }>
+					onPress={this.props.noEdit ?(index)=> {this.updateState(e._id, e.estado); this.updateRestriccion(e._id, e.estado, e); this.updateStateRestriccion(e._id, e.estado)} :null}>
 					<Image source={{ uri: e.ruta}} style={CreatePlanStyle.iconRes}/>
 					{
 						e.estado
@@ -83,7 +83,7 @@ export default class RestriccionesPlanComponent extends Component{
 					<Text style={[CreatePlanStyle.textoRes, CreatePlanStyle.familia]}>{e.nombre}</Text>
 				</TouchableOpacity>
 			)
-		})
+		}) 
 	}
 	render(){
 		return(

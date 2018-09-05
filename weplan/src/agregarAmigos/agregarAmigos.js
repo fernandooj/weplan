@@ -19,7 +19,6 @@ export default class AgregarAmigosComponent extends Component{
 		this.searchUpdated = this.searchUpdated.bind(this)
 	}
 	componentWillMount(){
-		console.log(this.props)
 		const {asignados, usuariosAsignados} = this.props
  		if (usuariosAsignados.length>0 ) {
  			axios.get('/x/v1/ami/amigoUser/asignados/true')
@@ -30,14 +29,8 @@ export default class AgregarAmigosComponent extends Component{
 	 						return e
 	 				})
 	 			})
-	 			console.log('++++++++++')
-	 			console.log(usuariosAsignados)
-	 			console.log(res.data.asignados)
-	 			console.log(n)
 				this.setState({filteredData:n, asignados:asignados, asignadosUsuarios:usuariosAsignados})
 			})	
-
-			// this.setState({filteredData:this.props.misUsuarios, asignados:this.props.asignados, asignadosUsuarios:this.props.usuariosAsignados})
 		}
 		if (usuariosAsignados.length === 0) {
 			axios.get('/x/v1/ami/amigoUser/asignados/true')
@@ -55,7 +48,7 @@ export default class AgregarAmigosComponent extends Component{
 		const filteredEmails = this.state.filteredData.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
 	 	return filteredEmails.map((data, key)=>{
 			return  <TouchableOpacity style={AmigosStyle.subLista} key={key} 
-					onPress={(e)=>{this.updateState(data._id, data.estado); this.updateStateAsignados(data.estado, data._id); this.updateStateUsuarios(data._id, data.estado, data)}} > 
+					onPress={!this.props.noEdita ?(e)=>{this.updateState(data._id, data.estado); this.updateStateAsignados(data.estado, data._id); this.updateStateUsuarios(data._id, data.estado, data)} :null} > 
 					<Image source={{ uri: data.photo}}  style={data.estado ?AmigosStyle.avatar :AmigosStyle.avatar2} /> 
 					<Text style={[AmigosStyle.textoAvatar, AmigosStyle.familia]}>{data.nombre}</Text>
 					{!data.estado ?<Image source={require('../assets/images/agregado.png')} style={AmigosStyle.agregado}/> :null} 
@@ -97,7 +90,6 @@ export default class AgregarAmigosComponent extends Component{
 	}
  
 	render(){
-		console.log(this.state.asignados)
 		return(
 			<View style={AmigosStyle.contenedor}>
 				<Modal

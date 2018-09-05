@@ -126,11 +126,10 @@ export default class homeComponent extends Component{
 	    } 
 	}
 	
-	 
+	
 	getRow(filteredData){
 		const {navigate} = this.props.navigation
 		const {opacity, top, deg, translate} = this.state
-
 		const filtered = this.state.filteredData.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
 		return filtered.map((e, key)=>{
 		let data = parseInt(e.dist/1000);

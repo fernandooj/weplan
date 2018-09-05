@@ -296,15 +296,25 @@ export default class ItemComponent extends Component{
 		);
 	}
 	cerrarItem(id, titulo){
-		Alert.alert(
+		axios.get(`x/v1/ite/item/id/${id}`)
+		.then(res=>{
+			console.log(res.data.mensaje[0].asignados)
+			let data = []
+			res.data.mensaje[0].asignados.filter(e=>{
+				data.push(e.nombre)
+			})
+			data = data.join('\n')
+			Alert.alert(
 				`Estas seguro de cerrar ${titulo}, luego no podras abrirlo`,
-				'los usuarios que quedaran asignados son:',
+				`los usuarios que quedaran asignados son: ${data}`,
 			[
 				{text: 'Mejor Luego', onPress: () => console.log('OK Pressed')},
 				{text: 'Si Cerrar', onPress: () => this.confirmaCerrarItem(id)},
 			],
 				{ cancelable: false }
 			)
+		})
+		
 	}
 	confirmaCerrarItem(id){
 		axios.post('x/v1/ite/item/cerrarItem', {id})

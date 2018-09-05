@@ -181,7 +181,7 @@ export default class editPerfilComponent extends Component{
            			placeholderTextColor="#8F9093" 
 			    />	
 			    <View style={style.containCiudad}>	
-			     <View style={{  justifyContent:'space-around' }}>
+			     <View style={{ justifyContent:'space-around' }}>
 				    <ModalSelector
 		                data={ciudad}
 		                initValue="Ciudad"
