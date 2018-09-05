@@ -130,8 +130,8 @@ export default class App extends Component<{}> {
    let userInfoId = await AsyncStorage.getItem('userInfoId');
    userInfoId = userInfoId.slice(1, -1)
    console.log(userInfoId) 
-   var num = Math.floor(Math.random() * 5);
-   this.setState({num})
+   
+   
    
    if (userInfoId===null || userInfoId==='0') {
       axios.get('/x/v1/user/profile/')
@@ -162,7 +162,7 @@ export default class App extends Component<{}> {
   
   }
   render() {
-    const {num} = this.state
+    let num = Math.floor(Math.random() * 5);
     const {google, local} = this.state
     if (local==null) {
       return (
