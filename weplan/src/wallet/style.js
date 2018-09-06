@@ -1,7 +1,7 @@
 import {StyleSheet, Dimensions} from 'react-native';
 var screenHeight = Dimensions.get('window');
-
-export const style = StyleSheet.create({
+import { MediaQueryStyleSheet } from "react-native-responsive";
+export const style = MediaQueryStyleSheet.create({
 	contenedor:{
 		alignItems: 'center',
 		flex: 1,
@@ -11,7 +11,8 @@ export const style = StyleSheet.create({
 		fontFamily:'Futura-CondensedLight',
 	},
 	subContenedor:{
-		width:'80%',
+		width:'85%',
+		top:50
 	},
 	item:{
 		flexDirection:'row',
@@ -23,7 +24,7 @@ export const style = StyleSheet.create({
 		width: 80,
 		height: 80,
 		borderColor:'#9CB7F5',
-		borderWidth:6,
+		borderWidth:4,
 		marginRight:15
 	},
 	separador:{
@@ -41,7 +42,7 @@ export const style = StyleSheet.create({
 	nombre:{
 		color:'#5664ba',
 		fontSize:21,
-		width:160,
+		width:220,
 	},
 	textoTotal:{
 		fontSize:20,
@@ -57,12 +58,19 @@ export const style = StyleSheet.create({
 		fontSize:17,
 		width:80
 	},
-	back:{
-		width:20,
+	verDetalleBtn:{
+		width:10,
 		height:20,
-		marginLeft:6 
+		marginLeft:6,
+		transform: [{ rotate: '180deg'}] 
 	}
 	 
+},{
+	"@media (max-device-width: 320)": {
+		nombre:{
+			width:160,
+		},
+	}
 })
 
 

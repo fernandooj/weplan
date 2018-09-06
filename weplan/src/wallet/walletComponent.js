@@ -61,7 +61,7 @@ export default class walletComponent extends Component{
 								 
 							</View>	
 						</View>
-						<Image source={require('../assets/images/back.png')} style={style.back} />
+						<Image source={require('../assets/images/back.png')} style={style.verDetalleBtn} />
 					</View>
 					<View  style={style.separador}></View>
 				</TouchableOpacity>
@@ -70,25 +70,7 @@ export default class walletComponent extends Component{
 			return <Text> </Text>
 		}
 	}
-	cabezera(){
-		const {navigate} = this.props.navigation
-		return(
-			<View style={style.contenedorCabezera}> 
-				<TouchableOpacity onPress={()=>navigate('inicio')} style={style.btnClose} >
-					<Image source={require('../assets/images/back.png')} style={style.imagenClose} />
-				</TouchableOpacity>
-				<TextInput
-      				style={style.input}
-			        onChangeText={this.filteredData.bind(this)}
-			        value={this.state.username}
-			        underlineColorAndroid='transparent'
-           			placeholder="Buscar"
-           			placeholderTextColor="#8F9093" 
-			    />
-			    <Image source={require('../assets/images/search.png')} style={style.btnBuscar} />
-			</View>
-		)
-	}
+ 
  
 	render(){
 		const filteredData = this.state.filteredData
@@ -96,7 +78,6 @@ export default class walletComponent extends Component{
 		const {navigate} = this.props.navigation
 		return(	 
 			<View style={style.contenedor}>
-				 
 				<CabezeraComponent navigate={navigate} url={'inicio'} texto='My Wallet'  />
 				<ScrollView style={style.subContenedor}>
 					{rows}	

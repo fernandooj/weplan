@@ -30,7 +30,7 @@ export default class createPlanComponent extends Component{
  			textMonth:'Mes',
  			textDate:'Dia',
  			textYear:'Año',
- 			fechaHoy:moment().format('YYYY-MM-DD h:mm'),
+ 			fechaHoy:moment().format('DD-MM-YYYY h:mm'),
  			asignados:[],
  			usuariosAsignados:[],
  			restricciones:[],
@@ -179,7 +179,12 @@ export default class createPlanComponent extends Component{
 							<Image source={require('../assets/images/back.png')} style={CreatePlanStyle.imgBack} />
 						</TouchableOpacity>
 						<TouchableOpacity style={[CreatePlanStyle.contenedorTextBack]} onPress={() => this.setState({ showTipo:!this.state.showTipo})}>
-							<Text style={[CreatePlanStyle.textBack, CreatePlanStyle.familia]}>Click para cambiar tipo plan</Text>
+							<View style={CreatePlanStyle.planesTitulo}>
+								<Text style={[CreatePlanStyle.textBack, CreatePlanStyle.familia]}>
+									{publico ?'Plan Público' :'Plan Privado'}
+								</Text>	
+								<Text style={CreatePlanStyle.triangulo2}></Text>
+							</View>
 						</TouchableOpacity>
 				   </View>
 				}
@@ -299,8 +304,8 @@ export default class createPlanComponent extends Component{
 								date={this.state.fechaLugar}
 								style={CreatePlanStyle.inputs}
 								mode="datetime"
-								placeholder="Mes / Dia / Año / Hora"
-								format="YYYY-MM-DD h:mm"
+								placeholder="Dia / Mes / Año / Hora"
+								format="DD-MMM-YYYY h:mm"
 								showIcon={false}
 								confirmBtnText="Confirm"
 								cancelBtnText="Cancel"

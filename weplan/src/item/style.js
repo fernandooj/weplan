@@ -125,6 +125,10 @@ export const style = MediaQueryStyleSheet.create({
  	CrearItem:{
 		fontSize:20
 	},
+	textoSinAsignados:{
+		fontSize:22,
+		padding:10
+	},
   	//////////// crear item  //////////
 	container:{
 		backgroundColor:'rgba(0,0,0,.6)',

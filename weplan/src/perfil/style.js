@@ -11,6 +11,7 @@ export const style = MediaQueryStyleSheet.create({
 	},
 	subContenedor:{
 		width:'100%',
+		marginTop:50
 	},
 	avatar: {
 		marginTop:10,
@@ -31,7 +32,7 @@ export const style = MediaQueryStyleSheet.create({
 		marginTop:20,
 	},
 	perfil:{
-		marginHorizontal:10
+		marginHorizontal:10,
 	},
 	contenedorRegistros:{
 		flexDirection:'row',

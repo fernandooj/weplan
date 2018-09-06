@@ -15,14 +15,15 @@ export const style = MediaQueryStyleSheet.create({
 	encabezadoPlan:{
 		alignItems: 'center',
 		backgroundColor:'#f8f8f8',
-		paddingTop: 30,
-		paddingBottom: 30,
+		paddingTop: 10,
+		marginTop:  45,
+		paddingBottom: 20,
 		flexDirection: 'row',
 		width:'100%',
 		paddingRight:10,
 		paddingLeft:10,
-		borderBottomLeftRadius:40,
-		borderBottomRightRadius:40
+		borderBottomLeftRadius:30,
+		borderBottomRightRadius:30
 	},
 	imagenPlan:{
  		width:100,

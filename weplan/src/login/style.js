@@ -14,7 +14,7 @@ export const style = MediaQueryStyleSheet.create({
 		justifyContent: 'center', /*justifica contenido verticalmente */
 	},
 	image:{
-		marginTop:20,
+		marginTop:60,
 		marginBottom:40,
 	},
 	familia:{

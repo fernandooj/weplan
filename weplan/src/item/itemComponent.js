@@ -69,7 +69,8 @@ export default class ItemComponent extends Component{
 		}) 
 	}
 	renderAcordeon() {
-		const {render, total}=this.state
+		const {render, total, articulosPendientes, pago, deuda, articulosPublicados}=this.state
+ 
 		return (
 			<View>
 				<View style={style.headerCollapsable}>
@@ -78,7 +79,9 @@ export default class ItemComponent extends Component{
 			    	</TouchableOpacity>
 			    	{
 			    	 	render==1
-			    	 	&&this.articulosPendientes()
+			    	 	&&articulosPendientes.length==0
+			    	 	?<Text style={[style.textoSinAsignados, style.familia]}>No te han asignado a ningún artículo!, aquí podras encontrar cuando te asignen a alguno!</Text>
+			    	 	:this.articulosPendientes()
 			    	}
 			  	</View>
 			  	<View style={style.headerCollapsable}>
@@ -86,7 +89,9 @@ export default class ItemComponent extends Component{
 			    		<Text style={[style.headerText, style.familia]}><Icon name={render==2 ?'angle-down' :'angle-right'} allowFontScaling style={style.iconMenu} /> Mis Artículos</Text>
 			    	</TouchableOpacity>
 			    	{	render==2
-			    		&&<View>
+			    	  	?pago.length==0 && deuda.length==0
+			    	  	?<Text style={[style.textoSinAsignados, style.familia]}>Aún no has creado ningún artículo! Empieza clickeando en "Crear artículo"</Text>
+			    	  	:<View>
 			    			<View>
 			    				{this.articulosMios()}{this.articulosAsignados()}
 			    			</View>
@@ -97,6 +102,7 @@ export default class ItemComponent extends Component{
 								</Text>
 				    		</View>
 				    	</View>
+				    	:null
 			    	}
 			  	</View>
 
@@ -106,7 +112,9 @@ export default class ItemComponent extends Component{
 			    	</TouchableOpacity>
 			    	 {
 			    	 	render==3
-			    	 	&&this.articulosPublicados()
+			    	 	&&articulosPublicados.length===0
+			    	 	?<Text style={[style.textoSinAsignados, style.familia]}>Ninguno de tus amigos ha publicado artículos, aqui podrás verlos e interesarte si así lo quieres! </Text>
+			    	 	:this.articulosPublicados()
 			    	 }
 			  	</View>
 			</View>
@@ -141,7 +149,6 @@ export default class ItemComponent extends Component{
 	/////// SI ESTA EN LISTADO DE ESPERA Y EL USUARIO ACEPTA ENTRAR 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	aceptarItem(idItem, token, titulo, imagen, monto){
-		console.log({idItem, token, titulo, imagen, monto})
 		axios.put(`/x/v1/ite/item/activar/${idItem}`, {monto, planId:this.state.planId})
 		.then(e=>{
 			console.log(e.data)
@@ -198,7 +205,6 @@ export default class ItemComponent extends Component{
 	/////// SI EL USUARIO HACE CLICK EN ME INTERESA, ENVIA LA NOTIFICACION AL CREADOR DEL ITEM PARA DARLE PERMISO DE INGRESAR
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	ingresarItem(idItem, token, titulo, imagen){
-		console.log(idItem)
 		axios.put('x/v1/ite/item', {idItem})
 		.then(e=>{
 			if (e.data.code==1) {
@@ -270,7 +276,7 @@ export default class ItemComponent extends Component{
 		return (
 			<ScrollView>
 				<View  style={style.contentItem}>
-					<CabezeraComponent navigate={navigate} url={'chat'} parameter={this.state.planId} />
+					<CabezeraComponent navigate={navigate} url={'chat'} parameter={this.state.planId} texto='Artículos' />
 					
 					  	{/*****   show the modal to create component	*****/}
 						  	{

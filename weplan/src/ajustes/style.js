@@ -10,7 +10,8 @@ export const style = MediaQueryStyleSheet.create({
 		fontFamily:'Futura-CondensedLight',
 	},
 	subContenedor:{
-		width:'80%'
+		width:'80%',
+		marginTop:50
 	},
 	avatar: {
 		marginTop:10,
@@ -55,8 +56,14 @@ export const style = MediaQueryStyleSheet.create({
  	registro:{
  		flexDirection:'row',
  		alignItems: 'center',
- 		width:'100%' 
+ 		width:'100%',
  	},
+	registro2:{
+		flexDirection:'row',
+ 		alignItems: 'center',
+ 		width:'100%',
+ 		marginTop:45 
+	},
  	btnCabezera:{
  		padding:15,
  		width:'50%',
@@ -161,23 +168,34 @@ export const style = MediaQueryStyleSheet.create({
  	////////////////////////////	CABEZERA   //////////////////////////////////////
  	contenedorBack:{
  		flexDirection:'row',
- 		backgroundColor:'#dadede',
+ 		alignItems:'center',
+ 		position:'absolute',
+ 		zIndex:100,
+ 		top:0,
+ 		left:0,
+ 		backgroundColor:'#eeecec',
  		width:screenWidth,
- 		padding:10,
- 	},
- 	imgBack:{
- 		width:18,
- 		height:20
+ 		padding:13,
  	},
  	btnBack:{
- 		width:'30%',
+ 		width:30,
  		marginLeft:20
  	},
+ 	imgBack:{
+ 		width:11,
+ 		height:20
+ 	},
  	btnEdit:{
- 		width:'30%'
+ 		width:'10%'
+ 	},
+ 	contenedorTexto:{
+ 		width:'80%',
+ 		alignItems:'center',
  	},
  	textBack:{
- 		width:'35%',
+ 		
+ 		alignItems:'center',
+ 		
  		fontSize:20
  	},
  	separador:{

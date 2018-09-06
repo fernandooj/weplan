@@ -12,6 +12,7 @@ export const style = StyleSheet.create({
 	},
 	subContenedor:{
 		width:'80%',
+		marginTop:50
 	},
 	item:{
 		flexDirection:'row',

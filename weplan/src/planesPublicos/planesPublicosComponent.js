@@ -103,16 +103,13 @@ export default class planesPublicosComponent extends Component{
 					filtroData.length==0
 					?<Image source={require('../assets/images/sinPlanes.png')} style={style.sinPlanes} />
 					:filtroData.length>0
-					?<ScrollView showsVerticalScrollIndicator={false}>
-						<View style={style.subContenedor}>
-						{rows}
-						</View>	
+					?<ScrollView showsVerticalScrollIndicator={false} style={style.subContenedor}>
+						 
+							{rows}
+						 
 					</ScrollView>
 					:<View></View>
 				}
-				{/*<ScrollView style={style.subContenedor}>
-					{rows}	
-				</ScrollView>*/}
 				<View style={style.footer}>
 					<FooterComponent navigate={navigate} />	
 				</View>	

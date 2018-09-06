@@ -152,7 +152,7 @@ export default class LoginComponent extends Component{
 	    }
 
 	    FCM.getFCMToken().then(token => {
-	      console.log(token);
+	      // console.log(token);
 	      this.setState({token: token || ""})
 	    });
 

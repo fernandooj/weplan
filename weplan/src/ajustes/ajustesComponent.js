@@ -149,7 +149,7 @@ export default class ajustesComponent extends Component{
 		const {navigate} = this.props.navigation
 		return(
 			<View style={style.contenedor}>
-				<CabezeraComponent navigate={navigate} url={'inicio'} />
+				<CabezeraComponent navigate={navigate} url={'inicio'} texto='Ajustes' />
 				{this.renderQr()}		
 				<View style={style.subContenedor}>
 					{this.renderPerfil()}

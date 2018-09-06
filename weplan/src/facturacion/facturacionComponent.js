@@ -54,7 +54,7 @@ export default class facturacionComponent extends Component{
 		const {navigate} = this.props.navigation
 		return(	 
 			<View style={style.contenedor}>
-				<CabezeraComponent navigate={navigate} url={'ajustes'} texto='Facturacion'  />
+				<CabezeraComponent navigate={navigate} url={'ajustes'} texto='Facturación'  />
 				<ScrollView style={style.subContenedor}>
 					<Text style={[style.titulo, style.familia]}>Realizar Pago</Text>
 					<View style={style.contenedorImagenes}>

@@ -369,7 +369,7 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
  		padding:10,
  	},
  	imgBack:{
- 		width:18,
+ 		width:11,
  		height:20
  	},
  	btnBack:{
@@ -442,6 +442,24 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 	    borderLeftColor: 'transparent',
 	    borderRightColor: 'transparent',
 	    borderBottomColor: '#dadede'
+	},
+	planesTitulo:{
+		flexDirection:'row',
+		marginLeft:40
+	},
+	triangulo2:{
+		width: 0,
+	    height: 0,
+	    top:6,
+	    marginLeft:10,
+	    backgroundColor: 'transparent',
+	    borderStyle: 'solid',
+	    borderLeftWidth: 8,
+	    borderRightWidth: 8,
+	    borderTopWidth: 16,
+	    borderLeftColor: 'transparent',
+	    borderRightColor: 'transparent',
+	    borderTopColor: 'grey'
 	}
 },{
 	"@media (max-device-width: 320)": {

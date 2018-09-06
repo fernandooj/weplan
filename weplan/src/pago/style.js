@@ -18,6 +18,7 @@ export const style = MediaQueryStyleSheet.create({
 	},
 	contenedor:{
 		width:'90%',
+		marginTop:45
 	},
 	contenedorImagen:{
 		minWidth:100,
@@ -265,6 +266,7 @@ export const style = MediaQueryStyleSheet.create({
 		contentItem:{
 			flex:1,
 			height:screenHeight+210,
+			marginTop:45
 		},
 		montoTitulo:{
 			width:'50%',

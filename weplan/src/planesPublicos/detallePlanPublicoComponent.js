@@ -139,6 +139,7 @@ export default class detallePlanPublicoComponent extends Component{
 				}
 
 				<CabezeraComponent navigate={navigate} url={'planesPublicos'} texto='Activar Plan' />
+				<View style={{height:45}}></View>
 				<TakePhotoComponent fuente={'cam.png'} fuente2={imagen} ancho={screenWidth} alto={160} updateImagen={(imagen) => {this.setState({imagen})}}   />
 				<View style={CreatePlanStyle.textoCargado2}>
 					<TextInput
@@ -192,8 +193,8 @@ export default class detallePlanPublicoComponent extends Component{
 							date={fechaLugar}
 							style={CreatePlanStyle.inputs}
 							mode="datetime"
-							placeholder="Mes / Dia / Año / Hora"
-							format="YYYY-MM-DD h:mm"
+							placeholder="Dia / Mes / Año / Hora"
+							format="DD-MMM-YYYY h:mm"
 							showIcon={false}
 							confirmBtnText="Confirm"
 							cancelBtnText="Cancel"

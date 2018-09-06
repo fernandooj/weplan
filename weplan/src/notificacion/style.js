@@ -14,6 +14,7 @@ export const style = MediaQueryStyleSheet.create({
 		flex: .5,
 		paddingRight:15,	
 		paddingLeft:15,	
+		marginTop:50,
 	},
 	subContenedor:{
 		width:'100%',
@@ -25,7 +26,7 @@ export const style = MediaQueryStyleSheet.create({
 		width: 70,
 		height: 70,
 		borderColor:'#5664ba',
-		borderWidth:5,
+		borderWidth:4,
 	},
 	perfil:{
 	 	alignItems: 'center',

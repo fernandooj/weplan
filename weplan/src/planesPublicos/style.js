@@ -6,12 +6,15 @@ export const style = MediaQueryStyleSheet.create({
 		alignItems: 'center',
 		flex: 1,
 		backgroundColor:"#ffffff",
+		width:'100%',
+
 	},
 	familia:{
 		fontFamily:'Futura-CondensedLight',
 	},
 	subContenedor:{
-		width:'80%',
+		width:'90%',
+		marginTop:46,
 	},
 	item:{
 		flexDirection:'row',
@@ -41,7 +44,7 @@ export const style = MediaQueryStyleSheet.create({
 	nombre:{
 		color:'#5664ba',
 		fontSize:20,
-		width:160,
+		width:220,
 	},
 	textoTotal:{
 		fontSize:20,
@@ -58,9 +61,10 @@ export const style = MediaQueryStyleSheet.create({
 		width:80
 	},
 	back:{
-		width:20,
+		width:10,
 		height:20,
-		marginLeft:6 
+		marginLeft:6,
+		transform: [{ rotate: '180deg'}] 
 	},
 	activarBtn:{
 		backgroundColor:'#5664ba',
@@ -77,7 +81,8 @@ export const style = MediaQueryStyleSheet.create({
 	sinPlanes:{
 		width:350,
 		height:530,
-		marginBottom:10
+		marginBottom:10,
+		marginTop:45
 	},
 	footer:{
 		position : 'absolute',
@@ -88,6 +93,7 @@ export const style = MediaQueryStyleSheet.create({
 	"@media (max-device-width: 320)": {
 		nombre:{
 			fontSize:18,
+			width:160
 		},
 		textoTotal:{
 			fontSize:18,

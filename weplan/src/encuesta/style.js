@@ -14,6 +14,7 @@ export const style = MediaQueryStyleSheet.create({
 	},
 	subContentItem:{
 		flex: 1,
+		marginTop:50,
 		minHeight:screenHeight,
 		marginRight:'4%',
 		marginLeft:'4%'
@@ -237,8 +238,20 @@ export const style = MediaQueryStyleSheet.create({
 	},
 	btnCamera:{
 		position:'absolute',
-		bottom:-15,
-		right:-10, 
+		bottom:-10,
+		right:-5, 
+		zIndex:100 
+	},
+	btnCamera2:{
+		position:'absolute',
+		bottom:0,
+		right:2, 
+		zIndex:100 
+	},
+	btnCamera2:{
+		position:'absolute',
+		bottom:0,
+		right:2, 
 		zIndex:100 
 	},
 	titulo:{

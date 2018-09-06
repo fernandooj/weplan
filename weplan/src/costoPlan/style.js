@@ -17,6 +17,7 @@ export const style = MediaQueryStyleSheet.create({
 	},
 	contentItem:{
 		flex: 1,
+		
 		height:screenHeight.height+100,
 	},
 	subContenedor:{
@@ -24,6 +25,7 @@ export const style = MediaQueryStyleSheet.create({
 	},
 	contenedorItem:{
 		flexDirection:'row',
+		marginTop:60,
 	},
 	item:{
 		flexDirection:'row',
@@ -35,7 +37,7 @@ export const style = MediaQueryStyleSheet.create({
 		width: 80,
 		height: 80,
 		borderColor:'#9CB7F5',
-		borderWidth:6,
+		borderWidth:4,
 		marginRight:15
 	},
 	contenedorLeft:{

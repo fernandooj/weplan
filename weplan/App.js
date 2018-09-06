@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import {
-  Animated,
+  Animated, YellowBox,
   Easing, StyleSheet, Text, View, Image, Dimensions, ImageBackground, AsyncStorage
 } from 'react-native'
 import axios                  from 'axios' 
 import { StackNavigator } from 'react-navigation'
-
+YellowBox.ignoreWarnings(['Remote debugger']);
 import homeComponent          from './src/home/homeComponent';
 import LoginComponent         from './src/login/loginComponent';
 import RegistroComponent      from './src/registro/registroComponent';
@@ -128,11 +128,10 @@ export default class App extends Component<{}> {
   }
   componentWillMount = async()=> {
    let userInfoId = await AsyncStorage.getItem('userInfoId');
-   userInfoId = userInfoId.slice(1, -1)
-   console.log(userInfoId) 
    
-   
-   
+   if (userInfoId) {
+      userInfoId = userInfoId.slice(1, -1)  
+   }
    if (userInfoId===null || userInfoId==='0') {
       axios.get('/x/v1/user/profile/')
       .then((res)=>{
@@ -158,16 +157,16 @@ export default class App extends Component<{}> {
       .catch((err)=>{
          console.log(err)
       })
-   }
-  
+    }
   }
   render() {
     let num = Math.floor(Math.random() * 5);
     const {google, local} = this.state
+    console.log(num)
     if (local==null) {
       return (
-         <ImageBackground source={num===0 ?require('./splash0.jpg') :num===1 ?require('./splash1.jpg') :num===2 ?require('./splash2.jpg') :num===3 ?require('./splash3.jpg') :num===4 &&require('./splash4.jpg')} style={styles.image}>   
-           
+         <ImageBackground source={num==0 ?require('./splash0.jpg') :num==1 ?require('./splash1.jpg') :num==2 ?require('./splash2.jpg') :num==3 ?require('./splash3.jpg') :num==4 &&require('./splash4.jpg')} style={styles.image}>   
+           <Image source={require('./src/assets/images/logo.png')} style={{width:300, height:220}} />
           </ImageBackground>
           )
     }else if(local==1){
@@ -183,9 +182,11 @@ export default class App extends Component<{}> {
 }
  
 const styles = StyleSheet.create({
-    image: {
-        flex: 1,
-        width: win.width,
-        height: win.height,
-    }
+  image: {
+    flex: 1,
+    width: win.width,
+    height: win.height,
+    alignItems:'center',
+    justifyContent: 'center',
+  }
 }); 

@@ -136,7 +136,7 @@ export default class infoPlanComponent extends Component{
 			{/* si la ubicacion no tiene */}
 			{this.renderAlertNombreEvento()}
 			<View style={style.contenedor}> 
-				<CabezeraComponent navigate={navigate} url={'chat'} parameter={data._id}  />
+				<CabezeraComponent navigate={navigate} url={'chat'} parameter={data._id} texto='Info Plan' />
 				<View style={style.encabezadoPlan}>
 				   	<View>
 				   	<Lightbox 
@@ -226,8 +226,8 @@ export default class infoPlanComponent extends Component{
 								date={fechaLugar}
 								style={[style.btnInputs, style.btnInputs2]}
 								mode="datetime"
-								placeholder="Mes / Dia / Año / Hora"
-								format="YYYY-MM-DD h:mm"
+								placeholder="Dia / Mes / Año / Hora"
+								format="DD-MMM-YYYY h:mm"
 								showIcon={false}
 								confirmBtnText="Confirm"
 								cancelBtnText="Cancel"

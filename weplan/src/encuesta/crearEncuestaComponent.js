@@ -13,8 +13,8 @@ export default class CrearEncuestaComponent extends Component{
       titulo:'',
       pregunta1:'',
       pregunta2:'',
-      imagen:'',
-      imagen2:'',
+      imagen:null,
+      imagen2:null,
       descripcion:'',
       valor:0,
       enviarChat:'Enviar',
@@ -44,7 +44,7 @@ export default class CrearEncuestaComponent extends Component{
   }
 
   render() {
-    const {enviarChat, valor, adjuntarAmigos, asignados} = this.state
+    const {enviarChat, valor, adjuntarAmigos, asignados, imagen, imagen2} = this.state
     return (
       <View style={style.container}>
         <View style={style.modalIn}>
@@ -95,8 +95,8 @@ export default class CrearEncuestaComponent extends Component{
                 onChangeText={(pregunta1) => this.setState({pregunta1})}
                 maxLength={17}
               />
-              <TouchableOpacity style={style.btnCamera} >
-                <TakePhotoComponent fuente={'camara.png'} ancho={40} alto={40} border={20}
+              <TouchableOpacity style={imagen ?style.btnCamera2 :style.btnCamera} >
+                <TakePhotoComponent fuente={'camara.png'} ancho={imagen ?120 :40} alto={imagen ?70 :40} border={imagen ?70 :20}
                   updateImagen={(imagen) => {this.setState({imagen})}} 
                   style={style.camera} />
               </TouchableOpacity>
@@ -112,8 +112,8 @@ export default class CrearEncuestaComponent extends Component{
                 onChangeText={(pregunta2) => this.setState({pregunta2})}
                 maxLength={17}
               />
-              <TouchableOpacity style={style.btnCamera} >
-                <TakePhotoComponent fuente={'camara.png'} ancho={40} alto={40} border={20}
+              <TouchableOpacity style={imagen2 ?style.btnCamera2 :style.btnCamera} >
+                <TakePhotoComponent fuente={'camara.png'} ancho={imagen2 ?120 :40} alto={imagen2 ?70 :40} border={imagen2 ?70 :20}
                   updateImagen={(imagen2) => {this.setState({imagen2})}} 
                   style={style.camera} />
               </TouchableOpacity>

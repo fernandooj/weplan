@@ -18,7 +18,7 @@ export default class encuestaComponent extends Component{
 	}
 	componentWillMount(){
 		let planId = this.props.navigation.state.params	
-		// let planId = '5b3f9da239e97c7d2fd4a425'	
+		// let planId = '5b8a278dc581676c62f30ca8'	
  
 		axios.get('/x/v1/enc/encuesta/'+planId)
 		.then(e=>{
@@ -293,10 +293,11 @@ export default class encuestaComponent extends Component{
 		const {show, items, itemsPlan, render, planId} = this.state
 		const {navigate} = this.props.navigation
 		return (
-			<ScrollView>
+
+			
 				<View  style={style.contentItem}>
-					<CabezeraComponent navigate={navigate} url={'chat'} parameter={this.state.planId} />
-					
+				<CabezeraComponent navigate={navigate} url={'chat'} parameter={this.state.planId} texto='Encuestas' />
+					<ScrollView>					
 					  	{/*****   show the modal to create component	*****/}
 						  	{
 						  		show
@@ -316,8 +317,9 @@ export default class encuestaComponent extends Component{
 						  	
 						 	{this.renderAcordeon()}
 					  	</View>
+					</ScrollView>
 				</View>
-			</ScrollView>
+			
 		);
 	}
 	 

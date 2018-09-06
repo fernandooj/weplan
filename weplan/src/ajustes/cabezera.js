@@ -22,17 +22,16 @@ export default class CabezeraComponent extends Component{
 				</TouchableOpacity>
 				{
 					texto
-					?<Text style={[style.textBack, style.familia]}>{this.props.texto}</Text>
+					?<View style={style.contenedorTexto}><Text style={[style.textBack, style.familia]}>{this.props.texto}</Text></View>
 					:null
 				}
-				{
+				{/*
 					show
 					?<TouchableOpacity onPress={()=> navigate(url)} style={style.btnEdit}>
 						<Image source={require('../assets/images/back.png')} style={style.imgBack} />
 					</TouchableOpacity>
 					:null
-				}
-				
+				*/}
 		   </View>
 		)
 	}

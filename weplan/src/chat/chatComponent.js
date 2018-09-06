@@ -55,7 +55,7 @@ export default class ChatComponent extends Component{
 
 	componentWillMount(){
 		let planId = this.props.navigation.state.params	
-		// let planId = '5b8b54be02e37b1e83c23520'	 
+		// let planId = '5b8a278dc581676c62f30ca8'	 
 		console.log(this.props.navigation.state.params)
 		console.log(planId)
 		this.socket = SocketIOClient(URL);
@@ -88,8 +88,6 @@ export default class ChatComponent extends Component{
 	}
 	componentDidMount() {
 	    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
-	   	
- 
 	}
 	handleBackPress = () => {
 		const {navigate} = this.props.navigation
@@ -121,7 +119,8 @@ export default class ChatComponent extends Component{
 			<View>
 				<View style={style.cabezera}>
 					<TouchableOpacity onPress={() => navigate('misPlanes')} style={style.iconRegresar}>
-						<Text style={style.regresar}>&#60;</Text>		
+						<Image source={require('../assets/images/item3.png')} style={style.imgRegresar}  />
+						 
 					</TouchableOpacity> 
 					<TouchableOpacity onPress={() => navigate('infoPlan', {plan,id})}>
 						<Text style={[style.nombrePlan, style.familia]}>{nombrePlan ?nombrePlan.substring(0, 60) :''}</Text>
@@ -721,7 +720,7 @@ export default class ChatComponent extends Component{
 
 			{this.renderQr()}
 
-			{/* FOOTER INPUT / ENVIAR */}
+			{/* FOOTER INPUT / ENVIAR */} 
 				<View style={showMainFooter ?[style.footer, style.showFooter] :[style.footer]}>
 					<View style={style.footer1}>
 						<TouchableOpacity onPress={()=>this.setState({showOpciones:!this.state.showOpciones})} style={style.opcionesBtn}>

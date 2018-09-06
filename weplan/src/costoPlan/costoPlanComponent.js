@@ -173,9 +173,9 @@ export default class costoPlanComponent extends Component{
   		const {show, monto, photo, nombre, itemId, userId, debo, total} = this.state
 		return (
 			<View style={style.container}>
+				<CabezeraComponent navigate={navigate} url={'wallet'} parameter={this.state.planId} texto='Mi Wallet' />
 				<ScrollView >
 					<View style={style.contentItem}>
-						<CabezeraComponent navigate={navigate} url={'wallet'} parameter={this.state.planId} texto='Mi Wallet' />
 						<View style={style.contenedor}>
 							{this.renderPlan()}
 							<Text style={[style.tituloDeuda, style.familia]}>Cuanto Debo</Text>

@@ -42,7 +42,7 @@ export const style = MediaQueryStyleSheet.create({
 	btnImagenPlan:{
 		position:'absolute',
 		top:15,
-		left:screenWidth/20,
+		left:45,
 		zIndex:110	
 	},
 	imagen:{
@@ -53,9 +53,16 @@ export const style = MediaQueryStyleSheet.create({
 		height:70
 	},
 	iconRegresar:{
-		width:60,
-		height:60,
-		bottom:-10
+		width:23,
+		height:45,
+		left:10,
+		top:5
+	},
+	imgRegresar:{
+		width:15,
+		height:28,
+		// left:10,
+		// top:5
 	},
 	iconContenedor:{	
 		width:60,
@@ -72,7 +79,7 @@ export const style = MediaQueryStyleSheet.create({
 	nombrePlan:{
 		color:'#ffffff',
 		fontSize:18,
-		marginLeft:30, 
+		left:40, 
 		width:150,
 		lineHeight: 17
 	},
@@ -94,20 +101,22 @@ export const style = MediaQueryStyleSheet.create({
 	//////////////		OPCIONES
 	///////////////////////////////////////////////////////////////
 	opcionesBtn:{
-		width:60
+		width:50,
+		marginTop:2
 	},
 	opciones:{
-		width:45,
-		height:32,
+		width:35,
+		height:24,
 		marginLeft:13,
 		marginTop:3,
 	},
 	enviarBtn:{
 		width:70,
+		marginTop:5
 	},
 	enviar:{
-		width:45,
-		height:26
+		width:40,
+		height:23
 	},
 	contenedorOpciones:{
  		flexDirection:'row',
@@ -156,7 +165,7 @@ export const style = MediaQueryStyleSheet.create({
 		justifyContent: 'flex-start',
 	},
 	textarea:{
-		width:'60%',
+		width:'67%',
 		height:35,
 		color:'#969696',
 		paddingTop:5,
@@ -167,7 +176,7 @@ export const style = MediaQueryStyleSheet.create({
 		marginLeft:10,
 		backgroundColor: '#ffffff',	
 		fontSize:17,
-		borderRadius: 50,
+		borderRadius: 10,
 	},
 	////////////////// box chat /////////////////
 	box:{

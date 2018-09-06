@@ -21,8 +21,8 @@ export default class MapaPlanComponent extends Component{
  			x: {
 				latitude: 4.597825,
 				longitude: -74.0755723,
-				latitudeDelta: 0.015,
-				longitudeDelta: 0.0121,
+				latitudeDelta: 0.046002887451081165,
+				longitudeDelta: 0.05649235099555483,
 		    },
 		    buscador:false,
 		    marker: {
@@ -41,48 +41,49 @@ export default class MapaPlanComponent extends Component{
 	}
 
 	async componentWillMount(){	
+		const {ubicacionDefecto,  guardaUbicacion} = this.props
+		
 		navigator.geolocation.getCurrentPosition(e=>{
 			// console.log(e)
 			let lat = parseFloat(e.coords.latitude)
 			let lng = parseFloat(e.coords.longitude)
+			let latitude = ubicacionDefecto.infoplan ?ubicacionDefecto.lat 
+						   :guardaUbicacion.lat ?guardaUbicacion.lat 
+						   :lat ?lat :4.597825;
+			let longitude = ubicacionDefecto.infoplan ?ubicacionDefecto.lng 
+						   :guardaUbicacion.lng ?guardaUbicacion.lng 
+						   :lng ?lng :-74.0755723;
 			let x = {
-				latitude:lat,
-				longitude:lng,
-				latitudeDelta:LATITUD_DELTA,
-				longitudeDelta:LONGITUDE_DELTA
+				latitude:latitude,
+				longitude:longitude,
+				latitudeDelta:0.013850498819819812,
+				longitudeDelta:0.01412317156791687
 			}
 			this.setState({x, mapaCargado:true})
-			 
-			// Alert.alert(
-			//   `lat: ${lat}`,
-			//  `lng: ${lng}`,
-			//   [
-			//     {text: 'OK', onPress: () => console.log('OK Pressed')},
-			//   ],
-			//   { cancelable: false }
-			// )
+ 
 		}, (error)=>this.watchID = navigator.geolocation.watchPosition(e=>{
 			let lat =parseFloat(e.coords.latitude)
 			let lng = parseFloat(e.coords.longitude)
+			let latitude = ubicacionDefecto.infoplan ?ubicacionDefecto.lat 
+						   :guardaUbicacion.lat ?guardaUbicacion.lat 
+						   :lat ?lat :4.597825;
+			let longitude = ubicacionDefecto.infoplan ?ubicacionDefecto.lng 
+						   :guardaUbicacion.lng ?guardaUbicacion.lng 
+						   :lng ?lng :-74.0755723;
 			let x = {
-				latitude : lat,
-				longitude : lng,
-				latitudeDelta : LATITUD_DELTA,
-				longitudeDelta : LONGITUDE_DELTA
+				latitude:latitude,
+				longitude:longitude,
+				latitudeDelta:0.013850498819819812,
+				longitudeDelta:0.01412317156791687
 			}
 			this.setState({x, mapaCargado:true})
-			// Alert.alert(
-			//   `lat: ${lat}`,
-			//  `lng: ${lng}`,
-			//   [
-			//     {text: 'OK', onPress: () => console.log('OK Pressed')},
-			//   ],
-			//   { cancelable: false }
-			// )
+ 
 		},
 		(error) => console.log('error'),
 		{enableHighAccuracy: true, timeout:5000, maximumAge:0})
       )
+		
+		// this.setState({x: {latitude, longitude}})
 	}
 	componentWillUnmount() {
 		Keyboard.dismiss()
@@ -98,8 +99,9 @@ export default class MapaPlanComponent extends Component{
 	}
 	render(){
 		const {ubicacionDefecto, inputValor, planPublico, guardaUbicacion} = this.props
-		const {valorInicial, km, latitudeDelta, longitudeDelta, mapaCargado, showKeyboard, buscador} = this.state
+		const {valorInicial, km, latitudeDelta, longitudeDelta, mapaCargado, showKeyboard, buscador ,x} = this.state
 		let direccion = guardaUbicacion.direccion ?guardaUbicacion.direccion :this.state.direccion
+		console.log(x)
 		console.log(buscador)
 		if (mapaCargado) {
 			return(
@@ -172,17 +174,16 @@ export default class MapaPlanComponent extends Component{
 		      					?<MapView
 						          style={CreatePlanStyle.map, {height:showKeyboard ?250:405}}
 						          region={{
-						            latitude:  ubicacionDefecto.infoplan ?ubicacionDefecto.lat :guardaUbicacion.lat ?guardaUbicacion.lat :this.state.x.latitude,
-						            longitude: ubicacionDefecto.infoplan ?ubicacionDefecto.lng :guardaUbicacion.lng ?guardaUbicacion.lng :this.state.x.longitude,
-						            latitudeDelta: this.state.x.latitudeDelta,
-						            longitudeDelta: this.state.x.longitudeDelta,
+						            latitude:  x.latitude,
+						            longitude: x.longitude,
+						            latitudeDelta: x.latitudeDelta,
+						            longitudeDelta: x.longitudeDelta,
 						          }}
 					          		onRegionChange={(e)=>this.onRegionChange(e)}
 						        	> 
 						        <Marker
-								    coordinate={ubicacionDefecto.infoplan ?{latitude:this.props.ubicacionDefecto.lat, longitude:this.props.ubicacionDefecto.lng}  :guardaUbicacion.lat ?{latitude:this.props.guardaUbicacion.lat, longitude:this.props.guardaUbicacion.lng} :this.state.x}
-
-								    //onDragEnd={(e) => {this.setState({ x: e.nativeEvent.coordinate }); console.log(e.nativeEvent.coordinate)}}
+								    // coordinate={ubicacionDefecto.infoplan ?{latitude:this.props.ubicacionDefecto.lat, longitude:this.props.ubicacionDefecto.lng}  :guardaUbicacion.lat ?{latitude:this.props.guardaUbicacion.lat, longitude:this.props.guardaUbicacion.lng} :this.state.x}
+								    coordinate={x}
 								  />
 								  <Circle 
 								  	radius={km}
@@ -203,7 +204,7 @@ export default class MapaPlanComponent extends Component{
 					          		onRegionChange={(e)=>this.onRegionChange(e)}
 						        	> 
 						        <Marker
-								    coordinate={ubicacionDefecto.infoplan ?{latitude:this.props.ubicacionDefecto.lat, longitude:this.props.ubicacionDefecto.lng}  :guardaUbicacion.lat ?{latitude:this.props.guardaUbicacion.lat, longitude:this.props.guardaUbicacion.lng} :this.state.x}
+								    coordinate={x}
 								  />
 								  <Circle 
 								  	radius={km}
@@ -231,7 +232,7 @@ export default class MapaPlanComponent extends Component{
 					        }
 					        {
 					        	!ubicacionDefecto.infoplan || ubicacionDefecto.muestraBtnHecho
-					        	?<View  style={CreatePlanStyle.contenedorRes}>
+					        	?<View style={CreatePlanStyle.contenedorRes}>
 						       		<TouchableOpacity 
 						       			onPress={() => { this.props.updateStateX(this.state.x.latitude, this.state.x.longitude, direccion, km, valorInicial)} } 
 										style={CreatePlanStyle.btnHecho}>

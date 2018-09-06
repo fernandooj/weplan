@@ -64,7 +64,7 @@ export default class ajustesAmigosComponent extends Component{
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  	renderCabezera(){
  		return(
-			<View style={style.registro}>
+			<View style={style.registro2}>
 				<TouchableOpacity style={style.btnCabezera} >
 					<Text style={[style.textCabezera, style.familia]}>Amigos</Text>
 				</TouchableOpacity>
@@ -166,7 +166,7 @@ export default class ajustesAmigosComponent extends Component{
 		const {navigate} = this.props.navigation
 		return(
 			<View style={style.contenedorA}>
-				<CabezeraComponent navigate={navigate} url={'ajustes'} />
+				<CabezeraComponent navigate={navigate} url={'ajustes'} texto='Amigos' />
 				<ScrollView>
 					{this.renderCabezera()}
 					<View style={style.contenedor}>

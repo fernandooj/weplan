@@ -67,7 +67,6 @@ export default class perfilComponent extends Component{
  	renderPerfil(){
 		const {perfil, imagen, ciudad, ciudades, sexo, photo, exitoso, nombre, qr, calificacion, saldo} = this.state
 		const {navigate} = this.props.navigation
-		console.log(ciudad)
 		let a=60
 		let b=100
 		if (perfil) {
@@ -164,8 +163,8 @@ export default class perfilComponent extends Component{
 								date={this.state.nacimiento}
 								style={style.date}
 								mode="date"
-								placeholder="Mes / Dia / Año"
-								format="DD-MM-YYYY"
+								placeholder="Dia / Mes / Año"
+								format="DD-MMM-YYYY"
 								showIcon={false}
 								confirmBtnText="Confirm"
 								cancelBtnText="Cancel"
@@ -228,9 +227,8 @@ export default class perfilComponent extends Component{
 		const {navigate} = this.props.navigation
 		return(	 
 			<View style={style.contenedor}>
-			<ScrollView style={style.subContenedor}>
 				<CabezeraComponent navigate={navigate} url={'ajustes'} texto='Perfil' />
-				
+				<ScrollView style={style.subContenedor}>
 					{this.renderPerfil()}
 				</ScrollView>	
 			</View> 

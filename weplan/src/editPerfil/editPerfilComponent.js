@@ -38,18 +38,18 @@ const day  = [
 	{label:31, key:31}
 ]
 const month = [
-	{label:1, key:0},
-	{label:2, key:2},
-	{label:3, key:3},
-	{label:4, key:4},
-	{label:5, key:5},
-	{label:6, key:6},
-	{label:7, key:7},
-	{label:8, key:8},
-	{label:9, key:9},
-	{label:10, key:10},
-	{label:11, key:11},
-	{label:12, key:12}
+	{label:'ene', key:0},
+	{label:'feb', key:2},
+	{label:'mar', key:3},
+	{label:'abr', key:4},
+	{label:'may', key:5},
+	{label:'jun', key:6},
+	{label:'jul', key:7},
+	{label:'ago', key:8},
+	{label:'sep', key:9},
+	{label:'oct', key:10},
+	{label:'nov', key:11},
+	{label:'dic', key:12}
 ]
 const year = [  
 	{label:1950, key:0},
