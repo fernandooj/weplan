@@ -82,8 +82,6 @@ export default class MapaPlanComponent extends Component{
 		(error) => console.log('error'),
 		{enableHighAccuracy: true, timeout:5000, maximumAge:0})
       )
-		
-		// this.setState({x: {latitude, longitude}})
 	}
 	componentWillUnmount() {
 		Keyboard.dismiss()
@@ -97,12 +95,38 @@ export default class MapaPlanComponent extends Component{
  		this.setState({buscador:true})
 		this.setState({direccion, x:{latitude, longitude, latitudeDelta: 0.015, longitudeDelta: 0.0121}})
 	}
+	currentUbication(){
+		navigator.geolocation.getCurrentPosition(e=>{
+			let lat = parseFloat(e.coords.latitude)
+			let lng = parseFloat(e.coords.longitude)
+			let x = {
+				latitude:lat,
+				longitude:lng,
+				latitudeDelta:0.013850498819819812,
+				longitudeDelta:0.01412317156791687
+			}
+			this.setState({x, mapaCargado:true, buscador:true})
+ 
+		}, (error)=>this.watchID = navigator.geolocation.watchPosition(e=>{
+			let lat =parseFloat(e.coords.latitude)
+			let lng = parseFloat(e.coords.longitude)
+			let x = {
+				latitude:lat,
+				longitude:lng,
+				latitudeDelta:0.013850498819819812,
+				longitudeDelta:0.01412317156791687
+			}
+			this.setState({x, mapaCargado:true,buscador:true})
+		},
+		(error) => console.log('error'),
+		{enableHighAccuracy: true, timeout:5000, maximumAge:0})
+      )
+	}
 	render(){
 		const {ubicacionDefecto, inputValor, planPublico, guardaUbicacion} = this.props
 		const {valorInicial, km, latitudeDelta, longitudeDelta, mapaCargado, showKeyboard, buscador ,x} = this.state
 		let direccion = guardaUbicacion.direccion ?guardaUbicacion.direccion :this.state.direccion
-		console.log(x)
-		console.log(buscador)
+ 
 		if (mapaCargado) {
 			return(
 				<View>
@@ -133,11 +157,13 @@ export default class MapaPlanComponent extends Component{
 								renderDescription={row => row.description} // custom description render
 								onPress={(data, details = null) => {this.setUbicacion(data,details)}}// 'details' is provided when fetchDetails = true
 									
-								
+								 
 								getDefaultValue={() => ''}
 								query={{
 									key: 'AIzaSyCn_XO2J1yIl7I3UMy7hL6-0QmFJAOwIz8',
 									language: 'es', // language of the results
+									location: '4.597825,-74.0755723',
+									components: 'country:co'
 								}}
 								styles={{
 										textInputContainer: {
@@ -182,7 +208,6 @@ export default class MapaPlanComponent extends Component{
 					          		onRegionChange={(e)=>this.onRegionChange(e)}
 						        	> 
 						        <Marker
-								    // coordinate={ubicacionDefecto.infoplan ?{latitude:this.props.ubicacionDefecto.lat, longitude:this.props.ubicacionDefecto.lng}  :guardaUbicacion.lat ?{latitude:this.props.guardaUbicacion.lat, longitude:this.props.guardaUbicacion.lng} :this.state.x}
 								    coordinate={x}
 								  />
 								  <Circle 
@@ -201,8 +226,8 @@ export default class MapaPlanComponent extends Component{
 						            latitudeDelta: this.state.x.latitudeDelta,
 						            longitudeDelta: this.state.x.longitudeDelta,
 						          }}
-					          		onRegionChange={(e)=>this.onRegionChange(e)}
-						        	> 
+				          		onRegionChange={(e)=>this.onRegionChange(e)}
+					        	> 
 						        <Marker
 								    coordinate={x}
 								  />
@@ -215,8 +240,9 @@ export default class MapaPlanComponent extends Component{
 								  />
 						        </MapView>
 			      				}
-					        
-					         
+			      			<TouchableOpacity onPress={()=>this.currentUbication()} style={CreatePlanStyle.ubicationBtn}>
+					        	<Image source={require('../assets/images/ubication.png')} style={CreatePlanStyle.ubication}/>
+					        </TouchableOpacity>
 					        {
 					        	inputValor
 					        	&&<TextInputMask

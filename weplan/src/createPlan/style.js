@@ -215,6 +215,16 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		height: 38,
 		width: 30
 	},
+	ubicationBtn:{
+		position:'relative',
+		top:-50,
+		right:10,
+		alignSelf: 'flex-end'
+	},
+	ubication:{
+		width:40,
+		height:40,
+	},
 	///////////////////////////////////////
 	////////// restricciones //////////////
 	///////////////////////////////////////

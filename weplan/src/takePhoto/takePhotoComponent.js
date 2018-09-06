@@ -48,18 +48,31 @@ export default class TakePhotoComponent extends Component{
 		    console.log('User tapped custom button: ', response.customButton);
 		  }
 		  else {
-		    let source = { uri: response.uri };
-		    var imagen = {
-			    uri:  response.uri,
-			    type: response.type ?response.type :'image/jpeg',
-			    name: response.fileName ?response.fileName :'imagen.jpg',
-			    path: response.path
-			};
-			this.props.updateImagen(imagen)
-		    this.setState({
-		      avatarSource: source,
-		      imagen
-		    });
+		  	let extension = response.fileName.split('.').pop()	
+		  	if (extension==='jpg' || extension==='png' || extension==='jpeg') {
+		  		let source = { uri: response.uri };
+			    var imagen = {
+				    uri:  response.uri,
+				    type: response.type ?response.type :'image/jpeg',
+				    name: response.fileName ?response.fileName :`imagen.${extension}`,
+				    path: response.path
+				};
+				this.props.updateImagen(imagen)
+			    this.setState({
+			      avatarSource: source,
+			      imagen
+			    });
+		  	}else{
+		  		Alert.alert(
+				  'imagen no compatible',
+				  '',
+				  [
+				    {text: 'OK', onPress: () => {console.log('OK Pressed') }},
+				  ],
+				  { cancelable: false }
+				)
+		  	}
+		    
 		  }
 		});
 	}

@@ -81,13 +81,13 @@ export default class createPlanComponent extends Component{
 		}else{
 			this.setState({tipoPlan:true})
 		}
-		// this.setState({
-	 //      interval: setInterval(() => {
-	 //        this.setState({
-	 //          position: this.state.position === this.state.imagenes.length ? 0 : this.state.position + 1
-	 //        });
-	 //      }, 2000)
-	 //    });
+		this.setState({
+	      interval: setInterval(() => {
+	        this.setState({
+	          position: this.state.position === this.state.imagenes.length ? 0 : this.state.position + 1
+	        });
+	      }, 2000)
+	    });
 	}
 	componentWillUnmount() {
 		clearInterval(this.state.interval);
