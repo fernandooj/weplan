@@ -11,7 +11,7 @@ export const style = MediaQueryStyleSheet.create({
 	},
 	subContenedor:{
 		width:'80%',
-		marginTop:50
+		marginTop:Platform.OS==='android' ?50 :65
 	},
 	avatar: {
 		marginTop:10,
@@ -62,7 +62,7 @@ export const style = MediaQueryStyleSheet.create({
 		flexDirection:'row',
  		alignItems: 'center',
  		width:'100%',
- 		marginTop:45 
+ 		marginTop:Platform.OS==='android' ?50 :70 
 	},
  	btnCabezera:{
  		padding:15,
@@ -179,7 +179,7 @@ export const style = MediaQueryStyleSheet.create({
  	},
  	btnBack:{
  		width:30,
- 		marginLeft:20
+ 		marginLeft:20,
  	},
  	imgBack:{
  		width:11,

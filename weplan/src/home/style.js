@@ -50,6 +50,7 @@ export const style = MediaQueryStyleSheet.create({
 		top:-100
 	},
 	fondo:{
+		top:Platform.OS==='android' ?0 :18,
 		height:Platform.OS==='android' ?screenHeight-(screenHeight/9.7) :screenHeight-(screenHeight/16.7),
 	},
 	footer:{

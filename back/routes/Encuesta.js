@@ -155,7 +155,6 @@ router.post('/', function(req, res){
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 router.post('/:id', (req,res)=>{
-	console.log(req.files)
 	let id = req.session.usuario.user._id
 	let ruta  = null
 	let ruta2 = null
@@ -168,20 +167,20 @@ router.post('/:id', (req,res)=>{
 	if (req.files.imagen) {
 		let extension = req.files.imagen.name.split('.').pop()
 		let fullUrl = '../../front/docs/public/uploads/encuesta/'+fechab+'_'+randonNumber+'.'+extension
-		ruta = req.protocol+'://'+req.get('Host') + '/public/uploads/encuesta/'+fechab+'_'+randonNumber+'.'+extension
+		ruta = req.protocol+'s://'+req.get('Host') + '/public/uploads/encuesta/'+fechab+'_'+randonNumber+'.'+extension
 		fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))
 	}else{
-		ruta = req.protocol+'://'+req.get('Host') + '/encuesta.png'
+		ruta = req.protocol+'s://'+req.get('Host') + '/encuesta.png'
 	}
 
 	////////////////////////////////////////  RECIVO LA SEGUNDA IMAGEN 		/////////////////////////////////////////
 	if (req.files.imagen2) {
 		let extension2 = req.files.imagen2.name.split('.').pop()
 		let fullUrl2 = '../../front/docs/public/uploads/encuesta/'+fechab+'_'+randonNumber2+'.'+extension2
-		ruta2 = req.protocol+'://'+req.get('Host') + '/public/uploads/encuesta/'+fechab+'_'+randonNumber2+'.'+extension2
+		ruta2 = req.protocol+'s://'+req.get('Host') + '/public/uploads/encuesta/'+fechab+'_'+randonNumber2+'.'+extension2
 		fs.rename(req.files.imagen2.path, path.join(__dirname, fullUrl2))
 	}else{
-		ruta2 = req.protocol+'://'+req.get('Host') + '/encuesta.png'
+		ruta2 = req.protocol+'s://'+req.get('Host') + '/encuesta.png'
 	}
 
 	///////////////////////// 	condiciono el tipo de pregunta 	///////////////////////

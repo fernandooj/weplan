@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, Platform} from 'react-native';
 var screenHeight = Dimensions.get('window');
 import { MediaQueryStyleSheet } from "react-native-responsive";
 export const style = MediaQueryStyleSheet.create({
@@ -12,7 +12,7 @@ export const style = MediaQueryStyleSheet.create({
 	},
 	subContenedor:{
 		width:'85%',
-		top:50
+		top:Platform.OS==='android' ?50 :75,
 	},
 	item:{
 		flexDirection:'row',

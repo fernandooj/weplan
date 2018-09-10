@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, Platform} from 'react-native';
 var screenHeight = Dimensions.get('window').height;
 import { MediaQueryStyleSheet } from "react-native-responsive";
 export const style = MediaQueryStyleSheet.create({ 
@@ -16,7 +16,7 @@ export const style = MediaQueryStyleSheet.create({
 		alignItems: 'center',
 		backgroundColor:'#f8f8f8',
 		paddingTop: 10,
-		marginTop:  45,
+		marginTop:  Platform.OS==='android' ?45 :65,
 		paddingBottom: 20,
 		flexDirection: 'row',
 		width:'100%',

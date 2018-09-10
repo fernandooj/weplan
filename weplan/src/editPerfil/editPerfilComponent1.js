@@ -1,9 +1,11 @@
-import React, {Component} 						 from 'react'
-import {View, Text, TouchableOpacity, TextInput, CheckBox, Linking, Alert} from 'react-native'
-import {style} 							 from '../editPerfil/style'
-import Image 									 from 'react-native-scalable-image';
-import axios 									 from 'axios';
-import Icon from 'react-native-fa-icons';
+import React, {Component} 	from 'react'
+import {View, Text, TouchableOpacity, 
+TextInput, Linking, Alert}  from 'react-native'
+import {style} 				from '../editPerfil/style'
+import Image 				from 'react-native-scalable-image';
+import CheckBox 			from 'react-native-check-box'
+import axios 				from 'axios';
+import Icon 				from 'react-native-fa-icons';
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////  ARCHIVOS GENERADOS POR EL EQUIPO  //////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -38,7 +40,9 @@ export default class editPerfilComponent1 extends Component{
 		const {showPassword, textPassword, textPassword1, condiciones} = this.state
 		return(
 			<View style={style.fondo}> 
-	           	<TakePhotoComponent fuente={'foto.png'} ancho={140} alto={10} updateImagen={(photo) => {this.setState({photo})}} border={80} />
+				<View style={{marginTop:50}}>  </View>
+	           		<TakePhotoComponent fuente={'foto.png'} ancho={140} alto={10} updateImagen={(photo) => {this.setState({photo})}} border={50} />
+		       
 		        <TextInput
 			        style={[style.input, style.familia]}
 			        onChangeText={(textPassword) => this.setState({textPassword})}
@@ -62,8 +66,11 @@ export default class editPerfilComponent1 extends Component{
 			    />	
 			    <View style={style.logos}>
 			    	<CheckBox 
-				    	onValueChange={(condiciones) => this.setState({condiciones})}
-				    	value={condiciones}
+			    		style={style.check}
+				    	onClick={(condiciones) => this.setState({condiciones:!this.state.condiciones})}
+				    	isChecked={this.state.condiciones}
+				    	checkedImage={<Image source={require('../assets/images/categoriaCheck.png')} style={{width:15, height:15}}/>}
+            			unCheckedImage={<Image source={require('../assets/images/categoriaCheckDisable.png')} style={{width:15, height:15}}/>}
 			    	/>
 			    	<TouchableOpacity onPress={()=>{ Linking.openURL('https://appweplan.com')}}>
 			    		<Text style={[style.textoAcepto, style.familia]}>Acepto los terminos y condiciones</Text>

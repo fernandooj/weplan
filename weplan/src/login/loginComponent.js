@@ -173,7 +173,7 @@ export default class LoginComponent extends Component{
 				<ImageBackground style={style.fondoLogin}  source={num===0 ?require('../../splash0.jpg') :num===1 ?require('../../splash1.jpg') :num===2 ?require('../../splash2.jpg') :num===3 ?require('../../splash3.jpg') :num===4 &&require('../../splash4.jpg')} >
 					<View>
 						<Image
-							style={style.image}
+							style={style.imageLogin}
 							width={140} // height will be calculated automatically
 							source={require('../assets/images/logo.png')}
 					   />
@@ -214,14 +214,14 @@ export default class LoginComponent extends Component{
 				    <View style={style.logos}>
 				      <TouchableOpacity onPress={()=>this._signInRedes(1)} >
 				        <Image
-							style={style.image}
+							style={style.imageLogos}
 							width={60} // height will be calculated automatically
 							source={require('../assets/images/facebook.png')}
 					    />
 				      </TouchableOpacity>
 				      <TouchableOpacity onPress={()=>this._signInRedes(2)} >
 				       <Image
-							style={style.image}
+							style={style.imageLogos}
 							width={60} // height will be calculated automatically
 							source={require('../assets/images/google.png')}
 					    />

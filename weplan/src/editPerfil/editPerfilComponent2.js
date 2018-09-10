@@ -71,7 +71,6 @@ export default class editPerfilComponent2 extends Component{
 	}
 	render(){
 		const {activo, qr} = this.state
-		console.log(this.state.restriccionArray.length)
 		return(
 			<ScrollView style={style.fondoUltimo}>
 			{

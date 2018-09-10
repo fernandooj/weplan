@@ -682,8 +682,11 @@ export const style = MediaQueryStyleSheet.create({
 		btnImagenPlan:{
 			position:'absolute',
 			top:10,
-			left:screenWidth/20,
+			left:Platform.OS==='android' ?30 :40,
 			zIndex:110	
+		},
+		textarea:{
+			width:'60%'
 		},
 		imagen:{
 			borderRadius:30,

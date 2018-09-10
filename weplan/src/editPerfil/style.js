@@ -22,7 +22,7 @@ export const style = MediaQueryStyleSheet.create({
  
 	},
 	image2:{
-		marginTop:10,
+		marginTop:60,
         width:'70%',
         height:60
 	},
@@ -251,8 +251,9 @@ export const style = MediaQueryStyleSheet.create({
 		color:'#FF5959'
 	},
 	check:{
-		width:30,
-		height:30
+		width:15,
+		height:15,
+		left:-30
 	},
 	BtniconPass:{
 		position:'relative',

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, TextInput, ImageBackground, Alert, BackHandler} from 'react-native'
+import {View, Text, Image, TouchableOpacity, TextInput, ImageBackground, Alert, BackHandler, Platform} from 'react-native'
 import {style}        from '../encuesta/style'
 import axios                  from 'axios'
 import TakePhotoComponent     from '../takePhoto/takePhotoComponent.js'
@@ -73,7 +73,7 @@ export default class CrearEncuestaComponent extends Component{
                 underlineColorAndroid='transparent' 
                 placeholderTextColor="#5664BA" 
                 editable = {true}
-                multiline = {true}
+                multiline = {false}
                 style={[style.descripcion, style.familia]}
                 onChangeText={(titulo) => this.setState({titulo})}
                 maxLength={30}
@@ -94,9 +94,10 @@ export default class CrearEncuestaComponent extends Component{
                 style={[style.inputValor, style.familia]}
                 onChangeText={(pregunta1) => this.setState({pregunta1})}
                 maxLength={17}
+                multiline = {false}
               />
               <TouchableOpacity style={imagen ?style.btnCamera2 :style.btnCamera} >
-                <TakePhotoComponent fuente={'camara.png'} ancho={imagen ?120 :40} alto={imagen ?70 :40} border={imagen ?70 :20}
+                <TakePhotoComponent fuente={'camara.png'} ancho={imagen ?Platform.OS==='android' ?120 :94 :Platform.OS==='android' ?120 :35} alto={imagen ?70 :40} border={imagen ?Platform.OS==='android' ?70 :32 :20}
                   updateImagen={(imagen) => {this.setState({imagen})}} 
                   style={style.camera} />
               </TouchableOpacity>
@@ -111,9 +112,10 @@ export default class CrearEncuestaComponent extends Component{
                 style={[style.inputValor, style.familia]}
                 onChangeText={(pregunta2) => this.setState({pregunta2})}
                 maxLength={17}
+                multiline = {false}
               />
               <TouchableOpacity style={imagen2 ?style.btnCamera2 :style.btnCamera} >
-                <TakePhotoComponent fuente={'camara.png'} ancho={imagen2 ?120 :40} alto={imagen2 ?70 :40} border={imagen2 ?70 :20}
+                <TakePhotoComponent fuente={'camara.png'} ancho={imagen2 ?Platform.OS==='android' ?120 :94 :Platform.OS==='android' ?120 :35} alto={imagen2 ?70 :40} border={imagen2 ?Platform.OS==='android' ?70 :39 :20}
                   updateImagen={(imagen2) => {this.setState({imagen2})}} 
                   style={style.camera} />
               </TouchableOpacity>

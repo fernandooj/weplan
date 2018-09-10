@@ -50,7 +50,7 @@ export default class MisPlanesComponent extends Component{
 		if(filteredData.length>0){
 			return filteredData.map((e, key)=>{
 			return  <TouchableOpacity onPress={()=>this.handleSubmit(e.id)} key={key} style={MisPlanesStyle.boxPlan}>
-					<Image source={{uri: e.imagen[0]}} style={MisPlanesStyle.background} />
+					<Image source={{uri: e.imagen ?e.imagen[0] :URL+'public/img/plan.jpg'}} style={MisPlanesStyle.background} />
 					<Text style={[MisPlanesStyle.nombre, MisPlanesStyle.familia]}>{e.nombrePlan.length<27 ?e.nombrePlan :e.nombrePlan.substring(0, 27)+' ...'}</Text>
 					<View style={MisPlanesStyle.boxPlan1} >
 						<Text style={[MisPlanesStyle.fechaLugar, MisPlanesStyle.familia]}>{e.fecha}</Text>

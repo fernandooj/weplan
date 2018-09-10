@@ -9,10 +9,10 @@ import {sendRemoteNotification} from '../push/envioNotificacion.js'
 export default class ajustesComponent extends Component{
 	state={
 		menus:[
-			{method:1, label:'Amigos', 		 	value:'ajustesAmigos', },
-			{method:1, label:'Planes Públicos', value:'planesPublicos', },
+			{method:1, label:'Amigos', 		 	value:'ajustesAmigos'},
+			{method:1, label:'Planes Públicos', value:'planesPublicos'},
 			{method:1, label:'Facturación', 	value:'facturacion'},
-			{method:3, label:'QR', 		 		value:'abrirQr', },
+			{method:3, label:'QR', 		 		value:'abrirQr'},
 			{method:1, label:'Privacidad',  	value:'privacidad'},
 			{method:1, label:'General', 	 	value:'general'},
 			{method:2, label:'Cerrar Sesion',   value:'closeSession'},
@@ -158,11 +158,6 @@ export default class ajustesComponent extends Component{
 			</View>
 		)
 	}
-
-
-
-
-
 
 	closeSession(){
 		const {navigate} = this.props.navigation

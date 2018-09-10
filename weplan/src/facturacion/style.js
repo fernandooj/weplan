@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, Platform} from 'react-native';
 var screenHeight = Dimensions.get('window');
 
 export const style = StyleSheet.create({
@@ -12,7 +12,7 @@ export const style = StyleSheet.create({
 	},
 	subContenedor:{
 		width:'80%',
-		marginTop:50
+		marginTop:Platform.OS==='android' ?50 :75,
 	},
 	item:{
 		flexDirection:'row',
@@ -33,7 +33,9 @@ export const style = StyleSheet.create({
 		alignItems: 'center',
 	},
 	separador:{
-		borderWidth:2,
+		borderWidth:Platform.OS==='android' ?2 :0,
+		padding:0,
+		height:0,
 		borderTopColor:'#ffffff',
 		borderBottomColor:'#CACACA',
 		borderLeftColor:'#f8f8f8',

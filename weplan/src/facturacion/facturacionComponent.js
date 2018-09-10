@@ -58,8 +58,7 @@ export default class facturacionComponent extends Component{
 				<ScrollView style={style.subContenedor}>
 					<Text style={[style.titulo, style.familia]}>Realizar Pago</Text>
 					<View style={style.contenedorImagenes}>
-						<Image source={{uri:'http://www.lebrija-santander.gov.co/Ciudadanos/PublishingImages/Paginas/Pagos-en-Linea/logo-pse.PNG'}} style={style.imagen}/>
-						<Image source={{uri:'http://tintalplaza.com/wp-content/uploads/2016/05/AV-villas.jpg'}} style={style.imagen}/>
+						<Image source={{uri:'https://www.centrocomercialfundadores.com/wp-content/uploads/2018/05/av_villas_1.jpg'}} style={style.imagen}/>
 					</View>
 					<Text style={style.separador}></Text>
 					<Text style={[style.titulo, style.familia]}>Pagos Realizados</Text>

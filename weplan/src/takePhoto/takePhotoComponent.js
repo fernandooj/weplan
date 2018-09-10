@@ -29,6 +29,7 @@ export default class TakePhotoComponent extends Component{
 			quality: 1.0,
 			maxWidth: 500,
 			maxHeight: 500,
+			allowsEditing:true,
 			storageOptions: {
 				skipBackup: true
 			}
@@ -47,14 +48,12 @@ export default class TakePhotoComponent extends Component{
 		  else if (response.customButton) {
 		    console.log('User tapped custom button: ', response.customButton);
 		  }
-		  else {
-		  	let extension = response.fileName.split('.').pop()	
-		  	if (extension==='jpg' || extension==='png' || extension==='jpeg') {
+		  	else {
 		  		let source = { uri: response.uri };
 			    var imagen = {
 				    uri:  response.uri,
 				    type: response.type ?response.type :'image/jpeg',
-				    name: response.fileName ?response.fileName :`imagen.${extension}`,
+				    name: response.fileName ?response.fileName :`imagen.jpg`,
 				    path: response.path
 				};
 				this.props.updateImagen(imagen)
@@ -62,18 +61,7 @@ export default class TakePhotoComponent extends Component{
 			      avatarSource: source,
 			      imagen
 			    });
-		  	}else{
-		  		Alert.alert(
-				  'imagen no compatible',
-				  '',
-				  [
-				    {text: 'OK', onPress: () => {console.log('OK Pressed') }},
-				  ],
-				  { cancelable: false }
-				)
 		  	}
-		    
-		  }
 		});
 	}
 	render(){
