@@ -6,7 +6,6 @@ const API_URL = "https://fcm.googleapis.com/fcm/send";
 class FirebaseClient {
 
   async send(body, type) {
-
 		if(FirebaseConstants.KEY === 'YOUR_API_KEY'){
 			Alert.alert('Set your API_KEY in app/FirebaseConstants.js')
 			return;
@@ -23,11 +22,11 @@ class FirebaseClient {
 				response = await response.json();
 				if(!response.success){
 
-					//Alert.alert('Failed to send notification, check error log')
+					// Alert.alert('Failed to send notification, check error log')
 					console.log('Failed to send notification, check error log')
 				}
 			} catch (err){
-				//Alert.alert('Failed to send notification, check error log')
+				// Alert.alert('Failed to send notification, check error log')
 				console.log('Failed to send notification' +err)
 			}
 		} catch (err) {

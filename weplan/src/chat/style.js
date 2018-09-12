@@ -23,7 +23,8 @@ export const style = MediaQueryStyleSheet.create({
 		width:screenWidth,
 	},
 	fondoCorto:{
-		height:Platform.OS==='android' ?screenHeight-395 :screenHeight-128,
+		height:Platform.OS==='android' ?screenHeight-395 :screenHeight-390,
+		// height:105,
 	},
  	////////////////// cabezera
  	cabezera:{
@@ -61,8 +62,6 @@ export const style = MediaQueryStyleSheet.create({
 	imgRegresar:{
 		width:15,
 		height:28,
-		// left:10,
-		// top:5
 	},
 	iconContenedor:{	
 		width:60,
@@ -93,7 +92,7 @@ export const style = MediaQueryStyleSheet.create({
 	},
  	indicador:{
  		position:'absolute',
- 		top:70,
+ 		top:Platform.OS==='android' ?70 :80,
  		zIndex:100,
  		left:'50%'
  	},
@@ -681,7 +680,7 @@ export const style = MediaQueryStyleSheet.create({
 	"@media (max-device-width: 320)": {
 		btnImagenPlan:{
 			position:'absolute',
-			top:10,
+			top:Platform.OS==='android' ?5 :30,
 			left:Platform.OS==='android' ?30 :40,
 			zIndex:110	
 		},
@@ -784,15 +783,15 @@ export const style = MediaQueryStyleSheet.create({
 			bottom:Platform.OS==='android' ?0 :20,
 		},
 		fondo:{
-			height:Platform.OS==='android' ?screenHeight-155 :screenHeight-160,
+			height:Platform.OS==='android' ?screenHeight-155 :screenHeight-180,
 		},
 		cabezera:{
 			// marginTop:Platform.OS==='android' ?0 :32,
 			paddingTop:Platform.OS==='android' ?0 :30,
 		},
 		btnImagenPlan:{	
-			top:Platform.OS==='android' ?15 :30,
-			left:25
+			top:Platform.OS==='android' ?15 :31,
+			left:Platform.OS==='android' ?25 :37,
 		}
 	}
 })

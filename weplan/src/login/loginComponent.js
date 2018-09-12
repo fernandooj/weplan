@@ -152,15 +152,18 @@ export default class LoginComponent extends Component{
 	    }
 
 	    FCM.getFCMToken().then(token => {
-	      // console.log(token);
+	      console.log(token);
 	      this.setState({token: token || ""})
+
 	    });
 
 	    if(Platform.OS === 'ios'){
 	      FCM.getAPNSToken().then(token => {
 	        console.log("APNS TOKEN (getFCMToken)", token);
+	          
 	      });
 	    }
+
 	}
 
 	

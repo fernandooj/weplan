@@ -30,11 +30,8 @@ export default class profileComponent extends Component{
 		}
 	}
 	componentWillMount(){
-
 		let userId = this.props.navigation.state.params.userId
-
 		// let userId = '5b37d5c226d7c9175c24ddbd'
-		 
 		axios.get(`/x/v1/pla/plan/getbyid/${userId}`) 
 		.then((res)=>{
 	 
@@ -58,10 +55,6 @@ export default class profileComponent extends Component{
 		/////////////////	OBTENGO MIS AMIGOS ASIGNADOS
 		axios.get(`/x/v1/ami/amigoUser/${userId}`)
 		.then(res=>{
-			console.log(res.data.asignados)
-			// let asignado = res.data.asignados.filter(e=>{
-			// 	return e.idUsuario._id==userId || e.asignado._id==userId 
-			// })
 			if (res.data.asignados.length>0) {
 				 res.data.asignados[0].estado ?this.setState({esAmigo:'si'}) :this.setState({esAmigo:'siEsperando'})
 			}else{
@@ -97,34 +90,31 @@ export default class profileComponent extends Component{
 		const {navigate} = this.props.navigation
  
 		return(	 
-			<ScrollView >
-				<View style={profileStyle.contenedor}>
-					<CabezeraComponent navigate={navigate} url={this.props.navigation.state.params.planId ?'chat' :'notificacion'} texto='' parameter={this.props.navigation.state.params.planId ?this.props.navigation.state.params.planId._id :null} /> 
-			 
-					<View style={profileStyle.subContenedor}>
-						{this.renderPerfil()}
-						<Text  style={profileStyle.planesTitulo}>Planes en común</Text>
+			<View style={profileStyle.contenedor}>	
+				<CabezeraComponent navigate={navigate} url={this.props.navigation.state.params.planId ?'chat' :'notificacion'} texto='' parameter={this.props.navigation.state.params.planId ?this.props.navigation.state.params.planId._id :null} /> 
+			 	<ScrollView style={profileStyle.subContenedor}>
+					{this.renderPerfil()}
+					<Text  style={profileStyle.planesTitulo}>Planes en común</Text>
 
+			 		{
+			 			this.state.planesComun.length==0
+			 			?<Text style={profileStyle.sinPlanes}>No tienen planes en común</Text>
+			 			:this.renderPlanes()
+			 		}
+			 		<View style={profileStyle.perfil}>
 				 		{
-				 			this.state.planesComun.length==0
-				 			?<Text style={profileStyle.sinPlanes}>No tienen planes en común</Text>
-				 			:this.renderPlanes()
-				 		}
-				 		<View style={profileStyle.perfil}>
-					 		{
-								this.state.esAmigo==='no'
-								?<TouchableOpacity onPress={()=>this.handleSubmit()} style={profileStyle.agregarBtn}>
-									<Text style={profileStyle.sinPlanes}>Agregar como amigo</Text>
-									<Image source={require('../assets/images/agregar.png')} style={profileStyle.agregar}/>
-								</TouchableOpacity>
-								:this.state.esAmigo==='siEsperando'
-								?<Text style={profileStyle.agregar}>esta en espera de aceptar solicitud</Text>
-								:null
-							}
-						</View>	
+							this.state.esAmigo==='no'
+							?<TouchableOpacity onPress={()=>this.handleSubmit()} style={profileStyle.agregarBtn}>
+								<Text style={profileStyle.sinPlanes}>Agregar como amigo</Text>
+								<Image source={require('../assets/images/agregar.png')} style={profileStyle.agregar}/>
+							</TouchableOpacity>
+							:this.state.esAmigo==='siEsperando'
+							?<Text style={profileStyle.agregar}>esta en espera de aceptar solicitud</Text>
+							:null
+						}
 					</View>	
-				</View>
-			</ScrollView> 
+				</ScrollView> 
+			</View>
 		)
 	}
 	handleSubmit(){

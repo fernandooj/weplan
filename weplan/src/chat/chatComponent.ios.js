@@ -25,6 +25,7 @@ import { showLocation, Popup } from 'react-native-map-link'
 ///////////////////////////////////////////////////////////////////////////////////////////////////////// 
 
 import {URL} from '../../App.js'
+const heightScreen = Dimensions.get('window').height
 export default class ChatComponent extends Component{
 	constructor(props){
 		super(props)
@@ -47,7 +48,8 @@ export default class ChatComponent extends Component{
 			scroll: 	 0, 		    ////// esto resuelve el bug de ir a bottom por parte del scroll 
 			scrollState: false, 		 ////// esto resuelve el bug de ir a bottom por parte del scroll 
 			modalQr: 	 false, 	    ////// muestra el modal del QR
-			showMainFooter:false 		////// en ios, no se muestra el footer cuando se abre el keyboard
+			showMainFooter:false, 		////// en ios, no se muestra el footer cuando se abre el keyboard
+			showIndicador:true        ////// muestra el indicador mientras se carga la informacion
 		}
 		this.onReceivedMessage 	   = this.onReceivedMessage.bind(this);
 		this.onReceivedMessagePago = this.onReceivedMessagePago.bind(this);
@@ -55,13 +57,13 @@ export default class ChatComponent extends Component{
 
 	componentWillMount(){
 		let planId = this.props.navigation.state.params	
-		// let planId = '5b8a278dc581676c62f30ca8'	 
+		// let planId = '5b96ec5c7d74dd757c9e8f7b'	 
 		console.log(this.props.navigation.state.params)
 		console.log(planId)
 		this.socket = SocketIOClient(URL);
 		this.socket.on(`chat${planId}`, 	this.onReceivedMessage);
 		this.socket.on(`editPago${planId}`, this.onReceivedMessagePago);
-		this.setState({showIndicador:true})
+		 
   
 
 		/////////////////	OBTENGO EL PERFIL
@@ -70,17 +72,17 @@ export default class ChatComponent extends Component{
 			let id = res.data.user.user._id
 			let photo = res.data.user.user.photo
 			let nombre = res.data.user.user.nombre
-			this.setState({id, photo, nombre, showIndicador:false})
+			this.setState({id, photo, nombre})
 		})
 		.catch((err)=>{
 			console.log(err)
 		})
 
 		/////////////////	OBTENGO TODOS LOS MENSAJES Y EL PLAN
-		axios.get(`/x/v1/cha/chat/chatPlan/${planId}/${10}`)
+		axios.get(`/x/v1/cha/chat/chatPlan/${planId}/${100}`)
 		.then(e=>{
- 			console.log(e.data)
-			this.setState({mensajes:e.data.chat, planId, scrollState:1, limite:10, imagen: e.data.plan.imagenResize[0], nombrePlan: e.data.plan.nombre, planId, planAsignados:e.data.planAsignados, notificaciones:e.data.plan.notificaciones, plan:e.data.plan})
+ 			console.log(e.data.plan.notificaciones)
+			this.setState({mensajes:e.data.chat, planId, imagen: e.data.plan.imagenResize[0], nombrePlan: e.data.plan.nombre, planId, planAsignados:e.data.planAsignados, notificaciones:e.data.plan.notificaciones, plan:e.data.plan, showIndicador:false})
 		})
 		.catch(err=>{
 			console.log(err)
@@ -613,60 +615,60 @@ export default class ChatComponent extends Component{
 			/>
 		)	
 	}
-	handleScroll(event) {	
-		if(event.nativeEvent.contentOffset.y===0){
-			let limite = this.state.limite + 30
-			this.setState({showIndicador:true, scroll2:this.state.scroll})
-			axios.get(`/x/v1/cha/chat/chatPlan/${this.state.planId}/${limite}`)
-			.then(e=>{
+	// handleScroll(event) {	
+	// 	if(event.nativeEvent.contentOffset.y===0){
+	// 		let limite = this.state.limite + 30
+	// 		this.setState({showIndicador:true, scroll2:this.state.scroll})
+	// 		axios.get(`/x/v1/cha/chat/chatPlan/${this.state.planId}/${limite}`)
+	// 		.then(e=>{
 	 			 
-	 				// let mensajes = [...e.data.chat, ...this.state.mensajes]
-	 				// console.log('---------')
-	 				// console.log(e.data.chat)
-	 				// console.log(this.state.mensajes)
-	 				// console.log(mensajes)
-	 				// console.log('---------')
+	//  				// let mensajes = [...e.data.chat, ...this.state.mensajes]
+	//  				// console.log('---------')
+	//  				// console.log(e.data.chat)
+	//  				// console.log(this.state.mensajes)
+	//  				// console.log(mensajes)
+	//  				// console.log('---------')
 
  
- 					// e.data.chat.map(e=>{
-						// 	this.setState({
-						// 	mensajes: update(this.state.mensajes, {$push: [e]})
-						// })
- 					// })
+ // 					// e.data.chat.map(e=>{
+	// 					// 	this.setState({
+	// 					// 	mensajes: update(this.state.mensajes, {$push: [e]})
+	// 					// })
+ // 					// })
 
-					// this.setState({
-					//   mensajes: update(this.state.mensajes, {$unshift: [e.data.chat[0]]}),
-					//   limite, scrollState:2, showIndicador:false
-					// })
+	// 				// this.setState({
+	// 				//   mensajes: update(this.state.mensajes, {$unshift: [e.data.chat[0]]}),
+	// 				//   limite, scrollState:2, showIndicador:false
+	// 				// })
  
-	 				// this.setState({limite, scrollState:2, showIndicador:false})
+	//  				// this.setState({limite, scrollState:2, showIndicador:false})
 
-	 				this.setState({mensajes:e.data.chat, scrollState:2, showIndicador:false})
-			})
-			.catch(err=>{
-				console.log(err)
-			})
-		}
-	}
+	//  				this.setState({mensajes:e.data.chat, scrollState:2, showIndicador:false})
+	// 		})
+	// 		.catch(err=>{
+	// 			console.log(err)
+	// 		})
+	// 	}
+	// }
    
-	componentDidUpdate(){
-		const {scrollState, scroll, scroll2, showMainFooter, mensajes } = this.state
-		if (this.scrollView && scrollState===1 && scroll2===undefined) {
-			this.scrollView.scrollTo({x:0, y:scroll-Dimensions.get('window').height+150, animated:true}) 
-		}
+	// componentDidUpdate(){
+	// 	const {scrollState, scroll, scroll2, showMainFooter, mensajes } = this.state
+	// 	if (this.scrollView && scrollState===1 && scroll2===undefined) {
+	// 		this.scrollView.scrollTo({x:0, y:scroll-Dimensions.get('window').height+150, animated:true}) 
+	// 	}
 		
-		if (this.scrollView && scrollState===2 ) {	
-			this.scrollView.scrollTo({x:0, y:scroll-scroll2, animated:true}) 
+	// 	if (this.scrollView && scrollState===2 ) {	
+	// 		this.scrollView.scrollTo({x:0, y:scroll-scroll2, animated:true}) 
 			
-		}
-		if (showMainFooter) {
-			this.scrollView.scrollTo({x:0, y:this.state.scroll-Dimensions.get('window').height+700, animated:true}) 
-		}
-	}
+	// 	}
+	// 	if (showMainFooter) {
+	// 		this.scrollView.scrollTo({x:0, y:this.state.scroll-Dimensions.get('window').height+700, animated:true}) 
+	// 	}
+	// }
  
 	render(){
 		const {adjuntarAmigos, asignados, usuariosAsignados, mapa, qr, planId, showMainFooter, showIndicador, scroll, scroll2, scrollState, notificaciones, imagen, nombrePlan, id} = this.state
- 		console.log(showMainFooter)
+ 		let suma = heightScreen==812 ?180 :150 
 		return(
 			<View style={style.contenedorGeneral} > 
 				{this.renderCabezera()}
@@ -682,11 +684,13 @@ export default class ChatComponent extends Component{
 				 	&&<ActivityIndicator size="small" color="#148dc9" style={style.indicador} />
 				}
 				 <ImageBackground source={require('../assets/images/fondo.png')} style={showMainFooter ?style.fondoCorto :style.fondo }>	
-					<ScrollView ref={scroll => { this.scrollView = scroll }}
-								style={style.contenedorChat} 
-								//keyboardDismissMode='on-drag'
-								onScroll={this.handleScroll.bind(this)}
-								onContentSizeChange={(width,height) => {this.setState({scroll:height}); }}>
+					<ScrollView 
+						ref='scrollView'
+						style={style.contenedorChat} 
+						keyboardDismissMode='on-drag'
+						onContentSizeChange={(width,height) => {this.refs.scrollView.scrollTo({y:height-heightScreen+suma}); this.setState({heightContent:height})}}
+						onMomentumScrollEnd={(event)=>this.setState({scrollPosition:event.nativeEvent.contentOffset.y})}
+					>		
 						{this.renderMensajes()}		
 					</ScrollView>
 				</ImageBackground>
@@ -735,7 +739,7 @@ export default class ChatComponent extends Component{
 							placeholderTextColor="#c9c9c9" 
 							underlineColorAndroid='transparent'
 							ref={input => { this.textInput = input }}
-
+							onFocus={()=>this.focus()}
 						/>
 						<TouchableOpacity onPress={this.state.mensaje.length>0 ?() => this.handleSubmit(this) :null}  style={style.enviarBtn} >
 							<Image source={require('../assets/images/enviar.png')} style={style.enviar}  />
@@ -744,6 +748,17 @@ export default class ChatComponent extends Component{
 				</View>
 			</View>	
 		)
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////// CUANDO DA CLICK EN EL INPUT BAJA EL CONTENIDO
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	focus(){
+		const {heightContent, scrollPosition} = this.state
+		
+		let diferencia= heightContent-scrollPosition
+		console.log({heightContent, scrollPosition, diferencia})
+		diferencia<500 ?this.refs.scrollView.scrollTo({y:heightContent-heightScreen+390}) :null
 	}
  
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -820,7 +835,6 @@ export default class ChatComponent extends Component{
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	agregarUsuarioPlan(id, idChat, token){
  		const {imagen, nombrePlan} = this.state
- 
 		axios.put(`/x/v1/pla/plan/insertar/${this.state.planId}`, {id})
       	.then(res=>{      
       		console.log(res.data)
@@ -900,6 +914,7 @@ export default class ChatComponent extends Component{
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	handleSubmit(){
 		// Keyboard.dismiss()
+		// this.refs.scrollView.scrollTo({y:(this.state.heightContent+200)-Dimensions.get('window').height-390})
 		const {planId, mensaje, id, photo, notificaciones, nombrePlan, imagen} = this.state
 		let nuevaNotificacion = notificaciones.filter(e=>{
 			return e._id!==id

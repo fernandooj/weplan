@@ -14,9 +14,8 @@ export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaj
 	    let nombre = tipo==14 ?'' :res.data.user.user.nombre
 	    let photo  = res.data.user.user.photo
 	    imagen = imagen==null ? photo :imagen
-	    if(Platform.OS === 'android'){
-	    	console.log({tipo, token, targetScreen, titulo, mensaje, imagen})
-	        body = {
+	    
+	        bodyAndroid = {
 	        "to": token,
 	      	"data": {
 	            "custom_notification": {
@@ -37,34 +36,34 @@ export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaj
 	        },
 	    		"priority": 10
 	      }
-	    } else {
-	    	 console.log('ios')
-			body = {
-				to: token,
-				notification: {
-		          	title: titulo,
+	    
+			bodyIos = {
+		        to: token,
+		        notification: {
+		         	title: titulo,
 					body : `${nombre} ${mensaje}`,
 					priority:"high",
 					icon:"ic_notif",
-					targetScreen:targetScreen,
+					// targetScreen:targetScreen,
 					color:"#00ACD4",
 					big_picture:imagen,
 					picture:imagen,
 					image:imagen,
 					large_icon: imagen,
 					sound: "default",
-					parameter,
+					
 					show_in_foreground: true
 		        },
 		        data: {
-		          targetScreen: "detail"
+		          targetScreen:targetScreen,
+		          parameter,
 		        },
 		        priority: 10
-    		}
-		}
-    	firebaseClient.send(JSON.stringify(body), "notification");
-    })
-    .catch(err=>{
-    	console.log(err)
+		      };
+		
+    	firebaseClient.send(JSON.stringify(bodyAndroid), "notification");
+    	firebaseClient.send(JSON.stringify(bodyIos), "notification");
+   
+    
     })
 }

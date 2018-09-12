@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {Dimensions, Platform} from 'react-native';
 var screenHeight = Dimensions.get('window');
 import { MediaQueryStyleSheet } from "react-native-responsive";
 export const profileStyle = MediaQueryStyleSheet.create({
@@ -6,7 +6,8 @@ export const profileStyle = MediaQueryStyleSheet.create({
 		alignItems: 'center',
 	},
 	subContenedor:{
-		width:'80%',
+		width:'85%',
+		top:Platform.OS==='android' ?50 :75,
 	},
 	perfil:{
 		alignItems: 'center',

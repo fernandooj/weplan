@@ -88,7 +88,6 @@ export default class MapaPlanComponent extends Component{
 		clearInterval(this.state.interval);
 	}
 	setUbicacion(data, details){
-		console.log(data, details)
 		let latitude = details.geometry.location.lat;
 		let longitude = details.geometry.location.lng;
 		let direccion = details.formatted_address;
