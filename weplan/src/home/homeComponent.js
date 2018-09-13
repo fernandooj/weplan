@@ -20,6 +20,15 @@ const LATITUD_DELTA = 0.092
 const LONGITUDE_DELTA  = LATITUD_DELTA * ASPECT_RATIO
 registerKilledListener();
 export default class homeComponent extends Component{
+		// static navigationOptions = {
+	//     drawerLabel: 'Home',
+	//     drawerIcon: ({ tintColor }) => (
+	//       <Image
+	//         source={require('../../assets/img/trofeo.png')}
+	//         style={[style.icon, {tintColor: tintColor}]}
+	//       />
+	//     ),
+	//   };
 	constructor(props){
 		super(props);
 		this.state={ 

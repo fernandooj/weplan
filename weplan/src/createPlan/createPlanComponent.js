@@ -160,9 +160,9 @@ export default class createPlanComponent extends Component{
 	///////////////////////////////////////////////////  	RENDER  	/////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	render(){
-		const {nombre, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, area, costo, saldo, lat, lng, showTipo} = this.state
+		const {nombre, fechaLugar, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, area, costo, saldo, lat, lng, showTipo} = this.state
 		const {navigate} = this.props.navigation
- 
+ 		console.log(fechaLugar)
 		return (
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} keyboardDismissMode='on-drag'> 
 				{/* si la ubicacion no tiene */}
@@ -295,17 +295,17 @@ export default class createPlanComponent extends Component{
 			                        	color: '#969696'
 			                        },
 			                        btnTextConfirm: {
-								            color: '#969696',
-								         },
-								         btnTextCancel: {
-								            color: '#969696',
-								         } 
+							            color: '#969696',
+							         },
+							         btnTextCancel: {
+							            color: '#969696',
+							         } 
 			                    }}
 								date={this.state.fechaLugar}
 								style={CreatePlanStyle.inputs}
 								mode="datetime"
 								placeholder="Dia / Mes / Año / Hora"
-								format="DD-MMM-YYYY h:mm"
+								format="DD-MMM-YYYY h:mm a"
 								showIcon={false}
 								confirmBtnText="Confirm"
 								cancelBtnText="Cancel"

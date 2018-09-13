@@ -18,7 +18,7 @@ export default class encuestaComponent extends Component{
 	}
 	componentWillMount(){
 		let planId = this.props.navigation.state.params	
-		// let planId = '5b908d86de373662367ae39e'	
+		// let planId = '5b8a278dc581676c62f30ca8'	
  
 		axios.get('/x/v1/enc/encuesta/'+planId)
 		.then(e=>{

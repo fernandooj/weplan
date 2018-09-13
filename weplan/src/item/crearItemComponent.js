@@ -81,6 +81,7 @@ export default class CrearItemComponent extends Component{
                 style={[style.titulo, style.familia]}
                 onChangeText={(titulo) => this.setState({titulo})}
                 maxLength={30}
+                multiline = {true}
              />
             <TextInput 
               placeholder='Descripcion'

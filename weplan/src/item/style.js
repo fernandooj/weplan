@@ -181,7 +181,7 @@ export const style = MediaQueryStyleSheet.create({
 	titulo:{
 		marginLeft:75,
 		fontSize:25,
-		width:120,
+		width:190,
 		paddingRight:5,
 		paddingLeft:5
 	},
@@ -339,6 +339,9 @@ export const style = MediaQueryStyleSheet.create({
 		adjuntarExistentes:{
 			fontSize:14,
 			width:170
+		},
+		titulo:{
+			width:135,
 		}
 	}
 })

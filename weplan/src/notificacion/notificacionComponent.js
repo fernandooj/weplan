@@ -17,7 +17,7 @@ export default class notificacionComponent extends Component{
  		axios.get('/x/v1/not/notificacion')
  		.then(e=>{ 
  			console.log(e.data.notificacion)
- 			this.setState({notificacion: e.data.notificacion})
+ 			this.setState({notificacion: e.data.notificacion, id:e.data.id})
  		}) 
  		.catch(err=>{
  			console.log(err)
@@ -26,12 +26,15 @@ export default class notificacionComponent extends Component{
  
 	renderNotificacion(){
 		const {navigate} = this.props.navigation
- 		return this.state.notificacion.map((e, key)=>{
+		const {id, notificacion} = this.state
+ 		return notificacion.map((e, key)=>{
  			let valor = '$ '+Number(e.valorItem).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
+ 			let estaPlan = e.infoPlan.asignados.includes(id)
+ 			console.log(estaPlan)
 			return(
  				<View key={key} style={style.subContenedor}>
 	 				<View style={style.contenedorNoti2}>
-	 					<TouchableOpacity onPress={e.tipo==2 ?()=>navigate('chat', e.idTipo) :e.tipo==1 || e.tipo==5 ?()=>navigate('profile', {userId:e.idUser, planId:null}) :null } >
+	 					<TouchableOpacity onPress={e.tipo==2 &&(estaPlan || e.infoPlan.idUsuario===id) ?()=>navigate('chat', e.idTipo) :e.tipo==1 || e.tipo==5 ?()=>navigate('profile', {userId:e.idUser, planId:null}) :null } >
 		 					<Image source={e.photo ?{uri:e.photo} :{uri:'https://appweplan.com/public/assets/logo.png'}} style={style.avatar} />
 	 					</TouchableOpacity>
 	 					<View>
