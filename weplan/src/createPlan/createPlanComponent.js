@@ -49,7 +49,7 @@ export default class createPlanComponent extends Component{
 	      	interval: null,
 	      	imagenes:[],
 	      	showTipo:false, //// modal que muestra el tipo del plan
-	      	publico:false,  //// determina si el plan va a ser publico o privado
+	      	publico:this.props.navigation.state.params.publico,  //// determina si el plan va a ser publico o privado
 		}
 	}
 
@@ -63,7 +63,7 @@ export default class createPlanComponent extends Component{
 			console.log(err)
 		})
 
-		console.log(this.props.navigation.state.params) 
+		console.log(this.props.navigation.state.params.publico) 
 		if (this.props.navigation.state.params) {
 			axios.get('/x/v1/pla/plan/'+this.props.navigation.state.params)
 			.then((e)=>{
@@ -162,7 +162,7 @@ export default class createPlanComponent extends Component{
 	render(){
 		const {nombre, fechaLugar, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, area, costo, saldo, lat, lng, showTipo} = this.state
 		const {navigate} = this.props.navigation
- 		console.log(fechaLugar)
+ 
 		return (
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} keyboardDismissMode='on-drag'> 
 				{/* si la ubicacion no tiene */}
@@ -252,13 +252,13 @@ export default class createPlanComponent extends Component{
 							    <Text style={[CreatePlanStyle.votaciones, CreatePlanStyle.familia]}>{cargaPlan.idUsuario.calificacion.length} votaciones</Text>
 							</View>
 						</View>
-					</View>
+					</View> 
 				}
 					   
 			   <View style={CreatePlanStyle.contenedor} >
 					{/* Descripcion  */}	
 					{
-						!cargaPlan.descripcion
+						!cargaPlan
 						?<View style={CreatePlanStyle.cajaInpunts}>
 							<TextInput
 								style={[CreatePlanStyle.textarea, CreatePlanStyle.familia]}
@@ -272,7 +272,7 @@ export default class createPlanComponent extends Component{
 							/>
 						</View>
 						:<View style={CreatePlanStyle.cajaInpunts}>
-							<Text style={CreatePlanStyle.textarea}>{cargaPlan.descripcion}</Text>
+							<Text style={CreatePlanStyle.textarea}>{cargaPlan.descripcion ?cargaPlan.descripcion :'Sin Descripción'}</Text>
 						</View>
 					}
 					
@@ -315,14 +315,14 @@ export default class createPlanComponent extends Component{
 						</View> 
 						:<View style={CreatePlanStyle.cajaInpunts}>
 							<Image source={require('../assets/images/fecha.png')} style={CreatePlanStyle.iconInput} />
-							<Text style={CreatePlanStyle.btnInputs}>{cargaPlan.fechaLugar}</Text>
+							<Text style={[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>{cargaPlan.fechaLugar ?cargaPlan.fechaLugar :'Sin fecha asignada'}</Text>
 						</View>
 					}
 				   
 
 				{/*  mapa  */}
 					{  
-						!cargaPlan.lat
+						!cargaPlan
 						?<View style={CreatePlanStyle.cajaInpunts}>
 				    		<Image source={require('../assets/images/map.png')} style={CreatePlanStyle.iconInput} />
 					    	<TouchableOpacity onPress={() => this.setState({mapa:true})}  style={direccion ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>
@@ -332,7 +332,7 @@ export default class createPlanComponent extends Component{
 					   :<TouchableOpacity onPress={() => this.setState({mapa:true})} style={CreatePlanStyle.cajaInpunts}> 
 			    			<Image source={require('../assets/images/map.png')} style={CreatePlanStyle.iconInput} />
 			    			<View style={direccion ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>
-					    		<Text style={[CreatePlanStyle.textosActivo]}>{cargaPlan.lugar}</Text>
+					    		<Text style={[CreatePlanStyle.textosActivo, cargaPlan.lugar &&CreatePlanStyle.btnColor2Input]}>{cargaPlan.lugar}</Text>
 					    	</View>
 			    			
 						</TouchableOpacity>	
@@ -354,7 +354,7 @@ export default class createPlanComponent extends Component{
 					    {
 					    	restricciones.length==0
 					    	?<TouchableOpacity onPress={()=>this.setState({ restriccion:true})} style={restricciones.length>0 ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>
-						    	<Text style={restricciones.length>0 ?[CreatePlanStyle.textos, CreatePlanStyle.familia] :[CreatePlanStyle.textosActivo, CreatePlanStyle.familia]}>{restricciones.length>0 ?'tienes: '+restricciones.length+' Restricciones' :'Restricciones'}</Text>
+						    	<Text style={restricciones.length>0 ?[CreatePlanStyle.textos, CreatePlanStyle.familia] :[CreatePlanStyle.textosActivo, CreatePlanStyle.familia]}>{restricciones.length>0 ?'tienes: '+restricciones.length+' Restricciones' : cargaPlan ?'Sin Restricciones asignadas' :'Restricciones'}</Text>
 						    </TouchableOpacity>
 					    	:<View style={CreatePlanStyle.contentAdd}>
 					    		<View style={CreatePlanStyle.agregadosContenedor}>

@@ -31,7 +31,7 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 	}, 
 	textarea:{
 		borderWidth: 0,
-		alignItems: 'center',
+		paddingTop:10,
 		marginTop:5,
 		width:'80%',
 		height:40,
@@ -39,7 +39,11 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		borderRadius: 20, 
 		paddingLeft:20,
 		height:60,
-		color:'#969696'
+		color:'#969696',
+		alignItems: 'center',
+		alignSelf: 'center',
+		justifyContent: 'flex-end',
+		 
 	},
 	encabezadoPlan:{
 		alignItems: 'center',
@@ -77,7 +81,7 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		color:'#969696'
 	},
 	textosActivo:{
-		color:'#c9c9c9',
+		color:'#8F9093',
 	},
 	btnColor2Input:{
 		backgroundColor: '#f1f3f3',
@@ -183,8 +187,10 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		width: '100%',
 	},
 	btnClose:{
-		marginLeft:20,
-		width:'8%'
+		height:44,
+		width:50,
+		alignItems:'center',
+ 
 	},
 	imagenClose:{
 		width:10,
@@ -470,7 +476,8 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 	    borderLeftColor: 'transparent',
 	    borderRightColor: 'transparent',
 	    borderTopColor: 'grey'
-	}
+	},
+ 
 },{
 	"@media (max-device-width: 320)": {
 		textarea:{

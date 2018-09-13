@@ -175,11 +175,12 @@ export const style = MediaQueryStyleSheet.create({
  		left:0,
  		backgroundColor:'#eeecec',
  		width:screenWidth,
- 		padding:13,
  	},
  	btnBack:{
- 		width:30,
- 		marginLeft:20,
+		alignItems:'center',
+		width:60,
+		padding:13,
+ 		marginLeft:10,
  	},
  	imgBack:{
  		width:11,
@@ -189,13 +190,11 @@ export const style = MediaQueryStyleSheet.create({
  		width:'10%'
  	},
  	contenedorTexto:{
- 		width:'80%',
+ 		width:screenWidth-130,
  		alignItems:'center',
  	},
  	textBack:{
- 		
  		alignItems:'center',
- 		
  		fontSize:20
  	},
  	separador:{

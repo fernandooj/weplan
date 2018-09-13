@@ -31,7 +31,7 @@ export default class CabezeraComponent extends Component{
 		this.setState({notificacion:true})
 	}
 	render(){
-		const {navigate} = this.props	
+		const {navigate, publico} = this.props	
 		return(
 			<View style={cabezeraFooterStyle.footer3} >
 				<TouchableOpacity onPress={()=> navigate('inicio')} style={cabezeraFooterStyle.btnFooter3}>
@@ -42,7 +42,7 @@ export default class CabezeraComponent extends Component{
 					<Image source={require('../assets/images/mi_wallet.png')} style={cabezeraFooterStyle.iconFooter3} />
 					{/*<Text style={cabezeraFooterStyle.textoFooter3}>My Wallet</Text>*/}
 				</TouchableOpacity>
-				<TouchableOpacity onPress={()=> navigate('createPlan')} style={[cabezeraFooterStyle.btnFooter3, cabezeraFooterStyle.btnFooter3Create]} >
+				<TouchableOpacity onPress={()=> navigate('createPlan', {publico})} style={[cabezeraFooterStyle.btnFooter3, cabezeraFooterStyle.btnFooter3Create]} >
 					<Image source={require('../assets/images/crear_plan.png')} style={cabezeraFooterStyle.iconFooter3Create} />
 					{/*<Text style={cabezeraFooterStyle.textoFooter3}>Crear Plan</Text>*/}
 				</TouchableOpacity>

@@ -11,7 +11,7 @@ import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import Lightbox from 'react-native-lightbox';
 import KeyboardListener from 'react-native-keyboard-listener';
- 
+import Toast from 'react-native-simple-toast';
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////  ARCHIVOS GENERADOS POR EL EQUIPO  //////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -227,9 +227,9 @@ export default class ChatComponent extends Component{
 							       	</TouchableOpacity>
 							      </View> 	
 							      :!asignadoItem && esperaItem
-							      ?<View style={e.userId== id ?style.contenedorInteres :[style.contenedorInteres, style.contenedorInteresLeft]}>
+							      ?<TouchableOpacity onPress={()=>Toast.show('Revisa en tus artículos pendientes, este artículo ya te fue asignado.')} style={e.userId== id ?style.contenedorInteres :[style.contenedorInteres, style.contenedorInteresLeft]}>
 							      	<Image source={require('../assets/images/espera.png')} style={style.imagenEspera} />
-							      </View>
+							      </TouchableOpacity>
 							      :null
 					       	}
 					    <Text style={e.userId== id ?[style.fecha, style.familia] :[style.fecha, style.fechaLeft, style.familia]}>{e.fecha}</Text>
