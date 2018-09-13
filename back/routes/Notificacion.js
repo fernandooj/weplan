@@ -48,6 +48,7 @@ router.get('/', (req, res)=>{
 					photo  : e.idAmigoUser ?e.idUsuarioAsigna.photo  :e.idPlan ?e.idPlan.imagenMiniatura[0] :e.idItem ?e.idItem.imagenMiniatura :e.idItem===4 ?e.idItem.imagenMiniatura :e.tipo==5 ?e.idUsuarioAsigna.photo :e.idPago &&e.idUsuarioAsigna.photo ,
 					titulo : e.idAmigoUser ?e.idUsuarioAsigna.nombre :e.idPlan ?e.idPlan.nombre :e.idPago ?e.idPago.monto :e.idItem ?e.idItem.titulo :e.idItem===4 &&e.idItem.titulo,
 					token  : e.idUsuarioAsigna &&e.idUsuarioAsigna.tokenPhone,
+					infoPlan:e.idPlan ?e.idPlan :null,
 					////////////////////////////  AMIGOS  ////////////////////////////////////
 					//idAmigoUser : e.idAmigoUser ?e.idAmigoUser._id 				:null,
 
@@ -64,7 +65,7 @@ router.get('/', (req, res)=>{
 
 				}
 			})
-			res.json({status:'SUCCESS', notificacion, code:1})   
+			res.json({status:'SUCCESS', notificacion, id:req.session.usuario.user._id, code:1})   
 		}
 		 
 	})

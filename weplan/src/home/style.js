@@ -196,7 +196,9 @@ export const style = MediaQueryStyleSheet.create({
 	},
 	"@media (device-height: 812)": {
 		fondo:{
-			height:Platform.OS==='android' ?screenHeight-(screenHeight/9.7) :screenHeight-(screenHeight/16.4),
+			top:Platform.OS==='android' ?0 :32,
+			// height:Platform.OS==='android' ?screenHeight-(screenHeight/9.7) :screenHeight-(screenHeight/16.7),
+			height:Platform.OS==='android' ?screenHeight-(screenHeight/9.7) :screenHeight-(screenHeight/9.6),
 		},
 	}
 })

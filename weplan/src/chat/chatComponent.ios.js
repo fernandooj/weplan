@@ -65,7 +65,7 @@ export default class ChatComponent extends Component{
 		this.socket.on(`editPago${planId}`, this.onReceivedMessagePago);
 		 
   
-
+		this.setState({planId})
 		/////////////////	OBTENGO EL PERFIL
 		axios.get('/x/v1/user/profile') 
 		.then((res)=>{
@@ -81,8 +81,7 @@ export default class ChatComponent extends Component{
 		/////////////////	OBTENGO TODOS LOS MENSAJES Y EL PLAN
 		axios.get(`/x/v1/cha/chat/chatPlan/${planId}/${100}`)
 		.then(e=>{
- 			console.log(e.data.plan.notificaciones)
-			this.setState({mensajes:e.data.chat, planId, imagen: e.data.plan.imagenResize[0], nombrePlan: e.data.plan.nombre, planId, planAsignados:e.data.planAsignados, notificaciones:e.data.plan.notificaciones, plan:e.data.plan, showIndicador:false})
+			this.setState({mensajes:e.data.chat, imagen: e.data.plan.imagenResize[0], nombrePlan: e.data.plan.nombre, planAsignados:e.data.planAsignados, notificaciones:e.data.plan.notificaciones, plan:e.data.plan, showIndicador:false})
 		})
 		.catch(err=>{
 			console.log(err)
@@ -97,7 +96,6 @@ export default class ChatComponent extends Component{
 	    return true;
   	}
 	onReceivedMessage(messages) {
-		console.log(messages)
 	 	this.setState({
 		  mensajes: update(this.state.mensajes, {$push: [messages]})
 		})
@@ -615,57 +613,6 @@ export default class ChatComponent extends Component{
 			/>
 		)	
 	}
-	// handleScroll(event) {	
-	// 	if(event.nativeEvent.contentOffset.y===0){
-	// 		let limite = this.state.limite + 30
-	// 		this.setState({showIndicador:true, scroll2:this.state.scroll})
-	// 		axios.get(`/x/v1/cha/chat/chatPlan/${this.state.planId}/${limite}`)
-	// 		.then(e=>{
-	 			 
-	//  				// let mensajes = [...e.data.chat, ...this.state.mensajes]
-	//  				// console.log('---------')
-	//  				// console.log(e.data.chat)
-	//  				// console.log(this.state.mensajes)
-	//  				// console.log(mensajes)
-	//  				// console.log('---------')
-
- 
- // 					// e.data.chat.map(e=>{
-	// 					// 	this.setState({
-	// 					// 	mensajes: update(this.state.mensajes, {$push: [e]})
-	// 					// })
- // 					// })
-
-	// 				// this.setState({
-	// 				//   mensajes: update(this.state.mensajes, {$unshift: [e.data.chat[0]]}),
-	// 				//   limite, scrollState:2, showIndicador:false
-	// 				// })
- 
-	//  				// this.setState({limite, scrollState:2, showIndicador:false})
-
-	//  				this.setState({mensajes:e.data.chat, scrollState:2, showIndicador:false})
-	// 		})
-	// 		.catch(err=>{
-	// 			console.log(err)
-	// 		})
-	// 	}
-	// }
-   
-	// componentDidUpdate(){
-	// 	const {scrollState, scroll, scroll2, showMainFooter, mensajes } = this.state
-	// 	if (this.scrollView && scrollState===1 && scroll2===undefined) {
-	// 		this.scrollView.scrollTo({x:0, y:scroll-Dimensions.get('window').height+150, animated:true}) 
-	// 	}
-		
-	// 	if (this.scrollView && scrollState===2 ) {	
-	// 		this.scrollView.scrollTo({x:0, y:scroll-scroll2, animated:true}) 
-			
-	// 	}
-	// 	if (showMainFooter) {
-	// 		this.scrollView.scrollTo({x:0, y:this.state.scroll-Dimensions.get('window').height+700, animated:true}) 
-	// 	}
-	// }
- 
 	render(){
 		const {adjuntarAmigos, asignados, usuariosAsignados, mapa, qr, planId, showMainFooter, showIndicador, scroll, scroll2, scrollState, notificaciones, imagen, nombrePlan, id} = this.state
  		let suma = heightScreen==812 ?180 :150 

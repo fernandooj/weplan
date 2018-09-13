@@ -29,6 +29,13 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		color: '#8F9093',
 		alignItems: 'center',
 	}, 
+	contenedorTextarea:{
+		borderWidth: 0,
+		alignItems: 'center',
+		width:'95%',
+		backgroundColor: '#f1f3f3',
+		borderRadius: 20,
+	},
 	textarea:{
 		borderWidth: 0,
 		paddingTop:10,
@@ -130,6 +137,7 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 	encabezadoPlan2:{
 		alignItems: 'center',
 		paddingTop: 0,
+		marginTop: Platform.OS === 'android' ?45 : 65,
 		paddingBottom: 12,
 	},
 	imagenCargada:{
@@ -528,10 +536,14 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 			fontSize:22,
 		},
 	},
-	"@media (min-device-height: 811)": {
+	"@media (device-height: 812)": {
 		contenedorBack:{
 			top:Platform.OS==='android' ?0 :10,
 			marginBottom:Platform.OS==='android' ?0 :10
-		}
+		},
+		tituloMapa:{
+			flexDirection:'row', 
+			marginTop:Platform.OS==='android' ? 0 : 35,
+		},
 	}
 })

@@ -49,7 +49,7 @@ export default class createPlanComponent extends Component{
 	      	interval: null,
 	      	imagenes:[],
 	      	showTipo:false, //// modal que muestra el tipo del plan
-	      	publico:this.props.navigation.state.params.publico,  //// determina si el plan va a ser publico o privado
+	      	publico:this.props.navigation.state.params===true ?true :false,  //// determina si el plan va a ser publico o privado
 		}
 	}
 
@@ -63,7 +63,7 @@ export default class createPlanComponent extends Component{
 			console.log(err)
 		})
 
-		console.log(this.props.navigation.state.params.publico) 
+		console.log(this.props.navigation.state.params) 
 		if (this.props.navigation.state.params) {
 			axios.get('/x/v1/pla/plan/'+this.props.navigation.state.params)
 			.then((e)=>{
@@ -272,7 +272,9 @@ export default class createPlanComponent extends Component{
 							/>
 						</View>
 						:<View style={CreatePlanStyle.cajaInpunts}>
-							<Text style={CreatePlanStyle.textarea}>{cargaPlan.descripcion ?cargaPlan.descripcion :'Sin Descripción'}</Text>
+							<View style={CreatePlanStyle.contenedorTextarea}>
+								<Text style={[CreatePlanStyle.textarea,CreatePlanStyle.familia]}>{cargaPlan.descripcion ?cargaPlan.descripcion :'Sin Descripción'}</Text>
+							</View>
 						</View>
 					}
 					
@@ -315,7 +317,9 @@ export default class createPlanComponent extends Component{
 						</View> 
 						:<View style={CreatePlanStyle.cajaInpunts}>
 							<Image source={require('../assets/images/fecha.png')} style={CreatePlanStyle.iconInput} />
-							<Text style={[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>{cargaPlan.fechaLugar ?cargaPlan.fechaLugar :'Sin fecha asignada'}</Text>
+							<TouchableOpacity style={[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>
+								<Text style={[CreatePlanStyle.textos]}>{cargaPlan.fechaLugar ?cargaPlan.fechaLugar :'Sin fecha asignada'}</Text>
+							</TouchableOpacity>
 						</View>
 					}
 				   
@@ -379,7 +383,6 @@ export default class createPlanComponent extends Component{
 							    restriccionesAsignadas={this.state.restriccionesAsignadas}
 							    noEdit={this.props.navigation.state.params ?false :true}
 						    />
-						     
 						    :null
 						}
 					</View>
@@ -391,8 +394,8 @@ export default class createPlanComponent extends Component{
 				    	<Image source={require('../assets/images/friends.png')} style={CreatePlanStyle.iconInput} />
 				    	{	
 				    		asignados.length==0
-				    		?<TouchableOpacity onPress={() => this.setState({adjuntarAmigos:true})}>
-						    	<Text style={[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input, CreatePlanStyle.familia]}>{asignados.length>0 ?'tienes: '+asignados.length+' Amigos' :' Invitar Amigos'}</Text>
+				    		?<TouchableOpacity onPress={() => this.setState({adjuntarAmigos:true})} style={[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>
+						    	<Text style={[CreatePlanStyle.textosActivo, CreatePlanStyle.familia]}>{asignados.length>0 ?'tienes: '+asignados.length+' Amigos' :' Invitar Amigos'}</Text>
 						    </TouchableOpacity>
 						    :<View style={CreatePlanStyle.contentAdd}>
 						    	<View style={CreatePlanStyle.agregadosContenedor}>

@@ -239,7 +239,7 @@ export default class infoPlanComponent extends Component{
 						
 					</View>
 					
-				{/*  restricciones   */}
+				{/*  ubicacion   */}
 				{  
 					permiteEditar
 					?<View style={style.cajaInpunts}>
@@ -274,7 +274,7 @@ export default class infoPlanComponent extends Component{
 				    {
 				    	restricciones.length==0
 				    	?<TouchableOpacity onPress={()=>this.setState({ restriccion:true})} style={restricciones.length>0 ?style.btnInputs :[style.btnInputs,style.btnColor2Input]}>
-					    	<Text style={restricciones.length>0 ?[style.textos, style.familia] :[style.textosActivo, style.familia]}>{restricciones.length>0 ?'tienes: '+restricciones.length+' Restricciones' :'Restricciones'}</Text>
+					    	<Text style={restricciones.length>0 ?[style.textos, style.familia] :[style.textosActivo, style.familia]}>{restricciones.length>0 ?'tienes: '+restricciones.length+' Restricciones' :'Este plan no tiene restricciones'}</Text>
 					    </TouchableOpacity>
 				    	:<View style={style.contentAdd}>
 				    		<View style={style.agregadosContenedor}>
@@ -307,8 +307,8 @@ export default class infoPlanComponent extends Component{
 				    	<Image source={require('../assets/images/friends.png')} style={style.iconInput} />
 				    	{	
 				    		asignados.length==0
-				    		?<TouchableOpacity onPress={() => this.setState({adjuntarAmigos:true})}>
-						    	<Text style={[style.btnInputs, style.btnColor2Input, style.familia]}>{asignados.length>0 ?'tienes: '+asignados.length+' Amigos' :' Invitar Amigos'}</Text>
+				    		?<TouchableOpacity onPress={() => this.setState({adjuntarAmigos:true})} style={[style.btnInputs,style.btnColor2Input]}>
+						    	<Text style={[style.textosActivo, style.familia]}>{asignados.length>0 ?'tienes: '+asignados.length+' Amigos' :' Invitar Amigos'}</Text>
 						    </TouchableOpacity>
 						    :<View style={style.contentAdd}>
 						    	<View style={style.agregadosContenedor}>

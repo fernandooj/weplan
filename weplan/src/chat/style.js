@@ -792,7 +792,13 @@ export const style = MediaQueryStyleSheet.create({
 		btnImagenPlan:{	
 			top:Platform.OS==='android' ?15 :31,
 			left:Platform.OS==='android' ?25 :37,
-		}
+		},
+		contenedorOpcionesBotonesShow:{
+			marginTop:-145,
+		},
+		showFooter:{
+			bottom:Platform.OS==='android' ?0 :330
+		},
 	}
 })
 

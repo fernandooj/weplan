@@ -16,7 +16,7 @@ export const style = MediaQueryStyleSheet.create({
 		alignItems: 'center',
 		backgroundColor:'#f8f8f8',
 		paddingTop: 10,
-		marginTop:  Platform.OS==='android' ?45 :65,
+		marginTop:  Platform.OS==='android' ?45 :70,
 		paddingBottom: 20,
 		flexDirection: 'row',
 		width:'100%',
@@ -281,5 +281,11 @@ export const style = MediaQueryStyleSheet.create({
 			marginTop:10,
 			width:'75.5%' 
 		},
+	}
+},{
+	"@media (device-height: 812)": {
+		encabezadoPlan:{
+			marginTop:  Platform.OS==='android' ?45 :75,
+		}
 	}
 })
