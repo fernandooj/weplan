@@ -318,7 +318,7 @@ export default class createPlanComponent extends Component{
 						:<View style={CreatePlanStyle.cajaInpunts}>
 							<Image source={require('../assets/images/fecha.png')} style={CreatePlanStyle.iconInput} />
 							<TouchableOpacity style={[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>
-								<Text style={[CreatePlanStyle.textos]}>{cargaPlan.fechaLugar ?cargaPlan.fechaLugar :'Sin fecha asignada'}</Text>
+								<Text style={[CreatePlanStyle.textos, CreatePlanStyle.familia]}>{cargaPlan.fechaLugar ?cargaPlan.fechaLugar :'Sin fecha asignada'}</Text>
 							</TouchableOpacity>
 						</View>
 					}
@@ -336,7 +336,7 @@ export default class createPlanComponent extends Component{
 					   :<TouchableOpacity onPress={() => this.setState({mapa:true})} style={CreatePlanStyle.cajaInpunts}> 
 			    			<Image source={require('../assets/images/map.png')} style={CreatePlanStyle.iconInput} />
 			    			<View style={direccion ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>
-					    		<Text style={[CreatePlanStyle.textosActivo, cargaPlan.lugar &&CreatePlanStyle.btnColor2Input]}>{cargaPlan.lugar}</Text>
+					    		<Text style={[CreatePlanStyle.textosActivo, CreatePlanStyle.familia, cargaPlan.lugar &&CreatePlanStyle.btnColor2Input]}>{cargaPlan.lugar}</Text>
 					    	</View>
 			    			
 						</TouchableOpacity>	

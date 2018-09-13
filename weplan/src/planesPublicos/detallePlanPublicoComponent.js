@@ -71,7 +71,7 @@ export default class detallePlanPublicoComponent extends Component{
 			let data = e.data.plan[0]
 
 			// this.setState({imagen:data.imagenMiniatura[0], iconCreate:false, restriccion:false, restriccionesAsignadas:e.data.plan[0].restricciones , restricciones:e.data.plan[0].restricciones, planPadre:this.props.navigation.state.params, imagenes, tipoPlan:false })
-			this.setState({imagen:data.imagenMiniatura[0], nombre:data.nombre, descripcion:data.descripcion, fechaLugar:data.fechaLugar, direccion:data.lugar, loc:data.loc.coordinates, area:data.area, restriccionesAsignadas:data.restricciones , restricciones:data.restricciones, planId, costo:(data.area*2000)/300 })
+			this.setState({imagen:data.imagenMiniatura[0], nombre:data.nombre,  lat:data.loc.coordinates[1], lng:data.loc.coordinates[0], descripcion:data.descripcion, fechaLugar:data.fechaLugar, direccion:data.lugar, loc:data.loc.coordinates, area:data.area, restriccionesAsignadas:data.restricciones , restricciones:data.restricciones, planId, costo:(data.area*2000)/300 })
 		})
 		.catch(err=>{
 			console.log(err)
@@ -126,7 +126,7 @@ export default class detallePlanPublicoComponent extends Component{
 	///////////////////////////////////////////////////  	RENDER  	/////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	render(){
-		const {nombre, direccion, fechaLugar, lugar, loc, area,    restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, costo} = this.state
+		const {nombre, direccion, fechaLugar, lugar, loc, area, lat, lng, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, costo} = this.state
 		const {navigate} = this.props.navigation
 		console.log(loc)
 		return (
@@ -217,6 +217,7 @@ export default class detallePlanPublicoComponent extends Component{
 							close={()=> this.setState({mapa:false})} 						   			/////////   cierro el modal
 							updateStateX={(lat,lng, direccion, area, costo)=>this.updateStateX(lat, lng, direccion, area, costo)}  /////////	me devuelve la posicion del marcador 
 							ubicacionDefecto={{infoplan:true, lat:parseFloat(loc[1]), lng:parseFloat(loc[0]), area, muestraBtnHecho:true}}
+							guardaUbicacion={{lat, lng, direccion}}
 						/> 
 					}
 				
