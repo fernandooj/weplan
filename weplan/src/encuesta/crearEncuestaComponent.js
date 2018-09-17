@@ -153,17 +153,12 @@ export default class CrearEncuestaComponent extends Component{
       .then(e=>{
         let encuestaId = e.data.encuesta._id
          console.log({titulo, descripcion, imagen, imagen2, id, pregunta1, pregunta2, encuestaId, planId})
-        
-            
-           
             data.append('imagen',    imagen);
             data.append('imagen2',   imagen2);
             data.append('pregunta1', pregunta1);
             data.append('pregunta2', pregunta2);
             data.append('encuestaId',encuestaId);
             data.append('planId',    planId);
-
-       
             axios({
                   method: 'post', //you can set what request you want to be
                   url: '/x/v1/enc/encuesta/'+encuestaId,
@@ -176,7 +171,7 @@ export default class CrearEncuestaComponent extends Component{
             .then(res=>{  
               console.log(res.data)     
               if(res.data.code==1){ 
-                this.props.updateItems()
+                this.props.updateItems(titulo)
               }else{
                 Alert.alert(
                  'Error!, intenta nuevamente'

@@ -156,7 +156,7 @@ export default class MapaPlanComponent extends Component{
 								renderDescription={row => row.description} // custom description render
 								onPress={(data, details = null) => {this.setUbicacion(data,details)}}// 'details' is provided when fetchDetails = true
 									
-								 
+								
 								getDefaultValue={() => ''}
 								query={{
 									key: 'AIzaSyCn_XO2J1yIl7I3UMy7hL6-0QmFJAOwIz8',
@@ -244,16 +244,19 @@ export default class MapaPlanComponent extends Component{
 					        </TouchableOpacity>
 					        {
 					        	inputValor
-					        	&&<TextInputMask
-				                  ref="text"
-				                  placeholder='Valor a invertir por día'
-				                  type={'money'}
-				                  options={{ unit: '$', zeroCents:true, precision:0 }} 
-				                  style={CreatePlanStyle.inputValor}
-				                  underlineColorAndroid='transparent'
-				                  onChangeText={this.getValor.bind(this)} 
-				                  value={(km*2000)/300}
-				                />
+					        	&&<View style={{paddingHorizontal:10}}>
+					        		<Text style={{textAlign:'center'}}>Ingresa el monto que desees para visualizar el área de influencia definida</Text>
+					        		<TextInputMask
+					                  ref="text"
+					                  placeholder='Valor a invertir por día'
+					                  type={'money'}
+					                  options={{ unit: '$', zeroCents:true, precision:0 }} 
+					                  style={CreatePlanStyle.inputValor}
+					                  underlineColorAndroid='transparent'
+					                  onChangeText={this.getValor.bind(this)} 
+					                  value={(km*2000)/300}
+					                />
+					            </View>
 					        }
 					        {
 					        	!ubicacionDefecto.infoplan || ubicacionDefecto.muestraBtnHecho

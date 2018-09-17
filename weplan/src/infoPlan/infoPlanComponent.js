@@ -8,7 +8,7 @@ import DatePicker from 'react-native-datepicker'
 import moment from 'moment'
 import AlertInput from 'react-native-alert-input';
 import Lightbox from 'react-native-lightbox';
-
+import { showLocation, Popup } from 'react-native-map-link'
 import RestriccionesPlanComponent from '../createPlan/restricciones.js'
 import MapaPlanComponent 		  from '../createPlan/mapa.js'
 import AgregarAmigosComponent     from '../agregarAmigos/agregarAmigos.js'
@@ -24,6 +24,7 @@ export default class infoPlanComponent extends Component{
 	  		mapa:false,
 	  		restriccion:false,
 	  		adjuntarAmigos:false,
+	  		mapaVisible:false,
 	  		exitoso:false,
 	  		planId:'',
 	  		nombre:'',
@@ -112,6 +113,29 @@ export default class infoPlanComponent extends Component{
  			}
  		})
  	}
+ 	renderModalAbrirMapa(lat, lng, lugar){
+		return(
+			<Popup
+			    isVisible={this.state.mapaVisible}
+			    onCancelPressed={() => this.setState({ mapaVisible: false })}
+			    onAppPressed={() => this.setState({ mapaVisible: false })}
+			    onBackButtonPressed={() => this.setState({ mapaVisible: false })}
+			    modalProps={{ // you can put all react-native-modal props inside.
+			        animationIn: 'slideInUp'
+			    }}
+			   
+			    options={{ latitude: lat,
+				    longitude: lng,
+				    title: lugar,  // optional
+				    googleForceLatLon: false,  // optionally force GoogleMaps to use the latlon for the query instead of the title
+				    dialogTitle: 'Abrir Con', // optional (default: 'Open in Maps')
+				    dialogMessage: '', // optional (default: 'What app would you like to use?')
+				    cancelText: 'Cancelar', // optional (default: 'Cancel')
+				    appsWhiteList: ['google-maps'] }}
+			    style={{ /* Optional: you can override default style by passing your values. */ }}
+			/>
+		)	
+	}
 	render(){
 	let data = this.props.navigation.state.params.plan
 	let id   = this.props.navigation.state.params.id
@@ -135,6 +159,7 @@ export default class infoPlanComponent extends Component{
 		<ScrollView  style={style.contenedorGeneral}>
 			{/* si la ubicacion no tiene */}
 			{this.renderAlertNombreEvento()}
+
 			<View style={style.contenedor}> 
 				<CabezeraComponent navigate={navigate} url={'chat'} parameter={data._id} texto='Info Plan' />
 				<View style={style.encabezadoPlan}>
@@ -248,7 +273,7 @@ export default class infoPlanComponent extends Component{
 				    		<Text style={direccion ?[style.textos, style.familia] :[style.textosActivo, style.familia]}>{direccion ?direccion.substr(0,60) :'Ubicación'}</Text>
 				    	</TouchableOpacity>
 					</View>
-				   :<TouchableOpacity onPress={() => this.setState({mapa:true})} style={style.cajaInpunts}> 
+				   :<TouchableOpacity onPress={() => this.setState({mapaVisible:true})} style={style.cajaInpunts}> 
 		    			<Image source={require('../assets/images/map.png')} style={style.iconInput} />
 		    			<View style={direccion ?style.btnInputs :[style.btnInputs]}>
 				    		<Text style={[style.textosActivo]}>{lugar}</Text>
@@ -256,6 +281,7 @@ export default class infoPlanComponent extends Component{
 		    			
 					</TouchableOpacity>	
 				}
+				{this.renderModalAbrirMapa(lat, lng, lugar)}
 				{
 					mapa &&<MapaPlanComponent 
 						inputValor= {false}

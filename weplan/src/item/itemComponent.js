@@ -25,7 +25,7 @@ export default class ItemComponent extends Component{
 		total:0
 	}
 	componentWillMount =async() =>{
-		let planId = this.props.navigation.state.params	
+		let planId = this.props.navigation.state.params.planId
 		// let planId = '5b7b7ddc272b0d29918c46e3'	
 		console.log(planId)
 		this.setState({planId})

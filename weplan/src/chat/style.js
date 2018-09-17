@@ -12,19 +12,18 @@ export const style = MediaQueryStyleSheet.create({
 		fontFamily:'Futura-CondensedLight',
 	},
  	contenedorChat:{
- 			 
+ 		top:-290
+ 	},
+ 	contenedorChat2:{
+ 		top:0
  	},
  	fondo:{
 		zIndex:0,
 		top:0,
 		left:0,
-		height:Platform.OS==='android' ?screenHeight-155 :screenHeight-128,
+		height:Platform.OS==='android' ?screenHeight-155 :screenHeight-18,
 		marginTop:10,
 		width:screenWidth,
-	},
-	fondoCorto:{
-		height:Platform.OS==='android' ?screenHeight-395 :screenHeight-390,
-		// height:105,
 	},
  	////////////////// cabezera
  	cabezera:{
@@ -677,7 +676,7 @@ export const style = MediaQueryStyleSheet.create({
 		borderColor:'#9CB7F5',
 	},
 },{
-	"@media (max-device-width: 320)": {
+	"@media (max-device-width: 360)": {
 		btnImagenPlan:{
 			position:'absolute',
 			top:Platform.OS==='android' ?5 :30,
@@ -776,7 +775,10 @@ export const style = MediaQueryStyleSheet.create({
 		},
 		fondo:{
 			height:screenHeight-145,
-		}
+		},
+		contenedorChat:{
+	 		top:-255
+	 	},
 	},
 	"@media (device-height: 812)": {
 		footer:{
@@ -786,7 +788,6 @@ export const style = MediaQueryStyleSheet.create({
 			height:Platform.OS==='android' ?screenHeight-155 :screenHeight-180,
 		},
 		cabezera:{
-			// marginTop:Platform.OS==='android' ?0 :32,
 			paddingTop:Platform.OS==='android' ?0 :30,
 		},
 		btnImagenPlan:{	

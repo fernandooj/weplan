@@ -12,6 +12,7 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 import Lightbox from 'react-native-lightbox';
 import KeyboardListener from 'react-native-keyboard-listener';
 import Toast from 'react-native-simple-toast';
+import { showLocation, Popup } from 'react-native-map-link'
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////  ARCHIVOS GENERADOS POR EL EQUIPO  //////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -20,7 +21,7 @@ import MapaPlanComponent 	  from '../createPlan/mapa.js'
 import PdfComponent           from '../pdf/pdfComponent.js'
 import MapComponent           from '../mapa/mapComponent.js'
 import {pedirImagen, pedirPdf, pedirContacto, pedirMapa} from './peticiones.js'		
-import { showLocation, Popup } from 'react-native-map-link'
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////// 
 
@@ -113,7 +114,7 @@ export default class ChatComponent extends Component{
 	/////////////// 		RENDERIZA LA CABEZERA CON EL NOMBRE DEL PLAN Y LOS ICONOS
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	renderCabezera(){
-		const {planId, imagen, nombrePlan, plan, id} = this.state
+		const {planId, imagen, nombrePlan, plan, id, notificaciones} = this.state
 		const {navigate} = this.props.navigation
 		return(
 			<View>
@@ -126,10 +127,10 @@ export default class ChatComponent extends Component{
 						<Text style={[style.nombrePlan, style.familia]}>{nombrePlan ?nombrePlan.substring(0, 60) :''}</Text>
 					</TouchableOpacity>
 					<View style={style.iconosHeaderContenedor}>
-						<TouchableOpacity onPress={() => navigate('encuesta', planId)}  style={style.iconContenedor}>
+						<TouchableOpacity onPress={() => navigate('encuesta', {planId, notificaciones, id, nombrePlan, imagen})}  style={style.iconContenedor}>
 							<Image source={require('../assets/images/preguntar.png')} style={style.icon}  />
 						</TouchableOpacity>
-						<TouchableOpacity onPress={() => navigate('item', planId)} style={style.iconContenedor}>
+						<TouchableOpacity onPress={() => navigate('item', {planId, notificaciones, id, nombrePlan, imagen})} style={style.iconContenedor}>
 							<Image source={require('../assets/images/cuentas.png')} style={style.icon}  />
 						</TouchableOpacity>
 					</View>
@@ -681,9 +682,9 @@ export default class ChatComponent extends Component{
 				 	showIndicador
 				 	&&<ActivityIndicator size="small" color="#148dc9" style={style.indicador} />
 				}
-				 <ImageBackground source={require('../assets/images/fondo.png')} style={showMainFooter ?style.fondoCorto :style.fondo }>	
+				 <ImageBackground source={require('../assets/images/fondo.png')} style={style.fondo }>	
 					<ScrollView ref={scroll => { this.scrollView = scroll }}
-								style={style.contenedorChat} 
+								style={showMainFooter ?style.contenedorChat :style.contenedorChat2} 
 								//keyboardDismissMode='on-drag'
 								onScroll={this.handleScroll.bind(this)}
 								onContentSizeChange={(width,height) => {this.setState({scroll:height}); }}>

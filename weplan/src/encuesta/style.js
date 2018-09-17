@@ -422,7 +422,11 @@ export const style = MediaQueryStyleSheet.create({
 		width:'35%',
 		alignItems: 'center',
 		fontSize:20
-	}
+	},
+	textoSinAsignados:{
+		fontSize:22,
+		padding:10
+	},
 },{
 	"@media (max-device-width: 320)": {
 		textoAbono:{

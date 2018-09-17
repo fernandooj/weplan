@@ -7,7 +7,7 @@ import CrearEncuestaComponent from './crearEncuestaComponent'
 import CabezeraComponent from '../ajustes/cabezera.js'
 import update from 'react-addons-update';
 import Icon from 'react-native-fa-icons';
- 
+import {sendRemoteNotification} from '../push/envioNotificacion.js'
 
 export default class encuestaComponent extends Component{
 	state={
@@ -17,12 +17,17 @@ export default class encuestaComponent extends Component{
 		render:0
 	}
 	componentWillMount(){
-		let planId = this.props.navigation.state.params	
+		let planId = this.props.navigation.state.params.planId
+		let notificaciones = this.props.navigation.state.params.notificaciones
+		let id = this.props.navigation.state.params.id
+		let nombrePlan = this.props.navigation.state.params.nombrePlan
+		let imagen = this.props.navigation.state.params.imagen
 		// let planId = '5b8a278dc581676c62f30ca8'	
- 
+ 		console.log(this.props.navigation.state.param)
+ 		this.setState({planId, notificaciones, id, nombrePlan, imagen})
 		axios.get('/x/v1/enc/encuesta/'+planId)
 		.then(e=>{
-			this.setState({misEncuestas:e.data.encuesta, planId})
+			this.setState({misEncuestas:e.data.encuesta})
 		})		 
 		.catch(err=>{
 			console.log(err)
@@ -41,7 +46,7 @@ export default class encuestaComponent extends Component{
 		this.setState({render})
 	}
 	renderAcordeon() {
-		const {render, total}=this.state
+		const {render, total, misEncuestas, encuestasPublicadas}=this.state
 		return (
 			<View>
 				<View style={style.headerCollapsable}>
@@ -50,7 +55,11 @@ export default class encuestaComponent extends Component{
 			    	</TouchableOpacity>
 			    	{
 			    	 	render==1
-			    	 	&&this.misEncuestas()
+			    	 	?misEncuestas.length==0
+			    	 	?<Text style={[style.textoSinAsignados, style.familia]}>Aún no has creado ninguna encuesta! Empieza clickeando en "Crear Encuesta"</Text>
+			    	 	:this.misEncuestas()
+			    	 	:null
+			    	 	// &&this.misEncuestas()
 			    	}
 			  	</View>
 			  	 
@@ -63,7 +72,11 @@ export default class encuestaComponent extends Component{
 			    	</TouchableOpacity>
 			    	 {
 			    	 	render==2
-			    	 	&&this.encuestasPublicadas()
+			    	 	?encuestasPublicadas.length==0
+			    	 	?<Text style={[style.textoSinAsignados, style.familia]}>Ninguno de tus amigos ha publicado encuestas, aqui podrás verlas e interesarte si así lo quieres! </Text>
+			    	 	:this.encuestasPublicadas()
+			    	 	:null
+			    	 	// &&this.encuestasPublicadas()
 			    	 }
 			  	</View>
 			</View>
@@ -278,7 +291,14 @@ export default class encuestaComponent extends Component{
 		})
 	}
 
-	updateItems(){
+	updateItems(titulo){
+		const {notificaciones, planId, id, nombrePlan, imagen} = this.state
+		let nuevaNotificacion = notificaciones.filter(e=>{
+			return e._id!==id
+		}) 
+		nuevaNotificacion.map(e=>{
+			sendRemoteNotification(15, e.tokenPhone, 'chat', `${nombrePlan}`,  `: envio la encuesta: ${titulo}`, imagen, planId)
+		})
 		axios.get('/x/v1/enc/encuesta/'+this.state.planId)
 		.then(e=>{
 			console.log(e.data)
@@ -293,8 +313,6 @@ export default class encuestaComponent extends Component{
 		const {show, items, itemsPlan, render, planId} = this.state
 		const {navigate} = this.props.navigation
 		return (
-
-			
 				<View  style={style.contentItem}>
 				<CabezeraComponent navigate={navigate} url={'chat'} parameter={this.state.planId} texto='Encuestas' />
 					<ScrollView>					
@@ -303,7 +321,7 @@ export default class encuestaComponent extends Component{
 						  		show
 						  		?<CrearEncuestaComponent  
 						  			planId={planId}
-						  			updateItems={(id, deuda, titulo)=>this.updateItems(id, deuda, titulo)}
+						  			updateItems={(titulo)=>this.updateItems(titulo)}
 						  			close={()=>this.setState({show:false})}
 						  		 />
 						  		:null 

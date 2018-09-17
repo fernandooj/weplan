@@ -85,7 +85,7 @@ export default class App extends Component<{}> {
   render() {
    const {google, local} = this.state
    const NavigationApp = StackNavigator({
-      Home:          {screen: local===1 ?walletComponent :LoginComponent },
+      Home:          {screen: local===1 ?homeComponent :LoginComponent },
       Login:         {screen: LoginComponent },
       Registro:      {screen: RegistroComponent },
       insertCode:    {screen: insertCodeComponent },
