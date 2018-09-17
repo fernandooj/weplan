@@ -117,8 +117,8 @@ export default class ChatComponent extends Component{
 		const {planId, imagen, nombrePlan, plan, id} = this.state
 		const {navigate} = this.props.navigation
 		return(
-			<View>
 				<View style={style.cabezera}>
+				 
 					<TouchableOpacity onPress={() => navigate('misPlanes')} style={style.iconRegresar}>
 						<Image source={require('../assets/images/item3.png')} style={style.imgRegresar}  />
 						 
@@ -134,7 +134,7 @@ export default class ChatComponent extends Component{
 							<Image source={require('../assets/images/cuentas.png')} style={style.icon}  />
 						</TouchableOpacity>
 					</View>
-				</View>
+				 
 				<TouchableOpacity onPress={() => navigate('infoPlan', {plan,id})} style={style.btnImagenPlan}>
 					<Image
 						style={style.imagen}
@@ -616,7 +616,7 @@ export default class ChatComponent extends Component{
 	}
 	render(){
 		const {adjuntarAmigos, asignados, usuariosAsignados, mapa, qr, planId, showMainFooter, showIndicador, scroll, scroll2, scrollState, notificaciones, imagen, nombrePlan, id} = this.state
- 		let suma = heightScreen==812 ?180 :150 
+ 		let suma = heightScreen==812 ?165 :150 
 		return(
 			<View style={style.contenedorGeneral} > 
 				{this.renderCabezera()}
@@ -631,14 +631,24 @@ export default class ChatComponent extends Component{
 				 	showIndicador
 				 	&&<ActivityIndicator size="small" color="#148dc9" style={style.indicador} />
 				}
-				 <ImageBackground source={require('../assets/images/fondo.png')} style={showMainFooter ?style.fondoCorto :style.fondo }>	
-					<ScrollView 
+				<ImageBackground source={require('../assets/images/fondo.png')} style={style.fondo }>	
+					{/*<ScrollView 
 						ref='scrollView'
 						style={style.contenedorChat} 
 						keyboardDismissMode='on-drag'
 						onContentSizeChange={(width,height) => {this.refs.scrollView.scrollTo({y:height-heightScreen+suma}); this.setState({heightContent:height})}}
 						onMomentumScrollEnd={(event)=>this.setState({scrollPosition:event.nativeEvent.contentOffset.y})}
 					>		
+						{this.renderMensajes()}		
+					</ScrollView>*/}
+					<ScrollView 
+							ref='scrollView'
+							style={showMainFooter ?style.contenedorChat :style.contenedorChat2} 
+							keyboardDismissMode='on-drag'
+							// onScroll={this.handleScroll.bind(this)}
+							onContentSizeChange={(width,height) => {this.refs.scrollView.scrollTo({y:height-heightScreen+suma}); this.setState({heightContent:height})}}
+							// onContentSizeChange={(width,height) => {this.setState({scroll:height}); }}
+						>
 						{this.renderMensajes()}		
 					</ScrollView>
 				</ImageBackground>

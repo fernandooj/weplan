@@ -12,17 +12,22 @@ export const style = MediaQueryStyleSheet.create({
 		fontFamily:'Futura-CondensedLight',
 	},
  	contenedorChat:{
- 		top:-290
+ 		top:Platform.OS==='android' ?290 :-320,
+ 		zIndex :0
  	},
  	contenedorChat2:{
  		top:0
+ 	},
+ 	contenedorBox:{
+ 		position:'relative',
+ 		zIndex:-100
  	},
  	fondo:{
 		zIndex:0,
 		top:0,
 		left:0,
 		height:Platform.OS==='android' ?screenHeight-155 :screenHeight-18,
-		marginTop:10,
+		marginTop:90,
 		width:screenWidth,
 	},
  	////////////////// cabezera
@@ -36,14 +41,17 @@ export const style = MediaQueryStyleSheet.create({
 		paddingTop:Platform.OS==='android' ?0 :18,
 		borderBottomWidth:2,
 		borderColor:'#4461D8',
-		position:'relative',
-		zIndex:100	 
+		position:'absolute',
+		top:0,
+		left:0,
+		width:'100%',
+		zIndex:100 
 	},
 	btnImagenPlan:{
 		position:'absolute',
 		top:15,
 		left:45,
-		zIndex:110	
+		zIndex:1100	
 	},
 	imagen:{
 		borderRadius:35,
@@ -134,6 +142,7 @@ export const style = MediaQueryStyleSheet.create({
 		width:230,
 		borderRadius:35
 	},
+
 	btnIconoOpciones:{
 		backgroundColor:'#ebebeb',
 		padding:3,
@@ -191,7 +200,8 @@ export const style = MediaQueryStyleSheet.create({
 		marginLeft: 15,
 		marginRight: 15,
 		marginBottom:10,
-		width:screenWidth/1.5,		
+		width:screenWidth/1.5,	
+		zIndex:0	
 	},
 	boxLeft:{ 
 		alignSelf: 'flex-start',
@@ -749,7 +759,7 @@ export const style = MediaQueryStyleSheet.create({
 			marginTop:-55,
 		},
 		contenedorOpcionesBotonesShow:{
-			marginTop:-45,
+			marginTop:-310,
 		},
 		btnIconoOpciones:{
 			padding:3,
@@ -785,7 +795,7 @@ export const style = MediaQueryStyleSheet.create({
 			bottom:Platform.OS==='android' ?0 :20,
 		},
 		fondo:{
-			height:Platform.OS==='android' ?screenHeight-155 :screenHeight-180,
+			height:Platform.OS==='android' ?screenHeight-155 :screenHeight-165,
 		},
 		cabezera:{
 			paddingTop:Platform.OS==='android' ?0 :30,
@@ -795,11 +805,14 @@ export const style = MediaQueryStyleSheet.create({
 			left:Platform.OS==='android' ?25 :37,
 		},
 		contenedorOpcionesBotonesShow:{
-			marginTop:-145,
+			bottom:295,
 		},
 		showFooter:{
 			bottom:Platform.OS==='android' ?0 :330
 		},
+		// contenedorOpcionesBotones:{
+		// 	marginTop:Platform.OS==='android' ?-55 :-35,
+		// },
 	}
 })
 
