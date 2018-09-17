@@ -12,7 +12,7 @@ export const style = MediaQueryStyleSheet.create({
 		fontFamily:'Futura-CondensedLight',
 	},
  	contenedorChat:{
- 		 
+ 			 
  	},
  	fondo:{
 		zIndex:0,

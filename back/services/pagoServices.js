@@ -57,6 +57,7 @@ class pagoServices{
 	edit(_id, monto, callback){
 		pagoSchema.findOneAndUpdate({_id}, {$set: {
             'monto': monto,
+            'activo': true,
             'updatedAt': moment().format('YYYY-MM-DD h:mm:ss')
     	}}, callback);
 	}

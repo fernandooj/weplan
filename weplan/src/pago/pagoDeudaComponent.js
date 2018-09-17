@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, Image, TouchableHighlight, TextInput, ScrollView, Alert} from 'react-native'
-import {style} from '../pago/style'
+import {style} from './style'
 import axios from 'axios'
 import CabezeraComponent from '../ajustes/cabezera.js'
 import AbonarComponent   from './abonarComponent.js'
@@ -133,7 +133,7 @@ export default class pagoDeudaComponent extends Component{
 	 				<View>	
 		 				{
 		 					e.data.map((e2, key2)=>{
-		 						if (e2.info[0].monto!==-deuda && e2.info[0].monto!==deuda ) {
+		 						if (e2.info[0].monto!==-deuda && e2.info[0].monto!==deuda && e2.info[0].monto>=0) {
 		 							return(
 			 							<View key={key2} style={style.infoAbonoDeuda}>
 			 								<Text style={[style.textAbonoDeuda, style.familia]}>Abono: </Text>
@@ -165,46 +165,48 @@ export default class pagoDeudaComponent extends Component{
 		})
 		var sum = suma.reduce(add, 0);
 		if (planId.length!==0) {
-			return (<ScrollView style={style.container}>
-				<View style={style.contentItem}>
+			return (
+				<View style={style.contenedorPago}>
+
 					<CabezeraComponent navigate={navigate} url={'item'} parameter={planId} />
-					{
-				  		show
-				  		?<AbonarComponent
-				  			photo={photo}
-				  			nombre={nombre}
-				  			valor={monto}
-				  			itemId={itemId}
-				  			planId={planId}
-				  			userId={userId}
-				  			token={token}
-				  			imagen={item.imagenResize}
-				  			titulo={item.titulo}
-				  			updateItems={(id, monto)=>this.updateItems(id, monto)}
-				  			close={()=>this.setState({show:false})}
-				  		 />
-				  		:null 
-				  	}
-					<View style={style.contenedor}>
-						{this.renderItem()}
-						{this.renderAsignados()}
-						
-					</View>	
-					{
-						editCosto
-						&&<TouchableHighlight onPress={() => this.enviarEdicion() } style={style.btnHecho}>
-							<Text style={[style.hecho, style.familia]}>Guardar !</Text>
-						</TouchableHighlight>
-					}
-		    		<View style={style.contenedorTotal}>
-		    			<Text style={[style.textoTotal, style.familia]}>Total</Text>
-		    			<Text style={sum>=0 ?[style.valueTotal, style.familia] :[style.valueNoAsignadoTotal, style.familia]}>
-							{'$ '+Number(sum).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
-						</Text>
-		    		</View>
-			    			  
+					<ScrollView style={style.subContenedor}>
+						{
+					  		show
+					  		?<AbonarComponent
+					  			photo={photo}
+					  			nombre={nombre}
+					  			valor={monto}
+					  			itemId={itemId}
+					  			planId={planId}
+					  			userId={userId}
+					  			token={token}
+					  			imagen={item.imagenResize}
+					  			titulo={item.titulo}
+					  			updateItems={(id, monto)=>this.updateItems(id, monto)}
+					  			close={()=>this.setState({show:false})}
+					  		 />
+					  		:null 
+					  	}
+						<View style={style.contenedor}>
+							{this.renderItem()}
+							{this.renderAsignados()}
+							
+						</View>	
+						{
+							editCosto
+							&&<TouchableHighlight onPress={() => this.enviarEdicion() } style={style.btnHecho}>
+								<Text style={[style.hecho, style.familia]}>Guardar !</Text>
+							</TouchableHighlight>
+						}
+			    		<View style={style.contenedorTotal}>
+			    			<Text style={[style.textoTotal, style.familia]}>Total</Text>
+			    			<Text style={sum>=0 ?[style.valueTotal, style.familia] :[style.valueNoAsignadoTotal, style.familia]}>
+								{'$ '+Number(sum).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
+							</Text>
+			    		</View>
+			    	</ScrollView>	  
 				</View>
-			</ScrollView>)
+			)
 		}else{
 			return <Text></Text>
 		}

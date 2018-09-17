@@ -1,6 +1,6 @@
 
 import React, {Component} from 'react'
-import {View, Text, TouchableOpacity, ScrollView, Image, Alert} from 'react-native'
+import {View, Text, TouchableOpacity, ScrollView, Image, Alert, AsyncStorage} from 'react-native'
 import {style} from '../item/style'
  
 import axios from 'axios'
@@ -24,7 +24,7 @@ export default class ItemComponent extends Component{
 		render:0,
 		total:0
 	}
-	componentWillMount(){
+	componentWillMount =async() =>{
 		let planId = this.props.navigation.state.params	
 		// let planId = '5b7b7ddc272b0d29918c46e3'	
 		console.log(planId)
@@ -54,10 +54,15 @@ export default class ItemComponent extends Component{
 		.catch(err=>{
 			console.log(err)
 		})
- 
+ 		
+ 		let render = await AsyncStorage.getItem('codeTab')
+ 		render = parseInt(render)
+ 		this.setState({render})
+ 		console.log(render)
 	}
 	peticiones(render){
 		this.setState({render})
+		saveTabNumber(render)
 	}
 	updateItems(id, deuda, titulo){
 		deuda = parseInt(deuda)
@@ -312,7 +317,7 @@ export default class ItemComponent extends Component{
 			data = data.join('\n')
 			Alert.alert(
 				`Estas seguro de cerrar ${titulo}, luego no podras abrirlo`,
-				`los usuarios que quedaran asignados son: ${data}`,
+				`los usuarios que quedaran asignados son:\n ${data}`,
 			[
 				{text: 'Mejor Luego', onPress: () => console.log('OK Pressed')},
 				{text: 'Si Cerrar', onPress: () => this.confirmaCerrarItem(id)},
@@ -338,3 +343,12 @@ export default class ItemComponent extends Component{
 	}
 }
  
+const saveTabNumber = async(code) =>{
+	code = code.toString()
+	try {
+		await AsyncStorage.setItem('codeTab', code)
+	} catch(e) {
+		// statements
+		console.log(e);
+	}
+}

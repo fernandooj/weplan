@@ -385,6 +385,7 @@ class planServices {
 			        abono: '$PagoData.abono',
 			        userId: '$PagoData.userId',
 			        pagoId: '$PagoData._id',
+			        pagoActivo: '$PagoData.activo',
 			    }
 			},
 			// {
@@ -400,6 +401,7 @@ class planServices {
 				        	idItem: '$itemId',
 				        	abono:  "$abono",
 				        	userItemId:  "$userItemId",
+				        	pagoActivo:  "$pagoActivo",
 				        },
 			        data: {
                         $addToSet: {info:["$idUsuario", "$nombreUsuario", '$abono', '$imagenResize', '$nombre', '$userItemId',  '$itemTitulo', '$valorItem', '$fechaLugar', '$activo', '$asignadosItem', '$userId', "$monto", "$pagoId"]}

@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, Platform} from 'react-native';
 var screenWidth = Dimensions.get('window').width;
 var screenHeight = Dimensions.get('window').height;
 import { MediaQueryStyleSheet } from "react-native-responsive";
@@ -6,6 +6,11 @@ export const style = MediaQueryStyleSheet.create({
 	container:{
 		flex:1,
 		height:screenHeight,
+	},
+	contenedorPago:{
+		alignItems: 'center',
+		flex: 1,
+		backgroundColor:"#ffffff",
 	},
 	familia:{
 		fontFamily:'Futura-CondensedLight',
@@ -16,9 +21,13 @@ export const style = MediaQueryStyleSheet.create({
 		alignItems: 'center',
 		backgroundColor:'#f8f8f8'
 	},
+	subContenedor:{
+		width:'100%'
+	},
 	contenedor:{
-		width:'90%',
-		marginTop:45
+		width:'100%',
+		paddingHorizontal:20,
+		marginTop:Platform.OS==='android' ?50 :75,
 	},
 	contenedorImagen:{
 		minWidth:100,

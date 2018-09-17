@@ -390,21 +390,22 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
  		flexDirection:'row',
  		backgroundColor:'#dadede',
  		width:screenWidth,
- 		padding:10,
+ 		
  	},
  	imgBack:{
  		width:11,
  		height:20
  	},
  	btnBack:{
- 		width:'25%',
- 		marginLeft:20
+ 		padding:10,
+ 		paddingHorizontal:20
  	},
  	btnEdit:{
  		width:'30%'
  	},
  	contenedorTextBack:{
-		width:'55%',
+		width:screenWidth-55,
+		alignItems:'center',
  	},
  	textBack:{
  		fontSize:20
@@ -421,7 +422,7 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 	contenedorCambioTipo:{		
 		alignItems : 'center',
 		position:'absolute',
-		top:50,
+		top:Platform.OS === 'android' ?50 : 65,
 		zIndex:100,
 		width:'100%'
 	},
@@ -469,11 +470,13 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 	},
 	planesTitulo:{
 		flexDirection:'row',
-		marginLeft:40
+		padding:8,
+		backgroundColor:'#dadede'
 	},
 	triangulo2:{
 		width: 0,
 	    height: 0,
+
 	    top:6,
 	    marginLeft:10,
 	    backgroundColor: 'transparent',

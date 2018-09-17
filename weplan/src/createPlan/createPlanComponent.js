@@ -62,8 +62,6 @@ export default class createPlanComponent extends Component{
 		.catch(err=>{
 			console.log(err)
 		})
-
-		console.log(this.props.navigation.state.params) 
 		if (this.props.navigation.state.params) {
 			axios.get('/x/v1/pla/plan/'+this.props.navigation.state.params)
 			.then((e)=>{
@@ -183,7 +181,7 @@ export default class createPlanComponent extends Component{
 								<Text style={[CreatePlanStyle.textBack, CreatePlanStyle.familia]}>
 									{publico ?'Plan Público' :'Plan Privado'}
 								</Text>	
-								<Text style={CreatePlanStyle.triangulo2}></Text>
+								<View style={CreatePlanStyle.triangulo2}></View>
 							</View>
 						</TouchableOpacity>
 				   </View>

@@ -591,8 +591,10 @@ router.get('/suma/totales/plan', (req, res)=>{
 			res.json({status: 'FAIL', err, code:0})
 		}else{
 			let abonoTrue = pago.filter(e=>{
-				if (e._id.abono!==false && e.data[0].info[9]===true &&e._id.userItemId!==undefined) return e
-				// if (e._id.abono!==false && e.data[0].info[9]===true) return e
+				// console.log(e.data[0].info[14])
+				// return e.data[0].info[14]
+				// if (e._id.abono!==false && e.data[0].info[9]===true && e.data[0].info[14]==true &&e._id.userItemId!==undefined) return e
+				if (e._id.abono!==false && e._id.pagoActivo===true) return e
 			})
 			let id = req.session.usuario.user._id
 			let suma=[]
@@ -607,7 +609,7 @@ router.get('/suma/totales/plan', (req, res)=>{
 				if (e._id.userItemId==id) {
 					return {
 						id:e._id.id,
-						nombrePlan:'wan',
+						nombrePlan:e.data[0].info[4],
 						imagen:e.data[0].info[3],
 						total:e.total-Math.abs((Math.ceil((e.data[0].info[7]/(e.data[0].info[10]+1))/100)*100))
 					}
@@ -620,7 +622,19 @@ router.get('/suma/totales/plan', (req, res)=>{
 					}
 				}
 			})
-			res.json({status: 'SUCCESS', result:getUserpays, code:1 })
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+			///////////////////////  ESTE CODIGO LO HIZE POR QUE AL CREAR MAS DE UN ITEM SE DUPLICA EL PLAN, ASI QUE UNO LOS ITEM Y SUMO LOS TOTALES	
+			let map = getUserpays.reduce((prev, next) =>{
+			  if (next.id in prev) {
+			    prev[next.id].total += next.total;
+			  } else {
+			     prev[next.id] = next;
+			  }
+			  return prev;
+			}, {});
+			let result = Object.keys(map).map(id => map[id]);
+			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			res.json({status: 'SUCCESS', result, code:1 })
 		}
 	})
 })

@@ -330,8 +330,8 @@ router.post('/:id', (req,res)=>{
 let createPago = function(req, res, id, item){	
 	console.log("req.valor") 
 	console.log(req.valor) 
-	let data = {userId:id, itemId:item._id, monto:req.valor, planId:req.planId, abono:true, metodo:null, descripcion:'pago inicial por inscribirse', activo:true}
-	pagoServices.create(data, null, id, true, (err, pago)=>{
+	let data = {userId:id, itemId:item._id, monto:req.valor, planId:req.planId, abono:true, metodo:null, descripcion:'pago inicial por inscribirse', activo:false} 
+	pagoServices.create(data, null, id, false, (err, pago)=>{
 		if(err){
 			console.log(err)
 		}else{		

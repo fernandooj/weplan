@@ -49,9 +49,9 @@ export default class walletComponent extends Component{
 			return filteredData.map((e, key)=>{
 			return  <TouchableOpacity onPress={()=>navigate('costoPlan', e.id )} key={key}>
 					<View style={style.item}>
-						<Image source={{uri: e.imagen[0]}} style={style.imagen} />
+						<Image source={{uri: e.imagen ?e.imagen[0] :'https://appweplan.com/public/img/plan.jpg'}} style={style.imagen} />
 						<View style={style.boxPlan1} >
-							<Text style={[style.nombre, style.familia]}>{e.nombrePlan.length<30 ?e.nombrePlan :e.nombrePlan.substring(0, 30)+' ...'}</Text>
+							<Text style={[style.nombre, style.familia]}>{e.nombrePlan ?e.nombrePlan.length<30 ?e.nombrePlan :e.nombrePlan.substring(0, 30)+' ...' :''}</Text>
 							<Text style={[style.fechaLugar, style.familia]}>By {e.nombreUsuario} </Text>
 							<View style={style.item}>	
 								<Text style={[style.textoTotal, style.familia]}>Total</Text>

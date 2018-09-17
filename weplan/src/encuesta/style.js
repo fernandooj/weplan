@@ -200,7 +200,7 @@ export const style = MediaQueryStyleSheet.create({
 		width:screenWidth,
 		height:screenHeight,
 		position:'absolute',
-		zIndex:100,
+		zIndex:1000,
 		justifyContent: 'center', 
 		alignItems: 'center',
 	},

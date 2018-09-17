@@ -44,19 +44,19 @@ export default class notificacionComponent extends Component{
 				 					{
 				 						e.tipo==1 ?'Te quiere agregar como amigo' 
 				 						:e.tipo==2 ?`Te agregó al plan: ${e.titulo}` 
-				 						:e.tipo==3 ?`Te agregó al item: ${e.titulo}. El valor para entrar es: ${valor}`
-				 						:e.tipo==4 ?`Quiere acceder al item: ${e.titulo}. El valor para entrar es: ${valor}`
+				 						:e.tipo==3 ?`Te agregó al articulo: ${e.titulo}. El valor para entrar es: ${valor}`
+				 						:e.tipo==4 ?`Quiere acceder al articulo: ${e.titulo}. El valor para entrar es: ${valor}`
 				 						:e.tipo==5 ?`Aceptó ser tu amigo`
-				 						:e.tipo==6 ?`Aceptó ser parte del item: ${e.titulo}`
-				 						:e.tipo==7 ?`Te agregó al item: ${e.titulo}`
+				 						:e.tipo==6 ?`Aceptó ser parte del articulo: ${e.titulo}`
+				 						:e.tipo==7 ?`Te agregó al articulo: ${e.titulo}`
 				 						:e.tipo==8 ?`Se salio del plan: ${e.titulo}`
-				 						:e.tipo==9 ?`No le entro al item: ${e.titulo}`
+				 						:e.tipo==9 ?`No le entro al articulo: ${e.titulo}`
 				 						:e.tipo==10 ?`Te abono en efectivo: ${e.titulo}`
 				 						:e.tipo==11 ?`Tu abono de: ${e.titulo}, fue Aprobado`
 				 						:e.tipo==12 ?`Tu abono de: ${e.titulo}, fue Rechazado`
 				 						:e.tipo==13 ?`Cerro el plan: ${e.titulo}`
 				 						:e.tipo==14 ?`Califica el plan: ${e.titulo}`
-				 						:e.tipo==15 &&`el costo del item ${e.titulo} cambio`
+				 						:e.tipo==15 &&`el costo del artículo ${e.titulo} cambio`
 				 					}
 				 				</Text>
 				 			</TouchableOpacity>
