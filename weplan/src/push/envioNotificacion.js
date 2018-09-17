@@ -14,7 +14,7 @@ export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaj
 	    let nombre = tipo==14 ?'' :res.data.user.user.nombre
 	    let photo  = res.data.user.user.photo
 	    imagen = imagen==null ? photo :imagen
-	    
+	    if(Platform.OS === 'android'){
 	        bodyAndroid = {
 	        "to": token,
 	      	"data": {
@@ -36,7 +36,7 @@ export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaj
 	        },
 	    		"priority": 10
 	      }
-	    
+	      firebaseClient.send(JSON.stringify(bodyAndroid), "notification");
 			bodyIos = {
 		        to: token,
 		        notification: {
@@ -44,25 +44,74 @@ export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaj
 					body : `${nombre} ${mensaje}`,
 					priority:"high",
 					icon:"ic_notif",
-					// targetScreen:targetScreen,
+					targetScreen:targetScreen,
 					color:"#00ACD4",
 					big_picture:imagen,
 					picture:imagen,
 					image:imagen,
 					large_icon: imagen,
 					sound: "default",
-					
+					parameter,
 					show_in_foreground: true
 		        },
 		        data: {
-		          targetScreen:targetScreen,
-		          parameter,
+					targetScreen:targetScreen,
+					parameter,
 		        },
 		        priority: 10
-		      };
+		    };
+		    firebaseClient.send(JSON.stringify(bodyIos), "notification");
+	    }else{
+	    	bodyAndroid = {
+	        "to": token,
+	      	"data": {
+	            "custom_notification": {
+					title: titulo,
+					body : `${nombre} ${mensaje}`,
+					priority:"high",
+					icon:"ic_notif",
+					targetScreen:targetScreen,
+					color:"#00ACD4",
+					big_picture:imagen,
+					picture:imagen,
+					image:imagen,
+					large_icon: imagen,
+					sound: "default",
+					parameter,
+					show_in_foreground: true
+	            }
+	        },
+	    		"priority": 10
+	      }
+	      firebaseClient.send(JSON.stringify(bodyAndroid), "notification");
+			bodyIos = {
+		        to: token,
+		        notification: {
+		         	title: titulo,
+					body : `${nombre} ${mensaje}`,
+					priority:"high",
+					icon:"ic_notif",
+					targetScreen:targetScreen,
+					color:"#00ACD4",
+					big_picture:imagen,
+					picture:imagen,
+					image:imagen,
+					large_icon: imagen,
+					sound: "default",
+					parameter,
+					show_in_foreground: true
+		        },
+		        data: {
+					targetScreen:targetScreen,
+					parameter,
+		        },
+		        priority: 10
+		    };
+		    firebaseClient.send(JSON.stringify(bodyIos), "notification");
+	    }
 		
-    	firebaseClient.send(JSON.stringify(bodyAndroid), "notification");
-    	firebaseClient.send(JSON.stringify(bodyIos), "notification");
+    	
+    	
    
     
     })

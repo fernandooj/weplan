@@ -29,7 +29,7 @@ export default class notificacionComponent extends Component{
 		const {id, notificacion} = this.state
  		return notificacion.map((e, key)=>{
  			let valor = '$ '+Number(e.valorItem).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
- 			let estaPlan = e.infoPlan.asignados.includes(id)
+ 			let estaPlan = e.infoPlan ?e.infoPlan.asignados.includes(id) :[]
  			console.log(estaPlan)
 			return(
  				<View key={key} style={style.subContenedor}>

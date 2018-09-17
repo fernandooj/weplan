@@ -81,7 +81,8 @@ export default class ChatComponent extends Component{
 		/////////////////	OBTENGO TODOS LOS MENSAJES Y EL PLAN
 		axios.get(`/x/v1/cha/chat/chatPlan/${planId}/${100}`)
 		.then(e=>{
-			this.setState({mensajes:e.data.chat, imagen: e.data.plan.imagenResize[0], nombrePlan: e.data.plan.nombre, planAsignados:e.data.planAsignados, notificaciones:e.data.plan.notificaciones, plan:e.data.plan, showIndicador:false})
+			console.log(e.data.plan.idUsuario)
+			this.setState({mensajes:e.data.chat, imagen: e.data.plan.imagenResize[0], nombrePlan: e.data.plan.nombre, idUserDueno:e.data.plan.idUsuario, planAsignados:e.data.planAsignados, notificaciones:e.data.plan.notificaciones, plan:e.data.plan, showIndicador:false})
 		})
 		.catch(err=>{
 			console.log(err)
@@ -862,14 +863,15 @@ export default class ChatComponent extends Component{
 	handleSubmit(){
 		// Keyboard.dismiss()
 		// this.refs.scrollView.scrollTo({y:(this.state.heightContent+200)-Dimensions.get('window').height-390})
-		const {planId, mensaje, id, photo, notificaciones, nombrePlan, imagen} = this.state
+		let {planId, mensaje, id, photo, notificaciones, nombrePlan, imagen, idUserDueno} = this.state
+		 
 		let nuevaNotificacion = notificaciones.filter(e=>{
 			return e._id!==id
 		}) 
+		
 		nuevaNotificacion.map(e=>{
 			sendRemoteNotification(15, e.tokenPhone, 'chat', `${nombrePlan}`,  `: ${mensaje}`, imagen, planId)
 		})
-		
 		const fecha = moment().format('h:mm')
 
 		this.textInput.clear()

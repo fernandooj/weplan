@@ -14,7 +14,7 @@ class planServices {
 	}
 	/// con populate
 	getByIdPlanPopulate(_id, callback){
-		planSchema.find({_id}).populate('idUsuario', 'nombre ciudad photo calificacion').populate('restricciones').populate('asignados', 'username photo nombre token estado').populate('notificaciones', 'tokenPhone').exec(callback)
+		planSchema.find({_id}).populate('idUsuario', 'nombre ciudad photo calificacion tokenPhone').populate('restricciones').populate('asignados', 'username photo nombre token estado').populate('notificaciones', 'tokenPhone').exec(callback)
 	}
 	getPlanesPublicosDesactivados(idUsuario, callback){
 		idUsuario = mongoose.Types.ObjectId(idUsuario);	
@@ -293,123 +293,7 @@ class planServices {
 	        'activo': activo,
         }}, callback);
 	}
-	sumaPlan(idUsuario, callback){
-		idUsuario = mongoose.Types.ObjectId(idUsuario);	
- 		planSchema.aggregate([
- 			{
- 			    $match:{
- 			    	$or:[
- 			    	    {idUsuario, tipo:'suscripcion'},
- 			    	    {asignados:idUsuario, tipo:'suscripcion'},
- 			    	]
- 			    }
- 			},
- 			{
-	 			$lookup: {
-	 				from: "users",
-	 				localField: "idUsuario",
-	 				foreignField: "_id",
-	 				as: "UserData"
-	 			}
-	 		},
-	 		{
-	 			$unwind:
-	 			{
-	 				path:'$UserData',
-	 				preserveNullAndEmptyArrays: true
-	 			}
-	 		},
-	 		{
-	 			$lookup: {
-	 				from: "items",
-	 				localField: "_id",
-	 				foreignField: "planId",
-	 				as: "ItemData"
-	 			}
-	 		},
-	 		{
-	 			$unwind:
-	 			{
-	 				path:'$ItemData',
-	 				preserveNullAndEmptyArrays: true
-	 			}
-	 		},
-	 		{
-	 			$project:{
-	 				_id:1,
-	 				nombre:1,
-	 				imagenResize:1,
-	 				fechaLugar:1,
-	 				activo:1,
-	 				nombreUsuario:'$UserData.nombre',
-	 				idUsuario:'$UserData._id',
-	 				itemId:'$ItemData._id',
-	 				userItemId:'$ItemData.userId',
-	 				itemTitulo: '$ItemData.titulo',
-	 				valorItem:'$ItemData.valor',
-	 				asignadosItem:{ "$size": { "$ifNull": [ "$ItemData.asignados", [] ] } },
-	 			},
-	 		}, 
-			{
-			    $lookup:{
-			        from:"pagos",
-			        localField:"itemId",
-			        foreignField:"itemId",
-			        as:"PagoData"
-			    }
-			},	
-			{
-				$unwind:
-				{
-	 				path:'$PagoData',
-	 				preserveNullAndEmptyArrays: true
-	 			}
-			},
-			{
-			    $project:{
-			        _id:1,
-			        nombre:1,
-			        imagenResize:1,
-			        idUsuario:1,
-			        nombreUsuario:1,
-			        itemId:1,
-			        itemTitulo:1,
-			        userItemId:1,
-			        valorItem:1,
-			        fechaLugar:1,
-			        activo:1,
-			        asignadosItem:1,
-			        monto: '$PagoData.monto',
-			        abono: '$PagoData.abono',
-			        userId: '$PagoData.userId',
-			        pagoId: '$PagoData._id',
-			    }
-			},
-			// {
-		 //    	$match:{
-		 //    		userId:idUsuario
-		 //    	},
-		 //    },
-			{
-			    $group:{
-			        _id:
-				        {
-				        	id:'$_id',
-				        	idItem: '$itemId',
-				        	abono:  "$abono",
-				        	userItemId:  "$userItemId",
-				        	 
-				        },
-			        data: {
-                        $addToSet: {info:["$idUsuario", "$nombreUsuario", '$abono', '$imagenResize', '$nombre', '$userItemId',  '$itemTitulo', '$valorItem', '$fechaLugar', '$activo', '$asignadosItem', '$userId', "$monto", "$pagoId"]}
-                    },
-			        total:{ $sum :'$monto'},
-			        count:{ $sum :1}
-			    }
-			},
-			
-		], callback);
- 	}
+	 
 
  	sumaPlan(idUsuario, callback){
 		idUsuario = mongoose.Types.ObjectId(idUsuario);	
@@ -516,7 +400,6 @@ class planServices {
 				        	idItem: '$itemId',
 				        	abono:  "$abono",
 				        	userItemId:  "$userItemId",
-				        	 
 				        },
 			        data: {
                         $addToSet: {info:["$idUsuario", "$nombreUsuario", '$abono', '$imagenResize', '$nombre', '$userItemId',  '$itemTitulo', '$valorItem', '$fechaLugar', '$activo', '$asignadosItem', '$userId', "$monto", "$pagoId"]}

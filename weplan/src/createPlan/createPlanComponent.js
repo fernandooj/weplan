@@ -357,7 +357,7 @@ export default class createPlanComponent extends Component{
 				    	<Image source={require('../assets/images/denied.png')} style={CreatePlanStyle.iconInput} />
 					    {
 					    	restricciones.length==0
-					    	?<TouchableOpacity onPress={()=>this.setState({ restriccion:true})} style={restricciones.length>0 ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>
+					    	?<TouchableOpacity onPress={!cargaPlan ?()=>this.setState({ restriccion:true}) :null} style={restricciones.length>0 ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>
 						    	<Text style={restricciones.length>0 ?[CreatePlanStyle.textos, CreatePlanStyle.familia] :[CreatePlanStyle.textosActivo, CreatePlanStyle.familia]}>{restricciones.length>0 ?'tienes: '+restricciones.length+' Restricciones' : cargaPlan ?'Sin Restricciones asignadas' :'Restricciones'}</Text>
 						    </TouchableOpacity>
 					    	:<View style={CreatePlanStyle.contentAdd}>

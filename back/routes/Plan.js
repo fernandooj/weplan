@@ -607,7 +607,7 @@ router.get('/suma/totales/plan', (req, res)=>{
 				if (e._id.userItemId==id) {
 					return {
 						id:e._id.id,
-						nombrePlan:e.data[0].info[4],
+						nombrePlan:'wan',
 						imagen:e.data[0].info[3],
 						total:e.total-Math.abs((Math.ceil((e.data[0].info[7]/(e.data[0].info[10]+1))/100)*100))
 					}

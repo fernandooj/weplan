@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import {
-  Animated, YellowBox,
+  Animated, YellowBox,Platform,
   Easing, StyleSheet, Text, View, Image, Dimensions, ImageBackground, AsyncStorage
 } from 'react-native'
 import axios                  from 'axios' 
@@ -13,10 +13,10 @@ import insertCodeComponent    from './src/registro/insertCodeComponent';
 import editPerfilComponent    from './src/editPerfil/editPerfilComponent';
 import editPerfilComponent1   from './src/editPerfil/editPerfilComponent1';
 import editPerfilComponent2   from './src/editPerfil/editPerfilComponent2';
-
 import createPlanComponent    from './src/createPlan/createPlanComponent';
 import MisPlanesComponent     from './src/misPlanes/misPlanesComponent';
-import ChatComponent          from './src/chat/chatComponent';
+import ChatComponentAndroid   from './src/chat/chatComponent.android';
+import ChatComponentIos       from './src/chat/chatComponent.ios';
 import ItemComponent          from './src/item/itemComponent';
 import encuestaComponent      from './src/encuesta/encuestaComponent';
 import pagoComponent          from './src/pago/pagoComponent';
@@ -37,87 +37,10 @@ import facturacionComponent        from './src/facturacion/facturacionComponent'
 import planesPublicosComponent     from './src/planesPublicos/planesPublicosComponent';
 import detallePlanPublicoComponent from './src/planesPublicos/detallePlanPublicoComponent';
  
-
-
-
 export const URL = 'https://appweplan.com/';
 axios.defaults.baseURL = URL;
 
- 
-
-
 const win = Dimensions.get('window');
-const NavigationApp = StackNavigator({
-    Home:          {screen: LoginComponent },
-    Login:         {screen: LoginComponent },
-    Registro:      {screen: RegistroComponent },
-    insertCode:    {screen: insertCodeComponent },
-    editPerfil:    {screen: editPerfilComponent },
-    editPerfil1:   {screen: editPerfilComponent1 },
-    editPerfil2:   {screen: editPerfilComponent2 },
-    inicio:        {screen: homeComponent },
-    createPlan:    {screen: createPlanComponent },
-    misPlanes:     {screen: MisPlanesComponent },
-    chat:          {screen: ChatComponent },
-    item:          {screen: ItemComponent },
-    ajustes:       {screen: ajustesComponent },
-    ajustesAmigos: {screen: ajustesAmigosComponent },
-    pago:          {screen: pagoComponent },
-    pagoDeuda:     {screen: pagoDeudaComponent },
-    encuesta:      {screen: encuestaComponent },
-    notificacion:  {screen: notificacionComponent },
-    wallet:        {screen: walletComponent },
-    perfil:        {screen: perfilComponent },
-    profile:       {screen: profileComponent },
-    editPassword:  {screen: EditPasswordComponent },
-    insertCode2:   {screen: insertCodeComponent2 },
-    nuevoPassword: {screen: nuevoPasswordComponent },
-    infoPlan:      {screen: infoPlanComponent },
-},{ headerMode: 'none', 
-    navigationOptions: {
-      gesturesEnabled: false
-   }
-})
- 
-const NavigationAppLogin = StackNavigator({  
-    Home:          {screen: homeComponent}, 
-    Login:         {screen: LoginComponent },
-    Registro:      {screen: RegistroComponent },
-    insertCode:    {screen: insertCodeComponent },
-    editPerfil:    {screen: editPerfilComponent },
-    editPerfil1:   {screen: editPerfilComponent1 },
-    editPerfil2:   {screen: editPerfilComponent2 },
-    inicio:        {screen: homeComponent },
-    createPlan:    {screen: createPlanComponent },
-    misPlanes:     {screen: MisPlanesComponent },
-    chat:          {screen: ChatComponent },
-    item:          {screen: ItemComponent },
-    encuesta:      {screen: encuestaComponent },
-    ajustes:       {screen: ajustesComponent },
-    ajustesAmigos: {screen: ajustesAmigosComponent },
-    pago:          {screen: pagoComponent },
-    pagoDeuda:     {screen: pagoDeudaComponent },
-    notificacion:  {screen: notificacionComponent },
-    wallet:        {screen: walletComponent },
-    perfil:        {screen: perfilComponent },
-    profile:       {screen: profileComponent },
-    editPassword:  {screen: EditPasswordComponent },
-    insertCode2:   {screen: insertCodeComponent2 },
-    nuevoPassword: {screen: nuevoPasswordComponent },
-    infoPlan:      {screen: infoPlanComponent },
-    costoPlan:     {screen: costoPlanComponent },
-    medioPago:     {screen: medioPagoComponent },
-    planesPublicos:{screen: planesPublicosComponent },
-    facturacion:   {screen: facturacionComponent },
-    detallePlanPublico:{screen: detallePlanPublicoComponent },
-},{ headerMode: 'none', 
-    navigationOptions: {
-      gesturesEnabled: false
-   }
-})
-
-
- 
 
 export default class App extends Component<{}> {
   constructor(props) {
@@ -160,20 +83,51 @@ export default class App extends Component<{}> {
     }
   }
   render() {
+   const {google, local} = this.state
+   const NavigationApp = StackNavigator({
+      Home:          {screen: local===1 ?walletComponent :LoginComponent },
+      Login:         {screen: LoginComponent },
+      Registro:      {screen: RegistroComponent },
+      insertCode:    {screen: insertCodeComponent },
+      editPerfil:    {screen: editPerfilComponent },
+      editPerfil1:   {screen: editPerfilComponent1 },
+      editPerfil2:   {screen: editPerfilComponent2 },
+      inicio:        {screen: homeComponent },
+      createPlan:    {screen: createPlanComponent },
+      misPlanes:     {screen: MisPlanesComponent },
+      chat:          {screen: Platform.OS==='android' ?ChatComponentAndroid :ChatComponentIos},
+      item:          {screen: ItemComponent },
+      ajustes:       {screen: ajustesComponent },
+      ajustesAmigos: {screen: ajustesAmigosComponent },
+      pago:          {screen: pagoComponent },
+      pagoDeuda:     {screen: pagoDeudaComponent },
+      encuesta:      {screen: encuestaComponent },
+      notificacion:  {screen: notificacionComponent },
+      wallet:        {screen: walletComponent },
+      perfil:        {screen: perfilComponent },
+      profile:       {screen: profileComponent },
+      editPassword:  {screen: EditPasswordComponent },
+      insertCode2:   {screen: insertCodeComponent2 },
+      nuevoPassword: {screen: nuevoPasswordComponent },
+      infoPlan:      {screen: infoPlanComponent },
+      costoPlan:     {screen: costoPlanComponent },
+      medioPago:     {screen: medioPagoComponent },
+      planesPublicos:{screen: planesPublicosComponent },
+      facturacion:   {screen: facturacionComponent },
+      detallePlanPublico:{screen: detallePlanPublicoComponent },
+   },{ headerMode: 'none', 
+       navigationOptions: {
+         gesturesEnabled: false
+      }
+   })
     let num = Math.floor(Math.random() * 5);
-    const {google, local} = this.state
-    console.log(num)
     if (local==null) {
       return (
          <ImageBackground source={num==0 ?require('./splash0.jpg') :num==1 ?require('./splash1.jpg') :num==2 ?require('./splash2.jpg') :num==3 ?require('./splash3.jpg') :num==4 &&require('./splash4.jpg')} style={styles.image}>   
            <Image source={require('./src/assets/images/logo.png')} style={{width:300, height:220}} />
           </ImageBackground>
           )
-    }else if(local==1){
-      return (
-        <NavigationAppLogin screenProps={{num}}/>
-      )
-    }else if(local==2){
+    }else{
       return (
         <NavigationApp screenProps={{num}}/>
       )
