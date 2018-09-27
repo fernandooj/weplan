@@ -24,6 +24,12 @@ export default class MapaPlanComponent extends Component{
 				latitudeDelta: 0.046002887451081165,
 				longitudeDelta: 0.05649235099555483,
 		    },
+		    x2: {
+				latitude: 4.597825,
+				longitude: -74.0755723,
+				latitudeDelta: 0.046002887451081165,
+				longitudeDelta: 0.05649235099555483,
+		    },
 		    buscador:false,
 		    marker: {
 				latitude: 4.597825,
@@ -123,9 +129,10 @@ export default class MapaPlanComponent extends Component{
 	}
 	render(){
 		const {ubicacionDefecto, inputValor, planPublico, guardaUbicacion} = this.props
-		const {valorInicial, km, latitudeDelta, longitudeDelta, mapaCargado, showKeyboard, buscador ,x} = this.state
+		const {valorInicial, km, latitudeDelta, longitudeDelta, mapaCargado, showKeyboard, buscador,x,x2}=this.state
 		let direccion = guardaUbicacion.direccion ?guardaUbicacion.direccion :this.state.direccion
- 
+ 	 	console.log(x)
+ 	 	console.log(km)
 		if (mapaCargado) {
 			return(
 				<View>
@@ -197,43 +204,44 @@ export default class MapaPlanComponent extends Component{
 		      				{
 		      					buscador
 		      					?<MapView
-						          style={CreatePlanStyle.map, {height:showKeyboard ?250:405}}
-						          region={{
-						            latitude:  x.latitude,
-						            longitude: x.longitude,
-						            latitudeDelta: x.latitudeDelta,
-						            longitudeDelta: x.longitudeDelta,
-						          }}
+					          		style={CreatePlanStyle.map, {height:showKeyboard ?250:405}}
+					          		region={{
+							            latitude:  x.latitude,
+							            longitude: x.longitude,
+							            latitudeDelta: x.latitudeDelta,
+							            longitudeDelta: x.longitudeDelta,
+					          		}}
 					          		onRegionChange={(e)=>this.onRegionChange(e)}
-						        	> 
+					          		onPress={()=>this.setState({buscador:true})}
+					        	> 
 						        <Marker
 								    coordinate={x}
-								  />
-								  <Circle 
+							  	/>
+							  	<Circle 
 								  	radius={km}
 								  	center={{latitude:ubicacionDefecto.infoplan ?ubicacionDefecto.lat :this.state.x.latitude, 
 								  		longitude: ubicacionDefecto.infoplan ?ubicacionDefecto.lng : this.state.x.longitude}}
 								  	strokeColor = { '#1a66ff' }
 		                			fillColor = { 'rgba(100,100,100,.2)' }
-								  />
+							  	/>
 						        </MapView>
 					        	:<MapView
 						          style={CreatePlanStyle.map, {height:showKeyboard ?250:405}}
 						          initialRegion={{
-						            latitude:  ubicacionDefecto.infoplan ?ubicacionDefecto.lat :guardaUbicacion.lat ?guardaUbicacion.lat :this.state.x.latitude,
-						            longitude: ubicacionDefecto.infoplan ?ubicacionDefecto.lng :guardaUbicacion.lng ?guardaUbicacion.lng :this.state.x.longitude,
+						            latitude:ubicacionDefecto.infoplan ?ubicacionDefecto.lat :guardaUbicacion.lat ?guardaUbicacion.lat :x.latitude,
+						            longitude:ubicacionDefecto.infoplan ?ubicacionDefecto.lng :guardaUbicacion.lng ?guardaUbicacion.lng :x.longitude,
 						            latitudeDelta: this.state.x.latitudeDelta,
 						            longitudeDelta: this.state.x.longitudeDelta,
 						          }}
 				          		onRegionChange={(e)=>this.onRegionChange(e)}
 					        	> 
 						        <Marker
-								    coordinate={x}
+								    coordinate={km<200 ?x :x2}
 								  />
 								  <Circle 
 								  	radius={km}
-								  	center={{latitude:ubicacionDefecto.infoplan ?ubicacionDefecto.lat :this.state.x.latitude, 
-								  		longitude: ubicacionDefecto.infoplan ?ubicacionDefecto.lng : this.state.x.longitude}}
+								  	center={{latitude:ubicacionDefecto.infoplan ?ubicacionDefecto.lat :km<200 ?x.latitude :x2.latitude, 
+								  		longitude: ubicacionDefecto.infoplan ?ubicacionDefecto.lng :km<200 ?x.longitude :x2.longitude}}
 								  	strokeColor = { '#1a66ff' }
 		                			fillColor = { 'rgba(100,100,100,.2)' }
 								  />
@@ -254,6 +262,7 @@ export default class MapaPlanComponent extends Component{
 					                  style={CreatePlanStyle.inputValor}
 					                  underlineColorAndroid='transparent'
 					                  onChangeText={this.getValor.bind(this)} 
+					                  onBlur={()=>this.setState({buscador:false})}
 					                  value={(km*2000)/300}
 					                />
 					            </View>
@@ -279,18 +288,31 @@ export default class MapaPlanComponent extends Component{
 		}	
 	}
 	onRegionChange(x) {
-		this.setState({x, buscador:false});
-	  	// this.setState({ marker:{latitude:e.latitude, longitude: e.longitude} });
+		this.state.km<200 ?this.setState({x2:x}) :null
+		this.setState({x});
 	}
 	getValor(e){
 	    e = e.substr(1)
 	    e = e.replace(/[^0-9]/g, '') 
 	    e = Number(e)
-
+	   
 	    let km = (e*300)/2000 
-	     
-	    this.setState({valorInicial:e, km})
+	    // console.log(0.013850498819819812+(km*.000005))
+	    
+	    let x = {
+			latitude: this.state.x.latitude,
+			longitude:this.state.x.longitude,
+			latitudeDelta: 0.013850498819819812+(km*.00002),
+			longitudeDelta: 0.01412317156791687+(km*.00002),
+	    }
+	    // this.state.km<200 ?this.setState({buscador:true}) :this.setState({buscador:false})
+	   
+	
+	    this.setState({valorInicial:e, km, x, x2:x, buscador:true})
 
+	    setTimeout(function(){ 
+	    	this.setState({ buscador:false })
+	    }, 100);
 
 	}
 	 

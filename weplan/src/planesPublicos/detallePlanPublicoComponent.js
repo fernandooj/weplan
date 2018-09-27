@@ -5,8 +5,7 @@ import {CreatePlanStyle} from '../createPlan/style'
 import axios from 'axios'
 import DatePicker from 'react-native-datepicker'
 import moment from 'moment'
-import Slideshow from 'react-native-slideshow';
-
+ 
 
 import RestriccionesPlanComponent from '../createPlan/restricciones.js'
 import MapaPlanComponent 		  from '../createPlan/mapa.js'
@@ -18,14 +17,7 @@ import AlertInput 				  from 'react-native-alert-input';
  
 
 const screenWidth = Dimensions.get('window').width;
-const influencia = [
-	{label:'1 Km',  key:1000},
-	{label:'5 km',  key:5000},
-	{label:'7 km',  key:7000},
-	{label:'15 km', key:15000},
-	{label:'30 km', key:30000}
-]
-
+ 
 export default class detallePlanPublicoComponent extends Component{
 	constructor(props){
 		super(props);
@@ -50,10 +42,10 @@ export default class detallePlanPublicoComponent extends Component{
  			cargaPlan:false,
  			showAlertUbicacion:false,
  			position: 1,
-	      	interval: null,
-	      	imagenes:[],
-	      	tipoPlan:null, //// modal que muestra el tipo del plan
-	      	publico:null,  //// determina si el plan va a ser publico o privado
+      	interval: null,
+      	imagenes:[],
+      	tipoPlan:null, //// modal que muestra el tipo del plan
+      	publico:null,  //// determina si el plan va a ser publico o privado
 		}
 	}
 
@@ -71,7 +63,7 @@ export default class detallePlanPublicoComponent extends Component{
 			let data = e.data.plan[0]
 
 			// this.setState({imagen:data.imagenMiniatura[0], iconCreate:false, restriccion:false, restriccionesAsignadas:e.data.plan[0].restricciones , restricciones:e.data.plan[0].restricciones, planPadre:this.props.navigation.state.params, imagenes, tipoPlan:false })
-			this.setState({imagen:data.imagenMiniatura[0], nombre:data.nombre,  lat:data.loc.coordinates[1], lng:data.loc.coordinates[0], descripcion:data.descripcion, fechaLugar:data.fechaLugar, direccion:data.lugar, loc:data.loc.coordinates, area:data.area, restriccionesAsignadas:data.restricciones , restricciones:data.restricciones, planId, costo:(data.area*2000)/300 })
+			this.setState({imagen2:data.imagenMiniatura[0], nombre:data.nombre,  lat:data.loc.coordinates[1], lng:data.loc.coordinates[0], descripcion:data.descripcion, fechaLugar:data.fechaLugar, direccion:data.lugar, loc:data.loc.coordinates, area:data.area, restriccionesAsignadas:data.restricciones , restricciones:data.restricciones,  activo:data.activo, planId, costo:(data.area*2000)/300 })
 		})
 		.catch(err=>{
 			console.log(err)
@@ -126,7 +118,7 @@ export default class detallePlanPublicoComponent extends Component{
 	///////////////////////////////////////////////////  	RENDER  	/////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	render(){
-		const {nombre, direccion, fechaLugar, lugar, loc, area, lat, lng, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, costo} = this.state
+		const {nombre, direccion, fechaLugar, lugar, loc, area, lat, lng, restricciones, asignados, imagen2, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, costo, activo, exitoso} = this.state
 		const {navigate} = this.props.navigation
 		console.log(loc)
 		return (
@@ -140,7 +132,7 @@ export default class detallePlanPublicoComponent extends Component{
 
 				<CabezeraComponent navigate={navigate} url={'planesPublicos'} texto='Activar Plan' />
 				<View style={{height:45}}></View>
-				<TakePhotoComponent fuente={'cam.png'} fuente2={imagen} ancho={screenWidth} alto={160} updateImagen={(imagen) => {this.setState({imagen})}}   />
+				<TakePhotoComponent fuente={'cam.png'} fuente2={imagen2} ancho={screenWidth} alto={160} updateImagen={(imagen) => {this.setState({imagen})}}   />
 				<View style={CreatePlanStyle.textoCargado2}>
 					<TextInput
 						style={[CreatePlanStyle.nombreCargado, CreatePlanStyle.familia]}
@@ -234,21 +226,20 @@ export default class detallePlanPublicoComponent extends Component{
 					    		<View style={CreatePlanStyle.agregadosContenedor}>
 						    		{this.renderRestriccionesAsignados()} 
 						    	</View>
-						    	{
-						    		!this.props.navigation.state.params
-						    		&&<TouchableOpacity onPress={() => this.setState({restriccion:true})} style={CreatePlanStyle.addBtn}>
+						    	 <TouchableOpacity onPress={() => this.setState({restriccion:true})} style={CreatePlanStyle.addBtn}>
 							    		<Image source={require('../assets/images/add.png')} style={CreatePlanStyle.add} />
 							    	</TouchableOpacity>
-						    	}
+						    	 
 						    </View>
 						}
 						{
 							restriccion 
 							?<RestriccionesPlanComponent  
-							    restriccion={(restricciones, restriccionesAsignadas, misRestricciones)=>this.setState({restricciones, restriccionesAsignadas, misRestricciones, restriccion:false})}
-							    restricciones={this.state.restricciones}
+							    restriccion={(restricciones, restriccionesAsignadas)=>this.setState({restricciones, restriccionesAsignadas, restriccion:false})}
+							    arrayRestricciones={this.state.restricciones}
 							    restriccionesAsignadas={this.state.restriccionesAsignadas}
-							    misRestricciones={this.state.misRestricciones}
+							    
+							    noEdit={true}
 						    />
 						     
 						    :null
@@ -265,13 +256,26 @@ export default class detallePlanPublicoComponent extends Component{
 				    	<Text style={[CreatePlanStyle.costoPlan, CreatePlanStyle.familia]}>Costo plan: {'$ '+Number(costo).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
 		          </View>
 		        </View>
-				
+				{
+		    		exitoso
+			    	&&<Text style={CreatePlanStyle.exitoso}>Plan Actualizado</Text>
+			    }
 				
 				{/*  Crear Plan  */}
-					<TouchableOpacity onPress={this.handleSubmit.bind(this)} style={CreatePlanStyle.btnHecho}>
-					   <Text style={[CreatePlanStyle.hecho, CreatePlanStyle.familia]}>Activar</Text>
+				<View>
+					<TouchableOpacity onPress={this.editarPlan.bind(this)} style={CreatePlanStyle.btnEditarPlan}>
+					   <Text style={[CreatePlanStyle.hecho, CreatePlanStyle.familia]}>Editar</Text>
 					</TouchableOpacity>
-				 
+					{
+						activo
+						&&<TouchableOpacity onPress={this.handleSubmit.bind(this)} style={[CreatePlanStyle.btnEditarPlan, CreatePlanStyle.btnActivar]}>
+						   <Text style={[CreatePlanStyle.hecho, CreatePlanStyle.familia]}>Activar</Text>
+						</TouchableOpacity>
+					}
+					<TouchableOpacity onPress={this.eliminarPlan.bind(this)} style={[CreatePlanStyle.btnEditarPlan, CreatePlanStyle.btnEliminar]}>
+					   <Text style={[CreatePlanStyle.hecho, CreatePlanStyle.familia]}>Eliminar</Text>
+					</TouchableOpacity>
+				</View> 
 			    </View>	
 			</ScrollView>
 		)
@@ -302,10 +306,21 @@ export default class detallePlanPublicoComponent extends Component{
  			}
  		})
  	}
+ 	eliminarPlan(){
+		const {navigate} = this.props.navigation
+		axios.put('/x/v1/pla/plan/eliminar', {planId:this.state.planId}) 
+		.then((res)=>{
+			console.log(res)
+			navigate('planesPublicos')
+		})
+		.catch((err)=>{
+			console.log(err)
+		})
+	}
 	handleSubmit(){
 		const {navigate} = this.props.navigation
-		let {nombre, descripcion, fechaLugar, lat, lng, asignados, usuariosAsignados, restricciones, imagen, tipo, cargaPlan, planPadre, direccion, area, publico, costo, planId} = this.state
-
+		// let {nombre, descripcion, fechaLugar, lat, lng, asignados, usuariosAsignados, restricciones, imagen, tipo, cargaPlan, planPadre, direccion, area, publico, costo, planId} = this.state
+		const {direccion, area, costo, planId} = this.state
 		// nombre 		= cargaPlan.nombre ?cargaPlan.nombre :nombre
 		// descripcion = cargaPlan.descripcion ?cargaPlan.descripcion :descripcion
 		// lat 		= cargaPlan.lat ?cargaPlan.lat :lat
@@ -345,12 +360,13 @@ export default class detallePlanPublicoComponent extends Component{
 		console.log(costo)
 		axios.get('/x/v1/pag/pagopublico/byuser') 
 		.then((res)=>{
-			if (res.data.pago[0].saldo<costo) {
+			console.log(res.data)
+			if (res.data.saldo<costo) {
 				Alert.alert(
 					`Tu saldo es insuficiente`,
 					'',
 				[
-					{text: 'Salir', onPress: () => navigate('inicio')},
+					{text: 'Ok'},
 					{text: 'Recargar', onPress: () => navigate('facturacion')},
 				],
 					{ cancelable: false }
@@ -359,7 +375,7 @@ export default class detallePlanPublicoComponent extends Component{
 				axios.put('/x/v1/pla/plan/cambiarestado', {id, activo:true})
 				.then(data=>{
 					if(data.data.code==1){
-						axios.post('/x/v1/pag/pagopublico', {monto:-Math.abs(costo), planId:id, userId:res.data.pago[0]._id})
+						axios.post('/x/v1/pag/pagopublico', {monto:-Math.abs(costo), planId:id, userId:res.data._id})
 						.then(res2=>{
 							if (res2.data.code==1) {
 								Alert.alert(
@@ -383,9 +399,10 @@ export default class detallePlanPublicoComponent extends Component{
 		})
 	}
 	editarPlan(){
-		if (!imagen) {
+		let {nombre, descripcion, fechaLugar, lat, lng, asignados, usuariosAsignados, restricciones, imagen, tipo, cargaPlan, direccion, area, publico, costo, planId, lugar} = this.state
+		if (imagen) {
 				let data = new FormData();
-				axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, restricciones, lugar:direccion, area, activo})
+				axios.put('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, restricciones, lugar:direccion, area})
 				.then(e=>{
 					if(e.data.code==1){	
 						let id = e.data.message._id;
@@ -401,26 +418,8 @@ export default class detallePlanPublicoComponent extends Component{
 							}
 						})
 						.then((res)=>{
-							console.log(res.data)
-							if(res.data.status=="SUCCESS"){
-							usuariosAsignados.map(e=>{
-								sendRemoteNotification(2, e.token, 'misPlanes', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, res.data.rutaImagenResize[0])
-							})
-								if (!publico) {
-									navigate('chat', id)
-								}else{
-									Alert.alert(
-										`Tu plan ha sido creado`,
-										'puedes activarlo ahora por las proximas 24 horas, o activarlo luego desde ajustes',
-									[
-										{text: 'Mejor Luego', onPress: () => navigate('inicio')},
-										{text: 'Activar', onPress: () => this.activarPlan(costo, navigate, id)},
-									],
-										{ cancelable: false }
-									)
-								}
-								
-							}
+							this.setState({exitoso:true})
+							 
 						})
 						.catch((err)=>{
 							console.log(err)
@@ -433,15 +432,9 @@ export default class detallePlanPublicoComponent extends Component{
 					console.log(err)
 				})
 			}else{
-				axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, lugar, area, restricciones, tipo, activo, imagenOriginal:imagen, imagenResize:imagen, imagenMiniatura:imagen, planPadre})
+				axios.put('/x/v1/pla/plan/editar', {nombre, descripcion, fechaLugar, lat, lng, asignados, lugar, area, restricciones, tipo,   planId})
 				.then(e=>{
-					if(e.data.code==1){	
-						let id = e.data.message._id;
-						usuariosAsignados.map(e=>{
-							sendRemoteNotification(2, e.token, 'misPlanes', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, imagen)
-						})
-						navigate('chat', id)
-					}
+					this.setState({exitoso:true})
 				})
 				.catch(err=>{
 					console.log(err)

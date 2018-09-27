@@ -81,7 +81,7 @@ export default class ChatComponent extends Component{
 		/////////////////	OBTENGO TODOS LOS MENSAJES Y EL PLAN
 		axios.get(`/x/v1/cha/chat/chatPlan/${planId}/${100}`)
 		.then(e=>{
-			console.log(e.data.plan.idUsuario)
+			console.log(e.data)
 			this.setState({mensajes:e.data.chat, imagen: e.data.plan.imagenResize[0], nombrePlan: e.data.plan.nombre, idUserDueno:e.data.plan.idUsuario, planAsignados:e.data.planAsignados, notificaciones:e.data.plan.notificaciones, plan:e.data.plan, showIndicador:false})
 		})
 		.catch(err=>{
@@ -190,7 +190,7 @@ export default class ChatComponent extends Component{
 								<Image style={style.photo}
 									width={45}
 									height={45}
-									source={{uri: e.photo}}  />
+									source={{uri: e.photo ?e.photo :`${URL}/public/img/plan.jpg`}}  />
 							</TouchableOpacity>
 						}
 						 {/* texto avatar */}

@@ -321,7 +321,7 @@ export default class createPlanComponent extends Component{
 						</View>
 					}
 				   
-
+ 
 				{/*  mapa  */}
 					{  
 						!cargaPlan

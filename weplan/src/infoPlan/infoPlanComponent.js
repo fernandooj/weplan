@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {View, Text, Image, TouchableOpacity, ScrollView, Alert, TextInput} from 'react-native'
 
-import {style} from '../infoPlan/style'
+import {style} from './style'
 import axios from 'axios'
 import Icon from 'react-native-fa-icons';
 import DatePicker from 'react-native-datepicker'

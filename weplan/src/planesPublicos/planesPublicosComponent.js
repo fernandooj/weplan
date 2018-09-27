@@ -22,7 +22,7 @@ export default class planesPublicosComponent extends Component{
 		}
 	}
 	componentWillMount(){
-		axios.get('/x/v1/pla/plan/planespublicos/innactivos')
+		axios.get('/x/v1/pla/plan/planespublicos/cliente')
 		.then(e=>{
 			console.log(e.data)
 			this.setState({todoListado:e.data.planes, filtroData:e.data.planes})
@@ -60,8 +60,8 @@ export default class planesPublicosComponent extends Component{
 							<Text style={[style.pagoDeudaMontoActive, style.familia]}>
 								{'$ '+Number(Math.abs(e.saldo)).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
 							</Text>	
-							 
 						</View>
+						<Text style={style.estado}>{e.estado ?"Activo" :"In Activo"}</Text>
 						<Image source={require('../assets/images/back.png')} style={style.back} />
 					</View>
 					<View  style={style.separador}></View>

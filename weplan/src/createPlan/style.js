@@ -286,6 +286,23 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
  		marginTop:20,
  		marginBottom:20,
  	},
+ 	btnEditarPlan:{
+ 		width:100,
+ 		alignItems: 'center',
+ 		backgroundColor:'#94A5F3',
+ 		borderRadius:10,
+ 		padding:10,
+ 		marginTop:5,
+ 		marginBottom:5,
+ 	},
+ 	btnActivar:{
+ 		backgroundColor:'#4db6ac',
+ 		marginRight:10
+ 	},
+ 	btnEliminar:{
+ 		backgroundColor:'#ef5350',
+ 		marginRight:10
+ 	},
  	rutaRes:{
 		width:50,
 		height:50,
@@ -383,7 +400,12 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		width:225,
 		padding:0,
 		color:'#969696'
-	},
+	},exitoso:{
+ 		color:'#7585eb',
+		padding:20,
+		paddingTop:0,
+		textAlign: 'center',
+ 	},
 	//////////////////////////////////////////////////////////////////////////////////
  	////////////////////////////	CABEZERA   //////////////////////////////////////
  	contenedorBack:{

@@ -15,6 +15,7 @@ export const style = MediaQueryStyleSheet.create({
 	subContenedor:{
 		width:'90%',
 		marginTop:Platform.OS==='android' ?46 :70,
+		marginBottom:60
 	},
 	item:{
 		flexDirection:'row',
@@ -41,10 +42,13 @@ export const style = MediaQueryStyleSheet.create({
 		marginTop:5,
 		marginBottom:5
 	},
+	estado:{
+		width:60
+	},
 	nombre:{
 		color:'#5664ba',
 		fontSize:20,
-		width:220,
+		width:190,
 	},
 	textoTotal:{
 		fontSize:20,
