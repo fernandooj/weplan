@@ -91,7 +91,7 @@ export default class profileComponent extends Component{
  
 		return(	 
 			<View style={profileStyle.contenedor}>	
-				<CabezeraComponent navigate={navigate} url={this.props.navigation.state.params.planId ?'chat' :'notificacion'} texto='' parameter={this.props.navigation.state.params.planId ?this.props.navigation.state.params.planId._id :null} /> 
+				<CabezeraComponent navigate={navigate} url={this.props.navigation.state.params.planId ?'chat' :this.props.navigation.state.params.amigos? 'ajustesAmigos':'notificacion'} texto='' parameter={this.props.navigation.state.params.planId ?this.props.navigation.state.params.planId._id :null} /> 
 			 	<ScrollView style={profileStyle.subContenedor}>
 					{this.renderPerfil()}
 					<Text  style={profileStyle.planesTitulo}>Planes en común</Text>

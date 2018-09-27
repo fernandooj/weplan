@@ -22,6 +22,7 @@ let planSchema = mongoose.Schema({
 	tipo		   :  { type : String},
 	area		   :  { type : Number},
 	activo		   :  { type : Boolean},
+	eliminado	   :  { type : Boolean, default:false},
 	descripcion    :  { type : String },
 	imagenOriginal : [{ type : String }],
 	imagenResize   : [{ type : String }],

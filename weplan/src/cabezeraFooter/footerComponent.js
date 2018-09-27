@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, Image, TouchableOpacity, Text, AsyncStorage} from 'react-native'
-import {cabezeraFooterStyle} from '../cabezeraFooter/style'
+import {cabezeraFooterStyle} from './style'
 import axios from 'axios'
 import SocketIOClient from 'socket.io-client';
 import {URL} from '../../App.js'

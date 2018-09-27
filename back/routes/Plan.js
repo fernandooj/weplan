@@ -126,7 +126,7 @@ router.get(`/pago/:lat/:lon`, (req,res)=>{
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////// OBTENGO LOS PLANES PUBLICOS INNACTIVOS DEL USUARIO LOGUEADO, ESTO ES DE LA PAGINA AJUSTES / PLANES PUBLICOS
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-router.get(`/planespublicos/innactivos`, (req,res)=>{
+router.get(`/planespublicos/cliente`, (req,res)=>{
 	planServices.getPlanesPublicosDesactivados(req.session.usuario.user._id, (err, planes)=>{
 		if (err) {
 			res.json({ status: 'ERROR', message: err, code:0 });
@@ -137,6 +137,7 @@ router.get(`/planespublicos/innactivos`, (req,res)=>{
                     id:e._id,
                     saldo:e.saldo,
                     imagen:data.imagenMiniatura,
+                    estado:data.estado,
                     nombre:data.nombre,
                 }
             })
@@ -375,6 +376,19 @@ const creaNotificacion = (req, res, plan, rutaImagenResize)=>{
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.put('/cambiarestado', (req,res)=>{
 	planServices.cambioestado(req.body.id, req.body.activo, (err, plan)=>{
+		if(err) {
+			res.json({status:'FAIL', message: err,  code:0})  
+		}else{
+			res.json({status:'SUCCESS',  plan, code:1})  
+		}
+	})
+})
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////// ELIMINO EL PLAN
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+router.put('/eliminar', (req,res)=>{
+	planServices.eliminar(req.body.planId, (err, plan)=>{
 		if(err) {
 			res.json({status:'FAIL', message: err,  code:0})  
 		}else{

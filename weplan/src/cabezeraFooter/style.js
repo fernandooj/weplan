@@ -129,7 +129,8 @@ export const cabezeraFooterStyle = MediaQueryStyleSheet.create({
 	},
 	"@media (min-device-height: 811)": {
 		cabezera:{
-			marginTop:32,
+			marginTop:Platform.OS==='android' ? 0 : 0,
+			paddingTop:32,
 		},
 		footer3:{
 			paddingBottom:10,

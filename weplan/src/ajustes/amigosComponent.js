@@ -127,13 +127,14 @@ export default class ajustesAmigosComponent extends Component{
 		this.setState({searchTerm: term})
 	}
  	renderAmigosAsignados(){
+ 		const {navigate} = this.props.navigation
  		return this.state.amigosAsignados.map((e, key)=>{
  			if (e.estado) {
  				return(
-		 			<View key={key} style={style.registro}>
-		 				 <Image source={{ uri: e.photo}}  style={style.avatarA} /> 
+		 			<TouchableOpacity key={key} style={style.registro} onPress={()=>navigate('profile', {userId:e._id, amigos:true})}>
+		 				 <Image source={{uri: e.photo ?e.photo :`${URL}/public/img/plan.jpg`}}  style={style.avatarA} /> 
 		 				 <Text style={[style.textoAvatar, style.familia]}>{e.nombre}</Text>
-		 			</View>
+		 			</TouchableOpacity>
 		 		)
  			}
  		})

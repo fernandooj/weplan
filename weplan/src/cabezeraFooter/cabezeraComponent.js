@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Image, TouchableOpacity, Animated, Text, TextInput} from 'react-native'
+import {View, Image, TouchableOpacity, Animated, Text, TextInput, Platform} from 'react-native'
 import Icon from 'react-native-fa-icons';
 import SearchInput, { createFilter } from 'react-native-search-filter';
 import {cabezeraFooterStyle} from '../cabezeraFooter/style'
@@ -56,20 +56,35 @@ export default class CabezeraComponent extends Component{
 				</Animated.View> 
 			)
 		}else{
-			return(
-				<Animated.View style={[cabezeraFooterStyle.cabezera, { opacity: this.state.opacity, top:this.state.top}]}>	
-					<TouchableOpacity onPress={() => navigate('ajustes')}>
-						<Image source={require('../assets/images/icon1.png')} style={cabezeraFooterStyle.iconHead} />
-					</TouchableOpacity>
-					<TouchableOpacity onPress={() => navigate('inicio')}>
-						<Image source={require('../assets/images/icon2.png')} style={cabezeraFooterStyle.iconHead2} />
-					</TouchableOpacity>
-					<TouchableOpacity onPress={() => this.setState({search:true})}>
-						<Image source={require('../assets/images/icon3.png')} style={cabezeraFooterStyle.iconHead} />
-					</TouchableOpacity>
-				</Animated.View> 
-			)
+			if (Platform.OS==='android') {
+				return(
+					<Animated.View style={[cabezeraFooterStyle.cabezera, { opacity: this.state.opacity, top:this.state.top}]}>	
+						<TouchableOpacity onPress={() => navigate('ajustes')}>
+							<Image source={require('../assets/images/icon1.png')} style={cabezeraFooterStyle.iconHead} />
+						</TouchableOpacity>
+						<TouchableOpacity onPress={() => navigate('inicio')}>
+							<Image source={require('../assets/images/icon2.png')} style={cabezeraFooterStyle.iconHead2} />
+						</TouchableOpacity>
+						<TouchableOpacity onPress={() => this.setState({search:true})}>
+							<Image source={require('../assets/images/icon3.png')} style={cabezeraFooterStyle.iconHead} />
+						</TouchableOpacity>
+					</Animated.View> 
+				)
+			}else{
+				return(
+					<View style={cabezeraFooterStyle.cabezera}>	
+						<TouchableOpacity onPress={() => navigate('ajustes')}>
+							<Image source={require('../assets/images/icon1.png')} style={cabezeraFooterStyle.iconHead} />
+						</TouchableOpacity>
+						<TouchableOpacity onPress={() => navigate('inicio')}>
+							<Image source={require('../assets/images/icon2.png')} style={cabezeraFooterStyle.iconHead2} />
+						</TouchableOpacity>
+						<TouchableOpacity onPress={() => this.setState({search:true})}>
+							<Image source={require('../assets/images/icon3.png')} style={cabezeraFooterStyle.iconHead} />
+						</TouchableOpacity>
+					</View> 
+				)
+			}
 		}
-		
 	}
 }

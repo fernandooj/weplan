@@ -190,7 +190,7 @@ export default class ChatComponent extends Component{
 								<Image style={style.photo}
 									width={45}
 									height={45}
-									source={{uri: e.photo}}  />
+									source={{uri: e.photo ?e.photo :`${URL}/public/img/plan.jpg`}}  />
 							</TouchableOpacity>
 						}
 						 {/* texto avatar */}

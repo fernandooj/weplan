@@ -106,7 +106,7 @@ class itemServices {
 			{
 				"$match": {
 					abono:true,
-					activo:true,
+					// activo:true,
 					// userIdPago:{
 					// 	$ne:userId
 					// },

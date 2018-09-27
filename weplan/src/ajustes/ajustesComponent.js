@@ -5,7 +5,7 @@ import axios from 'axios'
 import CabezeraComponent from './cabezera.js'
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
-
+import {URL} from '../../App.js'
 export default class ajustesComponent extends Component{
 	state={
 		menus:[
@@ -39,7 +39,7 @@ export default class ajustesComponent extends Component{
 		if (perfil!==undefined) {
 			return(
 				<TouchableOpacity style={style.perfil} onPress={()=>navigate('perfil')}>
-					<Image source={{uri: perfil.photo}} style={style.avatar} />
+					<Image source={{uri: perfil.photo ?perfil.photo :`${URL}/public/img/plan.jpg`}}  style={style.avatar} />
 					<Text style={[style.username, style.familia]}>{perfil.nombre}</Text>
 					<Text style={[style.username, style.familia]}>{perfil.username}</Text>
 					 

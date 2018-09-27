@@ -24,7 +24,8 @@ class planServices {
 		    	$match:{
 		    		idUsuario,
 		    		tipo:'pago', 
-		    		activo:false
+		    		eliminado:false
+		    		// activo:false
 		    	},
 		    },
 		    {
@@ -59,7 +60,7 @@ class planServices {
 	 		        _id:'$_id',
 	 		        saldo:{$sum:'$monto'},
 	 		        data: {
-                        $addToSet: {info:[{imagenMiniatura:'$imagenMiniatura', nombre:'$nombre'}]}
+                        $addToSet: {info:[{imagenMiniatura:'$imagenMiniatura', nombre:'$nombre', estado:'$activo'}]}
                     },
 	 		    }
 	 		},
@@ -291,6 +292,11 @@ class planServices {
 	cambioestado(id, activo, callback){
 		planSchema.findByIdAndUpdate(id, {$set: {
 	        'activo': activo,
+        }}, callback);
+	}
+	eliminar(id, callback){
+		planSchema.findByIdAndUpdate(id, {$set: {
+	        'eliminado': true,
         }}, callback);
 	}
 	 
