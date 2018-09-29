@@ -22,6 +22,7 @@ export default class pagoDeudaComponent extends Component{
 	 	let planId = this.props.navigation.state.params.planId
 	 	// let planId = '5aefdb91423c402001dbb329'
 	 	// let itemId = '5af143b7076e9c07c4973aa8'
+	 	console.log(planId)
 	 	axios.get('x/v1/user/porusuario/'+itemId)
 	 	.then(e=>{
 	 		console.log(e.data)

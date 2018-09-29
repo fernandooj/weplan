@@ -905,6 +905,7 @@ export default class ChatComponent extends Component{
 		let nuevaNotificacion = notificaciones.filter(e=>{
 			return e._id!==id
 		}) 
+		console.log(nuevaNotificacion)
 		nuevaNotificacion.map(e=>{
 			sendRemoteNotification(15, e.tokenPhone, 'chat', `${nombrePlan}`,  `: ${mensaje}`, imagen, planId)
 		})

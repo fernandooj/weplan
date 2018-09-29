@@ -25,9 +25,9 @@ export default class ItemComponent extends Component{
 		total:0
 	}
 	componentWillMount =async() =>{
-		let planId = this.props.navigation.state.params.planId
-		// let planId = '5b7b7ddc272b0d29918c46e3'	
-		console.log(planId)
+		let planId = this.props.navigation.state.params.planId ?this.props.navigation.state.params.planId :this.props.navigation.state.params
+		// let planId = '5b8f5155de373662367ae2eb'	
+		// console.log(this.props.navigation.state.params)
 		this.setState({planId})
  
 		axios.get('/x/v1/ite/item/'+planId)
@@ -126,6 +126,7 @@ export default class ItemComponent extends Component{
 		);
 	}
 	articulosPendientes(){
+		console.log(this.state.articulosPendientes)
 		return this.state.articulosPendientes.map((e, key)=>{
 			return (
 			    <View style={style.content} key={key}>

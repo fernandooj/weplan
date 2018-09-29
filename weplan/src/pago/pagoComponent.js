@@ -20,6 +20,7 @@ export default class pagoComponent extends Component{
 	 	let itemId = this.props.navigation.state.params.id
 	 	let valor  = this.props.navigation.state.params.valor
 	 	let planId = this.props.navigation.state.params.planId
+	 	console.log(planId)
 	 	axios.get('x/v1/ite/item/id/'+itemId)
 	 	.then(e=>{
 	 		console.log(e.data)

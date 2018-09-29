@@ -12,7 +12,7 @@ export const style = MediaQueryStyleSheet.create({
 		fontFamily:'Futura-CondensedLight',
 	},
  	contenedorChat:{
- 		top:Platform.OS==='android' ?290 :-320,
+ 		top:Platform.OS==='android' ?-300 :-320,
  		zIndex :0
  	},
  	contenedorChat2:{
