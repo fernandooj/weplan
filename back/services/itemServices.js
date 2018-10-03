@@ -94,6 +94,7 @@ class itemServices {
 			        userId:1,
 			        asignados:1,
 			        valor:1,
+			        activo:1,
 	 				montos:"$PagoData.monto",
 	 				pagoId:"$PagoData._id",
 			        abono:"$PagoData.abono",
@@ -119,7 +120,7 @@ class itemServices {
 			       deuda: { $sum: "$montos"}, 
 			       count: { $sum: 1 }, // for no. of documents count
 			       data: {
-			       	$addToSet: {info:[{titulo:'$titulo', userId:'$userId', abierto:'$abierto', asignados:'$asignados', valor:'$valor', monto:"$montos", userIdPago:'$userIdPago' }]},
+			       	$addToSet: {info:[{titulo:'$titulo', userId:'$userId', abierto:'$abierto', asignados:'$asignados', valor:'$valor', monto:"$montos", userIdPago:'$userIdPago', pagoId:'$pagoId', activo:'$activo' }]},
 			       }
 			    } 
 			},

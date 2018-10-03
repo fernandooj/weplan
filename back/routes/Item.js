@@ -54,10 +54,25 @@ router.get('/:user', (req, res)=>{
 						res.json({err, code:0})
 					}else{
 						let data;
-						let data1;
+						// console.log('++++++')
+						// console.log(pago)
+						// console.log('++++++')
+						// pago = pago.map(e=>{
+						// 	if (e.count>1){ 
+						// 		return e.data.filter(e2=> {
+						// 			if (e2.info[0].activo===true) 
+						// 				return {
+						// 					e:
+						// 				}
+										
+						// 		})
+						// 	}else{
+						// 		return e
+						// 	} 
+						// })
 						pago = pago.map(e=>{
 							data = e.data[0].info[0]
-							data1 = e
+							
 							let deuda = e.data.filter(e2=>{
 								if (e2.info[0].userIdPago==req.session.usuario.user._id){
 									return e2.info[0].monto	
@@ -100,7 +115,7 @@ router.get('/:user', (req, res)=>{
 						let sumDeuda = sumaDeuda.reduce(add, 0);
 						let total = sumPago + sumDeuda;
 
-						console.log(pago)
+						
 						res.json({ status: 'SUCCESS', pago, deuda, deudaTotal:deuda.length, pagoTotal:pago.length, total, code:1 });	
 					}
 				})								
@@ -130,26 +145,29 @@ router.get('/id/:id', (req, res)=>{
 /////////////////////////		OBTENGO LOS QUE ESTAN EN ESPERA  
 ///////////////////////////////////////////////////////////////////////////////////////////////
 router.get('/pendientes/:planId', (req, res)=>{
-	
-	itemServices.getEspera(req.session.usuario.user._id, req.params.planId, (err, pendientes)=>{
-		if(err){
-			res.json({err, code:0})
-		}else{ //
-			pendientes = pendientes.map((e)=>{
-				return{
-					id:e._id,
-					titulo:e.titulo,
-					valor:e.valor,
-					idUsuario:e.userId.userId,
-					nombre:e.userId.nombre,
-					token:e.userId.tokenPhone,
-					imagen:e.imagenResize,
-					deuda:Math.ceil((e.valor/(e.asignados.length+2))/100)*100
-				}
-			})
-			res.json({ status: 'SUCCESS', pendientes, code:1 });				
-		}
-	})
+	if (!req.params.planId) {
+		res.json({ status: 'SUCCESS', pendientes:[], code:1 });	
+	}else{
+		itemServices.getEspera(req.session.usuario.user._id, req.params.planId, (err, pendientes)=>{
+			if(err){
+				res.json({err, code:0})
+			}else{ //
+				pendientes = pendientes.map((e)=>{
+					return{
+						id:e._id,
+						titulo:e.titulo,
+						valor:e.valor,
+						idUsuario:e.userId.userId,
+						nombre:e.userId.nombre,
+						token:e.userId.tokenPhone,
+						imagen:e.imagenResize,
+						deuda:Math.ceil((e.valor/(e.asignados.length+2))/100)*100
+					}
+				})
+				res.json({ status: 'SUCCESS', pendientes, code:1 });				
+			}
+		})
+	}
 })
 
 

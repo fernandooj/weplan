@@ -310,9 +310,9 @@ export default class MapaPlanComponent extends Component{
 	
 	    this.setState({valorInicial:e, km, x, x2:x, buscador:true})
 
-	    setTimeout(function(){ 
-	    	this.setState({ buscador:false })
-	    }, 100);
+	    // setTimeout(function(){ 
+	    // 	this.setState({ buscador:false })
+	    // }, 100);
 
 	}
 	 

@@ -84,9 +84,10 @@ export default class ItemComponent extends Component{
 			    	</TouchableOpacity>
 			    	{
 			    	 	render==1
-			    	 	&&articulosPendientes.length==0
+			    	 	?articulosPendientes.length==0
 			    	 	?<Text style={[style.textoSinAsignados, style.familia]}>No te han asignado a ningún artículo!, aquí podras encontrar cuando te asignen a alguno!</Text>
-			    	 	:this.articulosPendientes()
+			    	 	:<View>{this.articulosPendientes()}</View>
+			    	 	:null
 			    	}
 			  	</View>
 			  	<View style={style.headerCollapsable}>
@@ -117,9 +118,10 @@ export default class ItemComponent extends Component{
 			    	</TouchableOpacity>
 			    	 {
 			    	 	render==3
-			    	 	&&articulosPublicados.length===0
+			    	 	?articulosPublicados.length===0
 			    	 	?<Text style={[style.textoSinAsignados, style.familia]}>Ninguno de tus amigos ha publicado artículos, aqui podrás verlos e interesarte si así lo quieres! </Text>
 			    	 	:this.articulosPublicados()
+			    	 	:null
 			    	 }
 			  	</View>
 			</View>

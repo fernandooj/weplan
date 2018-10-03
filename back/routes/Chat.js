@@ -207,8 +207,8 @@ const ubicacionJimp =  '../front/docs/public/uploads/chat/'
 const resizeImagenes = (ruta, randonNumber, extension) =>{
 	Jimp.read(ruta, function (err, imagen) {
 	    if (err) throw err;
-	    imagen.resize(500, Jimp.AUTO)             
-		.quality(90)                          
+	    imagen.resize(800, Jimp.AUTO)             
+		.quality(95)                          
 		.write(`${ubicacionJimp}Resize_${fecha}_${randonNumber}.${extension}`);
 	});	
 

@@ -7,7 +7,8 @@ export const cabezeraFooterStyle = MediaQueryStyleSheet.create({
 	cabezera:{
 		position:'absolute',
 		top:0,
-		marginTop:Platform.OS==='android' ? 0 : 18,
+		marginTop:Platform.OS==='android' ? 0 : 0,
+		paddingTop:Platform.OS==='android' ? 0 : 18,
 		width:'100%',
 		zIndex:100,
 		flexWrap: 'wrap', 

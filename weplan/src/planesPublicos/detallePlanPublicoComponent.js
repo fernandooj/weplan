@@ -42,10 +42,10 @@ export default class detallePlanPublicoComponent extends Component{
  			cargaPlan:false,
  			showAlertUbicacion:false,
  			position: 1,
-      	interval: null,
-      	imagenes:[],
-      	tipoPlan:null, //// modal que muestra el tipo del plan
-      	publico:null,  //// determina si el plan va a ser publico o privado
+	      	interval: null,
+	      	imagenes:[],
+	      	tipoPlan:null, //// modal que muestra el tipo del plan
+	      	publico:null,  //// determina si el plan va a ser publico o privado
 		}
 	}
 
@@ -267,7 +267,7 @@ export default class detallePlanPublicoComponent extends Component{
 					   <Text style={[CreatePlanStyle.hecho, CreatePlanStyle.familia]}>Editar</Text>
 					</TouchableOpacity>
 					{
-						activo
+						!activo
 						&&<TouchableOpacity onPress={this.handleSubmit.bind(this)} style={[CreatePlanStyle.btnEditarPlan, CreatePlanStyle.btnActivar]}>
 						   <Text style={[CreatePlanStyle.hecho, CreatePlanStyle.familia]}>Activar</Text>
 						</TouchableOpacity>
