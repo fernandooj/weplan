@@ -379,7 +379,8 @@ export default class createPlanComponent extends Component{
 							    restriccion={(restricciones, restriccionesAsignadas)=>this.setState({restricciones, restriccionesAsignadas, restriccion:false})}
 							    arrayRestricciones={this.state.restricciones}
 							    restriccionesAsignadas={this.state.restriccionesAsignadas}
-							    noEdit={this.props.navigation.state.params ?false :true}
+							    // noEdit={this.props.navigation.state.params ?false :true}
+							    noEdit={true}
 						    />
 						    :null
 						}
@@ -563,15 +564,34 @@ export default class createPlanComponent extends Component{
 								if (!publico) {
 									navigate('chat', id)
 								}else{
-									Alert.alert(
-										`Tu plan ha sido creado`,
-										'puedes activarlo ahora por las proximas 24 horas, o activarlo luego desde ajustes',
-									[
-										{text: 'Mejor Luego', onPress: () => navigate('inicio')},
-										{text: 'Activar', onPress: () => this.activarPlan(costo, navigate, id)},
-									],
-										{ cancelable: false }
-									)
+									// Alert.alert(
+									// 	`Tu plan ha sido creado`,
+									// 	'puedes activarlo ahora por las proximas 24 horas, o activarlo luego desde ajustes',
+									// [
+									// 	{text: 'Mejor Luego', onPress: () => navigate('inicio')},
+									// 	{text: 'Activar', onPress: () => this.activarPlan(costo, navigate, id)},
+									// ],
+									// 	{ cancelable: false }
+									// )
+									axios.put('/x/v1/pla/plan/cambiarestado', {id, activo:true})
+									.then(data=>{
+										if(data.data.code==1){
+											axios.post('/x/v1/pag/pagopublico', {monto:-Math.abs(costo), planId:id})
+											.then(res2=>{
+												if (res2.data.code==1) {
+													Alert.alert(
+														`Tu plan ha sido creado`,
+														'ya puedes verlo en el home',
+													[
+														{text: 'Cerrar', onPress: () => navigate('inicio')},
+														 
+													],
+														{ cancelable: false }
+													)
+												}
+											})
+										}
+									})
 								}
 								
 							}

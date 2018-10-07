@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import {View, Text, Image, TouchableOpacity, Modal, ScrollView} from 'react-native'
 import SearchInput, { createFilter } from 'react-native-search-filter';
-import {AmigosStyle} from '../agregarAmigos/style'
+import {AmigosStyle} from './style'
 import axios from 'axios'
-
+import {URL}  from '../../App.js';
 const KEYS_TO_FILTERS = ['nombre', 'username']
 export default class AgregarAmigosComponent extends Component{
 	constructor(props){
@@ -46,14 +46,22 @@ export default class AgregarAmigosComponent extends Component{
 	 
 	getRow(){
 		const filteredEmails = this.state.filteredData.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
-	 	return filteredEmails.map((data, key)=>{
+		console.log(filteredEmails.length)
+		if (filteredEmails.length===0) {
+			return (<View style={AmigosStyle.sinResultados}><Text>No hemos encontrado amigos</Text></View>)
+		}else{
+			return filteredEmails.map((data, key)=>{
 			return  <TouchableOpacity style={AmigosStyle.subLista} key={key} 
 					onPress={!this.props.noEdita ?(e)=>{this.updateState(data._id, data.estado); this.updateStateAsignados(data.estado, data._id); this.updateStateUsuarios(data._id, data.estado, data)} :null} > 
-					<Image source={{ uri: data.photo}}  style={data.estado ?AmigosStyle.avatar :AmigosStyle.avatar2} /> 
+					<Image source={{ uri: data.photo ?data.photo :URL+'public/img/plan.jpg'}}  style={data.estado ?AmigosStyle.avatar :AmigosStyle.avatar2} /> 
 					<Text style={[AmigosStyle.textoAvatar, AmigosStyle.familia]}>{data.nombre}</Text>
 					{!data.estado ?<Image source={require('../assets/images/agregado.png')} style={AmigosStyle.agregado}/> :null} 
 			    	</TouchableOpacity>
 				})
+		}
+			
+		 
+	 	
 	}
 	updateState(id, estado){
 		let filteredData = this.state.filteredData.map(item=>{

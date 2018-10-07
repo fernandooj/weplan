@@ -47,6 +47,7 @@ export const cabezeraFooterStyle = MediaQueryStyleSheet.create({
 		width:200,
 		alignItems:'center',
 		paddingLeft:0,
+		paddingVertical:Platform.OS==='android' ? 0 : 11,
 		fontSize:20
 	},
 	closeBtn:{
@@ -67,6 +68,9 @@ export const cabezeraFooterStyle = MediaQueryStyleSheet.create({
 		marginRight:'1%',
 		paddingTop:5, 
 		paddingBottom:5 
+	},
+	btnFooter3Active:{
+		opacity:.5,
 	},
 	iconFooter3:{
 		width:'55%', 

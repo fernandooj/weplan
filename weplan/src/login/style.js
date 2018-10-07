@@ -14,6 +14,7 @@ export const style = MediaQueryStyleSheet.create({
 		flex: 1,
 		alignItems:'center',
 		justifyContent: 'center', /*justifica contenido verticalmente */
+		height:screenHeight.height,
 	},
 	image:{
 		marginTop:80,

@@ -5,8 +5,8 @@ export const EditPasswordStyle = StyleSheet.create({
 		alignItems: 'center'
 	},
 	image:{
-		marginTop:20,
-		marginBottom:40,
+		marginTop:80,
+		marginBottom:20,
 	},
 	input:{
 		marginTop:10,

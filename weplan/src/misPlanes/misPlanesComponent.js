@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, ScrollView, ImageBackground, TouchableOpacity, Image, TextInput, Keyboard} from 'react-native'
-import {MisPlanesStyle} from '../misPlanes/style'
+import {MisPlanesStyle} from './style'
 import axios from 'axios'
 
  
@@ -59,7 +59,7 @@ export default class MisPlanesComponent extends Component{
 				</TouchableOpacity>
 				})
 		}else{
-			return <Text> </Text>
+			return <View style={MisPlanesStyle.sinPlanes}><Text>No hemos encontrado planes</Text></View>
 		}
 	}
 	cabezera(){
@@ -103,7 +103,7 @@ export default class MisPlanesComponent extends Component{
 					:<View></View>
 				}
 				<View style={MisPlanesStyle.footer}>
-					<FooterComponent navigate={navigate} />	
+					<FooterComponent navigate={this.props.navigation} />	
 				</View>
 			</View> 
 		)

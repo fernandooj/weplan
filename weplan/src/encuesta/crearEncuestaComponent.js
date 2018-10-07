@@ -94,10 +94,10 @@ export default class CrearEncuestaComponent extends Component{
                 style={[style.inputValor, style.familia]}
                 onChangeText={(pregunta1) => this.setState({pregunta1})}
                 maxLength={17}
-                multiline = {true}
+                multiline = {false}
               />
               <TouchableOpacity style={imagen ?style.btnCamera2 :style.btnCamera} >
-                <TakePhotoComponent fuente={'camara.png'} ancho={imagen ?Platform.OS==='android' ?40 :94 :Platform.OS==='android' ?40 :94} alto={imagen ?70 :40} border={imagen ?Platform.OS==='android' ?70 :32 :20}
+                <TakePhotoComponent fuente={'camara.png'} ancho={imagen ?Platform.OS==='android' ?40 :94 :Platform.OS==='android' ?40 :35} alto={imagen ?70 :40} border={imagen ?Platform.OS==='android' ?70 :39 :20}
                   updateImagen={(imagen) => {this.setState({imagen})}} 
                   style={style.camera} />
               </TouchableOpacity>
@@ -112,7 +112,7 @@ export default class CrearEncuestaComponent extends Component{
                 style={[style.inputValor, style.familia]}
                 onChangeText={(pregunta2) => this.setState({pregunta2})}
                 maxLength={17}
-                multiline = {true}
+                multiline = {false}
               />
               <TouchableOpacity style={imagen2 ?style.btnCamera2 :style.btnCamera} >
                 <TakePhotoComponent fuente={'camara.png'} ancho={imagen2 ?Platform.OS==='android' ?40 :94 :Platform.OS==='android' ?40 :35} alto={imagen2 ?70 :40} border={imagen2 ?Platform.OS==='android' ?70 :39 :20}

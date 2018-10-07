@@ -198,7 +198,7 @@ export default class notificacionComponent extends Component{
 				<ScrollView style={style.contenedorPlan}>
 					{this.renderNotificacion()}
 				</ScrollView>
-				<FooterComponent navigate={navigate} />	
+				<FooterComponent navigate={this.props.navigation} />	
 			</View>
 		)
 	}

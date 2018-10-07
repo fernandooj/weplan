@@ -3,7 +3,8 @@ import {View, Text, Dimensions, TouchableHighlight, TextInput, Alert, ScrollView
 import {EditPasswordStyle} from '../editPassword/style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
- 
+import CabezeraComponent from '../ajustes/cabezera.js' 
+import Toast from 'react-native-simple-toast'; 
 
 export default class EditPasswordComponent extends Component{
 	constructor(props) {
@@ -11,13 +12,16 @@ export default class EditPasswordComponent extends Component{
 	  this.state = {
 	  	 codigo:null,
 	  	 tokenPhone: "",
+	  	 username:''
 	  };
 	}
 
 	render(){
-		const {codigo} = this.state 
+		const {codigo, username} = this.state 
+		const {navigate} = this.props.navigation
 		return(
 			<ImageBackground style={EditPasswordStyle.fondo}  >
+				<CabezeraComponent navigate={navigate} url={'Login'} texto='Recuperar Contraseña'  />
 				<View>
 					<Image
 						style={EditPasswordStyle.image}
@@ -27,8 +31,8 @@ export default class EditPasswordComponent extends Component{
 				</View>
 				<TextInput
 			        style={EditPasswordStyle.input}
-			        onChangeText={(text) => this.setState({text})}
-			        value={this.state.text}
+			        onChangeText={(username) => this.setState({username})}
+			        value={username}
 			        underlineColorAndroid='transparent'
            			placeholder="Email / Telefono"
            			placeholderTextColor="#8F9093" 
@@ -55,7 +59,10 @@ export default class EditPasswordComponent extends Component{
 
 	handleSubmit(){
 		const {navigate} = this.props.navigation
-		let username = this.state.text;
+		let {username} = this.state;
+		if (username.length===0) {
+			Toast.show('El campo usuario es obligatorio.')
+		}
 		let tipo = username.includes("@") ?1 :2;
 		let acceso = 'suscriptor'
 	  	axios.post('/x/v1/user/recupera_contrasena', {username, tipo})

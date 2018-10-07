@@ -173,6 +173,7 @@ export default class LoginComponent extends Component{
 		const {num} = this.props.screenProps
 		console.log(num)
 		return(
+				<ScrollView keyboardDismissMode='on-drag' style={style.container}>
 				<ImageBackground style={style.fondoLogin}  source={num===0 ?require('../../splash0.jpg') :num===1 ?require('../../splash1.jpg') :num===2 ?require('../../splash2.jpg') :num===3 ?require('../../splash3.jpg') :num===4 &&require('../../splash4.jpg')} >
 					<View>
 						<Image
@@ -235,6 +236,7 @@ export default class LoginComponent extends Component{
 	 					<Text style={[style.btnRegistro, style.familia]}>Registrate</Text>
 	 				</TouchableOpacity>
 				</ImageBackground>
+				</ScrollView>
 		)
 	}
  
@@ -247,7 +249,7 @@ export default class LoginComponent extends Component{
 			if(res.data.code==0){
 				Alert.alert(
 	            'Opss!! Error',
-	            'revisa tus datos que falta algo',
+	            'Datos incorrectos',
 	              [
 	                {text: 'OK', onPress: () => console.log('OK Pressed')},
 	              ],
@@ -259,7 +261,7 @@ export default class LoginComponent extends Component{
 			}else{
 				Alert.alert(
 	            'Opss!! Error',
-	            'revisa tus datos que falta algo',
+	            'Datos incorrectos',
 	              [
 	                {text: 'OK', onPress: () => console.log('OK Pressed')},
 	              ],

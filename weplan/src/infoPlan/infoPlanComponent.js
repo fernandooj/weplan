@@ -320,7 +320,7 @@ export default class infoPlanComponent extends Component{
 						    restriccion={(restricciones, restriccionesAsignadas)=>this.setState({restricciones, restriccionesAsignadas, restriccion:false})}
 						    arrayRestricciones={this.state.restricciones}
 						    restriccionesAsignadas={this.state.restriccionesAsignadas}
-						    
+						    noEdit={permiteEditar ?true :false}
 					    />
 					     
 					    :null

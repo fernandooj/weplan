@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, ImageBackground, ScrollView, Platform, Keyboard, Dimensions, Alert, Animated} from 'react-native'
+import {View, Text, Image, TouchableOpacity, ImageBackground, ScrollView, Platform, Keyboard, Dimensions, Alert, Animated, ActivityIndicator} from 'react-native'
 import {style} from '../home/style'
 import axios from 'axios'
 import SearchInput, { createFilter } from 'react-native-search-filter';
@@ -25,8 +25,9 @@ export default class homeComponent extends Component{
 		this.state={ 
 			isOpen: false,
 			isDisabled: false,
-			showBarra: true,  ///// muestra la barra superior
+			showBarra: true,     ///// muestra la barra superior
 			swipeToClose: true,
+			cargando: true,      ////// mientras carga los datos
 			sliderValue: 0.3,
 			filteredData: [],
 			searchTerm:'',
@@ -123,44 +124,52 @@ export default class homeComponent extends Component{
 	    } catch(e){
 	      console.error(e);
 	    } 
+	    this.setState({cargando:false})
 	}
 	
-	
-	getRow(filteredData){
+	getRow(){
 		const {navigate} = this.props.navigation
-		const {opacity, top, deg, translate} = this.state
+		const {opacity, top, deg, translate, cargando} = this.state
 		const filtered = this.state.filteredData.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
-		return filtered.map((e, key)=>{
-		let data = parseInt(e.dist/1000);
-		data = data.toString()
-		let calficaLongitud = e.UserData.calificacion ?e.UserData.calificacion.length: false
-		let calificacion = e.UserData.calificacion ?(e.UserData.calificacion.reduce((a, b) => a + b, 0))/e.UserData.calificacion.length :parseInt(0)
-		return  <ImageBackground source={{uri : e.imagenResize[0]}} style={style.fondo} key={key}>
-				<View style={style.footer}>
-					<View style={style.footer1}>
-						<Text style={[style.textFooter1, style.familia]}>{e.nombre.toUpperCase()}</Text>
-						<TouchableOpacity onPress={() => navigate('createPlan', e._id )} style={style.btnIconVer}>
-							<Image source={require('../assets/images/icon4.png')} style={style.iconVer} />
-						</TouchableOpacity>	
-					</View>
-					{e.descripcion &&<Text style={[style.textFooter2, style.familia]}>{e.descripcion}</Text>}
-					
-					<Text style={[style.textFooter2, style.familia]}>Estas a {parseInt(e.dist)<1000 ?`${parseInt(e.dist)} Metros` :`${data} Kilometros`}</Text>
-					<Text style={[style.textFooter2, style.familia]}>{`Por: ${e.UserData.nombre}, ${calficaLongitud ?parseFloat(calificacion).toFixed(0) :''}*`}</Text>
-					<View style={style.footer2}>
-						<TouchableOpacity onPress={() => this.like(e._id)} >
-							<Animated.View style={{opacity: opacity, top:top}}>
-								<Image source={require('../assets/images/corazon.png')} style={style.iconFooter} />
-							</Animated.View>
-						</TouchableOpacity>
-						<TouchableOpacity onPress={() => navigate('createPlan', e._id )}>
-							<Image source={require('../assets/images/acceder.png')} style={style.iconFooter1} /> 
-						</TouchableOpacity>
-					</View>
-					
-				</View> 
-			</ImageBackground>
+		console.log(this.state.filteredData)
+		if (filtered.length===0 ) {
+			return(<View style={style.sinResultados}>
+					<Text>{this.state.filteredData.length>0 ?'No hemos encontrado planes' :<ActivityIndicator size="large" color="#148dc9" />} </Text>
+					</View>)
+		}else{
+			return filtered.map((e, key)=>{
+				let data = parseInt(e.dist/1000);
+				data = data.toString()
+				let calficaLongitud = e.UserData.calificacion ?e.UserData.calificacion.length: false
+				let calificacion = e.UserData.calificacion ?(e.UserData.calificacion.reduce((a, b) => a + b, 0))/e.UserData.calificacion.length :parseInt(0)
+				return  <ImageBackground source={{uri : e.imagenResize[0]}} style={style.fondo} key={key}>
+						<View style={style.footer}>
+							<View style={style.footer1}>
+								<Text style={[style.textFooter1, style.familia]}>{e.nombre.toUpperCase()}</Text>
+								<TouchableOpacity onPress={() => navigate('createPlan', e._id )} style={style.btnIconVer}>
+									<Image source={require('../assets/images/icon4.png')} style={style.iconVer} />
+								</TouchableOpacity>	
+							</View>
+							{e.descripcion &&<Text style={[style.textFooter2, style.familia]}>{e.descripcion}</Text>}
+							
+							<Text style={[style.textFooter2, style.familia]}>Estas a {parseInt(e.dist)<1000 ?`${parseInt(e.dist)} Metros` :`${data} Kilometros`}</Text>
+							<Text style={[style.textFooter2, style.familia]}>{`Por: ${e.UserData.nombre}, ${calficaLongitud ?parseFloat(calificacion).toFixed(0) :''}*`}</Text>
+							<View style={style.footer2}>
+								<TouchableOpacity onPress={() => this.like(e._id)} >
+									<Animated.View style={{opacity: opacity, top:top}}>
+										<Image source={require('../assets/images/corazon.png')} style={style.iconFooter} />
+									</Animated.View>
+								</TouchableOpacity>
+								<TouchableOpacity onPress={() => navigate('createPlan', e._id )}>
+									<Image source={require('../assets/images/acceder.png')} style={style.iconFooter1} /> 
+								</TouchableOpacity>
+							</View>
+							
+						</View> 
+					</ImageBackground>
 			})
+		}
+		
 	}
 	searchUpdated (term) {
 		this.setState({searchTerm: term})
@@ -229,7 +238,7 @@ export default class homeComponent extends Component{
 				<ScrollView style={style.contenedorPlan} onScroll={this.handleScroll.bind(this)} scrollEventThrottle={16}>
 					{this.getRow()}
 				</ScrollView>
-				<FooterComponent navigate={navigate} />
+				<FooterComponent navigate={this.props.navigation} />
 		   </View>
 		)
 	}

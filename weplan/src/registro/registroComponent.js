@@ -4,19 +4,20 @@ import {style} from '../login/style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
 import CabezeraComponent from '../ajustes/cabezera.js'
- 
+import Toast from 'react-native-simple-toast'; 
 
 export default class RegistroComponent extends Component{
 	constructor(props) {
 	  super(props);
 	  this.state = {
-	  	 codigo:null,
-	  	 tokenPhone: "",
+			codigo:null,
+			tokenPhone: "",
+			username:''
 	  };
 	}
 
 	render(){
-		const {codigo} = this.state 
+		const {codigo, username} = this.state 
 		const {navigate} = this.props.navigation
 		return(
 			<ImageBackground style={style.fondo}  >
@@ -30,8 +31,8 @@ export default class RegistroComponent extends Component{
 				</View>
 				<TextInput
 			        style={[style.input, style.familia]}
-			        onChangeText={(text) => this.setState({text})}
-			        value={this.state.text}
+			        onChangeText={(username) => this.setState({username})}
+			        value={username}
 			        underlineColorAndroid='transparent'
            			placeholder="Email / Telefono"
            			placeholderTextColor="#8F9093"
@@ -59,7 +60,10 @@ export default class RegistroComponent extends Component{
 	handleSubmit(){
 		const {navigate} = this.props.navigation
 		const tokenPhone = this.props.navigation.state.params.tokenPhone
-		let username = this.state.text;
+		let username = this.state.username;
+		if (username.length===0) {
+			Toast.show('El campo usuario es obligatorio.')
+		}
 		let tipo = username.includes("@") ?1 :2;
 		let acceso = 'suscriptor'
 		

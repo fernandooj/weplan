@@ -54,41 +54,54 @@ router.get('/:user', (req, res)=>{
 						res.json({err, code:0})
 					}else{
 						let data;
-						// console.log('++++++')
-						// console.log(pago)
-						// console.log('++++++')
-						// pago = pago.map(e=>{
-						// 	if (e.count>1){ 
-						// 		return e.data.filter(e2=> {
-						// 			if (e2.info[0].activo===true) 
-						// 				return {
-						// 					e:
-						// 				}
-										
-						// 		})
-						// 	}else{
-						// 		return e
-						// 	} 
-						// })
+						/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+						////////////////////////////  devuelvo solo los que son activos y que sean abonos
+						//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+						pago = pago.filter(e=>{
+							return (e._id.descripcion=="pago inicial por inscribirse") || (e._id.descripcion=="abono de parte del dueño del item" && e._id.activo===true)|| 
+							(e._id.descripcion=="abono usuario" && e._id.activo===true)
+						})
+
+
+						/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+						///////////////////////  ESTE CODIGO LO HIZE POR QUE SE DUPLICAN LOS ITEMS, ASI QUE UNO LOS ITEM Y SUMO LOS TOTALES	
+						/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+						let map = pago.reduce((prev, next) =>{
+						  if (next._id.id in prev) {
+						    prev[next._id.id].deuda += next.deuda;
+						  } else {
+						     prev[next._id.id] = next;
+						  }
+						  return prev;
+						}, {});
+						pago = Object.keys(map).map(id => map[id]);
+
+						/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+						///////////////////////  ESTE CODIGO LO HIZE POR QUE SE DUPLICAN LOS ITEMS, ASI QUE UNO LOS ITEM Y SUMO LOS TOTALES	
+						/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 						pago = pago.map(e=>{
 							data = e.data[0].info[0]
 							
-							let deuda = e.data.filter(e2=>{
+							let nuevaDeuda = e.data.filter(e2=>{
 								if (e2.info[0].userIdPago==req.session.usuario.user._id){
 									return e2.info[0].monto	
 								}
 							}) 
 							return{
-								id:e._id,
+								id:e._id.id,
 								titulo:data.titulo,
 								idUsuario:data.userId,
 								valor:data.valor,
 								count:e.count,
-								deuda:e.deuda-deuda[0].info[0].monto,
-								deuda1:e.deuda,
+								// deuda:e.deuda-data.valor,
+								deuda:e.deuda - nuevaDeuda[0] ?nuevaDeuda[0].info[0].monto :e.deuda-Math.ceil((data.valor/(data.asignados.length+1))/100)*100,
+								deuda1:nuevaDeuda,
 		 						abierto:data.abierto,
 							}
 						})
+
+						 
+						console.log(req.session.usuario.user._id)
 						deuda = deuda.map(e=>{
 							data = e.data[0].info[0]
 							return{
@@ -105,9 +118,9 @@ router.get('/:user', (req, res)=>{
 						}
 						let sumaPago  =[];
 						let sumaDeuda =[];
-						pago.filter(e=>{
-							sumaPago.push(e.deuda)
-						})
+						// pago.filter(e=>{
+						// 	sumaPago.push(e.deuda)
+						// })
 						deuda.filter(e=>{
 							sumaDeuda.push(e.deuda)
 						})

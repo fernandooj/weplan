@@ -48,7 +48,7 @@ export const style = MediaQueryStyleSheet.create({
 	nombre:{
 		color:'#5664ba',
 		fontSize:20,
-		width:190,
+		width:180,
 	},
 	textoTotal:{
 		fontSize:20,

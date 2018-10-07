@@ -103,6 +103,9 @@ export const MisPlanesStyle = MediaQueryStyleSheet.create({
 		position : 'absolute',
 		bottom:0,
 		zIndex:100
+	},
+	sinPlanes:{
+		paddingHorizontal:90
 	}
 },{
 	"@media (max-device-width: 320)": {

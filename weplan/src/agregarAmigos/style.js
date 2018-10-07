@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, Platform} from 'react-native';
 import { MediaQueryStyleSheet } from "react-native-responsive";
 var screenHeight = Dimensions.get('window').height;
 
@@ -44,7 +44,7 @@ export const AmigosStyle = MediaQueryStyleSheet.create({
 	titulo:{
 		flexDirection:'row',
 		alignItems: 'flex-start',
-		marginTop:10,
+		marginTop: Platform.OS === 'android' ?10 : 39,
 		marginBottom:10
 	},
 	separador:{
@@ -122,6 +122,10 @@ export const AmigosStyle = MediaQueryStyleSheet.create({
  	},
  	hecho:{
  		color:'white'
+ 	},
+ 	sinResultados:{
+ 		marginTop:25,
+ 		marginHorizontal:40
  	}
 },{
 	"@media (max-device-width: 320)": {

@@ -12,22 +12,27 @@ export const style = MediaQueryStyleSheet.create({
 		fontFamily:'Futura-CondensedLight',
 	},
  	contenedorChat:{
- 		top:Platform.OS==='android' ?-300 :-320,
+ 		top:Platform.OS==='android' ?-300 :-265,
  		zIndex :0
  	},
  	contenedorChat2:{
- 		top:0
+ 		top:0,
  	},
  	contenedorBox:{
  		position:'relative',
  		zIndex:-100
  	},
+ 	contenedorBox2:{
+ 		position:'relative',
+ 		zIndex:-100,
+ 		marginTop:-35
+ 	},
  	fondo:{
 		zIndex:0,
 		top:0,
 		left:0,
-		height:Platform.OS==='android' ?screenHeight-155 :screenHeight-18,
-		marginTop:90,
+		height:Platform.OS==='android' ?screenHeight-155 :screenHeight-140,
+		marginTop:Platform.OS==='android' ?75 :90,
 		width:screenWidth,
 	},
  	////////////////// cabezera
@@ -61,10 +66,14 @@ export const style = MediaQueryStyleSheet.create({
 		height:70
 	},
 	iconRegresar:{
-		width:23,
-		height:45,
-		left:10,
-		top:5
+		// borderWidth:1,
+		// borderColor:'red',
+		// width:60,
+		// height:55,
+		paddingLeft:10,
+		paddingVertical:15,
+		paddingRight:20,
+		top:0
 	},
 	imgRegresar:{
 		width:15,
@@ -138,11 +147,14 @@ export const style = MediaQueryStyleSheet.create({
 		backgroundColor:'#ffffff',
 		padding:8,
 		left:5,
-		marginTop:Platform.OS==='android' ?-55 :-75,
+		bottom:Platform.OS==='android' ?60 :60,
 		width:230,
+		position:'absolute',
 		borderRadius:35
 	},
-
+	contenedorOpcionesBotonesShow:{
+		bottom:Platform.OS==='android' ?320 :320,
+	},
 	btnIconoOpciones:{
 		backgroundColor:'#ebebeb',
 		padding:3,
@@ -276,7 +288,7 @@ export const style = MediaQueryStyleSheet.create({
 		marginRight: 15,
 		marginTop: 5,
 		width:screenWidth/1.5,
-		backgroundColor:'#ffffff',
+		// backgroundColor:'#ffffff',
 		paddingBottom:20,		
  	},
  	contenedorItemLeft:{
@@ -553,7 +565,7 @@ export const style = MediaQueryStyleSheet.create({
 	////////////////////////////////////////////
 	////////////////// contenedor 4  ==> chat
 	////////////////////////////////////////////
- 
+
 	mensajeCChat:{
 		backgroundColor:'#afc4f0',
 		borderTopLeftRadius:10,
@@ -567,7 +579,7 @@ export const style = MediaQueryStyleSheet.create({
 	},
 	cPhoto:{
 		borderWidth:4,
-		borderRadius:35,	
+		borderRadius:30,	
 		borderColor:'#9CB7F5',
 	},
 	cPhotoLeft:{
@@ -796,23 +808,32 @@ export const style = MediaQueryStyleSheet.create({
 		},
 		fondo:{
 			height:Platform.OS==='android' ?screenHeight-155 :screenHeight-165,
+			marginTop:Platform.OS==='android' ?75 :102,
 		},
 		cabezera:{
 			paddingTop:Platform.OS==='android' ?0 :30,
 		},
+		contenedorChat:{
+	 		top:Platform.OS==='android' ?-300 :-320,
+	 		zIndex :0
+	 	},
+	 	contenedorChat2:{
+	 		top:-10,
+	 	},
 		btnImagenPlan:{	
 			top:Platform.OS==='android' ?15 :31,
 			left:Platform.OS==='android' ?25 :37,
 		},
+		contenedorOpcionesBotones:{
+			bottom:Platform.OS==='android' ?60 :85,
+		},
 		contenedorOpcionesBotonesShow:{
-			bottom:295,
+			bottom:395,
 		},
 		showFooter:{
 			bottom:Platform.OS==='android' ?0 :330
 		},
-		// contenedorOpcionesBotones:{
-		// 	marginTop:Platform.OS==='android' ?-55 :-35,
-		// },
+		
 	}
 })
 

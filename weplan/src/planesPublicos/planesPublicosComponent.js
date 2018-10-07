@@ -111,7 +111,7 @@ export default class planesPublicosComponent extends Component{
 					:<View></View>
 				}
 				<View style={style.footer}>
-					<FooterComponent navigate={navigate} publico />	
+					<FooterComponent navigate={this.props.navigation} publico />	
 				</View>	
 			</View> 
 		)

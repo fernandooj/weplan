@@ -34,7 +34,7 @@ export default class nuevoPasswordComponent extends Component{
            			placeholder="Contraseña"
            			placeholderTextColor="#8F9093" 
            			secureTextEntry
-           			maxLength={4} 
+           
 			    />	
 			    <TextInput
 			        style={EditPasswordStyle.input}
@@ -44,7 +44,7 @@ export default class nuevoPasswordComponent extends Component{
            			placeholder="Confirmar Contraseña"
            			placeholderTextColor="#8F9093" 
            			secureTextEntry
-           			maxLength={4} 
+           
 			    />			 
 			    <TouchableHighlight  style={EditPasswordStyle.signup_btn} onPress={this.handleSubmit.bind(this)}>
 			    	<Text  style={EditPasswordStyle.textSubmit}>!Hecho</Text>

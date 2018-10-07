@@ -101,7 +101,8 @@ class itemServices {
 			        userIdPago:'$PagoData.userId',
 			        titulo:1,
 			        abierto:1,
-			        activo:"$PagoData.activo",
+			        pagoActivo:"$PagoData.activo",
+			        descripcion:"$PagoData.descripcion",
 			    }
 			},
 			{
@@ -116,7 +117,7 @@ class itemServices {
 		    },
 			{
 			    $group : {
-			       _id : "$_id",
+			       _id : {id:"$_id", activo:'$pagoActivo', descripcion:'$descripcion'},
 			       deuda: { $sum: "$montos"}, 
 			       count: { $sum: 1 }, // for no. of documents count
 			       data: {

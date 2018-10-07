@@ -8,16 +8,17 @@ import {URL} from '../../App.js'
 export default class CabezeraComponent extends Component{
 	constructor(props) {
 	  super(props);
-	
-	  this.state = {notificacion:'false'};
+		
+		this.state = {
+	  		notificacion:'false',
+		};
 	  this.onReceivedMessage = this.onReceivedMessage.bind(this);
 	}
  
 	componentWillMount = async () => {
 		/////////////////	OBTENGO EL PERFIL
-		let userInfoId = await AsyncStorage.getItem('userInfoId');
+		let userInfoId   = await AsyncStorage.getItem('userInfoId');
 		let notificacion = await AsyncStorage.getItem('userInfoNotificacion');
-		
 		userInfoId =  JSON.parse(userInfoId)
 		notificacion =  JSON.parse(notificacion)
 
@@ -30,43 +31,40 @@ export default class CabezeraComponent extends Component{
 		await AsyncStorage.setItem('userInfoNotificacion', 'true');
 		this.setState({notificacion:true})
 	}
+	 
 	render(){
-		const {navigate, publico} = this.props	
+		const {navigate, publico} = this.props
+		const route = navigate.state.routeName
 		return(
 			<View style={cabezeraFooterStyle.footer3} >
-				<TouchableOpacity onPress={()=> navigate('inicio')} style={cabezeraFooterStyle.btnFooter3}>
+				<TouchableOpacity onPress={()=> navigate.navigate('inicio')} style={route=='Home'||route=='inicio' ?[cabezeraFooterStyle.btnFooter3, cabezeraFooterStyle.btnFooter3Active] :[cabezeraFooterStyle.btnFooter3]} >
 					<Image source={require('../assets/images/home.png')} style={cabezeraFooterStyle.iconFooter3} />
-					{/*<Text style={cabezeraFooterStyle.textoFooter3}>Home</Text>*/}
 				</TouchableOpacity>
-				<TouchableOpacity onPress={()=> navigate('wallet')} style={cabezeraFooterStyle.btnFooter3}>
+				<TouchableOpacity onPress={()=> navigate.navigate('wallet')} style={route=='wallet' ?[cabezeraFooterStyle.btnFooter3, cabezeraFooterStyle.btnFooter3Active] :[cabezeraFooterStyle.btnFooter3]} >
 					<Image source={require('../assets/images/mi_wallet.png')} style={cabezeraFooterStyle.iconFooter3} />
-					{/*<Text style={cabezeraFooterStyle.textoFooter3}>My Wallet</Text>*/}
 				</TouchableOpacity>
-				<TouchableOpacity onPress={()=> navigate('createPlan', publico)} style={[cabezeraFooterStyle.btnFooter3, cabezeraFooterStyle.btnFooter3Create]} >
+				<TouchableOpacity onPress={()=> navigate.navigate('createPlan', publico)} style={route=='3' ?[cabezeraFooterStyle.btnFooter3, cabezeraFooterStyle.btnFooter3Create, cabezeraFooterStyle.btnFooter3Active] :[cabezeraFooterStyle.btnFooter3, cabezeraFooterStyle.btnFooter3Create]} >
 					<Image source={require('../assets/images/crear_plan.png')} style={cabezeraFooterStyle.iconFooter3Create} />
-					{/*<Text style={cabezeraFooterStyle.textoFooter3}>Crear Plan</Text>*/}
 				</TouchableOpacity>
-				<TouchableOpacity onPress={()=> navigate('misPlanes')} style={cabezeraFooterStyle.btnFooter3} >
+				<TouchableOpacity onPress={()=> navigate.navigate('misPlanes')} style={route=='misPlanes' ?[cabezeraFooterStyle.btnFooter3, cabezeraFooterStyle.btnFooter3Active] :[cabezeraFooterStyle.btnFooter3]} >
 					<Image source={require('../assets/images/mis_planes.png')} style={cabezeraFooterStyle.iconFooter3} />
-					{/*<Text style={cabezeraFooterStyle.textoFooter3}>Planes</Text>*/} 
 				</TouchableOpacity>
-				<TouchableOpacity onPress={()=> this.updatePerfilNotificacion()} style={cabezeraFooterStyle.btnFooter3} >
+				<TouchableOpacity onPress={()=> this.updatePerfilNotificacion()} style={route=='notificacion' ?[cabezeraFooterStyle.btnFooter3, cabezeraFooterStyle.btnFooter3Active] :[cabezeraFooterStyle.btnFooter3]} >
 					<Image source={require('../assets/images/notificaciones.png')} style={cabezeraFooterStyle.iconFooter3} />
 					{
 						this.state.notificacion
 						&&<Text style={cabezeraFooterStyle.punto}>&#8226;</Text>
 					}
-					{/*<Text style={cabezeraFooterStyle.textoFooter3}>Notificacion</Text>*/}
 				</TouchableOpacity>
 			</View>
 		)
 	}
-	updatePerfilNotificacion = async (userInfo)=>{
-		const {navigate} = this.props	
+	updatePerfilNotificacion = async ()=>{
+		const {navigate} = this.props
 		axios.put('/x/v1/user/desactivaNotificacion') 
 		.then((res)=>{
 			if(res.data.code===1){
-				navigate('notificacion')
+				navigate.navigate('notificacion')
 				this.setState({notificacion:false}) 
 			}  
 			 

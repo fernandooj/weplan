@@ -82,7 +82,7 @@ export default class walletComponent extends Component{
 				<ScrollView style={style.subContenedor}>
 					{rows}	
 				</ScrollView>
-				<FooterComponent navigate={navigate} />		
+				<FooterComponent navigate={this.props.navigation} />		
 			</View> 
 		)
 	}
