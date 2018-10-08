@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground, Alert, Keyboard, Modal, Dimensions, BackHandler, Platform, ActivityIndicator} from 'react-native'
+import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground, Alert, Keyboard, Modal, Dimensions, BackHandler, Platform, ActivityIndicator, AsyncStorage} from 'react-native'
 import axios from 'axios'
 import SocketIOClient from 'socket.io-client';
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
@@ -20,6 +20,7 @@ import AgregarAmigosComponent from '../agregarAmigos/agregarAmigos.js'
 import MapaPlanComponent 	  from '../createPlan/mapa.js'
 import PdfComponent           from '../pdf/pdfComponent.js'
 import MapComponent           from '../mapa/mapComponent.js'
+import GuiaInicio 	 		  from '../guia_inicio/guia_inicio'
 import {pedirImagen, pedirPdf, pedirContacto, pedirMapa} from './peticiones.js'		
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -54,15 +55,16 @@ export default class ChatComponent extends Component{
 		this.onReceivedMessagePago = this.onReceivedMessagePago.bind(this);
 	}
 
-	componentWillMount(){
+	componentWillMount = async()=>{
 		let planId = this.props.navigation.state.params	
 		// let planId = '5b8a278dc581676c62f30ca8'	 
-		console.log(this.props.navigation.state.params)
 		console.log(planId)
+		let guia_inicio   = await AsyncStorage.getItem('chat');
+
 		this.socket = SocketIOClient(URL);
 		this.socket.on(`chat${planId}`, 	this.onReceivedMessage);
 		this.socket.on(`editPago${planId}`, this.onReceivedMessagePago);
-		this.setState({showIndicador:true})
+		this.setState({showIndicador:true, guia_inicio})
   
 
 		/////////////////	OBTENGO EL PERFIL
@@ -666,10 +668,12 @@ export default class ChatComponent extends Component{
 	}
  
 	render(){
-		const {adjuntarAmigos, asignados, usuariosAsignados, mapa, qr, planId, showMainFooter, showIndicador, scroll, scroll2, scrollState, notificaciones, imagen, nombrePlan, id} = this.state
- 		console.log(showMainFooter)
+		const {adjuntarAmigos, asignados, guia_inicio, usuariosAsignados, mapa, qr, planId, showMainFooter, showIndicador, scroll, scroll2, scrollState, notificaciones, imagen, nombrePlan, id} = this.state
 		return(
 			<View style={style.contenedorGeneral} > 
+				{
+					typeof guia_inicio!=='string'  &&<GuiaInicio number={7} guia_inicio={()=>this.setState({guia_inicio:'2'})} />
+				}
 				{this.renderCabezera()}
 				<KeyboardListener
 					onWillShow={() => { this.setState({ showMainFooter: true }); }}

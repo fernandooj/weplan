@@ -1,13 +1,16 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, ImageBackground, ScrollView, Platform, Keyboard, Dimensions, Alert, Animated, ActivityIndicator} from 'react-native'
+import {View, Text, Image, TouchableOpacity, ImageBackground, ScrollView, Platform, Keyboard, Dimensions, Alert, Animated, ActivityIndicator, AsyncStorage} from 'react-native'
 import {style} from '../home/style'
 import axios from 'axios'
 import SearchInput, { createFilter } from 'react-native-search-filter';
 
+
 import CabezeraComponent from '../cabezeraFooter/cabezeraComponent'
 import FooterComponent 	 from '../cabezeraFooter/footerComponent'
-import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
+import GuiaInicio 	 	 from '../guia_inicio/guia_inicio'
 
+
+import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import FCM, {NotificationActionType} from "react-native-fcm";
 import {registerKilledListener, registerAppListener} from "../push/Listeners";
 
@@ -53,6 +56,8 @@ export default class homeComponent extends Component{
 		})
 	}
 	async componentWillMount(){
+		let guia_inicio   = await AsyncStorage.getItem('home');
+		this.setState({guia_inicio})
 		if (Platform.OS==='android') {
 			RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({interval: 10000, fastInterval: 5000})
 		   .then(data => {
@@ -131,10 +136,9 @@ export default class homeComponent extends Component{
 		const {navigate} = this.props.navigation
 		const {opacity, top, deg, translate, cargando} = this.state
 		const filtered = this.state.filteredData.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
-		console.log(this.state.filteredData)
 		if (filtered.length===0 ) {
 			return(<View style={style.sinResultados}>
-					<Text>{this.state.filteredData.length>0 ?'No hemos encontrado planes' :<ActivityIndicator size="large" color="#148dc9" />} </Text>
+					 {this.state.filteredData.length===0 ?<Text>No hemos encontrado planes</Text> :<ActivityIndicator size="large" color="#148dc9" />} 
 					</View>)
 		}else{
 			return filtered.map((e, key)=>{
@@ -217,7 +221,6 @@ export default class homeComponent extends Component{
 		if(event.nativeEvent.contentOffset.y<=0){
 			axios.get(`/x/v1/pla/plan/pago/${this.state.lat}/${this.state.lng}`)
 			.then(e=>{
-				console.log(e.data)
 				this.setState({planes:e.data.planes})
 			})
 			.catch(err=>{
@@ -232,9 +235,14 @@ export default class homeComponent extends Component{
 	}
 	render(){
 		const {navigate} = this.props.navigation
+		const {showBarra, guia_inicio} = this.state
 		return(	 
 			<View style={style.contenedor}>
-				<CabezeraComponent navigate={navigate} hide={this.state.showBarra ?false :true} term={(term)=>this.searchUpdated(term)} />
+				{
+					typeof guia_inicio!=='string'  &&<GuiaInicio number={1} guia_inicio={()=>this.setState({guia_inicio:'1'})} />
+				}
+				
+				<CabezeraComponent navigate={navigate} hide={showBarra ?false :true} term={(term)=>this.searchUpdated(term)} />
 				<ScrollView style={style.contenedorPlan} onScroll={this.handleScroll.bind(this)} scrollEventThrottle={16}>
 					{this.getRow()}
 				</ScrollView>

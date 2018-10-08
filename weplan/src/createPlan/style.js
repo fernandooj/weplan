@@ -11,7 +11,9 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		fontFamily:'Futura-CondensedLight',
 	},
 	contenedorGeneral:{
-		backgroundColor:'#ffffff'
+		backgroundColor:'#ffffff',
+		height:screenHeight,
+		flex:1
 	},
 	encabezado:{
 		backgroundColor:'#DAE0E0',

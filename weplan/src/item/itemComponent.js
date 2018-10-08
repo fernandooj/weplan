@@ -8,6 +8,7 @@ import CrearItemComponent from './crearItemComponent'
 import CabezeraComponent from '../ajustes/cabezera.js'
 import update from 'react-addons-update';
 import Icon from 'react-native-fa-icons';
+import GuiaInicio 	 	 from '../guia_inicio/guia_inicio'
 import {sendRemoteNotification} from '../push/envioNotificacion.js' 
 
 export default class ItemComponent extends Component{
@@ -27,8 +28,8 @@ export default class ItemComponent extends Component{
 	componentWillMount =async() =>{
 		let planId = this.props.navigation.state.params.planId ?this.props.navigation.state.params.planId :this.props.navigation.state.params
 		// let planId = '5b8f5155de373662367ae2eb'	
-		// console.log(this.props.navigation.state.params)
-		this.setState({planId})
+		let guia_inicio   = await AsyncStorage.getItem('articulo');	
+		this.setState({planId, guia_inicio})
  
 		axios.get('/x/v1/ite/item/'+planId)
 		.then(e=>{
@@ -279,11 +280,14 @@ export default class ItemComponent extends Component{
 
 
   	render() {
-		const {show, items, itemsPlan, render, planId} = this.state
+		const {show, items, itemsPlan, render, planId, guia_inicio} = this.state
 		const {navigate} = this.props.navigation
 		return (
 			<ScrollView>
 				<View  style={style.contentItem}>
+				{
+					typeof guia_inicio!=='string'  &&<GuiaInicio number={11} guia_inicio={()=>this.setState({guia_inicio:'1'})} />
+				}
 					<CabezeraComponent navigate={navigate} url={'chat'} parameter={this.state.planId} texto='Artículos' />
 					
 					  	{/*****   show the modal to create component	*****/}

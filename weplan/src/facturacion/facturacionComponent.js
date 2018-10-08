@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, ScrollView, ImageBackground, TouchableOpacity, Image, TextInput} from 'react-native'
-import {style} from '../facturacion/style'
+import {style} from './style'
 import axios from 'axios'
 import CabezeraComponent from '../ajustes/cabezera.js'
  

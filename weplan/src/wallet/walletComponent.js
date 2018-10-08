@@ -1,11 +1,10 @@
 import React, {Component} from 'react'
-import {View, Text, ScrollView, ImageBackground, TouchableOpacity, Image, TextInput} from 'react-native'
-import {style} from '../wallet/style'
-import axios from 'axios'
+import {View, Text, ScrollView, ImageBackground, TouchableOpacity, Image, TextInput, AsyncStorage} from 'react-native'
+import {style} 			 from './style'
+import axios 			 from 'axios'
 import CabezeraComponent from '../ajustes/cabezera.js'
-
- 
 import FooterComponent 	 from '../cabezeraFooter/footerComponent'
+import GuiaInicio 	 	 from '../guia_inicio/guia_inicio'
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////  ARCHIVOS GENERADOS POR EL EQUIPO  //////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -21,7 +20,9 @@ export default class walletComponent extends Component{
 			allList:[]
 		}
 	}
-	componentWillMount(){
+	async componentWillMount(){
+		let guia_inicio   = await AsyncStorage.getItem('wallet');
+		this.setState({guia_inicio})
 		axios.get('/x/v1/pla/plan/suma/totales/plan')
 		.then(e=>{
 			console.log(e.data.result)
@@ -78,6 +79,9 @@ export default class walletComponent extends Component{
 		const {navigate} = this.props.navigation
 		return(	 
 			<View style={style.contenedor}>
+				{
+					typeof this.state.guia_inicio!=='string'  &&<GuiaInicio number={17} guia_inicio={()=>this.setState({guia_inicio:'1'})} />
+				}
 				<CabezeraComponent navigate={navigate} url={'inicio'} texto='My Wallet'  />
 				<ScrollView style={style.subContenedor}>
 					{rows}	

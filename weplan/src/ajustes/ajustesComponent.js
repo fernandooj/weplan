@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, AsyncStorage, Modal, Alert, Keyboard} from 'react-native'
+import {View, Text, Image, TouchableOpacity, Modal, Alert, Keyboard, AsyncStorage} from 'react-native'
 import {style} from '../ajustes/style'
 import axios from 'axios'
 import CabezeraComponent from './cabezera.js'
+import GuiaInicio 	 	 from '../guia_inicio/guia_inicio'
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
 import {URL} from '../../App.js'
@@ -21,7 +22,9 @@ export default class ajustesComponent extends Component{
       	result: 'No result',
       	modalVisible:false
 	}
-	componentWillMount(){
+	async componentWillMount(){
+		let guia_inicio   = await AsyncStorage.getItem('ajustes');
+		this.setState({guia_inicio})
 		Keyboard.dismiss()
 		/////////////////	OBTENGO EL PERFIL
 		axios.get('/x/v1/user/profile') 
@@ -149,6 +152,9 @@ export default class ajustesComponent extends Component{
 		const {navigate} = this.props.navigation
 		return(
 			<View style={style.contenedor}>
+				{
+					typeof this.state.guia_inicio!=='string'  &&<GuiaInicio number={14} guia_inicio={()=>this.setState({guia_inicio:'1'})} />
+				}
 				<CabezeraComponent navigate={navigate} url={'inicio'} texto='Ajustes' />
 				{this.renderQr()}		
 				<View style={style.subContenedor}>

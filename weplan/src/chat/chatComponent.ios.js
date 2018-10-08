@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground, Alert, Keyboard, Modal, Dimensions, BackHandler, Platform, ActivityIndicator} from 'react-native'
+import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground, Alert, Keyboard, Modal, Dimensions, BackHandler, Platform, ActivityIndicator, AsyncStorage} from 'react-native'
 import axios from 'axios'
 import SocketIOClient from 'socket.io-client';
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
@@ -19,6 +19,7 @@ import AgregarAmigosComponent from '../agregarAmigos/agregarAmigos.js'
 import MapaPlanComponent 	  from '../createPlan/mapa.js'
 import PdfComponent           from '../pdf/pdfComponent.js'
 import MapComponent           from '../mapa/mapComponent.js'
+import GuiaInicio 	 		  from '../guia_inicio/guia_inicio'
 import {pedirImagen, pedirPdf, pedirContacto, pedirMapa} from './peticiones.js'		
 import { showLocation, Popup } from 'react-native-map-link'
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -55,17 +56,17 @@ export default class ChatComponent extends Component{
 		this.onReceivedMessagePago = this.onReceivedMessagePago.bind(this);
 	}
 
-	componentWillMount(){
+	componentWillMount = async()=>{
 		let planId = this.props.navigation.state.params	
 		// let planId = '5b96ec5c7d74dd757c9e8f7b'	 
-		console.log(this.props.navigation.state.params)
+		let guia_inicio   = await AsyncStorage.getItem('chat');
 		console.log(planId)
 		this.socket = SocketIOClient(URL);
 		this.socket.on(`chat${planId}`, 	this.onReceivedMessage);
 		this.socket.on(`editPago${planId}`, this.onReceivedMessagePago);
 		 
   
-		this.setState({planId})
+		this.setState({planId, guia_inicio})
 		/////////////////	OBTENGO EL PERFIL
 		axios.get('/x/v1/user/profile') 
 		.then((res)=>{
@@ -613,12 +614,15 @@ export default class ChatComponent extends Component{
 			    style={{ /* Optional: you can override default style by passing your values. */ }}
 			/>
 		)	
-	}
+	} 
 	render(){
-		const {adjuntarAmigos, asignados, usuariosAsignados, mapa, qr, planId, showMainFooter, showIndicador, scroll, scroll2, scrollState, notificaciones, imagen, nombrePlan, id} = this.state
+		const {adjuntarAmigos, asignados, guia_inicio, usuariosAsignados, mapa, qr, planId, showMainFooter, showIndicador, scroll, scroll2, scrollState, notificaciones, imagen, nombrePlan, id} = this.state
  		let suma = heightScreen==812 ?165 :150 
 		return(
 			<View style={style.contenedorGeneral} > 
+				{
+					typeof guia_inicio!=='string'  &&<GuiaInicio number={7} guia_inicio={()=>this.setState({guia_inicio:'2'})} />
+				}
 				{this.renderCabezera()}
 				<KeyboardListener
 					onWillShow={() => { this.setState({ showMainFooter: true }); }}

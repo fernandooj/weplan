@@ -1,12 +1,14 @@
 import React, {Component} from 'react'
-import {View, Text, TouchableOpacity, ScrollView, Image} from 'react-native'
-import {style} from '../encuesta/style'
-
+import {View, Text, TouchableOpacity, ScrollView, Image, AsyncStorage} from 'react-native'
+import {style} from './style'
 import axios from 'axios'
-import CrearEncuestaComponent from './crearEncuestaComponent'
-import CabezeraComponent from '../ajustes/cabezera.js'
 import update from 'react-addons-update';
 import Icon from 'react-native-fa-icons';
+
+import CrearEncuestaComponent from './crearEncuestaComponent'
+import CabezeraComponent from '../ajustes/cabezera.js'
+import GuiaInicio 	 	 from '../guia_inicio/guia_inicio'
+
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
 
 export default class encuestaComponent extends Component{
@@ -16,15 +18,17 @@ export default class encuestaComponent extends Component{
 		encuestasPublicadas:[],
 		render:0
 	}
-	componentWillMount(){
-		let planId = this.props.navigation.state.params.planId
-		let notificaciones = this.props.navigation.state.params.notificaciones
-		let id = this.props.navigation.state.params.id
-		let nombrePlan = this.props.navigation.state.params.nombrePlan
-		let imagen = this.props.navigation.state.params.imagen
+	async componentWillMount(){
+		const {params} = this.props.navigation.state
+		let planId = params.planId
+		let notificaciones = params.notificaciones
+		let id = params.id
+		let nombrePlan = params.nombrePlan
+		let imagen = params.imagen
+
 		// let planId = '5b8a278dc581676c62f30ca8'	
- 		console.log(this.props.navigation.state.param)
- 		this.setState({planId, notificaciones, id, nombrePlan, imagen})
+		let guia_inicio   = await AsyncStorage.getItem('encuesta');	
+ 		this.setState({planId, notificaciones, id, nombrePlan, imagen, guia_inicio})
 		axios.get('/x/v1/enc/encuesta/'+planId)
 		.then(e=>{
 			this.setState({misEncuestas:e.data.encuesta})
@@ -310,10 +314,13 @@ export default class encuestaComponent extends Component{
 	}
 
   	render() {
-		const {show, items, itemsPlan, render, planId} = this.state
+		const {show, items, itemsPlan, render, planId, guia_inicio} = this.state
 		const {navigate} = this.props.navigation
 		return (
 				<View  style={style.contentItem}>
+				{
+					typeof guia_inicio!=='string'  &&<GuiaInicio number={9} guia_inicio={()=>this.setState({guia_inicio:'1'})} />
+				}
 				<CabezeraComponent navigate={navigate} url={'chat'} parameter={this.state.planId} texto='Encuestas' />
 					<ScrollView>					
 					  	{/*****   show the modal to create component	*****/}

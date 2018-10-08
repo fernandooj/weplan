@@ -1,21 +1,21 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Picker, Alert, Dimensions, Platform} from 'react-native'
+import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Picker, Alert, Dimensions, Platform, AsyncStorage} from 'react-native'
 
-import {CreatePlanStyle} from '../createPlan/style'
-import axios from 'axios'
-import DatePicker from 'react-native-datepicker'
-import moment from 'moment'
-import Slideshow from 'react-native-slideshow';
-import AlertInput from 'react-native-alert-input';
- 
-import StarRating from 'react-native-star-rating';
+import {CreatePlanStyle} 		  from '../createPlan/style'
+import axios 					  from 'axios'
+import DatePicker 				  from 'react-native-datepicker'
+import moment 					  from 'moment'
+import Slideshow 				  from 'react-native-slideshow';
+import AlertInput 				  from 'react-native-alert-input'; 
+import StarRating 				  from 'react-native-star-rating';
 
 import RestriccionesPlanComponent from './restricciones.js'
-import MapaPlanComponent 		    from './mapa.js'
-import AgregarAmigosComponent    from '../agregarAmigos/agregarAmigos.js'
-import TakePhotoComponent 	  		 from '../takePhoto/takePhotoComponent.js'
-import CabezeraComponent from '../ajustes/cabezera.js'
-import {sendRemoteNotification} from '../push/envioNotificacion.js'
+import MapaPlanComponent 		  from './mapa.js'
+import AgregarAmigosComponent     from '../agregarAmigos/agregarAmigos.js'
+import TakePhotoComponent 	  	  from '../takePhoto/takePhotoComponent.js'
+import CabezeraComponent 		  from '../ajustes/cabezera.js'
+import GuiaInicio 	 	 		  from '../guia_inicio/guia_inicio'
+import {sendRemoteNotification}   from '../push/envioNotificacion.js'
 
 
 const screenWidth = Dimensions.get('window').width;
@@ -53,7 +53,9 @@ export default class createPlanComponent extends Component{
 		}
 	}
 
-	componentWillMount(){
+	async componentWillMount(){
+		let guia_inicio   = await AsyncStorage.getItem('crear_plan');
+		this.setState({guia_inicio})
 		axios.get('/x/v1/pag/pagoPublico/byuser' )
 		.then((e)=>{
 	 		console.log(e.data)
@@ -158,12 +160,15 @@ export default class createPlanComponent extends Component{
 	///////////////////////////////////////////////////  	RENDER  	/////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	render(){
-		const {nombre, fechaLugar, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, area, costo, saldo, lat, lng, showTipo} = this.state
+		const {nombre, fechaLugar, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, area, costo, saldo, lat, lng, showTipo, guia_inicio} = this.state
 		const {navigate} = this.props.navigation
  
 		return (
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} keyboardDismissMode='on-drag'> 
 				{/* si la ubicacion no tiene */}
+				{
+					typeof guia_inicio!=='string'  &&<GuiaInicio number={15} guia_inicio={()=>this.setState({guia_inicio:'1'})} />
+				}
 				{this.renderAlertNombreEvento()}
 				{/*
 					tipoPlan
