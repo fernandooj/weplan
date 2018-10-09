@@ -1,7 +1,8 @@
 import {StyleSheet, Dimensions, Platform} from 'react-native';
+import { MediaQueryStyleSheet } from "react-native-responsive";
 var size = Dimensions.get('window');
 
-export const style = StyleSheet.create({
+export const style = MediaQueryStyleSheet.create({
 	contenedor:{
 		position:'absolute',
 		backgroundColor:'rgba(0,0,0,.5)',
@@ -81,15 +82,15 @@ export const style = StyleSheet.create({
  		width:75,
 		height:100,
 		position:'absolute',
-		bottom:205,
+		bottom:Platform.OS==='android' ?205 :200,
 		left:0	
  	},
  	icono2:{
  		width:50,
 		height:50,
 		position:'absolute',
-		bottom:27,
-		left:15	
+		bottom:Platform.OS==='android' ?27 :2,
+		left:Platform.OS==='android' ?15 :5,	
  	}, 	
 
  	//////////////////////////////////////////////////////////////////////
@@ -98,8 +99,8 @@ export const style = StyleSheet.create({
  		width:50,
 		height:50,
 		position:'absolute',
-		bottom:27,
-		left:95	
+		bottom:Platform.OS==='android' ?27 :2,
+		left:Platform.OS==='android' ?95 :78,	
  	},
  	//////////////////////////////////////////////////////////////////////
 	//////////////  pantalla 4
@@ -107,15 +108,15 @@ export const style = StyleSheet.create({
  		width:100,
 		height:100,
 		position:'absolute',
-		top:135,
+		top:Platform.OS==='android' ?125 :110,
 		left:180	
  	},
  	icono4:{
  		width:50,
 		height:53,
 		position:'absolute',
-		bottom:22,
-		left:185	
+		bottom:Platform.OS==='android' ?27 :2,
+		left:Platform.OS==='android' ?185 :165,	
  	},
  	//////////////////////////////////////////////////////////////////////
 	//////////////  pantalla 5
@@ -123,7 +124,7 @@ export const style = StyleSheet.create({
  		width:90,
 		height:110,
 		position:'absolute',
-		top:180,
+		top:Platform.OS==='android' ?180 :170,
 		left:0,
 		zIndex:50	
  	},
@@ -131,8 +132,8 @@ export const style = StyleSheet.create({
  		width:50,
 		height:50,
 		position:'absolute',
-		bottom:27,
-		left:265
+		bottom:Platform.OS==='android' ?27 :2,
+		left:Platform.OS==='android' ?265 :248,	
  	},
  	//////////////////////////////////////////////////////////////////////
 	//////////////  pantalla 6
@@ -140,7 +141,7 @@ export const style = StyleSheet.create({
  		width:74,
 		height:120,
 		position:'absolute',
-		bottom:180,
+		bottom:Platform.OS==='android' ?180 :170,
 		left:20,
 		zIndex:50	
  	},
@@ -148,8 +149,8 @@ export const style = StyleSheet.create({
  		width:50,
 		height:50,
 		position:'absolute',
-		bottom:27,
-		right:25
+		bottom:Platform.OS==='android' ?27 :2,
+		right:Platform.OS==='android' ?25 :20,
  	},
  	//////////////////////////////////////////////////////////////////////
 	//////////////  pantalla 7
@@ -157,15 +158,15 @@ export const style = StyleSheet.create({
  		width:99,
 		height:120,
 		position:'absolute',
-		top:180,
-		right:50,
+		top:Platform.OS==='android' ?180 :170,
+		right:Platform.OS==='android' ?50 :40,
 		zIndex:50	
  	},
  	icono7:{
  		width:50,
 		height:50,
 		position:'absolute',
-		top:7,
+		top:Platform.OS==='android' ?7 :23,
 		right:58
  	},
  	//////////////////////////////////////////////////////////////////////
@@ -174,7 +175,7 @@ export const style = StyleSheet.create({
  		width:50,
 		height:50,
 		position:'absolute',
-		top:7,
+		top:Platform.OS==='android' ?7 :23,
 		right:4
  	},
  	//////////////////////////////////////////////////////////////////////
@@ -184,7 +185,7 @@ export const style = StyleSheet.create({
 		paddingVertical:20,
 		width:'100%',
 		flexDirection:'row',
-		top:-130,
+		top:Platform.OS==='android' ?-130 :-100,
 	},
 	subContenedor9:{
 		flexDirection:'row',
@@ -229,7 +230,7 @@ export const style = StyleSheet.create({
 		paddingVertical:20,
 		width:'100%',
 		flexDirection:'row',
-		top:-75,
+		top:Platform.OS==='android' ?-75 :-45,
 	},
 	iconRight10:{
 		fontSize:23,
@@ -280,6 +281,52 @@ export const style = StyleSheet.create({
 		marginTop:28,
 		left:-90,
  	},
+},{
+	"@media (max-device-width: 320)": {
+		 
+	},
+	"@media (device-height: 812)": {
+		pulpo2:{
+			bottom:275,	
+	 	},
+		pulpo4:{	 		 
+			top:184,
+			left:150	
+	 	},
+	 	pulpo5:{
+			top:243,
+			left:0,	
+	 	},
+	 	pulpo6:{
+			bottom:230,	
+	 	},
+	 	pulpo7:{
+			top:242,
+			right:50,	
+	 	},
+	 	icono7:{
+			top:38,
+			right:55
+	 	},
+	 	icono8:{
+			top:38,
+	 	},
+	 	contenedor9:{
+			top:-170,
+		},
+		pulpo9:{
+			bottom:220,
+	 	},
+	 	contenedor10:{
+			top:-115,
+		},
+		pulpo10:{
+			bottom:190,
+	 	},
+	 	pulpo11:{
+			bottom:180,
+	 	},
+	}
 })
 
 
