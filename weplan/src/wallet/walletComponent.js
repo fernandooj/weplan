@@ -82,7 +82,7 @@ export default class walletComponent extends Component{
 				{
 					typeof this.state.guia_inicio!=='string'  &&<GuiaInicio number={17} guia_inicio={()=>this.setState({guia_inicio:'1'})} />
 				}
-				<CabezeraComponent navigate={navigate} url={'inicio'} texto='My Wallet'  />
+				<CabezeraComponent navigate={navigate} url={'inicio'} texto='Mi billetera'  />
 				<ScrollView style={style.subContenedor}>
 					{rows}	
 				</ScrollView>

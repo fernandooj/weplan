@@ -184,7 +184,7 @@ export default class createPlanComponent extends Component{
 						<TouchableOpacity style={[CreatePlanStyle.contenedorTextBack]} onPress={() => this.setState({ showTipo:!this.state.showTipo})}>
 							<View style={CreatePlanStyle.planesTitulo}>
 								<Text style={[CreatePlanStyle.textBack, CreatePlanStyle.familia]}>
-									{publico ?'Plan Público' :'Plan Privado'}
+									{publico ?'Plan público' :'Plan privado'}
 								</Text>	
 								<View style={CreatePlanStyle.triangulo2}></View>
 							</View>
@@ -199,13 +199,13 @@ export default class createPlanComponent extends Component{
 			    &&<View style={CreatePlanStyle.contenedorCambioTipo}>
 				   	<View style={CreatePlanStyle.triangulo}></View>
 				   	<TouchableOpacity style={CreatePlanStyle.btnCambioTipo} onPress={() => this.setState({publico:false, showTipo:false})}>
-				   		<Text style={[CreatePlanStyle.familia, CreatePlanStyle.textoCambio]}>Plan Privado</Text>
+				   		<Text style={[CreatePlanStyle.familia, CreatePlanStyle.textoCambio]}>Plan privado</Text>
 				   		{
 				   			!publico &&<Image source={require('../assets/images/tipoPlan.png')} style={CreatePlanStyle.imgCambio} />
 				   		}
 				   	</TouchableOpacity>
 				   	<TouchableOpacity style={CreatePlanStyle.btnCambioTipo2} onPress={() => this.setState({publico:true, showTipo:false})}>	
-				   		<Text style={[CreatePlanStyle.familia, CreatePlanStyle.textoCambio]}>Plan Publico</Text>
+				   		<Text style={[CreatePlanStyle.familia, CreatePlanStyle.textoCambio]}>Plan público</Text>
 				   		{
 				   			publico &&<Image source={require('../assets/images/tipoPlan.png')} style={CreatePlanStyle.imgCambio} />
 				   		}
@@ -223,7 +223,7 @@ export default class createPlanComponent extends Component{
 								onChangeText={(nombre) => this.setState({nombre})}
 								value={nombre}
 								underlineColorAndroid='transparent'
-								placeholder="INSERTA EL NOMBRE DE TU PLAN"
+								placeholder={publico ?"Nombre de tu publicación" :"Nombre de tu plan"}
 								placeholderTextColor="#ffffff" 
 								maxLength={30}
 						    />
@@ -268,7 +268,7 @@ export default class createPlanComponent extends Component{
 								onChangeText={(descripcion) => this.setState({descripcion})}
 								value={this.state.descripcion}
 								underlineColorAndroid='transparent'
-								placeholder="descripcion"
+								placeholder="Descripción"
 								placeholderTextColor="#c9c9c9" 
 								multiline={true}
 								maxLength={100}
@@ -309,7 +309,8 @@ export default class createPlanComponent extends Component{
 								date={this.state.fechaLugar}
 								style={CreatePlanStyle.inputs}
 								mode="datetime"
-								placeholder="Dia / Mes / Año / Hora"
+								// placeholder="Dia / Mes / Año / Hora"
+								placeholder={publico ?"Fecha y hora de tu publicación" :"Fecha y hora de tu plan"}
 								format="DD-MMM-YYYY h:mm a"
 								showIcon={false}
 								confirmBtnText="Confirm"
@@ -431,10 +432,10 @@ export default class createPlanComponent extends Component{
 						<Image source={require('../assets/images/area.png')} style={CreatePlanStyle.iconInputArea} />	
 					    <View style={CreatePlanStyle.contenedorArea}>
 					    	<View>
-					    		<Text style={[CreatePlanStyle.costoPlan, CreatePlanStyle.familia]}>Saldo Actual: {'$ '+Number(saldo-costo).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+					    		<Text style={[CreatePlanStyle.costoPlan, CreatePlanStyle.familia]}>Saldo actual: {'$ '+Number(saldo-costo).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
 					    	</View>
 					    	<View>
-					    		<Text style={[CreatePlanStyle.costoPlan, CreatePlanStyle.familia]}>Costo plan: {'$ '+Number(costo).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+					    		<Text style={[CreatePlanStyle.costoPlan, CreatePlanStyle.familia]}>Costo de la publicación: {'$ '+Number(costo).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
 					    	</View>
 					    	{/*<ModalPicker
 				                data={influencia}

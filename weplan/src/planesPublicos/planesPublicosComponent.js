@@ -98,7 +98,7 @@ export default class planesPublicosComponent extends Component{
 		return(	 
 			<View style={style.contenedor}>
 				 
-				<CabezeraComponent navigate={navigate} url={'ajustes'} texto='Planes Publicos'  />
+				<CabezeraComponent navigate={navigate} url={'ajustes'} texto='Planes públicos'  />
 				{
 					filtroData.length==0
 					?<Image source={require('../assets/images/sinPlanes.png')} style={style.sinPlanes} />

@@ -46,7 +46,7 @@ export default class CabezeraComponent extends Component{
 							onChangeText={(term) => this.props.term(term)}
 							value={term}
 							underlineColorAndroid='transparent'
-							placeholder="Buscador Plan"
+							placeholder="Buscar Plan"
 							placeholderTextColor="#777777"  
 					    />
 					    <TouchableOpacity onPress={() => {this.setState({search:false}); this.props.term('')}}>

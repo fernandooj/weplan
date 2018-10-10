@@ -260,7 +260,7 @@ export default class LoginComponent extends Component{
 				navigate('inicio')
 			}else{
 				Alert.alert(
-	            'Opss!! Error',
+	            'Revisa tus datos',
 	            'Datos incorrectos',
 	              [
 	                {text: 'OK', onPress: () => console.log('OK Pressed')},

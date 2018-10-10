@@ -50,11 +50,11 @@ export default class notificacionComponent extends Component{
 				 						:e.tipo==6 ?`Aceptó ser parte del articulo: ${e.titulo}`
 				 						:e.tipo==7 ?`Te agregó al articulo: ${e.titulo}`
 				 						:e.tipo==8 ?`Se salio del plan: ${e.titulo}`
-				 						:e.tipo==9 ?`No le entro al articulo: ${e.titulo}`
+				 						:e.tipo==9 ?`No le entro al artículo: ${e.titulo}`
 				 						:e.tipo==10 ?`Te abono en efectivo: ${e.titulo}`
 				 						:e.tipo==11 ?`Tu abono de: ${e.titulo}, fue Aprobado`
 				 						:e.tipo==12 ?`Tu abono de: ${e.titulo}, fue Rechazado`
-				 						:e.tipo==13 ?`Cerro el plan: ${e.titulo}`
+				 						:e.tipo==13 ?`Cerró el plan: ${e.titulo}`
 				 						:e.tipo==14 ?`Califica el plan: ${e.titulo}`
 				 						:e.tipo==15 &&`el costo del artículo ${e.titulo} cambio`
 				 					}
@@ -155,11 +155,11 @@ export default class notificacionComponent extends Component{
 					sendRemoteNotification(tipo, token, 'Home', 'Estas dentro de un item',  `, te agregó al item ${titulo}`, imagen)
 				}
 				else if (tipo==11) {
-					sendRemoteNotification(tipo, token, 'Home', 'Aceptaron tu pago',  `, Acepto tu pago por: ${titulo} `, imagen)
+					sendRemoteNotification(tipo, token, 'Home', 'Aceptaron tu pago',  `, Aceptó tu pago por: ${titulo} `, imagen)
 				}
 				
 			}else if(e.data.code==2){
-				this.alerta('Opss!! Articulo Cerrado', 'El dueño del articulo ya lo ha terminado, y ya no puedes ingresar')
+				this.alerta('Opss!! Artículo Cerrado', 'El dueño del artículo ya lo ha terminado, y ya no puedes ingresar')
 			}else{
 				this.alerta('Opss!! revisa tus datos que falta algo', '')
 			}

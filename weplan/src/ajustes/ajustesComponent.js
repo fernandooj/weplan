@@ -11,12 +11,12 @@ export default class ajustesComponent extends Component{
 	state={
 		menus:[
 			{method:1, label:'Amigos', 		 	value:'ajustesAmigos'},
-			{method:1, label:'Planes Públicos', value:'planesPublicos'},
+			{method:1, label:'Planes públicos', value:'planesPublicos'},
 			//{method:1, label:'Facturación', 	value:'facturacion'},
-			{method:3, label:'QR', 		 		value:'abrirQr'},
+			{method:3, label:'Código QR', 		value:'abrirQr'},
 			{method:1, label:'Privacidad',  	value:'privacidad'},
 			{method:1, label:'General', 	 	value:'general'},
-			{method:2, label:'Cerrar Sesion',   value:'closeSession'},
+			{method:2, label:'Cerrar sesión',   value:'closeSession'},
 		],
 		delay: 300,
       	result: 'No result',
@@ -60,7 +60,7 @@ export default class ajustesComponent extends Component{
 			return(
 				<View key={key} >
 					<TouchableOpacity style={style.btnMenu} onPress={e.method==1 ?() => navigate(e.value) :e.method==2 ?this.closeSession.bind(this) :this.abrirQr.bind(this)}>
-						<Text style={style.familia}>{e.label} </Text>
+						<Text style={[style.familia, style.txtMenu]}>{e.label} </Text>
 					</TouchableOpacity>
  
 					{/* SEPARADOR */}

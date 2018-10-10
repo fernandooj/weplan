@@ -253,7 +253,7 @@ export default class MapaPlanComponent extends Component{
 					        {
 					        	inputValor
 					        	&&<View style={{paddingHorizontal:10}}>
-					        		<Text style={{textAlign:'center'}}>Ingresa el monto que desees para visualizar el área de influencia definida</Text>
+					        		<Text style={{textAlign:'center', fontSize:18}}>Ingresa el monto de dinero para visualizar el área de influencia</Text>
 					        		<TextInputMask
 					                  ref="text"
 					                  placeholder='Valor a invertir por día'
@@ -273,7 +273,7 @@ export default class MapaPlanComponent extends Component{
 						       		<TouchableOpacity 
 						       			onPress={() => { this.props.updateStateX(this.state.x.latitude, this.state.x.longitude, direccion, km, valorInicial)} } 
 										style={CreatePlanStyle.btnHecho}>
-										<Text style={[CreatePlanStyle.hecho, CreatePlanStyle.familia]}>Hecho !</Text>
+										<Text style={[CreatePlanStyle.hecho, CreatePlanStyle.familia]}>¡ Hecho !</Text>
 									</TouchableOpacity>
 								</View>
 								:null
