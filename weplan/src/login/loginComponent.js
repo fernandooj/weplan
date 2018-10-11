@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, TouchableOpacity, TextInput, Alert, Platform, ImageBackground, ScrollView, AsyncStorage, Keyboard} from 'react-native'
-import {style} from '../login/style'
+import {style} from './style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
 import Icon from 'react-native-fa-icons';
@@ -42,7 +42,7 @@ export default class LoginComponent extends Component{
 		const {token} = this.state
 		if (e===1) {
 			console.log(Platform)
-			FBLoginManager.loginWithPermissions(["email","user_friends"], function(error, data){
+			FBLoginManager.loginWithPermissions(["email"], function(error, data){
 				/////////////////////////////////////////////    SAVE INFO IF IS ANDROID PLATFORM /////////////////////////////////////////////////////////
 				if(Platform.OS === 'android'){
 					if (!error) {
@@ -152,9 +152,7 @@ export default class LoginComponent extends Component{
 	    }
 
 	    FCM.getFCMToken().then(token => {
-	      console.log(token);
-	      this.setState({token: token || ""})
-
+	    	this.setState({token: token || ""})
 	    });
 
 	    if(Platform.OS === 'ios'){
@@ -223,13 +221,13 @@ export default class LoginComponent extends Component{
 							source={require('../assets/images/facebook.png')}
 					    />
 				      </TouchableOpacity>
-				      <TouchableOpacity onPress={()=>this._signInRedes(2)} >
+				      {/*<TouchableOpacity onPress={()=>this._signInRedes(2)} >
 				       <Image
 							style={style.imageLogos}
 							width={60} // height will be calculated automatically
 							source={require('../assets/images/google.png')}
 					    />
-				      </TouchableOpacity>
+				      </TouchableOpacity>*/}
 				    </View>  
 				    <Text style={[style.text, style.familia]}>¿Aún no haces parte de Weplan? </Text>	
 				     <TouchableOpacity onPress={()=> navigate('Registro', {tokenPhone:this.state.token})} style={style.signup_btn}>

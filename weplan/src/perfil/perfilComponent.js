@@ -1,12 +1,13 @@
 import React, {Component} from 'react'
-import {View, Text, ScrollView, ImageBackground, TouchableOpacity, Image, TextInput, Picker} from 'react-native'
-import {style} from '../perfil/style'
-import axios from 'axios'
+import {View, Text, ScrollView, ImageBackground, TouchableOpacity, Image, TextInput, Picker, Dimensions} from 'react-native'
+import {style} 			 from '../perfil/style'
+import axios 		 	 from 'axios'
 import CabezeraComponent from '../ajustes/cabezera.js'
-import DatePicker from 'react-native-datepicker'
-import moment from 'moment' 
-import ModalSelector from 'react-native-modal-selector'
-import StarRating from 'react-native-star-rating';
+import DatePicker 	 	 from 'react-native-datepicker'
+import moment 		 	 from 'moment' 
+import ModalSelector 	 from 'react-native-modal-selector'
+import StarRating    	 from 'react-native-star-rating';
+import Lightbox 	 	 from 'react-native-lightbox';
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////  ARCHIVOS GENERADOS POR EL EQUIPO  //////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -15,6 +16,7 @@ import TakePhotoComponent 	from '../takePhoto/takePhotoComponent.js'
 import QrComponent from '../qr/qrComponent.js'
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////// 
+const size = Dimensions.get('window').width;
 const generos = [
 	{label:'Masculino', key:1},
 	{label:'Femenino', key:2}
@@ -67,8 +69,8 @@ export default class perfilComponent extends Component{
  	renderPerfil(){
 		const {perfil, imagen, ciudad, ciudades, sexo, photo, exitoso, nombre, qr, calificacion, saldo} = this.state
 		const {navigate} = this.props.navigation
-		let a=60
-		let b=100
+		let a=size<321 ?40 :60
+		let b=size<321 ?500 :100
 		if (perfil) {
 			return(
 				<View style={style.perfil}>
@@ -79,7 +81,19 @@ export default class perfilComponent extends Component{
 
 						{
 							!imagen
-							&&<Image source={{uri: photo}} style={style.avatar} />
+							&&<Lightbox 
+							      renderContent={() => (
+							        <Image 
+							          source={{uri: photo }}
+							          style={{ width: "100%", height:400}}
+							         />
+							       )}
+							   >
+							  <Image
+							    source={{ uri: photo  }}
+							    style={style.avatar}
+							  />
+							  </Lightbox>
 						}
 							<TouchableOpacity style={style.btnQr} onPress={()=>this.setState({qr:true})} > 
 								<Text style={[style.hecho, style.familia]}>mi codigo Qr</Text> 

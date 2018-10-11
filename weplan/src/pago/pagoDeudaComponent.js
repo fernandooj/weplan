@@ -67,9 +67,9 @@ export default class pagoDeudaComponent extends Component{
 	    valor = -Math.abs(Number(valor))
 	    let usuariosAsignados = Math.ceil((item.valor/(item.asignados.length))/100)*100 /// saco el divido de los usuarios que estan asignados
 	    let costoPago  		  = Math.ceil((valor/(this.state.item.asignados.length))/100)*100 //// divido el costo del pago entre los usuarios asignados
-	    let suma = usuariosAsignados + costoPago
+	    let costoCreador = usuariosAsignados + costoPago
 	    let usuarios = this.state.usuarios.filter(e=>{
-			if (e._id==id) {e.deuda= valor}else{e.deuda=-Math.abs(suma)}
+			if (e._id==id) {e.deuda= valor}else{e.deuda=-Math.abs(costoCreador)}
 			return e
 		})
 		let nuevaData = usuarios.map(e=>{
@@ -79,8 +79,8 @@ export default class pagoDeudaComponent extends Component{
 				token: e.data[0].info[0].token
 			}
 		})
-		nuevaData.push({id:item.userId._id, deuda:suma, token:null })
-		this.setState({usuarios, nuevaData})
+		nuevaData.push({id:item.userId._id, deuda:costoCreador, token:null })
+		this.setState({usuarios, nuevaData, costoCreador})
 	}
 	editarDeuda(id){
 		if (!this.state.item.abierto) {
@@ -213,10 +213,10 @@ export default class pagoDeudaComponent extends Component{
 		}
 	}
 	enviarEdicion(){
-		const {nuevaData, itemId, usuarios, imagenResize, item} = this.state
+		const {nuevaData, itemId, usuarios, imagenResize, item, costoCreador} = this.state
 		
 
-		axios.put('x/v1/pag/pago', {data: nuevaData, itemId:itemId })
+		axios.put('x/v1/pag/pago', {data: nuevaData, itemId:itemId, costoCreador})
 		.then(e=>{
 			console.log(e.data)
 			if (e.data.code===1) {

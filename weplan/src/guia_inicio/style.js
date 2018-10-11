@@ -293,8 +293,84 @@ export const style = MediaQueryStyleSheet.create({
  		borderRadius:22
  	},
 },{
-	"@media (max-device-width: 320)": {
-		 
+	"@media (max-device-width: 360)": {
+		pulpo2:{
+			bottom:140,	
+			width:77,
+	 	},
+	 	image2:{
+	 		width:50,
+	 		height:50
+	 	},
+	 	text2:{
+	 		fontSize:17,
+	 	},
+	 	btnSiguiente:{
+	 		paddingVertical:5,
+	 		paddingHorizontal:30,
+	 	},
+	 	txtSiguiente:{
+	 		fontSize:20
+	 	},
+	 	pulpo4:{	 		 
+			top:84,
+			left:150	
+	 	},
+	 	icono4:{
+			left:135
+	 	},
+	 	pulpo5:{	 		 
+			top:144,
+			left:0,
+			width:74,
+			height:90	
+	 	},
+	 	pulpo6:{
+			bottom:110,	
+	 	},
+	 	pulpo7:{
+			top:112,
+			right:50,	
+	 	},
+	 	text9:{
+	 		fontSize:17,
+	 	},
+	 	pulpo9:{
+	 		width:70,
+			height:100,
+			bottom:140,
+			left:0
+	 	},
+	 	contenedor9:{
+			paddingVertical:10,
+			top:-75,
+		},
+		contenedor10:{
+			paddingVertical:10,
+			top:-10,
+		},
+		pulpo10:{
+	 		width:73,
+			height:85,
+			bottom:140,
+			left:5
+	 	},
+	 	pulpo11:{
+	 		width:80,
+			height:100,
+			bottom:130,
+			left:5
+	 	},
+	 	contenedor12:{
+			paddingVertical:10,
+			marginBottom:31,
+		},
+		pulpo12:{
+			marginTop:95
+	 	},
+	 	pulpo13:{
+			marginTop:163,
+	 	},
 	},
 	"@media (device-height: 812)": {
 		pulpo2:{

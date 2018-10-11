@@ -796,7 +796,7 @@ export const style = MediaQueryStyleSheet.create({
 			fontSize :20
 		},
 		fondo:{
-			height:screenHeight-145,
+			height:screenHeight-155,
 		},
 		contenedorChat:{
 	 		top:-255

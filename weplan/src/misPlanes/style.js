@@ -7,6 +7,7 @@ export const MisPlanesStyle = MediaQueryStyleSheet.create({
 	contenedor:{
 		flex: 1,
 		alignItems: 'center', 
+		width:'100%',
 	},
 	familia:{
 		fontFamily:'Futura-CondensedLight',
@@ -82,6 +83,7 @@ export const MisPlanesStyle = MediaQueryStyleSheet.create({
 		backgroundColor:'#00bf07',
 		width:15,
 		height:15,
+		borderRadius:7,
 		marginTop:10
 	},
 	noDebe:{
@@ -108,7 +110,7 @@ export const MisPlanesStyle = MediaQueryStyleSheet.create({
 		paddingHorizontal:90
 	}
 },{
-	"@media (max-device-width: 320)": {
+	"@media (max-device-width: 360)": {
 		input:{
 			marginTop:10,
 			width:'70%',
@@ -127,8 +129,8 @@ export const MisPlanesStyle = MediaQueryStyleSheet.create({
 			right:15, 
 	 	}, 
 	 	sinPlanes:{
-			width:280,
-			height:390,
+			width:320,
+			height:430,
 			marginBottom:10
 		},
 		background:{ 
@@ -136,10 +138,10 @@ export const MisPlanesStyle = MediaQueryStyleSheet.create({
 		},
 	},
 	"@media (min-device-height: 710)": {
-		sinPlanes:{
-			width:470,
-			height:597,
-		},
+		// sinPlanes:{
+		// 	width:470,
+		// 	height:597,
+		// },
 	},
 	"@media (device-height: 812)": {
 		contenedorCabezera:{

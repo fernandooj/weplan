@@ -17,6 +17,7 @@ let itemSchema = mongoose.Schema({
 	valor         	: { type: String},
 	activo		  	: { type : Boolean},
 	abierto         : { type: Boolean},
+	costoCreador    : { type: Number},
 	planId     	  	: { type: Schema.Types.ObjectId, ref:'Plan'},
 	userId     	  	: { type: Schema.Types.ObjectId, ref:'User'}, 
 	asignados     	: [{type: Schema.Types.ObjectId, ref:'User'}],

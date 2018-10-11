@@ -66,6 +66,16 @@ class itemServices {
 	        'abierto': false,
         }}, callback);	
 	}
+
+
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////   EDITO EL COSTO DE CUANTO LE TOCA PAGAR AL DUEÑO DEL ITEM
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	editaCostoCreador(_id, costo, callback){
+		itemSchema.findByIdAndUpdate(_id, {$set: {
+	        'costoCreador': costo,
+        }}, callback);	
+	}
 	sumaItemPropios(planId, userId, callback){
 		console.log(userId)
 		planId = mongoose.Types.ObjectId(planId);
@@ -101,6 +111,7 @@ class itemServices {
 			        userIdPago:'$PagoData.userId',
 			        titulo:1,
 			        abierto:1,
+			        costoCreador:1,
 			        pagoActivo:"$PagoData.activo",
 			        descripcion:"$PagoData.descripcion",
 			    }
@@ -121,7 +132,7 @@ class itemServices {
 			       deuda: { $sum: "$montos"}, 
 			       count: { $sum: 1 }, // for no. of documents count
 			       data: {
-			       	$addToSet: {info:[{titulo:'$titulo', userId:'$userId', abierto:'$abierto', asignados:'$asignados', valor:'$valor', monto:"$montos", userIdPago:'$userIdPago', pagoId:'$pagoId', activo:'$activo' }]},
+			       	$addToSet: {info:[{titulo:'$titulo', userId:'$userId', abierto:'$abierto', asignados:'$asignados', valor:'$valor', monto:"$montos", userIdPago:'$userIdPago', pagoId:'$pagoId', activo:'$activo', costoCreador:'$costoCreador' }]},
 			       }
 			    } 
 			},

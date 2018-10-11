@@ -202,14 +202,19 @@ export const style = MediaQueryStyleSheet.create({
 	},
 	fondoUltimo:{
 		flex: 1,
-
 		backgroundColor:'#ffffff'
-		/*justifyContent: 'center', justifica contenido verticalmente */
 	},
 	textoAcepto:{
 		marginTop:6,
  		color:'rgba(117, 139, 252, 0.6)'
 	}, 
+	obligatorio:{
+		color:'red',
+		fontSize:12,
+		marginVertical:5,
+		alignSelf: 'flex-start',
+		marginLeft:30
+	},
 	///////////////////////////////////////
 	////////// LISTADO PLANES //////////////
 	///////////////////////////////////////
@@ -265,6 +270,11 @@ export const style = MediaQueryStyleSheet.create({
 	}
 },{
 	"@media (max-device-width: 320)": {
+		check:{
+			width:34,
+			height:34,
+			left:-30
+		},
 		touchRes:{
 			margin:1
 		},

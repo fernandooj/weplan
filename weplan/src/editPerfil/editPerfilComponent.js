@@ -153,7 +153,7 @@ export default class editPerfilComponent extends Component{
 	}
 	 
 	render(){
-		const {textApellido, textNombre, ciudad, email, textEmail, textTelefono, textDate} = this.state
+		const {textApellido, textNombre, ciudad, email, textEmail, textTelefono, textDate, nombreRequired, apellidoRequired, ciudadRequired, emailRequired, dateRequired, generoRequired} = this.state
 		return(
 			<ScrollView style={style.contenedor} >
 			<View style={style.fondo} >
@@ -166,20 +166,22 @@ export default class editPerfilComponent extends Component{
 				</View>
 				<TextInput
 			        style={[style.input, style.familia]}
-			        onChangeText={(textNombre) => this.setState({textNombre})}
+			        onChangeText={(textNombre) => this.setState({textNombre, nombreRequired:false})}
 			        value={textNombre}
 			        underlineColorAndroid='transparent'
            			placeholder="Nombre"
            			placeholderTextColor="#8F9093" 
-			    />	
+			    />
+			    {nombreRequired &&<Text style={[style.obligatorio, style.familia]}>Campo Obligatorio</Text>}	
 			    <TextInput
 			        style={[style.input, style.familia]}
-			        onChangeText={(textApellido) => this.setState({textApellido})}
+			        onChangeText={(textApellido) => this.setState({textApellido, apellidoRequired:false})}
 			        value={textApellido}
 			        underlineColorAndroid='transparent'
            			placeholder="Apellido"
            			placeholderTextColor="#8F9093" 
 			    />	
+			    {apellidoRequired &&<Text style={style.obligatorio}>Campo Obligatorio</Text>}	
 			    <View style={style.containCiudad}>	
 			     <View style={{ justifyContent:'space-around' }}>
 				    <ModalSelector
@@ -187,7 +189,7 @@ export default class editPerfilComponent extends Component{
 		                initValue="Ciudad"
 		                color='#8F9093'
 			            font={15}
-		                onChange={(e)=> this.setState({textCiudad:e.label})} 
+		                onChange={(e)=> this.setState({textCiudad:e.label, ciudadRequired:false})} 
 		                style={style.datePicker}
 		                selectStyle={{borderWidth:0}}
 		                cancelTextStyle={style.familia}
@@ -199,11 +201,12 @@ export default class editPerfilComponent extends Component{
                     </ModalSelector>  
 		          </View>
 	            </View>
+	             {ciudadRequired &&<Text style={style.obligatorio}>Campo Obligatorio</Text>}	
 	            {
 	            	email
 	            	?<TextInput
 				        style={[style.input, style.familia]}
-				        onChangeText={(textTelefono) => this.setState({textTelefono})}
+				        onChangeText={(textTelefono) => this.setState({textTelefono, emailRequired:false})}
 				        value={textTelefono}
 				        underlineColorAndroid='transparent'
 	           			placeholder="Telefono"
@@ -213,14 +216,14 @@ export default class editPerfilComponent extends Component{
 				    />	
 				    :<TextInput
 				        style={[style.input, style.familia]}
-				        onChangeText={(textEmail) => this.setState({textEmail})}
+				        onChangeText={(textEmail) => this.setState({textEmail, emailRequired:false})}
 				        value={textEmail}
 				        underlineColorAndroid='transparent'
 	           			placeholder="Email"
 	           			placeholderTextColor="#8F9093" 
 				    />	
 	            }
-			    
+			    {emailRequired &&<Text style={style.obligatorio}>Campo Obligatorio</Text>}	
 			    
 			    <View style={style.date}>
 				    <View style={style.containDatePicker}>
@@ -230,7 +233,7 @@ export default class editPerfilComponent extends Component{
 			                initValue="Dia"
 			                color='#ffffff'
 			                font={16}
-			                onChange={(e)=> this.setState({textDate:e.label})} 
+			                onChange={(e)=> this.setState({textDate:e.label, dateRequired:false})} 
 			                style={style.datePicker}
 			                 selectStyle={{borderWidth:0}}
 			                cancelTextStyle={style.familia}
@@ -249,7 +252,7 @@ export default class editPerfilComponent extends Component{
 			                initValue="Mes"
 			                color='#ffffff'
 			                font={16}
-			                onChange={(e)=> this.setState({textMonth:e.label})} 
+			                onChange={(e)=> this.setState({textMonth:e.label, dateRequired:false})} 
 			                style={style.datePicker}
 			                 selectStyle={{borderWidth:0}}
 			                cancelTextStyle={style.familia}
@@ -265,7 +268,7 @@ export default class editPerfilComponent extends Component{
 			                initValue="Año"
 			                color='#ffffff'
 			                font={16}
-			                onChange={(e)=> this.setState({textYear:e.label})} 
+			                onChange={(e)=> this.setState({textYear:e.label, dateRequired:false})} 
 			                style={style.datePicker}
 			                selectStyle={{borderWidth:0}}
 			                cancelTextStyle={style.familia}
@@ -275,13 +278,14 @@ export default class editPerfilComponent extends Component{
 			            />
 			        </View>    
 	            </View>	
+	            {dateRequired &&<Text style={style.obligatorio}>Campo Obligatorio</Text>}	
 	            <View style={style.containDatePickerGenero}> 
 	            	<ModalSelector
 		                data={genero}
 		                initValue="Genero"
 		                color='#ffffff'
 		                font={16}
-		                onChange={(e)=> this.setState({textGenero:e.label})} 
+		                onChange={(e)=> this.setState({textGenero:e.label, generoRequired:false})} 
 		                style={style.datePicker}
 		                selectStyle={{borderWidth:0}}
 		                cancelTextStyle={style.familia}
@@ -290,6 +294,7 @@ export default class editPerfilComponent extends Component{
 		                optionTextStyle={style.familia}
 		            />
 		        </View>  
+		        {generoRequired &&<Text style={style.obligatorio}>Campo Obligatorio</Text>}	
 			    <TouchableOpacity  style={style.signup_btn} onPress={this.handleSubmit.bind(this)}>
 			    	<Text  style={[style.btnRegistro, style.familia]}>Guardar</Text>
 			    </TouchableOpacity>
@@ -300,18 +305,26 @@ export default class editPerfilComponent extends Component{
 	handleSubmit(){
 		const {navigate} = this.props.navigation
 		const {textNombre, textApellido, textCiudad, textTelefono, textMonth, textDate, textYear, textGenero, textEmail} = this.state
-		console.log({textNombre, textApellido, textCiudad, textTelefono, textMonth, textDate, textYear, textGenero, textEmail})
-		if (textNombre=='' || textApellido==''|| textCiudad==''||  textMonth==''|| textDate==''|| textYear==''|| textGenero=='') {
-			Alert.alert(
-				'Opss!! revisa tus datos que falta algo',
-				'todos los campos son obligatorios',
-			[
-				{text: 'OK', onPress: () => console.log('OK Pressed')},
-			],
-				{ cancelable: false }
-			)
+		
+		if (textNombre==''){
+			this.setState({nombreRequired:true})
+		}else if(textApellido==''){
+			this.setState({apellidoRequired:true})
+		}else if(textCiudad==''){
+			this.setState({ciudadRequired:true})
+		}else if(textMonth==''){
+			this.setState({dateRequired:true})
+		}else if (textDate==''){
+			this.setState({dateRequired:true})
+		}else if(textYear==''){
+			this.setState({dateRequired:true})
+		}else if (textGenero=='') {
+			this.setState({generoRequired:true})
 		}else{
+			 
+			console.log({textNombre, textApellido, textCiudad, textTelefono, textMonth, textDate, textYear, textGenero, textEmail})
 			navigate('editPerfil1', {textNombre, textApellido, textCiudad, textTelefono, textMonth, textDate, textYear, textGenero, textEmail})
+
 		}
 		
 		

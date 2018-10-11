@@ -300,7 +300,7 @@ export const style = MediaQueryStyleSheet.create({
 		color:'#ffffff'
 	},
 	aceptarPendiente:{
-
+		padding:8,
 	},
 
 	////////////////////////////////////////////////////////////////////////////////////

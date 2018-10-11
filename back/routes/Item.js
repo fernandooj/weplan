@@ -87,6 +87,9 @@ router.get('/:user', (req, res)=>{
 									return e2.info[0].monto	
 								}
 							}) 
+
+							let costoCreador = data.costoCreador ?data.costoCreador :e.deuda-Math.ceil((data.valor/(data.asignados.length+1))/100)*100
+							let nuevaDeuda2 = nuevaDeuda[0] ?nuevaDeuda[0].info[0].monto :costoCreador
 							return{
 								id:e._id.id,
 								titulo:data.titulo,
@@ -94,8 +97,12 @@ router.get('/:user', (req, res)=>{
 								valor:data.valor,
 								count:e.count,
 								// deuda:e.deuda-data.valor,
-								deuda:e.deuda - nuevaDeuda[0] ?nuevaDeuda[0].info[0].monto :e.deuda-Math.ceil((data.valor/(data.asignados.length+1))/100)*100,
+								// deuda:e.deuda - nuevaDeuda[0] ?nuevaDeuda[0].info[0].monto :e.deuda-Math.ceil((data.valor/(data.asignados.length+1))/100)*100,
+								deuda:e.deuda - nuevaDeuda2 ,
 								deuda1:nuevaDeuda,
+								deuda2:nuevaDeuda2,
+								deuda3:costoCreador,
+								deuda3:e.deuda,
 		 						abierto:data.abierto,
 							}
 						})
@@ -478,11 +485,26 @@ router.put('/activar/:idTipo', (req, res)=>{
 		})
  
 		let asignados = item[0].asignados.concat(req.session.usuario.user._id)
-		itemServices.activaUsuario(req.params.idTipo, espera, asignados, (err, item)=>{
+		itemServices.activaUsuario(req.params.idTipo, espera, asignados, (err, item2)=>{
 			if (err) {
 				res.json({status: 'FAIL', err, code:0})
 			}else{
-				//res.json({status:'SUCCESS', asignados, code:1})
+
+				////////////  edita el valor en el chat
+				chatServices.getByItem(item[0]._id, (err, chat)=>{
+					if (!err) {
+						if (chat.length>0) {
+							let mensajeJson={
+								id:chat[0]._id ?chat[0]._id :null, 
+								planId:item[0].planId,
+								valor:Math.ceil((item[0].valor/(item[0].asignados.length+3))/100)*100,
+							}
+							cliente.publish('editaPago', JSON.stringify(mensajeJson))
+						}
+					}
+				})
+				////////////////////////////////////////////////////////////
+
 				nuevoPago(req, res, req.params.idTipo, req.body.monto)    	
 			}
 		})

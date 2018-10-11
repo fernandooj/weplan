@@ -118,15 +118,13 @@ export const style = MediaQueryStyleSheet.create({
 	}
 
 },{
-	"@media (max-device-width: 320)": {
-		 
-	 
+	"@media (max-device-width: 360)": {
 		imageLogin:{
-			marginTop:40,
-			marginBottom:40,
+			marginTop:0,
+			marginBottom:10,
 		},
 		imageLogos:{
-			marginTop:30
+			marginTop:10
 		},
 		// facebook:{
 		// 	fontSize:20,

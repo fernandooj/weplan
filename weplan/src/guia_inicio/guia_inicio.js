@@ -236,7 +236,7 @@ export default class guiaInicio extends Component{
 					<View style={style.contenedor12}>
 						<Icon name='angle-right' allowFontScaling style={style.iconRight10} />
 						<Text style={[style.headerText10, style.familia]}>
-							Mis Artículos
+							Artículos Publicados
 						</Text>
 					</View>
 					<View style={style.subContenedor9}>

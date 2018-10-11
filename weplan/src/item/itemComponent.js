@@ -28,9 +28,18 @@ export default class ItemComponent extends Component{
 	componentWillMount =async() =>{
 		let planId = this.props.navigation.state.params.planId ?this.props.navigation.state.params.planId :this.props.navigation.state.params
 		// let planId = '5b8f5155de373662367ae2eb'	
+
+		let tipo = this.props.navigation.state.params.tipo ?this.props.navigation.state.params.tipo :await AsyncStorage.getItem('codeTab')
+		tipo = parseInt(tipo)
 		let guia_inicio   = await AsyncStorage.getItem('articulo');	
-		this.setState({planId, guia_inicio})
- 
+		this.setState({planId, guia_inicio, render:parseInt(tipo)})
+
+
+ 		// let render = await AsyncStorage.getItem('codeTab')
+ 		
+ 		// this.setState({render})
+
+
 		axios.get('/x/v1/ite/item/'+planId)
 		.then(e=>{
 			console.log(e.data)
@@ -56,10 +65,8 @@ export default class ItemComponent extends Component{
 			console.log(err)
 		})
  		
- 		let render = await AsyncStorage.getItem('codeTab')
- 		render = parseInt(render)
- 		this.setState({render})
- 		console.log(render)
+ 		
+ 		 
 	}
 	peticiones(render){
 		this.setState({render})
@@ -133,7 +140,7 @@ export default class ItemComponent extends Component{
 		return this.state.articulosPendientes.map((e, key)=>{
 			return (
 			    <View style={style.content} key={key}>
-			  		<TouchableOpacity style={!key==0 ?style.filaDeuda: [style.filaDeuda, style.filaDeuda]}>
+			  		<View style={!key==0 ?style.filaDeuda: [style.filaDeuda, style.filaDeuda]}>
 				   		<View style={style.contentText}>
 					   		<Text style={[style.tituloItem, style.familia]}>
 					   			{e.titulo}  
@@ -148,7 +155,7 @@ export default class ItemComponent extends Component{
 								<Text style={style.familia}>Aceptar</Text>
 							</TouchableOpacity>
 						</View>
-				   	</TouchableOpacity>
+				   	</View>
 			  	</View> 
 			)
 		})
@@ -282,6 +289,7 @@ export default class ItemComponent extends Component{
   	render() {
 		const {show, items, itemsPlan, render, planId, guia_inicio} = this.state
 		const {navigate} = this.props.navigation
+		// alert(typeof (guia_inicio))
 		return (
 			<ScrollView>
 				<View  style={style.contentItem}>

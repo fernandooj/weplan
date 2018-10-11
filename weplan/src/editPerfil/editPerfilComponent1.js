@@ -40,8 +40,8 @@ export default class editPerfilComponent1 extends Component{
 		const {showPassword, textPassword, textPassword1, condiciones} = this.state
 		return(
 			<View style={style.fondo}> 
-				<View style={{marginTop:50}}>  </View>
-	           		<TakePhotoComponent fuente={'foto.png'} ancho={140} alto={10} updateImagen={(photo) => {this.setState({photo})}} border={50} />
+					<Text style={{marginTop:50}}>  </Text>
+	           		<TakePhotoComponent fuente={'foto.png'} ancho={100} alto={10} updateImagen={(photo) => {this.setState({photo})}} border={50} />
 		       
 		        <TextInput
 			        style={[style.input, style.familia]}
@@ -69,8 +69,8 @@ export default class editPerfilComponent1 extends Component{
 			    		style={style.check}
 				    	onClick={(condiciones) => this.setState({condiciones:!this.state.condiciones})}
 				    	isChecked={this.state.condiciones}
-				    	checkedImage={<Image source={require('../assets/images/categoriaCheck.png')} style={{width:15, height:15}}/>}
-            			unCheckedImage={<Image source={require('../assets/images/categoriaCheckDisable.png')} style={{width:15, height:15}}/>}
+				    	checkedImage={<Image source={require('../assets/images/categoriaCheck.png')} style={{width:12, height:12}}/>}
+            			unCheckedImage={<Image source={require('../assets/images/categoriaCheckDisable.png')} style={{width:12, height:12}}/>}
 			    	/>
 			    	<TouchableOpacity onPress={()=>{ Linking.openURL('https://appweplan.com')}}>
 			    		<Text style={[style.textoAcepto, style.familia]}>Acepto los terminos y condiciones</Text>

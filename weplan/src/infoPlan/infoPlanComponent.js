@@ -1,14 +1,13 @@
 import React, {Component} from 'react'
 import {View, Text, Image, TouchableOpacity, ScrollView, Alert, TextInput} from 'react-native'
-
-import {style} from './style'
-import axios from 'axios'
-import Icon from 'react-native-fa-icons';
-import DatePicker from 'react-native-datepicker'
-import moment from 'moment'
-import AlertInput from 'react-native-alert-input';
-import Lightbox from 'react-native-lightbox';
-import { showLocation, Popup } from 'react-native-map-link'
+import {style} 					  from './style'
+import axios 					  from 'axios'
+import Icon 					  from 'react-native-fa-icons';
+import DatePicker 				  from 'react-native-datepicker'
+import moment 					  from 'moment'
+import AlertInput 				  from 'react-native-alert-input';
+import Lightbox 				  from 'react-native-lightbox';
+import { showLocation, Popup } 	  from 'react-native-map-link'
 import RestriccionesPlanComponent from '../createPlan/restricciones.js'
 import MapaPlanComponent 		  from '../createPlan/mapa.js'
 import AgregarAmigosComponent     from '../agregarAmigos/agregarAmigos.js'

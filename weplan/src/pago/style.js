@@ -121,7 +121,9 @@ export const style = MediaQueryStyleSheet.create({
 		padding:2,
 		paddingLeft:10,
 		fontSize:15,
-		// height:40
+		width:80,
+		height:35,
+		top:2
 	},
 	metodoContenedor:{
 		flexDirection:'row',

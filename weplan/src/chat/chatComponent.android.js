@@ -132,7 +132,7 @@ export default class ChatComponent extends Component{
 						<TouchableOpacity onPress={() => navigate('encuesta', {planId, notificaciones, id, nombrePlan, imagen})}  style={style.iconContenedor}>
 							<Image source={require('../assets/images/preguntar.png')} style={style.icon}  />
 						</TouchableOpacity>
-						<TouchableOpacity onPress={() => navigate('item', {planId, notificaciones, id, nombrePlan, imagen})} style={style.iconContenedor}>
+						<TouchableOpacity onPress={() => navigate('item', {planId})} style={style.iconContenedor}>
 							<Image source={require('../assets/images/cuentas.png')} style={style.icon}  />
 						</TouchableOpacity>
 					</View>
@@ -183,7 +183,7 @@ export default class ChatComponent extends Component{
 				let esperaItem = e.esperaItem.includes(id)
 				let asignadoItem = e.asignadoItem.includes(id)
 				return (
-					<View key={key} style={style.contenedorBox}>
+					<View key={key} style={e.userId== id ?style.contenedorBox :style.contenedorBox2}>
 						{
 							e.userId!==id
 				      		&&<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?style.cBtnAvatarItem : [style.cBtnAvatarItem, style.cBtnAvatarItemLeft]}>
@@ -244,7 +244,7 @@ export default class ChatComponent extends Component{
 				e.respuesta1= e.respuesta1==null ? 0:e.respuesta1  
 				e.respuesta2= e.respuesta2==null ? 0:e.respuesta2  
 				return(
-					<View key={key} style={style.contenedorBox}>
+					<View key={key} style={e.userId== id ?style.contenedorBox :style.contenedorBox2}>
 					{
 						e.userId!==id
 							&&<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?style.cBtnAvatarItem : [style.cBtnAvatarItem, style.cBtnAvatarItemLeft]}>
@@ -399,7 +399,7 @@ export default class ChatComponent extends Component{
 			}else if (e.tipoChat===4) {
 				let estaPlan = planAsignados.includes(e.contactoId) 
 				return (
-					<View key={key} style={style.contenedorBox}>
+					<View key={key} style={e.userId== id ?style.contenedorBox :style.contenedorBox2}>
 					{
 					 	e.userId!==id
 						&&<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?style.cBtnAvatarC : [style.cBtnAvatarC, style.cBtnAvatarCLeft]}>
@@ -453,7 +453,7 @@ export default class ChatComponent extends Component{
 				)
 			}else if (e.tipoChat===5) {
 				return (
-					<View key={key} style={style.contenedorBox}>
+					<View key={key} style={e.userId== id ?style.contenedorBox :style.contenedorBox2}>
 						{	
 							e.userId!==id
 							&&<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?style.cBtnAvatarC : [style.cBtnAvatarC, style.cBtnAvatarCLeft]}>
@@ -486,7 +486,7 @@ export default class ChatComponent extends Component{
 				)	
 			}else if (e.tipoChat===6) {
 				return (
-					<View key={key} style={style.contenedorBox}>
+					<View key={key} style={e.userId== id ?style.contenedorBox :style.contenedorBox2}>
 						{	
 							e.userId!==id
 							&&<TouchableOpacity onPress={e.userId== id ?null :()=> navigate('profile', {userId:e.userId, planId:plan})} style={e.userId== id ?style.cBtnAvatarC : [style.cBtnAvatarC, style.cBtnAvatarCLeft]}>

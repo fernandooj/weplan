@@ -166,19 +166,27 @@ router.post('/', (req, res)=>{
 //////////////////////////////////////////////////////////////////////////////////////////
 router.put('/', (req, res)=>{
 	let mensajeJson= {}
-	req.body.data.map(e=>{
-		mensajeJson={
-			userId:e.id,
-			notificacion:true,
+	itemServices.editaCostoCreador(req.body.itemId, req.body.costoCreador, (err, item)=>{
+		if (!err) {
+			req.body.data.map(e=>{
+				mensajeJson={
+					userId:e.id,
+					notificacion:true,
+				}
+				cliente.publish('notificacion', JSON.stringify(mensajeJson))
+				pagoServices.editByItemAndUser(e.id, req.body.itemId, e.deuda, (err, pago)=>{
+					if (!err) {
+						creaNotificacion(req.session.usuario.user._id, e.id, req.body.itemId, false, 15, res)
+					}	 
+				})
+			})
+			res.json({status:'SUCCESS', code:1}) 
 		}
-		cliente.publish('notificacion', JSON.stringify(mensajeJson))
-		pagoServices.editByItemAndUser(e.id, req.body.itemId, e.deuda, (err, pago)=>{
-			if (!err) {
-				creaNotificacion(req.session.usuario.user._id, e.id, req.body.itemId, false, 15, res)
-			}	 
-		})
 	})
-	res.json({status:'SUCCESS', code:1}) 
+
+
+
+	
 })
 
 

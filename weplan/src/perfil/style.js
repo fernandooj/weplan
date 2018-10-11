@@ -1,5 +1,4 @@
 import {StyleSheet, Dimensions} from 'react-native';
-var screenHeight = Dimensions.get('window').height;
 import { MediaQueryStyleSheet } from "react-native-responsive";
 
 export const style = MediaQueryStyleSheet.create({
@@ -19,7 +18,7 @@ export const style = MediaQueryStyleSheet.create({
 		width: 120,
 		height: 120,
 		borderColor:'#9CB7F5',
-		borderWidth:7,
+		borderWidth:4,
 		marginBottom:30
 	},
 	avatar2:{
@@ -36,7 +35,7 @@ export const style = MediaQueryStyleSheet.create({
 	},
 	contenedorRegistros:{
 		flexDirection:'row',
-		marginTop:10
+		marginTop:10,
 	},
 	btnQr:{
  		width:110,
@@ -67,11 +66,8 @@ export const style = MediaQueryStyleSheet.create({
 		
 	},
 	valor:{
- 
-		paddingTop:10,
-		paddingBottom:10,
-		paddingLeft:12, 
-		paddingRight:12, 
+		paddingVertical:10,
+		paddingHorizontal:12, 
 		borderRadius:30,
 		position:'relative',
 		width:230,
@@ -83,7 +79,6 @@ export const style = MediaQueryStyleSheet.create({
 	 	borderWidth:0,
 		height:40,
 		paddingLeft:10,
-
 	},
 	inputCiudad:{
 		height:30,
@@ -119,18 +114,26 @@ export const style = MediaQueryStyleSheet.create({
  	},
 },{
 	"@media (max-device-width: 320)": {
+		subContenedor:{
+			marginTop:30
+		},
+		avatar: {
+			width:90,
+			height:90,
+			marginBottom:10
+		},
 		avatar2:{
-			top:75,
-			left:63,
+			top:65,
+			left:53,
 			zIndex:100
 		},
 		valor:{
 			width:180,
-			paddingTop:7,
-			paddingBottom:7,
+			paddingVertical:7,
 		},
 		containCiudad:{
 			width:180,	 
+			height:35,
 		},
 		date:{
 			width:180

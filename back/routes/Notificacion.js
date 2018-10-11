@@ -49,6 +49,7 @@ router.get('/', (req, res)=>{
 					titulo : e.idAmigoUser ?e.idUsuarioAsigna.nombre :e.idPlan ?e.idPlan.nombre :e.idPago ?e.idPago.monto :e.idItem ?e.idItem.titulo :e.idItem===4 &&e.idItem.titulo,
 					token  : e.idUsuarioAsigna &&e.idUsuarioAsigna.tokenPhone,
 					infoPlan:e.idPlan ?e.idPlan :null,
+					infoItem:e.idItem ?e.idItem :null,
 					////////////////////////////  AMIGOS  ////////////////////////////////////
 					//idAmigoUser : e.idAmigoUser ?e.idAmigoUser._id 				:null,
 
