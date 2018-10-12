@@ -83,7 +83,7 @@ export default class ajustesAmigosComponent extends Component{
 		return filteredEmails.map((data, key)=>{
 			return  <View style={style.registro} key={key} onPress={()=>this.updateState(data.id, data.estado, data.token)} > 
 						<Image source={{ uri: data.photo}}  style={data.estado ?style.avatarA :style.avatarA2} /> 
-						<Text style={style.textoAvatar}>{data.nombre}</Text>
+						<Text style={[style.textoAvatar, style.familia]}>{data.nombre}</Text>
 						
 						<TouchableOpacity style={style.btnHecho} onPress={(e)=>{this.handleSubmit(data.id, data.token)}} > 
 							<Text style={style.hecho}>Agregar</Text>
@@ -221,7 +221,7 @@ export default class ajustesAmigosComponent extends Component{
 		.then((e)=>{
 			console.log(e.data)
 			if (e.data.code==1) {
-				this.setState({show:false, username:''})
+				// this.setState({show:false, username:''})
 				sendRemoteNotification(1, token, "notificacion", 'Tienes una solicitud de amistad', ', Quiere agregarte como amigo', null)
 			}else{
 				Alert.alert(

@@ -56,8 +56,7 @@ export const style = MediaQueryStyleSheet.create({
 	},
 	textAlert:{
 		color:'#7585eb',
-		marginTop:20,
-		padding:20,
+		marginTop:5,
 		textAlign: 'center',
 	},
 	date:{
@@ -213,7 +212,7 @@ export const style = MediaQueryStyleSheet.create({
 		fontSize:12,
 		marginVertical:5,
 		alignSelf: 'flex-start',
-		marginLeft:30
+		marginLeft:60,
 	},
 	///////////////////////////////////////
 	////////// LISTADO PLANES //////////////
@@ -269,7 +268,7 @@ export const style = MediaQueryStyleSheet.create({
 		fontSize:16
 	}
 },{
-	"@media (max-device-width: 320)": {
+	"@media (max-device-width: 360)": {
 		check:{
 			width:34,
 			height:34,
@@ -285,6 +284,9 @@ export const style = MediaQueryStyleSheet.create({
 		signup_btn:{
 			marginTop:10,
 			marginBottom:10,
+		},
+		obligatorio:{
+			marginLeft:40,
 		},
 	}
 })

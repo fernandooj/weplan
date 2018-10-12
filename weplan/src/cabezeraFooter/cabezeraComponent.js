@@ -38,8 +38,26 @@ export default class CabezeraComponent extends Component{
 			}).start()
 		}
 		if (search) {
-			return(
-				<Animated.View style={[cabezeraFooterStyle.cabezera, {opacity: this.state.opacity, top:this.state.top}]}>	
+			if (Platform.OS==='android') {
+				return(
+					<Animated.View style={[cabezeraFooterStyle.cabezera, {opacity: this.state.opacity, top:this.state.top}]}>	
+						<View style={cabezeraFooterStyle.containerBuscador}>
+							<SearchInput
+								style={[cabezeraFooterStyle.buscador, cabezeraFooterStyle.familia]}
+								onChangeText={(term) => this.props.term(term)}
+								value={term}
+								underlineColorAndroid='transparent'
+								placeholder="Buscar Plan"
+								placeholderTextColor="#777777"  
+						    />
+						    <TouchableOpacity onPress={() => {this.setState({search:false}); this.props.term('')}}>
+						    	<Icon name='close' style={cabezeraFooterStyle.closeBtn} />
+						    </TouchableOpacity>
+						</View>
+					</Animated.View> 
+				)
+			}else{
+				<View style={[cabezeraFooterStyle.cabezera, {opacity: this.state.opacity, top:this.state.top}]}>	
 					<View style={cabezeraFooterStyle.containerBuscador}>
 						<SearchInput
 							style={[cabezeraFooterStyle.buscador, cabezeraFooterStyle.familia]}
@@ -53,8 +71,8 @@ export default class CabezeraComponent extends Component{
 					    	<Icon name='close' style={cabezeraFooterStyle.closeBtn} />
 					    </TouchableOpacity>
 					</View>
-				</Animated.View> 
-			)
+				</View> 
+			}	
 		}else{
 			if (Platform.OS==='android') {
 				return(

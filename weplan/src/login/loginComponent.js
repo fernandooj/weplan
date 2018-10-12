@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, TouchableOpacity, TextInput, Alert, Platform, ImageBackground, ScrollView, AsyncStorage, Keyboard} from 'react-native'
+import {View, Text, TouchableOpacity, TextInput, Alert, Platform, ImageBackground, ScrollView, AsyncStorage, Keyboard, Modal} from 'react-native'
 import {style} from './style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
@@ -9,6 +9,7 @@ import {FBLogin, FBLoginManager} from 'react-native-facebook-login';
 import FCM, {NotificationActionType} from "react-native-fcm";
 import {registerKilledListener, registerAppListener} from "../push/Listeners";
  
+ 
 registerKilledListener();
 export default class LoginComponent extends Component{
 	constructor(props) {
@@ -17,6 +18,7 @@ export default class LoginComponent extends Component{
 			facebook:null,
 			google:null,
 			showPassword:false,
+			modalVisible:false,
 			token: "",
 		};
 	}
@@ -36,12 +38,11 @@ export default class LoginComponent extends Component{
 			// }).done();	   
    //  	})
 	}
-	 
 	_signInRedes(e){
 		const {navigate} = this.props.navigation 	
 		const {token} = this.state
 		if (e===1) {
-			console.log(Platform)
+			 
 			FBLoginManager.loginWithPermissions(["email"], function(error, data){
 				/////////////////////////////////////////////    SAVE INFO IF IS ANDROID PLATFORM /////////////////////////////////////////////////////////
 				if(Platform.OS === 'android'){
@@ -57,16 +58,23 @@ export default class LoginComponent extends Component{
 						console.log({accessToken:accessToken1, idUser:idUser1, nombre:name1, photo:photo1, email:email1, tipo:tipo1, tokenPhone:token})
 						axios.post('/x/v1/user/facebook', {accessToken:accessToken1, idUser:idUser1, nombre:name1, photo:photo1, email:email1, username:email1, tipo:tipo1, acceso, tokenPhone:token})
 						.then((e)=>{
-							console.log(e.data.user)
-							if (e.data.code==1) {
-								if (e.data.user.categorias.length>1) {
-									saveInfo(e.data.user)
-									navigate('inicio') 
-								}else{
-									saveInfo(e.data.user)
-									navigate('editPerfil2') 
-								}
+							console.log(e.data)
+							if (e.data.status==='SUCCESSNOEXISTE') {
+								saveInfo(e.data.user)
+								navigate('Terminos', {redes:true}) 
+							}else{
+								saveInfo(e.data.user)
+								navigate('misPlanes') 
 							}
+							// if (e.data.code==1) {
+							// 	if (e.data.user.categorias.length>1) {
+							// 		saveInfo(e.data.user)
+							// 		navigate('inicio') 
+							// 	}else{
+							// 		saveInfo(e.data.user)
+							// 		navigate('editPerfil2') 
+							// 	}
+							// }
 						})
 						.catch((err)=>{
 							console.log(err)
@@ -90,14 +98,12 @@ export default class LoginComponent extends Component{
 							axios.post('/x/v1/user/facebook', {accessToken:accessToken1, idUser:idUser1, nombre:name1, photo:photo1, email:email1, username:email1, tipo:tipo1, acceso, tokenPhone:token})
 							.then((e)=>{
 								console.log(e.data.user)
-								if (e.data.code==1) {
-									if (e.data.user.categorias.length>1) {
-										navigate('inicio') 
-										saveInfo(e.data.user)
-									}else{
-										saveInfo(e.data.user)
-										navigate('editPerfil2') 
-									}
+								if (e.data.status==='SUCCESSNOEXISTE') {
+									saveInfo(e.data.user)
+									navigate('Terminos', {redes:true}) 
+								}else{
+									saveInfo(e.data.user)
+									navigate('misPlanes') 
 								}
 							})
 				        })
@@ -163,8 +169,7 @@ export default class LoginComponent extends Component{
 	    }
 
 	}
-
-	
+	 
 	render(){
 		const {navigate} = this.props.navigation
 		const {showPassword} = this.state
@@ -172,6 +177,7 @@ export default class LoginComponent extends Component{
 		console.log(num)
 		return(
 				<ScrollView keyboardDismissMode='on-drag' style={style.container}>
+				 
 				<ImageBackground style={style.fondoLogin}  source={num===0 ?require('../../splash0.jpg') :num===1 ?require('../../splash1.jpg') :num===2 ?require('../../splash2.jpg') :num===3 ?require('../../splash3.jpg') :num===4 &&require('../../splash4.jpg')} >
 					<View>
 						<Image

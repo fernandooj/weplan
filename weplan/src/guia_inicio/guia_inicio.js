@@ -70,6 +70,7 @@ export default class guiaInicio extends Component{
 		}else if (number===4){
 			return(	 
 				<View style={style.contenedor}>
+					<Image source={require('../assets/images/guia_inicio/Recurso_9_3x.png')} style={style.pulpo4} />
 					<View style={style.subContenedor2}>
 						<Image source={require('../assets/images/guia_inicio/create.png')} style={style.image2} />
 						<Text style={[style.text2, style.familia]}>¡En este lugar podrás crear los planes que desees, desde planes privados con tus amigos hasta publicaciones para promover tus eventos!</Text>
@@ -77,13 +78,14 @@ export default class guiaInicio extends Component{
 					<TouchableOpacity style={style.btnSiguiente} onPress={()=>this.setState({number:5})}>
 						<Text style={[style.txtSiguiente, style.familia]}>Siguiente</Text>
 					</TouchableOpacity>
-					<Image source={require('../assets/images/guia_inicio/Recurso_9_3x.png')} style={style.pulpo4} />
+					
 					<Image source={require('../assets/images/guia_inicio/Recurso_16_3x.png')} style={style.icono4} />
 				</View> 
 			)
 		}else if (number===5){
 			return(	 
 				<View style={style.contenedor}>
+					<Image source={require('../assets/images/guia_inicio/Recurso_12_3x.png')} style={style.pulpo5} />
 					<View style={style.subContenedor2}>
 						<Image source={require('../assets/images/guia_inicio/Recurso_14_3x.png')} style={style.image2} />
 						<Text style={[style.text2, style.familia]}>¡Aquí podrás ver todos los planes a los que perteneces e ingresar a tus chats!</Text>
@@ -91,7 +93,7 @@ export default class guiaInicio extends Component{
 					<TouchableOpacity style={style.btnSiguiente} onPress={()=>this.setState({number:6})}>
 						<Text style={[style.txtSiguiente, style.familia]}>Siguiente</Text>
 					</TouchableOpacity>
-					<Image source={require('../assets/images/guia_inicio/Recurso_12_3x.png')} style={style.pulpo5} />
+					
 					<Image source={require('../assets/images/guia_inicio/Recurso_15_3x.png')} style={style.icono5} />
 				</View> 
 			)
@@ -117,6 +119,7 @@ export default class guiaInicio extends Component{
 		else if (number===7){
 			return(	 
 				<View style={style.contenedor}>
+					<Image source={require('../assets/images/guia_inicio/Recurso_23_3x.png')} style={style.pulpo7} />
 					<View style={style.subContenedor2}>
 						<Image source={require('../assets/images/guia_inicio/Recurso_22_3x.png')} style={style.image2} />
 						<Text style={[style.text2, style.familia]}>¡Aquí podrás hacer encuestas y votaciones para conciderar la opinión de todos los integrantes del plan!</Text>
@@ -124,7 +127,6 @@ export default class guiaInicio extends Component{
 					<TouchableOpacity style={style.btnSiguiente} onPress={()=>this.setState({number:8})}>
 						<Text style={[style.txtSiguiente, style.familia]}>Siguiente</Text>
 					</TouchableOpacity>
-					<Image source={require('../assets/images/guia_inicio/Recurso_23_3x.png')} style={style.pulpo7} />
 					<Image source={require('../assets/images/guia_inicio/Recurso_21_3x.png')} style={style.icono7} />
 				</View> 
 
@@ -132,6 +134,7 @@ export default class guiaInicio extends Component{
 		}else if (number===8){
 			return(	 
 				<View style={style.contenedor}>
+					<Image source={require('../assets/images/guia_inicio/Recurso_23_3x.png')} style={style.pulpo7} />
 					<View style={style.subContenedor2}>
 						<Image source={require('../assets/images/guia_inicio/Recurso_25_3x.png')} style={style.image2} />
 						<Text style={[style.text2, style.familia]}>¡En este lugar podrás crear y agregar artículos al plan! También divide los costos para sacarle el mejor provecho a WePlan</Text>
@@ -139,7 +142,7 @@ export default class guiaInicio extends Component{
 					<TouchableOpacity style={style.btnSiguiente} onPress={()=>this.borrarGuia('chat')}>
 						<Text style={[style.txtSiguiente, style.familia]}>Siguiente</Text>
 					</TouchableOpacity>
-					<Image source={require('../assets/images/guia_inicio/Recurso_23_3x.png')} style={style.pulpo7} />
+					
 					<Image source={require('../assets/images/guia_inicio/Recurso_24_3x.png')} style={style.icono8} />
 				</View> 
 
@@ -254,14 +257,13 @@ export default class guiaInicio extends Component{
 		else if (number===14){
 			return(	 
 				<View style={style.contenedor}>
+					<Image source={require('../assets/images/guia_inicio/Recurso_12_3x.png')} style={style.pulpo5} />
 					<View style={style.subContenedor2}>
 						<Text style={[style.text9, style.familia]}>¡En esta pantalla puedes agregar amigos, ver tu perfil y escanear códigos QR de otros usuarios!</Text>
 					</View>
 					<TouchableOpacity style={style.btnSiguiente} onPress={()=>this.borrarGuia('ajustes')}>
 						<Text style={[style.txtSiguiente, style.familia]}>Siguiente</Text>
 					</TouchableOpacity>
-					<Image source={require('../assets/images/guia_inicio/Recurso_12_3x.png')} style={style.pulpo5} />
-					 
 				</View> 
 			)
 		}
@@ -313,6 +315,23 @@ export default class guiaInicio extends Component{
 						<Text style={[style.txtSiguiente, style.familia]}>Siguiente</Text>
 					</TouchableOpacity>
 					<Image source={require('../assets/images/guia_inicio/Recurso_18_3x.png')} style={style.pulpo6} />
+				</View> 
+			)
+		}
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		//////////////////   PLAN PUBLICO GANO PUNTOS
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		else if (number===18){
+			return(	 
+				<View style={style.contenedor}>
+					<View style={style.subContenedor2}>
+						<Text style={[style.text18, style.familia]}>Como nuevo usuario de weplan te regalamos 1.000.000 para que difundas tus eventos, ¡Disfrutalos!</Text>
+						<Image source={require('../assets/images/guia_inicio/estrella.png')} style={style.estrella} />
+					</View>
+					<TouchableOpacity style={style.btnSiguiente} onPress={()=>this.borrarGuia('ganapuntos')}>
+						<Text style={[style.txtSiguiente, style.familia]}>Siguiente</Text>
+					</TouchableOpacity>
+					<Image source={require('../assets/images/guia_inicio/Recurso_1_3x.png')} style={style.pulpo18} />
 				</View> 
 			)
 		}

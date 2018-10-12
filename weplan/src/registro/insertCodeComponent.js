@@ -25,6 +25,7 @@ export default class insertCodeComponent extends Component{
 						source={require('../assets/images/logo.png')}
 				   />
 				</View>
+				<Text style={[style.textAlert, style.familia]}>Te hemos enviado un codigo, por favor insertalo</Text>
 				<TextInput
 			        style={[style.input, style.familia]}
 			        onChangeText={(text) => this.setState({text})}
@@ -55,7 +56,7 @@ export default class insertCodeComponent extends Component{
 		.then((res)=>{
 			console.log(res.data)
 			if(res.data.status=='SUCCESS'){
-				navigate('editPerfil') 
+				navigate('Terminos') 
 			}else{
 				this.setState({codigo:0})
 			}

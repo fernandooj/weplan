@@ -133,7 +133,7 @@ export const style = MediaQueryStyleSheet.create({
 		borderWidth:6,
  	},
  	textoAvatar:{
-		fontSize:28,
+		fontSize:22,
 		marginLeft:20,
 		marginTop:18,
 		width:'55%'

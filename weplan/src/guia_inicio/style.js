@@ -50,10 +50,12 @@ export const style = MediaQueryStyleSheet.create({
  		paddingVertical:7,
  		paddingHorizontal:40,
  		borderRadius:40,
+ 		right:25
  	},
  	txtSiguiente:{
  		color:'black',
- 		fontSize:27
+ 		fontSize:27,
+
  	},
 
  	//////////////////////////////////////////////////////////////////////
@@ -81,9 +83,10 @@ export const style = MediaQueryStyleSheet.create({
  	pulpo2:{
  		width:75,
 		height:100,
-		position:'absolute',
-		bottom:Platform.OS==='android' ?205 :200,
-		left:0	
+		top:-20,
+		// position:'absolute',
+		// bottom:Platform.OS==='android' ?205 :200,
+		left:-size.width/2+40	
  	},
  	icono2:{
  		width:50,
@@ -107,9 +110,10 @@ export const style = MediaQueryStyleSheet.create({
  	pulpo4:{
  		width:100,
 		height:100,
-		position:'absolute',
-		top:Platform.OS==='android' ?125 :110,
-		left:180	
+		left:40,
+		// position:'absolute',
+		// top:Platform.OS==='android' ?125 :110,
+		// left:180	
  	},
  	icono4:{
  		width:50,
@@ -123,9 +127,10 @@ export const style = MediaQueryStyleSheet.create({
  	pulpo5:{
  		width:90,
 		height:110,
-		position:'absolute',
-		top:Platform.OS==='android' ?180 :170,
-		left:0,
+		// position:'absolute',
+		// top:Platform.OS==='android' ?180 :170,
+		left:-size.width/2+40,	
+		top:30,
 		zIndex:50	
  	},
  	icono5:{
@@ -133,16 +138,17 @@ export const style = MediaQueryStyleSheet.create({
 		height:50,
 		position:'absolute',
 		bottom:Platform.OS==='android' ?27 :2,
-		left:Platform.OS==='android' ?265 :248,	
+		right:Platform.OS==='android' ?85 :85,	
  	},
  	//////////////////////////////////////////////////////////////////////
 	//////////////  pantalla 6
  	pulpo6:{
  		width:74,
 		height:120,
-		position:'absolute',
-		bottom:Platform.OS==='android' ?180 :170,
-		left:20,
+		// position:'absolute',
+		// bottom:Platform.OS==='android' ?180 :170,
+		left:-size.width/2+60,	
+		top:-30,
 		zIndex:50	
  	},
  	icono6:{
@@ -157,9 +163,9 @@ export const style = MediaQueryStyleSheet.create({
  	pulpo7:{
  		width:99,
 		height:120,
-		position:'absolute',
-		top:Platform.OS==='android' ?150 :140,
-		right:Platform.OS==='android' ?50 :40,
+		// position:'absolute',
+		top:Platform.OS==='android' ?40 :40,
+		right:Platform.OS==='android' ?-40 :40,
 		zIndex:50	
  	},
  	icono7:{
@@ -219,9 +225,9 @@ export const style = MediaQueryStyleSheet.create({
  	pulpo9:{
  		width:100,
 		height:150,
-		position:'absolute',
-		bottom:170,
-		left:0
+		// position:'absolute',
+		// bottom:170,
+		left:-size.width/2+30,	
  	},
  	//////////////////////////////////////////////////////////////////////
 	//////////////  pantalla 10
@@ -292,6 +298,25 @@ export const style = MediaQueryStyleSheet.create({
  		paddingHorizontal:32,
  		borderRadius:22
  	},
+ 	//////////////////////////////////////////////////////////////////////
+	//////////////  pantalla 18
+	pulpo18:{
+ 		width:85,
+		height:110,
+		top:-53,
+		left:-size.width/2+30,	
+ 	},
+ 	estrella:{
+ 		width:50,
+ 		height:50,
+ 		position:'absolute',
+ 		right:10
+ 	},
+ 	text18:{
+ 		fontSize:18,
+ 		paddingHorizontal:5,
+ 		width:'79%'
+ 	},
 },{
 	"@media (max-device-width: 360)": {
 		pulpo2:{
@@ -313,24 +338,24 @@ export const style = MediaQueryStyleSheet.create({
 	 		fontSize:20
 	 	},
 	 	pulpo4:{	 		 
-			top:84,
-			left:150	
+			// top:84,
+			// left:150	
 	 	},
 	 	icono4:{
-			left:135
+			left:155
 	 	},
 	 	pulpo5:{	 		 
-			top:144,
-			left:0,
+			// top:144,
+			// left:0,
 			width:74,
 			height:90	
 	 	},
 	 	pulpo6:{
-			bottom:110,	
+			// bottom:110,	
 	 	},
 	 	pulpo7:{
-			top:112,
-			right:50,	
+			// top:112,
+			// right:50,	
 	 	},
 	 	text9:{
 	 		fontSize:17,
@@ -338,8 +363,8 @@ export const style = MediaQueryStyleSheet.create({
 	 	pulpo9:{
 	 		width:70,
 			height:100,
-			bottom:140,
-			left:0
+			// bottom:140,
+			// left:0
 	 	},
 	 	contenedor9:{
 			paddingVertical:10,

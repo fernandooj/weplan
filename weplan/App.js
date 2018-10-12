@@ -9,6 +9,7 @@ YellowBox.ignoreWarnings(['Remote debugger']);
 import homeComponent          from './src/home/homeComponent';
 import LoginComponent         from './src/login/loginComponent';
 import RegistroComponent      from './src/registro/registroComponent';
+import TerminosComponent      from './src/terminos/terminosComponent';
 import insertCodeComponent    from './src/registro/insertCodeComponent';
 import editPerfilComponent    from './src/editPerfil/editPerfilComponent';
 import editPerfilComponent1   from './src/editPerfil/editPerfilComponent1';
@@ -114,6 +115,7 @@ export default class App extends Component<{}> {
       medioPago:     {screen: medioPagoComponent },
       planesPublicos:{screen: planesPublicosComponent },
       facturacion:   {screen: facturacionComponent },
+      Terminos:      {screen: TerminosComponent },
       detallePlanPublico:{screen: detallePlanPublicoComponent },
    },{ headerMode: 'none', 
        navigationOptions: {

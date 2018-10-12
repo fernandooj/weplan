@@ -92,7 +92,7 @@ export default class editPerfilComponent2 extends Component{
 			    	{
 			    		this.state.restriccionArray.length<3
 			    		?<TouchableOpacity  style={style.estasListoBtn} onPress={this.selecciona.bind(this)}>
-					    	<Text  style={style.btnEstasListo}>!Estas Listo!</Text>
+					    	<Text  style={style.btnEstasListo}>!Estás Listo!</Text>
 					    </TouchableOpacity>
 					    :<TouchableOpacity  style={[style.estasListoBtn, style.estasListoBtnActivo]} onPress={this.handleSubmit.bind(this)}>
 					    	<Text  style={[style.btnEstasListo, style.btnEstasListoActivo]}>!Estas Listo!</Text>
@@ -128,7 +128,7 @@ export default class editPerfilComponent2 extends Component{
 		axios.put('/x/v1/user/categoria', {categorias:this.state.restriccionArray})
 		.then(e=>{
 			if (e.data.code===1) {
-				navigate('inicio') 
+				navigate('misPlanes') 
 			}else{
 				Alert.alert(
 				  'Opss!! revisa tus datos que falta algo',

@@ -52,16 +52,6 @@ const month = [
 	{label:'dic', key:12}
 ]
 const year = [  
-	{label:1950, key:0},
-    {label:1951, key:1951},
-    {label:1952, key:1952},
-    {label:1953, key:1953},
-    {label:1954, key:1954},
-    {label:1955, key:1955},
-    {label:1956, key:1956},
-    {label:1957, key:1957},
-    {label:1958, key:1958},
-    {label:1959, key:1959},
     {label:1960, key:1960},
     {label:1961, key:1961},
     {label:1962, key:1962},
@@ -224,7 +214,7 @@ export default class editPerfilComponent extends Component{
 				    />	
 	            }
 			    {emailRequired &&<Text style={style.obligatorio}>Campo Obligatorio</Text>}	
-			    
+			    <Text style={[style.textAlert, style.familia]}>Fecha de nacimiento</Text>
 			    <View style={style.date}>
 				    <View style={style.containDatePicker}>
 					{/* DIA */}

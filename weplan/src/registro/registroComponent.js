@@ -75,7 +75,9 @@ export default class RegistroComponent extends Component{
 				this.setState({codigo:0})
 			}else if(data==1){
 				this.setState({codigo:1})
+				navigate('insertCode', username)
 				setTimeout(function(){ 
+					console.log('papi')
 					navigate('insertCode', username) },  
 				3000);
 			}else if(data==2){
@@ -83,6 +85,7 @@ export default class RegistroComponent extends Component{
 			}
 			else if(data==3){
 				this.setState({codigo:3})
+				navigate('insertCode', username)
 				setTimeout(function(){ 
 					navigate('insertCode', username) }, 
 				3000);

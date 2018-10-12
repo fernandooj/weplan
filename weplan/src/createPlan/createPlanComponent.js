@@ -55,7 +55,8 @@ export default class createPlanComponent extends Component{
 
 	async componentWillMount(){
 		let guia_inicio   = await AsyncStorage.getItem('crear_plan');
-		this.setState({guia_inicio})
+		let ganapuntos    = await AsyncStorage.getItem('ganapuntos');
+		this.setState({guia_inicio, ganapuntos})
 		axios.get('/x/v1/pag/pagoPublico/byuser' )
 		.then((e)=>{
 	 		console.log(e.data)
@@ -160,16 +161,16 @@ export default class createPlanComponent extends Component{
 	///////////////////////////////////////////////////  	RENDER  	/////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	render(){
-		const {nombre, fechaLugar, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, area, costo, saldo, lat, lng, showTipo, guia_inicio} = this.state
+		const {nombre, fechaLugar, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, area, costo, saldo, lat, lng, showTipo, guia_inicio, ganapuntos} = this.state
 		const {navigate} = this.props.navigation
- 
+ 	
 		return (
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} keyboardDismissMode='on-drag'> 
 				{/* si la ubicacion no tiene */}
-				{
-					typeof guia_inicio!=='string'  &&<GuiaInicio number={15} guia_inicio={()=>this.setState({guia_inicio:'1'})} />
-				}
 				{this.renderAlertNombreEvento()}
+				{ typeof guia_inicio!=='string'  &&<GuiaInicio number={15} guia_inicio={()=>this.setState({guia_inicio:'1'})} /> }
+				{ typeof ganapuntos!=='string' &&publico  &&<GuiaInicio number={18} guia_inicio={()=>this.setState({ganapuntos:'1'})} /> }
+				
 				{/*
 					tipoPlan
 					&&this.tipoMapa()

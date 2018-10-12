@@ -1,9 +1,9 @@
 import React, {Component} 	from 'react'
-import {View, Text, TouchableOpacity, 
+import {View, Text, TouchableOpacity, Dimensions,
 TextInput, Linking, Alert}  from 'react-native'
 import {style} 				from '../editPerfil/style'
 import Image 				from 'react-native-scalable-image';
-import CheckBox 			from 'react-native-check-box'
+ 
 import axios 				from 'axios';
 import Icon 				from 'react-native-fa-icons';
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -12,16 +12,15 @@ import Icon 				from 'react-native-fa-icons';
 import TakePhotoComponent 						from '../takePhoto/takePhotoComponent.js'
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+const size = Dimensions.get('window');
 export default class editPerfilComponent1 extends Component{
 	constructor(props) {
 	  super(props);
 	  this.state = {
 		avatarSource: null,
 		videoSource: null,
-		condiciones:false,
 		photo:'',
-		password:''
+		textPassword:''
 	  };
 	}
 	componentWillMount(){
@@ -37,12 +36,14 @@ export default class editPerfilComponent1 extends Component{
 	}
 	 
 	render(){
-		const {showPassword, textPassword, textPassword1, condiciones} = this.state
+		const {showPassword, textPassword, textPassword1, perfil, passwordRequired} = this.state
+		let ancho = size>=361 ? 80 :173
+		let alto = size>=361 ? 10 :1
 		return(
 			<View style={style.fondo}> 
 					<Text style={{marginTop:50}}>  </Text>
-	           		<TakePhotoComponent fuente={'foto.png'} ancho={100} alto={10} updateImagen={(photo) => {this.setState({photo})}} border={50} />
-		       
+	           		<TakePhotoComponent fuente={'foto.png'} ancho={ancho} alto={alto} updateImagen={(photo) => {this.setState({photo})}} border={70} />
+		       	{perfil &&<Text style={style.obligatorio}>Foto de perfil Obligatorio</Text>}
 		        <TextInput
 			        style={[style.input, style.familia]}
 			        onChangeText={(textPassword) => this.setState({textPassword})}
@@ -52,6 +53,7 @@ export default class editPerfilComponent1 extends Component{
            			placeholderTextColor="#8F9093" 
            			secureTextEntry={showPassword ?false :true}
 			    />	
+			   
 		     	<TouchableOpacity onPress={()=>this.setState({showPassword:!this.state.showPassword})} style={style.BtniconPass}> 
 			    	<Icon name={showPassword ?'eye-slash' :'eye'} allowFontScaling style={style.iconPass} />
 			    </TouchableOpacity>
@@ -64,28 +66,10 @@ export default class editPerfilComponent1 extends Component{
            			placeholderTextColor="#8F9093" 
            			secureTextEntry={showPassword ?false :true}
 			    />	
-			    <View style={style.logos}>
-			    	<CheckBox 
-			    		style={style.check}
-				    	onClick={(condiciones) => this.setState({condiciones:!this.state.condiciones})}
-				    	isChecked={this.state.condiciones}
-				    	checkedImage={<Image source={require('../assets/images/categoriaCheck.png')} style={{width:12, height:12}}/>}
-            			unCheckedImage={<Image source={require('../assets/images/categoriaCheckDisable.png')} style={{width:12, height:12}}/>}
-			    	/>
-			    	<TouchableOpacity onPress={()=>{ Linking.openURL('https://appweplan.com')}}>
-			    		<Text style={[style.textoAcepto, style.familia]}>Acepto los terminos y condiciones</Text>
-			    	</TouchableOpacity>
-			    </View>
-			    {
-			    	this.state.condiciones
-			    	?<TouchableOpacity  style={style.signup_btn} onPress={this.handleSubmit.bind(this)}>
-				    	<Text  style={[style.btnRegistro, style.familia]}>Guardar</Text>
-				    </TouchableOpacity>
-				    :<TouchableOpacity  style={style.signup_btn_disabled}>
-				    	<Text  style={[style.btnRegistroDisabled, style.familia]}>Guardar</Text>
-				    </TouchableOpacity>
-			    }
-			    
+			    {passwordRequired &&<Text style={style.obligatorio}>Password Obligatorio</Text>}
+		    	<TouchableOpacity  style={style.signup_btn} onPress={this.handleSubmit.bind(this)}>
+			    	<Text  style={[style.btnRegistro, style.familia]}>Guardar</Text>
+			    </TouchableOpacity>
 		    </View>
 		)
 	}
@@ -120,15 +104,10 @@ export default class editPerfilComponent1 extends Component{
 
  
 		console.log({photo, nacimiento, ciudad, tipo, pais, password, sexo, telefono, email})
-		if (photo==='' || password=='') {
-			Alert.alert(
-				'Opss!! revisa tus datos que falta algo',
-				'El Avatar y la contraseña son obligatorios',
-			[
-				{text: 'OK', onPress: () => console.log('OK Pressed')},
-			],
-				{ cancelable: false }
-			)
+		if (photo==='') {
+			this.setState({perfil:true})
+		}else if(password===''){
+			this.setState({passwordRequired:true})
 		}else{
 			axios({
 			  method: 'put', //you can set what request you want to be
