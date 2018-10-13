@@ -129,8 +129,8 @@ export const style = MediaQueryStyleSheet.create({
 		height:110,
 		// position:'absolute',
 		// top:Platform.OS==='android' ?180 :170,
-		left:-size.width/2+40,	
-		top:30,
+		left:Platform.OS==='android' ?-size.width/2+40 :-size.width/2+40,	
+		top:Platform.OS==='android' ?35 :45,
 		zIndex:50	
  	},
  	icono5:{
@@ -188,10 +188,10 @@ export const style = MediaQueryStyleSheet.create({
 	//////////////  pantalla 9
 	contenedor9:{
 		backgroundColor:'#ffffff',
-		paddingVertical:20,
+		paddingVertical:15,
 		width:'100%',
 		flexDirection:'row',
-		top:Platform.OS==='android' ?-130 :-100,
+		top:Platform.OS==='android' ?-130 :-35,
 	},
 	subContenedor9:{
 		flexDirection:'row',
@@ -233,7 +233,7 @@ export const style = MediaQueryStyleSheet.create({
 	//////////////  pantalla 10
 	contenedor10:{
 		backgroundColor:'#ffffff',
-		paddingVertical:20,
+		paddingVertical:15,
 		width:'100%',
 		flexDirection:'row',
 		top:Platform.OS==='android' ?-75 :-45,
@@ -278,7 +278,7 @@ export const style = MediaQueryStyleSheet.create({
  		width:70,
 		height:70,
 		left:-90,
-		marginTop:30
+		marginTop:50
  	},
  	//////////////////////////////////////////////////////////////////////
 	//////////////  pantalla 13
@@ -293,7 +293,7 @@ export const style = MediaQueryStyleSheet.create({
 	contenedor15:{
  		backgroundColor:'#ffffff',
  		position:'absolute',
- 		top:2,
+ 		top:Platform.OS==='android' ?2 :22,
  		paddingVertical:10,
  		paddingHorizontal:32,
  		borderRadius:22
@@ -402,19 +402,19 @@ export const style = MediaQueryStyleSheet.create({
 			bottom:275,	
 	 	},
 		pulpo4:{	 		 
-			top:184,
-			left:150	
+			// top:184,
+			// left:150	
 	 	},
 	 	pulpo5:{
-			top:243,
-			left:0,	
+			// top:243,
+			// left:0,	
 	 	},
 	 	pulpo6:{
 			bottom:230,	
 	 	},
 	 	pulpo7:{
-			top:212,
-			right:50,	
+			// top:212,
+			left:50,	
 	 	},
 	 	icono7:{
 			top:38,
@@ -424,10 +424,10 @@ export const style = MediaQueryStyleSheet.create({
 			top:38,
 	 	},
 	 	contenedor9:{
-			top:-170,
+			top:-100,
 		},
 		pulpo9:{
-			bottom:220,
+			// bottom:220,
 	 	},
 	 	contenedor10:{
 			top:-115,
@@ -438,6 +438,15 @@ export const style = MediaQueryStyleSheet.create({
 	 	pulpo11:{
 			bottom:180,
 	 	},
+	 	pulpo12:{
+			marginTop:115
+	 	},
+	 	pulpo13:{
+			marginTop:163,
+	 	},
+	 	contenedor15:{
+	 		top:Platform.OS==='android' ?2 :34,
+	 	}
 	}
 })
 

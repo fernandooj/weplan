@@ -84,7 +84,7 @@ export default class LoginComponent extends Component{
 					}
 				}else{
 					if (!error) {
-						fetch(`https://graph.facebook.com/v2.12/me?fields=id,name,birthday,email,address,age_range,gender,picture{url}&access_token=${data.credentials.token}`)
+						fetch(`https://graph.facebook.com/v2.12/me?fields=id,name,birthday,email,gender,picture{url}&access_token=${data.credentials.token}`)
 				        .then((response) => response.json())
 				        .then((result) => {
 				        	let accessToken1 = null
@@ -108,7 +108,7 @@ export default class LoginComponent extends Component{
 							})
 				        })
 				        .catch(() => {
-				          reject('ERROR')
+				          console.log('ERROR')
 				        })
 				    }
 				}
@@ -281,8 +281,7 @@ export default class LoginComponent extends Component{
 
 const saveInfo = async (userInfo)=>{
 	let id = JSON.stringify(userInfo._id)
-	let notificacion = JSON.stringify(userInfo.notificacion)
-	console.log(id)
+	let notificacion = userInfo.notificacion ?JSON.stringify(userInfo.notificacion) :''
 	try {
 	    await AsyncStorage.setItem('userInfoId', id);
 	    await AsyncStorage.setItem('userInfoNotificacion', notificacion);

@@ -81,13 +81,14 @@ export const MisPlanesStyle = MediaQueryStyleSheet.create({
 	},
 	debe:{
 		backgroundColor:'#00bf07',
-		width:15,
-		height:15,
-		borderRadius:7,
+		width:16,
+		height:16,
+		borderRadius:8,
 		marginTop:10
 	},
 	noDebe:{
 		backgroundColor:'#BF0005',
+		borderRadius:8,
 	},
 	fechaLugar:{
 		fontSize:20,
@@ -99,16 +100,14 @@ export const MisPlanesStyle = MediaQueryStyleSheet.create({
 	sinPlanes:{
 		width:350,
 		height:530,
-		marginBottom:10
+		marginBottom:10,
+		paddingHorizontal:90
 	},
 	footer:{
 		position : 'absolute',
 		bottom:0,
 		zIndex:100
 	},
-	sinPlanes:{
-		paddingHorizontal:90
-	}
 },{
 	"@media (max-device-width: 360)": {
 		input:{

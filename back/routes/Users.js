@@ -198,6 +198,20 @@ module.exports = function(app, passport){
     });
 
 
+   ///////////////////////////////////////////////////////////////////////////
+    /*
+    despues del login siempre modifico ==> tokenphone
+    */
+    ///////////////////////////////////////////////////////////////////////////
+    const modificaTokenPhone = (req, res)=>{
+        userServices.modificaTokenPhone(req.session.usuario.user._id, req.body.tokenPhone, (err, user)=>{
+            if (err) {
+                res.json({status:'FAIL', err, code:0})    
+            }else{
+                res.json({status: 'SUCCESS_MODIFICA', user, code:1})
+            }
+        })
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     /*
@@ -208,8 +222,6 @@ module.exports = function(app, passport){
         res.json({ status: 'FAIL', message: 'datos incorrectos' });   
     })
 
-
-
     ///////////////////////////////////////////////////////////////////////////
     /*
     peticion que verifica si el usuario existe
@@ -219,7 +231,7 @@ module.exports = function(app, passport){
         userServices.getEmailFacebook(req.body.username, (err, user)=>{   
             if (!user) {
                 console.log(1)
-                existe(req, res)
+                noExiste(req, res)
             }else{
                 req.session.usuario = {user}
                 //user.tokenPhone!==req.body.tokenPhone  ?modificaUsuario(req, res) :res.json({status: 'SUCCESS', user, code:1})
@@ -233,28 +245,13 @@ module.exports = function(app, passport){
     si el usuario no existe lo creo en redes sociales
     */
     ///////////////////////////////////////////////////////////////////////////
-    const existe = (req, res)=>{
+    const noExiste = (req, res)=>{
         userServices.facebook(req.body, (err, user)=>{
             if (err) {
                 res.json({status:'FAIL', err, code:0})    
             }else{
-                req.session.usuario = {user:user}
-                res.json({status: 'SUCCESS', user, code:1})
-            }
-        })
-    }
-
-    ///////////////////////////////////////////////////////////////////////////
-    /*
-    despues del login siempre modifico ==> tokenphone
-    */
-    ///////////////////////////////////////////////////////////////////////////
-    const modificaTokenPhone = (req, res)=>{
-        userServices.modificaTokenPhone(req.session.usuario.user._id, req.body.tokenPhone, (err, user)=>{
-            if (err) {
-                res.json({status:'FAIL', err, code:0})    
-            }else{
-                res.json({status: 'SUCCESS_MODIFICA', user, code:1})
+                req.session.usuario = {user:user} 
+                res.json({status: 'SUCCESSNOEXISTE', user, code:1})
             }
         })
     }
@@ -276,8 +273,6 @@ module.exports = function(app, passport){
     }
 
 
-
- 
 
     ///////////////////////////////////////////////////////////////////////////
     /*

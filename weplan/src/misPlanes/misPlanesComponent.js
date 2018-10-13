@@ -54,7 +54,7 @@ export default class MisPlanesComponent extends Component{
 					<Text style={[MisPlanesStyle.nombre, MisPlanesStyle.familia]}>{e.nombrePlan.length<27 ?e.nombrePlan :e.nombrePlan.substring(0, 27)+' ...'}</Text>
 					<View style={MisPlanesStyle.boxPlan1} >
 						<Text style={[MisPlanesStyle.fechaLugar, MisPlanesStyle.familia]}>{e.fecha}</Text>
-						<Text style={e.total>0 ?MisPlanesStyle.debe :[MisPlanesStyle.debe, MisPlanesStyle.noDebe]}></Text>
+						<View style={e.total>=0 ?MisPlanesStyle.debe :[MisPlanesStyle.debe, MisPlanesStyle.noDebe]}></View>
 					</View>
 				</TouchableOpacity>
 				})
