@@ -251,11 +251,28 @@ module.exports = function(app, passport){
                 res.json({status:'FAIL', err, code:0})    
             }else{
                 req.session.usuario = {user:user} 
-                res.json({status: 'SUCCESSNOEXISTE', user, code:1})
+                guardoPago(req, res, user)
+                // res.json({status: 'SUCCESSNOEXISTE', user, code:1})
             }
         })
     }
 
+    ///////////////////////////////////////////////////////////////////////////
+    /*
+    guardo el pago de regalo de 1.000.000
+    */
+    ///////////////////////////////////////////////////////////////////////////
+    const guardoPago = (req, res, user)=>{
+        let activo = true
+        let data = {monto:1000000, referencia:'regalo', metodo:'efectivo', descripcion:'pago de regalo por inscribirse'}
+        pagoPublicoServices.create(data, user._id, activo, (err, pago)=>{
+            if(err){
+                res.json({ status: 'FAIL', mensaje:err, code:0});   
+            }else{
+                res.json({ status: 'SUCCESSNOEXISTE',  pago, user, code:1});                  
+            }
+        })
+    }
 
     ///////////////////////////////////////////////////////////////////////////
     /*
@@ -357,61 +374,7 @@ module.exports = function(app, passport){
     })
 
 
-    ///////////////////////////////////////////////////////////////////////////
-    /*
-    Inserta Pago
-    
-    app.post('/x/v1/users/insertapago', function(req,res){
-        if(req.session.usuario){
-            if (req.session.usuario.user.acceso=='superAdmin') {
-                let activo = true
-                userServices.insertPago(req.body, activo, (err, usuarios)=>{
-                    if(!err){
-                        let nuevoSaldo = usuarios.saldo + parseInt(req.body.monto)
-                        userServices.editoSaldo(req.body.userId, nuevoSaldo, (err, data)=>{
-                            if (!err) {
-                                 res.json({status:'SUCCESS', data})
-                            }
-                        })
-                    }else{
-                        res.json({ status: 'FAIL', err}) 
-                    }
-                })
-            }else{
-                res.json({ status: 'FAIL', message:'No tienes acceso'})
-            }
-        }else{
-            res.json({ status: 'FAIL', message:'usuario no logueado'})  
-        }
-    })
-*/
-    ///////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////
-    /*
-    DESCUENTa un Pago cuando se activa un plan
-    
-    app.post('/x/v1/users/descuentapago', function(req,res){
-        if(req.session.usuario){
-            let activo = true
-            userServices.descuentaPago(req.body, req.session.usuario.user._id, activo, (err, usuarios)=>{
-                if(!err){
-                    console.log(usuarios)
-                    let nuevoSaldo = usuarios.saldo + parseInt(-Math.abs(req.body.monto))
-                    userServices.editoSaldo(req.session.usuario.user._id, nuevoSaldo, (err, data)=>{
-                        if (!err) {
-                             res.json({status:'SUCCESS', data, code:1})
-                        }
-                    })
-                }else{
-                    res.json({ status: 'FAIL', err}) 
-                }
-            })
-        }else{
-            res.json({ status: 'FAIL', message:'usuario no logueado'})  
-        }
-    })
-*/
-    ///////////////////////////////////////////////////////////////////////////
+     
 
     ///////////////////////////////////////////////////////////////////////////
     /*

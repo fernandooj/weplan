@@ -274,7 +274,8 @@ export default class MapaPlanComponent extends Component{
 						       			onPress={() => { this.props.updateStateX(this.state.x.latitude, this.state.x.longitude, direccion, km, valorInicial)} } 
 										style={CreatePlanStyle.btnHecho}>
 										<Text style={[CreatePlanStyle.hecho, CreatePlanStyle.familia]}>¡ Hecho !</Text>
-									</TouchableOpacity> </View>
+									</TouchableOpacity> 
+								</View>
 								:null
 					        }
 					        

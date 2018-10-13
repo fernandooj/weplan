@@ -547,7 +547,7 @@ export default class createPlanComponent extends Component{
 		else{
 			if (!cargaPlan) {
 				let data = new FormData();
-				axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, restricciones, tipo, lugar, area, activo})
+				axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, restricciones, tipo, lugar, area, activo, costo})
 				.then(e=>{
 					if(e.data.code==1){	
 						let id = e.data.message._id;
@@ -571,34 +571,15 @@ export default class createPlanComponent extends Component{
 								if (!publico) {
 									navigate('chat', id)
 								}else{
-									// Alert.alert(
-									// 	`Tu plan ha sido creado`,
-									// 	'puedes activarlo ahora por las proximas 24 horas, o activarlo luego desde ajustes',
-									// [
-									// 	{text: 'Mejor Luego', onPress: () => navigate('inicio')},
-									// 	{text: 'Activar', onPress: () => this.activarPlan(costo, navigate, id)},
-									// ],
-									// 	{ cancelable: false }
-									// )
-									axios.put('/x/v1/pla/plan/cambiarestado', {id, activo:true})
-									.then(data=>{
-										if(data.data.code==1){
-											axios.post('/x/v1/pag/pagopublico', {monto:-Math.abs(costo), planId:id})
-											.then(res2=>{
-												if (res2.data.code==1) {
-													Alert.alert(
-														`Tu plan ha sido creado`,
-														'ya puedes verlo en el home',
-													[
-														{text: 'Cerrar', onPress: () => navigate('inicio')},
-														 
-													],
-														{ cancelable: false }
-													)
-												}
-											})
-										}
-									})
+									Alert.alert(
+										`Tu plan ha sido creado`,
+										'puedes activarlo ahora por las proximas 24 horas, o activarlo luego desde ajustes',
+									[
+										{text: 'Mejor Luego', onPress: () => navigate('inicio')},
+										{text: 'Activar', onPress: () => this.activarPlan(costo, navigate, id)},
+									],
+										{ cancelable: false }
+									)
 								}
 								
 							}
@@ -615,7 +596,7 @@ export default class createPlanComponent extends Component{
 					console.log(err)
 				})
 			}else{
-				axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, lugar, area, restricciones, tipo, activo, imagenOriginal:imagen, imagenResize:imagen, imagenMiniatura:imagen, planPadre})
+				axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, lugar, area, restricciones, tipo, activo, imagenOriginal:imagen, imagenResize:imagen, imagenMiniatura:imagen, planPadre, costo})
 				.then(e=>{
 					if(e.data.code==1){	
 						let id = e.data.message._id;

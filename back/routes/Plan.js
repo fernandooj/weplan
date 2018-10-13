@@ -15,15 +15,26 @@ let sizeOf    = promisify(require('image-size'));
 let mongoose  = require('mongoose')
 let ip 		  = require("ip");
 let ipLocator = require('ip-locator')
-
+let nodemailer = require('nodemailer');
 const ubicacion     =  '../../front/docs/public/uploads/plan/'
 const ubicacionJimp =  '../front/docs/public/uploads/plan/'
 let planServices = require('../services/planServices.js')
 let notificacionService = require('../services/notificacionServices.js');
 let itemServices = require('../services/itemServices.js')
 let pagoServices = require('../services/pagoServices.js')
- 
- 
+let transporter=null;  
+///////////////////////////////////////////////////////////////////////////
+/*
+    CONFIGURACION DEL CORREO
+*/
+///////////////////////////////////////////////////////////////////////////
+transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'weplanapp@gmail.com', // generated ethereal user
+        pass: 'appweplan'  // generated ethereal password
+    }
+});
  
 router.get('/', (req, res)=>{
 	planServices.get((err, planes)=>{
@@ -244,7 +255,8 @@ router.post('/', function(req, res){
 		// })
 		let lat = req.body.lat==='undefined' || req.body.lat==='null' || req.body.lat===undefined ?4.597825    :req.body.lat 
 		let lon = req.body.lng==='undefined' || req.body.lng==='null' || req.body.lng===undefined ?-74.0755723 :req.body.lng
-		let notificaciones = req.body.asignados ?req.body.asignados.concat(req.session.usuario.user._id) :null
+		let notificaciones = req.body.asignados ?req.body.asignados.concat(req.session.usuario.user._id) :[]
+
     	planServices.create(req.body, req.session.usuario.user._id, lat, lon, notificaciones, (err, plan)=>{
     		console.log(err)
 			if(err){
@@ -263,6 +275,17 @@ router.post('/', function(req, res){
 						})
 					res.json({status:'SUCCESS', message: plan, code:1})  
 				}else{
+					let mailOptions = {
+                        from: '<weplanapp@appweplan.com>',                              // email del que se envia
+                        to: 'fernandooj@gmail.com, venfercolombia@gmail.com',
+                        subject: 'nuevo plan creado',                                            // mensaje en el sujeto
+                        html:  `usuario :<b> ${req.session.usuario.user.nombre}</b> <br/>Plan : <b>${req.body.nombre}</b> <br/>Ubicación : <b>${req.body.lugar}</b> <br/>Costo : <b>${'$ '+Number(req.body.costo ?req.body.costo :0).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")} </b>`  // texto
+                    };
+                    transporter.sendMail(mailOptions, (error, info) => {
+                        if (error) {
+                            return console.log(error);
+                        }
+                    });
 					res.json({ status: 'SUCCESS', message: plan, code:1 });	
 				}
 			}
