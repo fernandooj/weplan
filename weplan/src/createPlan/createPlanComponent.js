@@ -166,11 +166,12 @@ export default class createPlanComponent extends Component{
  	
 		return (
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} keyboardDismissMode='on-drag'> 
+				
 				{/* si la ubicacion no tiene */}
 				{this.renderAlertNombreEvento()}
-				{ typeof guia_inicio!=='string'  &&<GuiaInicio number={15} guia_inicio={()=>this.setState({guia_inicio:'1'})} /> }
+				{ typeof guia_inicio!=='string'  ?<View style={CreatePlanStyle.contenedorGeneral}><GuiaInicio number={15} guia_inicio={()=>this.setState({guia_inicio:'1'})} /></View> :null}
 				{ typeof ganapuntos!=='string' &&publico  &&<GuiaInicio number={18} guia_inicio={()=>this.setState({ganapuntos:'1'})} /> }
-				
+				 
 				{/*
 					tipoPlan
 					&&this.tipoMapa()
@@ -297,14 +298,19 @@ export default class createPlanComponent extends Component{
 			                            borderBottomWidth: 0,
 			                            alignItems: 'flex-start',
 			                        },
+			                        placeholderText:{
+			                        	fontSize:18,
+			                        	color:'#8F9093',
+			                        },
 			                        dateText: { 
-			                        	color: '#969696'
+			                        	fontSize:18,
+			                        	color: '#8F9093'
 			                        },
 			                        btnTextConfirm: {
-							            color: '#969696',
+							            color: '#8F9093',
 							         },
 							         btnTextCancel: {
-							            color: '#969696',
+							            color: '#8F9093',
 							         } 
 			                    }}
 								date={this.state.fechaLugar}
@@ -351,7 +357,7 @@ export default class createPlanComponent extends Component{
 							inputValor= {!cargaPlan && publico ?true :false}
 							close={()=> this.setState({mapa:false})} 						   			/////////   cierro el modal
 							updateStateX={(lat,lng, direccion, area, costo)=>this.updateStateX(lat, lng, direccion, area, costo)}  /////////	me devuelve la posicion del marcador 
-							ubicacionDefecto={cargaPlan.loc ?{infoplan:true, lat:parseFloat(cargaPlan.loc.coordinates[1]), lng:parseFloat(cargaPlan.loc.coordinates[0])} :{infoplan:false, muestraBtnHecho:true}}
+							ubicacionDefecto={cargaPlan.loc ?{infoplan:true, area, lat:parseFloat(cargaPlan.loc.coordinates[1]), lng:parseFloat(cargaPlan.loc.coordinates[0])} :{infoplan:false,  muestraBtnHecho:true}}
 							guardaUbicacion={{lat, lng, direccion}}
 						/> 
 					}
@@ -459,6 +465,7 @@ export default class createPlanComponent extends Component{
 						</TouchableOpacity>
 					}
 			    </View>	
+			  
 			</ScrollView>
 		)
 	}

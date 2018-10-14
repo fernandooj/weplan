@@ -112,7 +112,7 @@ export const style = MediaQueryStyleSheet.create({
 		height:100,
 		left:40,
 		// position:'absolute',
-		// top:Platform.OS==='android' ?125 :110,
+		top:Platform.OS==='android' ?10 :0,
 		// left:180	
  	},
  	icono4:{
@@ -130,7 +130,7 @@ export const style = MediaQueryStyleSheet.create({
 		// position:'absolute',
 		// top:Platform.OS==='android' ?180 :170,
 		left:Platform.OS==='android' ?-size.width/2+40 :-size.width/2+40,	
-		top:Platform.OS==='android' ?35 :45,
+		top:Platform.OS==='android' ?52 :45,
 		zIndex:50	
  	},
  	icono5:{
@@ -138,7 +138,7 @@ export const style = MediaQueryStyleSheet.create({
 		height:50,
 		position:'absolute',
 		bottom:Platform.OS==='android' ?27 :2,
-		right:Platform.OS==='android' ?85 :85,	
+		right:Platform.OS==='android' ?96 :85,	
  	},
  	//////////////////////////////////////////////////////////////////////
 	//////////////  pantalla 6

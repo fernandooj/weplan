@@ -7,6 +7,10 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		alignItems: 'center',
 		marginTop:20
 	},
+	contenedor2:{
+		flex:1,
+		// height:screenHeight
+	},
 	familia:{
 		fontFamily:'Futura-CondensedLight',
 	},
@@ -52,7 +56,7 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		alignItems: 'center',
 		alignSelf: 'center',
 		justifyContent: 'flex-end',
-		 
+		fontSize:22
 	},
 	encabezadoPlan:{
 		alignItems: 'center',
@@ -77,7 +81,7 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		borderWidth: 0,
 		marginTop:10,
 		width:240,
-		height:40,
+		height:44,
 		backgroundColor: '#D9E6F4',
 		borderRadius: 50,
 		paddingLeft:20,
@@ -87,10 +91,12 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		padding:10
 	},
 	textos:{
-		color:'#969696'
+		color:'#969696',
+		fontSize:20,
 	},
 	textosActivo:{
 		color:'#8F9093',
+		fontSize:18,
 	},
 	btnColor2Input:{
 		backgroundColor: '#f1f3f3',
@@ -139,7 +145,7 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 	encabezadoPlan2:{
 		alignItems: 'center',
 		paddingTop: 0,
-		marginTop: Platform.OS === 'android' ?45 : 65,
+		marginTop: Platform.OS === 'android' ?0 : 45,
 		paddingBottom: 12,
 	},
 	imagenCargada:{
@@ -157,10 +163,11 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		backgroundColor:'#rgba(0,0,0,.5)',
 		width:'100%',
 		padding:5,
+		paddingVertical:2,
 	},
 	nombreCargado:{
 		color:"white",
-		fontSize:25,
+		fontSize:28,
 	},
 	ByCargado:{
 		color:"white",
