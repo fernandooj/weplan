@@ -32,7 +32,6 @@ OBTENGO LAS NOTIFICACIONES DEL USUARIO LOGUEADO
 ///////////////////////////////////////////////////////////////////////////
 router.get('/', (req, res)=>{ 
 	notificacionService.getByUser(req.session.usuario.user._id, (err, notificacion)=>{
-		
 		if (err) {
 			res.json({status:'FAIL', err, code:0})    
 		}else{
@@ -113,7 +112,7 @@ router.put('/:idNotificacion/:idTipo/:tipo/:idUser', (req,res)=>{
 			req.params.tipo==1 
 			?activaAmigoUser(req.params.idTipo, req.params.idUser, req.session.usuario.user._id, res) 
 			:req.params.tipo==3 || req.params.tipo==4
-			?verificaItemAbierto(req.session.usuario, req.params.idTipo, id, res, req) 
+			?verificaItemAbierto(req.session.usuario, req.params.idTipo, id, res, req, req.params.tipo) 
 			:req.params.tipo==11
 			?editaPago(req.params.idTipo, req.session.usuario.user._id, req.params.idUser, res) 
 			:req.params.tipo==14
@@ -189,27 +188,46 @@ const activaAmigoUser =(idTipo, idUser, idSession, res)=>{
 	})
 }
 
-const verificaItemAbierto=(usuario, idTipo, id, res, req)=>{
+const verificaItemAbierto=(usuario, idTipo, id, res, req, tipo)=>{
 	itemServices.getById(idTipo, (err, item)=>{
 		if (err) {
 			console.log(err)
 		}else{
 			if (item[0].abierto) {
 				//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-				////////////////////////////// 		edito el chat con el nuevo valor 
-				// let longitud;
-				// if (item[0].asignados.length===0) {
-				// 	longitud=3
-				// }else{
-				// 	longitud=3
-				// }
-				// console.log('++++++')
+				////////////////////////////// 		edito el chat, el item y la notificacion con el nuevo valor 
+				if (tipo==='3') {
+					let mensajeJson1={
+						id:item[0]._id ?item[0]._id :null, 
+						planId:item[0].planId,
+						valor:Math.ceil((item[0].valor/(item[0].asignados.length+3))/100)*100,
+					}
+					cliente.publish('itemCosto', JSON.stringify(mensajeJson1))
+					notificacionService.getByItem(item[0]._id, (err, notificacion)=>{
+						if (!err) {
+							if (notificacion.length>0) {
+								let mensajeJson={
+									id:notificacion[0]._id ?notificacion[0]._id :null, 
+									userId:req.session.usuario.user._id,
+									valor:Math.ceil((item[0].valor/(item[0].asignados.length+3))/100)*100,
+								}
+								cliente.publish('notificacionCosto', JSON.stringify(mensajeJson))
+							}
+						}
+					})
+				}
 				
-				// console.log(item[0].asignados.length)
-				// console.log(Math.ceil((item[0].valor/(item[0].asignados.length+longitud))/100)*100)
-				// console.log('++++++')
-				chatServices.getByItem(item[0]._id, (err, chat)=>{
+				if(tipo==='4'){
+					let mensajeJson1={
+						id:item[0]._id ?item[0]._id :null, 
+						valor:Math.ceil((item[0].valor/(item[0].asignados.length+3))/100)*100,
+					}
+					cliente.publish('notificacionCostoCreador', JSON.stringify(mensajeJson1))
+				}
+				
+				
 
+				chatServices.getByItem(item[0]._id, (err, chat)=>{
 					if (!err) {
 						if (chat.length>0) {
 							let mensajeJson={
@@ -221,6 +239,7 @@ const verificaItemAbierto=(usuario, idTipo, id, res, req)=>{
 						}
 					}
 				})
+				
 				//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				activaItem(usuario, idTipo, id, res, req)
 			}else{

@@ -1,19 +1,32 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, Alert, ScrollView} from 'react-native'
+import {View, Text, Image, TouchableOpacity, Alert, ScrollView, AsyncStorage} from 'react-native'
 import {style} from '../notificacion/style'
 import axios from 'axios'
 import CabezeraComponent from '../ajustes/cabezera.js'
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
 import FooterComponent 	 from '../cabezeraFooter/footerComponent'
 import StarRating from 'react-native-star-rating';
+import SocketIOClient from 'socket.io-client';
+import {URL} from '../../App.js'
+
 
 export default class notificacionComponent extends Component{
-	state={
-		notificacion:[],
-		eliminar:false, /// muestra el boton de eliminar cada notificacion
-		rating:0,
+	constructor(props) {
+	  	super(props);
+	  	this.state={
+			notificacion:[],
+			eliminar:false, /// muestra el boton de eliminar cada notificacion
+			rating:0,
+		}
+		this.onReceivedMessage = this.onReceivedMessage.bind(this);
+		this.onReceivedMessageCreador = this.onReceivedMessageCreador.bind(this);
 	}
-	componentWillMount(){
+	
+	componentWillMount = async()=>{
+		this.socket = SocketIOClient(URL);
+		this.socket.on(`notificacion`, this.onReceivedMessage);
+		this.socket.on(`notificacionCostoCreador`, this.onReceivedMessageCreador); /// si el dueño del item tiene varias opciones para ingresar usuarios
+
  		axios.get('/x/v1/not/notificacion')
  		.then(e=>{ 
  			console.log(e.data.notificacion)
@@ -23,7 +36,21 @@ export default class notificacionComponent extends Component{
  			console.log(err)
  		})
 	}
- 
+ 	onReceivedMessage(messages){
+ 		let notificacion = this.state.notificacion.filter((e)=>{
+			if (e.id==messages.id) {e.valorItem=messages.valor}
+			return e
+		})
+		this.setState({notificacion})
+ 	}
+ 	onReceivedMessageCreador(messages){
+ 		console.log(messages)
+ 		let notificacion = this.state.notificacion.filter((e)=>{
+			if (e.idTipo==messages.id) {e.valorItem=messages.valor}
+			return e
+		})
+		this.setState({notificacion})
+ 	}
 	renderNotificacion(){
 		const {navigate} = this.props.navigation
 		const {id, notificacion} = this.state
@@ -171,18 +198,6 @@ export default class notificacionComponent extends Component{
 			console.log(err)
 		})
 	}
-	// enviaPuntuacion(idNotificacion, idTipo, tipo){
-	// 	console.log(rating)
-	// 	this.setState({rating})
-	// 	axios.post(`/x/v1/not/notificacion/rating/${idNotificacion}/${idTipo}/${tipo}`)
-	// 	.then(e=>{
-	// 		console.log(e.data)
-	// 		updateStado(idNotificacion)
-	// 	})
-	// 	.catch(e=>{
-	// 		console.log(e)
-	// 	})
-	// }
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////  muestra boton de eliminar
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

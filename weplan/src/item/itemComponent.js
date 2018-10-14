@@ -10,35 +10,39 @@ import update from 'react-addons-update';
 import Icon from 'react-native-fa-icons';
 import GuiaInicio 	 	 from '../guia_inicio/guia_inicio'
 import {sendRemoteNotification} from '../push/envioNotificacion.js' 
+import SocketIOClient from 'socket.io-client';
+import {URL} from '../../App.js'
 
 export default class ItemComponent extends Component{
-	state={
-		show:false,
-		misItems:[],
-		deuda:[],
-		pago:[],
-		itemsPlan:[],
-		articulosPendientes:[],
-		articulosPublicados:[],
-		noasignados:[],
-		pendientes:[],
-		render:0,
-		total:0
+	constructor(props) {
+	  	super(props);
+	
+		this.state={
+			show:false,
+			misItems:[],
+			deuda:[],
+			pago:[],
+			itemsPlan:[],
+			articulosPendientes:[],
+			articulosPublicados:[],
+			noasignados:[],
+			pendientes:[],
+			render:0,
+			total:0
+		}
+	  	this.onReceivedMessage = this.onReceivedMessage.bind(this);
 	}
+	
 	componentWillMount =async() =>{
 		let planId = this.props.navigation.state.params.planId ?this.props.navigation.state.params.planId :this.props.navigation.state.params
 		// let planId = '5b8f5155de373662367ae2eb'	
-
 		let tipo = this.props.navigation.state.params.tipo ?this.props.navigation.state.params.tipo :await AsyncStorage.getItem('codeTab')
 		tipo = parseInt(tipo)
 		let guia_inicio   = await AsyncStorage.getItem('articulo');	
 		this.setState({planId, guia_inicio, render:parseInt(tipo)})
 
-
- 		// let render = await AsyncStorage.getItem('codeTab')
- 		
- 		// this.setState({render})
-
+		this.socket = SocketIOClient(URL);
+		this.socket.on(`itemCosto${planId}`, this.onReceivedMessage);
 
 		axios.get('/x/v1/ite/item/'+planId)
 		.then(e=>{
@@ -63,11 +67,16 @@ export default class ItemComponent extends Component{
 		})		 
 		.catch(err=>{
 			console.log(err)
-		})
- 		
- 		
- 		 
+		}) 
 	}
+	onReceivedMessage(messages){
+		console.log(messages)
+ 		let articulosPendientes = this.state.articulosPendientes.filter((e)=>{
+			if (e.id==messages.id) {e.deuda=messages.valor}
+			return e
+		})
+		this.setState({articulosPendientes})
+ 	}
 	peticiones(render){
 		this.setState({render})
 		saveTabNumber(render)

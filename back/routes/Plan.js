@@ -277,9 +277,12 @@ router.post('/', function(req, res){
 				}else{
 					let mailOptions = {
                         from: '<weplanapp@appweplan.com>',                              // email del que se envia
-                        to: 'fernandooj@gmail.com, venfercolombia@gmail.com',
-                        subject: 'nuevo plan creado',                                            // mensaje en el sujeto
-                        html:  `usuario :<b> ${req.session.usuario.user.nombre}</b> <br/>Plan : <b>${req.body.nombre}</b> <br/>Ubicación : <b>${req.body.lugar}</b> <br/>Costo : <b>${'$ '+Number(req.body.costo ?req.body.costo :0).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")} </b>`  // texto
+                        to: 'fernandooj@ymail.com, unifyincatec@gmail.com',
+                        subject: 'Nuevo plan creado',                                            // mensaje en el sujeto
+                        html:  `Usuario :<b> ${req.session.usuario.user.nombre}</b> <br/>Nombre : <b>${req.body.nombre}</b> <br/>
+                        		Ubicación : <b>${req.body.lugar}</b> <br/>
+                        		Tipo : <b>${req.body.tipo}</b> <br/>
+                        		Costo : <b>${'$ '+Number(req.body.costo ?req.body.costo :0).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")} </b>`  // texto
                     };
                     transporter.sendMail(mailOptions, (error, info) => {
                         if (error) {
@@ -308,7 +311,8 @@ router.put('/web', (req, res)=>{
 			let extension = e.name.split('.').pop()
 			let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
 			let fullUrl = `${ubicacion}Original_${fecha}_${randonNumber}.${extension}`
-			
+			console.log(extension)
+			extension = extension=='HEIC' ?'jpg' :extension
 			fs.rename(e.path, path.join(__dirname, fullUrl))
 
 			let rutasImagenOriginal = `${url}plan/Original_${fecha}_${randonNumber}.${extension}`

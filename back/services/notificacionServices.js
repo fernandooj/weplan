@@ -13,6 +13,9 @@ class notificacionService{
 	getByUser(idUsuario, callback){ 
 		notificacionSchema.find({idUsuario, eliminado:true}, null, {sort: {_id: -1}}).populate('idUsuario').populate('idPlan').populate('idAmigoUser').populate('idItem').populate('idPago').populate('idUsuarioAsigna').exec(callback)
 	}
+	getByItem(idItem, callback){
+		notificacionSchema.find({idItem}, callback)
+	}
 	getByItemUser(idItem, idUsuario, callback){
 		notificacionSchema.find({idItem, idUsuario}, callback)
 	}

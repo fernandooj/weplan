@@ -490,7 +490,14 @@ router.put('/activar/:idTipo', (req, res)=>{
 				res.json({status: 'FAIL', err, code:0})
 			}else{
 
-				////////////  edita el valor en el chat
+				//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				////////////////////////////// 		edito el chat, el item y la notificacion con el nuevo valor 
+				let mensajeJson1={
+					id:item[0]._id ?item[0]._id :null, 
+					planId:item[0].planId,
+					valor:Math.ceil((item[0].valor/(item[0].asignados.length+3))/100)*100,
+				}
+				cliente.publish('itemCosto', JSON.stringify(mensajeJson1))
 				chatServices.getByItem(item[0]._id, (err, chat)=>{
 					if (!err) {
 						if (chat.length>0) {
@@ -503,7 +510,19 @@ router.put('/activar/:idTipo', (req, res)=>{
 						}
 					}
 				})
-				////////////////////////////////////////////////////////////
+				notificacionService.getByItem(item[0]._id, (err, notificacion)=>{
+					if (!err) {
+						if (notificacion.length>0) {
+							let mensajeJson={
+								id:notificacion[0]._id ?notificacion[0]._id :null, 
+								userId:req.session.usuario.user._id,
+								valor:Math.ceil((item[0].valor/(item[0].asignados.length+3))/100)*100,
+							}
+							cliente.publish('notificacionCosto', JSON.stringify(mensajeJson))
+						}
+					}
+				})
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 				nuevoPago(req, res, req.params.idTipo, req.body.monto)    	
 			}
@@ -635,7 +654,8 @@ const desactivaNotificacion =(id, userId, res)=>{
 	console.log(id)
 	console.log(userId)
 	notificacionService.getByItemUser(id, userId, (err, notificacion)=>{
-		if (!err) {
+		if (!err && notificacion[0]) {
+			console.log(notificacion)
 			notificacionService.desactiva(notificacion[0]._id,  (err2, notifica)=>{
 				console.log(notificacion[0]._id)
 				if (!err2) {
