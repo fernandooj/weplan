@@ -311,8 +311,7 @@ router.put('/web', (req, res)=>{
 			let extension = e.name.split('.').pop()
 			let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
 			let fullUrl = `${ubicacion}Original_${fecha}_${randonNumber}.${extension}`
-			console.log(extension)
-			extension = extension=='HEIC' ?'jpg' :extension
+			
 			fs.rename(e.path, path.join(__dirname, fullUrl))
 
 			let rutasImagenOriginal = `${url}plan/Original_${fecha}_${randonNumber}.${extension}`
@@ -349,11 +348,14 @@ router.put('/', (req, res)=>{
 	let rutaImagenMiniatura = [] 
 	if (req.files.imagen) {
 		let extension = req.files.imagen.name.split('.').pop()
+		extension = extension=='HEIC' ?'jpg' :extension
+ 
 		let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
 		let fullUrl = `${ubicacion}Original_${fecha}_${randonNumber}.${extension}`
-			
-		fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))
+		
 
+		fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))
+		
 		let rutasImagenOriginal = `${url}plan/Original_${fecha}_${randonNumber}.${extension}`
 		let rutasImagenResize = `${url}plan/Resize_${fecha}_${randonNumber}.${extension}`
 		let rutasImagenMiniatura = `${url}plan/Miniatura_${fecha}_${randonNumber}.${extension}`
@@ -730,8 +732,8 @@ router.get('/suma/totales/miplan', (req, res)=>{
 const resizeImagenes = (ruta, randonNumber, extension) =>{
 	Jimp.read(ruta, function (err, imagen) {
 	    if (err) throw err;
-	    imagen.resize(720, Jimp.AUTO)             
-		.quality(90)                          
+	    imagen.resize(1024, Jimp.AUTO)             
+		.quality(95)                          
 		.write(`${ubicacionJimp}Resize_${fecha}_${randonNumber}.${extension}`);
 	});	
 

@@ -120,9 +120,9 @@ export default class ajustesAmigosComponent extends Component{
 
  	searchUpdated (term) {
  		if (term.length>0){
-			this.setState({show:true})
+			this.setState({show:true, continuar:true})
 		}else{
-			this.setState({show:false})
+			this.setState({show:false, continuar:false})
 		}
 		this.setState({searchTerm: term})
 	}
@@ -163,13 +163,17 @@ export default class ajustesAmigosComponent extends Component{
 
 
 	render(){
-		const {show, token} = this.state
-		const {navigate} = this.props.navigation
+		const {show, token, continuar} = this.state
+		const {navigate, state} = this.props.navigation
+		console.log(this.props.navigation)
 		return(
 			<View style={style.contenedorA}>
-				<CabezeraComponent navigate={navigate} url={'ajustes'} texto='Amigos' />
+				{ !this.props.navigation.state.params &&<CabezeraComponent navigate={navigate} url={'ajustes'} texto='Amigos' /> }
 				<ScrollView>
-					{this.renderCabezera()}
+					{
+						!state.params
+						&&this.renderCabezera()
+					}
 					<View style={style.contenedor}>
 						<View style={style.subContenedorA}>
 							{/* buscador  */}
@@ -182,12 +186,21 @@ export default class ajustesAmigosComponent extends Component{
 				           			placeholder="Buscar"
 				           			placeholderTextColor="#8F9093" 
 				           			 
-							    />
-							   <Image source={require('../assets/images/search.png')} style={style.btnSearch} />
-							   <TouchableOpacity style={style.btnBuscar} onPress={this.handleSubmit.bind(this)}>
-							   	<Image source={require('../assets/images/agregar.png')} style={style.btnAgregar} />
-							   </TouchableOpacity>
+								    />
+							    <Image source={require('../assets/images/search.png')} style={style.btnSearch} />
+							    {
+							    	state.params
+							    	?<TouchableOpacity style={style.btnOmitir} onPress={()=>navigate('misPlanes')}>
+								   		<Text style={style.txtOmitir}>{continuar ?'Continuar' :'Omitir'}</Text>
+								    </TouchableOpacity>
+								    :<TouchableOpacity style={style.btnBuscar} onPress={this.handleSubmit.bind(this)}>
+								   		<Image source={require('../assets/images/agregar.png')} style={style.btnAgregar} />
+								    </TouchableOpacity>
+							    }
+							    
 							</View>
+							{state.params &&<Text>Por que no agregas algunos amigos antes de empezar</Text>}
+							
 							{
 								show
 								?this.renderAmigos()
@@ -202,7 +215,6 @@ export default class ajustesAmigosComponent extends Component{
 
 	
 	updateState(id, estado, token){
-		console.log(token)
 		let filteredData = this.state.filteredData.map(item=>{
 			if(item.id == id) item.estado = !estado
 			return item

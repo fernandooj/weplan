@@ -33,8 +33,7 @@ export default class editPerfilComponent1 extends Component{
 		.catch((err)=>{
 			console.log(err)
 		})
-	}
-	 
+	}	 
 	render(){
 		const {showPassword, textPassword, textPassword1, perfil, passwordRequired} = this.state
 		let ancho = size>=361 ? 80 :173
@@ -120,7 +119,7 @@ export default class editPerfilComponent1 extends Component{
 			})
 			.then((res)=>{
 	 
-				if(res.data.status=="SUCCESS"){
+				if(res.data.code===1){
 					navigate('editPerfil2')
 				}
 			})

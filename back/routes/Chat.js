@@ -168,12 +168,13 @@ router.post('/documento', (req, res)=>{
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	if (req.files.imagen) {																								////
 		extension    = req.files.imagen.name.split('.').pop()															////
+		extension = extension=='HEIC' ?'jpg' :extension																	////
 		randonNumber = Math.floor(90000000 + Math.random() * 1000000)													////
-		fullUrl      = `../../front/docs/public/uploads/chat/Original_${fecha}_${randonNumber}.${req.files.imagen.name}`			////
-		ruta 		 = `${url}chat/Original_${fecha}_${randonNumber}.${req.files.imagen.name}`										////
+		fullUrl      = `../../front/docs/public/uploads/chat/Original_${fecha}_${randonNumber}.${req.files.imagen.name}`////
+		ruta 		 = `${url}chat/Original_${fecha}_${randonNumber}.${req.files.imagen.name}`							////
 		fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))													////
 	}else{																												////
-		ruta = req.protocol+'s://'+req.get('Host') + '/chat.png'															////
+		ruta = req.protocol+'s://'+req.get('Host') + '/chat.png'														////
 	}																													////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	if(req.session.usuario===undefined || req.session.usuario.user==null){

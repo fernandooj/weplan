@@ -207,9 +207,21 @@ export const style = MediaQueryStyleSheet.create({
 		marginTop:5,
 		marginBottom:5
 	},
+	btnOmitir:{
+		alignItems: 'center',
+ 		backgroundColor:'#94A5F3',
+ 		borderRadius:10,
+ 		padding:5,
+ 		paddingTop:8,
+ 		paddingBottom:8,
+ 		marginTop:2	
+	},
+	txtOmitir:{
+		color:'#ffffff'
+	}
 
 },{
-	"@media (max-device-width: 320)": {
+	"@media (max-device-width: 360)": {
 		username:{ 
 
 		},

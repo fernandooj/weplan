@@ -7,6 +7,7 @@ import org.wonday.pdf.RCTPdfView;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.evollu.react.fcm.FIRMessagingPackage;
 import com.imagepicker.ImagePickerPackage;
+import com.wix.pagedcontacts.PagedContactsPackage;
 import com.magus.fblogin.FacebookLoginPackage;
 import co.apptailor.googlesignin.RNGoogleSigninPackage;
 import com.facebook.react.ReactNativeHost;
@@ -40,6 +41,7 @@ public class MainApplication extends Application implements ReactApplication {
             new FacebookLoginPackage(),
             new MapsPackage(),
             new ReactNativeDocumentPicker(),
+            new PagedContactsPackage(),
             new RNAndroidLocationEnablerPackage()
       );
     }

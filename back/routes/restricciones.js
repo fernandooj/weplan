@@ -30,6 +30,7 @@ router.post('/', (req, res)=>{
 	let ruta =null
 	if (req.files.imagen) {
 		let extension = req.files.imagen.name.split('.').pop()
+			extension = extension=='HEIC' ?'jpg' :extension
 		let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
 		let fullUrl = '../../front/docs/public/uploads/restriccion/'+fecha+'_'+randonNumber+'.'+extension
 		ruta = req.protocol+'://'+req.get('Host') + '/public/uploads/restriccion/'+fecha+'_'+randonNumber+'.'+extension
@@ -66,6 +67,7 @@ router.put('/:id', (req, res)=>{
 	let ruta =null
 	if (req.files.imagen) {
 		let extension = req.files.imagen.name.split('.').pop()
+			extension = extension=='HEIC' ?'jpg' :extension
 		let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
 		let fullUrl = '../../front/docs/public/uploads/restriccion/'+fecha+'_'+randonNumber+'.'+extension
 		ruta = req.protocol+'://'+req.get('Host') + '/public/uploads/restriccion/'+fecha+'_'+randonNumber+'.'+extension

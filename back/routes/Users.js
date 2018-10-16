@@ -257,22 +257,7 @@ module.exports = function(app, passport){
         })
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    /*
-    guardo el pago de regalo de 1.000.000
-    */
-    ///////////////////////////////////////////////////////////////////////////
-    const guardoPago = (req, res, user)=>{
-        let activo = true
-        let data = {monto:1000000, referencia:'regalo', metodo:'efectivo', descripcion:'pago de regalo por inscribirse'}
-        pagoPublicoServices.create(data, user._id, activo, (err, pago)=>{
-            if(err){
-                res.json({ status: 'FAIL', mensaje:err, code:0});   
-            }else{
-                res.json({ status: 'SUCCESSNOEXISTE',  pago, user, code:1});                  
-            }
-        })
-    }
+   
 
     ///////////////////////////////////////////////////////////////////////////
     /*
@@ -517,6 +502,7 @@ module.exports = function(app, passport){
         if (req.files) {
             if (req.files.imagen!=undefined) {
                 let extension = req.files.imagen.name.split('.').pop()
+                extension = extension=='HEIC' ?'jpg' :extension
                 let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
                 fullUrl = '../../front/docs/public/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
                 ruta = req.protocol+'s://'+req.get('Host') + '/public/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
@@ -531,20 +517,35 @@ module.exports = function(app, passport){
             if(err){
                 res.json({ status: 'FAIL', message: err}) 
             } else{
-              
-               
                 userServices.login(user1, (err, user)=>{
                     console.log(user)
                     if (!err) {
                         req.session.usuario = {user:user}
-                        res.json({ status: 'SUCCESS', message: 'Usuario Activado', user }); 
-
+                        // res.json({ status: 'SUCCESS', message: 'Usuario Activado', user }); 
+                        guardoPago(req, res, user)
                     }
                     
                 })       
             }
         }) 
     })
+
+    ///////////////////////////////////////////////////////////////////////////
+    /*
+    guardo el pago de regalo de 1.000.000
+    */
+    ///////////////////////////////////////////////////////////////////////////
+    const guardoPago = (req, res, user)=>{
+        let activo = true
+        let data = {monto:1000000, referencia:'regalo', metodo:'efectivo', descripcion:'pago de regalo por inscribirse'}
+        pagoPublicoServices.create(data, user._id, activo, (err, pago)=>{
+            if(err){
+                res.json({ status: 'FAIL', mensaje:err, code:0});   
+            }else{
+                res.json({ status: 'SUCCESSNOEXISTE',  pago, user, code:1});                  
+            }
+        })
+    }
     
     ///////////////////////////////////////////////////////////////////////////
     /*
@@ -704,6 +705,31 @@ module.exports = function(app, passport){
             }
         })
     })
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////    enviar solicitud de amistad via sms
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    app.get('/x/v1/user/enviarsmsamistad/:telefono', (req, res)=>{
+        let ssss = '+57 310 3076805'
+        let telefono = ssss.split('+').join('').split('-').join('').split('(').join('').split(')').join('').split(' ').join('');
+        telefono = telefono.length===12 ? `+57${telefono.substring(2,12)}` :telefono.length===11 ?`+1${telefono.substring(1,10)}` :`+57${telefono}` 
+
+        res.json({ status: 'SUCCESS', message: 'Reenvieando el mensaje', code:1 });
+        client.api.messages
+            .create({
+              body: `Tu amigo ${req.session.usuario.user.nombre} te invitó a que descargues We Plan: https://play.google.com/store/apps/details?id=com.weplan` ,
+              to:  telefono,
+              from: '+17328750948',
+            }).then(function(data) {
+                res.json({ status: 'SUCCESS', message: 'Reenvieando el mensaje', code:1 });
+            }).catch(function(err) { 
+                res.json({ status: 'FAIL',    message: error, code:0 });
+        }); 
+
+    })
+    
+
 
     // =====================================
     // LOGOUT ==============================

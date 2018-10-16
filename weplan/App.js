@@ -6,37 +6,38 @@ import {
 import axios                  from 'axios' 
 import { StackNavigator } from 'react-navigation'
 YellowBox.ignoreWarnings(['Remote debugger']);
-import homeComponent          from './src/home/homeComponent';
-import LoginComponent         from './src/login/loginComponent';
-import RegistroComponent      from './src/registro/registroComponent';
-import TerminosComponent      from './src/terminos/terminosComponent';
-import insertCodeComponent    from './src/registro/insertCodeComponent';
-import editPerfilComponent    from './src/editPerfil/editPerfilComponent';
-import editPerfilComponent1   from './src/editPerfil/editPerfilComponent1';
-import editPerfilComponent2   from './src/editPerfil/editPerfilComponent2';
-import createPlanComponent    from './src/createPlan/createPlanComponent';
-import MisPlanesComponent     from './src/misPlanes/misPlanesComponent';
-import ChatComponentAndroid   from './src/chat/chatComponent.android';
-import ChatComponentIos       from './src/chat/chatComponent.ios';
-import ItemComponent          from './src/item/itemComponent';
-import encuestaComponent      from './src/encuesta/encuestaComponent';
-import pagoComponent          from './src/pago/pagoComponent';
-import pagoDeudaComponent     from './src/pago/pagoDeudaComponent';
-import ajustesComponent       from './src/ajustes/ajustesComponent';
-import ajustesAmigosComponent from './src/ajustes/amigosComponent';
-import notificacionComponent  from './src/notificacion/notificacionComponent';
-import walletComponent        from './src/wallet/walletComponent';
-import perfilComponent        from './src/perfil/perfilComponent';
-import profileComponent       from './src/profile/profileComponent';
-import EditPasswordComponent  from './src/editPassword/EditPasswordComponent';
-import insertCodeComponent2   from './src/editPassword/insertCodeComponent2';
-import nuevoPasswordComponent from './src/editPassword/nuevoPasswordComponent';
-import infoPlanComponent      from './src/infoPlan/infoPlanComponent';
+import homeComponent               from './src/home/homeComponent';
+import LoginComponent              from './src/login/loginComponent';
+import RegistroComponent           from './src/registro/registroComponent';
+import TerminosComponent           from './src/terminos/terminosComponent';
+import insertCodeComponent         from './src/registro/insertCodeComponent';
+import editPerfilComponent         from './src/editPerfil/editPerfilComponent';
+import editPerfilComponent1        from './src/editPerfil/editPerfilComponent1';
+import editPerfilComponent2        from './src/editPerfil/editPerfilComponent2';
+import createPlanComponent         from './src/createPlan/createPlanComponent';
+import MisPlanesComponent          from './src/misPlanes/misPlanesComponent';
+import ChatComponentAndroid        from './src/chat/chatComponent.android';
+import ChatComponentIos            from './src/chat/chatComponent.ios';
+import ItemComponent               from './src/item/itemComponent';
+import encuestaComponent           from './src/encuesta/encuestaComponent';
+import pagoComponent               from './src/pago/pagoComponent';
+import pagoDeudaComponent          from './src/pago/pagoDeudaComponent';
+import ajustesComponent            from './src/ajustes/ajustesComponent';
+import ajustesAmigosComponent      from './src/ajustes/amigosComponent';
+import notificacionComponent       from './src/notificacion/notificacionComponent';
+import walletComponent             from './src/wallet/walletComponent';
+import perfilComponent             from './src/perfil/perfilComponent';
+import profileComponent            from './src/profile/profileComponent';
+import EditPasswordComponent       from './src/editPassword/EditPasswordComponent';
+import insertCodeComponent2        from './src/editPassword/insertCodeComponent2';
+import nuevoPasswordComponent      from './src/editPassword/nuevoPasswordComponent';
+import infoPlanComponent           from './src/infoPlan/infoPlanComponent';
 import costoPlanComponent          from './src/costoPlan/costoPlanComponent';
 import medioPagoComponent          from './src/medioPago/medioPagoComponent';
 import facturacionComponent        from './src/facturacion/facturacionComponent';
 import planesPublicosComponent     from './src/planesPublicos/planesPublicosComponent';
 import detallePlanPublicoComponent from './src/planesPublicos/detallePlanPublicoComponent';
+import importarComponent           from './src/importarContactos/importarContactos';
  
 export const URL = 'https://appweplan.com/';
 axios.defaults.baseURL = URL;
@@ -103,20 +104,21 @@ export default class App extends Component<{}> {
       pago:          {screen: pagoComponent },
       pagoDeuda:     {screen: pagoDeudaComponent },
       encuesta:      {screen: encuestaComponent },
-      notificacion:  {screen: notificacionComponent },
-      wallet:        {screen: walletComponent },
-      perfil:        {screen: perfilComponent },
-      profile:       {screen: profileComponent },
-      editPassword:  {screen: EditPasswordComponent },
-      insertCode2:   {screen: insertCodeComponent2 },
-      nuevoPassword: {screen: nuevoPasswordComponent },
-      infoPlan:      {screen: infoPlanComponent },
-      costoPlan:     {screen: costoPlanComponent },
-      medioPago:     {screen: medioPagoComponent },
-      planesPublicos:{screen: planesPublicosComponent },
-      facturacion:   {screen: facturacionComponent },
-      Terminos:      {screen: TerminosComponent },
-      detallePlanPublico:{screen: detallePlanPublicoComponent },
+      notificacion       : {screen: notificacionComponent },
+      wallet             : {screen: walletComponent },
+      perfil             : {screen: perfilComponent },
+      profile            : {screen: profileComponent },
+      editPassword       : {screen: EditPasswordComponent },
+      insertCode2        : {screen: insertCodeComponent2 },
+      nuevoPassword      : {screen: nuevoPasswordComponent },
+      infoPlan           : {screen: infoPlanComponent },
+      costoPlan          : {screen: costoPlanComponent },
+      medioPago          : {screen: medioPagoComponent },
+      planesPublicos     : {screen: planesPublicosComponent },
+      facturacion        : {screen: facturacionComponent },
+      Terminos           : {screen: TerminosComponent },
+      detallePlanPublico : {screen: detallePlanPublicoComponent },
+      importar           : {screen: importarComponent },
    },{ headerMode: 'none', 
        navigationOptions: {
          gesturesEnabled: false

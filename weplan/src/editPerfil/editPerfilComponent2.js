@@ -127,8 +127,9 @@ export default class editPerfilComponent2 extends Component{
 		console.log(this.state.restriccionArray)
 		axios.put('/x/v1/user/categoria', {categorias:this.state.restriccionArray})
 		.then(e=>{
+			console.log(e.data)
 			if (e.data.code===1) {
-				navigate('misPlanes') 
+				navigate('importar') 
 			}else{
 				Alert.alert(
 				  'Opss!! revisa tus datos que falta algo',

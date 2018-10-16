@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Picker, Alert, Dimensions, Platform, AsyncStorage} from 'react-native'
+import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Picker, Alert, Dimensions, Platform, AsyncStorage, ImageBackground} from 'react-native'
 
 import {CreatePlanStyle} 		  from '../createPlan/style'
 import axios 					  from 'axios'
@@ -161,7 +161,7 @@ export default class createPlanComponent extends Component{
 	///////////////////////////////////////////////////  	RENDER  	/////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	render(){
-		const {nombre, fechaLugar, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, area, costo, saldo, lat, lng, showTipo, guia_inicio, ganapuntos} = this.state
+		const {nombre, fechaLugar, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, area, costo, saldo, lat, lng, showTipo, guia_inicio, ganapuntos, guardandoPlan} = this.state
 		const {navigate} = this.props.navigation
  	
 		return (
@@ -227,7 +227,7 @@ export default class createPlanComponent extends Component{
 								underlineColorAndroid='transparent'
 								placeholder={publico ?"Nombre de tu publicación" :"Nombre de tu plan"}
 								placeholderTextColor="#ffffff" 
-								maxLength={30}
+								maxLength={60}
 						    />
 						</View>
 					</View>
@@ -459,9 +459,14 @@ export default class createPlanComponent extends Component{
 				{/*  Crear Plan  */}
 					{
 						nombre.length==0 && !cargaPlan
-						?<Image source={require('../assets/images/createDisable.png')} style={CreatePlanStyle.createIconDisable} />
-						:<TouchableOpacity onPress={this.handleSubmit.bind(this)} style={CreatePlanStyle.create}>
-							<Image source={require('../assets/images/create.png')} style={CreatePlanStyle.createIcon} />
+						?<ImageBackground source={require('../assets/images/createDisable.png')} style={CreatePlanStyle.createIconDisable}>
+							<Text style={CreatePlanStyle.familia}>¡ CREA TU PLAN !</Text>
+						</ImageBackground>
+						:<TouchableOpacity onPress={guardandoPlan ?null :()=>this.handleSubmit()} >
+							<ImageBackground source={require('../assets/images/create.png')} style={CreatePlanStyle.createIcon}>
+							
+								<Text style={[CreatePlanStyle.crearText, CreatePlanStyle.familia]}> {guardandoPlan ?'Guardando..' :'¡ CREA TU PLAN !'}</Text>
+							</ImageBackground>	
 						</TouchableOpacity>
 					}
 			    </View>	
@@ -552,6 +557,7 @@ export default class createPlanComponent extends Component{
 			)
 		}
 		else{
+			this.setState({guardandoPlan:true})
 			if (!cargaPlan) {
 				let data = new FormData();
 				axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, restricciones, tipo, lugar, area, activo, costo})
@@ -572,9 +578,9 @@ export default class createPlanComponent extends Component{
 						.then((res)=>{
 							console.log(res.data)
 							if(res.data.status=="SUCCESS"){
-							usuariosAsignados.map(e=>{
-								sendRemoteNotification(2, e.token, 'chat', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, res.data.rutaImagenResize[0], id)
-							})
+								usuariosAsignados.map(e=>{
+									sendRemoteNotification(2, e.token, 'chat', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, res.data.rutaImagenResize[0], id)
+								})
 								if (!publico) {
 									navigate('chat', id)
 								}else{
@@ -588,7 +594,8 @@ export default class createPlanComponent extends Component{
 										{ cancelable: false }
 									)
 								}
-								
+							}else{
+								this.setState({guardandoPlan:false})
 							}
 						})
 						.catch((err)=>{
@@ -611,6 +618,8 @@ export default class createPlanComponent extends Component{
 							sendRemoteNotification(2, e.token, 'chat', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, imagen, id)
 						})
 						navigate('chat', id)
+					}else{
+						this.setState({guardandoPlan:false})
 					}
 				})
 				.catch(err=>{

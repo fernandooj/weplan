@@ -134,13 +134,22 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 	},
 	createIcon:{
 		width:180,
-		height:90
+		height:70,
+		marginTop:20,
+		marginBottom:20,
+		paddingTop:25,
+		paddingLeft:75
 	},
 	createIconDisable:{
 		width:180,
 		height:63,
 		marginTop:20,
-		marginBottom:20
+		marginBottom:20,
+		paddingTop:25,
+		paddingLeft:75
+	},
+	crearText:{
+		color:'#ffffff'
 	},
 	encabezadoPlan2:{
 		alignItems: 'center',

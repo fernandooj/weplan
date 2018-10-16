@@ -297,6 +297,7 @@ class planServices {
 	eliminar(id, callback){
 		planSchema.findByIdAndUpdate(id, {$set: {
 	        'eliminado': true,
+	        'activo': false,
         }}, callback);
 	}
 	 

@@ -38,7 +38,7 @@ const day  = [
 	{label:31, key:31}
 ]
 const month = [
-	{label:'ene', key:0},
+	{label:'ene', key:1},
 	{label:'feb', key:2},
 	{label:'mar', key:3},
 	{label:'abr', key:4},
@@ -242,7 +242,7 @@ export default class editPerfilComponent extends Component{
 			                initValue="Mes"
 			                color='#ffffff'
 			                font={16}
-			                onChange={(e)=> this.setState({textMonth:e.label, dateRequired:false})} 
+			                onChange={(e)=> this.setState({textMonth:e.key, dateRequired:false})} 
 			                style={style.datePicker}
 			                 selectStyle={{borderWidth:0}}
 			                cancelTextStyle={style.familia}
