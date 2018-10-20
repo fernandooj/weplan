@@ -53,7 +53,7 @@ export const MisPlanesStyle = MediaQueryStyleSheet.create({
 	/////////////////////////////////////////////////////////////////////////// filtros
 	container:{
 	 	width:Width-20,
-		
+		marginBottom:50,
 	},
 	boxPlan:{
     	width: Width ,

@@ -2,11 +2,11 @@ import React, {Component} from 'react'
 import {View, Text, Image, TouchableOpacity, ScrollView, Alert} from 'react-native'
 import SearchInput, { createFilter } from 'react-native-search-filter';
 import axios from 'axios'
-
+import Toast 			 from 'react-native-simple-toast';
 import {style} from '../ajustes/style'
 import CabezeraComponent 	  from './cabezera.js'
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
-
+import {URL}  from '../../App.js';
 const KEYS_TO_FILTERS = ['nombre', 'username']
 export default class ajustesAmigosComponent extends Component{
 	state={
@@ -22,7 +22,7 @@ export default class ajustesAmigosComponent extends Component{
 			console.log(res.data)
 			let todosUsuarios = res.data.usuarios.map((item)=>{
 				return {
-					id:item._id,
+					_id:item._id,
 					username:item.username,
 					photo: item.photo,
 					nombre: item.nombre,
@@ -34,18 +34,26 @@ export default class ajustesAmigosComponent extends Component{
 			//////////////////	 OBTENGO LOS USUARIOS ASIGNADOS  ///////////////////////////////
 			axios.get('/x/v1/ami/amigoUser/asignados/null')
 			.then((res2)=>{
-				 	console.log(res2.data.asignados)
-					 
-					/////////////////////////////////////////////////////////////////////////////////
-					/////////////////////////////////////////////////////////////////////////////////
-					////////////////////	CONCATENO LOS DOS ARRAYS  ////////////////////////////////
-					const diffBy1 = (pred) => (a, b) => a.filter(x => !b.some(y => pred(x, y)))
-					const makeSymmDiffFunc1 = (pred) => (a, b) => diffBy1(pred)(a, b).concat(diffBy1(pred)(b, a))
-					const myDiff1 = makeSymmDiffFunc1((x, y) => x.id === y.id)
-					const filteredData = myDiff1(res2.data.asignados, todosUsuarios)
-					/////////////////////////////////////////////////////////////////////////////////
-				 	console.log(filteredData)
-					this.setState({filteredData, amigosAsignados:res2.data.asignados})
+					console.log(res2.data)
+				 	if (res2.data.code===2) {
+						this.props.navigation.navigate('Login')
+						Toast.show('No éstas logueado')
+					}else{
+						/////////////////////////////////////////////////////////////////////////////////
+						/////////////////////////////////////////////////////////////////////////////////
+						////////////////////	CONCATENO LOS DOS ARRAYS  ////////////////////////////////
+						const diffBy1 = (pred) => (a, b) => a.filter(x => !b.some(y => pred(x, y)))
+						const makeSymmDiffFunc1 = (pred) => (a, b) => diffBy1(pred)(a, b).concat(diffBy1(pred)(b, a))
+						const myDiff1 = makeSymmDiffFunc1((x, y) => x._id === y._id)
+						let filteredData = myDiff1(res2.data.asignados, todosUsuarios)
+						/////////////////////////////////////////////////////////////////////////////////
+					 	filteredData = filteredData.filter((thing, index, self) =>
+						  index === self.findIndex((t) => (
+						    t._id === thing._id  
+						  ))
+						)
+						this.setState({filteredData, amigosAsignados:res2.data.asignados})
+					}
 			})	
 			.catch((err)=>{
 				console.log(err)
@@ -63,12 +71,13 @@ export default class ajustesAmigosComponent extends Component{
 	////////////////////////////////			RENDERIZO LA CABEZERA						 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  	renderCabezera(){
+ 		const {navigate} = this.props.navigation
  		return(
 			<View style={style.registro2}>
 				<TouchableOpacity style={style.btnCabezera} >
 					<Text style={[style.textCabezera, style.familia]}>Amigos</Text>
 				</TouchableOpacity>
-				<TouchableOpacity style={[style.btnCabezera, style.btnCabezeraActive]}>
+				<TouchableOpacity style={[style.btnCabezera, style.btnCabezeraActive]} onPress={()=>navigate('importar', {amigos:true})}>
 					<Text style={[style.textCabezera, style.familia]}>Explorar</Text>
 				</TouchableOpacity>
 			</View>
@@ -79,13 +88,14 @@ export default class ajustesAmigosComponent extends Component{
 	////////////////////			OBTENGO CADA UNO DE LOS REGISTROS						 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  	getRow(){
- 		const filteredEmails = this.state.filteredData.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
-		return filteredEmails.map((data, key)=>{
-			return  <View style={style.registro} key={key} onPress={()=>this.updateState(data.id, data.estado, data.token)} > 
-						<Image source={{ uri: data.photo}}  style={data.estado ?style.avatarA :style.avatarA2} /> 
-						<Text style={[style.textoAvatar, style.familia]}>{data.nombre}</Text>
+ 		const filter = this.state.filteredData.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
+ 		console.log(filter)
+		return filter.map((data, key)=>{
+			return  <View style={style.registro} key={key} > 
+						<Image source={{uri: data.photo ?data.photo :URL+'public/img/plan.jpg'}}  style={style.avatarA} /> 
+						<Text style={[style.textoAvatar, style.familia]}>{data.nombre ?data.nombre :'We Plan'}</Text>
 						
-						<TouchableOpacity style={style.btnHecho} onPress={(e)=>{this.handleSubmit(data.id, data.token)}} > 
+						<TouchableOpacity style={style.btnHecho} onPress={(e)=>{this.handleSubmit(data._id, data.token)}} > 
 							<Text style={style.hecho}>Agregar</Text>
 						</TouchableOpacity> 
 				    </View>
@@ -94,17 +104,13 @@ export default class ajustesAmigosComponent extends Component{
  	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////		FILTRO LOS AMIGOS DEL INPUT					 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	filteredData(event){
-		const regex = new RegExp(event, 'i');
-		const filtered = this.state.allList.filter(function(e){
-			return (e.username.search(regex)> -1)	
-		})
-		if (event.length>0){
-			this.setState({filteredData:filtered, show:true})
+ 	searchUpdated (term) {
+ 		if (term.length>1){
+			this.setState({show:true, continuar:true})
 		}else{
-			this.setState({filteredData:[], show:false})
+			this.setState({show:false, continuar:false})
 		}
-		console.log(filtered)
+		this.setState({searchTerm: term})
 	}
  
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -118,14 +124,7 @@ export default class ajustesAmigosComponent extends Component{
  		)	
  	}
 
- 	searchUpdated (term) {
- 		if (term.length>0){
-			this.setState({show:true, continuar:true})
-		}else{
-			this.setState({show:false, continuar:false})
-		}
-		this.setState({searchTerm: term})
-	}
+
  	renderAmigosAsignados(){
  		const {navigate} = this.props.navigation
  		return this.state.amigosAsignados.map((e, key)=>{
@@ -165,7 +164,7 @@ export default class ajustesAmigosComponent extends Component{
 	render(){
 		const {show, token, continuar} = this.state
 		const {navigate, state} = this.props.navigation
-		console.log(this.props.navigation)
+		
 		return(
 			<View style={style.contenedorA}>
 				{ !this.props.navigation.state.params &&<CabezeraComponent navigate={navigate} url={'ajustes'} texto='Amigos' /> }
@@ -212,21 +211,6 @@ export default class ajustesAmigosComponent extends Component{
 			</View>
 		)
 	}
-
-	
-	updateState(id, estado, token){
-		let filteredData = this.state.filteredData.map(item=>{
-			if(item.id == id) item.estado = !estado
-			return item
-		})
-		this.setState({filteredData, idAsignado:id, token})
-		if (estado) {
-			this.setState({asignados: this.state.asignados.concat([id])})
-		}else{
-			this.setState({asignados:this.state.asignados.filter(function(val){return val != id}) })
-		}
-	}
-
 	
 	handleSubmit(idAsignado, token){
 		axios.post('/x/v1/ami/amigoUser', {asignado: idAsignado} )
@@ -250,7 +234,7 @@ export default class ajustesAmigosComponent extends Component{
 			console.log(err)
 		})
 		let filteredData = this.state.filteredData.filter(e=>{
-			return e.id!==idAsignado
+			return e._id!==idAsignado
 		})
 		this.setState({filteredData})
 	}

@@ -21,24 +21,28 @@ router.get('/', (req, res)=>{
 })
 
 router.get('/asignados/:estado', (req, res)=>{ 
-	amigoUserService.getById(req.session.usuario.user._id, req.params.estado, (err, asignados)=>{
-		if (err) {
-			res.json({status:'FAIL', err, code:0})    
-		}else{
-			let idUsuario = req.session.usuario.user._id
-			asignados=asignados.map((e)=>{
-				return {
-					_id      : e.asignado &&e.asignado._id==idUsuario &&e.idUsuario?e.idUsuario._id          :e.asignado &&e.asignado._id,
-					username: e.asignado &&e.asignado._id==idUsuario &&e.idUsuario?e.idUsuario.username     :e.asignado &&e.asignado.username,
-					photo   : e.asignado &&e.asignado._id==idUsuario &&e.idUsuario?e.idUsuario.photo        :e.asignado &&e.asignado.photo,
-					nombre  : e.asignado &&e.asignado._id==idUsuario &&e.idUsuario?e.idUsuario.nombre   	:e.asignado &&e.asignado.nombre,
-					token   : e.asignado &&e.asignado._id==idUsuario &&e.idUsuario?e.idUsuario.tokenPhone   :e.asignado &&e.asignado.tokenPhone,
-					estado  : e.estado,	
-				}
-			})
-			res.json({status:'SUCCESS', asignados, code:1})    
-		}
-	})
+	if (!req.session.usuario) {
+		res.json({ status: 'FAIL', mensaje:'sin sesion', asignados:[], code:2 });
+	}else{
+		amigoUserService.getById(req.session.usuario.user._id, req.params.estado, (err, asignados)=>{
+			if (err) {
+				res.json({status:'FAIL', err, code:0})    
+			}else{
+				let idUsuario = req.session.usuario.user._id
+				asignados=asignados.map((e)=>{
+					return {
+						_id      : e.asignado &&e.asignado._id==idUsuario &&e.idUsuario?e.idUsuario._id         :e.asignado &&e.asignado._id,
+						username: e.asignado &&e.asignado._id==idUsuario &&e.idUsuario?e.idUsuario.username     :e.asignado &&e.asignado.username,
+						photo   : e.asignado &&e.asignado._id==idUsuario &&e.idUsuario?e.idUsuario.photo        :e.asignado &&e.asignado.photo,
+						nombre  : e.asignado &&e.asignado._id==idUsuario &&e.idUsuario?e.idUsuario.nombre   	:e.asignado &&e.asignado.nombre,
+						token   : e.asignado &&e.asignado._id==idUsuario &&e.idUsuario?e.idUsuario.tokenPhone   :e.asignado &&e.asignado.tokenPhone,
+						estado  : e.estado,	
+					}
+				})
+				res.json({status:'SUCCESS', asignados, code:1})    
+			}
+		})
+	}
 })
 
 

@@ -3,7 +3,7 @@ import {View, Text, Image, TouchableOpacity, ImageBackground, ScrollView, Platfo
 import {style} from '../home/style'
 import axios from 'axios'
 import SearchInput, { createFilter } from 'react-native-search-filter';
-
+import Toast 			 from 'react-native-simple-toast';
 
 import CabezeraComponent from '../cabezeraFooter/cabezeraComponent'
 import FooterComponent 	 from '../cabezeraFooter/footerComponent'
@@ -30,6 +30,7 @@ export default class homeComponent extends Component{
 			isDisabled: false,
 			showBarra: true,     ///// muestra la barra superior
 			swipeToClose: true,
+			cargado: false,      ////// muestra la precarga
 			cargando: true,      ////// mientras carga los datos
 			sliderValue: 0.3,
 			filteredData: [],
@@ -45,10 +46,16 @@ export default class homeComponent extends Component{
 	
 	getPlans(lat, lng){
 		axios.get(`/x/v1/pla/plan/pago/${lat}/${lng}`)
-		.then(e=>{
-			console.log(e.data)
-			if (e.data.code===1) {
-				this.setState({filteredData: e.data.planes})
+		.then(res=>{
+			if (res.data.code===2) {
+				this.props.navigation.navigate('Login')
+				Toast.show('No éstas logueado')
+			}else{
+				if (res.data.code===1) {
+					this.setState({filteredData: res.data.planes, cargado:true})
+				}else{
+					Toast.show('Houston tenemos un problema, reinicia la app')
+				}
 			}
 		})
 		.catch(err=>{
@@ -80,7 +87,7 @@ export default class homeComponent extends Component{
 			  	axios.get(`/x/v1/pla/plan/pago/${undefined}/${undefined}`)
 				.then(e=>{
 					if (e.data.code===1) {
-						this.setState({filteredData: e.data.planes})
+						this.setState({filteredData: e.data.planes, cargado:true})
 					}
 				})
 		  	});
@@ -134,11 +141,11 @@ export default class homeComponent extends Component{
 	
 	getRow(){
 		const {navigate} = this.props.navigation
-		const {opacity, top, deg, translate, cargando} = this.state
-		const filtered = this.state.filteredData.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
+		const {opacity, top, deg, translate, cargando, cargado, filteredData, searchTerm} = this.state
+		const filtered = filteredData.filter(createFilter(searchTerm, KEYS_TO_FILTERS))
 		if (filtered.length===0 ) {
 			return(<View style={style.sinResultados}>
-					 {this.state.filteredData.length===0 ?<Text>No hemos encontrado planes</Text> :<ActivityIndicator size="large" color="#148dc9" />} 
+					 {!cargado ?<ActivityIndicator size="large" color="#148dc9" /> :<Text>No hemos encontrado planes</Text> } 
 					</View>)
 		}else{
 			return filtered.map((e, key)=>{

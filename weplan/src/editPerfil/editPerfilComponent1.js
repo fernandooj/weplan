@@ -35,7 +35,7 @@ export default class editPerfilComponent1 extends Component{
 		})
 	}	 
 	render(){
-		const {showPassword, textPassword, textPassword1, perfil, passwordRequired} = this.state
+		const {showPassword, textPassword, textPassword1, perfil, passwordRequired, guardando} = this.state
 		let ancho = size>=361 ? 80 :173
 		let alto = size>=361 ? 10 :1
 		return(
@@ -66,8 +66,8 @@ export default class editPerfilComponent1 extends Component{
            			secureTextEntry={showPassword ?false :true}
 			    />	
 			    {passwordRequired &&<Text style={style.obligatorio}>Password Obligatorio</Text>}
-		    	<TouchableOpacity  style={style.signup_btn} onPress={this.handleSubmit.bind(this)}>
-			    	<Text  style={[style.btnRegistro, style.familia]}>Guardar</Text>
+		    	<TouchableOpacity  style={style.signup_btn} onPress={guardando ?null :this.handleSubmit.bind(this)}>
+			    	<Text  style={[style.btnRegistro, style.familia]}>{guardando ?"Guardando..." :"Guardar"}</Text>
 			    </TouchableOpacity>
 		    </View>
 		)
@@ -108,6 +108,7 @@ export default class editPerfilComponent1 extends Component{
 		}else if(password===''){
 			this.setState({passwordRequired:true})
 		}else{
+			this.setState({guardando:true})
 			axios({
 			  method: 'put', //you can set what request you want to be
 			  url: '/x/v1/user/update/'+id,
@@ -121,6 +122,8 @@ export default class editPerfilComponent1 extends Component{
 	 
 				if(res.data.code===1){
 					navigate('editPerfil2')
+				}else{
+					this.setState({guardando:false})
 				}
 			})
 			.catch((err)=>{

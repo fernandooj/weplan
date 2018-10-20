@@ -57,7 +57,7 @@ export default class CabezeraComponent extends Component{
 					</Animated.View> 
 				)
 			}else{
-				<View style={[cabezeraFooterStyle.cabezera, {opacity: this.state.opacity, top:this.state.top}]}>	
+				return <View style={[cabezeraFooterStyle.cabezera]}>	
 					<View style={cabezeraFooterStyle.containerBuscador}>
 						<SearchInput
 							style={[cabezeraFooterStyle.buscador, cabezeraFooterStyle.familia]}

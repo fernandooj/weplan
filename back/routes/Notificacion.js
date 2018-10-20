@@ -31,44 +31,47 @@ OBTENGO LAS NOTIFICACIONES DEL USUARIO LOGUEADO
 */
 ///////////////////////////////////////////////////////////////////////////
 router.get('/', (req, res)=>{ 
-	notificacionService.getByUser(req.session.usuario.user._id, (err, notificacion)=>{
-		if (err) {
-			res.json({status:'FAIL', err, code:0})    
-		}else{
-			notificacion = notificacion.map((e)=>{
-				return {
-					id 	   : e._id,
-					tipo   : e.tipo, 
-					activo : e.activo,
-					btnEliminar:false, /// pongo este valor para que muestre el boton de eliminar
-					idUser : e.idUsuarioAsigna &&e.idUsuarioAsigna._id,
-					nombre : e.idUsuarioAsigna &&e.idUsuarioAsigna.nombre,
-					idTipo : e.idAmigoUser ?e.idAmigoUser._id :e.idPlan ?e.idPlan._id :e.idPago ?e.idPago._id	:e.idItem ?e.idItem._id :e.idItem===4 &&e.idItem._id,
-					photo  : e.idAmigoUser ?e.idUsuarioAsigna.photo  :e.idPlan ?e.idPlan.imagenMiniatura[0] :e.idItem ?e.idItem.imagenMiniatura :e.idItem===4 ?e.idItem.imagenMiniatura :e.tipo==5 ?e.idUsuarioAsigna.photo :e.idPago &&e.idUsuarioAsigna.photo ,
-					titulo : e.idAmigoUser ?e.idUsuarioAsigna.nombre :e.idPlan ?e.idPlan.nombre :e.idPago ?e.idPago.monto :e.idItem ?e.idItem.titulo :e.idItem===4 &&e.idItem.titulo,
-					token  : e.idUsuarioAsigna &&e.idUsuarioAsigna.tokenPhone,
-					infoPlan:e.idPlan ?e.idPlan :null,
-					infoItem:e.idItem ?e.idItem :null,
-					////////////////////////////  AMIGOS  ////////////////////////////////////
-					//idAmigoUser : e.idAmigoUser ?e.idAmigoUser._id 				:null,
+	if (!req.session.usuario) {
+		res.json({ status: 'FAIL', mensaje:'sin sesion', code:2, notificacion:[]});	
+	}else{
+		notificacionService.getByUser(req.session.usuario.user._id, (err, notificacion)=>{
+			if (err) {
+				res.json({status:'FAIL', err, code:0})    
+			}else{
+				notificacion = notificacion.map((e)=>{
+					return {
+						id 	   : e._id,
+						tipo   : e.tipo, 
+						activo : e.activo,
+						btnEliminar:false, /// pongo este valor para que muestre el boton de eliminar
+						idUser : e.idUsuarioAsigna &&e.idUsuarioAsigna._id,
+						nombre : e.idUsuarioAsigna &&e.idUsuarioAsigna.nombre,
+						idTipo : e.idAmigoUser ?e.idAmigoUser._id :e.idPlan ?e.idPlan._id :e.idPago ?e.idPago._id	:e.idItem ?e.idItem._id :e.idItem===4 &&e.idItem._id,
+						photo  : e.idAmigoUser ?e.idUsuarioAsigna.photo  :e.idPlan ?e.idPlan.imagenMiniatura[0] :e.idItem ?e.idItem.imagenMiniatura :e.idItem===4 ?e.idItem.imagenMiniatura :e.tipo==5 ?e.idUsuarioAsigna.photo :e.idPago &&e.idUsuarioAsigna.photo ,
+						titulo : e.idAmigoUser ?e.idUsuarioAsigna.nombre :e.idPlan ?e.idPlan.nombre :e.idPago ?e.idPago.monto :e.idItem ?e.idItem.titulo :e.idItem===4 &&e.idItem.titulo,
+						token  : e.idUsuarioAsigna &&e.idUsuarioAsigna.tokenPhone,
+						infoPlan:e.idPlan ?e.idPlan :null,
+						infoItem:e.idItem ?e.idItem :null,
+						////////////////////////////  AMIGOS  ////////////////////////////////////
+						//idAmigoUser : e.idAmigoUser ?e.idAmigoUser._id 				:null,
 
-					//////////////////////////// PLAN /////////////////////////////////////
-					//idPlan   	: e.idPlan  ?e.idPlan._id    :null,
-					//nombrePlan  : e.idPlan  ?e.idPlan.nombre :null,
-					//imagenPlan  : e.idPlan  ?e.idPlan.imagenMiniatura[0] :null,
+						//////////////////////////// PLAN /////////////////////////////////////
+						//idPlan   	: e.idPlan  ?e.idPlan._id    :null,
+						//nombrePlan  : e.idPlan  ?e.idPlan.nombre :null,
+						//imagenPlan  : e.idPlan  ?e.idPlan.imagenMiniatura[0] :null,
 
-					////////////////////////////  ITEM  //////////////////////////////////////
-					//idItem   	: e.idItem  &&e.idItem._id    ,
-					//nombreItem  : e.idItem  &&e.idItem.titulo ,
-					//imagenItem  : e.idItem  &&e.idItem.imagenMiniatura ,
-					valorItem   : e.idItem  &&Math.ceil((e.idItem.valor/(e.idItem.asignados.length+2))/100)*100,
+						////////////////////////////  ITEM  //////////////////////////////////////
+						//idItem   	: e.idItem  &&e.idItem._id    ,
+						//nombreItem  : e.idItem  &&e.idItem.titulo ,
+						//imagenItem  : e.idItem  &&e.idItem.imagenMiniatura ,
+						valorItem   : e.idItem  &&Math.ceil((e.idItem.valor/(e.idItem.asignados.length+2))/100)*100,
 
-				}
-			})
-			res.json({status:'SUCCESS', notificacion, id:req.session.usuario.user._id, code:1})   
-		}
-		 
-	})
+					}
+				})
+				res.json({status:'SUCCESS', notificacion, id:req.session.usuario.user._id, code:1})   
+			}		 
+		})
+	}
 })
 
 

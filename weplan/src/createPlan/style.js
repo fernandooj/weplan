@@ -197,6 +197,11 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 	textArrastar:{
 		color: '#94A5F3',
 	},
+	required:{
+		top:20,
+		left:5,
+		color:'#DC4B4B'
+	},
 	///////////////////////////////////////
 	/////////////// mapa //////////////////
 	///////////////////////////////////////

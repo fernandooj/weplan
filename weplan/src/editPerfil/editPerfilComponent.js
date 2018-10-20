@@ -38,18 +38,18 @@ const day  = [
 	{label:31, key:31}
 ]
 const month = [
-	{label:'ene', key:1},
-	{label:'feb', key:2},
-	{label:'mar', key:3},
-	{label:'abr', key:4},
-	{label:'may', key:5},
-	{label:'jun', key:6},
-	{label:'jul', key:7},
-	{label:'ago', key:8},
-	{label:'sep', key:9},
-	{label:'oct', key:10},
-	{label:'nov', key:11},
-	{label:'dic', key:12}
+	{label:'Enero', key:1},
+	{label:'Febrero', key:2},
+	{label:'Marzo', key:3},
+	{label:'Abril', key:4},
+	{label:'Mayo', key:5},
+	{label:'Junio', key:6},
+	{label:'Julio', key:7},
+	{label:'Agosto', key:8},
+	{label:'Septiembre', key:9},
+	{label:'Octubre', key:10},
+	{label:'Noviembre', key:11},
+	{label:'Diciembre', key:12}
 ]
 const year = [  
     {label:1960, key:1960},
@@ -132,7 +132,8 @@ export default class editPerfilComponent extends Component{
 		})
 		axios.get('/x/v1/user/profile')
 		.then(e=>{
-			if (e.data.user.user.email==='false') {
+			console.log(e.data.user)
+			if (e.data.user.user.email==='false' ||e.data.user.email==='false'  ) {
 
 			}else{
 				this.setState({email:true})

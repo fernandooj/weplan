@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {View, Image, TouchableOpacity, Text, AsyncStorage} from 'react-native'
 import {cabezeraFooterStyle} from './style'
 import axios from 'axios'
+import Toast 			 from 'react-native-simple-toast';
 import SocketIOClient from 'socket.io-client';
 import {URL} from '../../App.js'
 
@@ -63,10 +64,17 @@ export default class CabezeraComponent extends Component{
 		const {navigate} = this.props
 		axios.put('/x/v1/user/desactivaNotificacion') 
 		.then((res)=>{
-			if(res.data.code===1){
-				navigate.navigate('notificacion')
-				this.setState({notificacion:false}) 
-			}  
+			if (res.data.code===2) {
+				navigate.navigate('Login')
+				Toast.show('No éstas logueado')
+			}else{
+				if(res.data.code===1){
+					navigate.navigate('notificacion')
+					this.setState({notificacion:false}) 
+				}else{
+					Toast.show('Houston tenemos un problema, reinicia la app')
+				}  
+			}
 			 
 		})
 		.catch((err)=>{

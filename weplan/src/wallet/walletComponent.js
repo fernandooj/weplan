@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {View, Text, ScrollView, ImageBackground, TouchableOpacity, Image, TextInput, AsyncStorage} from 'react-native'
 import {style} 			 from './style'
 import axios 			 from 'axios'
+import Toast 			 from 'react-native-simple-toast';
 import CabezeraComponent from '../ajustes/cabezera.js'
 import FooterComponent 	 from '../cabezeraFooter/footerComponent'
 import GuiaInicio 	 	 from '../guia_inicio/guia_inicio'
@@ -24,9 +25,13 @@ export default class walletComponent extends Component{
 		let guia_inicio   = await AsyncStorage.getItem('wallet');
 		this.setState({guia_inicio})
 		axios.get('/x/v1/pla/plan/suma/totales/plan')
-		.then(e=>{
-			console.log(e.data.result)
-			this.setState({allList:e.data.result, filteredData:e.data.result})
+		.then(res=>{
+			if (res.data.code===2) {
+				this.props.navigation.navigate('Login')
+				Toast.show('No éstas logueado')
+			}else{
+				this.setState({allList:res.data.result, filteredData:res.data.result})
+			}
 		})
 		.catch(res=>{
 			console.log(res)

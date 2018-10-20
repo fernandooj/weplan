@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, Dimensions, TouchableHighlight, TextInput, Alert, ScrollView, ImageBackground} from 'react-native'
+import {View, Text, Dimensions, TouchableHighlight, TextInput, Alert, ScrollView, ImageBackground, AsyncStorage} from 'react-native'
 import {style} from '../login/style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
@@ -69,22 +69,24 @@ export default class RegistroComponent extends Component{
 		
 	  	axios.post('/x/v1/user/sign_up', {username, tipo, acceso, tokenPhone})
 		.then((res)=>{
-			console.log(res.data.code)
+			console.log(res.data.user._id)
 			let data = res.data.code
 			if(data==0){
 				this.setState({codigo:0})
 			}else if(data==1){
 				this.setState({codigo:1})
+				saveInfo(res.data.user._id)
 				navigate('insertCode', username)
 				setTimeout(function(){ 
-					console.log('papi')
-					navigate('insertCode', username) },  
+					navigate('insertCode', username) }, 
+
 				3000);
 			}else if(data==2){
 				this.setState({codigo:2})
 			}
 			else if(data==3){
 				this.setState({codigo:3})
+				saveInfo(res.data.user._id)
 				navigate('insertCode', username)
 				setTimeout(function(){ 
 					navigate('insertCode', username) }, 
@@ -98,7 +100,15 @@ export default class RegistroComponent extends Component{
 }
 
 
-
+const saveInfo = async (id)=>{
+	id = JSON.stringify(id)
+	try {
+	    await AsyncStorage.setItem('userInfoId', id);
+	} catch (error) {
+	   console.log(error)
+	}
+}
+ 
 
 
 

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, ScrollView, Alert, ActivityIndicator} from 'react-native'
+import {View, Text, Image, TouchableOpacity, ScrollView, Alert, Platform, ActivityIndicator} from 'react-native'
 import SearchInput, { createFilter } from 'react-native-search-filter';
 import axios from 'axios'
 
@@ -94,7 +94,7 @@ export default class importarComponent extends Component{
 	render(){
 		const {show, token, sinPermiso, continuar} = this.state
 		const {navigate} = this.props.navigation
-		return(
+		return( 
 			<View style={style.contenedorA}>
 				 
 				<ScrollView>
@@ -113,9 +113,15 @@ export default class importarComponent extends Component{
 				           			 
 							    />
 							   <Image source={require('../assets/images/search.png')} style={style.btnSearch} />
-							   	<TouchableOpacity style={style.btnOmitir} onPress={()=>navigate('ajustesAmigos', {importar:true})}>
-							   		<Text style={style.txtOmitir}>{continuar ?'Continuar' :'Omitir'}</Text>
-							    </TouchableOpacity>
+							    {
+							   		!this.props.navigation.state.params
+								   	?<TouchableOpacity style={style.btnOmitir} onPress={()=>navigate('ajustesAmigos', {importar:true})}>
+								   		<Text style={style.txtOmitir}>{continuar ?'Continuar' :'Omitir'}</Text>
+								    </TouchableOpacity>
+								    :<TouchableOpacity style={style.btnOmitir} onPress={()=>navigate('ajustesAmigos')}>
+								   		<Text style={style.txtOmitir}>Terminar</Text>
+								    </TouchableOpacity>
+								}
 							</View>
 							{
 								sinPermiso &&<Text>No Tenemos acceso a tus amigos</Text>
@@ -153,9 +159,9 @@ export default class importarComponent extends Component{
 
 	
 	handleSubmit(id, telefono){
-		axios.get(`/x/v1/user/enviarsmsamistad/${telefono}` )
+		axios.get(`/x/v1/user/enviarsmsamistad/${telefono}/${Platform.OS}` )
 		.then((e)=>{
-			console.log(id)
+			console.log(e)
 			if (e.data.code==1) {
 				let contacts = this.state.contacts.filter(e=>{
 					return e.id!==id

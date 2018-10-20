@@ -25,8 +25,8 @@ router.get('/', (req, res)=>{
 //////////////////////	 	GET BY USER/PAGO 	
 ///////////////////////////////////////////////////////////////////////////////////////////////
 router.get('/byuser', (req, res)=>{
-	if (!req.session) {
-		res.json({ status: 'FAIL', mensaje:'sin sesion', code:1});	
+	if (!req.session.usuario) {
+		res.json({ status: 'FAIL', mensaje:'sin sesion', code:2});	
 	}else{
 		pagoPublicoServices.getByidUSer(req.session.usuario.user._id, (err, saldo)=>{
 			if(err){

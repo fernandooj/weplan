@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {View, Text, ScrollView, ImageBackground, TouchableOpacity, Image, TextInput, Keyboard} from 'react-native'
 import {MisPlanesStyle} from './style'
 import axios from 'axios'
-
+import Toast 			 		  from 'react-native-simple-toast';
  
 import FooterComponent 	 from '../cabezeraFooter/footerComponent'
 
@@ -25,11 +25,15 @@ export default class MisPlanesComponent extends Component{
 	componentWillMount(){
 		Keyboard.dismiss()
 		axios.get('/x/v1/pla/plan/suma/totales/miplan')
-		.then(e=>{
-			console.log(e.data.result)
-			let filteredData = e.data.result
-			let planesAsignados = e.data.result==0 ?1 :2
-			this.setState({allList:filteredData, filteredData, planesAsignados})
+		.then(res=>{
+			if (res.data.code===2) {
+				this.props.navigation.navigate('Login')
+				Toast.show('No éstas logueado')
+			}else{
+				let filteredData = res.data.result
+				let planesAsignados = res.data.result==0 ?1 :2
+				this.setState({allList:filteredData, filteredData, planesAsignados})
+			}
 		})
 		.catch(res=>{
 			console.log(res)

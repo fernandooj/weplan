@@ -53,18 +53,21 @@ export default class App extends Component<{}> {
   }
   componentWillMount = async()=> {
    let userInfoId = await AsyncStorage.getItem('userInfoId');
-   
+   console.log(userInfoId)
    if (userInfoId) {
       userInfoId = userInfoId.slice(1, -1)  
    }
    if (userInfoId===null || userInfoId==='0') {
       axios.get('/x/v1/user/profile/')
       .then((res)=>{
-         if(res.data.code==1){
-           this.setState({local:1})
-         }else{
-           this.setState({local:2})
-         }
+         // console.log(res.data.user)
+        if(res.data.code===1){
+          this.setState({local:1})
+        }else if(res.data.code===0){
+          this.setState({local:0})
+        }else{
+          this.setState({local:2})
+        }
        })
       .catch((err)=>{
          console.log(err)
@@ -72,12 +75,14 @@ export default class App extends Component<{}> {
    }else{
       axios.get(`/x/v1/user/profile/${userInfoId}`)
       .then((res)=>{
-         console.log(res.data)
-         if(res.data.code==1){
-           this.setState({local:1})
-         }else{
-           this.setState({local:2})
-         }
+        console.log(res.data)
+        if(res.data.code===1){
+          this.setState({local:1})
+        }else if(res.data.code===0){
+          this.setState({local:0})
+        }else{
+          this.setState({local:2})
+        }
       })
       .catch((err)=>{
          console.log(err)
@@ -86,24 +91,25 @@ export default class App extends Component<{}> {
   }
   render() {
    const {google, local} = this.state
+   console.log(local)
    const NavigationApp = StackNavigator({
-      Home:          {screen: local===1 ?MisPlanesComponent :LoginComponent },
-      Login:         {screen: LoginComponent },
-      Registro:      {screen: RegistroComponent },
-      insertCode:    {screen: insertCodeComponent },
-      editPerfil:    {screen: editPerfilComponent },
-      editPerfil1:   {screen: editPerfilComponent1 },
-      editPerfil2:   {screen: editPerfilComponent2 },
-      inicio:        {screen: homeComponent },
-      createPlan:    {screen: createPlanComponent },
-      misPlanes:     {screen: MisPlanesComponent },
-      chat:          {screen: Platform.OS==='android' ?ChatComponentAndroid :ChatComponentIos},
-      item:          {screen: ItemComponent },
-      ajustes:       {screen: ajustesComponent },
-      ajustesAmigos: {screen: ajustesAmigosComponent },
-      pago:          {screen: pagoComponent },
-      pagoDeuda:     {screen: pagoDeudaComponent },
-      encuesta:      {screen: encuestaComponent },
+      Home               : {screen: local===1 ?MisPlanesComponent :local===0 ?editPerfilComponent :LoginComponent },
+      Login              : {screen: LoginComponent },
+      Registro           : {screen: RegistroComponent },
+      insertCode         : {screen: insertCodeComponent },
+      editPerfil         : {screen: editPerfilComponent },
+      editPerfil1        : {screen: editPerfilComponent1 },
+      editPerfil2        : {screen: editPerfilComponent2 },
+      inicio             : {screen: homeComponent },
+      createPlan         : {screen: createPlanComponent },
+      misPlanes          : {screen: MisPlanesComponent },
+      chat               : {screen: Platform.OS==='android' ?ChatComponentAndroid :ChatComponentIos},
+      item               : {screen: ItemComponent },
+      ajustes            : {screen: ajustesComponent },
+      ajustesAmigos      : {screen: ajustesAmigosComponent },
+      pago               : {screen: pagoComponent },
+      pagoDeuda          : {screen: pagoDeudaComponent },
+      encuesta           : {screen: encuestaComponent },
       notificacion       : {screen: notificacionComponent },
       wallet             : {screen: walletComponent },
       perfil             : {screen: perfilComponent },

@@ -50,27 +50,32 @@ router.get('/', (req, res)=>{
 /////// OBTENGO LOS PLANES PUBLICOS DEL USUARIO LOGUEADO, ESTO PARA EL ADMINISTRADOR
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.get('/planesPublicos/', (req, res)=>{
-	planServices.getPublicos(req.session.usuario.user._id, req.session.usuario.user.acceso, (err, plan)=>{
-		if (err) {
-			res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
-		}else{
-			plan = plan.map(e=>{
-                let data = e.data[0].info[0]
-                return{
-                    _id:e._id,
-                    nombre:data.nombre,
-                    tipo:data.tipo,
-                    area:data.area,
-                    lugar:data.lugar,
-                    activo:data.activo,
-                    likes:e.likes,
-                    planPadre:data.planPadre,
-                }
-            })
-			
-			res.json({ status: 'SUCCESS', plan, code:1 });	
-		}
-	})
+	if (!req.session) {
+		res.json({ status: 'FAIL', mensaje:'sin sesion', code:0 });
+	}else{
+		planServices.getPublicos(req.session.usuario.user._id, req.session.usuario.user.acceso, (err, plan)=>{
+			if (err) {
+				res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
+			}else{
+				plan = plan.map(e=>{
+	                let data = e.data[0].info[0]
+	                return{
+	                    _id:e._id,
+	                    nombre:data.nombre,
+	                    tipo:data.tipo,
+	                    area:data.area,
+	                    lugar:data.lugar,
+	                    activo:data.activo,
+	                    likes:e.likes,
+	                    planPadre:data.planPadre,
+	                }
+	            })
+				
+				res.json({ status: 'SUCCESS', plan, code:1 });	
+			}
+		})
+	}
+	
 })
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -120,17 +125,20 @@ router.get(`/pago/:lat/:lon`, (req,res)=>{
  
 	let lat = req.params.lat!=='undefined' ?req.params.lat :4.597825
 	let lon = req.params.lon!=='undefined' ?req.params.lon :-74.0755723
-	planServices.getByPagoLatLng(lat, lon, (err, planes)=>{
-		if (err) {
-			res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
-		}else{
-			planes = planes.filter(e=>{
-				return (e.dist<e.area)	
-			})
-			res.json({ status: 'SUCCESS', planes, code:1 });	
-		}
-	})
-	
+	if (!req.session.usuario) {
+		res.json({ status: 'FAIL', mensaje:'sin sesion', planes:[], code:2 });
+	}else{
+		planServices.getByPagoLatLng(lat, lon, (err, planes)=>{
+			if (err) {
+				res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
+			}else{
+				planes = planes.filter(e=>{
+					return (e.dist<e.area)	
+				})
+				res.json({ status: 'SUCCESS', planes, code:1 });	
+			}
+		})
+	}
 })
 
 
@@ -275,20 +283,23 @@ router.post('/', function(req, res){
 						})
 					res.json({status:'SUCCESS', message: plan, code:1})  
 				}else{
-					let mailOptions = {
-                        from: '<weplanapp@appweplan.com>',                              // email del que se envia
-                        to: 'fernandooj@ymail.com, unifyincatec@gmail.com',
-                        subject: 'Nuevo plan creado',                                            // mensaje en el sujeto
-                        html:  `Usuario :<b> ${req.session.usuario.user.nombre}</b> <br/>Nombre : <b>${req.body.nombre}</b> <br/>
-                        		Ubicación : <b>${req.body.lugar}</b> <br/>
-                        		Tipo : <b>${req.body.tipo}</b> <br/>
-                        		Costo : <b>${'$ '+Number(req.body.costo ?req.body.costo :0).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")} </b>`  // texto
-                    };
-                    transporter.sendMail(mailOptions, (error, info) => {
-                        if (error) {
-                            return console.log(error);
-                        }
-                    });
+					if (req.body.tipo==='pago') {
+						let mailOptions = {
+	                        from: '<weplanapp@appweplan.com>',                              // email del que se envia
+	                        to: 'fernandooj@ymail.com, unifyincatec@gmail.com',
+	                        subject: 'Nuevo plan creado',                                            // mensaje en el sujeto
+	                        html:  `Usuario :<b> ${req.session.usuario.user.nombre}</b> <br/>Nombre : <b>${req.body.nombre}</b> <br/>
+	                        		Ubicación : <b>${req.body.lugar}</b> <br/>
+	                        		Tipo : <b>${req.body.tipo}</b> <br/>
+	                        		Costo : <b>${'$ '+Number(req.body.costo ?req.body.costo :0).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")} </b>`  // texto
+	                    };
+	                    transporter.sendMail(mailOptions, (error, info) => {
+	                        if (error) {
+	                            return console.log(error);
+	                        }
+	                    });	
+					}
+					
 					res.json({ status: 'SUCCESS', message: plan, code:1 });	
 				}
 			}
@@ -539,8 +550,7 @@ const sumaPorUsuarioMeDebe = (planId, id, debo, res)=>{
 ////////////////////////  si el usuario se sale despues de la fecha de inicio del plan le envio la notificacion
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const envioNotificacionSalir=(id, planId, fechaPlan, total, res)=>{
-	console.log(fechaPlan)
-	console.log(fecha2)
+ 
 	if (fechaPlan<fecha2) {
 		notificacionService.create(id, id, 14, planId, true, (err, notificacion)=>{
 			if (!err) {
@@ -629,101 +639,108 @@ const add = (a, b)=>{
 /////// OBTENGO LOS TOTALES DE CADA PLAN
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.get('/suma/totales/plan', (req, res)=>{
-	planServices.sumaPlan(req.session.usuario.user._id, (err, pago)=>{
-		if(err){
-			res.json({status: 'FAIL', err, code:0})
-		}else{
-			let abonoTrue = pago.filter(e=>{
-				// console.log(e.data[0].info[14])
-				// return e.data[0].info[14]
-				// if (e._id.abono!==false && e.data[0].info[9]===true && e.data[0].info[14]==true &&e._id.userItemId!==undefined) return e
-				if (e._id.abono!==false && e._id.pagoActivo===true) return e
-			})
-			let id = req.session.usuario.user._id
-			let suma=[]
-			let getUserpays = abonoTrue.map(e=>{
-				e.data.filter(e2=>{
-					// return e2.info[11]==id
-					if (e2.info[11]==id){
-						suma.push(e2.info[12])
-					}
-					
+	if (!req.session.usuario) {
+		res.json({ status: 'FAIL', mensaje:'sin sesion', result:[], code:2 });
+	}else{
+		planServices.sumaPlan(req.session.usuario.user._id, (err, pago)=>{
+			if(err){
+				res.json({status: 'FAIL', err, code:0})
+			}else{
+				let abonoTrue = pago.filter(e=>{
+					// console.log(e.data[0].info[14])
+					// return e.data[0].info[14]
+					// if (e._id.abono!==false && e.data[0].info[9]===true && e.data[0].info[14]==true &&e._id.userItemId!==undefined) return e
+					if (e._id.abono!==false && e._id.pagoActivo===true) return e
 				})
-				if (e._id.userItemId==id) {
-					return {
-						id:e._id.id,
-						nombrePlan:e.data[0].info[4],
-						imagen:e.data[0].info[3],
-						total:e.total-Math.abs((Math.ceil((e.data[0].info[7]/(e.data[0].info[10]+1))/100)*100))
+				let id = req.session.usuario.user._id
+				let suma=[]
+				let getUserpays = abonoTrue.map(e=>{
+					e.data.filter(e2=>{
+						// return e2.info[11]==id
+						if (e2.info[11]==id){
+							suma.push(e2.info[12])
+						}
+						
+					})
+					if (e._id.userItemId==id) {
+						return {
+							id:e._id.id,
+							nombrePlan:e.data[0].info[4],
+							imagen:e.data[0].info[3],
+							total:e.total-Math.abs((Math.ceil((e.data[0].info[7]/(e.data[0].info[10]+1))/100)*100))
+						}
+					}else{
+						return {
+							id:e._id.id,
+							nombrePlan:e.data[0].info[4],
+							imagen:e.data[0].info[3],
+							total:suma.reduce(add, 0)-Math.abs((Math.ceil((e.data[0].info[7]/(e.data[0].info[10]+1))/100)*100))
+						}
 					}
-				}else{
-					return {
-						id:e._id.id,
-						nombrePlan:e.data[0].info[4],
-						imagen:e.data[0].info[3],
-						total:suma.reduce(add, 0)-Math.abs((Math.ceil((e.data[0].info[7]/(e.data[0].info[10]+1))/100)*100))
-					}
-				}
-			})
-			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
-			///////////////////////  ESTE CODIGO LO HIZE POR QUE AL CREAR MAS DE UN ITEM SE DUPLICA EL PLAN, ASI QUE UNO LOS ITEM Y SUMO LOS TOTALES	
-			let map = getUserpays.reduce((prev, next) =>{
-			  if (next.id in prev) {
-			    prev[next.id].total += next.total;
-			  } else {
-			     prev[next.id] = next;
-			  }
-			  return prev;
-			}, {});
-			let result = Object.keys(map).map(id => map[id]);
-			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			res.json({status: 'SUCCESS', result, code:1 })
-		}
-	})
+				})
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+				///////////////////////  ESTE CODIGO LO HIZE POR QUE AL CREAR MAS DE UN ITEM SE DUPLICA EL PLAN, ASI QUE UNO LOS ITEM Y SUMO LOS TOTALES	
+				let map = getUserpays.reduce((prev, next) =>{
+				  if (next.id in prev) {
+				    prev[next.id].total += next.total;
+				  } else {
+				     prev[next.id] = next;
+				  }
+				  return prev;
+				}, {});
+				let result = Object.keys(map).map(id => map[id]);
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				res.json({status: 'SUCCESS', result, code:1 })
+			}
+		})
+	}
 })
 
 
 router.get('/suma/totales/miplan', (req, res)=>{
-	 
-	planServices.sumaPlan2(req.session.usuario.user._id, (err, pago)=>{
-		if(err){
-			res.json({status: 'FAIL', err, code:0})
-		}else{
-			
-	 
-			let abonoTrue = pago.filter(e=>{
-				if (e._id.abono!==false && e.data[0].info[9]==true) return e
-			})
+	if (!req.session.usuario) {
+		res.json({ status: 'FAIL', mensaje:'sin sesion', result:[], code:2 });
+	}else{
+		planServices.sumaPlan2(req.session.usuario.user._id, (err, pago)=>{
+			if(err){
+				res.json({status: 'FAIL', err, code:0})
+			}else{
+				
+		 
+				let abonoTrue = pago.filter(e=>{
+					if (e._id.abono!==false && e.data[0].info[9]==true) return e
+				})
 
-			let data1 = abonoTrue.filter(e=>{
-				if(e.data[0].info[5]!=req.session.usuario.user._id) {e.total=e.total-e.data[0].info[7]}
-				return e
-			})
-	 		let data = data1.map(e=>{
-				return{
-					id:e._id.id,
-					nombrePlan:e.data[0].info[4],
-					nombreUsuario:e.data[0].info[1],
-					imagen:e.data[0].info[3],
-					fecha:e.data[0].info[8],
-					total: e.total
-				}
-			})
+				let data1 = abonoTrue.filter(e=>{
+					if(e.data[0].info[5]!=req.session.usuario.user._id) {e.total=e.total-e.data[0].info[7]}
+					return e
+				})
+		 		let data = data1.map(e=>{
+					return{
+						id:e._id.id,
+						nombrePlan:e.data[0].info[4],
+						nombreUsuario:e.data[0].info[1],
+						imagen:e.data[0].info[3],
+						fecha:e.data[0].info[8],
+						total: e.total
+					}
+				})
 
-			let map = data.reduce((prev, next) =>{
-			  if (next.id in prev) {
-			    prev[next.id].total += next.total;
-			  } else {
-			     prev[next.id] = next;
-			  }
-			  return prev;
-			}, {});
+				let map = data.reduce((prev, next) =>{
+				  if (next.id in prev) {
+				    prev[next.id].total += next.total;
+				  } else {
+				     prev[next.id] = next;
+				  }
+				  return prev;
+				}, {});
 
-			let result = Object.keys(map).map(id => map[id]);
+				let result = Object.keys(map).map(id => map[id]);
 
-			res.json({result})
-		}
-	})
+				res.json({result})
+			}
+		})
+	}
 })
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

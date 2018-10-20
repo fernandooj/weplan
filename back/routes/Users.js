@@ -283,7 +283,7 @@ module.exports = function(app, passport){
     ///////////////////////////////////////////////////////////////////////////
     app.get('/x/v1/user/profile', function(req, res){
         if(req.session.usuario===undefined || req.session.usuario.user==null){
-            res.json({status:'FAIL', user: 'SIN SESION', code:0 })
+            res.json({status:'FAIL', user: 'SIN SESION', code:3 })
         }else{
             pagoPublicoServices.getByidUSer(req.session.usuario.user._id, (err, saldo)=>{
                 if(!err){
@@ -299,7 +299,9 @@ module.exports = function(app, passport){
         userServices.getOneUser(req.params.userId, (err, user)=>{
              if(!err){
                 req.session.usuario = {user:user}
-                res.json({status:'SUCCESS',  user, code:1})  
+                let code = user.nombre ?1 :0 
+                console.log(user)
+                res.json({status:'SUCCESS',  user, code})  
             }
         })
     })
@@ -398,7 +400,7 @@ module.exports = function(app, passport){
                 }
             })
         }else{
-            res.json({ status: 'FAIL', message:'usuario no logueado'})  
+           res.json({ status: 'FAIL', mensaje:'sin sesion', usuarios:[], code:2 }); 
         }
     })
 
@@ -698,12 +700,16 @@ module.exports = function(app, passport){
     /////////////////    DESACTIVO LA NOTIFICACION O EL PUNTO DEL FOOTER
     ///////////////////////////////////////////////////////////////////////////////////////////////
     app.put('/x/v1/user/desactivaNotificacion', (req, res)=>{
-        userServices.desactivaNotificacion(req.session.usuario.user._id, (err, user)=>{
-            if (!err) {
-                req.session.usuario = {user:user}
-                res.json({ status: 'SUCCESS', user, code:1 }); 
-            }
-        })
+        if (!req.session.usuario) {
+            res.json({ status: 'FAIL', mensaje:'sin sesion', user:[], code:2 });
+        }else{
+            userServices.desactivaNotificacion(req.session.usuario.user._id, (err, user)=>{
+                if (!err) {
+                    req.session.usuario = {user:user}
+                    res.json({ status: 'SUCCESS', user, code:1 }); 
+                }
+            })
+        }
     })
 
 
@@ -712,7 +718,7 @@ module.exports = function(app, passport){
     ///////////////////////////////////////////////////////////////////////////////////////////////
     app.get('/x/v1/user/enviarsmsamistad/:telefono', (req, res)=>{
         let ssss = '+57 310 3076805'
-        let telefono = ssss.split('+').join('').split('-').join('').split('(').join('').split(')').join('').split(' ').join('');
+        let telefono = req.params.telefono.split('+').join('').split('-').join('').split('(').join('').split(')').join('').split(' ').join('');
         telefono = telefono.length===12 ? `+57${telefono.substring(2,12)}` :telefono.length===11 ?`+1${telefono.substring(1,10)}` :`+57${telefono}` 
 
         res.json({ status: 'SUCCESS', message: 'Reenvieando el mensaje', code:1 });

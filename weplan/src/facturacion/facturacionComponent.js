@@ -64,7 +64,7 @@ export default class facturacionComponent extends Component{
 					<Text style={[style.titulo, style.familia]}>Pagos Realizados</Text>
 					{this.renderPagos()}
 				</ScrollView>
-				<FooterComponent navigate={navigate} />		
+				<FooterComponent navigate={this.props.navigation} />	
 			</View> 
 		)
 	}

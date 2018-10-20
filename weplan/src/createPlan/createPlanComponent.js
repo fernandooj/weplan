@@ -8,7 +8,7 @@ import moment 					  from 'moment'
 import Slideshow 				  from 'react-native-slideshow';
 import AlertInput 				  from 'react-native-alert-input'; 
 import StarRating 				  from 'react-native-star-rating';
-
+import Toast 			 		  from 'react-native-simple-toast';
 import RestriccionesPlanComponent from './restricciones.js'
 import MapaPlanComponent 		  from './mapa.js'
 import AgregarAmigosComponent     from '../agregarAmigos/agregarAmigos.js'
@@ -58,9 +58,13 @@ export default class createPlanComponent extends Component{
 		let ganapuntos    = await AsyncStorage.getItem('ganapuntos');
 		this.setState({guia_inicio, ganapuntos})
 		axios.get('/x/v1/pag/pagoPublico/byuser' )
-		.then((e)=>{
-	 		console.log(e.data)
-			this.setState({saldo:e.data.saldo})
+		.then((res)=>{
+	 		if (res.data.code===2) {
+	 			Toast.show('No éstas logueado')
+				this.props.navigation.navigate('Login')
+			}else{
+				this.setState({saldo:res.data.saldo})
+			}
 		})
 		.catch(err=>{
 			console.log(err)
@@ -325,6 +329,7 @@ export default class createPlanComponent extends Component{
 								androidMode='spinner'
 								onDateChange={(fechaLugar) => {this.setState({fechaLugar})}}
 						   />
+						   <Text style={CreatePlanStyle.required}>*</Text>
 						</View> 
 						:<View style={CreatePlanStyle.cajaInpunts}>
 							<Image source={require('../assets/images/fecha.png')} style={CreatePlanStyle.iconInput} />
@@ -343,6 +348,7 @@ export default class createPlanComponent extends Component{
 					    	<TouchableOpacity onPress={() => this.setState({mapa:true})}  style={direccion ?CreatePlanStyle.btnInputs :[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>
 					    		<Text style={direccion ?[CreatePlanStyle.textos, CreatePlanStyle.familia] :[CreatePlanStyle.textosActivo, CreatePlanStyle.familia]}>{direccion ?direccion.substr(0,60) :'Ubicación'}</Text>
 					    	</TouchableOpacity>
+					    	<Text style={CreatePlanStyle.required}>*</Text>
 						</View>
 					   :<TouchableOpacity onPress={() => this.setState({mapa:true})} style={CreatePlanStyle.cajaInpunts}> 
 			    			<Image source={require('../assets/images/map.png')} style={CreatePlanStyle.iconInput} />
@@ -351,6 +357,7 @@ export default class createPlanComponent extends Component{
 					    	</View>
 			    			
 						</TouchableOpacity>	
+
 					}
 					{
 						mapa &&<MapaPlanComponent 
@@ -516,7 +523,7 @@ export default class createPlanComponent extends Component{
 		 
 		this.setState({iconCreate:true})
 
-		if (!fechaLugar &&tipo=='suscripcion') {
+		if (!fechaLugar) {
 			Alert.alert(
 			  'La fecha es obligatoria',
 			  '',
@@ -576,8 +583,8 @@ export default class createPlanComponent extends Component{
 							}
 						})
 						.then((res)=>{
-							console.log(res.data)
-							if(res.data.status=="SUCCESS"){
+							console.log(costo, navigate, id)
+							if(res.data.code===1){
 								usuariosAsignados.map(e=>{
 									sendRemoteNotification(2, e.token, 'chat', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, res.data.rutaImagenResize[0], id)
 								})
@@ -585,8 +592,9 @@ export default class createPlanComponent extends Component{
 									navigate('chat', id)
 								}else{
 									Alert.alert(
-										`Tu plan ha sido creado`,
-										'puedes activarlo ahora por las proximas 24 horas, o activarlo luego desde ajustes',
+										'Tu plan ha sido creado',
+										// 'puedes activarlo ahora por las proximas 24 horas, o activarlo luego desde ajustes',
+										'ya puedes activarlo',
 									[
 										{text: 'Mejor Luego', onPress: () => navigate('inicio')},
 										{text: 'Activar', onPress: () => this.activarPlan(costo, navigate, id)},
@@ -635,7 +643,7 @@ export default class createPlanComponent extends Component{
 		if (res.data.saldo<costo) {
 				Alert.alert(
 					`Tu saldo es insuficiente`,
-					'',
+					'Recarga ahora!',
 				[
 					{text: 'Mejor Luego', onPress: () => navigate('inicio')},
 					{text: 'Recargar', onPress: () => navigate('facturacion')},
@@ -651,7 +659,7 @@ export default class createPlanComponent extends Component{
 						.then(res2=>{
 							if (res2.data.code==1) {
 								Alert.alert(
-									`Tu plan ha sido creado`,
+									`Tu plan ha sido activado exitosamente`,
 									'ya puedes verlo en el home',
 								[
 									{text: 'Cerrar', onPress: () => navigate('inicio')},

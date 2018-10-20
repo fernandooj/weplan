@@ -8,7 +8,7 @@ import FooterComponent 	 from '../cabezeraFooter/footerComponent'
 import StarRating from 'react-native-star-rating';
 import SocketIOClient from 'socket.io-client';
 import {URL} from '../../App.js'
-
+import Toast 			 from 'react-native-simple-toast';
 
 export default class notificacionComponent extends Component{
 	constructor(props) {
@@ -28,9 +28,13 @@ export default class notificacionComponent extends Component{
 		this.socket.on(`notificacionCostoCreador`, this.onReceivedMessageCreador); /// si el dueño del item tiene varias opciones para ingresar usuarios
 
  		axios.get('/x/v1/not/notificacion')
- 		.then(e=>{ 
- 			console.log(e.data.notificacion)
- 			this.setState({notificacion: e.data.notificacion, id:e.data.id})
+ 		.then(res=>{ 
+ 			if (res.data.code===2) {
+				this.props.navigation.navigate('Login')
+				Toast.show('No éstas logueado')
+			}else{
+ 				this.setState({notificacion: res.data.notificacion, id:res.data.id})
+ 			}
  		}) 
  		.catch(err=>{
  			console.log(err)

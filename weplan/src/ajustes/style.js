@@ -121,8 +121,8 @@ export const style = MediaQueryStyleSheet.create({
 		borderRadius: 30,
 		width: 60,
 		height: 60,
-		borderColor:'#969696',
-		borderWidth:6,
+		borderColor:'#9CB7F5',
+		borderWidth:4,
  	},
  	avatarA2:{
  		marginTop:10,
@@ -236,7 +236,7 @@ export const style = MediaQueryStyleSheet.create({
 			borderRadius: 75,
 			width: 43,
 			height: 43,
-			borderWidth:4,
+			borderWidth:3,
 	 	}, 
 	 	textoAvatar:{
 			fontSize:16,

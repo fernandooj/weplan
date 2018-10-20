@@ -26,9 +26,9 @@ export default class TakePhotoComponent extends Component{
 			cancelButtonTitle:'Cancelar',
 			takePhotoButtonTitle:'Tomar Foto',
 			chooseFromLibraryButtonTitle:'Buscar en imagenes',
-			quality: 1.0,
-			maxWidth: 500,
-			maxHeight: 500,
+			quality: 0.9,
+			maxWidth: 780,
+			maxHeight: 1400,
 			allowsEditing:true,
 			storageOptions: {
 				skipBackup: true
@@ -37,30 +37,40 @@ export default class TakePhotoComponent extends Component{
 
 
 		ImagePicker.showImagePicker(options, (response) => {
-		  console.log('Response = ', response);
-		   
-		  if (response.didCancel) {
-		    console.log('User cancelled photo picker');
-		  }
-		  else if (response.error) {
-		    console.log('ImagePicker Error: ', response.error);
-		  }
-		  else if (response.customButton) {
-		    console.log('User tapped custom button: ', response.customButton);
-		  }
-		  	else {
-		  		let source = { uri: response.uri };
-			    var imagen = {
-				    uri:  response.uri,
-				    type: response.type ?response.type :'image/jpeg',
-				    name: response.fileName ?response.fileName :`imagen.jpg`,
-				    path: response.path
-				};
-				this.props.updateImagen(imagen)
-			    this.setState({
-			      avatarSource: source,
-			      imagen
-			    });
+			console.log('Response = ', response);
+ 
+			if (response.didCancel) {
+				console.log('User cancelled photo picker');
+			}
+		    else if (response.error) {
+		    	console.log('ImagePicker Error: ', response.error);
+		    }
+		    else if (response.customButton) {
+		    	console.log('User tapped custom button: ', response.customButton);
+		  	} else {
+		  		if (response.width<720) {
+	  				Alert.alert(
+					  	'El tamaño de la imagen es muy pequeño',
+					  	'debe ser mayor a 720px de ancho',
+					  	[
+					    	{text: 'OK', onPress: () => {console.log('OK Pressed'); this.setState({iconCreate:false})}},
+					  	],
+					  	{ cancelable: false }
+					)
+		  		}else{
+			  		let source = { uri: response.uri };
+				    var imagen = {
+					    uri:  response.uri,
+					    type: response.type ?response.type :'image/jpeg',
+					    name: response.fileName ?response.fileName :`imagen.jpg`,
+					    path: response.path
+					};
+					this.props.updateImagen(imagen)
+				    this.setState({
+				      avatarSource: source,
+				      imagen
+				    });
+		  		}
 		  	}
 		});
 	}

@@ -87,11 +87,10 @@ app.use(allowCrossDomain);
 
 
 
-// required for passport
+// variables que guardan la
 app.use(cookieSession({ 
   name: 'weplan',
   keys: ['key1', 'key2'],
- 
 })); /// session secret
 
 app.use(formidable.parse({ keepExtensions:true }))
