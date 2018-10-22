@@ -186,7 +186,7 @@ export const style = MediaQueryStyleSheet.create({
 	textarea:{
 		width:'67%',
 		height:35,
-		color:'#969696',
+		color:'#000000',
 		paddingTop:5,
 		paddingLeft:20,
 		paddingBottom:0,
@@ -194,7 +194,7 @@ export const style = MediaQueryStyleSheet.create({
 		marginRight:10,
 		marginLeft:10,
 		backgroundColor: '#ffffff',	
-		fontSize:17,
+		fontSize:20,
 		borderRadius: 10,
 	},
 	////////////////// box chat /////////////////
@@ -212,7 +212,7 @@ export const style = MediaQueryStyleSheet.create({
 		marginLeft: 15,
 		marginRight: 15,
 		marginBottom:10,
-		width:screenWidth/1.5,	
+		// width:screenWidth/1.5,	///////// si quiero que quede el chat de un ancho fijo
 		zIndex:0	
 	},
 	boxLeft:{ 
@@ -220,13 +220,13 @@ export const style = MediaQueryStyleSheet.create({
 		marginLeft: 15,
 	},
 	fecha:{
-		alignSelf: 'flex-start',
+		alignSelf: 'flex-end',
 		color:'#acacac',
 		padding:5,
 		paddingLeft:10
 	},
 	fechaLeft:{
-		alignSelf: 'flex-end',
+		alignSelf: 'flex-start',
 		paddingRight:15
 	},
 	tituloTipoChat:{
@@ -237,17 +237,17 @@ export const style = MediaQueryStyleSheet.create({
 	mensajeTipoChat:{
 		// borderBottomLeftRadius:10,
 		// borderBottomRightRadius:10,
-		position:'relative',
-		zIndex:0,
+		// position:'relative',
+		// zIndex:0,
 		backgroundColor:'rgba(255,255,255,1)',
 		borderRadius:10
 		//shadowOffset: { width: 0, height: 2 },
 	},
 	nombreTipoChat:{
 		color:'#A8A8A8',
-		fontSize:15,
-		padding:10,
-		paddingRight:4
+		fontSize:18,
+		paddingVertical:5,
+		paddingHorizontal:8
 	},
 	nombreTipoChatLeft:{
 		color:'#A5a5a5'
@@ -270,6 +270,9 @@ export const style = MediaQueryStyleSheet.create({
 	},
 	mensaje:{
 		padding: 10,
+		paddingBottom:0,
+		fontSize:18,
+		color:'#000000'
 		// shadowOffset: { width: 0, height: 2 },
 	},
 	
@@ -833,7 +836,18 @@ export const style = MediaQueryStyleSheet.create({
 		showFooter:{
 			bottom:Platform.OS==='android' ?0 :330
 		},
-		
+	},
+	"@media (min-device-height: 832)": {
+		contenedorChat:{
+	 		top:Platform.OS==='android' ?-300 :-340,
+	 		zIndex :0
+	 	},
+		showFooter:{
+			bottom:Platform.OS==='android' ?0 :340
+		},
+		contenedorOpcionesBotonesShow:{
+			bottom:405,
+		},
 	}
 })
 

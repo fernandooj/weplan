@@ -5,7 +5,7 @@ import axios from 'axios'
 import Toast 			 from 'react-native-simple-toast';
 import SocketIOClient from 'socket.io-client';
 import {URL} from '../../App.js'
-
+import FCM  from "react-native-fcm";
 export default class CabezeraComponent extends Component{
 	constructor(props) {
 	  super(props);
@@ -75,13 +75,39 @@ export default class CabezeraComponent extends Component{
 					Toast.show('Houston tenemos un problema, reinicia la app')
 				}  
 			}
-			 
 		})
 		.catch((err)=>{
 			console.log(err)
 		})
+		///////////////////////////////////////////////////////////   traigo el array con los badge
+		let badgeArray = await AsyncStorage.getItem('badgeArray')
+
+		///////////////////////////////////////////////////////////   traigo el numero total del badge
+		let badge 	   = await AsyncStorage.getItem('badge')
+
+		////////////////////////////////////////////////////////////   parseo la informacion
+		badgeArray     = JSON.parse(badgeArray)
+		badge 		   = JSON.parse(badge)
+
+		////////////////////////////////////////////////////////////  filtro la cantidad de badge y elimino los que no sean iguales
+		let newBadge = badgeArray.filter(e=>{
+	 		return e==1
+	 	}) 
+	 	badgeArray = badgeArray.filter(e=>{
+	 		return e!==1
+	 	})
+
+	 	////////////////////////////////////////////////////////////  resto la cantidad total de badge con la que esta en notificaciones
+	 	badge = badge-newBadge.length
+
+	 	////////////////////////////////////////////////////////////  actualizo el numero del badge
+	  	FCM.setBadgeNumber(badge);  
+
+
 		try {
 		    await AsyncStorage.setItem('userInfoNotificacion', 'false');
+		    await AsyncStorage.setItem('badgeArray', JSON.stringify(badgeArray))
+		    await AsyncStorage.setItem('badge', 	 JSON.stringify(badge))
 		} catch (error) {
 		   console.log(error)
 		}

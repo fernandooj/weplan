@@ -1,4 +1,4 @@
-import {Platform} from 'react-native'
+import {Platform, AsyncStorage} from 'react-native'
 import firebaseClient from  "./FirebaseClient";
 import axios from 'axios'
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -7,39 +7,42 @@ import axios from 'axios'
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaje, imagen, parameter)=> {
-
+	
 	axios.get('/x/v1/user/profile') 
 	.then((res)=>{
 	    let body;
 	    let nombre = tipo==14 ?'' :res.data.user.user.nombre
 	    let photo  = res.data.user.user.photo
 	    imagen = imagen==null ? photo :imagen
-	   
+	   	console.log(token)
 	    if(Platform.OS === 'android'){
-	    	bodyIos = {
-		        to: token,
-		        notification: {
-		         	title: titulo,
-					body : `${nombre} ${mensaje}`,
-					priority:"high",
-					icon:"ic_notif",
-					targetScreen:targetScreen,
-					color:"#00ACD4",
-					big_picture:imagen,
-					picture:imagen,
-					image:imagen,
-					large_icon: imagen,
-					sound: "default",
-					parameter,
-					show_in_foreground: true
-		        },
-		        data: {
-					targetScreen:targetScreen,
-					parameter,
-		        },
-		        // priority: 10
-		    };
-		    firebaseClient.send(JSON.stringify(bodyIos), "notification");
+	    // 	bodyIos = {
+		   //      to: token,
+		   //      notification: {
+		   //       	title: "titulo",
+					// body : `${nombre} ${mensaje}`,
+					// priority:"high",
+					// icon:"ic_notif",
+					// targetScreen:targetScreen,
+					// color:"#00ACD4",
+					// big_picture:imagen,
+					// picture:imagen,
+					// image:imagen,
+					// large_icon: imagen,
+					// sound: "default",
+					// parameter,
+					// badge:45,
+					// show_in_foreground: true
+		   //      },
+		   //      data: {
+					// targetScreen:targetScreen,
+					// parameter,
+					// // badge:54,
+		   //      },
+		         
+		   //      // priority: 10
+		   //  };
+		   //  firebaseClient.send(JSON.stringify(bodyIos), "notification");
 		    
 	        bodyAndroid = {
 		        "to": token,
@@ -57,6 +60,8 @@ export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaj
 						large_icon: imagen,
 						sound: "default",
 						parameter,
+						badge:23,
+						number:20,
 						show_in_foreground: true
 		            }
 		        },
@@ -65,28 +70,29 @@ export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaj
 	      	firebaseClient.send(JSON.stringify(bodyAndroid), "notification");
 			
 	    }else{
-	    	bodyAndroid = {
-	        "to": token,
-	      	"data": {
-	            "custom_notification": {
-					title: titulo,
-					body : `${nombre} ${mensaje}`,
-					priority:"high",
-					icon:"ic_notif",
-					targetScreen:targetScreen,
-					color:"#00ACD4",
-					big_picture:imagen,
-					picture:imagen,
-					image:imagen,
-					large_icon: imagen,
-					sound: "default",
-					parameter,
-					show_in_foreground: true
-	            }
-	        },
-	    		"priority": 10
-	      }
-	      firebaseClient.send(JSON.stringify(bodyAndroid), "notification");
+	    // 	bodyAndroid = {
+	    //     "to": token,
+	    //   	"data": {
+	    //         "custom_notification": {
+					// title: titulo,
+					// body : `${nombre} ${mensaje}`,
+					// priority:"high",
+					// icon:"ic_notif",
+					// targetScreen:targetScreen,
+					// color:"#00ACD4",
+					// big_picture:imagen,
+					// picture:imagen,
+					// image:imagen,
+					// large_icon: imagen,
+					// sound: "default",
+					// parameter,
+					// badge:1,
+					// show_in_foreground: true
+	    //         }
+	    //     },
+	    // 		"priority": 10
+	    //   }
+	    //   firebaseClient.send(JSON.stringify(bodyAndroid), "notification");
 			bodyIos = {
 		        to: token,
 		        notification: {
@@ -102,6 +108,7 @@ export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaj
 					large_icon: imagen,
 					sound: "default",
 					parameter,
+					// badge:1,
 					show_in_foreground: true
 		        },
 		        data: {

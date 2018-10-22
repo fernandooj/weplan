@@ -152,7 +152,7 @@ export default class LoginComponent extends Component{
 	    registerAppListener(this.props.navigation);
 
 	    try{
-	      let result = await FCM.requestPermissions({badge: false, sound: true, alert: true});
+	      let result = await FCM.requestPermissions({badge: true, sound: true, alert: true});
 	    } catch(e){
 	      console.error(e);
 	    }

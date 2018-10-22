@@ -132,7 +132,7 @@ export default class homeComponent extends Component{
 	    });
 
 	    try{
-	      let result = await FCM.requestPermissions({badge: false, sound: true, alert: true});
+	      let result = await FCM.requestPermissions({badge: true, sound: true, alert: true});
 	    } catch(e){
 	      console.error(e);
 	    } 

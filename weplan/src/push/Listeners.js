@@ -7,6 +7,7 @@ AsyncStorage.getItem('lastNotification').then((err, data)=>{
     // if notification arrives when app is killed, it should still be logged here
     console.log('last notification', JSON.parse(data));
     console.log(data)
+    console.log(data)
     console.log(err)
     AsyncStorage.removeItem('lastNotification');
   }
@@ -20,10 +21,49 @@ AsyncStorage.getItem('lastMessage').then(data=>{
   }
 })
 
+ 
+
 export function registerKilledListener(){
   // these callback will be triggered even when app is killed
   FCM.on(FCMEvent.Notification, notif => {
+
+    
+  // if notification arrives when app is killed, it should still be logged here
+
+  if (notif.custom_notification) {      
+    let parameter = JSON.parse(notif.custom_notification)
+    AsyncStorage.getItem('badge').then((data)=>{
+      if (data==='null' || data===null) {
+        AsyncStorage.setItem('badge', '1');
+      }
+      if(data){
+        data = JSON.parse(data)
+        data = parseInt(data)
+        data = data+1
+        FCM.setBadgeNumber(data);  
+        AsyncStorage.setItem('badge', JSON.stringify(data));
+      }
+    })    
+
+    AsyncStorage.getItem('badgeArray').then((data)=>{
+      if (data=='null' || data==="null" || data==null) {
+        AsyncStorage.setItem('badgeArray', '[]');
+      
+      }
+      if (data) {
+        data = JSON.parse(data)
+        data = typeof data==='object' ?data :[]
+        let parametro = parameter.parameter ?parameter.parameter :1
+        data.push(parametro)
+        console.log(data)
+        AsyncStorage.setItem('badgeArray', JSON.stringify(data));
+      }
+    })
+  }
+   
+
     AsyncStorage.setItem('lastNotification', JSON.stringify(notif));
+  
     if(notif.opened_from_tray){
       setTimeout(()=>{
         if(notif._actionIdentifier === 'reply'){
@@ -62,15 +102,6 @@ export function registerAppListener(navigation){
       setTimeout(()=>{
         navigation.navigate(notif.targetScreen, id)
       }, 500)
-
-      // if(notif.targetScreen === 'createPlan'){
-      //   setTimeout(()=>{
-      //     navigation.navigate('createPlan')
-      //   }, 500)
-      // }
-      // setTimeout(()=>{
-      //   alert(`User tapped notification\n${JSON.stringify(notif)}`)
-      // }, 500)
     }
 
     if(Platform.OS ==='ios'){

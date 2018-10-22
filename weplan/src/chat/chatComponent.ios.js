@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground, Alert, Keyboard, Modal, Dimensions, BackHandler, Platform, ActivityIndicator, AsyncStorage} from 'react-native'
+import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground, Alert, Keyboard, Modal, Dimensions, Platform, ActivityIndicator, AsyncStorage} from 'react-native'
 import axios from 'axios'
 import SocketIOClient from 'socket.io-client';
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
@@ -11,7 +11,7 @@ import { DocumentPicker, DocumentPickerUtil } from 'react-native-document-picker
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import Lightbox from 'react-native-lightbox';
 import KeyboardListener from 'react-native-keyboard-listener';
- 
+import FCM  from "react-native-fcm"; 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////  ARCHIVOS GENERADOS POR EL EQUIPO  //////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,8 +89,37 @@ export default class ChatComponent extends Component{
 			console.log(err)
 		})
 	}
-	componentDidMount() {
-	    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+	componentDidMount = async ()=> {
+		let planId = this.props.navigation.state.params	
+	    ///////////////////////////////////////////////////////////   traigo el array con los badge
+		let badgeArray = await AsyncStorage.getItem('badgeArray')
+
+		///////////////////////////////////////////////////////////   traigo el numero total del badge
+		let badge 	   = await AsyncStorage.getItem('badge')
+
+		////////////////////////////////////////////////////////////   parseo la informacion
+		badgeArray     = JSON.parse(badgeArray)
+		badge 		   = JSON.parse(badge)
+
+		////////////////////////////////////////////////////////////  filtro la cantidad de badge y elimino los que no sean iguales
+		let newBadge = badgeArray.filter(e=>{
+	 		return e==planId
+	 	}) 
+	 	badgeArray = badgeArray.filter(e=>{
+	 		return e!==planId
+	 	})
+
+	 	////////////////////////////////////////////////////////////  resto la cantidad total de badge con la que esta en notificaciones
+	 	badge = badge-newBadge.length
+
+	 	////////////////////////////////////////////////////////////  actualizo el numero del badge
+	  	FCM.setBadgeNumber(badge);  
+	  	try {
+		    await AsyncStorage.setItem('badgeArray', JSON.stringify(badgeArray))
+		    await AsyncStorage.setItem('badge', 	 JSON.stringify(badge))
+		} catch (error) {
+		   console.log(error)
+		}
 	}
 	handleBackPress = () => {
 		const {navigate} = this.props.navigation
@@ -616,8 +645,10 @@ export default class ChatComponent extends Component{
 		)	
 	} 
 	render(){
-		const {adjuntarAmigos, asignados, guia_inicio, usuariosAsignados, mapa, qr, planId, showMainFooter, showIndicador, scroll, scroll2, scrollState, notificaciones, imagen, nombrePlan, id} = this.state
+		const {adjuntarAmigos, asignados, guia_inicio, usuariosAsignados, mapa, qr, planId, showMainFooter, showIndicador, scroll, scroll2, scrollState, notificaciones, imagen, nombrePlan, id, heightContent} = this.state
  		let suma = heightScreen==812 ?165 :150 
+ 		console.log(heightScreen)
+ 		console.log(heightContent)
 		return(
 			<View style={style.contenedorGeneral} > 
 				{
@@ -639,7 +670,7 @@ export default class ChatComponent extends Component{
 					 
 					<ScrollView 
 							ref='scrollView'
-							style={showMainFooter ?style.contenedorChat :style.contenedorChat2} 
+							style={showMainFooter&&heightContent>heightScreen/2 ?style.contenedorChat :style.contenedorChat2}
 							keyboardDismissMode='on-drag'
 							onContentSizeChange={(width,height) => {this.refs.scrollView.scrollTo({y:height-heightScreen+suma}); this.setState({heightContent:height})}}
 						>

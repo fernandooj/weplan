@@ -13,6 +13,7 @@ import Lightbox from 'react-native-lightbox';
 import KeyboardListener from 'react-native-keyboard-listener';
 import Toast from 'react-native-simple-toast';
 import { showLocation, Popup } from 'react-native-map-link'
+import FCM  from "react-native-fcm";
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////  ARCHIVOS GENERADOS POR EL EQUIPO  //////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -25,7 +26,7 @@ import {pedirImagen, pedirPdf, pedirContacto, pedirMapa} from './peticiones.js'
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////// 
-
+const heightScreen = Dimensions.get('window').height
 import {URL} from '../../App.js'
 export default class ChatComponent extends Component{
 	constructor(props){
@@ -89,8 +90,38 @@ export default class ChatComponent extends Component{
 			console.log(err)
 		})
 	}
-	componentDidMount() {
-	    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress);
+	componentDidMount = async ()=> {
+		let planId = this.props.navigation.state.params	
+	    BackHandler.addEventListener('hardwareBackPress', this.handleBackPress)
+	    ///////////////////////////////////////////////////////////   traigo el array con los badge
+		let badgeArray = await AsyncStorage.getItem('badgeArray')
+
+		///////////////////////////////////////////////////////////   traigo el numero total del badge
+		let badge 	   = await AsyncStorage.getItem('badge')
+
+		////////////////////////////////////////////////////////////   parseo la informacion
+		badgeArray     = JSON.parse(badgeArray)
+		badge 		   = JSON.parse(badge)
+
+		////////////////////////////////////////////////////////////  filtro la cantidad de badge y elimino los que no sean iguales
+		let newBadge = badgeArray.filter(e=>{
+	 		return e==planId
+	 	}) 
+	 	badgeArray = badgeArray.filter(e=>{
+	 		return e!==planId
+	 	})
+
+	 	////////////////////////////////////////////////////////////  resto la cantidad total de badge con la que esta en notificaciones
+	 	badge = badge-newBadge.length
+
+	 	////////////////////////////////////////////////////////////  actualizo el numero del badge
+	  	FCM.setBadgeNumber(badge);  
+	  	try {
+		    await AsyncStorage.setItem('badgeArray', JSON.stringify(badgeArray))
+		    await AsyncStorage.setItem('badge', 	 JSON.stringify(badge))
+		} catch (error) {
+		   console.log(error)
+		}
 	}
 	handleBackPress = () => {
 		const {navigate} = this.props.navigation
@@ -622,29 +653,7 @@ export default class ChatComponent extends Component{
 			this.setState({showIndicador:true, scroll2:this.state.scroll})
 			axios.get(`/x/v1/cha/chat/chatPlan/${this.state.planId}/${limite}`)
 			.then(e=>{
-	 			 
-	 				// let mensajes = [...e.data.chat, ...this.state.mensajes]
-	 				// console.log('---------')
-	 				// console.log(e.data.chat)
-	 				// console.log(this.state.mensajes)
-	 				// console.log(mensajes)
-	 				// console.log('---------')
-
- 
- 					// e.data.chat.map(e=>{
-						// 	this.setState({
-						// 	mensajes: update(this.state.mensajes, {$push: [e]})
-						// })
- 					// })
-
-					// this.setState({
-					//   mensajes: update(this.state.mensajes, {$unshift: [e.data.chat[0]]}),
-					//   limite, scrollState:2, showIndicador:false
-					// })
- 
-	 				// this.setState({limite, scrollState:2, showIndicador:false})
-
-	 				this.setState({mensajes:e.data.chat, scrollState:2, showIndicador:false})
+	 			this.setState({mensajes:e.data.chat, scrollState:2, showIndicador:false})
 			})
 			.catch(err=>{
 				console.log(err)
@@ -669,6 +678,9 @@ export default class ChatComponent extends Component{
  
 	render(){
 		const {adjuntarAmigos, asignados, guia_inicio, usuariosAsignados, mapa, qr, planId, showMainFooter, showIndicador, scroll, scroll2, scrollState, notificaciones, imagen, nombrePlan, id} = this.state
+		console.log(heightScreen / 2)
+		console.log(scroll)
+		console.log(scroll<heightScreen/2)
 		return(
 			<View style={style.contenedorGeneral} > 
 				{
@@ -688,7 +700,7 @@ export default class ChatComponent extends Component{
 				}
 				 <ImageBackground source={require('../assets/images/fondo.png')} style={style.fondo }>	
 					<ScrollView ref={scroll => { this.scrollView = scroll }}
-								style={showMainFooter ?style.contenedorChat :style.contenedorChat2} 
+								style={showMainFooter&&scroll>heightScreen/2 ?style.contenedorChat :style.contenedorChat2} 
 								//keyboardDismissMode='on-drag'
 								onScroll={this.handleScroll.bind(this)}
 								onContentSizeChange={(width,height) => {this.setState({scroll:height}); }}>
@@ -699,7 +711,7 @@ export default class ChatComponent extends Component{
 			{/* BOTONES OPCIONES */}
 				{
 					this.state.showOpciones
-					&&<View style={showMainFooter ?[style.contenedorOpcionesBotones, style.contenedorOpcionesBotonesShow] : [style.contenedorOpcionesBotones]}>
+					&&<View style={showMainFooter  ?[style.contenedorOpcionesBotones, style.contenedorOpcionesBotonesShow] : [style.contenedorOpcionesBotones]}>
 						{this.opciones()}
 					</View>
 				}
