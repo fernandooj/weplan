@@ -7,6 +7,7 @@ import GuiaInicio 	 	 from '../guia_inicio/guia_inicio'
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
 import {URL} from '../../App.js'
+import FCM  from "react-native-fcm";
 export default class ajustesComponent extends Component{
 	state={
 		menus:[
@@ -14,8 +15,8 @@ export default class ajustesComponent extends Component{
 			{method:1, label:'Planes públicos', value:'planesPublicos'},
 			//{method:1, label:'Facturación', 	value:'facturacion'},
 			{method:3, label:'Código QR', 		value:'abrirQr'},
-			{method:1, label:'Privacidad',  	value:'privacidad'},
-			{method:1, label:'General', 	 	value:'general'},
+			//{method:1, label:'Privacidad',  	value:'privacidad'},
+			//{method:1, label:'General', 	 	value:'general'},
 			{method:2, label:'Cerrar sesión',   value:'closeSession'},
 		],
 		delay: 300,
@@ -173,6 +174,7 @@ export default class ajustesComponent extends Component{
 			if(res.data.code==1){
 				saveInfo()
 				navigate('Login')
+				FCM.setBadgeNumber(0);  
 			}else if (res.data.code==1){
 				alert('error intenta nuevamente')
 			}
@@ -185,6 +187,8 @@ export default class ajustesComponent extends Component{
 
 const saveInfo = async (userInfo)=>{
 	try {
+		await AsyncStorage.setItem('badge', '0');
+		await AsyncStorage.setItem('badgeArray', '[]');
 	    await AsyncStorage.setItem('userInfoId', '0');
 	} catch (error) {
 	   console.log(error)

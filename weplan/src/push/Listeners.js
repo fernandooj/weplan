@@ -27,38 +27,44 @@ export function registerKilledListener(){
   // these callback will be triggered even when app is killed
   FCM.on(FCMEvent.Notification, notif => {
 
-    
   // if notification arrives when app is killed, it should still be logged here
+  if (notif.parameter) {      
+    let parameter = notif.parameter ?notif.parameter :JSON.parse(notif.custom_notification)
 
-  if (notif.custom_notification) {      
-    let parameter = JSON.parse(notif.custom_notification)
+    //////////////////////////////////////////  GUARDO EL NUMERO DEL BADGE
     AsyncStorage.getItem('badge').then((data)=>{
       if (data==='null' || data===null) {
         AsyncStorage.setItem('badge', '1');
       }
-      if(data){
-        data = JSON.parse(data)
-        data = parseInt(data)
-        data = data+1
-        FCM.setBadgeNumber(data);  
-        AsyncStorage.setItem('badge', JSON.stringify(data));
-      }
-    })    
+      data = data ?data :0
+      data = JSON.parse(data)
+      data = parseInt(data)
 
+      data = data+1
+      console.log(data)
+      FCM.setBadgeNumber(data);  
+     AsyncStorage.setItem('badge', JSON.stringify(data));
+       
+    })    
+    //////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////   GUARDO EL ARRAY DEL BADGE
     AsyncStorage.getItem('badgeArray').then((data)=>{
       if (data=='null' || data==="null" || data==null) {
         AsyncStorage.setItem('badgeArray', '[]');
       
       }
-      if (data) {
-        data = JSON.parse(data)
-        data = typeof data==='object' ?data :[]
-        let parametro = parameter.parameter ?parameter.parameter :1
-        data.push(parametro)
-        console.log(data)
-        AsyncStorage.setItem('badgeArray', JSON.stringify(data));
-      }
+      console.log(data)
+      data = JSON.parse(data)
+      console.log(data)
+      data = typeof data==='object' ?data :[]
+      let parametro = parameter ?parameter :1
+      console.log(data)
+      
+      data.push(parametro)
+     
+      AsyncStorage.setItem('badgeArray', JSON.stringify(data));
     })
+    ///////////////////////////////////////////////////////////////
   }
    
 

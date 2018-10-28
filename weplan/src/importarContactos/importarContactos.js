@@ -30,14 +30,16 @@ export default class importarComponent extends Component{
 	
 	async componentWillMount(){
 		pg.requestAccess().then((granted) => {
+			console.log(granted)
 		  if(granted !== true)
 		  {
 		    return; 
 		  }
 
 		  pg.getContactsCount().then( (count) => {
-		    pg.getContactsWithRange(0, count, [PagedContacts.displayName, PagedContacts.thumbnailImageData, PagedContacts.phoneNumbers, PagedContacts.emailAddresses]).then((contacts) => {
-		      contacts = contacts.map((e, key)=>{
+		    pg.getContactsWithRange(0, count, [PagedContacts.displayName, PagedContacts.phoneNumbers]).then((contacts) => {
+		    	// alert(JSON.stringify(contacts))
+		      let contacto = contacts.map((e, key)=>{
 		      		return {
 		      			id:key,
 		      			nombre:e.displayName,
@@ -45,7 +47,7 @@ export default class importarComponent extends Component{
 		      		}
 		      })
 		       console.log(contacts)
-		      this.setState({contacts})
+		      this.setState({contacts: contacto})
 		    });
 		  });
 		});
@@ -73,13 +75,13 @@ export default class importarComponent extends Component{
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////	RENDER LISTADO AMIGOS						 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- 	renderAmigos(){
+ 	/*renderAmigos(){
  		return(
  			<ScrollView style={style.contenedorLista}>
 				{this.getRow()}
 			</ScrollView>
  		)	
- 	}
+ 	}*/
 
  	searchUpdated (term) {
  		if (term.length>0){
@@ -128,11 +130,11 @@ export default class importarComponent extends Component{
 							}
 		 
 							<Text>Invita a tus contactos a usar We Plan</Text>	
-				 
+				 			<Text>{this.state.contacts.length}</Text>
 						 	{
 						 		this.state.contacts.length==0
 						 		?<ActivityIndicator size="small" color="#148dc9" style={style.indicador} />
-						 		:this.renderAmigos()
+						 		:this.getRow()
 						 	}
 							 
 					 

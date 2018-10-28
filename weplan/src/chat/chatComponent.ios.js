@@ -100,6 +100,7 @@ export default class ChatComponent extends Component{
 		////////////////////////////////////////////////////////////   parseo la informacion
 		badgeArray     = JSON.parse(badgeArray)
 		badge 		   = JSON.parse(badge)
+		badgeArray = badgeArray ?badgeArray :[]
 
 		////////////////////////////////////////////////////////////  filtro la cantidad de badge y elimino los que no sean iguales
 		let newBadge = badgeArray.filter(e=>{
@@ -111,7 +112,7 @@ export default class ChatComponent extends Component{
 
 	 	////////////////////////////////////////////////////////////  resto la cantidad total de badge con la que esta en notificaciones
 	 	badge = badge-newBadge.length
-
+	 	badge = badge<0 ?0 :badge
 	 	////////////////////////////////////////////////////////////  actualizo el numero del badge
 	  	FCM.setBadgeNumber(badge);  
 	  	try {

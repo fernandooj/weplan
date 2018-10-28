@@ -122,7 +122,7 @@ export default class guiaInicio extends Component{
 					<Image source={require('../assets/images/guia_inicio/Recurso_23_3x.png')} style={style.pulpo7} />
 					<View style={style.subContenedor2}>
 						<Image source={require('../assets/images/guia_inicio/Recurso_22_3x.png')} style={style.image2} />
-						<Text style={[style.text2, style.familia]}>¡Aquí podrás hacer encuestas y votaciones para conciderar la opinión de todos los integrantes del plan!</Text>
+						<Text style={[style.text2, style.familia]}>¡Aquí podrás hacer encuestas y votaciones para considerar la opinión de todos los integrantes del plan!</Text>
 					</View>
 					<TouchableOpacity style={style.btnSiguiente} onPress={()=>this.setState({number:8})}>
 						<Text style={[style.txtSiguiente, style.familia]}>Siguiente</Text>
@@ -225,7 +225,7 @@ export default class guiaInicio extends Component{
 						</Text>
 					</View>
 					<View style={style.subContenedor9}>
-						<Text style={[style.text9, style.familia]}>¡En esta pastaña encontrarás los artículos que has creado y también de los que haces parte!, no olvides verlos en detalle.</Text>
+						<Text style={[style.text9, style.familia]}>¡En esta pestaña encontrarás los artículos que has creado y también de los que haces parte!, no olvides verlos en detalle.</Text>
 					</View>
 					<TouchableOpacity style={style.btnSiguiente} onPress={()=>this.setState({number:13})}>
 						<Text style={[style.txtSiguiente, style.familia]}>Siguiente</Text>

@@ -14,6 +14,7 @@ import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import FCM, {NotificationActionType} from "react-native-fcm";
 import {registerKilledListener, registerAppListener} from "../push/Listeners";
 
+
 const KEYS_TO_FILTERS = ['nombre', 'lugar']
 const {width, height} = Dimensions.get('window')
 const SCREEN_HEIGHT = height
@@ -63,6 +64,7 @@ export default class homeComponent extends Component{
 		})
 	}
 	async componentWillMount(){
+		
 		let guia_inicio   = await AsyncStorage.getItem('home');
 		this.setState({guia_inicio})
 		if (Platform.OS==='android') {
@@ -118,6 +120,8 @@ export default class homeComponent extends Component{
 	async componentDidMount(){
 		const {navigation} = this.props
 	    registerAppListener(navigation);
+	    
+
 	    FCM.getInitialNotification().then(notif => {
 	    	
 	     	console.log({props:this.props, notif})

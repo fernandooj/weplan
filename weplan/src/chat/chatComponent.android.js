@@ -102,7 +102,7 @@ export default class ChatComponent extends Component{
 		////////////////////////////////////////////////////////////   parseo la informacion
 		badgeArray     = JSON.parse(badgeArray)
 		badge 		   = JSON.parse(badge)
-
+		badgeArray = badgeArray ?badgeArray :[]
 		////////////////////////////////////////////////////////////  filtro la cantidad de badge y elimino los que no sean iguales
 		let newBadge = badgeArray.filter(e=>{
 	 		return e==planId
@@ -113,6 +113,7 @@ export default class ChatComponent extends Component{
 
 	 	////////////////////////////////////////////////////////////  resto la cantidad total de badge con la que esta en notificaciones
 	 	badge = badge-newBadge.length
+	 	badge = badge<0 ?0 :badge
 
 	 	////////////////////////////////////////////////////////////  actualizo el numero del badge
 	  	FCM.setBadgeNumber(badge);  
@@ -678,9 +679,9 @@ export default class ChatComponent extends Component{
  
 	render(){
 		const {adjuntarAmigos, asignados, guia_inicio, usuariosAsignados, mapa, qr, planId, showMainFooter, showIndicador, scroll, scroll2, scrollState, notificaciones, imagen, nombrePlan, id} = this.state
-		console.log(heightScreen / 2)
-		console.log(scroll)
-		console.log(scroll<heightScreen/2)
+		// console.log(heightScreen / 2)
+		// console.log(scroll)
+		// console.log(scroll<heightScreen/2)
 		return(
 			<View style={style.contenedorGeneral} > 
 				{

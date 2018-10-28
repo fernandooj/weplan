@@ -13,7 +13,8 @@ const day  = [
 	{label:5, key:5},
 	{label:6, key:6},
 	{label:7, key:7},
-	{label:9, key:9},
+	{label:8,  key:8},
+	{label:9,  key:9},
 	{label:10, key:10},
 	{label:11, key:11},
 	{label:12, key:12},
@@ -52,6 +53,16 @@ const month = [
 	{label:'Diciembre', key:12}
 ]
 const year = [  
+    {label:1950, key:1950},
+    {label:1951, key:1951},
+    {label:1952, key:1952},
+    {label:1953, key:1953},
+    {label:1954, key:1954},
+    {label:1955, key:1955},
+    {label:1956, key:1956},
+    {label:1957, key:1957},
+    {label:1958, key:1958},
+    {label:1959, key:1959},
     {label:1960, key:1960},
     {label:1961, key:1961},
     {label:1962, key:1962},

@@ -50,7 +50,7 @@ export default class RegistroComponent extends Component{
 			    	:codigo==1	
 			    	?<Text style={[style.textAlert, style.familia]}>Te hemos enviado un codigo, por favor insertalo</Text>
 			    	:codigo==0	
-			    	?<Text style={[style.textAlert, style.familia]}>Houston, tenemos un problema, no se pudo crear el usuario, intentalo de nuevo</Text>
+			    	?<Text style={[style.textAlert, style.familia]}>Houston, tenemos un problema, code 2003, intentalo de nuevo</Text>
 			    	:null
 			    }	
 			</ImageBackground>

@@ -16,58 +16,58 @@ export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaj
 	    imagen = imagen==null ? photo :imagen
 	   	console.log(token)
 	    if(Platform.OS === 'android'){
-	    // 	bodyIos = {
-		   //      to: token,
-		   //      notification: {
-		   //       	title: "titulo",
-					// body : `${nombre} ${mensaje}`,
-					// priority:"high",
-					// icon:"ic_notif",
-					// targetScreen:targetScreen,
-					// color:"#00ACD4",
-					// big_picture:imagen,
-					// picture:imagen,
-					// image:imagen,
-					// large_icon: imagen,
-					// sound: "default",
-					// parameter,
-					// badge:45,
-					// show_in_foreground: true
-		   //      },
-		   //      data: {
-					// targetScreen:targetScreen,
-					// parameter,
-					// // badge:54,
-		   //      },
-		         
-		   //      // priority: 10
-		   //  };
-		   //  firebaseClient.send(JSON.stringify(bodyIos), "notification");
-		    
-	        bodyAndroid = {
-		        "to": token,
-		      	"data": {
-		            "custom_notification": {
-						title: titulo,
-						body : `${nombre} ${mensaje}`,
-						priority:"high",
-						icon:"ic_notif",
-						targetScreen:targetScreen,
-						color:"#00ACD4",
-						big_picture:imagen,
-						picture:imagen,
-						image:imagen,
-						large_icon: imagen,
-						sound: "default",
-						parameter,
-						badge:23,
-						number:20,
-						show_in_foreground: true
-		            }
+	    	bodyIos = {
+		        to: token,
+		        notification: {
+		         	title: titulo,
+					body : `${nombre} ${mensaje}`,
+					priority:"high",
+					icon:"ic_notif",
+					targetScreen:targetScreen,
+					color:"#00ACD4",
+					big_picture:imagen,
+					picture:imagen,
+					image:imagen,
+					large_icon: imagen,
+					sound: "default",
+					parameter,
+					// badge:33,
+					show_in_foreground: true
 		        },
-	    		// "priority": 10
-	     	}
-	      	firebaseClient.send(JSON.stringify(bodyAndroid), "notification");
+		        data: {
+					targetScreen:targetScreen,
+					parameter,
+					// badge:54,
+		        },
+		         
+		        // priority: 10
+		    };
+		    firebaseClient.send(JSON.stringify(bodyIos), "notification");
+		    
+	     //    bodyAndroid = {
+		    //     "to": token,
+		    //   	"data": {
+		    //         "custom_notification": {
+						// title: titulo,
+						// body : `${nombre} ${mensaje}`,
+						// priority:"high",
+						// icon:"ic_notif",
+						// targetScreen:targetScreen,
+						// color:"#00ACD4",
+						// big_picture:imagen,
+						// picture:imagen,
+						// image:imagen,
+						// large_icon: imagen,
+						// sound: "default",
+						// parameter,
+						// badge:23,
+						// number:20,
+						// show_in_foreground: true
+		    //         }
+		    //     },
+	    	// 	// "priority": 10
+	     // 	}
+	     //  	firebaseClient.send(JSON.stringify(bodyAndroid), "notification");
 			
 	    }else{
 	    // 	bodyAndroid = {

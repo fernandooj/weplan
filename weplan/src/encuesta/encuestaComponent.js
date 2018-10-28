@@ -21,6 +21,7 @@ export default class encuestaComponent extends Component{
 	async componentWillMount(){
 		const {params} = this.props.navigation.state
 		let planId = params.planId
+		console.log(planId)
 		let notificaciones = params.notificaciones
 		let id = params.id
 		let nombrePlan = params.nombrePlan
@@ -315,6 +316,7 @@ export default class encuestaComponent extends Component{
 
   	render() {
 		const {show, items, itemsPlan, render, planId, guia_inicio} = this.state
+		console.log(planId)
 		const {navigate} = this.props.navigation
 		return (
 				<View  style={style.contentItem}>

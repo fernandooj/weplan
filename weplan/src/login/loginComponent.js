@@ -8,7 +8,8 @@ import Icon from 'react-native-fa-icons';
 import {FBLogin, FBLoginManager} from 'react-native-facebook-login';
 import FCM, {NotificationActionType} from "react-native-fcm";
 import {registerKilledListener, registerAppListener} from "../push/Listeners";
- 
+import {PagedContacts} from 'react-native-paged-contacts';
+let pg = new PagedContacts(); 
  
 registerKilledListener();
 export default class LoginComponent extends Component{
@@ -23,7 +24,10 @@ export default class LoginComponent extends Component{
 		};
 	}
 
-	componentWillMount() {
+	async componentWillMount() {
+		pg.requestAccess().then((granted) => {
+			console.log(granted)
+		});
 		const {google} = this.state
     	////////////////////////////////////////////////////////////////////////////////////
     	/////////////////////		LOAD GOOGLE DATA 	///////////////////////////////////
