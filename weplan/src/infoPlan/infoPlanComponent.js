@@ -41,8 +41,9 @@ export default class infoPlanComponent extends Component{
 	  	}
 	}
 	componentWillMount(){
- 		let restricciones1 = []
- 		let asignados1 = []
+ 		let restricciones1  = []  /////  variablae para guardar los id de las restricciones
+ 		let asignados1 		= []  /////  variablae para guardar los id de los asignados
+ 	 
  		const {restricciones, asignados, loc, planId, nombre, descripcion, fechaLugar, lugar, notificaciones, _id} = this.props.navigation.state.params.plan
  	 
  		restricciones.map(e=>{
@@ -51,6 +52,7 @@ export default class infoPlanComponent extends Component{
  		asignados.map(e=>{
  			asignados1.push(e._id)
  		})
+ 		 
  		 
  		this.setState({restricciones:restricciones1, asignados:asignados1, planId:_id, restriccionesAsignadas:restricciones, usuariosAsignados:asignados, lat:loc.coordinates[1], lng:loc.coordinates[0], loc, nombre, descripcion, fechaLugar, lugar, notificaciones})
  	}
@@ -395,7 +397,7 @@ export default class infoPlanComponent extends Component{
 	}	
 	handleSubmit(){
 		const {nombre, descripcion, fechaLugar, lat, lng, asignados, lugar, restricciones, planId} = this.state
-		axios.put('/x/v1/pla/plan/editar', {nombre, descripcion, fechaLugar, lat, lng, asignados, lugar, restricciones, planId, area:0})
+		axios.put('/x/v1/pla/plan/editar', {nombre, descripcion, fechaLugar, lat, lng, asignados, lugar, restricciones, planId, notificaciones:asignados, area:0})
 		.then(e=>{
 			console.log(e.data)
 			if(e.data.code==1){	

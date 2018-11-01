@@ -1,7 +1,7 @@
 
 import React, {Component} from 'react'
 import {View, Text, TouchableOpacity, ScrollView, Image, Alert, AsyncStorage} from 'react-native'
-import {style} from '../item/style'
+import {style} from './style'
  
 import axios from 'axios'
 import CrearItemComponent from './crearItemComponent'
@@ -218,7 +218,8 @@ export default class ItemComponent extends Component{
 								{'$ '+Number(e.deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
 							</Text>
 							<TouchableOpacity onPress={()=>this.ingresarItem(e.id, e.token, e.titulo, e.imagen, e.deuda, e.valor)} style={style.aceptarPendiente}>
-								<Text style={style.familia}>Me Interesa</Text>
+								{/*<Text style={style.familia}>Me Interesa</Text>*/}
+								<Image style={style.meInteresa} source={require('../assets/images/me_interesa2.png')}  />
 							</TouchableOpacity>
 						</View>
 				   	</TouchableOpacity>
@@ -230,14 +231,14 @@ export default class ItemComponent extends Component{
 	/////// SI EL USUARIO HACE CLICK EN ME INTERESA, ENVIA LA NOTIFICACION AL CREADOR DEL ITEM PARA DARLE PERMISO DE INGRESAR
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	ingresarItem(idItem, token, titulo, imagen){
+		let articulosPublicados = this.state.articulosPublicados.filter(e=>{
+			return e.id!=idItem
+		})
+		this.setState({articulosPublicados})
 		axios.put('x/v1/ite/item', {idItem})
 		.then(e=>{
 			if (e.data.code==1) {
 				sendRemoteNotification(4, token, "notificacion", 'Quieren acceder a un item', `, quiere acceder a ${titulo}`, imagen)
-				let articulosPublicados = this.state.articulosPublicados.filter(e=>{
-					return e.id!=idItem
-				})
- 				this.setState({articulosPublicados})
 			}
 		})
 		.catch(err=>{

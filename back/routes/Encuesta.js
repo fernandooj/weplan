@@ -177,7 +177,7 @@ router.post('/:id', (req,res)=>{
 	////////////////////////////////////////  RECIVO LA SEGUNDA IMAGEN 		/////////////////////////////////////////
 	if (req.files.imagen2) {
 		let extension2 = req.files.imagen2.name.split('.').pop()
-			extension2 = extension=='HEIC' ?'jpg' :extension
+			extension2 = extension2=='HEIC' ?'jpg' :extension2
 		let fullUrl2 = '../../front/docs/public/uploads/encuesta/'+fechab+'_'+randonNumber2+'.'+extension2
 		ruta2 = req.protocol+'s://'+req.get('Host') + '/public/uploads/encuesta/'+fechab+'_'+randonNumber2+'.'+extension2
 		fs.rename(req.files.imagen2.path, path.join(__dirname, fullUrl2))

@@ -181,6 +181,7 @@ export default class ChatComponent extends Component{
 		const {navigate} = this.props.navigation
 		const {id, mensajes, planAsignados, plan, showPdf} = this.state
 		return mensajes.map((e,key)=>{
+			//////////////////////////////////////////////////////////////////////////////////////////////////// TIPO CHAT
 			if (e.tipoChat===1) {
 				return (
 					<View key={key} style={style.contenedorBox}>
@@ -208,6 +209,7 @@ export default class ChatComponent extends Component{
 					</View>	
 				)
 			}
+			//////////////////////////////////////////////////////////////////////////////////////////////////// TIPO ARTICULO
 			else if(e.tipoChat===2){
 				let esperaItem = e.esperaItem.includes(id)
 				let asignadoItem = e.asignadoItem.includes(id)
@@ -268,6 +270,7 @@ export default class ChatComponent extends Component{
 			      		</View>
 		     		</View>
 				)
+			//////////////////////////////////////////////////////////////////////////////////////////////////// TIPO ENCUESTA
 			}else if(e.tipoChat==3){
 				let asignado = e.asignados.includes(id)
 				e.respuesta1= e.respuesta1==null ? 0:e.respuesta1  
@@ -425,6 +428,7 @@ export default class ChatComponent extends Component{
 						</View>
 					</View>
 				)
+			//////////////////////////////////////////////////////////////////////////////////////////////////// TIPO CONTACTO
 			}else if (e.tipoChat===4) {
 				let estaPlan = planAsignados.includes(e.contactoId) 
 				return (
@@ -472,8 +476,8 @@ export default class ChatComponent extends Component{
 								
 								{
 									plan.idUsuario._id === id && !estaPlan && e.contactoId !=id
-									&&<TouchableOpacity onPress={()=>this.agregarUsuarioPlan(e.contactoId, e.id, e.cToken)}>
-										<Text style={style.cTextBotones}>Agregar al plan</Text>
+									&&<TouchableOpacity onPress={agregandoalplan ?null :()=>this.agregarUsuarioPlan(e.contactoId, e.id, e.cToken)}>
+										<Text style={style.cTextBotones}>{agregandoalplan ?"Agregando..." :"Agregar al plan"}</Text>
 									</TouchableOpacity>
 								}
 							</View>

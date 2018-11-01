@@ -70,7 +70,7 @@ module.exports = function(app, passport){
                                 }).then(function(data) {
                                     res.json({ status: 'SUCCESS', message: 'Reenvieando el mensaje', code:1 });
                                 }).catch(function(err) { 
-                                    res.json({ status: 'SUCCESS', message: 'no se pudo enviar el msn', code:0 });
+                                    res.json({ status: 'SUCCESS', message: err, code:0 });
                             });      
                         } 
                     })     
@@ -104,7 +104,7 @@ module.exports = function(app, passport){
                                 }).then(function(data) {
                                     res.json({ status: 'SUCCESS', message: 'Usuario Creado', user: user, code:1 });
                                 }).catch(function(err) {
-                                   res.json({ status: 'ERROR', message: 'no se pudo crear el usuario', user: user, code:0 });
+                                   res.json({ status: 'ERROR', message: err, user: user, code:0 });
                             });      
                         }
                     }
@@ -299,7 +299,7 @@ module.exports = function(app, passport){
         userServices.getOneUser(req.params.userId, (err, user)=>{
              if(!err){
                 req.session.usuario = {user:user}
-                let code = user.nombre ?1 :0 
+                let code = user ?user.nombre ?1 :0 :2
                 console.log(user)
                 res.json({status:'SUCCESS',  user, code})  
             }
@@ -539,7 +539,7 @@ module.exports = function(app, passport){
     ///////////////////////////////////////////////////////////////////////////
     const guardoPago = (req, res, user)=>{
         let activo = true
-        let data = {monto:1000000, referencia:'regalo', metodo:'efectivo', descripcion:'pago de regalo por inscribirse'}
+        let data = {monto:200000, referencia:'regalo', metodo:'virtual', descripcion:'pago de regalo por inscribirse'}
         pagoPublicoServices.create(data, user._id, activo, (err, pago)=>{
             if(err){
                 res.json({ status: 'FAIL', mensaje:err, code:0});   

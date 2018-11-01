@@ -52,15 +52,12 @@ export default class App extends Component<{}> {
     };
   }
   componentWillMount = async()=> {
-    let userInfoId = await AsyncStorage.getItem('userInfoId');
-    let badgeArray = await AsyncStorage.getItem('badgeArray');
-    let badge = await AsyncStorage.getItem('badge');
-    console.log(badgeArray)
-    console.log(badge)
-    if (userInfoId) {
+   let userInfoId = await AsyncStorage.getItem('userInfoId');
+   console.log(userInfoId)
+   if (userInfoId) {
       userInfoId = userInfoId.slice(1, -1)  
-    }
-    if (userInfoId===null || userInfoId==='0') {
+   }
+   if (userInfoId===null || userInfoId==='0') {
       axios.get('/x/v1/user/profile/')
       .then((res)=>{
          // console.log(res.data.user)
@@ -70,6 +67,7 @@ export default class App extends Component<{}> {
           this.setState({local:0})
         }else{
           this.setState({local:2})
+          AsyncStorage.setItem('userInfoId', '0');
         }
        })
       .catch((err)=>{
@@ -94,6 +92,7 @@ export default class App extends Component<{}> {
   }
   render() {
    const {google, local} = this.state
+   console.log(local)
    const NavigationApp = StackNavigator({
       Home               : {screen: local===1 ?MisPlanesComponent :local===0 ?editPerfilComponent :LoginComponent },
       Login              : {screen: LoginComponent },

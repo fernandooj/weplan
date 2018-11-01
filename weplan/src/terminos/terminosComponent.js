@@ -2,23 +2,30 @@ import React, {Component} from 'react'
 import {View, Text,  TouchableOpacity, ScrollView, StyleSheet} from 'react-native'
 
 let style = StyleSheet.create({
+	content:{
+		flex:1,
+ 
+	},
 	contenedor:{
-		padding:20,
+		paddingHorizontal:20,
+		marginBottom:50,
+		marginTop:10
 	},
 	btnHecho:{
- 		width:'80%',
+ 		width:'100%',
  		alignItems: 'center',
  		backgroundColor:'#94A5F3',
- 		borderRadius:10,
  		padding:10,
- 		marginVertical:30,
- 		marginHorizontal:40
+ 		position:"absolute",
+ 		bottom:0,
+ 		left:0
  	},
  	hecho:{
  		color:'white',
  	},
  	familia:{
 		fontFamily:'Futura-CondensedLight',
+		
 	},
 }) 
 export default class TerminosComponent extends Component{
@@ -30,7 +37,9 @@ export default class TerminosComponent extends Component{
 	render(){
  		const {navigate} = this.props.navigation 	
 		return(	 
+			<View style={style.content}>
 			<ScrollView style={style.contenedor}>
+				
 				<Text style={[style.familia]}>
 					Los siguientes términos y condiciones (los "Términos y Condiciones") rigen el uso que usted le dé a esta aplicación móvil y a cualquiera de los contenidos disponibles por o a través de esta aplicación movil, incluyendo cualquier contenido derivado del mismo. WePlan ha puesto a su disposición la aplicación movil. Podemos cambiar los Términos y Condiciones de vez en cuando, en cualquier momento sin ninguna notificación, sólo publicando los cambios en la aplicación o en el sitio web appweplan.com. AL USAR ESTA APLICACIÓN MOVIL, USTED ACEPTA Y ESTÉ DE ACUERDO CON ESTOS TÉRMINOS Y CONDICIONES EN LO QUE SE REFIERE A SU USO DE LA APLICACIÓN MOVIL. Si usted no está de acuerdo con estos Términos y Condiciones, no puede tener acceso al mismo ni usar la aplicació movil de ninguna otra manera.
  {"\n"}{"\n"}
@@ -87,10 +96,11 @@ SIN LIMITACIÓN DE LO ANTES MENCIONADO EN ESTA SECCIÓN, WePlan, Y SUS AFILIADOS
  {"\n"}{"\n"}
 22.      Misceláneos. Los Términos y Condiciones y la relación entre usted y nosotros, serán regidos por las leyes Colombianas, sin consideración a conflictos de disposiciones de ley. Usted se obliga a que cualquier causa de acción legal que resulte bajo los Términos y Condiciones será iniciada y oída en la corte apropiada en Colombia. Usted se obliga a someterse a la jurisdicción personal y exclusiva de las cortes localizadas dentro del Colombia. Nuestra falla al ejercer y hacer valer cualquier derecho o disposición de los Términos y Condiciones no constituirá una renuncia a dicho derecho o disposición. Si cualquier disposición de los Términos y Condiciones es encontrada inválida por una corte de jurisdicción competente, las partes, sin embargo, están de acuerdo en que la corte deberá esforzarse en aplicar las intenciones de las partes como están reflejadas en la disposición, y las otras disposiciones de los Términos y Condiciones permanecen vigentes.
        </Text>
-		<TouchableOpacity onPress={()=> this.props.navigation.state.params ?navigate('editPerfil2') :navigate('editPerfil')} style={style.btnHecho}>
-				<Text style={[style.hecho, style.familia]}>Acepto los términos y condiciones</Text>
-		</TouchableOpacity>  
 		   </ScrollView>
+		   <TouchableOpacity onPress={()=> this.props.navigation.state.params ?navigate('editPerfil2') :navigate('editPerfil')} style={style.btnHecho}>
+				<Text style={[style.hecho, style.familia]}>Acepto los términos y condiciones</Text>
+			</TouchableOpacity>
+		   </View>  
 		)
 	}
 

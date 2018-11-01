@@ -91,12 +91,13 @@ export const style = MediaQueryStyleSheet.create({
 		borderTopColor:'#cacaca',
 	},
 	contentText: {
-		width:'74%',
+		width:'65%',
 	},
 	valorPositivo:{
 		color:'#79CF40',
 		alignSelf: 'flex-start', 
 		width:'100%',
+		left:40
 	},
 	valorNegativo:{
 		color:'#c5012b',
@@ -302,7 +303,10 @@ export const style = MediaQueryStyleSheet.create({
 	aceptarPendiente:{
 		padding:8,
 	},
-
+	meInteresa:{
+		width:90,
+		height:30
+	},
 	////////////////////////////////////////////////////////////////////////////////////
 	////////////////// 		contenedor total
 	////////////////////////////////////////////////////////////////////////////////////

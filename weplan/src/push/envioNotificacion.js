@@ -16,6 +16,7 @@ export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaj
 	    imagen = imagen==null ? photo :imagen
 	   	console.log(token)
 	    if(Platform.OS === 'android'){
+	    	console.log("android")
 	    	bodyIos = {
 		        to: token,
 		        notification: {
@@ -31,12 +32,14 @@ export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaj
 					large_icon: imagen,
 					sound: "default",
 					parameter,
+					group: "GROUP",
 					// badge:33,
 					show_in_foreground: true
 		        },
 		        data: {
 					targetScreen:targetScreen,
 					parameter,
+					group: "GROUP",
 					// badge:54,
 		        },
 		         
@@ -67,9 +70,10 @@ export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaj
 		    //     },
 	    	// 	// "priority": 10
 	     // 	}
-	     //  	firebaseClient.send(JSON.stringify(bodyAndroid), "notification");
+	     //  	firebaseClient.send(JSON.stringify(bodyAndropaid), "notification");
 			
 	    }else{
+	    	console.log("ios")
 	    // 	bodyAndroid = {
 	    //     "to": token,
 	    //   	"data": {
@@ -108,12 +112,14 @@ export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaj
 					large_icon: imagen,
 					sound: "default",
 					parameter,
+					group: "GROUP",
 					// badge:1,
 					show_in_foreground: true
 		        },
 		        data: {
 					targetScreen:targetScreen,
 					parameter,
+					group: "GROUP",
 		        },
 		        priority: 10
 		    };

@@ -253,7 +253,8 @@ class planServices {
 			"area" 			: planData.area,
 			"restricciones" : planData.restricciones,			
 			"asignados" 	: planData.asignados,		
-			"categorias"    : planData.categorias	
+			"categorias"    : planData.categorias,	
+			"notificaciones": planData.notificaciones	
 		 }}, callback);	
 	}
 
@@ -325,7 +326,7 @@ class planServices {
 	 			$unwind:
 	 			{
 	 				path:'$UserData',
-	 				preserveNullAndEmptyArrays: true
+	 				// preserveNullAndEmptyArrays: true
 	 			}
 	 		},
 	 		{
@@ -340,7 +341,7 @@ class planServices {
 	 			$unwind:
 	 			{
 	 				path:'$ItemData',
-	 				preserveNullAndEmptyArrays: true
+	 				// preserveNullAndEmptyArrays: true
 	 			}
 	 		},
 	 		{
@@ -356,7 +357,8 @@ class planServices {
 	 				userItemId:'$ItemData.userId',
 	 				itemTitulo: '$ItemData.titulo',
 	 				valorItem:'$ItemData.valor',
-	 				asignadosItem:{ "$size": { "$ifNull": [ "$ItemData.asignados", [] ] } },
+	 				asignadosItemTotal:{ "$size": { "$ifNull": [ "$ItemData.asignados", [] ] } },
+	 				asignadosItem:"$ItemData.asignados",
 	 			},
 	 		}, 
 			{
@@ -371,7 +373,7 @@ class planServices {
 				$unwind:
 				{
 	 				path:'$PagoData',
-	 				preserveNullAndEmptyArrays: true
+	 				// preserveNullAndEmptyArrays: true
 	 			}
 			},
 			{
@@ -388,6 +390,7 @@ class planServices {
 			        fechaLugar:1,
 			        activo:1,
 			        asignadosItem:1,
+			        asignadosItemTotal:1,
 			        monto: '$PagoData.monto',
 			        abono: '$PagoData.abono',
 			        userId: '$PagoData.userId',
@@ -396,9 +399,24 @@ class planServices {
 			    }
 			},
 			// {
-		 //    	$match:{
-		 //    		userId:idUsuario
-		 //    	},
+			// 	$match: 
+			// 	{
+			// 		"$expr": {"$in": [idUsuario, "$asignadosItem"]}
+			// 	}
+			// },
+			// { 
+		 //        $redact: {
+		 //            "$cond": [
+		 //                { 
+		 //                    "$setIsSubset": [ 
+		 //                        [idUsuario],
+		 //                        "$asignadosItem"  
+		 //                    ] 
+		 //                },
+		 //                "$$KEEP",
+		 //                "$$PRUNE"
+		 //            ]
+		 //        }
 		 //    },
 			{
 			    $group:{
@@ -411,10 +429,10 @@ class planServices {
 				        	pagoActivo:  "$pagoActivo",
 				        },
 			        data: {
-                        $addToSet: {info:["$idUsuario", "$nombreUsuario", '$abono', '$imagenResize', '$nombre', '$userItemId',  '$itemTitulo', '$valorItem', '$fechaLugar', '$activo', '$asignadosItem', '$userId', "$monto", "$pagoId"]}
+                        $addToSet: {info:["$idUsuario", "$nombreUsuario", '$abono', '$imagenResize', '$nombre', '$userItemId',  '$itemTitulo', '$valorItem', '$fechaLugar', '$activo', '$asignadosItemTotal', '$userId', "$monto", "$pagoId", "$asignadosItem"]}
                     },
 			        total:{ $sum :'$monto'},
-			        count:{ $sum :1}
+			        count:{ $sum :1},
 			    }
 			},
 			

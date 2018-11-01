@@ -47,21 +47,20 @@ export function registerKilledListener(){
        
     })    
     //////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////   GUARDO EL ARRAY DEL BADGE
+    ////////////////////////////////////////////////   GUARDO EL ARRAY DEL BADGE  
     AsyncStorage.getItem('badgeArray').then((data)=>{
       if (data=='null' || data==="null" || data==null) {
         AsyncStorage.setItem('badgeArray', '[]');
       
       }
-      console.log(data)
+      
       data = JSON.parse(data)
-      console.log(data)
-      data = typeof data==='object' ?data :[]
+      data = data=="null" || data ==null ?[] :data
       let parametro = parameter ?parameter :1
-      console.log(data)
+    
       
       data.push(parametro)
-     
+      console.log(data)
       AsyncStorage.setItem('badgeArray', JSON.stringify(data));
     })
     ///////////////////////////////////////////////////////////////

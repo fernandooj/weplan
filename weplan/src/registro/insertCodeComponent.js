@@ -16,6 +16,7 @@ export default class insertCodeComponent extends Component{
 		const {navigate} = this.props.navigation
 		const {codigo} = this.state 
 		return(
+			<ScrollView style={style.contenedor} >
 			<ImageBackground style={style.fondo} >
 				<CabezeraComponent navigate={navigate} url={'Registro'} texto='Insertar Codigo'  />
 				<View>
@@ -45,6 +46,7 @@ export default class insertCodeComponent extends Component{
 			    	:null
 			    }
 			</ImageBackground>
+			</ScrollView>
 		)
 	}
 	handleSubmit(){

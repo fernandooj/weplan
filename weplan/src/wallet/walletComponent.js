@@ -26,11 +26,24 @@ export default class walletComponent extends Component{
 		this.setState({guia_inicio})
 		axios.get('/x/v1/pla/plan/suma/totales/plan')
 		.then(res=>{
+			console.log(res.data)
 			if (res.data.code===2) {
 				this.props.navigation.navigate('Login')
 				Toast.show('No éstas logueado')
 			}else{
-				this.setState({allList:res.data.result, filteredData:res.data.result})
+				let usuarioAsignado = res.data.result.filter(e=>{
+					if (e.userItemId==res.data.id || e.asignados.includes(res.data.id)) return e
+				})
+				let map = usuarioAsignado.reduce((prev, next) =>{
+				  if (next.id in prev) {
+				    prev[next.id].total += next.total;
+				  } else {
+				     prev[next.id] = next;
+				  }
+				  return prev;
+				}, {});
+				let result = Object.keys(map).map(id => map[id]);
+				this.setState({allList:result, filteredData:result})
 			}
 		})
 		.catch(res=>{

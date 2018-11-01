@@ -50,7 +50,8 @@ router.get('/', (req, res)=>{
 /////// OBTENGO LOS PLANES PUBLICOS DEL USUARIO LOGUEADO, ESTO PARA EL ADMINISTRADOR
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.get('/planesPublicos/', (req, res)=>{
-	if (!req.session) {
+	console.log(req.session)
+	if (!req.session.usuario) {
 		res.json({ status: 'FAIL', mensaje:'sin sesion', code:0 });
 	}else{
 		planServices.getPublicos(req.session.usuario.user._id, req.session.usuario.user.acceso, (err, plan)=>{
@@ -646,57 +647,67 @@ router.get('/suma/totales/plan', (req, res)=>{
 			if(err){
 				res.json({status: 'FAIL', err, code:0})
 			}else{
-				let abonoTrue = pago.filter(e=>{
-					// console.log(e.data[0].info[14])
-					// return e.data[0].info[14]
-					// if (e._id.abono!==false && e.data[0].info[9]===true && e.data[0].info[14]==true &&e._id.userItemId!==undefined) return e
-					if (e._id.abono!==false && e._id.pagoActivo===true) return e
-				})
 				let id = req.session.usuario.user._id
 				let suma=[]
-				let getUserpays = abonoTrue.map(e=>{
+				///////////////////////////////////////////////////////////////////  DEVUELVO LOS PAGOS ACTIVOS, QUE SEAN TIPO ABONOS Y QUE EL USUARIO ESTE EN ESE ITEM
+				let abonoTrue = pago.filter(e=>{
+					if (e._id.abono!==false && e._id.pagoActivo===true) return e
+				})
+				
+				// let usuarioAsignado = abonoTrue.map(e=>{
+				// 	if (e._id.userItemId==id || isInArray(id, e._id.asignadosItem)) return e
+				// })
+				
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				//////////////////////////////////////////////////////////////////  SI EL USUARIO ES EL DUEÑO DEL ITEM TRAIGO CIERTA INFORMACION 
+				let result = abonoTrue.map(e=>{
 					e.data.filter(e2=>{
-						// return e2.info[11]==id
 						if (e2.info[11]==id){
 							suma.push(e2.info[12])
 						}
-						
 					})
 					if (e._id.userItemId==id) {
 						return {
 							id:e._id.id,
 							nombrePlan:e.data[0].info[4],
 							imagen:e.data[0].info[3],
-							total:e.total-Math.abs((Math.ceil((e.data[0].info[7]/(e.data[0].info[10]+1))/100)*100))
+							total:e.data[0].info[7]-e.total,
+							monto:e.data[0].info[7],
+							nombreUsuario:e.data[0].info[1],
+							asignados:e.data[0].info[14],
+							userItemId:e._id.userItemId
 						}
 					}else{
 						return {
 							id:e._id.id,
 							nombrePlan:e.data[0].info[4],
 							imagen:e.data[0].info[3],
-							total:suma.reduce(add, 0)-Math.abs((Math.ceil((e.data[0].info[7]/(e.data[0].info[10]+1))/100)*100))
+							total:suma.reduce(add, 0)-Math.abs((Math.ceil((e.data[0].info[7]/(e.data[0].info[10]+1))/100)*100)),
+							asignados:e.data[0].info[14]
 						}
 					}
 				})
+				 
+				
 				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 				///////////////////////  ESTE CODIGO LO HIZE POR QUE AL CREAR MAS DE UN ITEM SE DUPLICA EL PLAN, ASI QUE UNO LOS ITEM Y SUMO LOS TOTALES	
-				let map = getUserpays.reduce((prev, next) =>{
-				  if (next.id in prev) {
-				    prev[next.id].total += next.total;
-				  } else {
-				     prev[next.id] = next;
-				  }
-				  return prev;
-				}, {});
-				let result = Object.keys(map).map(id => map[id]);
+				// let map = getUserpays.reduce((prev, next) =>{
+				//   if (next.id in prev) {
+				//     prev[next.id].total += next.total;
+				//   } else {
+				//      prev[next.id] = next;
+				//   }
+				//   return prev;
+				// }, {});
+				// let result = Object.keys(map).map(id => map[id]);
 				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-				res.json({status: 'SUCCESS', result, code:1 })
+				res.json({status: 'SUCCESS', result, code:1, pago, abonoTrue, id })
 			}
 		})
 	}
 })
 
-
+ 
 router.get('/suma/totales/miplan', (req, res)=>{
 	if (!req.session.usuario) {
 		res.json({ status: 'FAIL', mensaje:'sin sesion', result:[], code:2 });
