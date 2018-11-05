@@ -721,18 +721,37 @@ module.exports = function(app, passport){
         let telefono = req.params.telefono.split('+').join('').split('-').join('').split('(').join('').split(')').join('').split(' ').join('');
         telefono = telefono.length===12 ? `+57${telefono.substring(2,12)}` :telefono.length===11 ?`+1${telefono.substring(1,10)}` :`+57${telefono}` 
 
-        res.json({ status: 'SUCCESS', message: 'Reenvieando el mensaje', code:1 });
         client.api.messages
             .create({
-              body: `Tu amigo ${req.session.usuario.user.nombre} te invitó a que descargues We Plan: https://play.google.com/store/apps/details?id=com.weplan` ,
+              body: `Tu amigo ${req.session.usuario.user.nombre} te invitó a que descargues We Plan: https://appweplan.com/downloadApp` ,
               to:  telefono,
               from: '+17328750948',
             }).then(function(data) {
-                res.json({ status: 'SUCCESS', message: 'Reenvieando el mensaje', code:1 });
+                res.json({ status: 'SUCCESS', message: 'mensaje enviado', code:1 });
             }).catch(function(err) { 
                 res.json({ status: 'FAIL',    message: error, code:0 });
         }); 
+    })
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////    enviar sms desde la pagina web
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    app.get('/x/v1/user/enviarsms/:telefono', (req, res)=>{
+
+        let telefono = req.params.telefono.split('+').join('').split('-').join('').split('(').join('').split(')').join('').split(' ').join('');
+        //telefono = telefono.length===12 ? `+57${telefono.substring(2,12)}` :telefono.length===11 ?`+1${telefono.substring(1,10)}` :`+57${telefono}` 
+        telefono = "+"+telefono
+        console.log(telefono)
+        client.api.messages
+            .create({
+              body: `Descarga We Plan: https://appweplan.com/downloadApp` ,
+              to:  telefono,
+              from: '+17328750948',
+            }).then(function(data) {
+                res.json({ status: 'SUCCESS', message: 'mensaje enviado', code:1 });
+            }).catch(function(err) { 
+                res.json({ status: 'FAIL', message: err, code:0 });
+        }); 
     })
     
 

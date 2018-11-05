@@ -1,13 +1,12 @@
-
 <!DOCTYPE html>
 <html>
   <head>
-    <title>ReactJS Bootstrap Starter</title>
+    <title>App Weplan</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="ReactJS Bootstrap Starter">
-    <meta name="author" content="Erwan DATIN (MacKentoch)">
+    <meta name="description" content="WePlan es la nueva forma de realizar todos tus planes">
+    <meta name="author" content="Fernando Ortiz">
     <style>
       .loading-message {
         position: relative;
@@ -65,6 +64,7 @@
         }
       }
     </style>
+    <link rel="stylesheet" type="" href="/public/assets/app.styles.css">
   </head>
   <body>
     <div class="loader">
@@ -79,9 +79,8 @@
       </div>
     </div>
     <section id="root"></section>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyesbQMyKVVbBgKVi2g6VX7mop2z96jBo&libraries=places"></script>
-
-    <script type="text/javascript" src="http://localhost:3001/public/assets/bundle.js"></script>
+    <script type="text/javascript" src="/public/assets/app.vendor.bundle.js"></script>
+    <script type="text/javascript" src="/public/assets/app.bundle.js"></script>
     <script type="text/javascript">
       // loading fadeOut pure vanilla JS (I9+)
       ;(function(){

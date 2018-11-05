@@ -161,7 +161,7 @@ export default class importarComponent extends Component{
 
 	
 	handleSubmit(id, telefono){
-		axios.get(`/x/v1/user/enviarsmsamistad/${telefono}/${Platform.OS}` )
+		axios.get(`/x/v1/user/enviarsmsamistad/${telefono}` )
 		.then((e)=>{
 			console.log(e)
 			if (e.data.code==1) {

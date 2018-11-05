@@ -26,7 +26,7 @@ export default class AbonarComponent extends Component{
   render() {
     const {enviarChat, valor, adjuntarAmigos, asignados, valorInicial} = this.state
     return (
-      <View style={style.container}>
+      <View style={style.container2}>
         <View style={style.modalIn}>
          
           {/* rest modal */}

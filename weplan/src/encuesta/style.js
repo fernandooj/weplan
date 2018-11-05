@@ -356,6 +356,18 @@ export const style = MediaQueryStyleSheet.create({
 	////////////////////////////////////////////////////////////////////////////////////
 	////////////////// 		abono deuda
 	////////////////////////////////////////////////////////////////////////////////////
+	container2:{
+		backgroundColor:'rgba(0,0,0,.6)',
+		width:screenWidth,
+		height:screenHeight,
+		zIndex:1000,
+		justifyContent: 'center', 
+		alignItems: 'center',
+		top:0,
+	},
+	modalIn:{
+ 
+	},
 	modalAbono:{
 		width:screenWidth/1.3,
  		paddingBottom:45,

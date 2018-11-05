@@ -38,7 +38,7 @@ const obtieneUsuarios = ()=>{
 	return dispatch=>{
 		return axios.get('/x/v1/users/')
 	   .then(res=>{
-	   		console.log(res.data)
+	   		// console.log(res.data)
 	   		dispatch({
 	   			type:'OBTENER_USUARIOS',
 	   			usuarios: res.data.usuarios
@@ -49,7 +49,7 @@ const obtieneUsuarios = ()=>{
 	   })
 	}
 }
- 
+  
 const obtienePlan = ()=>{
 	return dispatch=>{
 		return axios.get('/x/v1/pla/plan/planesPublicos')

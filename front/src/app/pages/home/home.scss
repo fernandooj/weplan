@@ -3,47 +3,267 @@
 
 /*  better naming with camelCase than kebab-case */
 
-.homeInfo {
-  .mainTitle {
-    color: #222 !important;
-    font-weight: 800;
-  }
-  .lightNote {
-    font-size: 0.7em;
-  }
-}
-.redes{
-	display: flex;
-	div{
-		width: 200px;
-    	margin: auto;
-		i{
-			margin-right: 11px;
-			border-right: 1px solid #0000002b;
-			padding: 10px;
-			color:#ffffff;
-			float:left;
-			font-size:28px;
+/*********************    MENU SECUNDARIO      *******************/
+.navegacion{
+	position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 4px 25px;
+    box-shadow: 0px 5px 24px 3px rgba(128, 128, 128, 0.31);
+
+	img{
+		width: 77px;
+	}
+	ul{
+		float: right;
+		height: 100%;
+		padding: 20px 0;
+		margin: 0;
+		li{
+			display: inline-block;
+			a{
+				padding: 8px;
+			    border-radius: 5px;
+			    font-size: 15px;
+			    margin: 1px !important;
+			    color: #009de5;
+			}
 		}
-		p{
-			margin:0;
-			color:#ffffff;
-			font-size: 18px;
-			padding: 10px;
+		.cuentaBtn{
+			background-color: #009de5;
+			color: #ffffff;
 		}
 	}
 }
-.facebookBtn{
-	background:#3b5998;
-	margin-right: 9%;
+
+
+/*********************    SECTION 1            *******************/
+.banner{
+	background-color: #ffffff;
 }
 
-.googleBtn{
-	background:#d34836;
+.logo{
+	width:100px
 }
-.home{
-	margin: auto;
-    width: 100px;
+.navigator{
+	position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 4px 25px;
+    background: rgba(0,0,0,0);
+	ul{
+		float: right;
+		height: 100%;
+		padding: 20px 0;
+		background: rgba(0,0,0,0) !important;
+		margin: 0 !important;
+	}
+	li{
+		display: inline-block;
+		a{
+			padding: 8px;
+		    border-radius: 5px;
+		    font-size: 15px;
+		    margin: 1px !important;
+		    color: #009de5;
+		}
+	}
+	.cuentaBtn{
+		background-color: #009de5;
+		color: #ffffff;
+	}
+}
+
+
+.contenedorBanner{
+	>div{
+		display:inline-block
+	}
+	position:absolute;
+	right:0;
+	bottom:0;
+	img{
+		width:450px;
+		position:relative;
+	}
+	h1{
+		display:inline-block;
+		position:relative;
+		font-size: 53px;
+    	line-height: 48px;
+	}
+}
+.contenedorBannerIzq{
+    position: relative;
+    z-index: 2;
+    color: #ffffff;
+    background: rgba(70, 48, 48, 0.18824);
+    width: 30%;
+    border-radius: 10px;
+    font-size: 25px;
+    text-align: center;
+	h2{
+		font-size: 22px;
+    	line-height: 27px;
+    	margin: 26px 0;
+		color: #ffffff;
+	}
+}
+.modal{
+    position: absolute;
+    background-color: white;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    top: auto;
+    min-height: 100%;
+    width: 100%;
+    max-width: 100%;
     display: flex;
-    margin-bottom: 14px;
+    -webkit-box-align: center;
+    align-items: center;
+	>div{
+		height: 100%;
+	    display: flex;
+	    -webkit-box-pack: center;
+	    justify-content: center;
+	    -webkit-box-align: center;
+	    align-items: center;
+	    flex-direction: column;
+	    margin: 40px auto;
+	}
 }
+.btnClose{
+	position: absolute;
+	z-index: 100;
+	color: #605e5e;
+	top: 20px;
+	right: 20px;
+	font-size: 40px;
+	cursor: pointer;
+}
+
+.btnDescargar{
+	cursor:pointer;
+	background: #009de5;
+    width: 126px;
+    margin: auto;
+    color: white;
+    border-radius: 12px;
+    padding: 3px;
+    font-size: 17px;
+    box-shadow: 3px 3px 12px #5957576b;
+}
+
+
+/************.  SECTION 2 ********/
+.section2{
+	text-align:center;
+	h2{
+		font-size: 40px;
+	}
+	>p{
+		font-size: 20px;
+		width: 56%;
+		text-align: center;
+		margin: 22px auto;
+	}
+	aside{
+		width:18%;
+		display:inline-block;
+		margin: 0 1%;
+		p{
+			color:#ffffff;
+			font-size:15px
+		}
+	}
+	
+	img{
+		width:100%
+	}
+}
+
+ 
+/************.  SECTION 3 ********/
+
+.section3{
+	ul{
+		margin:0
+	}
+	li{
+		display:inline-block;
+		width:33%
+	}
+	h3{
+		font-size: 30px;
+	    line-height: 36px;
+	    position: relative;
+	    top: 20px;
+	    margin: auto;
+	    text-align: center;
+	}
+	li:nth-child(2){
+		// top: 120px;
+    	position: relative;
+	}
+	img{
+		width:96%
+	}
+}
+
+footer{
+	background: #cccccc;
+	padding: 18px;
+    ul{
+    	display: inline-block;
+	    margin: 0;
+	    width: 50%;
+	    text-align: center;
+    	li{
+			display:inline-block
+		}
+		a{
+			padding:10px
+		}
+		i{
+			font-size:23px
+		}
+    }
+	
+}
+
+
+
+@media (max-width: 1300px) {
+	.section2{
+		aside{
+			p{
+				color:#ffffff;
+				font-size:12px
+			}
+		}
+	}
+}
+
+@media (min-width: 1700px) {
+	.section2{
+		width:80%;
+		margin:auto;
+		aside{
+			width:18%;
+			display:inline-block;
+			margin: 0 1%;
+			p{
+				color:#ffffff;
+				font-size:12px
+			}
+		}
+	}
+}
+
+
+
+
+
+

@@ -653,11 +653,6 @@ router.get('/suma/totales/plan', (req, res)=>{
 				let abonoTrue = pago.filter(e=>{
 					if (e._id.abono!==false && e._id.pagoActivo===true) return e
 				})
-				
-				// let usuarioAsignado = abonoTrue.map(e=>{
-				// 	if (e._id.userItemId==id || isInArray(id, e._id.asignadosItem)) return e
-				// })
-				
 				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				//////////////////////////////////////////////////////////////////  SI EL USUARIO ES EL DUEÑO DEL ITEM TRAIGO CIERTA INFORMACION 
 				let result = abonoTrue.map(e=>{
@@ -683,12 +678,12 @@ router.get('/suma/totales/plan', (req, res)=>{
 							nombrePlan:e.data[0].info[4],
 							imagen:e.data[0].info[3],
 							total:suma.reduce(add, 0)-Math.abs((Math.ceil((e.data[0].info[7]/(e.data[0].info[10]+1))/100)*100)),
-							asignados:e.data[0].info[14]
+							asignados:e.data[0].info[14],
+							nombreUsuario:e.data[0].info[1],
 						}
 					}
 				})
-				 
-				
+				 				
 				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 				///////////////////////  ESTE CODIGO LO HIZE POR QUE AL CREAR MAS DE UN ITEM SE DUPLICA EL PLAN, ASI QUE UNO LOS ITEM Y SUMO LOS TOTALES	
 				// let map = getUserpays.reduce((prev, next) =>{
@@ -716,7 +711,8 @@ router.get('/suma/totales/miplan', (req, res)=>{
 			if(err){
 				res.json({status: 'FAIL', err, code:0})
 			}else{
-				
+				let id = req.session.usuario.user._id
+				let suma=[]
 		 
 				let abonoTrue = pago.filter(e=>{
 					if (e._id.abono!==false && e.data[0].info[9]==true) return e
@@ -726,29 +722,49 @@ router.get('/suma/totales/miplan', (req, res)=>{
 					if(e.data[0].info[5]!=req.session.usuario.user._id) {e.total=e.total-e.data[0].info[7]}
 					return e
 				})
-		 		let data = data1.map(e=>{
-					return{
-						id:e._id.id,
-						nombrePlan:e.data[0].info[4],
-						nombreUsuario:e.data[0].info[1],
-						imagen:e.data[0].info[3],
-						fecha:e.data[0].info[8],
-						total: e.total
+		 		let result = data1.map(e=>{
+					e.data.filter(e2=>{
+						if (e2.info[11]==id){
+							suma.push(e2.info[12])
+						}
+					})
+					if (e._id.userItemId==id) {
+						return {
+							id:e._id.id,
+							nombrePlan:e.data[0].info[4],
+							imagen:e.data[0].info[3],
+							total:e.data[0].info[7]-e.total,
+							monto:e.data[0].info[7],
+							nombreUsuario:e.data[0].info[1],
+							asignados:e.data[0].info[14],
+							userItemId:e._id.userItemId,
+							fecha:e.data[0].info[8],
+						}
+					}else{
+						return {
+							id:e._id.id,
+							nombrePlan:e.data[0].info[4],
+							imagen:e.data[0].info[3],
+							total:suma.reduce(add, 0)-Math.abs((Math.ceil((e.data[0].info[7]/(e.data[0].info[10]+1))/100)*100)),
+							asignados:e.data[0].info[14],
+							nombreUsuario:e.data[0].info[1],
+							fecha:e.data[0].info[8],
+						}
 					}
 				})
 
-				let map = data.reduce((prev, next) =>{
-				  if (next.id in prev) {
-				    prev[next.id].total += next.total;
-				  } else {
-				     prev[next.id] = next;
-				  }
-				  return prev;
-				}, {});
+				// let map = data.reduce((prev, next) =>{
+				//   if (next.id in prev) {
+				//     prev[next.id].total += next.total;
+				//   } else {
+				//      prev[next.id] = next;
+				//   }
+				//   return prev;
+				// }, {});
 
-				let result = Object.keys(map).map(id => map[id]);
+				// let result = Object.keys(map).map(id => map[id]);
 
-				res.json({result})
+				res.json({result, code:1, id})
 			}
 		})
 	}

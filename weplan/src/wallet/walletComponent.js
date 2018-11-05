@@ -34,6 +34,8 @@ export default class walletComponent extends Component{
 				let usuarioAsignado = res.data.result.filter(e=>{
 					if (e.userItemId==res.data.id || e.asignados.includes(res.data.id)) return e
 				})
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+				///////////////////////  ESTE CODIGO LO HIZE POR QUE AL CREAR MAS DE UN ITEM SE DUPLICA EL PLAN, ASI QUE UNO LOS ITEM Y SUMO LOS TOTALES	
 				let map = usuarioAsignado.reduce((prev, next) =>{
 				  if (next.id in prev) {
 				    prev[next.id].total += next.total;
@@ -43,6 +45,7 @@ export default class walletComponent extends Component{
 				  return prev;
 				}, {});
 				let result = Object.keys(map).map(id => map[id]);
+				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				this.setState({allList:result, filteredData:result})
 			}
 		})

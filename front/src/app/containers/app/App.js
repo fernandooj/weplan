@@ -54,12 +54,12 @@ class App extends Component {
     }
     return (
       <div id="appContainer">
-        <NavigationBar
+       {/* <NavigationBar
           showMenu={showMenu}
           infoUser={this.props.perfil.user}
           handleLeftNavItemClick={this.handleLeftNavItemClick}
           handleRightNavItemClick={this.handleRightNavItemClick}
-        />
+        />*/}
         <div className="container-fluid">
           <MainRoutes />
         </div>

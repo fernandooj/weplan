@@ -30,8 +30,25 @@ export default class MisPlanesComponent extends Component{
 				this.props.navigation.navigate('Login')
 				Toast.show('No éstas logueado')
 			}else{
-				let filteredData = res.data.result
-				let planesAsignados = res.data.result==0 ?1 :2
+				
+				let usuarioAsignado = res.data.result.filter(e=>{
+					if (e.userItemId==res.data.id || e.asignados ?e.asignados.includes(res.data.id) :true) return e
+				})
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+				///////////////////////  ESTE CODIGO LO HIZE POR QUE AL CREAR MAS DE UN ITEM SE DUPLICA EL PLAN, ASI QUE UNO LOS ITEM Y SUMO LOS TOTALES	
+				let map = usuarioAsignado.reduce((prev, next) =>{
+				  if (next.id in prev) {
+				    prev[next.id].total += next.total;
+				  } else {
+				     prev[next.id] = next;
+				  }
+				  return prev;
+				}, {});
+				let result = Object.keys(map).map(id => map[id]);
+
+				let filteredData = result
+				let planesAsignados = result==0 ?1 :2
+				console.log(filteredData)
 				this.setState({allList:filteredData, filteredData, planesAsignados})
 			}
 		})
@@ -58,7 +75,7 @@ export default class MisPlanesComponent extends Component{
 					<Text style={[MisPlanesStyle.nombre, MisPlanesStyle.familia]}>{e.nombrePlan.length<27 ?e.nombrePlan :e.nombrePlan.substring(0, 27)+' ...'}</Text>
 					<View style={MisPlanesStyle.boxPlan1} >
 						<Text style={[MisPlanesStyle.fechaLugar, MisPlanesStyle.familia]}>{e.fecha}</Text>
-						<View style={e.total>=0 ?MisPlanesStyle.debe :[MisPlanesStyle.debe, MisPlanesStyle.noDebe]}></View>
+						<View style={e.total>0 ?MisPlanesStyle.debe :e.total===0 ?MisPlanesStyle.deudaCero :[MisPlanesStyle.debe, MisPlanesStyle.noDebe]}></View>
 					</View>
 				</TouchableOpacity>
 				})

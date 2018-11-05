@@ -90,6 +90,13 @@ export const MisPlanesStyle = MediaQueryStyleSheet.create({
 		backgroundColor:'#BF0005',
 		borderRadius:8,
 	},
+	deudaCero:{
+		backgroundColor:'#98c2c6',
+		borderRadius:8,
+		width:16,
+		height:16,
+		marginTop:10
+	},
 	fechaLugar:{
 		fontSize:20,
 		color:'#98c2c6',
