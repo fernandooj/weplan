@@ -43,6 +43,7 @@ export default class infoPlanComponent extends Component{
 	componentWillMount(){
  		let restricciones1  = []  /////  variablae para guardar los id de las restricciones
  		let asignados1 		= []  /////  variablae para guardar los id de los asignados
+ 		let notificaciones1 = []  /////  variablae para guardar los id de los users en notificaciones
  	 
  		const {restricciones, asignados, loc, planId, nombre, descripcion, fechaLugar, lugar, notificaciones, _id} = this.props.navigation.state.params.plan
  	 
@@ -52,9 +53,12 @@ export default class infoPlanComponent extends Component{
  		asignados.map(e=>{
  			asignados1.push(e._id)
  		})
+ 		notificaciones.map(e=>{
+ 			notificaciones1.push(e._id)
+ 		})
  		 
- 		 
- 		this.setState({restricciones:restricciones1, asignados:asignados1, planId:_id, restriccionesAsignadas:restricciones, usuariosAsignados:asignados, lat:loc.coordinates[1], lng:loc.coordinates[0], loc, nombre, descripcion, fechaLugar, lugar, notificaciones})
+ 		///// asignadosInicial es para identificar los primeros usuarios y comparar con los nuevos mirar linea 396 handlesubmit, en caso de que se cambien los usuarios asignados al plan
+ 		this.setState({restricciones:restricciones1, asignados:asignados1, asignadosInicial:asignados1, planId:_id, restriccionesAsignadas:restricciones, usuariosAsignados:asignados, lat:loc.coordinates[1], lng:loc.coordinates[0], loc, nombre, descripcion, fechaLugar, lugar, notificaciones:notificaciones1})
  	}
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////  ACTUALIZA LA UBICACION //////////////////////////////////////////////////////////////////////////
@@ -369,35 +373,56 @@ export default class infoPlanComponent extends Component{
 				}
 				</View>
 				{
+		    		exitoso
+			    	&&<Text style={style.exitoso}>Plan Actualizado</Text>
+			    }
+				{
 					permiteEditar
 					&&<TouchableOpacity onPress={() => { this.handleSubmit()} } style={style.btnHecho}>
 						<Text style={[style.hecho, style.familia]}>Editar !</Text>
 					</TouchableOpacity>	
 				}
-				{
-		    		exitoso
-			    	&&<Text style={style.exitoso}>Plan Actualizado</Text>
-			    }
+				
 			    {/* listado */}
-					 
-					{
-						menus.map((e, key)=>{
-							if(e.show){
-								return (<TouchableOpacity onPress={e.funcion} key={key} style={style.botones}>
-									<Text style={key==1 ?[style.textoBotones, style.familia] :[style.textoBotones, style.textoBotonesLast, style.familia]}>{e.texto}</Text>
-								</TouchableOpacity>)
-							}
-							
-						})
-					}
-					 
+				{
+					menus.map((e, key)=>{
+						if(e.show){
+							return (<TouchableOpacity onPress={e.funcion} key={key} style={style.botones}>
+								<Text style={key==1 ?[style.textoBotones, style.familia] :[style.textoBotones, style.textoBotonesLast, style.familia]}>{e.texto}</Text>
+							</TouchableOpacity>)
+						}
+						
+					})
+				}
 			</View>
 		</ScrollView>
 		)
 	}	
 	handleSubmit(){
-		const {nombre, descripcion, fechaLugar, lat, lng, asignados, lugar, restricciones, planId} = this.state
-		axios.put('/x/v1/pla/plan/editar', {nombre, descripcion, fechaLugar, lat, lng, asignados, lugar, restricciones, planId, notificaciones:asignados, area:0})
+
+		let {nombre, descripcion, fechaLugar, lat, lng, asignados, asignadosInicial, notificaciones, lugar, restricciones, planId, usuariosAsignados} = this.state
+		console.log(usuariosAsignados)
+
+		/////   1--  identificar los que se eliminaron, comparando el nuevo array con el asignadosInicial el que guarda los asignados iniciales y guardarlos en un array
+		let eliminados = asignadosInicial.filter(x=> !asignados.includes(x))
+
+		////    2--  identifico los nuevos asignados   
+		let nuevos  = asignados.filter(x=> !asignadosInicial.includes(x))
+		
+		////   3--  identifico los nuevos asignados con su respectivo token   
+		let notificacionToken = usuariosAsignados.filter(x=> !asignadosInicial.includes(x._id))
+		
+		////   4--  elimino al usuario de la notificacion  
+		let nuevaNotificacion = notificaciones.filter(x=> !eliminados.includes(x))
+
+		////   5--  agrego los nuevos usuarios a la notificacion
+		notificaciones =  nuevaNotificacion.concat(nuevos)
+ 
+	 
+		console.log(notificacionToken)
+		console.log(nuevos)
+
+		axios.put('/x/v1/pla/plan/editar', {nombre, descripcion, fechaLugar, lat, lng, asignados, lugar, restricciones, planId, notificaciones, area:0})
 		.then(e=>{
 			console.log(e.data)
 			if(e.data.code==1){	
@@ -405,12 +430,10 @@ export default class infoPlanComponent extends Component{
 				setTimeout(()=>{
 					this.setState({exitoso:false})
 				},2000)
-				
-				// let id = e.data.message._id;
-				// usuariosAsignados.map(e=>{
-				// 	sendRemoteNotification(2, e.token, 'misPlanes', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, imagen)
-				// })
-				// navigate('chat', id)
+
+				notificacionToken.map(e=>{
+					sendRemoteNotification(2, e.token, 'misPlanes', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, null)
+				})
 			}
 		})
 		.catch(err=>{

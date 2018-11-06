@@ -32,18 +32,17 @@ export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaj
 					large_icon: imagen,
 					sound: "default",
 					parameter,
-					group: "GROUP",
+					// group: "GROUP",
 					// badge:33,
 					show_in_foreground: true
 		        },
 		        data: {
 					targetScreen:targetScreen,
 					parameter,
-					group: "GROUP",
+					// group: "GROUP",
 					// badge:54,
 		        },
-		         
-		        // priority: 10
+		        priority: 10
 		    };
 		    firebaseClient.send(JSON.stringify(bodyIos), "notification");
 		    
@@ -68,9 +67,9 @@ export const sendRemoteNotification = (tipo, token, targetScreen, titulo, mensaj
 						// show_in_foreground: true
 		    //         }
 		    //     },
-	    	// 	// "priority": 10
+	    	// 	"priority": 10
 	     // 	}
-	     //  	firebaseClient.send(JSON.stringify(bodyAndropaid), "notification");
+	     //  	firebaseClient.send(JSON.stringify(bodyAndroid), "notification");
 			
 	    }else{
 	    	console.log("ios")

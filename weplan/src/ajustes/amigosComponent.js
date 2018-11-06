@@ -14,6 +14,9 @@ export default class ajustesAmigosComponent extends Component{
  		asignados:[],
  		amigosAsignados:[],
  		show:false,
+ 		searchTerm:"",
+ 		inicio:0,
+ 		final:10
 	}
 	componentWillMount(){
 		/////////////////	OBTENGO LOS USUARIOS ACTIVOS 	/////////////////////
@@ -52,7 +55,7 @@ export default class ajustesAmigosComponent extends Component{
 						    t._id === thing._id  
 						  ))
 						)
-						this.setState({filteredData, amigosAsignados:res2.data.asignados})
+						this.setState({filteredData, usuarios:filteredData, amigosAsignados:res2.data.asignados})
 					}
 			})	
 			.catch((err)=>{
@@ -88,19 +91,46 @@ export default class ajustesAmigosComponent extends Component{
 	////////////////////			OBTENGO CADA UNO DE LOS REGISTROS						 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  	getRow(){
- 		const filter = this.state.filteredData.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
- 		console.log(filter)
+ 		const {filteredData, inicio, final} = this.state
+ 		let newFilter = filteredData.slice(inicio, final)
+ 		const filter = newFilter.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
+ 		
 		return filter.map((data, key)=>{
 			return  <View style={style.registro} key={key} > 
 						<Image source={{uri: data.photo ?data.photo :URL+'public/img/plan.jpg'}}  style={style.avatarA} /> 
-						<Text style={[style.textoAvatar, style.familia]}>{data.nombre ?data.nombre :'We Plan'}</Text>
-						
-						<TouchableOpacity style={style.btnHecho} onPress={(e)=>{this.handleSubmit(data._id, data.token)}} > 
-							<Text style={style.hecho}>Agregar</Text>
+						<View style={style.contentTextAvatar}>
+							<Text style={[style.textoAvatar, style.familia]}>{data.nombre ?data.nombre :'We Plan'}</Text>
+						</View>
+						<TouchableOpacity style={style.btnHechoAmigos} onPress={(e)=>{this.handleSubmit(data._id, data.token)}} > 
+							<Text style={style.hechoAmigos}>Agregar</Text>
 						</TouchableOpacity> 
 				    </View>
 		})
 	}
+ 
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////	RENDER LISTADO AMIGOS						 
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 	renderAmigos(){
+ 		return(
+ 			<ScrollView style={style.contenedorLista} horizontal={true} onScroll={(e)=>this.onScroll(e)}>
+				{this.getRow()}
+			</ScrollView>
+ 		)	
+ 	}
+
+ 	onScroll(e){
+ 		const {final} = this.state
+ 		let paddingLeft = 10
+
+ 		paddingLeft += e.nativeEvent.layoutMeasurement.width;
+ 		if (e.nativeEvent.contentOffset.x >= e.nativeEvent.contentSize.width-paddingLeft) {
+ 			console.log(final)
+ 			if (final<41) {
+ 				this.setState({final:final+5})
+ 			}
+ 		}
+ 	}
  	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////		FILTRO LOS AMIGOS DEL INPUT					 
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -112,32 +142,19 @@ export default class ajustesAmigosComponent extends Component{
 		}
 		this.setState({searchTerm: term})
 	}
- 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////	RENDER LISTADO AMIGOS						 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- 	renderAmigos(){
- 		return(
- 			<ScrollView style={style.contenedorLista}>
-				{this.getRow()}
-			</ScrollView>
- 		)	
- 	}
-
 
  	renderAmigosAsignados(){
  		const {navigate} = this.props.navigation
  		return this.state.amigosAsignados.map((e, key)=>{
  			if (e.estado) {
  				return(
-		 			<TouchableOpacity key={key} style={style.registro} onPress={()=>navigate('profile', {userId:e._id, amigos:true})}>
-		 				 <Image source={{uri: e.photo ?e.photo :`${URL}/public/img/plan.jpg`}}  style={style.avatarA} /> 
-		 				 <Text style={[style.textoAvatar, style.familia]}>{e.nombre}</Text>
+		 			<TouchableOpacity key={key} style={style.registroAsignados} onPress={()=>navigate('profile', {userId:e._id, amigos:true})}>
+		 				 <Image source={{uri: e.photo ?e.photo :`${URL}/public/img/plan.jpg`}}  style={style.avatarAsignados} /> 
+		 				 <Text style={[style.textoAvatarAsignados, style.familia]}>{e.nombre}</Text>
 		 			</TouchableOpacity>
 		 		)
  			}
- 		})
- 		
+ 		})	
  	}
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////				RENDER AMIGOS AGREGADOS					/////////////////////////////////////
@@ -201,9 +218,10 @@ export default class ajustesAmigosComponent extends Component{
 							{state.params &&<Text>Por que no agregas algunos amigos antes de empezar</Text>}
 							
 							{
-								show
-								?this.renderAmigos()
-								:this.renderAmigosGrupos()
+								this.renderAmigos()
+							}
+							{
+								this.renderAmigosGrupos()
 							}
 						</View>	
 					</View>

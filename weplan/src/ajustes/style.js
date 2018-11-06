@@ -50,14 +50,17 @@ export const style = MediaQueryStyleSheet.create({
  	/////////////////////////////////////////////////////////////////////////////////////
  	contenedorLista:{
  		width:'100%',  
+ 		flexDirection:'row',
  	},
  	contenedorA:{
  		paddingBottom:40
  	},
  	registro:{
- 		flexDirection:'row',
+ 		justifyContent :"center",
  		alignItems: 'center',
- 		width:'100%',
+ 		width:80,
+ 		marginHorizontal:1,
+ 		backgroundColor:'#94A5F3',
  	},
 	registro2:{
 		flexDirection:'row',
@@ -117,12 +120,9 @@ export const style = MediaQueryStyleSheet.create({
  		height:50
  	},
  	avatarA:{
- 		marginTop:10,
-		borderRadius: 30,
-		width: 60,
-		height: 60,
+		width: "100%",
+		height: 80,
 		borderColor:'#9CB7F5',
-		borderWidth:4,
  	},
  	avatarA2:{
  		marginTop:10,
@@ -132,11 +132,18 @@ export const style = MediaQueryStyleSheet.create({
 		borderColor:'#9CB7F5',
 		borderWidth:6,
  	},
+ 	contentTextAvatar:{
+ 		justifyContent:"center",
+ 		width:'90%',
+ 				height:38,
+ 	},
  	textoAvatar:{
 		fontSize:22,
-		marginLeft:20,
-		marginTop:18,
-		width:'55%'
+
+		marginTop:2,
+		
+		textAlign:"center",
+		color:"white"
 	},
 	agregado:{
 		position:'absolute',
@@ -152,9 +159,29 @@ export const style = MediaQueryStyleSheet.create({
 		marginBottom:10,
 	},
 
-	btnHecho:{
+	btnHechoAmigos:{
  		alignItems: 'center',
- 		backgroundColor:'#94A5F3',
+ 		backgroundColor:'#ffffff',
+ 		padding:5,
+ 		paddingTop:8,
+ 		paddingBottom:8,
+ 		width:"100%"
+ 	},
+ 	hecho:{
+ 		color:'94A5F3',
+ 	},
+ 	btnHecho:{
+ 		alignItems: 'center',
+ 		backgroundColor:'#ffffff',
+ 		borderRadius:10,
+ 		padding:5,
+ 		paddingTop:8,
+ 		paddingBottom:8,
+ 		marginTop:22
+ 	},
+ 	btnHechoEnviado:{
+ 		alignItems: 'center',
+ 		backgroundColor:'#309f6a',
  		borderRadius:10,
  		padding:5,
  		paddingTop:8,
@@ -164,7 +191,25 @@ export const style = MediaQueryStyleSheet.create({
  	hecho:{
  		color:'white',
  	},
- 		
+ 	registroAsignados:{
+ 		flexDirection:'row',
+ 		alignItems: 'center',
+ 		width:'100%',
+ 	},
+ 	avatarAsignados:{
+ 		marginTop:10,
+		borderRadius: 30,
+		width: 60,
+		height: 60,
+		borderColor:'#9CB7F5',
+		borderWidth:4,
+ 	},
+ 	textoAvatarAsignados:{
+		fontSize:22,
+		marginLeft:20,
+		marginTop:18,
+		width:'55%'
+ 	},
  	//////////////////////////////////////////////////////////////////////////////////
  	////////////////////////////	CABEZERA   //////////////////////////////////////
  	contenedorBack:{
@@ -232,17 +277,17 @@ export const style = MediaQueryStyleSheet.create({
 	 		top:9
 	 	}, 
 	 	avatarA:{
-	 		marginTop:10,
-			borderRadius: 75,
-			width: 43,
-			height: 43,
-			borderWidth:3,
+	 	// 	marginTop:10,
+			// borderRadius: 75,
+			// width: 43,
+			// height: 43,
+			// borderWidth:3,
 	 	}, 
 	 	textoAvatar:{
-			fontSize:16,
-			marginLeft:20,
-			marginTop:15,
-			width:'55%'
+			fontSize:14,
+			// marginLeft:20,
+			// marginTop:15,
+			// width:'55%'
 		},
 		avatar: {
 			marginTop:10,

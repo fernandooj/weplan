@@ -2,13 +2,10 @@ import { Platform, AsyncStorage, AppState } from 'react-native';
 
 import FCM, {FCMEvent, RemoteNotificationResult, WillPresentNotificationResult, NotificationType, NotificationActionType, NotificationActionOption, NotificationCategoryOption} from "react-native-fcm";
 
-AsyncStorage.getItem('lastNotification').then((err, data)=>{
+AsyncStorage.getItem('lastNotification').then(data=>{
   if(data){
     // if notification arrives when app is killed, it should still be logged here
     console.log('last notification', JSON.parse(data));
-    console.log(data)
-    console.log(data)
-    console.log(err)
     AsyncStorage.removeItem('lastNotification');
   }
 })
@@ -21,54 +18,10 @@ AsyncStorage.getItem('lastMessage').then(data=>{
   }
 })
 
- 
-
 export function registerKilledListener(){
   // these callback will be triggered even when app is killed
   FCM.on(FCMEvent.Notification, notif => {
-
-  // if notification arrives when app is killed, it should still be logged here
-  if (notif.parameter) {      
-    let parameter = notif.parameter ?notif.parameter :JSON.parse(notif.custom_notification)
-
-    //////////////////////////////////////////  GUARDO EL NUMERO DEL BADGE
-    AsyncStorage.getItem('badge').then((data)=>{
-      if (data==='null' || data===null) {
-        AsyncStorage.setItem('badge', '1');
-      }
-      data = data ?data :0
-      data = JSON.parse(data)
-      data = parseInt(data)
-
-      data = data+1
-      console.log(data)
-      FCM.setBadgeNumber(data);  
-     AsyncStorage.setItem('badge', JSON.stringify(data));
-       
-    })    
-    //////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////   GUARDO EL ARRAY DEL BADGE  
-    AsyncStorage.getItem('badgeArray').then((data)=>{
-      if (data=='null' || data==="null" || data==null) {
-        AsyncStorage.setItem('badgeArray', '[]');
-      
-      }
-      
-      data = JSON.parse(data)
-      data = data=="null" || data ==null ?[] :data
-      let parametro = parameter ?parameter :1
-    
-      
-      data.push(parametro)
-      console.log(data)
-      AsyncStorage.setItem('badgeArray', JSON.stringify(data));
-    })
-    ///////////////////////////////////////////////////////////////
-  }
-   
-
     AsyncStorage.setItem('lastNotification', JSON.stringify(notif));
-  
     if(notif.opened_from_tray){
       setTimeout(()=>{
         if(notif._actionIdentifier === 'reply'){
@@ -93,7 +46,7 @@ export function registerKilledListener(){
 // these callback will be triggered only when app is foreground or background
 export function registerAppListener(navigation){
   FCM.on(FCMEvent.Notification, notif => {
-    console.log(notif);
+    console.log("Notification", notif);
 
     if(Platform.OS ==='ios' && notif._notificationType === NotificationType.WillPresent && !notif.local_notification){
       // this notification is only to decide if you want to show the notification when user if in foreground.
@@ -103,9 +56,13 @@ export function registerAppListener(navigation){
     }
 
     if(notif.opened_from_tray){
-      let id = notif.parameter
+      if(notif.targetScreen === 'detail'){
+        setTimeout(()=>{
+          navigation.navigate('Detail')
+        }, 500)
+      }
       setTimeout(()=>{
-        navigation.navigate(notif.targetScreen, id)
+        alert(`User tapped notification\n${JSON.stringify(notif)}`)
       }, 500)
     }
 
@@ -140,7 +97,7 @@ export function registerAppListener(navigation){
   });
   setTimeout(function() {
     FCM.isDirectChannelEstablished().then(d => console.log(d));
-  }, 100);
+  }, 1000);
 }
 
 FCM.setNotificationCategories([

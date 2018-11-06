@@ -720,7 +720,7 @@ module.exports = function(app, passport){
         let ssss = '+57 310 3076805'
         let telefono = req.params.telefono.split('+').join('').split('-').join('').split('(').join('').split(')').join('').split(' ').join('');
         telefono = telefono.length===12 ? `+57${telefono.substring(2,12)}` :telefono.length===11 ?`+1${telefono.substring(1,10)}` :`+57${telefono}` 
-
+        console.log(telefono)
         client.api.messages
             .create({
               body: `Tu amigo ${req.session.usuario.user.nombre} te invitó a que descargues We Plan: https://appweplan.com/downloadApp` ,
@@ -729,7 +729,7 @@ module.exports = function(app, passport){
             }).then(function(data) {
                 res.json({ status: 'SUCCESS', message: 'mensaje enviado', code:1 });
             }).catch(function(err) { 
-                res.json({ status: 'FAIL',    message: error, code:0 });
+                res.json({ status: 'FAIL',    message: err, code:0 });
         }); 
     })
 

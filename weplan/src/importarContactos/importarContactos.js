@@ -38,15 +38,15 @@ export default class importarComponent extends Component{
 
 		  pg.getContactsCount().then( (count) => {
 		    pg.getContactsWithRange(0, count, [PagedContacts.displayName, PagedContacts.phoneNumbers]).then((contacts) => {
-		    	// alert(JSON.stringify(contacts))
 		      let contacto = contacts.map((e, key)=>{
 		      		return {
 		      			id:key,
 		      			nombre:e.displayName,
-		      			telefono: e.phoneNumbers[0].value
+		      			telefono: e.phoneNumbers[0] ?e.phoneNumbers[0].value :0,
+		      			state:true,
+		      			cargando:false,
 		      		}
 		      })
-		       console.log(contacts)
 		      this.setState({contacts: contacto})
 		    });
 		  });
@@ -64,9 +64,16 @@ export default class importarComponent extends Component{
 			return  (
 				<View style={style.registro} key={key}> 
 					<Text style={[style.textoAvatar, style.familia]}>{data.nombre}</Text>
-					<TouchableOpacity style={style.btnHecho} onPress={(e)=>{this.handleSubmit(data.id, data.telefono)}} > 
-						<Text style={style.hecho}>Enviar invitación</Text>
-					</TouchableOpacity> 
+					{
+						data.state
+						?<TouchableOpacity style={style.btnHecho} onPress={(e)=>{this.handleSubmit(data.id, data.telefono)}} > 
+							<Text style={style.hecho}>{!data.cargando ?"Enviar invitación" :"Enviando..."}</Text>
+						</TouchableOpacity> 
+						:<TouchableOpacity style={style.btnHechoEnviado} > 
+							<Text style={style.hecho}>Enviado!</Text>
+						</TouchableOpacity> 
+					}
+					
 			    </View>
 			)
 		})
@@ -98,9 +105,7 @@ export default class importarComponent extends Component{
 		const {navigate} = this.props.navigation
 		return( 
 			<View style={style.contenedorA}>
-				 
 				<ScrollView>
-			 
 					<View style={style.contenedor}>
 						<View style={style.subContenedorA}>
 							{/* buscador  */}
@@ -136,38 +141,28 @@ export default class importarComponent extends Component{
 						 		?<ActivityIndicator size="small" color="#148dc9" style={style.indicador} />
 						 		:this.getRow()
 						 	}
-							 
-					 
 						</View>	
 					</View>
 				</ScrollView>	
 			</View>
 		)
 	}
-
-	
-	updateState(id, estado, token){
-		let filteredData = this.state.filteredData.map(item=>{
-			if(item.id == id) item.estado = !estado
-			return item
-		})
-		this.setState({filteredData, idAsignado:id, token})
-		if (estado) {
-			this.setState({asignados: this.state.asignados.concat([id])})
-		}else{
-			this.setState({asignados:this.state.asignados.filter(function(val){return val != id}) })
-		}
-	}
-
 	
 	handleSubmit(id, telefono){
+		let contacts = this.state.contacts.map(e=>{
+			if (e.id===id) {e.cargando=true}
+				return e
+		})
+		this.setState({contacts})
 		axios.get(`/x/v1/user/enviarsmsamistad/${telefono}` )
 		.then((e)=>{
-			console.log(e)
+			console.log(e.data)
 			if (e.data.code==1) {
-				let contacts = this.state.contacts.filter(e=>{
-					return e.id!==id
+				let contacts = this.state.contacts.map(e=>{
+					if (e.id===id) {e.state=false}
+						return e
 				})
+				console.log(contacts)
 				this.setState({contacts, continuar:true})
 			}else{
 				Alert.alert(
@@ -178,6 +173,11 @@ export default class importarComponent extends Component{
 				  ],
 				  { cancelable: false }
 				)
+				let contacts2 = this.state.contacts.map(e=>{
+					if (e.id===id) {e.cargando=false}
+						return e
+				})
+				this.setState({contacts: contacts2})
 			}
 		})
 		.catch((err)=>{

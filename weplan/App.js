@@ -126,11 +126,7 @@ export default class App extends Component<{}> {
       Terminos           : {screen: TerminosComponent },
       detallePlanPublico : {screen: detallePlanPublicoComponent },
       importar           : {screen: importarComponent },
-   },{ headerMode: 'none', 
-       navigationOptions: {
-         gesturesEnabled: false
-      }
-   })
+   },{ headerMode: 'none'})
     let num = Math.floor(Math.random() * 5);
     if (local==null) {
       return (
