@@ -343,9 +343,11 @@ router.post('/:id', (req,res)=>{
 		resizeImagenes(rutaImagenOriginal, randonNumber, extension)
 
 	}else{
-		rutaImagenOriginal = req.protocol+'s://'+req.get('Host') + '/plan.png'
-		rutaImagenResize = req.protocol+'s://'+req.get('Host') + '/plan.png'
-		rutaImagenMiniatura = req.protocol+'s://'+req.get('Host') + '/plan.png'
+ 
+		rutaImagenOriginal  = req.protocol+'s://'+req.get('Host') + '/public/images/plan.jpg'
+		rutaImagenResize    = req.protocol+'s://'+req.get('Host') + '/public/images/plan.jpg'
+		rutaImagenMiniatura = req.protocol+'s://'+req.get('Host') + '/public/images/plan.jpg'
+
 	}
 
 	itemServices.uploadImage(req.params.id, rutaImagenOriginal, rutaImagenResize, rutaImagenMiniatura, (err, item)=>{

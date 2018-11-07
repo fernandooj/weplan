@@ -38,19 +38,19 @@ export default class CabezeraComponent extends Component{
 		const route = navigate.state.routeName
 		return(
 			<View style={cabezeraFooterStyle.footer3} >
-				<TouchableOpacity onPress={()=> navigate.navigate('inicio')} style={route=='Home'||route=='inicio' ?[cabezeraFooterStyle.btnFooter3, cabezeraFooterStyle.btnFooter3Active] :[cabezeraFooterStyle.btnFooter3]} >
+				<TouchableOpacity onPress={route=='inicio' ?null :()=> navigate.navigate('inicio')} style={route=='Home'||route=='inicio' ?[cabezeraFooterStyle.btnFooter3, cabezeraFooterStyle.btnFooter3Active] :[cabezeraFooterStyle.btnFooter3]} >
 					<Image source={require('../assets/images/home.png')} style={cabezeraFooterStyle.iconFooter3} />
 				</TouchableOpacity>
-				<TouchableOpacity onPress={()=> navigate.navigate('wallet')} style={route=='wallet' ?[cabezeraFooterStyle.btnFooter3, cabezeraFooterStyle.btnFooter3Active] :[cabezeraFooterStyle.btnFooter3]} >
+				<TouchableOpacity onPress={route=='wallet' ?null :()=> navigate.navigate('wallet')} style={route=='' ?[cabezeraFooterStyle.btnFooter3, cabezeraFooterStyle.btnFooter3Active] :[cabezeraFooterStyle.btnFooter3]} >
 					<Image source={require('../assets/images/mi_wallet.png')} style={cabezeraFooterStyle.iconFooter3} />
 				</TouchableOpacity>
-				<TouchableOpacity onPress={()=> navigate.navigate('createPlan', publico)} style={route=='3' ?[cabezeraFooterStyle.btnFooter3, cabezeraFooterStyle.btnFooter3Create, cabezeraFooterStyle.btnFooter3Active] :[cabezeraFooterStyle.btnFooter3, cabezeraFooterStyle.btnFooter3Create]} >
+				<TouchableOpacity onPress={route=='3' ?null :()=> navigate.navigate('createPlan', publico)} style={route=='3' ?[cabezeraFooterStyle.btnFooter3, cabezeraFooterStyle.btnFooter3Create, cabezeraFooterStyle.btnFooter3Active] :[cabezeraFooterStyle.btnFooter3, cabezeraFooterStyle.btnFooter3Create]} >
 					<Image source={require('../assets/images/crear_plan.png')} style={cabezeraFooterStyle.iconFooter3Create} />
 				</TouchableOpacity>
-				<TouchableOpacity onPress={()=> navigate.navigate('misPlanes')} style={route=='misPlanes' ?[cabezeraFooterStyle.btnFooter3, cabezeraFooterStyle.btnFooter3Active] :[cabezeraFooterStyle.btnFooter3]} >
+				<TouchableOpacity onPress={route=='misPlanes' ?null :()=> navigate.navigate('misPlanes')} style={route=='misPlanes' ?[cabezeraFooterStyle.btnFooter3, cabezeraFooterStyle.btnFooter3Active] :[cabezeraFooterStyle.btnFooter3]} >
 					<Image source={require('../assets/images/mis_planes.png')} style={cabezeraFooterStyle.iconFooter3} />
 				</TouchableOpacity>
-				<TouchableOpacity onPress={()=> this.updatePerfilNotificacion()} style={route=='notificacion' ?[cabezeraFooterStyle.btnFooter3, cabezeraFooterStyle.btnFooter3Active] :[cabezeraFooterStyle.btnFooter3]} >
+				<TouchableOpacity onPress={route=='notificacion' ?null :()=> this.updatePerfilNotificacion()} style={route=='notificacion' ?[cabezeraFooterStyle.btnFooter3, cabezeraFooterStyle.btnFooter3Active] :[cabezeraFooterStyle.btnFooter3]} >
 					<Image source={require('../assets/images/notificaciones.png')} style={cabezeraFooterStyle.iconFooter3} />
 					{
 						this.state.notificacion

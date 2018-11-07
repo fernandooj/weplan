@@ -19,6 +19,7 @@ import Drawer from 'react-drag-drawer'
 import {Animated} from "react-animated-css";
 import Flippy, { FrontSide, BackSide } from 'react-flippy';
 import axios from 'axios'
+import Slider from "react-slick";
 
 const fullpageOptions = {
   anchors: ["weplan", "secondPage", "thirdPage"],
@@ -27,6 +28,13 @@ const fullpageOptions = {
   scrollOverflow: true
 };
 const FormItem = Form.Item;
+const settings = {
+   dots: true,
+   infinite: true,
+   speed: 500,
+   slidesToShow: 1,
+   slidesToScroll: 1
+};
 
 const Menu = ()=>{
    const logo = URL+'public/images/logo.png'
@@ -102,8 +110,15 @@ const FullpageWrapper = fullpageProps => (
           <section className={"section"}>
             <Menu />
             <div className={style.section2}>
-              <h2>¡WePlan, un mar de posibilidad para crear tus planes!</h2>
-              <p>WePlan es la nueva forma de realizar todos tus planes, dividir costos y controlar todos los gastos que compartes con tus amigos de manera más fácil y practica… el único límite es tu imaginación.</p>
+               <h2>¡WePlan, un mar de posibilidad para crear tus planes!</h2>
+               <p>WePlan es la nueva forma de realizar todos tus planes, dividir costos y controlar todos los gastos que compartes con tus amigos de manera más fácil y practica… el único límite es tu imaginación.</p>
+               <section>
+                  <div className="slide"> <img src={`${URL}public/images/crear.jpeg`} /> </div>
+                  <div className="slide"> <img src={`${URL}public/images/encuestas.jpeg`} /> </div>
+                  <div className="slide"> <img src={`${URL}public/images/billetera.png`} /> </div>
+                  <div className="slide"> <img src={`${URL}public/images/home.png`} /> </div>
+                  <div className="slide"> <img src={`${URL}public/images/crear.jpeg`} /> </div>
+               </section>
                <aside>
                   <Flippy
                      flipOnHover={true} // default false
@@ -204,6 +219,11 @@ const FullpageWrapper = fullpageProps => (
                   </li>
                   <li> <img src={`${URL}public/images/recurso-6.png`} /></li>
                </ul>
+               <section>
+                  <div className="slide"> <img src={`${URL}public/images/recurso-5.png`} /> </div>
+                  <div className="slide"> <img src={`${URL}public/images/recurso-3.png`} /> </div>
+                  <div className="slide"> <img src={`${URL}public/images/recurso-6.png`} /> </div>
+               </section>
             </div>
             <footer>
                <ul>

@@ -475,7 +475,7 @@ module.exports = function(app, passport){
                         }
                     })
                 }else{
-                    ruta = req.protocol+'://'+req.get('Host') + '/avatar.png'
+                    ruta = req.protocol+'s://'+req.get('Host') + '/public/images/plan.jpg'
                     userServices.createUser(req.body, randonNumber, ruta, function(err, usuarios){
                         if(!err){
                             res.json({status:'SUCCESS', usuarios})
@@ -737,7 +737,6 @@ module.exports = function(app, passport){
     /////////////////    enviar sms desde la pagina web
     ///////////////////////////////////////////////////////////////////////////////////////////////
     app.get('/x/v1/user/enviarsms/:telefono', (req, res)=>{
-
         let telefono = req.params.telefono.split('+').join('').split('-').join('').split('(').join('').split(')').join('').split(' ').join('');
         //telefono = telefono.length===12 ? `+57${telefono.substring(2,12)}` :telefono.length===11 ?`+1${telefono.substring(1,10)}` :`+57${telefono}` 
         telefono = "+"+telefono
@@ -753,8 +752,13 @@ module.exports = function(app, passport){
                 res.json({ status: 'FAIL', message: err, code:0 });
         }); 
     })
-    
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////    verifica la ultima version 
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    app.get('/x/v1/currentversion', (req, res)=>{
+        res.json({version:"1.0.5"})
+    }) 
 
     // =====================================
     // LOGOUT ==============================

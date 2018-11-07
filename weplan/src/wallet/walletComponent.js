@@ -78,7 +78,7 @@ export default class walletComponent extends Component{
 							<View style={style.item}>	
 								<Text style={[style.textoTotal, style.familia]}>Total</Text>
 								<Text style={e.total>=0 ?[style.pagoDeudaMontoActive, style.familia] :[style.pagoDeudaMonto, style.familia]}>
-									{'$ '+Number(e.total).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
+									{'$ '+Number(e.total>=0 ?e.total :Math.abs(e.total)).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
 								</Text>
 								 
 							</View>	

@@ -2,7 +2,17 @@
 
 
 /*  better naming with camelCase than kebab-case */
-
+@font-face {
+   font-family: 'Futura';
+   font-style: normal;
+   font-weight: 400;
+   src: url('../../assets/fonts/Futura-CondensedLight.eot');
+   src: url('../../assets/fonts/Futura-CondensedLight.eot?#iefix') format('embedded-opentype'),
+        url('../../assets/fonts/Futura-CondensedLight.eot') format('woff2'),
+        url('../../assets/fonts/Futura-CondensedLight.woff') format('woff'),
+        url('../../assets/fonts/Futura-CondensedLight.ttf') format('truetype'),
+        url('../../assets/fonts/Futura-CondensedLight.svg') format('svg');
+}
 /*********************    MENU SECUNDARIO      *******************/
 .navegacion{
 	position: absolute;
@@ -22,10 +32,10 @@
 		margin: 0;
 		li{
 			display: inline-block;
-			a{
+			a{	
 				padding: 8px;
 			    border-radius: 5px;
-			    font-size: 15px;
+			    font-size: 24px;
 			    margin: 1px !important;
 			    color: #009de5;
 			}
@@ -36,7 +46,9 @@
 		}
 	}
 }
-
+body, *{
+	font-family: 'Futura' !important;
+}
 
 /*********************    SECTION 1            *******************/
 .banner{
@@ -65,7 +77,7 @@
 		a{
 			padding: 8px;
 		    border-radius: 5px;
-		    font-size: 15px;
+		    font-size: 24px;
 		    margin: 1px !important;
 		    color: #009de5;
 		}
@@ -104,8 +116,9 @@
     border-radius: 10px;
     font-size: 25px;
     text-align: center;
+        padding: 10px 0;
 	h2{
-		font-size: 22px;
+		font-size: 36px;
     	line-height: 27px;
     	margin: 26px 0;
 		color: #ffffff;
@@ -152,7 +165,7 @@
     color: white;
     border-radius: 12px;
     padding: 3px;
-    font-size: 17px;
+    font-size: 22px;
     box-shadow: 3px 3px 12px #5957576b;
 }
 
@@ -178,7 +191,9 @@
 			font-size:15px
 		}
 	}
-	
+	section{
+		display:none
+	}
 	img{
 		width:100%
 	}
@@ -209,6 +224,9 @@
 	}
 	img{
 		width:96%
+	}
+	section{
+		display:none
 	}
 }
 
@@ -261,9 +279,113 @@ footer{
 		}
 	}
 }
+@media (max-width: 480px) {
+	.contenedorBannerIzq{
+		width:100%
+	}
+	.contenedorBanner{
+		display:none
+	}
+	.menu, .navegacion{
+		a{
+			display:none !important
+		}
+		.cuentaBtn{
+			display:block !important
+		}
+	}
+	.navegacion{
+		ul{
+			padding:0
+		}
+	}
+	.section2{
+		    background-color: rgba(128, 128, 128, 0.16862745098039217);
+    		position: relative;
+    		top: 65px;
+		aside{
+			width:44%;
+			display:inline-block;
+			margin: 0 2%;
+			display:none
+		}
+		section{
+			display:block
+		}
+		img{
+			width: 60%;
+			margin-top:-260px
+		}
+		h2{
+			font-size: 15px;
+    		line-height: 27px;
+    		margin:0 !important
+		}
+		>p{
+			width: 99%;
+		    margin: 22px auto;
+		    line-height: 20px;
+		    font-size: 12px;
+		}
+	}
+	.section3{
+		ul{
+			display:none
+		}
+		section{
+			display:block
+		}
+		li{
+			display:inline-block;
+			width:33%
+		}
+		h3{
+			font-size: 30px;
+		    line-height: 36px;
+		    position: relative;
+		    top: 20px;
+		    margin: auto;
+		    text-align: center;
+		}
+		li:nth-child(2){
+			// top: 120px;
+	    	position: relative;
+		}
+		img{
+			width: 60%;
+			margin: auto;
+			display: block;
+			position:relative
+		}
+	}
+	footer{
+		position: absolute;
+		bottom: 0;
+		z-index:100;
+		ul{
+			padding: 0;
+			a{
+				padding: 5px
+			}
+		}
+		
+	}
+}
+@media (max-width: 375px) {
+	.section2{
+		img{
+			width: 60%;
+			margin-top:-260px
+		}
+		>p{
+			width: 99%;
+		    margin: 22px auto;
+		    line-height: 20px;
+		    font-size: 15px;
+		}
+	}
 
-
-
-
+}
+ 
 
 

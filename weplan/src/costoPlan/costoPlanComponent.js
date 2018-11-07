@@ -113,7 +113,7 @@ export default class costoPlanComponent extends Component{
 	 				<View style={style.pagoDeudaContenedor}>
 		 				<Image source={{uri: e.photo}} style={style.pagoDeudaAvatar} />
 		 				<Text style={[style.pagoDeudaNombre, style.familia]}>{e.nombre}</Text> 
-		 				<Text style={[style.pagoDeudaMonto, style.familia]}>{'$ '+Number(e.total).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+		 				<Text style={[style.pagoDeudaMonto, style.familia]}>{'$ '+Number(e.total>=0 ?e.total :Math.abs(e.total)).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
 		 			</View>
 	 				<View>	
 		 				{
@@ -153,7 +153,7 @@ export default class costoPlanComponent extends Component{
 			 							<View key={key2} style={style.infoAbonoDeuda}>
 			 								<Text style={style.textAbonoDeuda}>Abono: </Text>
 			 								<Text style={style.textAbonoDeuda}>{e2.createdAt} / </Text>
-			 								<Text style={style.textAbonoDeuda}>{'$ '+Number(e2.monto).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
+			 								<Text style={style.textAbonoDeuda}>{'$ '+Number(e2.monto>=0 ?e2.monto :Math.abs(e2.monto)).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
 			 							</View>
 			 						)
 		 						}

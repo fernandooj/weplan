@@ -171,7 +171,7 @@ router.post('/:id', (req,res)=>{
 		ruta = req.protocol+'s://'+req.get('Host') + '/public/uploads/encuesta/'+fechab+'_'+randonNumber+'.'+extension
 		fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))
 	}else{
-		ruta = req.protocol+'s://'+req.get('Host') + '/encuesta.png'
+		ruta = req.protocol+'s://'+req.get('Host') + '/public/images/plan.jpg'
 	}
 
 	////////////////////////////////////////  RECIVO LA SEGUNDA IMAGEN 		/////////////////////////////////////////
@@ -182,7 +182,7 @@ router.post('/:id', (req,res)=>{
 		ruta2 = req.protocol+'s://'+req.get('Host') + '/public/uploads/encuesta/'+fechab+'_'+randonNumber2+'.'+extension2
 		fs.rename(req.files.imagen2.path, path.join(__dirname, fullUrl2))
 	}else{
-		ruta2 = req.protocol+'s://'+req.get('Host') + '/encuesta.png'
+		ruta2 = req.protocol+'s://'+req.get('Host') + '/public/images/plan.jpg'
 	}
 
 	///////////////////////// 	condiciono el tipo de pregunta 	///////////////////////

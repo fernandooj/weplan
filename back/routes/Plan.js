@@ -336,9 +336,9 @@ router.put('/web', (req, res)=>{
 			resizeImagenes(rutasImagenOriginal, randonNumber, extension)
 		})	
 	}else{
-		rutaImagenOriginal = req.protocol+'://'+req.get('Host') + '/public/img/plan.jpg'
-		rutaImagenResize = req.protocol+'://'+req.get('Host') + '/public/img/plan.jpg'
-		rutaImagenMiniatura = req.protocol+'://'+req.get('Host') + '/public/img/plan.jpg'
+		rutaImagenOriginal = req.protocol+'://'+req.get('Host') + '/public/images/plan.jpg'
+		rutaImagenResize = req.protocol+'://'+req.get('Host') + '/public/images/plan.jpg'
+		rutaImagenMiniatura = req.protocol+'://'+req.get('Host') + '/public/images/plan.jpg'
 	}
 	planServices.uploadImage(id, rutaImagenOriginal, rutaImagenResize, rutaImagenMiniatura, (err, plan)=>{
 		if(err){
@@ -379,9 +379,9 @@ router.put('/', (req, res)=>{
 		resizeImagenes(rutasImagenOriginal, randonNumber, extension)
 	
 	}else{
-		rutaImagenOriginal = req.protocol+'s://'+req.get('Host') + '/public/img/plan.jpg'
-		rutaImagenResize = req.protocol+'s://'+req.get('Host') + '/public/img/plan.jpg'
-		rutaImagenMiniatura = req.protocol+'s://'+req.get('Host') + '/public/img/plan.jpg'
+		rutaImagenOriginal = req.protocol+'s://'+req.get('Host') + '/public/images/plan.jpg'
+		rutaImagenResize = req.protocol+'s://'+req.get('Host') + '/public/images/plan.jpg'
+		rutaImagenMiniatura = req.protocol+'s://'+req.get('Host') + '/public/images/plan.jpg'
 	}
 	planServices.uploadImage(req.body.id, rutaImagenOriginal, rutaImagenResize, rutaImagenMiniatura, (err, plan)=>{
 		if(err){
