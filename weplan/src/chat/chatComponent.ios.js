@@ -675,7 +675,8 @@ export default class ChatComponent extends Component{
 					 
 					<ScrollView 
 							ref='scrollView'
-							style={showMainFooter&&heightContent>heightScreen/2 ?style.contenedorChat :style.contenedorChat2}
+							// style={showMainFooter&&heightContent>heightScreen/2 ?style.contenedorChat :style.contenedorChat2}
+							style={showMainFooter ?style.contenedorChat :style.contenedorChat2} 
 							keyboardDismissMode='on-drag'
 							onContentSizeChange={(width,height) => {this.refs.scrollView.scrollTo({y:height-heightScreen+suma}); this.setState({heightContent:height})}}
 						>

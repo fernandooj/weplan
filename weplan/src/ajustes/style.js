@@ -58,7 +58,7 @@ export const style = MediaQueryStyleSheet.create({
  	registro:{
  		justifyContent :"center",
  		alignItems: 'center',
- 		width:80,
+ 		width:100,
  		marginHorizontal:1,
  		backgroundColor:'#94A5F3',
  	},
@@ -121,7 +121,7 @@ export const style = MediaQueryStyleSheet.create({
  	},
  	avatarA:{
 		width: "100%",
-		height: 80,
+		height: 100,
 		borderColor:'#9CB7F5',
  	},
  	avatarA2:{
@@ -139,11 +139,11 @@ export const style = MediaQueryStyleSheet.create({
  	},
  	textoAvatar:{
 		fontSize:22,
-
-		marginTop:2,
-		
+		// width:"50%",
+		marginTop:15,
 		textAlign:"center",
-		color:"white"
+		color:"white",
+		height:50
 	},
 	agregado:{
 		position:'absolute',

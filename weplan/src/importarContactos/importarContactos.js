@@ -38,11 +38,12 @@ export default class importarComponent extends Component{
 
 		  pg.getContactsCount().then( (count) => {
 		    pg.getContactsWithRange(0, count, [PagedContacts.displayName, PagedContacts.phoneNumbers]).then((contacts) => {
+		    	alert(JSON.stringify(contacts))
 		      let contacto = contacts.map((e, key)=>{
 		      		return {
 		      			id:key,
 		      			nombre:e.displayName,
-		      			telefono: e.phoneNumbers[0] ?e.phoneNumbers[0].value :0,
+		      			telefono: e.phoneNumbers ?e.phoneNumbers[0].value :0,
 		      			state:true,
 		      			cargando:false,
 		      		}

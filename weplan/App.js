@@ -38,6 +38,7 @@ import facturacionComponent        from './src/facturacion/facturacionComponent'
 import planesPublicosComponent     from './src/planesPublicos/planesPublicosComponent';
 import detallePlanPublicoComponent from './src/planesPublicos/detallePlanPublicoComponent';
 import importarComponent           from './src/importarContactos/importarContactos';
+import contactoComponent           from './src/contacto/contactoComponent';
  
 export const URL = 'https://appweplan.com/';
 axios.defaults.baseURL = URL;
@@ -126,6 +127,7 @@ export default class App extends Component<{}> {
       Terminos           : {screen: TerminosComponent },
       detallePlanPublico : {screen: detallePlanPublicoComponent },
       importar           : {screen: importarComponent },
+      contacto           : {screen: contactoComponent },
    },{ headerMode: 'none'})
     let num = Math.floor(Math.random() * 5);
     if (local==null) {

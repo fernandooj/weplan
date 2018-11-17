@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, ImageBackground, ScrollView, Platform, Keyboard, Dimensions, Alert, Animated, ActivityIndicator, AsyncStorage} from 'react-native'
+import {View, Text, Image, TouchableOpacity, ImageBackground, ScrollView, Platform, Keyboard, Dimensions, Alert, Animated, ActivityIndicator, AsyncStorage, TouchableHighlight} from 'react-native'
 import {style} from '../home/style'
 import axios from 'axios'
 import SearchInput, { createFilter } from 'react-native-search-filter';
@@ -13,7 +13,7 @@ import GuiaInicio 	 	 from '../guia_inicio/guia_inicio'
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import FCM, {NotificationActionType} from "react-native-fcm";
 import {registerKilledListener, registerAppListener} from "../push/Listeners";
-
+import UltimaVersionComponent from '../ultimaVersion/ultimaVersion'
 
 const KEYS_TO_FILTERS = ['nombre', 'lugar']
 const {width, height} = Dimensions.get('window')
@@ -33,6 +33,7 @@ export default class homeComponent extends Component{
 			swipeToClose: true,
 			cargado: false,      ////// muestra la precarga
 			cargando: true,      ////// mientras carga los datos
+			showComponents:true, ////// muestra la barra superior y el footer y desaparece al darle click a la imagen
 			sliderValue: 0.3,
 			filteredData: [],
 			searchTerm:'',
@@ -64,7 +65,14 @@ export default class homeComponent extends Component{
 		})
 	}
 	async componentWillMount(){
-		
+		////////////////////////////////////////////////////////////////// OBTENGO LA ULTIMA VERSION DE LA APP, SI NO ESTA ACTUALIZADA LE MUESTRO UN MENSAJE
+		axios.get('/x/v1/currentversion')
+		.then(e=>{
+			if (e.data.version!=="1.0.5") {
+				this.setState({mensaje:e.data.mensaje, showVersion:true})
+			}
+		})
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		let guia_inicio   = await AsyncStorage.getItem('home');
 		this.setState({guia_inicio})
 		if (Platform.OS==='android') {
@@ -145,7 +153,7 @@ export default class homeComponent extends Component{
 	
 	getRow(){
 		const {navigate} = this.props.navigation
-		const {opacity, top, deg, translate, cargando, cargado, filteredData, searchTerm} = this.state
+		const {opacity, top, deg, translate, cargando, cargado, filteredData, searchTerm, showComponents} = this.state
 		const filtered = filteredData.filter(createFilter(searchTerm, KEYS_TO_FILTERS))
 		if (filtered.length===0 ) {
 			return(<View style={style.sinResultados}>
@@ -157,31 +165,32 @@ export default class homeComponent extends Component{
 				data = data.toString()
 				let calficaLongitud = e.UserData.calificacion ?e.UserData.calificacion.length: false
 				let calificacion = e.UserData.calificacion ?(e.UserData.calificacion.reduce((a, b) => a + b, 0))/e.UserData.calificacion.length :parseInt(0)
-				return  <ImageBackground source={{uri : e.imagenResize[0]}} style={style.fondo} key={key}>
-						<View style={style.footer}>
-							<View style={style.footer1}>
-								<Text style={[style.textFooter1, style.familia]}>{e.nombre.toUpperCase()}</Text>
-								<TouchableOpacity onPress={() => navigate('createPlan', e._id )} style={style.btnIconVer}>
-									<Image source={require('../assets/images/icon4.png')} style={style.iconVer} />
-								</TouchableOpacity>	
-							</View>
-							{e.descripcion &&<Text style={[style.textFooter2, style.familia]}>{e.descripcion}</Text>}
-							
-							<Text style={[style.textFooter2, style.familia]}>Estas a {parseInt(e.dist)<1000 ?`${parseInt(e.dist)} Metros` :`${data} Kilometros`}</Text>
-							<Text style={[style.textFooter2, style.familia]}>{`Por: ${e.UserData.nombre}, ${calficaLongitud ?parseFloat(calificacion).toFixed(0) :''}*`}</Text>
-							<View style={style.footer2}>
-								<TouchableOpacity onPress={() => this.like(e._id)} >
-									<Animated.View style={{opacity: opacity, top:top}}>
-										<Image source={require('../assets/images/corazon.png')} style={style.iconFooter} />
-									</Animated.View>
-								</TouchableOpacity>
-								<TouchableOpacity onPress={() => navigate('createPlan', e._id )}>
-									<Image source={require('../assets/images/acceder.png')} style={style.iconFooter1} /> 
-								</TouchableOpacity>
-							</View>
-							
-						</View> 
-					</ImageBackground>
+				return  <TouchableHighlight onPress={()=>this.setState({showComponents:!showComponents})}  key={key}>
+							<ImageBackground source={{uri : e.imagenResize[0]}} style={style.fondo}>
+								<View style={style.footer}>
+									<View style={style.footer1}>
+										<Text style={[style.textFooter1, style.familia]}>{e.nombre.toUpperCase()}</Text>
+										<TouchableOpacity onPress={() => navigate('createPlan', e._id )} style={style.btnIconVer}>
+											<Image source={require('../assets/images/icon4.png')} style={style.iconVer} />
+										</TouchableOpacity>	
+									</View>
+									{/*e.descripcion &&<Text style={[style.textFooter2, style.familia]}>{e.descripcion}</Text>*/}
+									
+									<Text style={[style.textFooter2, style.familia]}>Estas a {parseInt(e.dist)<1000 ?`${parseInt(e.dist)} Metros` :`${data} Kilometros`}</Text>
+									<Text style={[style.textFooter2, style.familia]}>{`Por: ${e.UserData.nombre}, ${calficaLongitud ?parseFloat(calificacion).toFixed(0) :''}*`}</Text>
+									<View style={style.footer2}>
+										<TouchableOpacity onPress={() => this.like(e._id)} >
+											<Animated.View style={{opacity: opacity, top:top}}>
+												<Image source={require('../assets/images/corazon.png')} style={style.iconFooter} />
+											</Animated.View>
+										</TouchableOpacity>
+										<TouchableOpacity onPress={() => navigate('createPlan', e._id )}>
+											<Image source={require('../assets/images/acceder.png')} style={style.iconFooter1} /> 
+										</TouchableOpacity>
+									</View>
+								</View>
+					    </ImageBackground>
+					</TouchableHighlight>	 
 			})
 		}
 		
@@ -246,18 +255,27 @@ export default class homeComponent extends Component{
 	}
 	render(){
 		const {navigate} = this.props.navigation
-		const {showBarra, guia_inicio} = this.state
+		const {showBarra, guia_inicio, mensaje, showVersion, showComponents} = this.state
 		return(	 
 			<View style={style.contenedor}>
 				{
+					showVersion
+					&&<UltimaVersionComponent mensaje={mensaje} />
+				}
+				{
 					typeof guia_inicio!=='string'  &&<GuiaInicio number={1} guia_inicio={()=>this.setState({guia_inicio:'1'})} />
 				}
+				{
+					showComponents &&<CabezeraComponent navigate={navigate} hide={showBarra ?false :true} term={(term)=>this.searchUpdated(term)} />
+				}
 				
-				<CabezeraComponent navigate={navigate} hide={showBarra ?false :true} term={(term)=>this.searchUpdated(term)} />
 				<ScrollView style={style.contenedorPlan} onScroll={this.handleScroll.bind(this)} scrollEventThrottle={16}>
 					{this.getRow()}
 				</ScrollView>
-				<FooterComponent navigate={this.props.navigation} />
+				{
+					showComponents &&<FooterComponent navigate={this.props.navigation} />
+				}
+				
 		   </View>
 		)
 	}

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {View, Text, Image, TouchableOpacity, Alert} from 'react-native'
-import ImagePicker from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 
 
 
@@ -23,56 +23,61 @@ export default class TakePhotoComponent extends Component{
 	selectPhotoTapped() {
 		const options = {
 			title:'',
-			cancelButtonTitle:'Cancelar',
-			takePhotoButtonTitle:'Tomar Foto',
-			chooseFromLibraryButtonTitle:'Buscar en imagenes',
-			quality: 0.9,
-			maxWidth: 780,
-			maxHeight: 1400,
-			allowsEditing:true,
-			storageOptions: {
-				skipBackup: true
-			}
-		};
-
-
-		ImagePicker.showImagePicker(options, (response) => {
-			console.log('Response = ', response);
+			// cancelButtonTitle:'Cancelar',
+			// takePhotoButtonTitle:'Tomar Foto',
+			// chooseFromLibraryButtonTitle:'Buscar en imagenes',
+			compressImageQuality: 0.9,
+			width: 900,
+			height: 900,
  
-			if (response.didCancel) {
-				console.log('User cancelled photo picker');
-			}
-		    else if (response.error) {
-		    	console.log('ImagePicker Error: ', response.error);
-		    }
-		    else if (response.customButton) {
-		    	console.log('User tapped custom button: ', response.customButton);
-		  	} else {
-		  		if (response.width<720) {
-	  				Alert.alert(
-					  	'El tamaño de la imagen es muy pequeño',
-					  	'debe ser mayor a 720px de ancho',
-					  	[
-					    	{text: 'OK', onPress: () => {console.log('OK Pressed'); this.setState({iconCreate:false})}},
-					  	],
-					  	{ cancelable: false }
-					)
-		  		}else{
-			  		let source = { uri: response.uri };
-				    var imagen = {
-					    uri:  response.uri,
-					    type: response.type ?response.type :'image/jpeg',
-					    name: response.fileName ?response.fileName :`imagen.jpg`,
-					    path: response.path
-					};
-					this.props.updateImagen(imagen)
-				    this.setState({
-				      avatarSource: source,
-				      imagen
-				    });
-		  		}
-		  	}
+			cropping: true
+		 
+		};
+		ImagePicker.openPicker({
+		  width: 800,
+		  height: 800,
+		  cropping: true
+		}).then(image => {
+		  console.log(image);
 		});
+
+		// ImagePicker.openPicker(options, (response) => {
+		// 	console.log('Response = ', response);
+ 
+		// 	if (response.didCancel) {
+		// 		console.log('User cancelled photo picker');
+		// 	}
+		//     else if (response.error) {
+		//     	console.log('ImagePicker Error: ', response.error);
+		//     }
+		//     else if (response.customButton) {
+		//     	console.log('User tapped custom button: ', response.customButton);
+		//   	} else {
+		//   		if (response.width<720) {
+	 //  				Alert.alert(
+		// 			  	'El tamaño de la imagen es muy pequeño',
+		// 			  	'debe ser mayor a 720px de ancho',
+		// 			  	[
+		// 			    	{text: 'OK', onPress: () => {console.log('OK Pressed'); this.setState({iconCreate:false})}},
+		// 			  	],
+		// 			  	{ cancelable: false }
+		// 			)
+		//   		}else{
+		// 	  		let source = { uri: response.uri };
+		// 		    var imagen = {
+		// 			    uri:  response.uri,
+		// 			    type: response.type ?response.type :'image/jpeg',
+		// 			    name: response.fileName ?response.fileName :`imagen.jpg`,
+		// 			    path: response.path
+		// 			};
+		// 			this.props.updateImagen(imagen)
+		// 		    this.setState({
+		// 		      avatarSource: source,
+		// 		      imagen
+		// 		    });
+		//   		}
+		//   	}
+		// });
 	}
 	render(){
 		const {sinBorder, ancho, alto, anchoDos, altoDos, fuente, fuente2, border} = this.props

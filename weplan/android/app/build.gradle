@@ -98,6 +98,7 @@ android {
     buildToolsVersion "26.0.2"
 
     defaultConfig {
+        vectorDrawables.useSupportLibrary = true
         applicationId "com.weplan"
         multiDexEnabled true
         minSdkVersion 21
