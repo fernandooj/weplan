@@ -46,9 +46,16 @@ export default class AgregarAmigosComponent extends Component{
 	 
 	getRow(){
 		const filteredEmails = this.state.filteredData.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
-		console.log(filteredEmails.length)
+		console.log(this.props)
 		if (filteredEmails.length===0) {
-			return (<View style={AmigosStyle.sinResultados}><Text>No hemos encontrado amigos</Text></View>)
+			return (
+				<View style={AmigosStyle.sinResultados}>
+					<Text>No hemos encontrado amigos, pero puedes  agregar algunos</Text>
+					<TouchableOpacity style={AmigosStyle.btnHecho} onPress={()=>{this.props.navigate("ajustesAmigos"); this.props.close()}} > 
+						<Text style={AmigosStyle.hecho}>Agregar</Text>
+					</TouchableOpacity> 
+				</View>
+			)
 		}else{
 			return filteredEmails.map((data, key)=>{
 			return  <TouchableOpacity style={AmigosStyle.subLista} key={key} 

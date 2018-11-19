@@ -12,6 +12,11 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 import Lightbox from 'react-native-lightbox';
 import KeyboardListener from 'react-native-keyboard-listener';
 import FCM  from "react-native-fcm"; 
+import {
+  GoogleAnalyticsTracker,
+  GoogleTagManager,
+  GoogleAnalyticsSettings
+} from "react-native-google-analytics-bridge";
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////  ARCHIVOS GENERADOS POR EL EQUIPO  //////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -25,7 +30,9 @@ import { showLocation, Popup } from 'react-native-map-link'
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////// 
 
-import {URL} from '../../App.js'
+import {URL}  from '../../App.js';
+const TRACKER = new GoogleAnalyticsTracker("UA-129344133-1");
+TRACKER.trackScreenView("chat");
 const heightScreen = Dimensions.get('window').height
 export default class ChatComponent extends Component{
 	constructor(props){
@@ -803,11 +810,11 @@ export default class ChatComponent extends Component{
 	opciones(){
 		const {planId, notificaciones, imagen, nombrePlan, id} = this.state
 		let opciones=[
-			{url:`${URL}public/img/opcion_1.png`, click:()=>{pedirImagen(planId, notificaciones, imagen, nombrePlan, id); this.setState({showOpciones:false})}},
-			{url:`${URL}public/img/opcion_2.png`, click:()=>this.setState({mapa:true})},
-			{url:`${URL}public/img/opcion_3.png`, click:()=>this.setState({adjuntarAmigos:true})},
-			{url:`${URL}public/img/opcion_4.png`, click:()=>{pedirPdf(planId, notificaciones, imagen, nombrePlan, id); this.setState({showOpciones:false})}},
-			{url:`${URL}public/img/opcion_5.png`, click:()=>this.setState({modalQr:true})}
+			{url:`${URL}public/images/opcion_1.png`, click:()=>{pedirImagen(planId, notificaciones, imagen, nombrePlan, id); this.setState({showOpciones:false})}},
+			{url:`${URL}public/images/opcion_2.png`, click:()=>this.setState({mapa:true})},
+			{url:`${URL}public/images/opcion_3.png`, click:()=>this.setState({adjuntarAmigos:true})},
+			{url:`${URL}public/images/opcion_4.png`, click:()=>{pedirPdf(planId, notificaciones, imagen, nombrePlan, id); this.setState({showOpciones:false})}},
+			{url:`${URL}public/images/opcion_5.png`, click:()=>this.setState({modalQr:true})}
 		]
 		return opciones.map((e, key)=>{
 			return (

@@ -28,5 +28,6 @@ project(':react-native-android-location-enabler').projectDir = new File(rootProj
 
 include ':pagedcontacts'
 project(':pagedcontacts').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-paged-contacts/android/')
-
+include ':react-native-google-analytics-bridge', ':app'
+project(':react-native-google-analytics-bridge').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-google-analytics-bridge/android')
 include ':app'

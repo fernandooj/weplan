@@ -8,8 +8,15 @@ import Icon from 'react-native-fa-icons';
 import CrearEncuestaComponent from './crearEncuestaComponent'
 import CabezeraComponent from '../ajustes/cabezera.js'
 import GuiaInicio 	 	 from '../guia_inicio/guia_inicio'
-
+import {
+  GoogleAnalyticsTracker,
+  GoogleTagManager,
+  GoogleAnalyticsSettings
+} from "react-native-google-analytics-bridge";
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
+import {URL}  from '../../App.js';
+const TRACKER = new GoogleAnalyticsTracker("UA-129344133-1");
+TRACKER.trackScreenView("encuesta");
 
 export default class encuestaComponent extends Component{
 	state={

@@ -8,8 +8,14 @@ import {style} from '../ajustes/style'
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
 import {PagedContacts} from 'react-native-paged-contacts';
 let pg = new PagedContacts();
-
-
+import {
+  GoogleAnalyticsTracker,
+  GoogleTagManager,
+  GoogleAnalyticsSettings
+} from "react-native-google-analytics-bridge";
+const TRACKER = new GoogleAnalyticsTracker("UA-129344133-1");
+import {URL}  from '../../App.js';
+TRACKER.trackScreenView("importar");
 
 
 const KEYS_TO_FILTERS = ['nombre', 'telefono']
@@ -38,7 +44,7 @@ export default class importarComponent extends Component{
 
 		  pg.getContactsCount().then( (count) => {
 		    pg.getContactsWithRange(0, count, [PagedContacts.displayName, PagedContacts.phoneNumbers]).then((contacts) => {
-		    	alert(JSON.stringify(contacts))
+		     
 		      let contacto = contacts.map((e, key)=>{
 		      		return {
 		      			id:key,
@@ -63,18 +69,17 @@ export default class importarComponent extends Component{
  		const filterData = this.state.contacts.filter(createFilter(this.state.searchTerm, KEYS_TO_FILTERS))
 		return filterData.map((data, key)=>{
 			return  (
-				<View style={style.registro} key={key}> 
-					<Text style={[style.textoAvatar, style.familia]}>{data.nombre}</Text>
+				<View style={style.registroImp} key={key}> 
+					<Text style={[style.textoAvatarImp, style.familia]}>{data.nombre}</Text>
 					{
 						data.state
-						?<TouchableOpacity style={style.btnHecho} onPress={(e)=>{this.handleSubmit(data.id, data.telefono)}} > 
-							<Text style={style.hecho}>{!data.cargando ?"Enviar invitación" :"Enviando..."}</Text>
+						?<TouchableOpacity style={style.btnHechoImp} onPress={(e)=>{this.handleSubmit(data.id, data.telefono)}} > 
+							<Text style={style.hechoImp}>{!data.cargando ?"Enviar invitación" :"Enviando..."}</Text>
 						</TouchableOpacity> 
 						:<TouchableOpacity style={style.btnHechoEnviado} > 
 							<Text style={style.hecho}>Enviado!</Text>
 						</TouchableOpacity> 
 					}
-					
 			    </View>
 			)
 		})

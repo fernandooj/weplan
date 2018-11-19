@@ -131,6 +131,7 @@ export default class CrearItemComponent extends Component{
                   asignados={this.state.asignados}
                   usuariosAsignados={this.state.usuariosAsignados}
                   misUsuarios={this.state.misUsuarios}
+                  navigate={this.props.navigate}
               /> :null }
 
             {/* Enviar al Chat */}

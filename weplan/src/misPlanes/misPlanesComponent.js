@@ -1,19 +1,24 @@
 import React, {Component} from 'react'
-import {View, Text, ScrollView, ImageBackground, TouchableOpacity, Image, TextInput, Keyboard} from 'react-native'
+import {View, Text, ScrollView, ImageBackground, TouchableOpacity, Image, TextInput, Keyboard, Platform} from 'react-native'
 import {MisPlanesStyle} from './style'
 import axios from 'axios'
 import Toast 			 		  from 'react-native-simple-toast';
  
 import FooterComponent 	      from '../cabezeraFooter/footerComponent'
 import UltimaVersionComponent from '../ultimaVersion/ultimaVersion'
-
+import {
+  GoogleAnalyticsTracker,
+  GoogleTagManager,
+  GoogleAnalyticsSettings
+} from "react-native-google-analytics-bridge";
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////  ARCHIVOS GENERADOS POR EL EQUIPO  //////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 import {URL}  from '../../App.js';
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////// 
-
+const TRACKER = new GoogleAnalyticsTracker("UA-129344133-1");
+TRACKER.trackScreenView("misPlanes");
 export default class MisPlanesComponent extends Component{
 	constructor(props){
 		super(props)
@@ -25,13 +30,22 @@ export default class MisPlanesComponent extends Component{
 	}
 	componentWillMount(){
 		Keyboard.dismiss()
-		////////////////////////////////////////////////////////////////// OBTENGO LA ULTIMA VERSION DE LA APP, SI NO ESTA ACTUALIZADA LE MUESTRO UN MENSAJE
-		axios.get('/x/v1/currentversion')
-		.then(e=>{
-			if (e.data.version!=="1.0.5") {
-				this.setState({mensaje:e.data.mensaje, showVersion:true})
-			}
-		})
+		if (Platform.OS==='android') {
+			////////////////////////////////////////////////////////////////// OBTENGO LA ULTIMA VERSION DE LA APP, SI NO ESTA ACTUALIZADA LE MUESTRO UN MENSAJE
+			axios.get('/x/v1/currentversion/android')
+			.then(e=>{
+				if (e.data.version!=="1.0.5") {
+					this.setState({mensaje:e.data.mensaje, showVersion:true})
+				}
+			})
+		}else{
+			axios.get('/x/v1/currentversion/ios')
+			.then(e=>{
+				if (e.data.version!=="1.0.5") {
+					this.setState({mensaje:e.data.mensaje, showVersion:true})
+				}
+			})
+		}
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		axios.get('/x/v1/pla/plan/suma/totales/miplan')
 		.then(res=>{

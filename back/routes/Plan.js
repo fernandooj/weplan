@@ -284,23 +284,6 @@ router.post('/', function(req, res){
 						})
 					res.json({status:'SUCCESS', message: plan, code:1})  
 				}else{
-					if (req.body.tipo==='pago') {
-						let mailOptions = {
-	                        from: '<weplanapp@appweplan.com>',                              // email del que se envia
-	                        to: 'fernandooj@ymail.com, unifyincatec@gmail.com',
-	                        subject: 'Nuevo plan creado',                                            // mensaje en el sujeto
-	                        html:  `Usuario :<b> ${req.session.usuario.user.nombre}</b> <br/>Nombre : <b>${req.body.nombre}</b> <br/>
-	                        		Ubicación : <b>${req.body.lugar}</b> <br/>
-	                        		Tipo : <b>${req.body.tipo}</b> <br/>
-	                        		Costo : <b>${'$ '+Number(req.body.costo ?req.body.costo :0).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")} </b>`  // texto
-	                    };
-	                    transporter.sendMail(mailOptions, (error, info) => {
-	                        if (error) {
-	                            return console.log(error);
-	                        }
-	                    });	
-					}
-					
 					res.json({ status: 'SUCCESS', message: plan, code:1 });	
 				}
 			}
@@ -344,6 +327,7 @@ router.put('/web', (req, res)=>{
 		if(err){
 			res.json({err})
 		}else{
+
 			res.json({ status: 'SUCCESS', message: plan, code:1, imagen: rutaImagenOriginal });		
 		}
 	})
@@ -353,7 +337,7 @@ router.put('/web', (req, res)=>{
 /////// MODIFICO LAS IMAGENES SI SE ENVIAN DESDE LA APP / SOLO ACEPTA UNA IMAGEN
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.put('/', (req, res)=>{
-	console.log(req.files)
+	// console.log(req.files)
 	let url = `${req.protocol}s://${req.get('Host')}/public/uploads/`
 	let rutaImagenOriginal  = [] 
 	let rutaImagenResize    = [] 
@@ -387,7 +371,26 @@ router.put('/', (req, res)=>{
 		if(err){
 			res.json({err})
 		}else{
-			//res.json({ status: 'SUCCESS', message: plan, code:1 });	
+			console.log(plan.tipo)
+			if (plan.tipo==='pago') {
+				
+				let mailOptions = {
+                    from: '<weplanapp@appweplan.com>',                              // email del que se envia
+                    to: 'fernandooj@ymail.com, unifyincatec@gmail.com',
+                    subject: 'Nuevo plan creado',                                            // mensaje en el sujeto
+                    html:  `Usuario :   <b> ${req.session.usuario.user.nombre}</b> <br/>Nombre : <b>${plan.nombre}</b> <br/>
+                    		Ubicación : <b>${plan.lugar}</b> <br/>
+                    		Tipo    :   <b>${plan.tipo}</b> <br/>
+                    		Area    :   <b>${plan.area}</b> Mt <br/>
+                    		Costo   :   <b>${'$ '+Number(req.body.costo ?req.body.costo :0).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")} </b><br/>
+                    		Img     :    <img src="${rutaImagenMiniatura}" /> <br/>`
+                };
+                transporter.sendMail(mailOptions, (error, info) => {
+                    if (error) {
+                        return console.log(error);
+                    }
+                });	
+			}
 			creaNotificacion(req, res, plan, rutaImagenResize )
 		}
 	})
@@ -776,8 +779,8 @@ router.get('/suma/totales/miplan', (req, res)=>{
 const resizeImagenes = (ruta, randonNumber, extension) =>{
 	Jimp.read(ruta, function (err, imagen) {
 	    if (err) throw err;
-	    imagen.resize(1024, Jimp.AUTO)             
-		.quality(95)                          
+	    imagen.resize(800, Jimp.AUTO)             
+		.quality(90)                          
 		.write(`${ubicacionJimp}Resize_${fecha}_${randonNumber}.${extension}`);
 	});	
 

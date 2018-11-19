@@ -12,7 +12,7 @@ export const style = MediaQueryStyleSheet.create({
 		fontFamily:'Futura-CondensedLight',
 	},
 	contenedorPlan:{
-		flex: 1,	
+		flex: 1
 	},
 	cabezera:{
 		position:'absolute',
@@ -53,7 +53,7 @@ export const style = MediaQueryStyleSheet.create({
 		top:Platform.OS==='android' ?0 :18,
 		borderBottomWidth:6,
 		borderColor:"#ffffff",
-		height:Platform.OS==='android' ?screenHeight-(screenHeight/3.7) :screenHeight-(screenHeight/3),
+		height:screenWidth+100,
 	},
 	footer:{
 		position:'absolute',
@@ -61,7 +61,7 @@ export const style = MediaQueryStyleSheet.create({
 		width:screenWidth,
 		backgroundColor:"rgba(0,0,0,0.56)",  
 		paddingLeft:20,
-		paddingBottom:0
+		paddingBottom:0,
 	},
 	footer1:{
 		flexDirection:'row',
@@ -117,7 +117,7 @@ export const style = MediaQueryStyleSheet.create({
 		width:35,
 	 	height:35,
 	 	marginTop:10,
-	 	marginBottom:10, 
+	 	marginBottom:0, 
 	 	marginLeft:2,
 	 	marginRight:2
 	},
@@ -184,7 +184,7 @@ export const style = MediaQueryStyleSheet.create({
 			width:25,
 		 	height:25,
 		 	marginTop:0,
-		 	marginBottom:10, 
+		 	marginBottom:0, 
 		 	marginLeft:2,
 		 	marginRight:2
 		},
@@ -194,22 +194,20 @@ export const style = MediaQueryStyleSheet.create({
 		 	marginTop:4,
 		},
 		fondo:{
-			height:screenHeight-(screenHeight/5.1),
+			height:screenWidth+100,
 		},
 	},
 	"@media (min-device-height: 770)": {
-		fondo:{
-			height:screenHeight-(screenHeight/8.4),
-		},
+		 
 	},
 	"@media (device-height: 812)": {
 		fondo:{
 			top:Platform.OS==='android' ?0 :32,
 			// height:Platform.OS==='android' ?screenHeight-(screenHeight/9.7) :screenHeight-(screenHeight/16.7),
-			height:Platform.OS==='android' ?screenHeight-(screenHeight/9.7) :screenHeight-(screenHeight/8.6),
+			// height:Platform.OS==='android' ?screenHeight-(screenHeight/9.7) :screenHeight-(screenHeight/8.6),
 		},
 		footer:{
-			paddingBottom:15
+			paddingBottom:2
 		}
 	}
 })

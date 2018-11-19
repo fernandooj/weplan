@@ -11,7 +11,14 @@ import Icon from 'react-native-fa-icons';
 import GuiaInicio 	 	 from '../guia_inicio/guia_inicio'
 import {sendRemoteNotification} from '../push/envioNotificacion.js' 
 import SocketIOClient from 'socket.io-client';
-import {URL} from '../../App.js'
+import {
+  GoogleAnalyticsTracker,
+  GoogleTagManager,
+  GoogleAnalyticsSettings
+} from "react-native-google-analytics-bridge";
+import {URL}  from '../../App.js';
+const TRACKER = new GoogleAnalyticsTracker("UA-129344133-1");
+TRACKER.trackScreenView("item");
 
 export default class ItemComponent extends Component{
 	constructor(props) {
@@ -315,6 +322,7 @@ export default class ItemComponent extends Component{
 						  			planId={planId}
 						  			updateItems={(id, deuda, titulo)=>this.updateItems(id, deuda, titulo)}
 						  			close={()=>this.setState({show:false})}
+						  			navigate={navigate}
 						  		 />
 						  		:null 
 						  	}

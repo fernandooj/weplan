@@ -58,6 +58,21 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 		justifyContent: 'flex-end',
 		fontSize:22
 	},
+	textarea2:{
+		borderWidth: 0,
+		paddingTop:10,
+		marginTop:5,
+		width:'90%',
+		height:40,
+		backgroundColor: '#f1f3f3',
+		borderRadius: 20, 
+		paddingLeft:10,
+		height:60,
+		color:'#969696',
+		alignSelf: 'center',
+		justifyContent: 'flex-end',
+		fontSize:19
+	},
 	encabezadoPlan:{
 		alignItems: 'center',
 		backgroundColor:'#F2F4F4',
@@ -154,7 +169,13 @@ export const CreatePlanStyle = MediaQueryStyleSheet.create({
 	encabezadoPlan2:{
 		alignItems: 'center',
 		paddingTop: 0,
-		marginTop: Platform.OS === 'android' ?0 : 45,
+		marginTop: Platform.OS === 'android' ?0 : 0,
+		paddingBottom: 12,
+	},
+	encabezadoPlan3:{
+		alignItems: 'center',
+		paddingTop: 0,
+		marginTop: Platform.OS === 'android' ?0 : 40,
 		paddingBottom: 12,
 	},
 	imagenCargada:{

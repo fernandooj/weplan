@@ -83,7 +83,7 @@ export const style = MediaQueryStyleSheet.create({
  		flexDirection:'row',
  		position:'relative',
  		marginBottom:20,
- 		marginTop:20,
+ 		marginTop:40,
  	},
  	subContenedorA:{
  		width:'90%',	
@@ -167,12 +167,10 @@ export const style = MediaQueryStyleSheet.create({
  		paddingBottom:8,
  		width:"100%"
  	},
- 	hecho:{
- 		color:'94A5F3',
- 	},
+ 
  	btnHecho:{
  		alignItems: 'center',
- 		backgroundColor:'#ffffff',
+ 		backgroundColor:'#94A5F3',
  		borderRadius:10,
  		padding:5,
  		paddingTop:8,
@@ -189,7 +187,7 @@ export const style = MediaQueryStyleSheet.create({
  		marginTop:22
  	},
  	hecho:{
- 		color:'white',
+ 		color:"#ffffff"
  	},
  	registroAsignados:{
  		flexDirection:'row',
@@ -263,8 +261,36 @@ export const style = MediaQueryStyleSheet.create({
 	},
 	txtOmitir:{
 		color:'#ffffff'
-	}
+	},
 
+ 	//////////////////////////////////////////////////////////////////////////////////////
+ 	///////////////////////			IMPORTAR 			 
+ 	/////////////////////////////////////////////////////////////////////////////////////
+	textoAvatarImp:{
+		fontSize:22,
+		marginTop:2,
+		width:"60%",
+		color:"#000000"
+	},
+	registroImp:{
+		flexDirection:'row',
+ 		alignItems: 'center',
+ 		width:'100%',
+ 		marginTop:10 
+ 		// marginTop:Platform.OS==='android' ?50 :70 
+	},
+	btnHechoImp:{
+ 		alignItems: 'center',
+ 		backgroundColor:'#94A5F3',
+ 		borderRadius:10,
+ 		padding:15,
+ 		marginTop:22
+ 	},
+	hechoImp:{
+ 		color:'#ffffff',
+ 	},
+
+ 	
 },{
 	"@media (max-device-width: 360)": {
 		username:{ 

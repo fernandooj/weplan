@@ -17,6 +17,7 @@ import com.facebook.soloader.SoLoader;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.heanoria.library.reactnative.locationenabler.RNAndroidLocationEnablerPackage;
 import com.reactnativedocumentpicker.ReactNativeDocumentPicker;
+import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,7 +43,8 @@ public class MainApplication extends Application implements ReactApplication {
             new MapsPackage(),
             new ReactNativeDocumentPicker(),
             new PagedContactsPackage(),
-            new RNAndroidLocationEnablerPackage()
+            new RNAndroidLocationEnablerPackage(),
+            new GoogleAnalyticsBridgePackage()
       );
     }
 

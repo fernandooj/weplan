@@ -756,8 +756,11 @@ module.exports = function(app, passport){
     ///////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////    verifica la ultima version 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    app.get('/x/v1/currentversion', (req, res)=>{
-        res.json({version:"1.0.5"})
+    app.get('/x/v1/currentversion/android', (req, res)=>{
+        res.json({version:"1.0.5", mensaje:"Trabajamos siempre pensando en mejorar tu experiencia, ¡actualiza tu aplicación para seguir disfrutando de tus mejores planes!"})
+    })  
+    app.get('/x/v1/currentversion/ios', (req, res)=>{
+        res.json({version:"1.0.5", mensaje:"Trabajamos siempre pensando en mejorar tu experiencia, ¡actualiza tu aplicación para seguir disfrutando de tus mejores planes!"})
     }) 
 
     // =====================================

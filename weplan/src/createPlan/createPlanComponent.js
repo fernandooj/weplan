@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Picker, Alert, Dimensions, Platform, AsyncStorage, ImageBackground} from 'react-native'
+import {View, Text, Image, TouchableOpacity, TextInput, ScrollView, Picker, Alert, Dimensions, Platform, AsyncStorage, ImageBackground, ActivityIndicator} from 'react-native'
 
 import {CreatePlanStyle} 		  from '../createPlan/style'
 import axios 					  from 'axios'
@@ -16,10 +16,16 @@ import TakePhotoComponent 	  	  from '../takePhoto/takePhotoComponent.js'
 import CabezeraComponent 		  from '../ajustes/cabezera.js'
 import GuiaInicio 	 	 		  from '../guia_inicio/guia_inicio'
 import {sendRemoteNotification}   from '../push/envioNotificacion.js'
-
+import {
+  GoogleAnalyticsTracker,
+  GoogleTagManager,
+  GoogleAnalyticsSettings
+} from "react-native-google-analytics-bridge";
+import {URL}  from '../../App.js';
 
 const screenWidth = Dimensions.get('window').width;
- 
+const TRACKER = new GoogleAnalyticsTracker("UA-129344133-1");
+TRACKER.trackScreenView("createPlan");
 
 export default class createPlanComponent extends Component{
 	constructor(props){
@@ -77,7 +83,7 @@ export default class createPlanComponent extends Component{
 				e.data.plan[0].imagenResize.map(e=>{
 					imagenes.push({url:e})
 				}) 
-				this.setState({cargaPlan:e.data.plan[0], iconCreate:false, restriccion:false, restriccionesAsignadas:e.data.plan[0].restricciones , restricciones:e.data.plan[0].restricciones, planPadre:this.props.navigation.state.params, imagenes, tipoPlan:false })
+				this.setState({cargaPlan:e.data.plan[0], iconCreate:false, restriccion:false, restriccionesAsignadas:e.data.plan[0].restricciones, imagenResize:e.data.plan[0].imagenResize[0], restricciones:e.data.plan[0].restricciones, planPadre:this.props.navigation.state.params, imagenes, tipoPlan:false })
 
 			})
 			.catch(err=>{
@@ -165,9 +171,9 @@ export default class createPlanComponent extends Component{
 	///////////////////////////////////////////////////  	RENDER  	/////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	render(){
-		const {nombre, fechaLugar, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, area, costo, saldo, lat, lng, showTipo, guia_inicio, ganapuntos, guardandoPlan} = this.state
+		const {nombre, fechaLugar, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, area, costo, saldo, lat, lng, showTipo, guia_inicio, ganapuntos, guardandoPlan, imagenResize} = this.state
 		const {navigate} = this.props.navigation
- 	
+ 		console.log(JSON.stringify(imagenes))
 		return (
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} keyboardDismissMode='on-drag'> 
 				
@@ -222,7 +228,7 @@ export default class createPlanComponent extends Component{
 				{
 					!cargaPlan
 					?<View style={imagen ?CreatePlanStyle.encabezadoPlan2 :CreatePlanStyle.encabezadoPlan}>
-						<TakePhotoComponent fuente={'cam.png'} ancho={screenWidth} alto={160} updateImagen={(imagen) => {this.setState({imagen})}}   />
+						<TakePhotoComponent fuente={'cam.png'} ancho={screenWidth} alto={!imagen ?200 :screenWidth} updateImagen={(imagen) => {this.setState({imagen})}}   />
 						<View style={CreatePlanStyle.textoCargado2}>
 							<TextInput
 								style={[CreatePlanStyle.nombreCargado, CreatePlanStyle.familia]}
@@ -235,12 +241,22 @@ export default class createPlanComponent extends Component{
 						    />
 						</View>
 					</View>
-					:<View style={CreatePlanStyle.encabezadoPlan2}>
-						<Slideshow 
+					:<View style={CreatePlanStyle.encabezadoPlan3}>
+						{/*<Slideshow 
 					      dataSource={imagenes}
 					      position={this.state.position}
 					      onPositionChanged={position => this.setState({ position })} 
-					   />
+					      height={screenWidth}
+					   />*/}
+					   {
+					   	!imagenResize
+					   	?<View style={{width:screenWidth, height:screenWidth, justifyContent: 'center'}}>
+					   		<ActivityIndicator size="large" color="#148dc9" />
+					   	</View>
+					   	:<Image source={{uri:imagenResize}} style={{width:screenWidth, height:screenWidth}} />
+					   }
+					   	
+					   
 					   	<View style={CreatePlanStyle.textoCargado}>
 							<Text style={[CreatePlanStyle.nombreCargado, CreatePlanStyle.familia, {color:this.getRandomColor()}]}>
 								{cargaPlan.nombre.toUpperCase()} 
@@ -282,7 +298,7 @@ export default class createPlanComponent extends Component{
 						</View>
 						:<View style={CreatePlanStyle.cajaInpunts}>
 							<View style={CreatePlanStyle.contenedorTextarea}>
-								<Text style={[CreatePlanStyle.textarea,CreatePlanStyle.familia]}>{cargaPlan.descripcion ?cargaPlan.descripcion :'Sin Descripción'}</Text>
+								<Text style={[CreatePlanStyle.textarea2,CreatePlanStyle.familia]}>{cargaPlan.descripcion ?cargaPlan.descripcion :'Sin Descripción'}</Text>
 							</View>
 						</View>
 					}
@@ -434,6 +450,7 @@ export default class createPlanComponent extends Component{
 				                asignados={this.state.asignados}
 							    usuariosAsignados={this.state.usuariosAsignados}
 							    misUsuarios={this.state.misUsuarios}
+							    navigate={navigate}
 				            /> 
 				            :null 
 				        } 
@@ -567,11 +584,12 @@ export default class createPlanComponent extends Component{
 			this.setState({guardandoPlan:true})
 			if (!cargaPlan) {
 				let data = new FormData();
-				axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, restricciones, tipo, lugar, area, activo, costo})
+				axios.post('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, asignados, restricciones, tipo, lugar, area, activo, })
 				.then(e=>{
 					if(e.data.code==1){	
 						let id = e.data.message._id;
 						data.append('imagen', imagen);
+						data.append('costo', costo);
 						data.append('id', e.data.message._id);
 						axios({
 							method: 'put', //you can set what request you want to be

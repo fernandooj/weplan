@@ -4,7 +4,11 @@ import {style} from '../home/style'
 import axios from 'axios'
 import SearchInput, { createFilter } from 'react-native-search-filter';
 import Toast 			 from 'react-native-simple-toast';
-
+import {
+  GoogleAnalyticsTracker,
+  GoogleTagManager,
+  GoogleAnalyticsSettings
+} from "react-native-google-analytics-bridge";
 import CabezeraComponent from '../cabezeraFooter/cabezeraComponent'
 import FooterComponent 	 from '../cabezeraFooter/footerComponent'
 import GuiaInicio 	 	 from '../guia_inicio/guia_inicio'
@@ -14,6 +18,10 @@ import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import FCM, {NotificationActionType} from "react-native-fcm";
 import {registerKilledListener, registerAppListener} from "../push/Listeners";
 import UltimaVersionComponent from '../ultimaVersion/ultimaVersion'
+
+import {URL}  from '../../App.js';
+const TRACKER = new GoogleAnalyticsTracker("UA-129344133-1");
+TRACKER.trackScreenView("Home");
 
 const KEYS_TO_FILTERS = ['nombre', 'lugar']
 const {width, height} = Dimensions.get('window')
@@ -35,6 +43,8 @@ export default class homeComponent extends Component{
 			cargando: true,      ////// mientras carga los datos
 			showComponents:true, ////// muestra la barra superior y el footer y desaparece al darle click a la imagen
 			sliderValue: 0.3,
+			inicio:0,
+ 			final:3,
 			filteredData: [],
 			searchTerm:'',
 			planes:[],
@@ -49,6 +59,7 @@ export default class homeComponent extends Component{
 	getPlans(lat, lng){
 		axios.get(`/x/v1/pla/plan/pago/${lat}/${lng}`)
 		.then(res=>{
+			console.log(res.data)
 			if (res.data.code===2) {
 				this.props.navigation.navigate('Login')
 				Toast.show('No éstas logueado')
@@ -65,17 +76,18 @@ export default class homeComponent extends Component{
 		})
 	}
 	async componentWillMount(){
-		////////////////////////////////////////////////////////////////// OBTENGO LA ULTIMA VERSION DE LA APP, SI NO ESTA ACTUALIZADA LE MUESTRO UN MENSAJE
-		axios.get('/x/v1/currentversion')
-		.then(e=>{
-			if (e.data.version!=="1.0.5") {
-				this.setState({mensaje:e.data.mensaje, showVersion:true})
-			}
-		})
-		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
 		let guia_inicio   = await AsyncStorage.getItem('home');
 		this.setState({guia_inicio})
 		if (Platform.OS==='android') {
+			////////////////////////////////////////////////////////////////// OBTENGO LA ULTIMA VERSION DE LA APP, SI NO ESTA ACTUALIZADA LE MUESTRO UN MENSAJE
+			axios.get('/x/v1/currentversion/android')
+			.then(e=>{
+				if (e.data.version!=="1.0.5") {
+					this.setState({mensaje:e.data.mensaje, showVersion:true})
+				}
+			})
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({interval: 10000, fastInterval: 5000})
 		   .then(data => {
 		    	navigator.geolocation.getCurrentPosition(e=>{
@@ -102,6 +114,14 @@ export default class homeComponent extends Component{
 				})
 		  	});
 		  }else{
+		  	////////////////////////////////////////////////////////////////// OBTENGO LA ULTIMA VERSION DE LA APP, SI NO ESTA ACTUALIZADA LE MUESTRO UN MENSAJE
+			axios.get('/x/v1/currentversion/ios')
+			.then(e=>{
+				if (e.data.version!=="1.0.5") {
+					this.setState({mensaje:e.data.mensaje, showVersion:true})
+				}
+			})
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		  	navigator.geolocation.getCurrentPosition(e=>{
 				let lat =parseFloat(e.coords.latitude)
 				let lng = parseFloat(e.coords.longitude)
@@ -153,14 +173,15 @@ export default class homeComponent extends Component{
 	
 	getRow(){
 		const {navigate} = this.props.navigation
-		const {opacity, top, deg, translate, cargando, cargado, filteredData, searchTerm, showComponents} = this.state
-		const filtered = filteredData.filter(createFilter(searchTerm, KEYS_TO_FILTERS))
-		if (filtered.length===0 ) {
+		const {opacity, top, deg, translate, cargando, cargado, filteredData, searchTerm, showComponents, inicio, final} = this.state
+		let newFilter   = filteredData.slice(inicio, final)
+		newFilter.filter(createFilter(searchTerm, KEYS_TO_FILTERS))
+		if (newFilter.length===0 ) {
 			return(<View style={style.sinResultados}>
 					 {!cargado ?<ActivityIndicator size="large" color="#148dc9" /> :<Text>No hemos encontrado planes</Text> } 
 					</View>)
 		}else{
-			return filtered.map((e, key)=>{
+			return newFilter.map((e, key)=>{
 				let data = parseInt(e.dist/1000);
 				data = data.toString()
 				let calficaLongitud = e.UserData.calificacion ?e.UserData.calificacion.length: false
@@ -177,6 +198,7 @@ export default class homeComponent extends Component{
 									{/*e.descripcion &&<Text style={[style.textFooter2, style.familia]}>{e.descripcion}</Text>*/}
 									
 									<Text style={[style.textFooter2, style.familia]}>Estas a {parseInt(e.dist)<1000 ?`${parseInt(e.dist)} Metros` :`${data} Kilometros`}</Text>
+									<Text style={[style.textFooter2, style.familia]}>{e.fechaLugar}</Text>
 									<Text style={[style.textFooter2, style.familia]}>{`Por: ${e.UserData.nombre}, ${calficaLongitud ?parseFloat(calificacion).toFixed(0) :''}*`}</Text>
 									<View style={style.footer2}>
 										<TouchableOpacity onPress={() => this.like(e._id)} >
@@ -238,6 +260,15 @@ export default class homeComponent extends Component{
 		})
 	}
 	handleScroll(event) {
+		const {final} = this.state
+ 		let paddingBottom = 10
+
+		paddingBottom += event.nativeEvent.layoutMeasurement.width;
+ 		if (event.nativeEvent.contentOffset.y >= event.nativeEvent.contentSize.width-paddingBottom) {
+ 			console.log(final)
+ 				this.setState({final:final+5})
+ 		}
+
 		if(event.nativeEvent.contentOffset.y<=0){
 			axios.get(`/x/v1/pla/plan/pago/${this.state.lat}/${this.state.lng}`)
 			.then(e=>{
