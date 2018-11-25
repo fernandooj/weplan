@@ -13,7 +13,7 @@ export const style = MediaQueryStyleSheet.create({
 		marginTop:50
 	},
 	avatar: {
-		marginTop:10,
+		marginTop:20,
 		borderRadius: 60,
 		width: 120,
 		height: 120,
@@ -26,9 +26,15 @@ export const style = MediaQueryStyleSheet.create({
 		top:70,
 		left:75,
 		zIndex:100,
+		width:300,
+		zIndex:10000
 	},
 	avatar3:{
-		marginTop:20,
+		position:'absolute',
+		top:20,
+		width:200,
+ 		right:"0%",
+		zIndex:10000
 	},
 	perfil:{
 		marginHorizontal:10,
@@ -36,6 +42,7 @@ export const style = MediaQueryStyleSheet.create({
 	contenedorRegistros:{
 		flexDirection:'row',
 		marginTop:10,
+		zIndex:10
 	},
 	btnQr:{
  		width:110,

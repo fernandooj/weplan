@@ -25,7 +25,8 @@ export default class walletComponent extends Component{
 		super(props)
 		this.state={
 			filteredData:[],
-			allList:[]
+			allList:[],
+			billeteraAsignados:0
 		}
 	}
 	async componentWillMount(){
@@ -53,7 +54,8 @@ export default class walletComponent extends Component{
 				}, {});
 				let result = Object.keys(map).map(id => map[id]);
 				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-				this.setState({allList:result, filteredData:result})
+				let billeteraAsignados = result==0 ?1 :2
+				this.setState({allList:result, filteredData:result, billeteraAsignados})
 			}
 		})
 		.catch(res=>{
@@ -105,15 +107,23 @@ export default class walletComponent extends Component{
 		const filteredData = this.state.filteredData
 		const rows = this.getRow(filteredData)
 		const {navigate} = this.props.navigation
+		const {billeteraAsignados} = this.state
 		return(	 
 			<View style={style.contenedor}>
 				{
 					typeof this.state.guia_inicio!=='string'  &&<GuiaInicio number={17} guia_inicio={()=>this.setState({guia_inicio:'1'})} />
 				}
 				<CabezeraComponent navigate={navigate} url={'inicio'} texto='Mi billetera'  />
-				<ScrollView style={style.subContenedor}>
-					{rows}	
-				</ScrollView>
+				{
+					billeteraAsignados==1
+					?<Image source={require('../assets/images/sinBilletera.png')} style={style.sinPlanes} />
+					:billeteraAsignados==2
+					?<ScrollView style={style.subContenedor}>
+						{rows}	
+					</ScrollView>
+					:<View></View>
+				}
+				
 				<FooterComponent navigate={this.props.navigation} />		
 			</View> 
 		)

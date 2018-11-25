@@ -173,8 +173,14 @@ body, *{
 /************.  SECTION 2 ********/
 .section2{
 	text-align:center;
+	position: relative;
+	top: 130px;
 	h2{
 		font-size: 40px;
+	}
+	div{
+		box-shadow:none !important;
+		-webkit-box-shadow:none !important;
 	}
 	>p{
 		font-size: 20px;
@@ -203,6 +209,10 @@ body, *{
 /************.  SECTION 3 ********/
 
 .section3{
+	position: relative;
+    top: 97px;
+        max-width: 1400px;
+    margin: auto;
 	ul{
 		margin:0
 	}
@@ -233,6 +243,8 @@ body, *{
 footer{
 	background: #cccccc;
 	padding: 18px;
+	    position: relative;
+    top: 100px;
     ul{
     	display: inline-block;
 	    margin: 0;

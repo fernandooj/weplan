@@ -23,6 +23,7 @@ export default class notificacionComponent extends Component{
 			notificacion:[],
 			eliminar:false, /// muestra el boton de eliminar cada notificacion
 			rating:0,
+			notificacionAsignados:0
 		}
 		this.onReceivedMessage = this.onReceivedMessage.bind(this);
 		this.onReceivedMessageCreador = this.onReceivedMessageCreador.bind(this);
@@ -39,7 +40,8 @@ export default class notificacionComponent extends Component{
 				this.props.navigation.navigate('Login')
 				Toast.show('No éstas logueado')
 			}else{
- 				this.setState({notificacion: res.data.notificacion, id:res.data.id})
+				let notificacionAsignados = res.data.notificacion==0 ?1 :2
+ 				this.setState({notificacion: res.data.notificacion, id:res.data.id, notificacionAsignados})
  			}
  		}) 
  		.catch(err=>{
@@ -220,12 +222,21 @@ export default class notificacionComponent extends Component{
 	}
 	render(){
 		const {navigate} = this.props.navigation
+		const {notificacionAsignados} = this.state
+		console.log(notificacionAsignados)
 		return(	
 			<View style={style.contenedor}>
 				<CabezeraComponent navigate={navigate} url={'inicio'} texto={'Notificaciones'}  />
-				<ScrollView style={style.contenedorPlan}>
-					{this.renderNotificacion()}
-				</ScrollView>
+				{
+					notificacionAsignados==1
+					?<Image source={require('../assets/images/sinNotificaciones.png')} style={style.sinPlanes} />
+					:notificacionAsignados==2
+					?<ScrollView style={style.contenedorPlan}>
+						{this.renderNotificacion()}
+					</ScrollView>
+					:<View></View>
+				}
+				
 				<FooterComponent navigate={this.props.navigation} />	
 			</View>
 		)

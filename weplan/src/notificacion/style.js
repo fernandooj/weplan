@@ -1,5 +1,5 @@
 import {StyleSheet, Dimensions, Platform} from 'react-native';
-var screenWidth = Dimensions.get('window').width;
+var size = Dimensions.get('window');
 
 import { MediaQueryStyleSheet } from "react-native-responsive";
 export const style = MediaQueryStyleSheet.create({ 
@@ -110,10 +110,16 @@ export const style = MediaQueryStyleSheet.create({
 	eliminar:{
 		color:'#ffffff',
 		fontSize:17
-	}
+	},
+	sinPlanes:{
+		width:size.width,
+		height:size.height-60,
+		marginBottom:10,
+		paddingHorizontal:90
+	},
 
 },{
-	"@media (max-device-width: 320)": {
+	"@media (max-device-width: 360)": {
 	 	avatar:{
 	 		width: 55,
 			height: 55,
@@ -146,6 +152,11 @@ export const style = MediaQueryStyleSheet.create({
 		},
 		eliminar:{
 			fontSize:14
-		}
+		},
+		sinPlanes:{
+			width:320,
+			height:430,
+			marginBottom:10
+		},
 	}
 })

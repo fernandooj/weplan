@@ -38,6 +38,7 @@ export default class perfilComponent extends Component{
 			exitoso:false,
 			qr:false,
 			saldo:0,
+			img1:true
 		}
 	}
 	componentWillMount(){
@@ -67,7 +68,7 @@ export default class perfilComponent extends Component{
 	 
 	 
  	renderPerfil(){
-		const {perfil, imagen, ciudad, ciudades, sexo, photo, exitoso, nombre, qr, calificacion, saldo} = this.state
+		const {perfil, imagen, ciudad, ciudades, sexo, photo, exitoso, nombre, qr, calificacion, saldo, img1} = this.state
 		const {navigate} = this.props.navigation
 		let a=size<321 ?40 :60
 		let b=size<321 ?500 :100
@@ -75,8 +76,14 @@ export default class perfilComponent extends Component{
 			return(
 				<View style={style.perfil}>
 					<View style={style.contenedorRegistros}>
-						<View style={!imagen ?style.avatar2 :style.avatar3} >
-							<TakePhotoComponent fuente={'camPerfil.png'} border={50} ancho={!imagen ?a :b} alto={!imagen ?a :b} updateImagen={(photo) => {this.setState({photo, imagen:true})}} />
+						<View style={img1 ?style.avatar2 :style.avatar3} >
+							<TakePhotoComponent 
+								fuente={'camPerfil.png'} 
+								border={50} ancho={!imagen ?a :b} alto={!imagen ?a :b} 
+								updateImagen={(photo) => {this.setState({photo, imagen:true})}} 
+								updateImagen={(photo) => {this.setState({photo, imagen:true})}} 
+								img1={(img1) => {this.setState({img1})}} 
+							/>
 						</View>
 
 						{

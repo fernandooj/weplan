@@ -238,22 +238,19 @@ export const style = MediaQueryStyleSheet.create({
 	},
 	btnCamera:{
 		position:'absolute',
-		bottom:-10,
-		right:-5, 
-		zIndex:100 
+		bottom:-3,
+		right:0, 
+		zIndex:100,
 	},
 	btnCamera2:{
 		position:'absolute',
 		bottom:0,
 		right:2, 
-		zIndex:100 
+		zIndex:100,
+		width:200,
+		height:200,
 	},
-	btnCamera2:{
-		position:'absolute',
-		bottom:0,
-		right:2, 
-		zIndex:100 
-	},
+	 
 	titulo:{
 		width:'50%',
 		fontSize:25,

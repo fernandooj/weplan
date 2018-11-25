@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, ScrollView, Alert, TextInput} from 'react-native'
+import {View, Text, Image, TouchableOpacity, ScrollView, Alert, TextInput, Platform} from 'react-native'
 import {style} 					  from './style'
 import axios 					  from 'axios'
 import Icon 					  from 'react-native-fa-icons';
@@ -24,7 +24,8 @@ export default class infoPlanComponent extends Component{
 	  		restriccion:false,
 	  		adjuntarAmigos:false,
 	  		mapaVisible:false,
-	  		exitoso:false,
+	  		exitoso:false,  	  ///// muestra el mensaje de guardado exitoso
+	  		guardado:false,       ///// cuando los cambios no se han guardado y se va para atras
 	  		planId:'',
 	  		nombre:'',
 	  		descripcion:'',
@@ -65,10 +66,10 @@ export default class infoPlanComponent extends Component{
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	updateStateX(lat,lng, direccion, area, costo){
 		if (direccion) {
-			this.setState({lat,lng, area, costo, direccion, mapa:false})
+			this.setState({lat,lng, area, costo, direccion, mapa:false, guardado:true})
 		}else{
 			let direccion1 = lat+','+lng 
-			this.setState({lat,lng, area, costo, direccion:'', mapa:false, showAlertUbicacion:true})
+			this.setState({lat,lng, area, costo, direccion:'', mapa:false, showAlertUbicacion:true, guardado:true})
 		}
 	}
 
@@ -141,12 +142,29 @@ export default class infoPlanComponent extends Component{
 			/>
 		)	
 	}
+	goBack(){
+		let {nombre, descripcion, fechaLugar, lat, lng, asignados, asignadosInicial, notificaciones, lugar, restricciones, planId, usuariosAsignados, guardado} = this.state
+		const {plan}  = this.props.navigation.state.params
+		if ((nombre =plan.nombre || descripcion != plan.descripcion || fechaLugar != plan.fechaLugar || lat != plan.lat || lng != plan.lng || lat != asignados.lat || lng != asignados.lng) &&guardado){
+			Alert.alert(
+				'Opss!! no has guardado tus datos',
+				'¿estas seguro? Que quieres salir',
+			[
+				{text: 'Ir atras', onPress: () => this.props.navigation.navigate("chat", planId)},
+				{text: 'Cerrar', onPress: () => console.log("ok")},
+			],
+				{ cancelable: false }
+			)
+		}else{
+			 this.props.navigation.navigate("chat", planId)
+		}
+	}
 	render(){
 	let data = this.props.navigation.state.params.plan
 	let id   = this.props.navigation.state.params.id
  	let permiteEditar = id==data.idUsuario._id ?true :false;
 	let {navigate} = this.props.navigation
-	console.log(data)
+	console.log(this.state.fechaLugar)
 	let notifica = []
 	this.state.notificaciones.map(e=>{
 		notifica.push(e._id)
@@ -166,7 +184,13 @@ export default class infoPlanComponent extends Component{
 			{this.renderAlertNombreEvento()}
 
 			<View style={style.contenedor}> 
-				<CabezeraComponent navigate={navigate} url={'chat'} parameter={data._id} texto='Info Plan' />
+				<View style={ Platform.OS==='android' ?style.contenedorBack :[{marginTop:30}, style.contenedorBack] }>
+					<TouchableOpacity onPress={()=> this.goBack()} style={style.btnBack}>
+						<Image source={require('../assets/images/back.png')} style={style.imgBack} />
+					</TouchableOpacity>
+					 <View style={style.contenedorTexto}><Text style={[style.textBack, style.familia]}>Detalle Plan</Text></View>
+			   </View>
+				{/*<CabezeraComponent navigate={navigate} url={'chat'} parameter={data._id} texto='Info Plan' />*/}
 				<View style={style.encabezadoPlan}>
 				   	<View>
 				   	<Lightbox 
@@ -188,7 +212,7 @@ export default class infoPlanComponent extends Component{
 						permiteEditar
 						?<TextInput
 							style={[style.titulo, style.familia]}
-							onChangeText={(nombre) => this.setState({nombre})}
+							onChangeText={(nombre) => this.setState({nombre, guardado:true})}
 							value={nombre}
 							underlineColorAndroid='transparent'
 							placeholder="NOMBRE DE TU PLAN"
@@ -202,13 +226,14 @@ export default class infoPlanComponent extends Component{
 					{
 						permiteEditar
 						?<TextInput
-							style={[style.descripcionfaef, style.familia]}
-							onChangeText={(descripcion) => this.setState({descripcion})}
+							style={[style.descripcion, style.familia]}
+							onChangeText={(descripcion) => this.setState({descripcion, guardado:true})}
 							value={descripcion}
 							underlineColorAndroid='transparent'
 							placeholder="Descripcion"
-							placeholderTextColor="#ffffff" 
+							placeholderTextColor="#bbbbbb" 
 							maxLength={60}
+							multiline={true}
 					    />
 					    :<Text  style={[style.descripcion, style.familia]}>
 							{data.descripcion}
@@ -262,7 +287,7 @@ export default class infoPlanComponent extends Component{
 								confirmBtnText="Confirm"
 								cancelBtnText="Cancel"
 								androidMode='spinner'
-								onDateChange={(fechaLugar) => {this.setState({fechaLugar})}}
+								onDateChange={(fechaLugar) => {fechaLugar!=this.state.fechaLugar &&this.setState({guardado:true}); this.setState({fechaLugar})}}
 						   />
 						   :<Text style={[style.btnInputs,  style.familia]}>{fechaLugar}</Text>
 						}
@@ -322,7 +347,7 @@ export default class infoPlanComponent extends Component{
 					{
 						restriccion 
 						?<RestriccionesPlanComponent  
-						    restriccion={(restricciones, restriccionesAsignadas)=>this.setState({restricciones, restriccionesAsignadas, restriccion:false})}
+						    restriccion={(restricciones, restriccionesAsignadas)=>{this.setState({restricciones, restriccionesAsignadas, restriccion:false}); restricciones!=this.state.restricciones &&this.setState({guardado:true})}}
 						    arrayRestricciones={this.state.restricciones}
 						    restriccionesAsignadas={this.state.restriccionesAsignadas}
 						    noEdit={permiteEditar ?true :false}
@@ -362,10 +387,9 @@ export default class infoPlanComponent extends Component{
 				    			noEdita={permiteEditar?false:true}
 				                titulo='Asignar Amigos'
 				                close={(e)=>this.setState({asignados:[], usuariosAsignados:[], adjuntarAmigos:false})} 
-				                updateStateAsignados={(asignados, usuariosAsignados)=>this.setState({asignados, usuariosAsignados, adjuntarAmigos:false})}
+				                updateStateAsignados={(asignados, usuariosAsignados)=>{this.setState({asignados, usuariosAsignados, adjuntarAmigos:false}); asignados!=this.state.asignados &&this.setState({guardado:true})}}
 				                asignados={this.state.asignados}
 							    usuariosAsignados={this.state.usuariosAsignados}
-							    
 				            /> 
 				            :null 
 				        } 
@@ -379,7 +403,7 @@ export default class infoPlanComponent extends Component{
 				{
 					permiteEditar
 					&&<TouchableOpacity onPress={() => { this.handleSubmit()} } style={style.btnHecho}>
-						<Text style={[style.hecho, style.familia]}>Editar !</Text>
+						<Text style={[style.hecho, style.familia]}>Guardar Cambios !</Text>
 					</TouchableOpacity>	
 				}
 				
@@ -398,10 +422,10 @@ export default class infoPlanComponent extends Component{
 		</ScrollView>
 		)
 	}	
-	handleSubmit(){
 
+	
+	handleSubmit(){
 		let {nombre, descripcion, fechaLugar, lat, lng, asignados, asignadosInicial, notificaciones, lugar, restricciones, planId, usuariosAsignados} = this.state
-		console.log(usuariosAsignados)
 
 		/////   1--  identificar los que se eliminaron, comparando el nuevo array con el asignadosInicial el que guarda los asignados iniciales y guardarlos en un array
 		let eliminados = asignadosInicial.filter(x=> !asignados.includes(x))
@@ -417,16 +441,12 @@ export default class infoPlanComponent extends Component{
 
 		////   5--  agrego los nuevos usuarios a la notificacion
 		notificaciones =  nuevaNotificacion.concat(nuevos)
- 
-	 
-		console.log(notificacionToken)
-		console.log(nuevos)
 
 		axios.put('/x/v1/pla/plan/editar', {nombre, descripcion, fechaLugar, lat, lng, asignados, lugar, restricciones, planId, notificaciones, area:0})
 		.then(e=>{
 			console.log(e.data)
 			if(e.data.code==1){	
-				this.setState({exitoso:true})
+				this.setState({exitoso:true, guardado:false})
 				setTimeout(()=>{
 					this.setState({exitoso:false})
 				},2000)

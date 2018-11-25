@@ -65,7 +65,7 @@ export default class ChatComponent extends Component{
 
 	componentWillMount = async()=>{
 		let planId = this.props.navigation.state.params	
-		// let planId = '5b96ec5c7d74dd757c9e8f7b'	 
+		// let planId = '5be37154f542e76e7e6ac12c'	 
 		let guia_inicio   = await AsyncStorage.getItem('chat');
 		console.log(planId)
 		this.socket = SocketIOClient(URL);

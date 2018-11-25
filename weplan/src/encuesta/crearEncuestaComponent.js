@@ -13,6 +13,8 @@ export default class CrearEncuestaComponent extends Component{
       titulo:'',
       pregunta1:'',
       pregunta2:'',
+      img1:true,
+      img2:true,
       imagen:null,
       imagen2:null,
       descripcion:'',
@@ -44,7 +46,8 @@ export default class CrearEncuestaComponent extends Component{
   }
 
   render() {
-    const {enviarChat, valor, adjuntarAmigos, asignados, imagen, imagen2} = this.state
+    const {enviarChat, valor, adjuntarAmigos, asignados, imagen, imagen2, img1, img2} = this.state
+    console.log(img1)
     return (
       <View style={style.container}>
         <View style={style.modalIn}>
@@ -96,11 +99,12 @@ export default class CrearEncuestaComponent extends Component{
                 maxLength={17}
                 multiline = {false}
               />
-              <TouchableOpacity style={imagen ?style.btnCamera2 :style.btnCamera} >
-                <TakePhotoComponent fuente={'camara.png'} ancho={imagen ?Platform.OS==='android' ?104 :94 :Platform.OS==='android' ?40 :35} alto={imagen ?70 :40} border={imagen ?Platform.OS==='android' ?70 :39 :20}
+              <View style={img1 ?style.btnCamera :style.btnCamera2}>
+                <TakePhotoComponent img1 fuente={'camara.png'} ancho={imagen ?Platform.OS==='android' ?124 :114 :Platform.OS==='android' ?55 :45} alto={imagen ?70 :40} border={imagen ?Platform.OS==='android' ?70 :39 :20}
                   updateImagen={(imagen) => {this.setState({imagen})}} 
+                  img1={(img1) => {this.setState({img1})}} 
                   style={style.camera} />
-              </TouchableOpacity>
+              </View>
             </View>
  
           {/* PREGUNTA 2 */}
@@ -114,11 +118,12 @@ export default class CrearEncuestaComponent extends Component{
                 maxLength={17}
                 multiline = {false}
               />
-              <TouchableOpacity style={imagen2 ?style.btnCamera2 :style.btnCamera} >
-                <TakePhotoComponent fuente={'camara.png'} ancho={imagen2 ?Platform.OS==='android' ?104 :94 :Platform.OS==='android' ?40 :35} alto={imagen2 ?70 :40} border={imagen2 ?Platform.OS==='android' ?70 :39 :20}
+              <View style={img2 ?style.btnCamera :style.btnCamera2}>
+                <TakePhotoComponent img2 fuente={'camara.png'} ancho={imagen2 ?Platform.OS==='android' ?124 :114 :Platform.OS==='android' ?55 :45} alto={imagen2 ?70 :40} border={imagen2 ?Platform.OS==='android' ?70 :39 :20}
                   updateImagen={(imagen2) => {this.setState({imagen2})}} 
+                   img2={(img2) => {this.setState({img2})}} 
                   style={style.camera} />
-              </TouchableOpacity>
+              </View>
             </View>
           </View> 
 

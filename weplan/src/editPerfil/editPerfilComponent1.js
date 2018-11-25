@@ -36,8 +36,9 @@ export default class editPerfilComponent1 extends Component{
 	}	 
 	render(){
 		const {showPassword, textPassword, textPassword1, perfil, passwordRequired, guardando} = this.state
-		let ancho = size>=361 ? 80 :173
-		let alto = size>=361 ? 10 :1
+ 
+		let ancho = size.height>=812 ? 230 :175
+		let alto = size.height>=812 ? 20 :1
 		return(
 			<View style={style.fondo}> 
 					<Text style={{marginTop:50}}>  </Text>

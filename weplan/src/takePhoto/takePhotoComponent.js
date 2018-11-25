@@ -100,8 +100,15 @@ export default class TakePhotoComponent extends Component{
 			    this.setState({
 			      avatarSource: source,
 			      imagen,
-			      showImg:false
+			      showImg:true,
+			      showAlert:false,
 			    });
+			    if (this.props.img1) {
+					this.props.img1(true)
+				}
+				if (this.props.img2) {
+					this.props.img2(true)
+				}
 			}
 		});
 	}	
@@ -130,16 +137,79 @@ export default class TakePhotoComponent extends Component{
 			      imagen,
 			      showImg:false
 			    });
+			    if (this.props.img1) {
+					this.props.img1(true)
+				}
+				if (this.props.img2) {
+					this.props.img2(true)
+				}
 			}
 		});
+
+	}
+	showContent(){
+		this.setState({showImg:true})
+		this.setState({showAlert:true})
+		if (this.props.img1) {
+			this.props.img1(false)
+		}
+		if (this.props.img2) {
+			this.props.img2(false)
+		}
+	}
+	cancel(){
+		this.setState({showImg:false})
+		this.setState({showAlert:false})
+		if (this.props.img1) {
+			this.props.img1(true)
+		}
+		if (this.props.img2) {
+			this.props.img2(true)
+		}
 	}
 	render(){
 		const {sinBorder, ancho, alto, anchoDos, altoDos, fuente, fuente2, border} = this.props
-		const {showImg, avatarSource} = this.state
+		const {showImg, avatarSource, showAlert} = this.state
 		let ruta = fuente2 ?fuente2 : `${URL}public/images/${fuente}`
-		return (
-			<View style={{flex: .4}}>
-				<TouchableOpacity onPress={Platform.OS==='android' ?this.selectPhotoTappedAndroid.bind(this) :()=>this.setState({showImg:true})} >
+ 
+		if(showImg){
+			console.log(1)
+			return (
+				<View style={{flex: .4, width:"100%"}}>
+					<TouchableOpacity onPress={Platform.OS==='android' ?this.selectPhotoTappedAndroid.bind(this) :()=>this.setState({showAlert:true, showImg:true })} >
+						<View>
+							{ 
+								avatarSource === null 
+								?<Image
+									style={{flex: 1}}
+									width={ancho}
+									height={alto}
+									source={{uri : ruta }}
+								/>
+								:<Image 
+									width={!sinBorder ?ancho :ancho2} 
+									height={!sinBorder ?alto :alto2} 
+									style={!sinBorder ?{flex:1, borderRadius:border}: {flex:1}} 
+									source={avatarSource}
+								/>
+							}
+						</View>
+					</TouchableOpacity>
+					{
+						showAlert
+						&&<View style={style.contenedorBtn}>
+							<TouchableOpacity style={style.Btn}  onPress={this.selectCameraTappedIos.bind(this)}><Text style={style.txt}>Tomar Foto</Text></TouchableOpacity>
+							<TouchableOpacity style={style.Btn1} onPress={this.selectPhotoTappedIos.bind(this)}><Text style={style.txt}>Buscar en imagenes</Text></TouchableOpacity>
+							<TouchableOpacity style={style.Btn2} onPress={()=> this.cancel()}><Text style={style.txt}>Cancelar</Text></TouchableOpacity>
+						</View>
+					}
+					
+				</View>
+			); 
+		}else{
+			console.log(3)
+			return (
+				<TouchableOpacity onPress={Platform.OS==='android' ?this.selectPhotoTappedAndroid.bind(this) :()=>this.showContent()} style={{flex: .4}}>
 					<View>
 						{ 
 							avatarSource === null 
@@ -158,17 +228,9 @@ export default class TakePhotoComponent extends Component{
 						}
 					</View>
 				</TouchableOpacity>
-				{
-					showImg
-					&&<View style={style.contenedorBtn}>
-						<TouchableOpacity style={style.Btn}  onPress={this.selectCameraTappedIos.bind(this)}><Text style={style.txt}>Tomar Foto</Text></TouchableOpacity>
-						<TouchableOpacity style={style.Btn1} onPress={this.selectPhotoTappedIos.bind(this)}><Text style={style.txt}>Buscar en imagenes</Text></TouchableOpacity>
-						<TouchableOpacity style={style.Btn2} onPress={()=> this.setState({showImg:false})}><Text style={style.txt}>Cancelar</Text></TouchableOpacity>
-					</View>
-				}
-				
-			</View>
-		); 
+			); 
+		}
+		
 	}
 }
 
@@ -177,7 +239,8 @@ const style = StyleSheet.create({
 		position:"absolute", 
 		zIndex:1000, 
 		width:"96%",
-		marginHorizontal:"2%"
+		left:0,
+		marginHorizontal:"2%",
 	},
 	Btn:{
 		padding:15,

@@ -113,7 +113,7 @@ const FullpageWrapper = fullpageProps => (
                <h2>¡WePlan, un mar de posibilidad para crear tus planes!</h2>
                <p>WePlan es la nueva forma de realizar todos tus planes, dividir costos y controlar todos los gastos que compartes con tus amigos de manera más fácil y practica… el único límite es tu imaginación.</p>
                <section>
-                  <div className="slide"> <img src={`${URL}public/images/crear.jpeg`} /> </div>
+                  <div className="slide"> <img src={`${URL}public/images/crear_plan.png`} /> </div>
                   <div className="slide"> <img src={`${URL}public/images/encuestas.jpeg`} /> </div>
                   <div className="slide"> <img src={`${URL}public/images/billetera.png`} /> </div>
                   <div className="slide"> <img src={`${URL}public/images/home.png`} /> </div>
@@ -126,7 +126,7 @@ const FullpageWrapper = fullpageProps => (
                      ref={(r) => this.flippy = r} // to use toggle method like this.flippy.toggle()
                   >
                   <FrontSide style={{ padding:0 }} >
-                     <img src={`${URL}public/images/crear.jpeg`} />
+                     <img src={`${URL}public/images/crear_plan.png`} />
                   </FrontSide>
                   <BackSide style={{ backgroundColor: '#175852'}}>
                      <p>¿Tienes un nuevo plan? ¿Has tenido dificultades organizando tus planes? Con WePlan puedes organizar mejor estas geniales ideas!<br />
@@ -146,7 +146,7 @@ const FullpageWrapper = fullpageProps => (
                      ref={(r) => this.flippy = r} // to use toggle method like this.flippy.toggle()
                   >
                      <FrontSide style={{ padding:0 }} >
-                        <img src={`${URL}public/images/encuestas.jpeg`} />
+                        <img src={`${URL}public/images/encuesta.png`} />
                      </FrontSide>
                      <BackSide style={{ backgroundColor: '#471d1d'}}>
                        <p> WePlan te da la posibilidad de conocer mejor a tus amigos, crea encuestas para tomar mejores decisiones en tus planes y que todos estén de acuerdo. Así podrás asegurarte que no hayan errores en tu plan!</p>
@@ -160,7 +160,7 @@ const FullpageWrapper = fullpageProps => (
                      ref={(r) => this.flippy = r} // to use toggle method like this.flippy.toggle()
                   >
                      <FrontSide style={{ padding:0 }} >
-                        <img src={`${URL}public/images/billetera.png`} />
+                        <img src={`${URL}public/images/wallet.png`} />
                      </FrontSide>
                      <BackSide style={{ backgroundColor: '#197064'}}>
                        <p> Con la Billetera WePlan ya no te tienes que preocupar por tus gastos, visualiza el registro de todos los costos en los que has incurrido en los diferentes planes, con qué personas los has compartido y el saldo de estos. WePlan es tu mejor amigo para ayudarte a controlar tus gastos.</p>
@@ -174,7 +174,7 @@ const FullpageWrapper = fullpageProps => (
                      ref={(r) => this.flippy = r} // to use toggle method like this.flippy.toggle()
                   >
                      <FrontSide style={{ padding:0 }} >
-                        <img src={`${URL}public/images/home.png`} />
+                        <img src={`${URL}public/images/planes_publicos.png`} />
                      </FrontSide>
                      <BackSide style={{ backgroundColor: '#193070'}}>
                        <p> WePlan te permite explorar sugerencias de planes que crean diferentes usuarios en la sección del Home. Explora y conoce diferentes planes en el sitio donde te encuentres y ¡vive experiencias nuevas todos los días! Disfruta nuevas culturas, ideas, lugares y amigos que puedas encontrarte mientras usas WePlan.<br />
@@ -190,7 +190,7 @@ const FullpageWrapper = fullpageProps => (
                      ref={(r) => this.flippy = r} // to use toggle method like this.flippy.toggle()
                   >
                      <FrontSide style={{ padding:0 }} >
-                        <img src={`${URL}public/images/crear.jpeg`} />
+                        <img src={`${URL}public/images/crear_plan.png`} />
                      </FrontSide>
                      <BackSide style={{ backgroundColor: '#701965'}}>
                         <p>Puedes publicar los mejores planes para que los demás usuarios puedan asistir a estos, no tienes que ser una empresa para realizar estas publicaciones.<br />
@@ -227,7 +227,7 @@ const FullpageWrapper = fullpageProps => (
             </div>
             <footer>
                <ul>
-                  <li>&#9400; Todos los derechos reservador 2018 <Link to="/terminos-condiciones">Términos y condiciones</Link></li>
+                  <li>&#9400; Todos los derechos reservados 2018 <Link to="/terminos-condiciones">Términos y condiciones</Link></li>
                </ul>
                <ul>
                   <li><Link to="/"><Icon type="facebook" theme="outlined" /></Link></li>

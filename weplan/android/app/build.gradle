@@ -155,9 +155,9 @@ dependencies {
         compile 'com.android.support:exifinterface:+'
     }
     compile project(':pagedcontacts')
+    compile project(':react-native-google-analytics-bridge')
     compile project(':react-native-pdf')
     compile project(':react-native-fetch-blob')
-    compile project(':react-native-google-analytics-bridge')
     compile(project(':react-native-maps')){
         exclude group: 'com.google.android.gms'
     }

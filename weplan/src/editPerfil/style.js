@@ -221,32 +221,40 @@ export const style = MediaQueryStyleSheet.create({
 		alignItems: 'center',
 	},
 	touchRes:{
+		backgroundColor:"#ecf2fe",
 		margin: 10,
-    	height:width / 4 - 10,
-    	width: width / 4 - 10,
-		// width:100,
-		// height:100,
+    	height:100,
+    	width: 100,
+		borderRadius:50,
 		paddingTop:15,
 		paddingBottom:15,
 		alignItems: 'center',
+		borderWidth:1,
+		borderColor:"#b4c9f9",
+		marginBottom :60
 	},
 	iconRes:{
-		width:75,
-		height:75
+		width:60,
+		height:60
 	},
 	textoRes:{
 		fontSize:19,
 		color:'#969696',
 		width: 100,
-		height:60,
+		// height:60,
+		padding:5,
+		borderRadius:10,
 		textAlign: 'center',
+		marginTop:10,
+		borderRadius:20,
+		backgroundColor :"#f8f8f8"
 	},
 	banRes:{
 		position:'relative', 
-		top:-10,
-		left:20, 
-		width:21,
-		height:21
+		top:0,
+		left:30, 
+		width:28,
+		height:28
 	},
 	banResInactive:{
 		color:'#9B9B9B'

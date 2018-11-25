@@ -1,5 +1,5 @@
 import {StyleSheet, Dimensions, Platform} from 'react-native';
-var screenHeight = Dimensions.get('window');
+var size = Dimensions.get('window');
 import { MediaQueryStyleSheet } from "react-native-responsive";
 export const style = MediaQueryStyleSheet.create({
 	contenedor:{
@@ -63,7 +63,13 @@ export const style = MediaQueryStyleSheet.create({
 		height:20,
 		marginLeft:6,
 		transform: [{ rotate: '180deg'}] 
-	}
+	},
+	sinPlanes:{
+		width:size.width,
+		height:size.height-60,
+		marginBottom:10,
+		paddingHorizontal:90
+	},
 	 
 },{
 	"@media (max-device-width: 320)": {

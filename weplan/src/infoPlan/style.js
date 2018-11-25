@@ -1,5 +1,6 @@
 import {StyleSheet, Dimensions, Platform} from 'react-native';
 var screenHeight = Dimensions.get('window').height;
+var screenWidth = Dimensions.get('window').width;
 import { MediaQueryStyleSheet } from "react-native-responsive";
 export const style = MediaQueryStyleSheet.create({ 
 	contenedorGeneral:{
@@ -48,7 +49,7 @@ export const style = MediaQueryStyleSheet.create({
  	descripcion:{
  		color:'#5664ba',
  		fontSize:17,
- 		width:'70%'
+ 		width:'70%',
  	},
 	input:{
 		marginTop:10,
@@ -273,7 +274,35 @@ export const style = MediaQueryStyleSheet.create({
 	},
 	textoBotonesLast:{
 		borderBottomWidth:0,
-	}
+	},
+	contenedorBack:{
+ 		flexDirection:'row',
+ 		alignItems:'center',
+ 		position:'absolute',
+ 		zIndex:100,
+ 		top:0,
+ 		left:0,
+ 		backgroundColor:'#eeecec',
+ 		width:screenWidth,
+ 	},
+ 	btnBack:{
+		alignItems:'center',
+		width:60,
+		padding:13,
+ 		marginLeft:10,
+ 	},
+ 	contenedorTexto:{
+ 		width:screenWidth-130,
+ 		alignItems:'center',
+ 	},
+ 	textBack:{
+ 		alignItems:'center',
+ 		fontSize:20
+ 	},
+ 	imgBack:{
+ 		width:11,
+ 		height:20
+ 	},
 },{
 	"@media (max-device-width: 320)": {
 		contentAdd:{
@@ -283,9 +312,13 @@ export const style = MediaQueryStyleSheet.create({
 		},
 	}
 },{
-	"@media (device-height: 812)": {
+	"@media (min-device-height: 811)": {
 		encabezadoPlan:{
 			marginTop:  Platform.OS==='android' ?45 :75,
+		},
+		contenedorBack:{
+			top:Platform.OS==='android' ?0 :15,
+			marginBottom:Platform.OS==='android' ?0 :15
 		}
 	}
 })
