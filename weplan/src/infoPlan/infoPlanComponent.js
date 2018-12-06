@@ -14,7 +14,7 @@ import AgregarAmigosComponent     from '../agregarAmigos/agregarAmigos.js'
 import TakePhotoComponent 	  	  from '../takePhoto/takePhotoComponent.js'
 import CabezeraComponent 		  from '../ajustes/cabezera.js'
 import {sendRemoteNotification}   from '../push/envioNotificacion.js'
-
+ 
 
 export default class infoPlanComponent extends Component{
 	constructor(props) {
@@ -38,7 +38,7 @@ export default class infoPlanComponent extends Component{
 	  		usuariosAsignados:[],
 	  		notificaciones:'',
 	  		misUsuarios:[],
-	  		fechaHoy:moment().format('YYYY-MM-DD h:mm'),
+	  		fechaHoy:moment().format('YYYY-MMM-DD h:mm'),
 	  	}
 	}
 	componentWillMount(){
@@ -57,7 +57,9 @@ export default class infoPlanComponent extends Component{
  		notificaciones.map(e=>{
  			notificaciones1.push(e._id)
  		})
- 		 
+ 		console.log("notificaciones")
+ 		console.log(notificaciones)
+ 		console.log(notificaciones1)
  		///// asignadosInicial es para identificar los primeros usuarios y comparar con los nuevos mirar linea 396 handlesubmit, en caso de que se cambien los usuarios asignados al plan
  		this.setState({restricciones:restricciones1, asignados:asignados1, asignadosInicial:asignados1, planId:_id, restriccionesAsignadas:restricciones, usuariosAsignados:asignados, lat:loc.coordinates[1], lng:loc.coordinates[0], loc, nombre, descripcion, fechaLugar, lugar, notificaciones:notificaciones1})
  	}
@@ -164,20 +166,24 @@ export default class infoPlanComponent extends Component{
 	let id   = this.props.navigation.state.params.id
  	let permiteEditar = id==data.idUsuario._id ?true :false;
 	let {navigate} = this.props.navigation
-	console.log(this.state.fechaLugar)
+ 
 	let notifica = []
 	this.state.notificaciones.map(e=>{
 		notifica.push(e._id)
 	})
-	 
-	let notificacionActiva = notifica.includes(id)
+	console.log("notifica")
+	console.log(this.state.notificaciones)
+	console.log(id)
+	console.log(this.state.notificaciones.includes(id))
+	let notificacionActiva = this.state.notificaciones.includes(id)
 	let menus = [
 		{funcion:()=>this.silenciar(id), texto:'Silenciar Plan', show: notificacionActiva ?true :false },
 		{funcion:()=>this.cancelarSilenciar(id), texto:'Cancelar Silenciar Plan', show: notificacionActiva ?false :true },
 		{funcion:()=>salir(data._id, navigate), texto:'Salir del Plan', show: id==data.idUsuario._id ?false :true },
 		{funcion:()=>finalizar(data._id, navigate, data), texto:'Finalizar Plan', show: id==data.idUsuario._id ?true :false }
 	]
-	const {nombre, descripcion, fechaLugar, lat, lng, direccion, mapa, loc, lugar, restricciones, restriccion, asignados, adjuntarAmigos, exitoso} = this.state
+	const {nombre, descripcion, fechaLugar, lat, lng, direccion, mapa, loc, lugar, restricciones, restriccion, asignados, adjuntarAmigos, exitoso, img1, imagen} = this.state
+ 
 	return (
 		<ScrollView  style={style.contenedorGeneral}>
 			{/* si la ubicacion no tiene */}
@@ -193,19 +199,28 @@ export default class infoPlanComponent extends Component{
 				{/*<CabezeraComponent navigate={navigate} url={'chat'} parameter={data._id} texto='Info Plan' />*/}
 				<View style={style.encabezadoPlan}>
 				   	<View>
-				   	<Lightbox 
-					      renderContent={() => (
+				   		<View style={imagen ?style.avatar2 :style.avatar3} >
+					   		<TakePhotoComponent 
+								fuente={'camPerfil.png'} 
+								ancho={!imagen ?100 :100} alto={!imagen ?50 :100} 
+								border={100}
+								updateImagen={(photo) => {this.setState({photo, imagen:true})}} 
+								img1={(img1) => {this.setState({img1})}} 
+							/>
+						</View> 
+				   		<Lightbox 
+					      	renderContent={() => (
 					        <Image 
-					          source={{uri: data.imagenOriginal[0] }}
-					          style={{ width: "100%", height:400}}
-					         />
+					        	source={{uri: data.imagenOriginal[0] }}
+					        	style={{ width: "100%", height:400}}
+					        />
 					       )}
-					   >
-					  <Image
-					    source={{ uri: data.imagenOriginal[0]  }}
-					    style={style.imagenPlan}
-					  />
-					  </Lightbox>		 
+					    >
+						  	<Image
+							    source={{ uri: data.imagenOriginal[0]  }}
+							    style={style.imagenPlan}
+						  	/>
+					  	</Lightbox>		 
 					</View>
 					<View>
 					{
@@ -278,7 +293,7 @@ export default class infoPlanComponent extends Component{
 								            color: '#969696',
 								         } 
 			                    }}
-								date={fechaLugar}
+								date={fechaLugar.length==13 ?moment(JSON.parse(fechaLugar)).format("DD-MMM-YYYY h:mm") :fechaLugar}
 								style={[style.btnInputs, style.btnInputs2]}
 								mode="datetime"
 								placeholder="Dia / Mes / Año / Hora"
@@ -289,7 +304,7 @@ export default class infoPlanComponent extends Component{
 								androidMode='spinner'
 								onDateChange={(fechaLugar) => {fechaLugar!=this.state.fechaLugar &&this.setState({guardado:true}); this.setState({fechaLugar})}}
 						   />
-						   :<Text style={[style.btnInputs,  style.familia]}>{fechaLugar}</Text>
+						   :<Text style={[style.btnInputs,  style.familia]}>{fechaLugar.length==13 ?moment(JSON.parse(fechaLugar)).format("YYYY-MM-DD h:mm a") :fechaLugar}</Text>
 						}
 						
 					</View>
@@ -425,8 +440,8 @@ export default class infoPlanComponent extends Component{
 
 	
 	handleSubmit(){
-		let {nombre, descripcion, fechaLugar, lat, lng, asignados, asignadosInicial, notificaciones, lugar, restricciones, planId, usuariosAsignados} = this.state
-
+		let {nombre, descripcion, fechaLugar, lat, lng, asignados, asignadosInicial, notificaciones, lugar, restricciones, planId, usuariosAsignados, photo} = this.state
+		console.log(photo)
 		/////   1--  identificar los que se eliminaron, comparando el nuevo array con el asignadosInicial el que guarda los asignados iniciales y guardarlos en un array
 		let eliminados = asignadosInicial.filter(x=> !asignados.includes(x))
 
@@ -454,6 +469,23 @@ export default class infoPlanComponent extends Component{
 				notificacionToken.map(e=>{
 					sendRemoteNotification(2, e.token, 'misPlanes', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, null)
 				})
+				if (photo) {
+					let data = new FormData();
+					let id = e.data.plan._id;
+					data.append('imagen', photo);
+					data.append('id', id);
+					axios({
+							method: 'put', //you can set what request you want to be
+							url: '/x/v1/pla/plan',
+							data: data,
+							headers: {
+								'Accept': 'application/json',
+								'Content-Type': 'multipart/form-data'
+							}
+						})
+					.then((res)=>{
+					})
+				}
 			}
 		})
 		.catch(err=>{
@@ -461,15 +493,18 @@ export default class infoPlanComponent extends Component{
 		})
 	}
 	silenciar(id){
+		
 		const {notificaciones, planId} = this.state
-		let data = notificaciones.filter(e=>{return e._id !==id})
-		let newData = []
-		data.map(e=>{
-			newData.push(e._id)
-		})
-		axios.put('x/v1/pla/plan/silenciar', {data:newData, planId:planId})
+		console.log(id)
+		console.log(notificaciones)
+		let data = notificaciones.filter(e=>{return e!==id})
+ 
+		 
+		console.log(data)
+	 
+		axios.put('x/v1/pla/plan/silenciar', {data, planId:planId})
 		.then(res=>{
-			console.log(res.data)
+			// console.log(res.data)
 			if (res.data.code==1) {
 				this.setState({notificaciones:data})
 			}
@@ -480,17 +515,17 @@ export default class infoPlanComponent extends Component{
 		let data = {_id:id, tokenPhone:null}
 		data = [data, ...notificaciones]
 		
-
+		 
 		let newData = []
 		data.map(e=>{
 			newData.push(e._id)
 		})
-		console.log(newData)
+		
 		axios.put('x/v1/pla/plan/silenciar', {data:newData, planId:planId})
 		.then(res=>{
 			console.log(res.data)
 			if (res.data.code==1) {
-				this.setState({notificaciones:data})
+				this.setState({notificaciones:newData})
 			}
 		})
 	}

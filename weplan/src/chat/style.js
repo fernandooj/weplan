@@ -94,7 +94,7 @@ export const style = MediaQueryStyleSheet.create({
 	nombrePlan:{
 		color:'#ffffff',
 		fontSize:18,
-		left:40, 
+		left:0, 
 		width:150,
 		lineHeight: 17
 	},

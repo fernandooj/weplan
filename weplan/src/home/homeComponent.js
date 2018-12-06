@@ -4,6 +4,7 @@ import {style} from '../home/style'
 import axios from 'axios'
 import SearchInput, { createFilter } from 'react-native-search-filter';
 import Toast 			 from 'react-native-simple-toast';
+import moment 					  from 'moment'
 import {
   GoogleAnalyticsTracker,
   GoogleTagManager,
@@ -18,7 +19,7 @@ import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import FCM, {NotificationActionType} from "react-native-fcm";
 import {registerKilledListener, registerAppListener} from "../push/Listeners";
 import UltimaVersionComponent from '../ultimaVersion/ultimaVersion'
-
+import HuaweiProtectedApps from 'react-native-huawei-protected-apps';
 import {URL}  from '../../App.js';
 const TRACKER = new GoogleAnalyticsTracker("UA-129344133-1");
 TRACKER.trackScreenView("Home");
@@ -76,7 +77,17 @@ export default class homeComponent extends Component{
 		})
 	}
 	async componentWillMount(){
-		
+		const config = {
+	      title: "Huawei Protected Apps",
+	      text: "This app requires to be enabled in 'Protected Apps' in order to receive push notifcations",
+	      doNotShowAgainText: "Do not show again",
+	      positiveText: "PROTECTED APPS",
+	      negativeText: "CANCEL"
+	    };
+
+	    let test = HuaweiProtectedApps.AlertIfHuaweiDevice(config);
+	    console.log("test")
+	    console.log(test)
 		let guia_inicio   = await AsyncStorage.getItem('home');
 		this.setState({guia_inicio})
 		if (Platform.OS==='android') {
@@ -160,6 +171,7 @@ export default class homeComponent extends Component{
 			if(notif && navigation.state.routeName=='Home'){
 				let id = notif.parameter
 				this.props.navigation.navigate(notif.targetScreen, id)
+				console.log(notif)
 			}
 	    });
 
@@ -176,6 +188,7 @@ export default class homeComponent extends Component{
 		const {opacity, top, deg, translate, cargando, cargado, filteredData, searchTerm, showComponents, inicio, final} = this.state
 		let newFilter   = filteredData.slice(inicio, final)
 		newFilter.filter(createFilter(searchTerm, KEYS_TO_FILTERS))
+		console.log(newFilter)
 		if (newFilter.length===0 ) {
 			return(<View style={style.sinResultados}>
 					 {!cargado ?<ActivityIndicator size="large" color="#148dc9" /> :<Text>No hemos encontrado planes</Text> } 
@@ -198,7 +211,7 @@ export default class homeComponent extends Component{
 									{/*e.descripcion &&<Text style={[style.textFooter2, style.familia]}>{e.descripcion}</Text>*/}
 									
 									<Text style={[style.textFooter2, style.familia]}>Estas a {parseInt(e.dist)<1000 ?`${parseInt(e.dist)} Metros` :`${data} Kilometros`}</Text>
-									<Text style={[style.textFooter2, style.familia]}>{e.fechaLugar}</Text>
+									<Text style={[style.textFooter2, style.familia]}>{moment(JSON.parse(e.fechaLugar)).format("YYYY-MM-DD h:mm a")}</Text>
 									<Text style={[style.textFooter2, style.familia]}>{`Por: ${e.UserData.nombre}, ${calficaLongitud ?parseFloat(calificacion).toFixed(0) :''}*`}</Text>
 									<View style={style.footer2}>
 										<TouchableOpacity onPress={() => this.like(e._id)} >

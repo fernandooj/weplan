@@ -94,7 +94,7 @@ export const style = MediaQueryStyleSheet.create({
 		zIndex:100
 	}
 },{
-	"@media (max-device-width: 320)": {
+	"@media (max-device-width: 360)": {
 		nombre:{
 			fontSize:18,
 			width:160

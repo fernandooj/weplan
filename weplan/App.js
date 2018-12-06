@@ -39,7 +39,9 @@ import planesPublicosComponent     from './src/planesPublicos/planesPublicosComp
 import detallePlanPublicoComponent from './src/planesPublicos/detallePlanPublicoComponent';
 import importarComponent           from './src/importarContactos/importarContactos';
 import contactoComponent           from './src/contacto/contactoComponent';
- 
+
+
+
 export const URL = 'https://appweplan.com/';
 axios.defaults.baseURL = URL;
 
@@ -53,6 +55,7 @@ export default class App extends Component<{}> {
     };
   }
   componentWillMount = async()=> {
+   
    let userInfoId = await AsyncStorage.getItem('userInfoId');
    console.log(userInfoId)
    if (userInfoId) {

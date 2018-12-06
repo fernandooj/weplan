@@ -325,7 +325,7 @@ export default class guiaInicio extends Component{
 			return(	 
 				<View style={style.contenedor}>
 					<View style={style.subContenedor2}>
-						<Text style={[style.text18, style.familia]}>Como nuevo usuario de weplan te regalamos 1.000.000 para que difundas tus eventos, ¡Disfrutalos!</Text>
+						<Text style={[style.text18, style.familia]}>Como nuevo usuario de weplan te regalamos 250.000 para que difundas tus eventos, ¡Disfrutalos!</Text>
 						<Image source={require('../assets/images/guia_inicio/estrella.png')} style={style.estrella} />
 					</View>
 					<TouchableOpacity style={style.btnSiguiente} onPress={()=>this.borrarGuia('ganapuntos')}>

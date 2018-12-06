@@ -21,6 +21,7 @@ local.properties
 *.iml
 
 
+back/
 weplan_app/build/
 weplan_app/.idea
 weplan_app/.gradle

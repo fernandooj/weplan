@@ -1,5 +1,5 @@
 const FirebaseConstants = {
-	KEY: "AAAArV_16tM:APA91bGoBughha69vEXmgOkU662De3JfauezLlVC3zTNjQmNTttVOp-PRwej1A8L27R4JyKuYZIHM-NueJPpaz25vX8c-dkBQ70zUHgKXpReGrM7nN2r2rEMC42SvsPR3n19iAfvtgyq"
+	KEY: "AAAAW6Y_JEY:APA91bGRjl90e0aGo84jaCi6J3kl7sH0LcPUT2wI6WQzHm-OIZHU-WMuidyYmcdkFuxXaU_834qgb0MulrAK8pesCzs3TTahYgZjBgFGoiPRx4B-LFNB_K8w1-nHEGfuav8_ZWcTDCHM"
 }
 
 export default FirebaseConstants;

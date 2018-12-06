@@ -4,7 +4,7 @@ import {style} from './style'
 import Image from 'react-native-scalable-image';
 import axios from 'axios';
 import Icon from 'react-native-fa-icons';
-//import {GoogleSignin, GoogleSigninButton} from 'react-native-google-signin';
+// import {GoogleSignin} from 'react-native-google-signin';
 import {FBLogin, FBLoginManager} from 'react-native-facebook-login';
 import FCM, {NotificationActionType} from "react-native-fcm";
 import {registerKilledListener, registerAppListener} from "../push/Listeners";
@@ -33,11 +33,12 @@ export default class LoginComponent extends Component{
     	/////////////////////		LOAD GOOGLE DATA 	///////////////////////////////////
    //  	////////////////////////////////////////////////////////////////////////////////////
    //  	GoogleSignin.configure({
-   //  		webClientId: '744639294163-194p4cc8a9hlfreaoef9u1091pccb452.apps.googleusercontent.com',
+   //  		webClientId: '393631179846-h5elfjd904ueb0q76ghfavv3aoh14kin.apps.googleusercontent.com',
 	  //       offlineAccess: true // if you want to access Google API on behalf of the user FROM YOUR SERVER
 	  //   })
    //  	.then(()=>{
 			// GoogleSignin.currentUserAsync().then((user) => {
+			// 	// JSON.stringify(user)
 			// 	this.setState({user: user});
 			// }).done();	   
    //  	})
@@ -120,7 +121,7 @@ export default class LoginComponent extends Component{
 		}else{
 			// GoogleSignin.signIn()
 			// .then((result) => {
-			// 	console.log(result);
+			// 	alert(JSON.stringify(result))
 			// 	let accessToken = result.accessToken
 			// 	let idUser = result.id
 			// 	let nombre = result.name
@@ -146,12 +147,45 @@ export default class LoginComponent extends Component{
 			// 	})
 			// })
 			// .catch((err) => {
-			// 	console.log('WRONG SIGNIN', err);
+			// 	alert(JSON.stringify(err))
 			// })
 			// .done();
 		}
 	}
-	 
+	// async signIn(){
+	// 	const {navigate} = this.props.navigation 	
+	// 	const {token} = this.state
+	//   try {
+	//     await GoogleSignin.hasPlayServices();
+	//     const userInfo = await GoogleSignin.signIn();
+	//     alert(JSON.stringify(userInfo))
+	//     let accessToken = result.accessToken
+	// 	let idUser = result.id
+	// 	let nombre = result.name
+	// 	let photo = result.photo
+	// 	let email = result.email
+	// 	let username = result.email
+	// 	let tipo = 'google'
+	// 	let acceso = 'suscriptor'
+	// 	console.log({accessToken, idUser, nombre, photo, email, tipo})
+	// 	axios.post('/x/v1/user/facebook', {accessToken, idUser, nombre, photo, email, tipo, username, acceso, tokenPhone:this.state.token})
+	// 	.then((e)=>{
+	// 		if (e.data.code==1) {
+	// 			if (e.data.user.categorias.length>1) {
+	// 				saveInfo()
+	// 				navigate('inicio') 
+	// 			}else{
+	// 				navigate('editPerfil2') 
+	// 			}
+	// 		}
+	// 	})
+	// 	.catch((err)=>{
+	// 		alert(JSON.stringify(err))
+	// 	})
+	//   } catch (error) {
+	//   	alert(JSON.stringify(error))
+	//   }
+	// };
 	async componentDidMount(){
 	    registerAppListener(this.props.navigation);
 
@@ -163,6 +197,7 @@ export default class LoginComponent extends Component{
 
 	    FCM.getFCMToken().then(token => {
 	    	this.setState({token: token || ""})
+	    	console.log(token)
 	    });
 
 	    if(Platform.OS === 'ios'){
@@ -231,7 +266,7 @@ export default class LoginComponent extends Component{
 							source={require('../assets/images/facebook.png')}
 					    />
 				      </TouchableOpacity>
-				      {/*<TouchableOpacity onPress={()=>this._signInRedes(2)} >
+				      {/*<TouchableOpacity onPress={()=>this.signIn(2)} >
 				       <Image
 							style={style.imageLogos}
 							width={60} // height will be calculated automatically
@@ -265,7 +300,7 @@ export default class LoginComponent extends Component{
 	            )
 			}else if (res.data.code==1){
 				saveInfo(res.data.user)
-				navigate('inicio')
+				navigate('misPlanes')
 			}else{
 				Alert.alert(
 	            'Revisa tus datos',

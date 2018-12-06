@@ -36,7 +36,7 @@ export default class createPlanComponent extends Component{
  			textMonth:'Mes',
  			textDate:'Dia',
  			textYear:'Año',
- 			fechaHoy:moment().format('DD-MM-YYYY h:mm'),
+ 			fechaHoy:moment().format('DD-MMM-YYYY h:mm'),
  			asignados:[],
  			usuariosAsignados:[],
  			restricciones:[],
@@ -350,7 +350,7 @@ export default class createPlanComponent extends Component{
 						:<View style={CreatePlanStyle.cajaInpunts}>
 							<Image source={require('../assets/images/fecha.png')} style={CreatePlanStyle.iconInput} />
 							<TouchableOpacity style={[CreatePlanStyle.btnInputs,CreatePlanStyle.btnColor2Input]}>
-								<Text style={[CreatePlanStyle.textos, CreatePlanStyle.familia]}>{cargaPlan.fechaLugar ?cargaPlan.fechaLugar :'Sin fecha asignada'}</Text>
+								<Text style={[CreatePlanStyle.textos, CreatePlanStyle.familia]}>{cargaPlan.fechaLugar ?moment(JSON.parse(cargaPlan.fechaLugar)).format("YYYY-MM-DD h:mm a") :'Sin fecha asignada'}</Text>
 							</TouchableOpacity>
 						</View>
 					}
@@ -526,7 +526,7 @@ export default class createPlanComponent extends Component{
 	handleSubmit(){
 		const {navigate} = this.props.navigation
 		let {nombre, descripcion, fechaLugar, lat, lng, asignados, usuariosAsignados, restricciones, imagen, tipo, cargaPlan, planPadre, direccion, area, publico, costo} = this.state
-		// alert(JSON.stringify(imagen))
+
 		nombre 		= cargaPlan.nombre ?cargaPlan.nombre :nombre
 		descripcion = cargaPlan.descripcion ?cargaPlan.descripcion :descripcion
 		lat 		= cargaPlan.lat ?cargaPlan.lat :lat

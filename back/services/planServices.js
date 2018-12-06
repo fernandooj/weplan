@@ -1,8 +1,8 @@
 'use strict'
 
 let planSchema = require('../models/planModel.js')
-let mongoose = require('mongoose')
-
+let mongoose   = require('mongoose')
+let moment     = require('moment');
 
 class planServices {
 	get(callback){
@@ -55,6 +55,11 @@ class planServices {
 	 				monto:'$PagoData.monto'
 	 			},
 	 		},
+	 		{
+		    	$sort:{
+		    		createdAt:-1
+		    	}
+		    },
 	 		{
 	 		    $group:{
 	 		        _id:'$_id',
@@ -188,8 +193,8 @@ class planServices {
 			        near: { type: "Point", coordinates: [  parseFloat(lng) ,  parseFloat(lat) ] },
 			        distanceField: "dist",
 			      	query: { tipo: "pago", activo:true },
-			        maxDistance: 30000000,
-			        num: 5,
+			        maxDistance: 30000,
+			        num: 1000,
 			        spherical: true
 			    }
 		    },
@@ -228,7 +233,7 @@ class planServices {
 		plan.restricciones   = planData.restricciones	
 		plan.activo          = planData.activo	
 		plan.idUsuario 		 = id	
-		plan.fechaLugar 	 = planData.fechaLugar
+		plan.fechaLugar 	 = moment(planData.fechaLugar).valueOf() 
 		plan.loc 			 = loc
 		plan.area 			 = planData.area	
 		plan.lugar 			 = planData.lugar	

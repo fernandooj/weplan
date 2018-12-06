@@ -2,6 +2,8 @@ package com.weplan;
 
 import android.app.Application;
 import com.facebook.react.ReactApplication;
+import com.github.pgengoux.huaweiprotectedapps.HuaweiProtectedAppsPackage;
+import cl.json.RNSharePackage;
 import org.reactnative.camera.RNCameraPackage;
 import org.wonday.pdf.RCTPdfView;
 import com.RNFetchBlob.RNFetchBlobPackage;
@@ -33,6 +35,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
             new MainReactPackage(),
+            new HuaweiProtectedAppsPackage(),
+            new RNSharePackage(),
             new RNCameraPackage(),
             new RCTPdfView(),
             new RNFetchBlobPackage(),

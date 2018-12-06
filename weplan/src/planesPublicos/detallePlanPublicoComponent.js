@@ -25,6 +25,7 @@ export default class detallePlanPublicoComponent extends Component{
  			textMonth:'Mes',
  			textDate:'Dia',
  			textYear:'Año',
+ 			fechaLugar:'',
  			fechaHoy:moment().format('YYYY-MM-DD h:mm'),
  			asignados:[],
  			usuariosAsignados:[],
@@ -32,7 +33,7 @@ export default class detallePlanPublicoComponent extends Component{
  			restriccionesAsignadas:[],
  			misUsuarios:[],
  			misRestricciones:[],
- 			imagen:null,
+ 			// imagen:null,
  			adjuntarAmigos:false,
  			mapa:false,
  			tipo:'',
@@ -46,6 +47,7 @@ export default class detallePlanPublicoComponent extends Component{
 	      	imagenes:[],
 	      	tipoPlan:null, //// modal que muestra el tipo del plan
 	      	publico:null,  //// determina si el plan va a ser publico o privado
+	      	img1:true,  
 		}
 	}
 
@@ -118,7 +120,7 @@ export default class detallePlanPublicoComponent extends Component{
 	///////////////////////////////////////////////////  	RENDER  	/////////////////////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	render(){
-		const {nombre, direccion, fechaLugar, lugar, loc, area, lat, lng, restricciones, asignados, imagen2, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, costo, activo, exitoso} = this.state
+		const {nombre, direccion, fechaLugar, lugar, loc, area, lat, lng, restricciones, asignados, imagen2, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, costo, activo, exitoso, img1} = this.state
 		const {navigate} = this.props.navigation
 		console.log(loc)
 		return (
@@ -132,7 +134,7 @@ export default class detallePlanPublicoComponent extends Component{
 
 				<CabezeraComponent navigate={navigate} url={'planesPublicos'} texto='Activar Plan' />
 				<View style={{height:45}}></View>
-				<TakePhotoComponent fuente={'cam.png'} fuente2={imagen2} ancho={screenWidth} alto={160} updateImagen={(imagen) => {this.setState({imagen})}}   />
+				<TakePhotoComponent fuente={'cam.png'} fuente2={imagen2} ancho={screenWidth} alto={screenWidth} updateImagen={(imagen) => {this.setState({imagen})}}   />
 				<View style={CreatePlanStyle.textoCargado2}>
 					<TextInput
 						style={[CreatePlanStyle.nombreCargado, CreatePlanStyle.familia]}
@@ -182,7 +184,8 @@ export default class detallePlanPublicoComponent extends Component{
 						            color: '#969696',
 						         } 
 	                    }}
-							date={fechaLugar}
+						 
+							date={fechaLugar.length==13 ?moment(JSON.parse(fechaLugar)).format("DD-MMM-YYYY h:mm") :fechaLugar}
 							style={CreatePlanStyle.inputs}
 							mode="datetime"
 							placeholder="Dia / Mes / Año / Hora"
@@ -264,7 +267,7 @@ export default class detallePlanPublicoComponent extends Component{
 				{/*  Crear Plan  */}
 				<View>
 					<TouchableOpacity onPress={this.editarPlan.bind(this)} style={CreatePlanStyle.btnEditarPlan}>
-					   <Text style={[CreatePlanStyle.hecho, CreatePlanStyle.familia]}>Editar</Text>
+					   <Text style={[CreatePlanStyle.hecho, CreatePlanStyle.familia]}>Guardar Cambios !</Text>
 					</TouchableOpacity>
 					{
 						!activo
@@ -400,46 +403,48 @@ export default class detallePlanPublicoComponent extends Component{
 	}
 	editarPlan(){
 		let {nombre, descripcion, fechaLugar, lat, lng, asignados, usuariosAsignados, restricciones, imagen, tipo, cargaPlan, direccion, area, publico, costo, planId, lugar} = this.state
+		console.log(imagen)
 		if (imagen) {
-				let data = new FormData();
-				axios.put('/x/v1/pla/plan', {nombre, descripcion, fechaLugar, lat, lng, restricciones, lugar:direccion, area})
-				.then(e=>{
-					if(e.data.code==1){	
-						let id = e.data.message._id;
-						data.append('imagen', imagen);
-						data.append('id', e.data.message._id);
-						axios({
-							method: 'put', //you can set what request you want to be
-							url: '/x/v1/pla/plan',
-							data: data,
-							headers: {
-								'Accept': 'application/json',
-								'Content-Type': 'multipart/form-data'
-							}
-						})
-						.then((res)=>{
-							this.setState({exitoso:true})
-							 
-						})
-						.catch((err)=>{
-							console.log(err)
-						})
-					}
-
-				})
-				.catch(err=>{
-					alert('error intenta nuevamente')
-					console.log(err)
-				})
-			}else{
-				axios.put('/x/v1/pla/plan/editar', {nombre, descripcion, fechaLugar, lat, lng, asignados, lugar, area, restricciones, tipo,   planId})
-				.then(e=>{
-					this.setState({exitoso:true})
-				})
-				.catch(err=>{
-					console.log(err)
-				})
-			}
+			let data = new FormData();
+			axios.put('/x/v1/pla/plan/editar', {nombre, descripcion, fechaLugar, lat, lng, restricciones, planId, lugar:direccion, notificaciones:[], asignados:[], area})
+			.then(e=>{
+				console.log(e.data)
+				if(e.data.code==1){	
+					let id = e.data.plan._id;
+					data.append('imagen', imagen);
+					data.append('id', id);
+					data.append('editado', true);
+					axios({
+						method: 'put', //you can set what request you want to be
+						url: '/x/v1/pla/plan',
+						data: data,
+						headers: {
+							'Accept': 'application/json',
+							'Content-Type': 'multipart/form-data'
+						}
+					})
+					.then((res)=>{
+						this.setState({exitoso:true})
+						 
+					})
+					.catch((err)=>{
+						console.log(err)
+					})
+				}
+			})
+			.catch(err=>{
+				alert(err)
+				console.log(err)
+			})
+		}else{
+			axios.put('/x/v1/pla/plan/editar', {nombre, descripcion, fechaLugar, lat, lng, asignados, lugar, area, restricciones, tipo,  notificaciones:[],asignados:[], planId})
+			.then(e=>{
+				this.setState({exitoso:true})
+			})
+			.catch(err=>{
+				console.log(err)
+			})
+		}
 	}
 
 }			

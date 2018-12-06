@@ -3,7 +3,7 @@ import {View, Text, ScrollView, ImageBackground, TouchableOpacity, Image, TextIn
 import {MisPlanesStyle} from './style'
 import axios from 'axios'
 import Toast 			 		  from 'react-native-simple-toast';
- 
+import moment 					  from 'moment' 
 import FooterComponent 	      from '../cabezeraFooter/footerComponent'
 import UltimaVersionComponent from '../ultimaVersion/ultimaVersion'
 import {
@@ -98,7 +98,7 @@ export default class MisPlanesComponent extends Component{
 					<Image source={{uri: e.imagen ?e.imagen[0] :URL+'public/img/plan.jpg'}} style={MisPlanesStyle.background} />
 					<Text style={[MisPlanesStyle.nombre, MisPlanesStyle.familia]}>{e.nombrePlan.length<27 ?e.nombrePlan :e.nombrePlan.substring(0, 27)+' ...'}</Text>
 					<View style={MisPlanesStyle.boxPlan1} >
-						<Text style={[MisPlanesStyle.fechaLugar, MisPlanesStyle.familia]}>{e.fecha}</Text>
+						<Text style={[MisPlanesStyle.fechaLugar, MisPlanesStyle.familia]}>{e.fecha.length==13 ?moment(JSON.parse(e.fecha)).format("YYYY-MM-DD h:mm a") :e.fecha}</Text>
 						<View style={e.total>0 ?MisPlanesStyle.debe :e.total===0 ?MisPlanesStyle.deudaCero :[MisPlanesStyle.debe, MisPlanesStyle.noDebe]}></View>
 					</View>
 				</TouchableOpacity>

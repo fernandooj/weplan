@@ -19,7 +19,7 @@ let pagoPublicoServices = require('../services/pagoPublicoServices.js')
 ///////////////////////////////////////////////////////////////////////////
 client = require('twilio')( 
     'AC4befe78c65f3b0e70b62d21d9087a74f', //TWILIO_ACCOUNT_SID
-    '267e2522810ddde9dc330acbc9ad6fd0'//TWILIO_AUTH_TOKEN
+    'c089cdc506b5d7e229ac1ea8ade34a78'//TWILIO_AUTH_TOKEN
 ); 
 
 ///////////////////////////////////////////////////////////////////////////
@@ -31,7 +31,7 @@ transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'weplanapp@gmail.com', // generated ethereal user
-        pass: 'appweplan'  // generated ethereal password
+        pass: 'AppWePlan2019/'  // generated ethereal password
     }
 });
 

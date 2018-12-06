@@ -4,7 +4,7 @@ let express   = require('express')
 let router    = express.Router()
 let fs 	      = require('fs')
 let path      = require('path')
-let moment    = require('moment');
+let moment    = require('moment-timezone');
 let fecha     = moment().format('YYYY-MM-DD-h-mm')
 let fecha2    = moment().format('YYYY-MM-DD h:mm')
 let Jimp      = require("jimp");
@@ -32,7 +32,7 @@ transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'weplanapp@gmail.com', // generated ethereal user
-        pass: 'appweplan'  // generated ethereal password
+        pass: 'AppWePlan2019/'  // generated ethereal password
     }
 });
  
@@ -115,6 +115,43 @@ router.get('/:pago', (req, res)=>{
  
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////// DESACTIVO LOS PLANES QUE YA SE VENCIRON, ESTOS PARA EL HOME
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+router.get('/pagos/desactivar', (req, res)=>{
+	planServices.getByPago((err, planes)=>{
+		if (err) {
+			res.json({ status: err, message: 'no se pudo cargar los planes', code:0 });
+		}else{
+
+			///// saco la hora actual
+			let fechaActual   = moment().tz("America/Bogota").format("YYYY-MM-DD h:mm a")
+			//// quito 3 horas a mi hora si es a las 6, pongo a las 3
+			let agregoHora    = moment(fechaActual).add(-3, 'hours');
+			//// convierto en formato milisegundos
+			let nuevaHora     = moment(agregoHora).valueOf()
+			//// convierto en formato que necesito de hora y fecha
+			nuevaHora 		  = moment(nuevaHora).format("YYYY-MM-DD h:mm a")
+	 		console.log(nuevaHora)
+			
+			let nuevoPlanes = planes.map( function(e, index) {
+				 // console.log(moment(parseInt(e.fechaLugar)).format("YYYY-MM-DD h:mm a").valueOf())
+				// console.log(moment(e.fechaLugar).format("YYYY-MM-DD h:mm a")<nuevaHora)
+ 				// return {e:moment(e.fechaLugar).format("YYYY-MM-DD h:mm a")<nuevaHora}
+ 				if (moment(parseInt(e.fechaLugar)).format("YYYY-MM-DD h:mm a")<nuevaHora) {
+ 					planServices.cambioestado(e._id, false, (err, plan)=>{
+ 							
+					})
+ 				}
+				return {id:e._id, fecha:e.fechaLugar, nombre:e.nombre}
+			});
+			res.json({status: 'SUCCESS', code:1, miHora:nuevaHora, total:planes.length, planes:nuevoPlanes}) 	
+		}
+	})	
+})
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////// OBTENGO LOS PLANES DEL HOME, LOS QUE ESTAN MAS CERCA DEL USUARIO, DEPENDIENDO DE LA UBICACION Y DEL AREA DE INFLUENCIA
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.get(`/pago/:lat/:lon`, (req,res)=>{
@@ -181,6 +218,7 @@ router.get('/getbyid/:userId', (req, res)=>{
 })
 
 
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////// OBTENGO MIS PLANES 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -216,23 +254,16 @@ router.put('/editar', (req, res)=>{
 	if(req.session.usuario===undefined || req.session.usuario.user==null){
         res.json({status:'FAIL', user: 'SIN SESION', code:0 })
     }else{
-  //   	ipLocator.getDomainOrIPDetails(ip.address(),'json',  (err, data)=> {
-		// 	let lat = req.body.lat ?req.body.lat :data.lat
-		// 	let lon = req.body.lng ?req.body.lng :data.lon
-		// })
-		 
 		let lat = req.body.lat!=='undefined' ?req.body.lat :4.597825
 		let lon = req.body.lng!=='undefined' ?req.body.lng :-74.0755723
-		console.log(req.body)
-	    	planServices.editar(req.body, req.body.planId, lat, lon, (err, plan)=>{
-	    		 
-				if(err){
-					res.json({err})
-				}else{ 
-					res.json({ status: 'SUCCESS', plan, code:1 });	
-				}
-			})
-		
+ 
+    	planServices.editar(req.body, req.body.planId, lat, lon, (err, plan)=>{
+			if(err){
+				res.json({err})
+			}else{ 
+				res.json({ status: 'SUCCESS', plan, code:1 });	
+			}
+		})
     }
 })
 
@@ -337,7 +368,7 @@ router.put('/web', (req, res)=>{
 /////// MODIFICO LAS IMAGENES SI SE ENVIAN DESDE LA APP / SOLO ACEPTA UNA IMAGEN
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.put('/', (req, res)=>{
-	// console.log(req.files)
+	console.log(req.files)
 	let url = `${req.protocol}s://${req.get('Host')}/public/uploads/`
 	let rutaImagenOriginal  = [] 
 	let rutaImagenResize    = [] 
@@ -373,11 +404,10 @@ router.put('/', (req, res)=>{
 		}else{
 			console.log(plan.tipo)
 			if (plan.tipo==='pago') {
-				
 				let mailOptions = {
                     from: '<weplanapp@appweplan.com>',                              // email del que se envia
                     to: 'fernandooj@ymail.com, unifyincatec@gmail.com',
-                    subject: 'Nuevo plan creado',                                            // mensaje en el sujeto
+                    subject: req.body.editado ?`El plan: ${plan.nombre} ha sido editado` :'Nuevo plan creado',                                            // mensaje en el sujeto
                     html:  `Usuario :   <b> ${req.session.usuario.user.nombre}</b> <br/>Nombre : <b>${plan.nombre}</b> <br/>
                     		Ubicación : <b>${plan.lugar}</b> <br/>
                     		Tipo    :   <b>${plan.tipo}</b> <br/>

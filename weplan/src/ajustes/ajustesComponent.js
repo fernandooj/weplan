@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, Image, TouchableOpacity, Modal, Alert, Keyboard, AsyncStorage} from 'react-native'
+import {View, Text, Image, TouchableOpacity, Modal, Alert, Keyboard, AsyncStorage, Platform} from 'react-native'
 import {style} from '../ajustes/style'
 import axios from 'axios'
 import CabezeraComponent from './cabezera.js'
@@ -8,6 +8,8 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
 import {URL} from '../../App.js'
 import FCM  from "react-native-fcm";
+import Share from 'react-native-share';
+import Icon from 'react-native-fa-icons';
 export default class ajustesComponent extends Component{
 	state={
 		menus:[
@@ -163,10 +165,26 @@ export default class ajustesComponent extends Component{
 					{this.renderPerfil()}
 					{this.renderMenu()}
 				</View>	
+				<TouchableOpacity onPress={()=>this.share()}>
+					<Icon name='share-alt' style={style.share} />
+				</TouchableOpacity>
+				<TouchableOpacity onPress={()=>this.share()}>
+					<Text>Compartir</Text>
+				</TouchableOpacity>
 			</View>
 		)
 	}
-
+	share(){
+		let url = Platform.OS==='android' ?'https://play.app.goo.gl/?link=https://play.google.com/store/apps/details?id=com.weplan&ddl=1&pcampaignid=web_ddl_1' :"https://itunes.apple.com/us/app/we-plan/id1421335318?ls=1&mt=8"
+		const shareOptions = {
+		    title: 'Compartir',
+		    url,
+		    social: Share.Social.WHATSAPP
+		};
+		 Share.open(shareOptions)
+		.then((res) => { console.log(res) })
+		.catch((err) => { err && console.log(err); });
+	}
 	closeSession(){
 		const {navigate} = this.props.navigation
 		axios.get('/x/v1/logout/')

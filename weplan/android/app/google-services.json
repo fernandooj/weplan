@@ -1,39 +1,35 @@
 {
   "project_info": {
-    "project_number": "744639294163",
-    "firebase_url": "https://weplan-environme-1525418855464.firebaseio.com",
-    "project_id": "weplan-environme-1525418855464",
-    "storage_bucket": "weplan-environme-1525418855464.appspot.com"
+    "project_number": "393631179846",
+    "firebase_url": "https://produccion-1543214876263.firebaseio.com",
+    "project_id": "produccion-1543214876263",
+    "storage_bucket": "produccion-1543214876263.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:744639294163:android:424fb45a67929e93",
+        "mobilesdk_app_id": "1:393631179846:android:424fb45a67929e93",
         "android_client_info": {
           "package_name": "com.weplan"
         }
       },
       "oauth_client": [
         {
-          "client_id": "744639294163-cl7325fm6jn0a1v8ar3c3f6t3ddn4p8f.apps.googleusercontent.com",
-          "client_type": 3
-        },
-        {
-          "client_id": "744639294163-qiif0tj6an0rsv3olo37dejfsh6n6q9n.apps.googleusercontent.com",
+          "client_id": "393631179846-pts1h9a99s3tt7pkkt2vecv15ejt47nm.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.weplan",
-            "certificate_hash": "83d911ebc2c2148b6b05568ed8e7cfacc9d2edff"
+            "certificate_hash": "3494050d54f5529a771e9dbee1e9697f9ec099cb"
           }
         },
         {
-          "client_id": "744639294163-194p4cc8a9hlfreaoef9u1091pccb452.apps.googleusercontent.com",
+          "client_id": "393631179846-h5elfjd904ueb0q76ghfavv3aoh14kin.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB-q41NJh3xu-RCofVI41IG2JKh1UKCs48"
+          "current_key": "AIzaSyCp7VhZYGQrMUlYzlF5j2BmHS2NXN7hZsc"
         }
       ],
       "services": {
@@ -44,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "744639294163-cl7325fm6jn0a1v8ar3c3f6t3ddn4p8f.apps.googleusercontent.com",
+              "client_id": "393631179846-h5elfjd904ueb0q76ghfavv3aoh14kin.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

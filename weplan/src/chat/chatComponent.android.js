@@ -65,7 +65,7 @@ export default class ChatComponent extends Component{
 
 	componentWillMount = async()=>{
 		let planId = this.props.navigation.state.params	
-		// let planId = '5b8a278dc581676c62f30ca8'	 
+		// let planId = '5c06c8fc1b027d60d24dbb82'	 
 		console.log(planId)
 		let guia_inicio   = await AsyncStorage.getItem('chat');
 

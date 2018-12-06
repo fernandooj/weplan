@@ -129,7 +129,21 @@ export const style = MediaQueryStyleSheet.create({
 		top:15,
 		marginRight:10
 	},
-	 
+	avatar2:{
+		position:'absolute',
+		top:0,
+		left:0,
+		zIndex:100,
+		width:300,
+		zIndex:10000
+	},
+	avatar3:{
+		position:'absolute',
+		top:60,
+		width:200,
+ 		left:30,
+		zIndex:10000
+	},
 	 
 	 
 	
