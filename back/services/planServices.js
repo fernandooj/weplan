@@ -225,6 +225,7 @@ class planServices {
 		planSchema.find({$or:[{'asignados':asignados, activo:true},{'idUsuario':asignados, activo:true}]}, null, {sort: {_id: -1}}).populate('idUsuario', 'nombre ciudad photo').populate('asignados', 'nombre ciudad photo').exec(callback)
 	}
 	create(planData, id, lat, lng, notificaciones, callback){
+		console.log(moment(planData.fechaLugar).valueOf())
 		let loc = {'type':'Point', "coordinates": [parseFloat(lng), parseFloat(lat)] }
 		let plan 			 = new planSchema();
 		plan.tipo 		     = planData.tipo	

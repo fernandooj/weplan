@@ -84,17 +84,6 @@ export default class importarComponent extends Component{
 			)
 		})
 	}
- 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	////////////////////////////////	RENDER LISTADO AMIGOS						 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- 	/*renderAmigos(){
- 		return(
- 			<ScrollView style={style.contenedorLista}>
-				{this.getRow()}
-			</ScrollView>
- 		)	
- 	}*/
 
  	searchUpdated (term) {
  		if (term.length>0){
@@ -160,6 +149,8 @@ export default class importarComponent extends Component{
 				return e
 		})
 		this.setState({contacts})
+ 
+ 
 		axios.get(`/x/v1/user/enviarsmsamistad/${telefono}` )
 		.then((e)=>{
 			console.log(e.data)

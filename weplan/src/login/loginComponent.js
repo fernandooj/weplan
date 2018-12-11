@@ -48,7 +48,8 @@ export default class LoginComponent extends Component{
 		const {token} = this.state
 		if (e===1) {
 			 
-			FBLoginManager.loginWithPermissions(["email"], function(error, data){
+			FBLoginManager.loginWithPermissions(["email", "user_friends"], function(error, data){
+				console.log(data)
 				/////////////////////////////////////////////    SAVE INFO IF IS ANDROID PLATFORM /////////////////////////////////////////////////////////
 				if(Platform.OS === 'android'){
 					if (!error) {
@@ -60,10 +61,10 @@ export default class LoginComponent extends Component{
 						let email1 = result.email
 						let tipo1 = 'facebook'
 						let acceso = 'suscriptor'
-						console.log({accessToken:accessToken1, idUser:idUser1, nombre:name1, photo:photo1, email:email1, tipo:tipo1, tokenPhone:token})
+						// console.log({accessToken:accessToken1, idUser:idUser1, nombre:name1, photo:photo1, email:email1, tipo:tipo1, tokenPhone:token})
 						axios.post('/x/v1/user/facebook', {accessToken:accessToken1, idUser:idUser1, nombre:name1, photo:photo1, email:email1, username:email1, tipo:tipo1, acceso, tokenPhone:token})
 						.then((e)=>{
-							console.log(e.data)
+							// console.log(e.data)
 							if (e.data.status==='SUCCESSNOEXISTE') {
 								saveInfo(e.data.user)
 								navigate('Terminos', {redes:true}) 
@@ -89,7 +90,7 @@ export default class LoginComponent extends Component{
 					}
 				}else{
 					if (!error) {
-						fetch(`https://graph.facebook.com/v2.12/me?fields=id,name,birthday,email,gender,picture{url}&access_token=${data.credentials.token}`)
+						fetch(`https://graph.facebook.com/v2.12/me?fields=id,name,birthday,email,gender,picture,friends{url}&access_token=${data.credentials.token}`)
 				        .then((response) => response.json())
 				        .then((result) => {
 				        	let accessToken1 = null

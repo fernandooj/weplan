@@ -19,8 +19,8 @@ import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import FCM, {NotificationActionType} from "react-native-fcm";
 import {registerKilledListener, registerAppListener} from "../push/Listeners";
 import UltimaVersionComponent from '../ultimaVersion/ultimaVersion'
-import HuaweiProtectedApps from 'react-native-huawei-protected-apps';
 import {URL}  from '../../App.js';
+
 const TRACKER = new GoogleAnalyticsTracker("UA-129344133-1");
 TRACKER.trackScreenView("Home");
 
@@ -77,17 +77,7 @@ export default class homeComponent extends Component{
 		})
 	}
 	async componentWillMount(){
-		const config = {
-	      title: "Huawei Protected Apps",
-	      text: "This app requires to be enabled in 'Protected Apps' in order to receive push notifcations",
-	      doNotShowAgainText: "Do not show again",
-	      positiveText: "PROTECTED APPS",
-	      negativeText: "CANCEL"
-	    };
-
-	    let test = HuaweiProtectedApps.AlertIfHuaweiDevice(config);
-	    console.log("test")
-	    console.log(test)
+ 
 		let guia_inicio   = await AsyncStorage.getItem('home');
 		this.setState({guia_inicio})
 		if (Platform.OS==='android') {
