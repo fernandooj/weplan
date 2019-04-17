@@ -168,10 +168,10 @@ router.post('/:id', (req,res)=>{
 		let extension = req.files.imagen.name.split('.').pop()
 			extension = extension=='HEIC' ?'jpg' :extension
 		let fullUrl = '../../front/docs/public/uploads/encuesta/'+fechab+'_'+randonNumber+'.'+extension
-		ruta = req.protocol+'s://'+req.get('Host') + '/public/uploads/encuesta/'+fechab+'_'+randonNumber+'.'+extension
+		ruta = req.protocol+'://'+req.get('Host') + '/public/uploads/encuesta/'+fechab+'_'+randonNumber+'.'+extension
 		fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))
 	}else{
-		ruta = req.protocol+'s://'+req.get('Host') + '/public/images/plan.jpg'
+		ruta = req.protocol+'://'+req.get('Host') + '/public/images/plan.jpg'
 	}
 
 	////////////////////////////////////////  RECIVO LA SEGUNDA IMAGEN 		/////////////////////////////////////////
@@ -179,10 +179,10 @@ router.post('/:id', (req,res)=>{
 		let extension2 = req.files.imagen2.name.split('.').pop()
 			extension2 = extension2=='HEIC' ?'jpg' :extension2
 		let fullUrl2 = '../../front/docs/public/uploads/encuesta/'+fechab+'_'+randonNumber2+'.'+extension2
-		ruta2 = req.protocol+'s://'+req.get('Host') + '/public/uploads/encuesta/'+fechab+'_'+randonNumber2+'.'+extension2
+		ruta2 = req.protocol+'://'+req.get('Host') + '/public/uploads/encuesta/'+fechab+'_'+randonNumber2+'.'+extension2
 		fs.rename(req.files.imagen2.path, path.join(__dirname, fullUrl2))
 	}else{
-		ruta2 = req.protocol+'s://'+req.get('Host') + '/public/images/plan.jpg'
+		ruta2 = req.protocol+'://'+req.get('Host') + '/public/images/plan.jpg'
 	}
 
 	///////////////////////// 	condiciono el tipo de pregunta 	///////////////////////

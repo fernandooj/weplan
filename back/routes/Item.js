@@ -322,7 +322,7 @@ router.post('/', function(req, res){
 //////////////////////////////////////////////////////////////////////////////////////////
 
 router.post('/:id', (req,res)=>{	
-	let url = `${req.protocol}s://${req.get('Host')}/public/uploads/`
+	let url = `${req.protocol}://${req.get('Host')}/public/uploads/`
 	let rutaImagenOriginal ;
 	let rutaImagenResize   ; 
 	let rutaImagenMiniatura; 
@@ -344,9 +344,9 @@ router.post('/:id', (req,res)=>{
 
 	}else{
  
-		rutaImagenOriginal  = req.protocol+'s://'+req.get('Host') + '/public/images/plan.jpg'
-		rutaImagenResize    = req.protocol+'s://'+req.get('Host') + '/public/images/plan.jpg'
-		rutaImagenMiniatura = req.protocol+'s://'+req.get('Host') + '/public/images/plan.jpg'
+		rutaImagenOriginal  = req.protocol+'://'+req.get('Host') + '/public/images/plan.jpg'
+		rutaImagenResize    = req.protocol+'://'+req.get('Host') + '/public/images/plan.jpg'
+		rutaImagenMiniatura = req.protocol+'://'+req.get('Host') + '/public/images/plan.jpg'
 
 	}
 

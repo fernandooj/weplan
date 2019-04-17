@@ -122,7 +122,7 @@ function isInArray(value, array) {
 router.post('/', (req, res)=>{
  	let photo = req.session.usuario.user.photo 
 	if (!photo) {
-		photo = req.protocol+'s://'+req.get('Host') + '/avatar.png'
+		photo = req.protocol+'://'+req.get('Host') + '/avatar.png'
 	}
 
 	////////////////  esta informacion se envia al chat	
@@ -164,7 +164,7 @@ router.post('/documento', (req, res)=>{
 	let extension;		//// guardo la extension de la imagen
 	let randonNumber;	//// genero un numero aleatorio
 	let fullUrl;        //// es la ruta donde va a quedar guardada la imagen
-	let url  =  `${req.protocol}s://${req.get('Host')}/public/uploads/`
+	let url  =  `${req.protocol}://${req.get('Host')}/public/uploads/`
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	if (req.files.imagen) {																								////
 		extension    = req.files.imagen.name.split('.').pop()															////
@@ -174,7 +174,7 @@ router.post('/documento', (req, res)=>{
 		ruta 		 = `${url}chat/Original_${fecha}_${randonNumber}.${req.files.imagen.name}`							////
 		fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))													////
 	}else{																												////
-		ruta = req.protocol+'s://'+req.get('Host') + '/chat.png'														////
+		ruta = req.protocol+'://'+req.get('Host') + '/chat.png'														////
 	}																													////
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	if(req.session.usuario===undefined || req.session.usuario.user==null){

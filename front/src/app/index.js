@@ -27,7 +27,7 @@ const BootstrapedElement    = document.getElementById(ELEMENT_TO_BOOTSTRAP);
  
 
 
-export const URL = 'https://appweplan.com/';
+export const URL = 'http://muneo.co/';
 axios.defaults.baseURL = URL;
 
 

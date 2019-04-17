@@ -22,7 +22,7 @@ import axios from 'axios'
 import Slider from "react-slick";
 
 const fullpageOptions = {
-  anchors: ["weplan", "secondPage", "thirdPage"],
+  anchors: ["muneo", "secondPage", "thirdPage"],
   sectionsColor: ["#ffffff", "#ffffff", "#ffffff"],
   callbacks: ["onLeave", "afterLoad"],
   scrollOverflow: true
@@ -42,7 +42,7 @@ const Menu = ()=>{
       <div className={style.navegacion}>
          <img src={logo} className={style.logo} />
          <ul className={style.menu2}>
-            <li><Link to="/">Weplan</Link></li>
+            <li><Link to="/">Muneo</Link></li>
             <li><Link to="/">Posiciones</Link></li>
             <li><Link to="/">Contacto</Link></li>
             <li><Link to="/acceso" className={style.cuentaBtn}>Cuenta</Link></li>
@@ -76,7 +76,7 @@ const FullpageWrapper = fullpageProps => (
             <nav className={style.navigator}> 
                <img src={logo} className={style.logo} />
                <ul className={style.menu}>
-                  <li><Link to="/">Weplan</Link></li>
+                  <li><Link to="/">Muneo</Link></li>
                   <li><Link to="/">Posiciones</Link></li>
                   <li><Link to="/">Contacto</Link></li>
                   <li><Link to="/acceso" className={style.cuentaBtn}>Cuenta</Link></li>
@@ -86,7 +86,7 @@ const FullpageWrapper = fullpageProps => (
          {/***   SECCION IZQUIERDA   ***/}
             <Animated animationIn="bounceInLeft" animationInDelay={1000} isVisible={true}>
                <div className={style.contenedorBannerIzq}>
-                  <h2>WePlan es la nueva forma de realizar todos tus planes</h2>
+                  <h2>Muneo es la nueva forma de realizar todos tus planes</h2>
                   <div onClick={()=>fullpageProps.modal()} className={style.btnDescargar}> Descargar</div> 
                   <Icon type="android" theme="filled" />
                   <Icon type="apple" theme="filled" />
@@ -99,7 +99,7 @@ const FullpageWrapper = fullpageProps => (
                     <img src={`${URL}public/images/cel-banner.png`} />
                </Animated>
                <Animated animationIn="bounceInRight"animationInDelay={2500} isVisible={true}>
-                    <h1>Weplan <br/>¡Un mar de <br/>posibilidades!</h1>
+                    <h1>Muneo <br/>¡Un mar de <br/>posibilidades!</h1>
                </Animated>
             </div>
                {/*<button onClick={() => fullpageApi.moveSectionDown()}></button>*/}
@@ -110,8 +110,8 @@ const FullpageWrapper = fullpageProps => (
           <section className={"section"}>
             <Menu />
             <div className={style.section2}>
-               <h2>¡WePlan, un mar de posibilidad para crear tus planes!</h2>
-               <p>WePlan es la nueva forma de realizar todos tus planes, dividir costos y controlar todos los gastos que compartes con tus amigos de manera más fácil y practica… el único límite es tu imaginación.</p>
+               <h2>¡Muneo, un mar de posibilidad para crear tus planes!</h2>
+               <p>Muneo es la nueva forma de realizar todos tus planes, dividir costos y controlar todos los gastos que compartes con tus amigos de manera más fácil y practica… el único límite es tu imaginación.</p>
                <section>
                   <div className="slide"> <img src={`${URL}public/images/crear_plan.png`} /> </div>
                   <div className="slide"> <img src={`${URL}public/images/encuestas.jpeg`} /> </div>
@@ -129,12 +129,12 @@ const FullpageWrapper = fullpageProps => (
                      <img src={`${URL}public/images/crear_plan.png`} />
                   </FrontSide>
                   <BackSide style={{ backgroundColor: '#175852'}}>
-                     <p>¿Tienes un nuevo plan? ¿Has tenido dificultades organizando tus planes? Con WePlan puedes organizar mejor estas geniales ideas!<br />
+                     <p>¿Tienes un nuevo plan? ¿Has tenido dificultades organizando tus planes? Con Muneo puedes organizar mejor estas geniales ideas!<br />
                      -Crea un nombre<br />
                      -Asígnale una imagen<br />
                      -Fija un horario<br />
                      -Especifica la ubicación donde se desarrollará<br />
-                     -Invita a tus amigos y empieza a disfrutar de las mejores experiencias con WePlan!<br />
+                     -Invita a tus amigos y empieza a disfrutar de las mejores experiencias con Muneo!<br />
                      En tus planes podrás interactuar con tus amigos y demás usuarios, compartir archivos multimedia y organizar todos los detalles de una manera más práctica y eficiente.</p>
                   </BackSide>
                   </Flippy>
@@ -149,7 +149,7 @@ const FullpageWrapper = fullpageProps => (
                         <img src={`${URL}public/images/encuesta.png`} />
                      </FrontSide>
                      <BackSide style={{ backgroundColor: '#471d1d'}}>
-                       <p> WePlan te da la posibilidad de conocer mejor a tus amigos, crea encuestas para tomar mejores decisiones en tus planes y que todos estén de acuerdo. Así podrás asegurarte que no hayan errores en tu plan!</p>
+                       <p> Muneo te da la posibilidad de conocer mejor a tus amigos, crea encuestas para tomar mejores decisiones en tus planes y que todos estén de acuerdo. Así podrás asegurarte que no hayan errores en tu plan!</p>
                      </BackSide>
                   </Flippy>
                 </aside>  
@@ -163,7 +163,7 @@ const FullpageWrapper = fullpageProps => (
                         <img src={`${URL}public/images/wallet.png`} />
                      </FrontSide>
                      <BackSide style={{ backgroundColor: '#197064'}}>
-                       <p> Con la Billetera WePlan ya no te tienes que preocupar por tus gastos, visualiza el registro de todos los costos en los que has incurrido en los diferentes planes, con qué personas los has compartido y el saldo de estos. WePlan es tu mejor amigo para ayudarte a controlar tus gastos.</p>
+                       <p> Con la Billetera Muneo ya no te tienes que preocupar por tus gastos, visualiza el registro de todos los costos en los que has incurrido en los diferentes planes, con qué personas los has compartido y el saldo de estos. Muneo es tu mejor amigo para ayudarte a controlar tus gastos.</p>
                      </BackSide>
                   </Flippy>
                 </aside>  
@@ -177,7 +177,7 @@ const FullpageWrapper = fullpageProps => (
                         <img src={`${URL}public/images/planes_publicos.png`} />
                      </FrontSide>
                      <BackSide style={{ backgroundColor: '#193070'}}>
-                       <p> WePlan te permite explorar sugerencias de planes que crean diferentes usuarios en la sección del Home. Explora y conoce diferentes planes en el sitio donde te encuentres y ¡vive experiencias nuevas todos los días! Disfruta nuevas culturas, ideas, lugares y amigos que puedas encontrarte mientras usas WePlan.<br />
+                       <p> Muneo te permite explorar sugerencias de planes que crean diferentes usuarios en la sección del Home. Explora y conoce diferentes planes en el sitio donde te encuentres y ¡vive experiencias nuevas todos los días! Disfruta nuevas culturas, ideas, lugares y amigos que puedas encontrarte mientras usas Muneo.<br />
 
                         Ingresa a estos planes para ver más detalles, invita a tus amigos a participar contigo y no te quedes por fuera de los mejores planes que puedes encontrar cerca de ti!</p>
                      </BackSide>
@@ -214,7 +214,7 @@ const FullpageWrapper = fullpageProps => (
                <ul>
                   <li> <img src={`${URL}public/images/recurso-5.png`} /></li>
                   <li> 
-                     <h3>TODO LO QUE BUSCAS EN UN APP ESTA EN WEPLAN</h3>
+                     <h3>TODO LO QUE BUSCAS EN UN APP ESTA EN MUNEO</h3>
                      <img src={`${URL}public/images/recurso-3.png`} />
                   </li>
                   <li> <img src={`${URL}public/images/recurso-6.png`} /></li>
@@ -284,7 +284,7 @@ const notificacionError = (type) => {
                >
                <Icon type="close" theme="outlined" onClick={()=>this.setState({open:false})} className={style.btnClose} />
                <div>
-                  <h3>Obten weplan y empieza a crear planes con tus amigos</h3>
+                  <h3>Obten Muneo y empieza a crear planes con tus amigos</h3>
                   <p>Enviar link a mi celular!</p>
                   <Form onSubmit={(e)=>this.handleSubmit(e, validateFields)} className="login-form">
                      <FormItem

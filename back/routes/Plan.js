@@ -369,7 +369,7 @@ router.put('/web', (req, res)=>{
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.put('/', (req, res)=>{
 	console.log(req.files)
-	let url = `${req.protocol}s://${req.get('Host')}/public/uploads/`
+	let url = `${req.protocol}://${req.get('Host')}/public/uploads/`
 	let rutaImagenOriginal  = [] 
 	let rutaImagenResize    = [] 
 	let rutaImagenMiniatura = [] 
@@ -394,9 +394,9 @@ router.put('/', (req, res)=>{
 		resizeImagenes(rutasImagenOriginal, randonNumber, extension)
 	
 	}else{
-		rutaImagenOriginal = req.protocol+'s://'+req.get('Host') + '/public/images/plan.jpg'
-		rutaImagenResize = req.protocol+'s://'+req.get('Host') + '/public/images/plan.jpg'
-		rutaImagenMiniatura = req.protocol+'s://'+req.get('Host') + '/public/images/plan.jpg'
+		rutaImagenOriginal = req.protocol+'://'+req.get('Host') + '/public/images/plan.jpg'
+		rutaImagenResize = req.protocol+'://'+req.get('Host') + '/public/images/plan.jpg'
+		rutaImagenMiniatura = req.protocol+'://'+req.get('Host') + '/public/images/plan.jpg'
 	}
 	planServices.uploadImage(req.body.id, rutaImagenOriginal, rutaImagenResize, rutaImagenMiniatura, (err, plan)=>{
 		if(err){

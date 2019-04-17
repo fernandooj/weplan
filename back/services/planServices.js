@@ -43,7 +43,7 @@ class planServices {
 	 			}
 	 		},
 		    {
- 			$project:{
+ 				$project:{
 	 				_id:1,
 	 				nombre:1,
 	 				tipo:1,
@@ -253,7 +253,7 @@ class planServices {
 		planSchema.findByIdAndUpdate(idPlan, {$set: {
 			"nombre" 		: planData.nombre,	
 			"descripcion"	: planData.descripcion,	
-			"fechaLugar" 	: planData.fechaLugar,
+			"fechaLugar" 	: moment(planData.fechaLugar).valueOf(),
 			"loc" 			: loc,
 			"lugar" 		: planData.lugar,
 			"area" 			: planData.area,

@@ -1,0 +1,131 @@
+{
+  "project_info": {
+    "project_number": "393631179846",
+    "firebase_url": "https://produccion-1543214876263.firebaseio.com",
+    "project_id": "produccion-1543214876263",
+    "storage_bucket": "produccion-1543214876263.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:393631179846:android:37addbc7c3330085",
+        "android_client_info": {
+          "package_name": "com.muneo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "393631179846-enk5am73ucc8vv9go00pc8vv2slv84bs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.muneo",
+            "certificate_hash": "b30bf2487a6c609dcbd635ccd422989f10de52c7"
+          }
+        },
+        {
+          "client_id": "393631179846-qqh7f53h4500c1c3upg6ah1k984gkv7b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.muneo",
+            "certificate_hash": "5e77916196a0d3251379d1311fd386da9a93185f"
+          }
+        },
+        {
+          "client_id": "393631179846-kbjqstt160bj8is55mrqmt3fvcnrrclg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.muneo",
+            "certificate_hash": "3494050d54f5529a771e9dbee1e9697f9ec099cb"
+          }
+        },
+        {
+          "client_id": "393631179846-h5elfjd904ueb0q76ghfavv3aoh14kin.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCp7VhZYGQrMUlYzlF5j2BmHS2NXN7hZsc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "393631179846-h5elfjd904ueb0q76ghfavv3aoh14kin.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "393631179846-o8nvrpo2aelct2fj51d86bhc8de7ea74.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.weplan.weplan",
+                "app_store_id": "1421335318"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:393631179846:android:424fb45a67929e93",
+        "android_client_info": {
+          "package_name": "com.weplan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "393631179846-pts1h9a99s3tt7pkkt2vecv15ejt47nm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.weplan",
+            "certificate_hash": "3494050d54f5529a771e9dbee1e9697f9ec099cb"
+          }
+        },
+        {
+          "client_id": "393631179846-h5elfjd904ueb0q76ghfavv3aoh14kin.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCp7VhZYGQrMUlYzlF5j2BmHS2NXN7hZsc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "393631179846-h5elfjd904ueb0q76ghfavv3aoh14kin.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "393631179846-o8nvrpo2aelct2fj51d86bhc8de7ea74.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.weplan.weplan",
+                "app_store_id": "1421335318"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

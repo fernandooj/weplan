@@ -75,7 +75,7 @@ class userServices {
 		User.findOne({ 'username' :  user.username }, callback)
 	}
 	getActivos(callback){
-		User.find({ 'estado' :  'activo', 'acceso':'suscriptor' }, callback)
+		User.find({ 'estado' :  'activo', 'acceso':'suscriptor' }).sort({_id:"desc"}).exec(callback)
 	}
 	getOneUser(_id,callback){
 		User.findOne({_id},{nombre:1, photo:1, ciudad:1, tokenPhone:1, calificacion:1, email:1}, callback)
@@ -105,13 +105,14 @@ class userServices {
 		newUsuario.save(callback);	 
 	}
 	facebook(user, callback){
+		let avatar = user.photo.replace("s120", "s400")
 		let newUsuario = new User() 
 		newUsuario.token 	  = user.accessToken
 		newUsuario.tokenPhone = user.tokenPhone
 		newUsuario.email 	  = user.email
 		newUsuario.username   = user.email
 		newUsuario.nombre  	  = user.nombre
-		newUsuario.photo 	  = user.photo
+		newUsuario.photo 	  = user.tipo=="google" ?avatar :user.photo
 		newUsuario.idUser 	  = user.idUser
 		newUsuario.tipo	 	  = user.tipo
 		newUsuario.acceso     = user.acceso
@@ -129,6 +130,7 @@ class userServices {
 		})
 	}
 	modificaUsuario(idUser, data, callback){
+		console.log(data)
 		User.findByIdAndUpdate(idUser, {$set:{
 			'tokenPhone':data.tokenPhone,
 			'nombre':data.nombre,

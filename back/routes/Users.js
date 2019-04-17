@@ -117,10 +117,10 @@ module.exports = function(app, passport){
     app.post('/x/v1/user/resend_token', function(req, res){
         if(req.body.tipo==1){
             let mailOptions = {
-                from: '<weplanapp@weplanapp.com>',                              // email del que se envia
-                to: req.body.username,                                        // al usuario que se la va enviar
-                subject: 'Registro',                                            // mensaje en el sujeto
-                html:  `Tu codigo de verificacion es:<b> ${randonNumber} </b>`  // texto
+                from: '<weplanapp@weplanapp.com>',                               
+                to: req.body.username,                                         
+                subject: 'Registro',                                             
+                html:  `Tu codigo de verificacion es:<b> ${randonNumber} </b>`   
             };
             transporter.sendMail(mailOptions, (error, info) => {
                 if (error) {
@@ -389,12 +389,14 @@ module.exports = function(app, passport){
     ///////////////////////////////////////////////////////////////////////////
     app.get('/x/v1/users/activos/sinPerfil', function(req,res){
         if(req.session.usuario){
+            console.log("req.session.usuario.user._id")
+            console.log(req.session.usuario.user._id)
             userServices.getActivos(function(err, usuarios){
                 if(!err){
-                    usuarios = usuarios.filter(e=>{
-                        return e._id != req.session.usuario.user._id
-                    })
-                    res.json({status:'SUCCESS', usuarios})
+                    // usuarios = usuarios.filter(e=>{
+                    //     return e._id != req.session.usuario.user._id
+                    // })
+                    res.json({status:'SUCCESS', usuarios, id:req.session.usuario.user._id})
                 }else{
                     res.json({ status: 'FAIL', err}) 
                 }
@@ -507,7 +509,7 @@ module.exports = function(app, passport){
                 extension = extension=='HEIC' ?'jpg' :extension
                 let randonNumber = Math.floor(90000000 + Math.random() * 1000000)
                 fullUrl = '../../front/docs/public/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
-                ruta = req.protocol+'s://'+req.get('Host') + '/public/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
+                ruta = req.protocol+'://'+req.get('Host') + '/public/uploads/avatar/'+fecha+'_'+randonNumber+'.'+extension
                 fs.rename(req.files.imagen.path, path.join(__dirname, fullUrl))   
             }        
         }else{
@@ -523,8 +525,8 @@ module.exports = function(app, passport){
                     console.log(user)
                     if (!err) {
                         req.session.usuario = {user:user}
-                        // res.json({ status: 'SUCCESS', message: 'Usuario Activado', user }); 
-                        guardoPago(req, res, user)
+                        res.json({ status: 'SUCCESS', message: 'Usuario Activado', user }); 
+                        // guardoPago(req, res, user)
                     }
                     
                 })       
@@ -723,7 +725,7 @@ module.exports = function(app, passport){
         console.log(telefono)
         client.api.messages
             .create({
-              body: `Tu amigo ${req.session.usuario.user.nombre} te invitó a que descargues We Plan: https://appweplan.com/downloadApp` ,
+              body: `Tu amigo ${req.session.usuario.user.nombre} te invitó a que descargues We Plan: http://muneo.co/downloadApp` ,
               to:  telefono,
               from: '+17328750948',
             }).then(function(data) {
@@ -743,7 +745,7 @@ module.exports = function(app, passport){
         console.log(telefono)
         client.api.messages
             .create({
-              body: `Descarga We Plan: https://appweplan.com/downloadApp` ,
+              body: `Descarga We Plan: http://muneo.co/downloadApp` ,
               to:  telefono,
               from: '+17328750948',
             }).then(function(data) {
