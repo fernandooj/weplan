@@ -8,6 +8,9 @@ class planServices {
 	get(callback){
 		planSchema.find({}, null, {sort: {_id: -1}}).populate('asignados').populate('restricciones').exec(callback)
 	}
+	getPublicosActivos(callback){
+		planSchema.find({activo:true, tipo:"pago", eliminado:false}, null, {sort: {_id: -1}}).populate('asignados').populate('restricciones').exec(callback)
+	}
 	/// sin populate
 	getByIdPlan(_id, callback){
 		planSchema.find({_id}).populate('idUsuario', 'nombre ciudad photo').populate('restricciones').exec(callback)

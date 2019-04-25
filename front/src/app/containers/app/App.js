@@ -7,15 +7,16 @@ import { withRouter }     from 'react-router';
 import {
   NavigationBar,
   BackToTop
-}                         from '../../components';
-import MainRoutes         from '../../routes/MainRoutes';
-import styles             from './app.scss';
-import {connect}      from 'react-redux'
-import { notification } from 'antd';
-import {perfil}      from '../../redux/actionCreator'
+}                                   from '../../components';
+import MainRoutes                   from '../../routes/MainRoutes';
+import styles                       from './app.scss';
+import {connect}                    from 'react-redux'
+import { notification }             from 'antd';
+import {perfil, obtieneTodosPlanes} from '../../redux/actionCreator'
 import store from '../../redux/store.js'
  
 store.dispatch(perfil())
+store.dispatch(obtieneTodosPlanes())
 
 const alertaLogin = (type, mensaje) => {
   notification[type]({

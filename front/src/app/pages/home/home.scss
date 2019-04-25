@@ -13,44 +13,12 @@
         url('../../assets/fonts/Futura-CondensedLight.ttf') format('truetype'),
         url('../../assets/fonts/Futura-CondensedLight.svg') format('svg');
 }
-/*********************    MENU SECUNDARIO      *******************/
-.navegacion{
-	position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 4px 25px;
-    box-shadow: 0px 5px 24px 3px rgba(128, 128, 128, 0.31);
-
-	img{
-		width: 77px;
-	}
-	ul{
-		float: right;
-		height: 100%;
-		padding: 20px 0;
-		margin: 0;
-		li{
-			display: inline-block;
-			a{	
-				padding: 8px;
-			    border-radius: 5px;
-			    font-size: 24px;
-			    margin: 1px !important;
-			    color: #009de5;
-			}
-		}
-		.cuentaBtn{
-			background-color: #009de5;
-			color: #ffffff;
-		}
-	}
-}
 body, *{
 	font-family: 'Futura' !important;
 }
-
-/*********************    SECTION 1            *******************/
+////////////////////////////////////////////////////////////////////////
+////////////////////////			MENU
+////////////////////////////////////////////////////////////////////////
 .banner{
 	background-color: #ffffff;
 }
@@ -59,12 +27,14 @@ body, *{
 	width:100px
 }
 .navigator{
-	position: absolute;
+	position: fixed;
+	box-shadow: 1px 1px 6px 1px rgba(128, 128, 128, 0.24);
     top: 0;
     left: 0;
     width: 100%;
     padding: 4px 25px;
-    background: rgba(0,0,0,0);
+	background: #ffffff;
+	z-index: 1000;
 	ul{
 		float: right;
 		height: 100%;
@@ -88,55 +58,96 @@ body, *{
 	}
 }
 
-
-.contenedorBanner{
-	>div{
-		display:inline-block
-	}
-	position:absolute;
-	right:0;
-	bottom:0;
-	img{
-		width:450px;
-		position:relative;
+////////////////////////////////////////////////////////////////////////
+////////////////////////			PLANES BANNER
+////////////////////////////////////////////////////////////////////////
+.contenedorPlanes{
+		margin: 100px auto 0;
+		width: 97%;
+	.contenedorTitulo{
+		background: #cecece;
+		margin: 0 1%;
+		border-radius: 5px;
+		text-align: center;
 	}
 	h1{
-		display:inline-block;
-		position:relative;
-		font-size: 53px;
-    	line-height: 48px;
+		display: inline-block;
+		font-size: 22px;
+		margin: 11px 18px;
 	}
-}
-.contenedorBannerIzq{
-    position: relative;
-    z-index: 2;
-    color: #ffffff;
-    background: rgba(70, 48, 48, 0.18824);
-    width: 30%;
-    border-radius: 10px;
-    font-size: 25px;
-    text-align: center;
-        padding: 10px 0;
+	.btnDescargar{
+		cursor: pointer;
+		background: #009de5;
+		-webkit-box-shadow: 3px 3px 12px rgba(89, 87, 87, 0.41961);
+		box-shadow: 3px 3px 12px rgba(89, 87, 87, 0.41961);
+		display: inline-block;
+		margin: auto;
+		color: white;
+		width: 126px;
+		border-radius: 10px;
+		padding: 0px;
+		font-size: 19px;
+		p{
+			padding: 4px 5px;
+		}
+	}
+	aside{
+		display: inline-table;
+		-webkit-box-shadow: 0px 2px 5px 3px rgba(128, 128, 128, 0.29);
+		box-shadow: 0px 2px 5px 3px rgba(128, 128, 128, 0.29);
+		border: 1px solid rgba(128, 128, 128, 0.36863);
+		margin: 9px 1%;
+		width: 23%;
+	}
 	h2{
-		font-size: 36px;
-    	line-height: 27px;
-    	margin: 26px 0;
-		color: #ffffff;
+		width: 100%;
+		padding: 10px 5px;
+		line-height: 23px;
+		margin: 0;
+	}
+	p{
+		display: inline-table;
+		padding: 10px 5px;
+		margin:0;
+		width: 50%;
+	}
+	a{
+		display: inline-table;
+		text-align: right;
+		width: 50%;
+		padding: 0 10px;
+	}
+	.subContenedorPlanes{
+		flex-direction:row
+	}
+	.contenedorBtn{
+		display: block;
+		text-align: right;
+		margin: 0 1%;
 	}
 }
+.imgLoader {
+	position: relative;
+	width: 100%;
+	height: 300px;
+	background-color: #827f7f;
+}
+
+ 
+ 
 .modal{
     position: absolute;
     background-color: white;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
-    top: auto;
+    top: 103px;
     min-height: 100%;
     width: 100%;
     max-width: 100%;
     display: flex;
     -webkit-box-align: center;
     align-items: center;
-	>div{
+	>section{
 		height: 100%;
 	    display: flex;
 	    -webkit-box-pack: center;
@@ -145,6 +156,37 @@ body, *{
 	    align-items: center;
 	    flex-direction: column;
 	    margin: 40px auto;
+	}
+	div{
+		text-align: center;
+		a{
+			font-size: 50px;
+			color: #021f02;
+		}
+	}
+	.separador {
+		width: 100%;
+		margin: 30px 0 ;
+		padding: 0;
+		text-align: center;
+	}
+	.separador:after {
+		display: inline-block;
+		margin: 0 0 8px 20px;
+		height: 1px;
+		content: " ";
+		text-shadow: none;
+		background-color: #999;
+		width: 140px;
+	}
+	.separador:before {
+		display: inline-block;
+		margin: 0 20px 8px 0;
+		height: 1px;
+		content: " ";
+		text-shadow: none;
+		background-color: #999;
+		width: 140px;
 	}
 }
 .btnClose{
@@ -157,35 +199,29 @@ body, *{
 	cursor: pointer;
 }
 
-.btnDescargar{
-	cursor:pointer;
-	background: #009de5;
-    width: 126px;
-    margin: auto;
-    color: white;
-    border-radius: 12px;
-    padding: 3px;
-    font-size: 22px;
-    box-shadow: 3px 3px 12px #5957576b;
-}
+
 
 
 /************.  SECTION 2 ********/
 .section2{
-	text-align:center;
-	position: relative;
-	top: 130px;
+    text-align: center;
+    position: relative;
+    top: 50px;
+    background: #009de5;
+    padding: 13px 0;
 	h2{
 		font-size: 40px;
+		color:#ffffff
 	}
 	div{
 		box-shadow:none !important;
 		-webkit-box-shadow:none !important;
 	}
 	>p{
+		text-align: center;
+		color:#ffffff;
 		font-size: 20px;
 		width: 56%;
-		text-align: center;
 		margin: 22px auto;
 	}
 	aside{
@@ -265,38 +301,27 @@ footer{
 
 
 
-@media (max-width: 1300px) {
-	.section2{
-		aside{
-			p{
-				color:#ffffff;
-				font-size:12px
-			}
-		}
-	}
-}
-
-@media (min-width: 1700px) {
-	.section2{
-		width:80%;
-		margin:auto;
-		aside{
-			width:18%;
-			display:inline-block;
-			margin: 0 1%;
-			p{
-				color:#ffffff;
-				font-size:12px
-			}
-		}
-	}
-}
+ 
+ 
 @media (max-width: 480px) {
-	.contenedorBannerIzq{
-		width:100%
-	}
-	.contenedorBanner{
-		display:none
+	.contenedorPlanes{
+			margin: 100px auto 0;
+			width: 97%;
+		 
+		h1{
+			margin: 11px 8px;
+		}
+		.btnDescargar{
+			 margin-bottom: 10px;
+		}
+		aside{
+			width: 48.199%;
+			margin: 5px .9%;
+		}
+		.imgLoader {
+			height: 173px;
+		}
+
 	}
 	.menu, .navegacion{
 		a{
@@ -312,9 +337,7 @@ footer{
 		}
 	}
 	.section2{
-		    background-color: rgba(128, 128, 128, 0.16862745098039217);
-    		position: relative;
-    		top: 65px;
+		    
 		aside{
 			width:44%;
 			display:inline-block;
@@ -326,7 +349,7 @@ footer{
 		}
 		img{
 			width: 60%;
-			margin-top:-260px
+		 
 		}
 		h2{
 			font-size: 15px;
@@ -370,8 +393,9 @@ footer{
 			position:relative
 		}
 	}
+	 
 	footer{
-		position: absolute;
+		 
 		bottom: 0;
 		z-index:100;
 		ul{
@@ -384,18 +408,7 @@ footer{
 	}
 }
 @media (max-width: 375px) {
-	.section2{
-		img{
-			width: 60%;
-			margin-top:-260px
-		}
-		>p{
-			width: 99%;
-		    margin: 22px auto;
-		    line-height: 20px;
-		    font-size: 15px;
-		}
-	}
+	 
 
 }
  

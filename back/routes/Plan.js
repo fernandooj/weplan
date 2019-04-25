@@ -47,6 +47,33 @@ router.get('/', (req, res)=>{
 })
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////// OBTENGO TODOS LOS PLANES PUBLICOS DEL USUARIO LOGUEADO, ESTO PARA EL ADMINISTRADOR
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+router.get('/planesPublicos/activos', (req, res)=>{
+	planServices.getPublicosActivos((err, planes)=>{
+		if (err) {
+			res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
+		}else{
+			// plan = plan.map(e=>{
+			// 	let data = e.data[0].info[0]
+			// 	return{
+			// 		_id:e._id,
+			// 		nombre:data.nombre,
+			// 		tipo:data.tipo,
+			// 		area:data.area,
+			// 		lugar:data.lugar,
+			// 		activo:data.activo,
+			// 		likes:e.likes,
+			// 		planPadre:data.planPadre,
+			// 	}
+			// })			
+			res.json({ status: 'SUCCESS', planes, code:1 });	
+		}
+	})
+})
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////// OBTENGO LOS PLANES PUBLICOS DEL USUARIO LOGUEADO, ESTO PARA EL ADMINISTRADOR
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 router.get('/planesPublicos/', (req, res)=>{
@@ -70,13 +97,11 @@ router.get('/planesPublicos/', (req, res)=>{
 	                    likes:e.likes,
 	                    planPadre:data.planPadre,
 	                }
-	            })
-				
+	            })			
 				res.json({ status: 'SUCCESS', plan, code:1 });	
 			}
 		})
 	}
-	
 })
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

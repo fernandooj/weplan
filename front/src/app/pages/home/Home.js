@@ -9,7 +9,7 @@ import {login}      from '../../redux/actionCreator'
 class Home extends Component {
 	render(){
 		return(
-			<HomeComponent handleSubmit={(e, validateFields)=>this.props.handleSubmit(e, validateFields)} />
+			<HomeComponent handleSubmit={(e, validateFields)=>this.props.handleSubmit(e, validateFields)} planes={this.props.planes} />
 		)
 	}
 }
@@ -18,7 +18,8 @@ class Home extends Component {
 
 const mapStateToProps = state=>{
   return{
-    usuario:state.usuario
+    usuario:state.usuario,
+    planes:state.todosPlanes
   }
 }
 const mapDispatchToProps = dispatch=>{
@@ -35,6 +36,8 @@ const mapDispatchToProps = dispatch=>{
     }
   }
 }
-
+Home.defaultProps={
+  planes:[]
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

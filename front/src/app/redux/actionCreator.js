@@ -61,6 +61,19 @@ const obtienePlan = ()=>{
 	    })
 	}
 }
+
+const obtieneTodosPlanes = ()=>{
+	return dispatch=>{
+		return axios.get('/x/v1/pla/plan/planesPublicos/activos')
+	    .then(res=>{
+			console.log(res.data)
+	   		dispatch({
+	   			type:'OBTENER_TODOS_PLANES',
+	   			todosPlanes: res.data.planes
+	   		})
+	    })
+	}
+}
 const obtieneUnPlan = (idPlan)=>{
 	return dispatch=>{
 		return axios.get(`/x/v1/pla/plan/getbyid/${idPlan}`)
@@ -155,7 +168,7 @@ const crearPago= (data)=>{
 	}
 }
  
-export {perfil, login, obtieneUsuarios, obtienePlan, obtieneRestriccion, obtieneCategoria, crearPlan, insertaImagenPlan, obtieneUnPlan, creaRestriccion, creaCategoria, crearPago}
+export {perfil, login, obtieneUsuarios, obtienePlan, obtieneRestriccion, obtieneCategoria, crearPlan, insertaImagenPlan, obtieneUnPlan, creaRestriccion, creaCategoria, crearPago, obtieneTodosPlanes}
 
 
 

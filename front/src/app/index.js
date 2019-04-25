@@ -26,9 +26,12 @@ const BootstrapedElement    = document.getElementById(ELEMENT_TO_BOOTSTRAP);
 
  
 
-
-export const URL = 'http://muneo.co/';
-axios.defaults.baseURL = URL;
+// export const URL = 'https://releo.co/public/assets/img/';
+// export const URL2 = window.location.origin
+// axios.defaults.baseURL = URL2+"/x/v1/";
+export const URL = "http://muneo.co/";
+export const URL2  = window.location.origin;
+axios.defaults.baseURL = URL2;
 
 
 const renderApp = RootComponent => {

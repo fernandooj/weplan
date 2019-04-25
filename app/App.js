@@ -97,7 +97,7 @@ export default class App extends Component<{}> {
    console.log(local)
    
    const NavigationApp = StackNavigator({
-      Home               : {screen: local===1 ?ajustesAmigosComponent :local===0 ?editPerfilComponent :LoginComponent },
+      Home               : {screen: local===1 ?MisPlanesComponent :local===0 ?editPerfilComponent :LoginComponent },
       Login              : {screen: LoginComponent },
       Registro           : {screen: RegistroComponent },
       insertCode         : {screen: insertCodeComponent },

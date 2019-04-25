@@ -19,6 +19,7 @@
     "react-native-alert-input": "^1.0.5",
     "react-native-android-location-enabler": "^1.0.8",
     "react-native-camera": "^1.10.0",
+    "react-native-contacts": "^4.0.0",
     "react-native-credit-card-input": "^0.4.1",
     "react-native-datepicker": "^1.7.2",
     "react-native-document-picker": "^2.2.0",

@@ -4,37 +4,26 @@ import React, {
   PureComponent
 }                     from 'react';
 import PropTypes      from 'prop-types';
-import {Jumbotron}    from '../../components';
+ 
 import { Link }       from 'react-router-dom';
 import style         from './home.scss';
-import {connect}      from 'react-redux'
-
-import store        from '../../redux/store.js'
+ 
 import {Icon, Input, Button,  Form, Select, notification} from 'antd';
 import {URL} from "../../index.js"
 import 'antd/dist/antd.css'; 
-import ReactFullpage from "@fullpage/react-fullpage";
+import {  Element , Events, animateScroll as scroll, scrollSpy, scroller } from 'react-scroll'
+
 import PreloadImage from 'react-preload-image'
 import Drawer from 'react-drag-drawer'
 import {Animated} from "react-animated-css";
 import Flippy, { FrontSide, BackSide } from 'react-flippy';
 import axios from 'axios'
+import moment from 'moment'
 import Slider from "react-slick";
-
-const fullpageOptions = {
-  anchors: ["muneo", "secondPage", "thirdPage"],
-  sectionsColor: ["#ffffff", "#ffffff", "#ffffff"],
-  callbacks: ["onLeave", "afterLoad"],
-  scrollOverflow: true
-};
+ 
+ 
 const FormItem = Form.Item;
-const settings = {
-   dots: true,
-   infinite: true,
-   speed: 500,
-   slidesToShow: 1,
-   slidesToScroll: 1
-};
+ 
 
 const Menu = ()=>{
    const logo = URL+'public/images/logo.png'
@@ -43,57 +32,99 @@ const Menu = ()=>{
          <img src={logo} className={style.logo} />
          <ul className={style.menu2}>
             <li><Link to="/">Muneo</Link></li>
-            <li><Link to="/">Posiciones</Link></li>
+            {/* <li><Link to="/">Posiciones</Link></li> */}
             <li><Link to="/">Contacto</Link></li>
             <li><Link to="/acceso" className={style.cuentaBtn}>Cuenta</Link></li>
          </ul>
       </div>
    )   
 }
-const FullpageWrapper = fullpageProps => (
-   <ReactFullpage
-   {...fullpageProps}
-      render={({ state, fullpageApi }) => {
-      // console.log("render prop change", state);
 
-      if (state.callback === "onLeave") {
-        if (state.direction === "down") {
-          console.log("going down..." + state.origin.index);
-        }
-      }
+const notificacionExitosa = (type) => {
+  notification[type]({
+    message: 'Mensaje Enviado',
+    description: 'te hemos enviado un mensaje de texto con las indicaciones.',
+  });
+};
+const notificacionError = (type) => {
+  notification[type]({
+    message: '!opss error',
+    description: 'verifica tu telefono.',
+  });
+};
+ class HomeComponent extends PureComponent{
+   state = {
+      modal:false,
+      inicio:0,
+      final:8
+   }
+   renderPlanes(){
+      const {inicio, final} = this.state
+      return this.props.planes.slice(inicio,final).map((e, key)=>{
+         return(
+            <aside key={key}>
+               <PreloadImage
+                  className={style.imgLoader}
+                  src={e.imagenResize[0]}
+                  lazy
+               />
+               <div  className={style.subContenedorPlanes}>
+                  <p>{moment(JSON.parse(e.fechaLugar)).format("YYYY-MM-DD h:mm a")}</p>
+                  <a   onClick={()=>this.setState({modal:true})} >Ver Plan</a>
+               </div>
+               <h2>{e.nombre}</h2>
+            </aside>
+         )
+      })
+   }
+   mostrarMasPlanes(){
+      const {final} = this.state
+      this.setState({final:final+4})
+      scroll.scrollMore(500);
+      console.log(document.documentElement.scrollTop)
+   }
+   renderContenido(){
       const logo = URL+'public/images/logo.png'
+      
       return (
-        <div id="fullpage-wrapper">
+        <div>
          {/**************************    SECCION 1    *************************/}
           <header className="section section1">
-            <PreloadImage
-              className={style.banner}
-              src={`${URL}public/images/banner.jpg`}
-              lazy
-            />
-
+            
          {/***   MENU NAVEGACION   ***/}
             <nav className={style.navigator}> 
                <img src={logo} className={style.logo} />
                <ul className={style.menu}>
-                  <li><Link to="/">Muneo</Link></li>
-                  <li><Link to="/">Posiciones</Link></li>
-                  <li><Link to="/">Contacto</Link></li>
+                   {/*<li><Link to="/">Muneo</Link></li>
+                  <li><Link to="/">Posiciones</Link></li> 
+                  <li><Link to="/">Contacto</Link></li>*/}
                   <li><Link to="/acceso" className={style.cuentaBtn}>Cuenta</Link></li>
                </ul>
             </nav>
-
-         {/***   SECCION IZQUIERDA   ***/}
-            <Animated animationIn="bounceInLeft" animationInDelay={1000} isVisible={true}>
-               <div className={style.contenedorBannerIzq}>
-                  <h2>Muneo es la nueva forma de realizar todos tus planes</h2>
-                  <div onClick={()=>fullpageProps.modal()} className={style.btnDescargar}> Descargar</div> 
+         <section className={style.contenedorPlanes}>
+            <div className={style.contenedorTitulo}>
+               <h1>Muneo es la nueva forma de realizar todos tus planes</h1>
+               <div onClick={()=>this.setState({modal:true})} className={style.btnDescargar}> 
+                  <p>Descargar</p>
                   <Icon type="android" theme="filled" />
                   <Icon type="apple" theme="filled" />
+               </div> 
+            </div>
+            {this.renderPlanes()}
+            <div className={style.contenedorBtn}>
+               <Button type="primary" onClick={()=>this.mostrarMasPlanes()} >Ver mas Planes</Button>
+            </div>
+         </section>
+         {/***   SECCION IZQUIERDA  
+            <Animated animationIn="bounceInLeft" animationInDelay={1000} isVisible={true}>
+               <div className={style.contenedorBannerIzq}>
+                 
+                 
+                  
                </div>
-            </Animated>
+            </Animated> ***/}
          
-         {/***   SECCION DERECHA   ***/}
+         {/***   SECCION DERECHA  
             <div className={style.contenedorBanner}>
                <Animated animationIn="bounceInRight" animationInDelay={2000} isVisible={true}>
                     <img src={`${URL}public/images/cel-banner.png`} />
@@ -101,14 +132,13 @@ const FullpageWrapper = fullpageProps => (
                <Animated animationIn="bounceInRight"animationInDelay={2500} isVisible={true}>
                     <h1>Muneo <br/>¡Un mar de <br/>posibilidades!</h1>
                </Animated>
-            </div>
-               {/*<button onClick={() => fullpageApi.moveSectionDown()}></button>*/}
+            </div> ***/} 
 
           </header>
 
          {/**************************    SECCION 2    *************************/}
           <section className={"section"}>
-            <Menu />
+            
             <div className={style.section2}>
                <h2>¡Muneo, un mar de posibilidad para crear tus planes!</h2>
                <p>Muneo es la nueva forma de realizar todos tus planes, dividir costos y controlar todos los gastos que compartes con tus amigos de manera más fácil y practica… el único límite es tu imaginación.</p>
@@ -209,7 +239,7 @@ const FullpageWrapper = fullpageProps => (
 
          {/**************************    SECCION 3    *************************/}
           <div className="section">
-            <Menu />
+             
             <div className={style.section3}>
                <ul>
                   <li> <img src={`${URL}public/images/recurso-5.png`} /></li>
@@ -240,32 +270,14 @@ const FullpageWrapper = fullpageProps => (
 
         </div>
       );
-    }}
-  />
-);
-
-
-const notificacionExitosa = (type) => {
-  notification[type]({
-    message: 'Mensaje Enviado',
-    description: 'te hemos enviado un mensaje de texto con las indicaciones.',
-  });
-};
-const notificacionError = (type) => {
-  notification[type]({
-    message: '!opss error',
-    description: 'verifica tu telefono.',
-  });
-};
- class HomeComponent extends PureComponent{
-   state = {open:false}
- 
-   render() {
-      const { open } = this.state
+   }
+   renderModalEnviar(){
+      const { modal } = this.state
       const { getFieldDecorator, validateFields } = this.props.form;
       const prefixSelector = getFieldDecorator('prefix', {
-      initialValue: '57',
-       })(
+         initialValue: '57',
+       }
+      )(
          <Select style={{ width: 70 }}>
            <Option value="57">+57</Option>
            <Option value="1">+1</Option>
@@ -274,38 +286,56 @@ const notificacionError = (type) => {
            <Option value="86">+86</Option>
            <Option value="852">+852</Option>
          </Select>
-       );
+      );
+      return(
+         <Drawer
+            open={modal}
+            modalElementClass={style.modal}
+         >
+            <Icon type="close" theme="outlined" onClick={()=>this.setState({modal:false})} className={style.btnClose} />
+            <section>
+            <h3>Obten Muneo y empieza a crear planes con tus amigos</h3>
+               <div>
+                  <p>Descargar De</p>
+                  <a href="https://play.google.com/store/apps/details?id=com.weplan" target="blank">
+                     <Icon type="android" theme="filled" />
+                  </a>
+                  <a href="https://itunes.apple.com/us/app/muneo/id1421335318?ls=1&mt=8"  target="blank">
+                     <Icon type="apple" theme="filled" />
+                  </a>
+               </div>
+               <span className={style.separador}>O</span>
+
+              
+               <p>Enviar link a mi celular!</p>
+               <Form onSubmit={(e)=>this.handleSubmit(e, validateFields)} className="login-form">
+                  <FormItem
+                        label="Telefono"
+                     >
+                     {getFieldDecorator('phone', {
+                     rules: [{ required: true, message: 'Please input your phone number!' }],
+                     })(
+                     <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
+                     )}
+                  </FormItem>
+                  <Button type="primary" htmlType="submit">Enviar</Button>
+               </Form>
+            </section>
+         </Drawer>
+      )
+   }
+   render() {
+      console.log(this.props.planes)
       return (
          <div>
-            <FullpageWrapper {...fullpageOptions} modal={()=>this.setState({open:true})} />
-               <Drawer
-                  open={open}
-                  modalElementClass={style.modal}
-               >
-               <Icon type="close" theme="outlined" onClick={()=>this.setState({open:false})} className={style.btnClose} />
-               <div>
-                  <h3>Obten Muneo y empieza a crear planes con tus amigos</h3>
-                  <p>Enviar link a mi celular!</p>
-                  <Form onSubmit={(e)=>this.handleSubmit(e, validateFields)} className="login-form">
-                     <FormItem
-                         label="Telefono"
-                       >
-                      {getFieldDecorator('phone', {
-                        rules: [{ required: true, message: 'Please input your phone number!' }],
-                      })(
-                        <Input addonBefore={prefixSelector} style={{ width: '100%' }} />
-                      )}
-                     </FormItem>
-                     <Button type="primary" htmlType="submit">Enviar</Button>
-                  </Form>
-               </div>
-             </Drawer>
+            {this.renderContenido()}
+            {this.renderModalEnviar()}
+               
          </div>
       );
    }
    handleSubmit(e, validateFields){
       e.preventDefault()
-     
       validateFields((err, values) => {
          if (!err) {
             let telefono = `${values.prefix}${values.phone}`
@@ -325,8 +355,6 @@ const notificacionError = (type) => {
             })
          }
       });
-      // console.log(value)
-      // console.log(e)
    }
 
 
