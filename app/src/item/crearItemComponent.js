@@ -6,7 +6,7 @@ import TakePhotoComponent from '../takePhoto/takePhotoComponent.js'
 import AgregarAmigosComponent    from '../agregarAmigos/agregarAmigos.js'
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
 import { TextInputMask } from 'react-native-masked-text'
-import socket from '../../socket.js'
+ 
 import moment from 'moment'
 
 export default class CrearItemComponent extends Component{
@@ -124,14 +124,17 @@ export default class CrearItemComponent extends Component{
                </View>  
              }
             <View style={style.separador}></View>
-            {adjuntarAmigos ?<AgregarAmigosComponent 
-              titulo='Asignar Amigos'
-              close={(e)=>this.setState({asignados:[], usuariosAsignados:[], adjuntarAmigos:false})} 
-              updateStateAsignados={(asignados, usuariosAsignados, misUsuarios)=>this.setState({asignados, usuariosAsignados, misUsuarios, adjuntarAmigos:false})}
-                  asignados={this.state.asignados}
-                  usuariosAsignados={this.state.usuariosAsignados}
-                  misUsuarios={this.state.misUsuarios}
-                  navigate={this.props.navigate}
+            {
+              adjuntarAmigos 
+              ?<AgregarAmigosComponent 
+                titulo='Asignar Amigos'
+                close={(e)=>this.setState({asignados:[], usuariosAsignados:[], adjuntarAmigos:false})} 
+                updateStateAsignados={(asignados, usuariosAsignados, misUsuarios)=>this.setState({asignados, usuariosAsignados, misUsuarios, adjuntarAmigos:false})}
+                asignados={this.state.asignados}
+                usuariosAsignados={this.state.usuariosAsignados}
+                misUsuarios={this.state.misUsuarios}
+                navigate={this.props.navigate}
+                crearArticulo
               /> :null }
 
             {/* Enviar al Chat */}

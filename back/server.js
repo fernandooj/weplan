@@ -8,7 +8,7 @@ let mongoose     = require('mongoose');
 let cookieParser = require('cookie-parser');
 let cookieSession = require('cookie-session')
 let formidable   = require('express-form-data');
-const fileUpload = require('express-fileupload');
+let fs = require('fs');
 let SocketIO     = require('./socket.js')
 
 
@@ -39,9 +39,21 @@ const path          = require('path');
 let passport = require('passport');
 let flash    = require('connect-flash');
 
- 
-let http = require('http')
-let server = http.Server(app)
+
+/////////////////////////////////////    WEB   /////////////////////////
+// let https = require('https')
+// var options = {
+//   cert: fs.readFileSync('/home/certificados/nuevo/bundle.crt', 'utf8'),
+//   key: fs.readFileSync('/home/certificados/nuevo/muneo.pem', 'utf8')
+// };
+// let server = https.Server(options, app)
+
+/////////////////////////////////////    LOCAL   /////////////////////////
+let https = require('http')
+let server = https.Server(app)
+
+// let http = require('http')
+// let server = http.Server(app)
 SocketIO(server)
 
 

@@ -197,7 +197,7 @@ export default class homeComponent extends Component{
 									{/*e.descripcion &&<Text style={[style.textFooter2, style.familia]}>{e.descripcion}</Text>*/}
 									
 									<Text style={[style.textFooter2, style.familia]}>Estas a {parseInt(e.dist)<1000 ?`${parseInt(e.dist)} Metros` :`${data} Kilometros`}</Text>
-									<Text style={[style.textFooter2, style.familia]}>{moment(JSON.parse(e.fechaLugar)).format("YYYY-MM-DD h:mm a")}</Text>
+									<Text style={[style.textFooter2, style.familia]}>{e.fechaLugar!="NaN" ?moment(JSON.parse(e.fechaLugar)).format("YYYY-MM-DD h:mm a") :""}</Text>
 									<Text style={[style.textFooter2, style.familia]}>{`Por: ${e.UserData.nombre}, ${calficaLongitud ?parseFloat(calificacion).toFixed(0) :''}*`}</Text>
 									<View style={style.footer2}>
 										<TouchableOpacity onPress={() => this.like(e._id)} >

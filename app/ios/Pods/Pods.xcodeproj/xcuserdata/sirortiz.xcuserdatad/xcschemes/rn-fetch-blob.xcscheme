@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D65FACD1B1CCB64D9883FFCB5C947279"
+               BlueprintIdentifier = "9CF4684A860F1CE79CD240A840033F7F"
                BlueprintName = "rn-fetch-blob"
                ReferencedContainer = "container:Pods.xcodeproj"
                BuildableName = "librn-fetch-blob.a">

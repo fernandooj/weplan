@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "42298A913402292114EF0A3513CDCA45"
+               BlueprintIdentifier = "0819BFD0F7961A4BA45D398F175F4DAD"
                BlueprintName = "react-native-document-picker"
                ReferencedContainer = "container:Pods.xcodeproj"
                BuildableName = "libreact-native-document-picker.a">

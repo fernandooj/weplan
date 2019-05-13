@@ -477,7 +477,7 @@ module.exports = function(app, passport){
                         }
                     })
                 }else{
-                    ruta = req.protocol+'s://'+req.get('Host') + '/public/images/plan.jpg'
+                    ruta = req.protocol+'://'+req.get('Host') + '/public/images/plan.jpg'
                     userServices.createUser(req.body, randonNumber, ruta, function(err, usuarios){
                         if(!err){
                             res.json({status:'SUCCESS', usuarios})
@@ -725,7 +725,7 @@ module.exports = function(app, passport){
         console.log(telefono)
         client.api.messages
             .create({
-              body: `Tu amigo ${req.session.usuario.user.nombre} te invitó a que descargues We Plan: http://muneo.co/downloadApp` ,
+              body: `Tu amigo ${req.session.usuario.user.nombre} Te invito a que descargues Muneo y hagas parte de la nueva forma de ver y hacer planes.: https://muneo.co/downloadApp` ,
               to:  telefono,
               from: '+17328750948',
             }).then(function(data) {
@@ -745,7 +745,7 @@ module.exports = function(app, passport){
         console.log(telefono)
         client.api.messages
             .create({
-              body: `Descarga We Plan: http://muneo.co/downloadApp` ,
+              body: `Te invito a que descargues Muneo y hagas parte de la nueva forma de ver y hacer planes.: https://muneo.co/downloadApp` ,
               to:  telefono,
               from: '+17328750948',
             }).then(function(data) {

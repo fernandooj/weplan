@@ -2,7 +2,7 @@
 
 let mongoose = require('mongoose')
 let Schema = mongoose.Schema
-let moment   = require('moment');
+
 
 const geoSchema = mongoose.Schema({
 	type:{
@@ -16,8 +16,8 @@ const geoSchema = mongoose.Schema({
 })
 
 let planSchema = mongoose.Schema({
-	createdAt	   :  { type: String, default: moment().format('YYYY-MM-DD h:mm') },
-	updatedAt	   :  { type: String, default: moment().format('YYYY-MM-DD h:mm') },
+	createdAt	   :  { type: String },
+	updatedAt	   :  { type: String },
 	nombre         :  { type : String },
 	tipo		   :  { type : String},
 	area		   :  { type : Number},

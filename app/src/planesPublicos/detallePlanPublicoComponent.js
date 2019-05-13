@@ -122,7 +122,7 @@ export default class detallePlanPublicoComponent extends Component{
 	render(){
 		const {nombre, direccion, fechaLugar, lugar, loc, area, lat, lng, restricciones, asignados, imagen2, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, costo, activo, exitoso, img1} = this.state
 		const {navigate} = this.props.navigation
-		console.log(loc)
+		console.log(fechaLugar)
 		return (
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} > 
 				{/* si la ubicacion no tiene */}
@@ -194,7 +194,7 @@ export default class detallePlanPublicoComponent extends Component{
 							confirmBtnText="Confirm"
 							cancelBtnText="Cancel"
 							androidMode='spinner'
-							onDateChange={(fechaLugar) => {this.setState({fechaLugar})}}
+							onDateChange={(fechaLugar) => {this.setState({fechaLugar : fechaLugar })}}
 					   />
 					</View> 
 		 			
@@ -403,7 +403,8 @@ export default class detallePlanPublicoComponent extends Component{
 	}
 	editarPlan(){
 		let {nombre, descripcion, fechaLugar, lat, lng, asignados, usuariosAsignados, restricciones, imagen, tipo, cargaPlan, direccion, area, publico, costo, planId, lugar} = this.state
-		console.log(imagen)
+		fechaLugar = fechaLugar.length==13 ?fechaLugar :moment(fechaLugar).valueOf();
+	
 		if (imagen) {
 			let data = new FormData();
 			axios.put('/x/v1/pla/plan/editar', {nombre, descripcion, fechaLugar, lat, lng, restricciones, planId, lugar:direccion, notificaciones:[], asignados:[], area})

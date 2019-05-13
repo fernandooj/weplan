@@ -203,7 +203,7 @@ export default class MapaPlanComponent extends Component{
 		      				{
 		      					buscador
 		      					?<MapView
-					          		style={CreatePlanStyle.map, {height:showKeyboard ?250:405}}
+					          		style={[CreatePlanStyle.map, {height:showKeyboard ?250:405}]}
 					          		region={{
 							            latitude:  x.latitude,
 							            longitude: x.longitude,
@@ -225,7 +225,7 @@ export default class MapaPlanComponent extends Component{
 							  	/>
 						        </MapView>
 					        	:<MapView
-						          style={CreatePlanStyle.map, {height:showKeyboard ?250:405}}
+						          style={[CreatePlanStyle.map, {height:showKeyboard ?250:405}]}
 						          initialRegion={{
 						            latitude:ubicacionDefecto.infoplan ?ubicacionDefecto.lat :guardaUbicacion.lat ?guardaUbicacion.lat :x.latitude,
 						            longitude:ubicacionDefecto.infoplan ?ubicacionDefecto.lng :guardaUbicacion.lng ?guardaUbicacion.lng :x.longitude,

@@ -170,7 +170,7 @@ export default class ChatComponent extends Component{
 						<TouchableOpacity onPress={() => navigate('encuesta', {planId, notificaciones, id, nombrePlan, imagen})}  style={style.iconContenedor}>
 							<Image source={require('../assets/images/preguntar.png')} style={style.icon}  />
 						</TouchableOpacity>
-						<TouchableOpacity onPress={() => navigate('item', {planId, notificaciones, id, nombrePlan, imagen})} style={style.iconContenedor}>
+						<TouchableOpacity onPress={() => navigate('item', {planId, notificaciones, id, nombrePlan, imagen, asignados:plan.asignados})} style={style.iconContenedor}>
 							<Image source={require('../assets/images/cuentas.png')} style={style.icon}  />
 						</TouchableOpacity>
 					</View>

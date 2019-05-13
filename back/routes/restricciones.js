@@ -23,9 +23,7 @@ router.get('/', (req, res)=>{
 
 
 router.post('/', (req, res)=>{
-	let from = 'https://definicion.de/wp-content/uploads/2009/03/socio.jpg';
- 
-
+	 
 
 	let ruta =null
 	if (req.files.imagen) {

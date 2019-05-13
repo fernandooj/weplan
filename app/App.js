@@ -40,7 +40,7 @@ import contactoComponent           from './src/contacto/contactoComponent';
  
 
 
-export const URL = 'http://muneo.co/';
+export const URL = 'https://muneo.co/';
 // export const URL = 'http://192.168.0.3:8080/';
 export const VERSION = '1.10.1';
 axios.defaults.baseURL = URL;

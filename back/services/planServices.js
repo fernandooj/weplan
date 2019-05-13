@@ -2,7 +2,7 @@
 
 let planSchema = require('../models/planModel.js')
 let mongoose   = require('mongoose')
-let moment     = require('moment');
+let moment 	   = require('moment-timezone');
 
 class planServices {
 	get(callback){
@@ -228,7 +228,6 @@ class planServices {
 		planSchema.find({$or:[{'asignados':asignados, activo:true},{'idUsuario':asignados, activo:true}]}, null, {sort: {_id: -1}}).populate('idUsuario', 'nombre ciudad photo').populate('asignados', 'nombre ciudad photo').exec(callback)
 	}
 	create(planData, id, lat, lng, notificaciones, callback){
-		console.log(moment(planData.fechaLugar).valueOf())
 		let loc = {'type':'Point', "coordinates": [parseFloat(lng), parseFloat(lat)] }
 		let plan 			 = new planSchema();
 		plan.tipo 		     = planData.tipo	
@@ -237,7 +236,7 @@ class planServices {
 		plan.restricciones   = planData.restricciones	
 		plan.activo          = planData.activo	
 		plan.idUsuario 		 = id	
-		plan.fechaLugar 	 = moment(planData.fechaLugar).valueOf() 
+		plan.fechaLugar 	 = planData.fechaLugar
 		plan.loc 			 = loc
 		plan.area 			 = planData.area	
 		plan.lugar 			 = planData.lugar	
@@ -252,11 +251,13 @@ class planServices {
 	}
 
 	editar(planData, idPlan, lat, lng, callback){
+		console.log("planData")
+		console.log(planData)
 		let loc = {'type':'Point', "coordinates": [parseFloat(lng), parseFloat(lat)] }
 		planSchema.findByIdAndUpdate(idPlan, {$set: {
 			"nombre" 		: planData.nombre,	
 			"descripcion"	: planData.descripcion,	
-			"fechaLugar" 	: moment(planData.fechaLugar).valueOf(),
+			"fechaLugar" 	: planData.fechaLugar,
 			"loc" 			: loc,
 			"lugar" 		: planData.lugar,
 			"area" 			: planData.area,

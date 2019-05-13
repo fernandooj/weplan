@@ -3,6 +3,7 @@ platform :ios, '9.0'
 pod 'Firebase/Core', '~> 5.15.0'
 pod 'Firebase/Messaging', '~> 5.15.0'
 pod 'GoogleSignIn', '~> 4.4.0'
+#pod 'Facebook-iOS-SDK' 
 target 'billow' do
   rn_path = '../node_modules/react-native'
   rn_maps_path = '../node_modules/react-native-maps'
@@ -28,17 +29,14 @@ target 'billow' do
   # React Native third party dependencies podspecs
   pod 'DoubleConversion', :podspec => "#{rn_path}/third-party-podspecs/DoubleConversion.podspec"
   pod 'glog', :podspec => "#{rn_path}/third-party-podspecs/glog.podspec"
-  # If you are using React Native <0.54, you will get the following error:
-  # "The name of the given podspec `GLog` doesn't match the expected one `glog`"
-  # Use the following line instead:
-  #pod 'GLog', :podspec => "#{rn_path}/third-party-podspecs/GLog.podspec"
+ 
   pod 'Folly', :podspec => "#{rn_path}/third-party-podspecs/Folly.podspec"
   pod 'react-native-camera', path: '../node_modules/react-native-camera'
   pod 'react-native-document-picker', :path => '../node_modules/react-native-document-picker'
   pod 'RNImageCropPicker', :path =>  '../node_modules/react-native-image-crop-picker'
   # react-native-maps dependencies
   pod 'react-native-maps', path: rn_maps_path
-  pod 'react-native-google-maps', path: rn_maps_path  # Unomment this line if you want to support GoogleMaps on iOS
+  #pod 'react-native-google-maps', path: rn_maps_path  # Unomment this line if you want to support GoogleMaps on iOS
   pod 'GoogleMaps'  # Uncomment this line if you want to support GoogleMaps on iOS
   pod 'Google-Maps-iOS-Utils' # Uncomment this line if you want to support GoogleMaps on iOS
   pod 'ReactNativePermissions', :path => '../node_modules/react-native-permissions'
@@ -51,9 +49,9 @@ target 'billow' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
-  pod 'react-native-fcm', :path => '../node_modules/react-native-fcm'
+  #pod 'react-native-fcm', :path => '../node_modules/react-native-fcm'
 
-  pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
+  #pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
 
 end
 

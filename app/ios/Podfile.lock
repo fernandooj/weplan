@@ -114,11 +114,7 @@ PODS:
     - React
   - react-native-document-picker (2.2.0):
     - React
-  - react-native-google-maps (0.23.0):
-    - Google-Maps-iOS-Utils (= 2.1.0)
-    - GoogleMaps (= 2.5.0)
-    - React
-  - react-native-maps (0.23.0):
+  - react-native-maps (0.24.0):
     - React
   - react-native-pdf (5.0.11):
     - React
@@ -173,7 +169,7 @@ PODS:
     - React
   - rn-fetch-blob (0.10.6):
     - React/Core
-  - RNImageCropPicker (0.22.0):
+  - RNImageCropPicker (0.23.1):
     - QBImagePickerController
     - React/Core
     - RSKImageCropper
@@ -195,7 +191,6 @@ DEPENDENCIES:
   - GoogleSignIn (~> 4.4.0)
   - react-native-camera (from `../node_modules/react-native-camera`)
   - react-native-document-picker (from `../node_modules/react-native-document-picker`)
-  - react-native-google-maps (from `../node_modules/react-native-maps`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-pdf (from `../node_modules/react-native-pdf`)
   - React/Core (from `../node_modules/react-native`)
@@ -252,8 +247,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-camera"
   react-native-document-picker:
     :path: "../node_modules/react-native-document-picker"
-  react-native-google-maps:
-    :path: "../node_modules/react-native-maps"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
   react-native-pdf:
@@ -292,20 +285,19 @@ SPEC CHECKSUMS:
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
-  React: 9b873b38b92ed8012d7cdf3b965477095ed364c4
-  react-native-camera: a8d04ef12749def72cae86b0b8d28c2de891a392
-  react-native-document-picker: e7934f6a3c898a1b62fa68b1f09371beef6ac51a
-  react-native-google-maps: b946d62e25dc66097921ed82520e45b0b081768a
-  react-native-maps: 066c2afcc89e18726377bcc685315f989ca22449
-  react-native-pdf: 0268038d049187eccaf4bce4a2ca4a96719fdc36
-  ReactNativePermissions: 9f2d9c45c98800795e6c2ed330e25d11a66a8169
-  rn-fetch-blob: 76a8f798dae965bbcd146a2438f2e1d381c91ae3
-  RNImageCropPicker: 32ca4b9fef4e1b7b85ba69494242122948117e06
-  RNShare: d875e8e37f3e5e8eb7a103ae01e06490af1796f6
-  RNVectorIcons: c0dbfbf6068fefa240c37b0f71bd03b45dddac44
+  React: d099597d6ba7001f0219dbc48532b63cfd8d0eca
+  react-native-camera: 20dcf0e82ffc36aa0b2f73d584012a12045310cd
+  react-native-document-picker: da1c37bbc4ff0896986a70784808a2862d297887
+  react-native-maps: d87d8ed456d4132112fb1d2ee9baf3470c0f211d
+  react-native-pdf: aa2e3f51c3834cedbdafa743d122ce2974eab3f3
+  ReactNativePermissions: b64e084dff6a5cad51587d38c306f09246246384
+  rn-fetch-blob: 766f85cabd2992300dfa1be2bc9e4e258abc6f04
+  RNImageCropPicker: a4c8db5757926bda8b04ba6796cc2a21cc6fd783
+  RNShare: 4f206fa36e384e95a0cbf79f2a92490647e93127
+  RNVectorIcons: a3c395829c56e2cb054a0730126298bf805a2dca
   RSKImageCropper: 98296ad26b41753f796b6898d015509598f13d97
-  yoga: 0885622311729a02c2bc02dca97167787a51488b
+  yoga: 220e7595ec3cfe80c5ce02a0d0881be66b405e81
 
-PODFILE CHECKSUM: adbc340b1cd43429ba04d839a593bee58e6525fd
+PODFILE CHECKSUM: 748a728284ec62c37c1945b9e75abf4c84a237a1
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.0.beta.2
