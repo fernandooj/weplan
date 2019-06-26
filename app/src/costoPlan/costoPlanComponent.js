@@ -77,6 +77,7 @@ export default class costoPlanComponent extends Component{
 	renderPlan(){
 		const {navigate} = this.props.navigation
 		const {plan, valor, planId} = this.state
+		console.log({plan})
 		if (plan.nombre) {
 			return(
 				<View>
@@ -84,9 +85,13 @@ export default class costoPlanComponent extends Component{
 					<View style={style.contenedorItem}>
 						<View style={style.contenedorAvatar}>
 							<Image source={{uri:plan.imagenMiniatura[0]}} style={style.imagen}/>
-							<TouchableOpacity onPress={()=>navigate('chat', planId)} style={style.btnChat}>
-								<Text style={style.familia}>Abrir Chat</Text>	
-							</TouchableOpacity>
+							{
+								!plan.activo || !plan.eliminado
+								&&<TouchableOpacity onPress={()=>navigate('chat', planId)} style={style.btnChat}>
+									<Text style={style.familia}>Abrir Chat</Text>	
+								</TouchableOpacity>
+							}
+							
 						</View>
 						<View>	
 							<Text style={[style.titulo, style.familia]}>{plan.nombre}</Text>

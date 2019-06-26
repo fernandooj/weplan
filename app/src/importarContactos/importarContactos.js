@@ -121,7 +121,7 @@ export default class importarComponent extends Component{
 								sinPermiso &&<Text>No Tenemos acceso a tus amigos</Text>
 							}
 		 
-							<Text>Invita a tus contactos a usar We Plan</Text>	
+							<Text>Invita a tus contactos a usar Muneo</Text>	
 				 			<Text>{this.state.contacts.length}</Text>
 						 	{
 						 		this.state.contacts.length==0

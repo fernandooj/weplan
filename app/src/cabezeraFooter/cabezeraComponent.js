@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Image, TouchableOpacity, Animated, Text, TextInput, Platform} from 'react-native'
+import {View, Image, TouchableOpacity, Animated, Text, AsyncStorage, Platform} from 'react-native'
 import Icon from 'react-native-fa-icons';
 import SearchInput, { createFilter } from 'react-native-search-filter';
 import {cabezeraFooterStyle} from '../cabezeraFooter/style'
@@ -14,10 +14,17 @@ export default class CabezeraComponent extends Component{
 			search:false,
 		}
 	}
-	 
+	componentWillMount = async () => {
+		/////////////////	OBTENGO EL PERFIL
+		let userInfoId   = await AsyncStorage.getItem('userInfoId');
+ 
+		userInfoId =  JSON.parse(userInfoId)
+		this.setState({userInfoId})
+ 
+	}
 	render(){
 		const {navigate, hide} = this.props
-		const {opacity, top, search, term} = this.state
+		const {opacity, top, search, term, userInfoId} = this.state
 		if (!hide) {
 			Animated.timing(opacity,{
 				toValue:1,
@@ -77,7 +84,7 @@ export default class CabezeraComponent extends Component{
 			if (Platform.OS==='android') {
 				return(
 					<Animated.View style={[cabezeraFooterStyle.cabezera, { opacity: this.state.opacity, top:this.state.top}]}>	
-						<TouchableOpacity onPress={() => navigate('ajustes')}>
+						<TouchableOpacity onPress={() => navigate(userInfoId ?'ajustes' :"Login")}>
 							<Image source={require('../assets/images/icon1.png')} style={cabezeraFooterStyle.iconHead} />
 						</TouchableOpacity>
 						<TouchableOpacity onPress={() => navigate('inicio')}>
@@ -91,7 +98,7 @@ export default class CabezeraComponent extends Component{
 			}else{
 				return(
 					<View style={cabezeraFooterStyle.cabezera}>	
-						<TouchableOpacity onPress={() => navigate('ajustes')}>
+						<TouchableOpacity onPress={() => navigate(userInfoId ?'ajustes' :"Login")}>
 							<Image source={require('../assets/images/icon1.png')} style={cabezeraFooterStyle.iconHead} />
 						</TouchableOpacity>
 						<TouchableOpacity onPress={() => navigate('inicio')}>

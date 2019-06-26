@@ -49,7 +49,7 @@ export default class planesPublicosComponent extends Component{
 			return filtroData.map((e, key)=>{
 			return  <TouchableOpacity onPress={()=>navigate('detallePlanPublico', e.id)} key={key}>
 					<View style={style.item}>
-						<Image source={{uri: e.imagen[0] ?e.imagen[0] :`${URL}/public/img/plan.jpg`}} style={style.imagen} />
+						<Image source={{uri: e.imagen ?e.imagen[0] :`${URL}/public/img/plan.jpg`}} style={style.imagen} />
 						<View style={style.boxPlan1} >
 							<Text style={[style.nombre, style.familia]}>{e.nombre.length<30 ?e.nombre :e.nombre.substring(0, 30)+' ...'}</Text>
 							 

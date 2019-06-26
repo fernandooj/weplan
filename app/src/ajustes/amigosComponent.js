@@ -126,7 +126,7 @@ export default class ajustesAmigosComponent extends Component{
 							style={style.avatarA} 
 						/>
 						<View style={style.contentTextAvatar}>
-							<Text style={[style.textoAvatar, style.familia]}>{data.nombre ?data.nombre :'We Plan'}</Text>
+							<Text style={[style.textoAvatar, style.familia]}>{data.nombre ?data.nombre :'Muneo'}</Text>
 						</View>
 						<TouchableOpacity style={style.btnHechoAmigos} onPress={(e)=>{this.handleSubmit(data._id, data.token)}} > 
 							<Text style={style.hechoAmigos}>Agregar</Text>

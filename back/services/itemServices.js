@@ -39,8 +39,9 @@ class itemServices {
 		item.enviarChat  = itemData.enviarChat
 		item.valor 		 = itemData.valor		
 		item.planId 	 = itemData.planId			
-		item.asignados 	 = []	
+		item.asignados 	 = itemData.asignados	
 		item.espera 	 = itemData.espera	
+		item.asignadosDueno = itemData.espera	
 		item.save(callback)
 	}
 	uploadImage(id, imagenOriginal, imagenResize, imagenMiniatura, callback){
@@ -114,18 +115,18 @@ class itemServices {
 			        costoCreador:1,
 			        pagoActivo:"$PagoData.activo",
 			        descripcion:"$PagoData.descripcion",
+			        createdAt:"$PagoData.createdAt",
 			    }
 			},
 			{
 				"$match": {
 					abono:true,
-					// activo:true,
-					// userIdPago:{
-					// 	$ne:userId
-					// },
 					userId
 				}
-		    },
+			},
+			{ 
+				$sort : { createdAt : -1} 
+			},
 			{
 			    $group : {
 			       _id : {id:"$_id", activo:'$pagoActivo', descripcion:'$descripcion'},
@@ -165,7 +166,8 @@ class itemServices {
 			    $project:{
 			        _id:1,
 			        userIds:"$PagoData.userId",
-			        userId:1,
+					userId:1,
+					createdAt:1,
 	 				montos:"$PagoData.monto",
 	 				pagoId:"$PagoData._id",
 			        abono:"$PagoData.abono",
@@ -173,6 +175,7 @@ class itemServices {
 			        activo:"$PagoData.activo",
 			    }
 			},
+			
 			{
 				"$match": {
 					userId:{
@@ -202,16 +205,20 @@ class itemServices {
 	 				_id:1,
 	 				nombreUsuario:'$UserData.nombre',
 	 				titulo:1,
-	 				montos:1
+					montos:1,
+					createdAt:"$PagoData.createdAt",
 	 			},
-	 		},
+			 },
+			{ 
+				$sort : { createdAt : 1} 
+			},
 			{
 			    $group : {
 			       _id : "$_id",
 			       deuda: { $sum: "$montos"}, 
 			       count: { $sum: 1 }, // for no. of documents count
 			       data: {
-			       	$addToSet: {info:[{titulo:'$titulo', userId:'$userIds', nombre:'$nombreUsuario'}]},
+			       	$addToSet: {info:[{titulo:'$titulo', userId:'$userIds', nombre:'$nombreUsuario', createdAt:"$createdAt"}]},
 			       }
 			    } 
 			},
@@ -265,6 +272,7 @@ class itemServices {
 			        _id:1,
 					userId:1,
 					titulo:1,
+					createdAt:1,
 					userIds:"$PagoData.userId",
 					montos:"$PagoData.monto",
 					pagoId:"$PagoData._id",
@@ -279,6 +287,9 @@ class itemServices {
 					userIds:idUser,
 					activo:true
 				}
+			},
+			{ 
+				$sort : { createdAt : 1} 
 			},
 			{
 			    $group : {

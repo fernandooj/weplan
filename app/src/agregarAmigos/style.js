@@ -1,8 +1,8 @@
 import {StyleSheet, Dimensions, Platform} from 'react-native';
 import { MediaQueryStyleSheet } from "react-native-responsive";
-var screenHeight = Dimensions.get('window').height;
+var size = Dimensions.get('window');
 
-export const AmigosStyle = MediaQueryStyleSheet.create({  
+export const AmigosStyle = MediaQueryStyleSheet.create({
 	contenedor:{
 		alignItems: 'center',
 	},
@@ -12,7 +12,7 @@ export const AmigosStyle = MediaQueryStyleSheet.create({
  	subLista:{
 		flexDirection:'row',
 		alignItems: 'flex-start',
-		marginTop:10
+		marginTop:25
 	},
 	contenedorAmigos:{
  		paddingLeft:50,
@@ -22,22 +22,25 @@ export const AmigosStyle = MediaQueryStyleSheet.create({
 		width: 60,
 		borderRadius: 30,
 	},
-	avatar2:{   
-		height: 60,
-		width: 60,
-		borderRadius: 30,
+	avatar2:{
+		height: 40,
+		width: 40,
+		borderRadius: 20,
 		borderWidth: 3.5,
 		borderColor: '#C2E3EE',
+		left:-30, 
+		top:5,
+		marginRight:0
 	},
 	textoAvatar:{
 		fontSize:24,
-		marginLeft:20,
+		marginLeft:30,
 		marginTop:8
 	},
 	agregado:{
 		position:'absolute',
-		left:40,
-		bottom:0,
+		left:-5,
+		bottom:-15,
 		height: 27,
 		width: 27,
 	},
@@ -80,7 +83,7 @@ export const AmigosStyle = MediaQueryStyleSheet.create({
 		fontSize:20,
 		color: '#8F9093',
 		alignItems: 'center',
-	}, 
+	},
 	text: {
 		color:'#969696',
 		fontSize: 22,
@@ -95,18 +98,88 @@ export const AmigosStyle = MediaQueryStyleSheet.create({
 		alignItems: 'center',
 		marginRight:10,
 		marginLeft:10,
-	}, 
+	},
 	btnBuscar:{
 		position:'absolute',
-		top: 18,  
-		right:75, 
+		top: 18,
+		right:75,
 		width:25,
 		height:25
- 	}, 
+ 	},
  	contenedorLista:{
  		width:'100%',
- 		height:screenHeight+200
- 	},
+ 		height:size.height+200
+	},
+	////////// modal nuevo usuario
+	contenedorModal:{
+		position:Platform.OS=='android' ?null :"absolute",
+		alignItems:"center",
+		backgroundColor:"rgba(0,0,0,.5)",
+		height:size.height,
+		zIndex:10000,
+		width:"100%",
+		bottom:50,
+		top:0,
+		left:0
+	},
+	contenedorVentaModal:{
+		backgroundColor:"#ffffff",
+		borderRadius:7,
+		paddingVertical:10,
+		top:50
+	},
+	btnCloseModal:{
+		position:"absolute",
+		right:-5,
+		top:-5,
+		zIndex:100
+	},
+	iconCerrar:{
+		fontSize:18,
+		color:"black"
+	},
+	inputNombre:{
+		borderWidth:1,
+		borderColor:"rgba(0,0,0,.3)",
+		padding:0,
+		padding:5,
+		marginHorizontal:10
+	},
+	tituloUsuario:{
+		textAlign:"center",
+		width:size.width-120,
+		paddingHorizontal:10,
+		marginVertical:20,
+	},
+	/////////////////// 	LISTADO USUARIOS
+	contenedorUsuarios:{
+		flexDirection:"row",
+		padding:10
+	},
+	btnHecho2:{
+		width:'46%',
+		alignItems: 'center',
+		backgroundColor:'#94A5F3',
+		borderRadius:17,
+		padding:5,
+		marginVertical:10,
+		left:"28%"
+	},
+	textUsuarios:{
+		fontSize:25,
+		marginHorizontal:10,
+		top:13
+	},
+	textUsuarios2:{
+		fontSize:14,
+		marginHorizontal:15,
+		top:20
+	},
+	btnDeleteUsuarios:{
+		top:13,
+		padding:10,
+
+	},
  	/////////// btn hecho /////////////
  	containerHecho:{
  		marginTop:20,
@@ -121,7 +194,8 @@ export const AmigosStyle = MediaQueryStyleSheet.create({
  		padding:10
  	},
  	hecho:{
- 		color:'white'
+		 color:'white',
+		 fontSize:18
  	},
  	sinResultados:{
  		marginTop:25,
@@ -137,21 +211,21 @@ export const AmigosStyle = MediaQueryStyleSheet.create({
 			height:35,
 			marginTop:5
 		},
-		 
+
 		avatar:{
 			height: 50,
 			width: 50,
 			borderRadius: 30,
 		},
-		avatar2:{   
+		avatar2:{
 			height: 50,
 			width: 50,
 			borderRadius: 25,
 			borderWidth: 3,
 		},
 		btnBuscar:{
-			right:49, 
+			right:49,
 		}
-		 
+
 	}
 })

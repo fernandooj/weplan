@@ -17,11 +17,19 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>9.4</string>
+	<string>9.8</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
 	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.weplan.weplan</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>Muneo</string>
+			</array>
+		</dict>
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
@@ -38,7 +46,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
 	<key>FacebookAppID</key>
 	<string>537378143390977</string>
 	<key>FacebookDisplayName</key>
@@ -84,12 +92,11 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Queremos acceder a tu cámara para que puedas personalizar tus planes y artículos con imágenes en cualquier momento</string>
 	<key>NSContactsUsageDescription</key>
-	<string>Necesitamos acceder a tus contactos para que puedas invitar a tus amigos a descargar la aplicación o para agregarlos a tus planes</string>	
+	<string>Necesitamos acceder a tus contactos para que puedas invitar a tus amigos a descargar la aplicación o para agregarlos a tus planes</string>
 	<key>NSLocationUsageDescription</key>
 	<string>Activa las notificaciones para que estés al tanto de lo qué pasa en tus planes. Pueden incluir globos, alertas y sonidos que se pueden modificar en configuraciones.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Autorizar a Muneo para acceder a tu localización para mostrarte tus planes mientras usas el app</string>
-   
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Queremos acceder a tu microfono</string>
 	<key>NSMotionUsageDescription</key>

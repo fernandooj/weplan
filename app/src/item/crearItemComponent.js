@@ -31,7 +31,23 @@ export default class CrearItemComponent extends Component{
       let id = res.data.user.user._id
       let photo = res.data.user.user.photo
       let nombre = res.data.user.user.nombre
-      this.setState({id, photo, nombre})
+      let asignadosPlan = this.props.asignados.filter(e=>{
+        return e._id!==id
+      })
+       
+      asignadosPlan =asignadosPlan.map(e=>{
+        return{
+          estado:true,
+          nombre:e.nombre,
+          photo:e.photo,
+          username:e.username,
+          token:e.tokenPhone,
+          acceso:e.acceso,
+          _id:e._id,
+        }
+      })
+       
+      this.setState({id, photo, nombre, asignadosPlan})
     })
     .catch((err)=>{
       console.log(err)
@@ -50,7 +66,7 @@ export default class CrearItemComponent extends Component{
     this.setState({valorInicial:e, valor:Number(e)})
   }
   render() {
-    const {enviarChat, valorInicial, adjuntarAmigos, asignados, usuariosAsignados, mensajeEnvio} = this.state
+    const {enviarChat, valorInicial, adjuntarAmigos, asignados, asignadosPlan, mensajeEnvio} = this.state
     return (
       <View style={style.container}>
         <View style={style.modalIn}>
@@ -134,7 +150,7 @@ export default class CrearItemComponent extends Component{
                 usuariosAsignados={this.state.usuariosAsignados}
                 misUsuarios={this.state.misUsuarios}
                 navigate={this.props.navigate}
-                crearArticulo
+                crearArticulo={asignadosPlan}
               /> :null }
 
             {/* Enviar al Chat */}
@@ -165,8 +181,21 @@ export default class CrearItemComponent extends Component{
  
 
   handleSubmit(){
+    this.setState({mensajeEnvio:'Enviando...'})
     const {titulo, descripcion, valor, imagen, enviarChat, asignados, id, nombre, photo, usuariosAsignados} = this.state
-   
+    let temporales = usuariosAsignados.filter(e=>{
+      return e.acceso=="temporal"
+    }) 
+    let asignados1 = []
+    let espera1 = []
+    usuariosAsignados.filter(e=>{
+      if (e.acceso=="temporal") {
+        asignados1.push(e._id)
+      }else{
+        espera1.push(e._id)
+      }
+    }) 
+    console.log(temporales)
     const fecha = moment().format('h:mm')
     if (titulo.length==0) {
       alerta('El titulo es obligatorio')
@@ -175,17 +204,15 @@ export default class CrearItemComponent extends Component{
     }else if(isNaN(valor)){
       alerta('El Valor solo puede ser numerico')
     }else{
-      this.setState({mensajeEnvio:'Enviando...'})
       let planId = this.props.planId
       // let planId = '5b32a782922f9a3108fcc507'
       let data = new FormData();
       let deudaAsignados = Math.ceil((valor/(asignados.length+1))/100)*100
-      let deudaCreador = valor - (deudaAsignados * asignados.length)
-
-      axios.post('/x/v1/ite/item', {descripcion, valor, titulo, planId, espera:asignados, tipo:1})
+     
+      axios.post('/x/v1/ite/item', {descripcion, valor, titulo, planId, espera:espera1, asignados:asignados1, temporales, deudaAsignados,  tipo:1})
       .then(e=>{
-        let itemId = e.data.item._id
         console.log(e.data)
+        let itemId = e.data.item._id
         data.append('imagen', imagen);
         data.append('planId', planId);
         data.append('titulo', titulo);
@@ -204,8 +231,6 @@ export default class CrearItemComponent extends Component{
           }
         })
         .then(res=>{  
-          //console.log(res.data)     
-          // console.log(usuariosAsignados)
           if(res.data.code==1){ 
             usuariosAsignados.map(e=>{
               sendRemoteNotification(3, e.token, 'notificacion', 'Te han agregado a un Item', `, Te agrego a ${titulo}`, res.data.imagen)
@@ -226,10 +251,12 @@ export default class CrearItemComponent extends Component{
         })
         .catch(err=>{
           console.log(err)
+          this.setState({mensajeEnvio:'Enviar'})
         })
       })
       .catch(err=>{
         console.log(err)
+        this.setState({mensajeEnvio:'Enviar'})
       })
     }
   }

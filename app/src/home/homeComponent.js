@@ -59,8 +59,8 @@ export default class homeComponent extends Component{
 		.then(res=>{
 			console.log(res.data)
 			if (res.data.code===2) {
-				this.props.navigation.navigate('Login')
-				Toast.show('No éstas logueado')
+				// this.props.navigation.navigate('Login')
+				// Toast.show('No éstas logueado')
 			}else{
 				if (res.data.code===1) {
 					this.setState({filteredData: res.data.planes, cargado:true})
@@ -83,7 +83,7 @@ export default class homeComponent extends Component{
 		firebase.analytics().logEvent("infoUser", {"nombre":userNombre,"userId":userId,"platform":Platform.OS, userDireccion, VERSION});
 		///////////////////////////////////////////////////////////////////////////////////////////////////////
 		let guia_inicio   = await AsyncStorage.getItem('home');
-		this.setState({guia_inicio})
+		this.setState({guia_inicio, userId})
 		if (Platform.OS==='android') {
 			////////////////////////////////////////////////////////////////// OBTENGO LA ULTIMA VERSION DE LA APP, SI NO ESTA ACTUALIZADA LE MUESTRO UN MENSAJE
 			axios.get('/x/v1/currentversion/android')
@@ -171,10 +171,10 @@ export default class homeComponent extends Component{
 	 
 	renderPlanes(){
 		const {navigate} = this.props.navigation
-		const {opacity, top, deg, translate, cargando, cargado, filteredData, searchTerm, showComponents, inicio, final} = this.state
+		const {opacity, top, deg, translate, userId, cargado, filteredData, searchTerm, showComponents, inicio, final} = this.state
 		let newFilter   = filteredData.slice(inicio, final)
 		newFilter.filter(createFilter(searchTerm, KEYS_TO_FILTERS))
-		console.log(newFilter)
+		console.log(userId)
 		if (newFilter.length===0 ) {
 			return(<View style={style.sinResultados}>
 					 {!cargado ?<ActivityIndicator size="large" color="#148dc9" /> :<Text>No hemos encontrado planes</Text> } 
@@ -190,7 +190,7 @@ export default class homeComponent extends Component{
 								<View style={style.footer}>
 									<View style={style.footer1}>
 										<Text style={[style.textFooter1, style.familia]}>{e.nombre.toUpperCase()}</Text>
-										<TouchableOpacity onPress={() => navigate('createPlan', e._id )} style={style.btnIconVer}>
+										<TouchableOpacity onPress={() => navigate(userId ?'createPlan' :'Login', e._id )} style={style.btnIconVer}>
 											<Image source={require('../assets/images/icon4.png')} style={style.iconVer} />
 										</TouchableOpacity>	
 									</View>
@@ -200,12 +200,12 @@ export default class homeComponent extends Component{
 									<Text style={[style.textFooter2, style.familia]}>{e.fechaLugar!="NaN" ?moment(JSON.parse(e.fechaLugar)).format("YYYY-MM-DD h:mm a") :""}</Text>
 									<Text style={[style.textFooter2, style.familia]}>{`Por: ${e.UserData.nombre}, ${calficaLongitud ?parseFloat(calificacion).toFixed(0) :''}*`}</Text>
 									<View style={style.footer2}>
-										<TouchableOpacity onPress={() => this.like(e._id)} >
+										<TouchableOpacity onPress={() =>{userId ?this.like(e._id) :null}} >
 											<Animated.View style={{opacity: opacity, top:top}}>
 												<Image source={require('../assets/images/corazon.png')} style={style.iconFooter} />
 											</Animated.View>
 										</TouchableOpacity>
-										<TouchableOpacity onPress={() => navigate('createPlan', e._id )}>
+										<TouchableOpacity onPress={() => navigate(userId ?'createPlan' :'Login', e._id )}>
 											<Image source={require('../assets/images/acceder.png')} style={style.iconFooter1} /> 
 										</TouchableOpacity>
 									</View>

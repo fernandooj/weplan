@@ -69,17 +69,17 @@ export default class notificacionComponent extends Component{
 	renderNotificacion(){
 		const {navigate} = this.props.navigation
 		const {id, notificacion} = this.state
+		console.log(notificacion)
  		return notificacion.map((e, key)=>{
  			let valor = '$ '+Number(e.valorItem).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
  			let estaPlan = e.infoPlan ?e.infoPlan.asignados.includes(id) :[]
- 			console.log(e.infoPlan)
 			return(
  				<View key={key} style={style.subContenedor}>
 	 				<View style={style.contenedorNoti2}>
 	 					<TouchableOpacity 
 	 						onPress={e.tipo==2 &&((estaPlan || e.infoPlan.idUsuario===id) && e.infoPlan.activo===true && e.infoPlan.tipo=='suscripcion') ?()=>navigate('chat', e.idTipo) 
 	 								:e.tipo==1 || e.tipo==5 ?()=>navigate('profile', {userId:e.idUser, planId:null}) 
-	 								:e.tipo==3 || e.tipo==6 ?()=>navigate('item', {planId:e.infoItem.planId, tipo:e.tipo==3 ?1 :2}) :null } >
+	 								:e.tipo==3 || e.tipo==6 || e.tipo==7 || e.tipo==4 ?()=>navigate('item', {planId:e.infoItem.planId, tipo:e.tipo==3 ?1 :2}) :null } >
 		 					<Image source={e.photo ?{uri:e.photo} :{uri:'http://muneo.co/public/assets/logo.png'}} style={style.avatar} />
 	 					</TouchableOpacity>
 	 					<View>
@@ -176,7 +176,6 @@ export default class notificacionComponent extends Component{
 					 			</TouchableOpacity>
 					 			</View>
 			 				}
-			 				
 			 			</View>
 		 			</View>
 		 			<View style={style.separador}></View>
@@ -185,11 +184,12 @@ export default class notificacionComponent extends Component{
  		})
 	}
 	handleSubmit(idNotificacion, idTipo, tipo, token, idUser, monto, titulo, imagen){
+		this.updateStado(idNotificacion)
 		axios.put('/x/v1/not/notificacion/'+idNotificacion+'/'+idTipo+'/'+tipo+'/'+idUser, {monto})
 		.then(e=>{
 			console.log(e.data)
 			if (e.data.code==1) {
-				this.updateStado(idNotificacion)
+				
 				if (tipo==1) {
 					sendRemoteNotification(tipo, token, 'Home', 'Aceptó ser tu amigo',  ', te agregó como amigo', null)
 				}
@@ -237,10 +237,12 @@ export default class notificacionComponent extends Component{
 					?<ScrollView style={style.contenedorPlan}>
 						{this.renderNotificacion()}
 					</ScrollView>
-					:<View></View>
+					:<ScrollView />
 				}
 				
-				<FooterComponent navigate={this.props.navigation} />	
+				<View style={style.footer}>
+					<FooterComponent navigate={this.props.navigation} />	
+				</View>
 			</View>
 		)
 	}

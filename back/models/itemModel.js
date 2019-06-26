@@ -19,6 +19,7 @@ let itemSchema = mongoose.Schema({
 	abierto         : { type: Boolean},
 	costoCreador    : { type: Number},
 	planId     	  	: { type: Schema.Types.ObjectId, ref:'Plan'},
+	asignadosDueno 	: [{type: Schema.Types.ObjectId, ref:'User'}],
 	userId     	  	: { type: Schema.Types.ObjectId, ref:'User'}, 
 	asignados     	: [{type: Schema.Types.ObjectId, ref:'User'}],
 	espera        	: [{type: Schema.Types.ObjectId, ref:'User'}],
@@ -26,3 +27,7 @@ let itemSchema = mongoose.Schema({
 })
 
 module.exports = mongoose.model('Item', itemSchema)
+
+
+//// asignadosDueno ----> si es true es el dueño quien envio la invitacion de entrar, su unico objetivo es mostrar o no el boton de aceptar en pendientes,
+// sin esto en pendientes muestra el boton de aceptar a ambos tanto al dueño del item como a quien esta interesado en entrar 

@@ -119,15 +119,15 @@ export default class pagoDeudaComponent extends Component{
 		 					!e.estado
 		 					?<Text style={[style.pagoDeudaMonto, style.familia]}>{'$ '+Number(deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
 		 					:<TextInputMask
-			                  ref="text"
-			                  placeholder='Valor a Pagar'
-			                  type={'money'}
-			                  options={{ unit: '$', zeroCents:true, precision:0 }} 
-			                  style={[style.inputValorEdit, style.familia]}
-			                  underlineColorAndroid='transparent'
-			                  onChangeText={(data)=>this.getValor(data, e._id)} 
-			                  value={valorInicial ?valorInicial :deuda}
-			                />
+								ref="text"
+								placeholder='Valor a Pagar'
+								type={'money'}
+								options={{ unit: '$', zeroCents:true, precision:0 }} 
+								style={[style.inputValorEdit, style.familia]}
+								underlineColorAndroid='transparent'
+								onChangeText={(data)=>this.getValor(data, e._id)} 
+								value={valorInicial ?valorInicial :deuda}
+							/>
 		 				}
 		 				
 		 			</View>

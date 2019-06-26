@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground, Alert, Keyboard, Modal, Dimensions, Platform, ActivityIndicator, AsyncStorage} from 'react-native'
+import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground, Alert, Keyboard, Modal, Dimensions, Platform, ActivityIndicator, AsyncStorage, KeyboardAvoidingView} from 'react-native'
 import axios from 'axios'
 import SocketIOClient from 'socket.io-client';
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
@@ -11,7 +11,7 @@ import FCM  from "react-native-fcm";
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import Lightbox from 'react-native-lightbox';
 import KeyboardListener from 'react-native-keyboard-listener';
-
+import ImageEscalable from 'react-native-scalable-image';
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////  ARCHIVOS GENERADOS POR EL EQUIPO  //////////////////////////////////////////
@@ -29,6 +29,7 @@ import {URL, VERSION}  from '../../App.js';
 
 
 const heightScreen = Dimensions.get('window').height
+const widthScreen  = Dimensions.get('window').width
 export default class ChatComponent extends Component{
 	constructor(props){
 		super(props)
@@ -158,28 +159,23 @@ export default class ChatComponent extends Component{
 		const {planId, imagen, nombrePlan, plan, id, notificaciones} = this.state
 		const {navigate} = this.props.navigation
 		return(
-				<View style={style.cabezera}>
-				 
-					<TouchableOpacity onPress={() => navigate('misPlanes')} style={style.iconRegresar}>
-						<Image source={require('../assets/images/item3.png')} style={style.imgRegresar}  />
-					</TouchableOpacity> 
-					<TouchableOpacity onPress={() => navigate('infoPlan', {plan,id})}>
-						<Text style={[style.nombrePlanIos, style.familia]}>{nombrePlan ?nombrePlan.substring(0, 50) :''}</Text>
+			<View style={style.cabezera}>
+				<TouchableOpacity onPress={() => navigate('misPlanes')} style={style.iconRegresar}>
+					<Image source={require('../assets/images/item3.png')} style={style.imgRegresar}  />
+				</TouchableOpacity> 
+				<TouchableOpacity onPress={() => navigate('infoPlan', {plan,id})}>
+					<Text style={[style.nombrePlanIos, style.familia]}>{nombrePlan ?nombrePlan.substring(0, 50) :''}</Text>
+				</TouchableOpacity>
+				<View style={style.iconosHeaderContenedor}>
+					<TouchableOpacity onPress={() => navigate('encuesta', {planId, notificaciones, id, nombrePlan, imagen})}  style={style.iconContenedor}>
+						<Image source={require('../assets/images/preguntar.png')} style={style.icon}  />
 					</TouchableOpacity>
-					<View style={style.iconosHeaderContenedor}>
-						<TouchableOpacity onPress={() => navigate('encuesta', {planId, notificaciones, id, nombrePlan, imagen})}  style={style.iconContenedor}>
-							<Image source={require('../assets/images/preguntar.png')} style={style.icon}  />
-						</TouchableOpacity>
-						<TouchableOpacity onPress={() => navigate('item', {planId, notificaciones, id, nombrePlan, imagen, asignados:plan.asignados})} style={style.iconContenedor}>
-							<Image source={require('../assets/images/cuentas.png')} style={style.icon}  />
-						</TouchableOpacity>
-					</View>
-				 
+					<TouchableOpacity onPress={() => navigate('item', {planId, notificaciones, id, nombrePlan, imagen, asignados:plan.asignados})} style={style.iconContenedor}>
+						<Image source={require('../assets/images/cuentas.png')} style={style.icon}  />
+					</TouchableOpacity>
+				</View>
 				<TouchableOpacity onPress={() => navigate('infoPlan', {plan,id})} style={style.btnImagenPlan}>
-					<Image
-						style={style.imagen}
-						source={{uri: imagen}}
-				    />	
+					<Image style={style.imagen} source={{uri: imagen}}  />	
 				</TouchableOpacity>
 			</View>
 		)
@@ -550,17 +546,18 @@ export default class ChatComponent extends Component{
 						}	
 						     
 							<Lightbox 
-						      renderContent={() => (
-						        <Image 
+						      	renderContent={() => (
+						        	<ImageEscalable 
 						          	source={{ uri: e.documento }}
-						         	style={{ width: 300, height:600}}
+												width={widthScreen}
 						         />
-						       )}
+						        )}
 						    >
 							  <Image
 							   	source={{ uri: e.documento }}
 							    style={style.Iphoto}
 							  />
+							  
 							 </Lightbox>	
 						<Text style={e.userId== id ?[style.fechaMapa, style.familia] :[style.fechaMapa, style.fechaLeft, style.familia]}>{e.fecha}</Text>
 						</TouchableOpacity>
@@ -724,7 +721,7 @@ export default class ChatComponent extends Component{
 			{this.renderQr()}
 
 			{/* FOOTER INPUT / ENVIAR */} 
-				<View style={showMainFooter ?[style.footer, style.showFooter] :[style.footer]}>
+				<KeyboardAvoidingView  behavior="position" enabled>
 					<View style={style.footer1}>
 						<TouchableOpacity onPress={()=>this.setState({showOpciones:!this.state.showOpciones})} style={style.opcionesBtn}>
 							<Image source={require('../assets/images/opciones.png')} style={style.opciones}  />
@@ -744,7 +741,7 @@ export default class ChatComponent extends Component{
 							<Image source={require('../assets/images/enviar.png')} style={style.enviar}  />
 						</TouchableOpacity>
 					</View>
-				</View>
+				</KeyboardAvoidingView>
 			</View>	
 		)
 	}

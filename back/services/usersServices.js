@@ -4,6 +4,9 @@ let User = require('./../models/usersModel.js');
 let moment   = require('moment');
 let mongoose = require('mongoose')
 class userServices {
+	getAll(callback){
+		User.find({}, callback)
+	}
 	get(callback){
 		// User.find({}, null, {sort: {_id: -1}}, callback)
 		User.aggregate([
@@ -96,12 +99,18 @@ class userServices {
 		newUsuario.estado   = "inactivo"
 		newUsuario.tipo	    = "local"
 		newUsuario.acceso   = user.acceso
-		newUsuario.acceso   = user.acceso
 		newUsuario.categorias = []
 		newUsuario.calificacion = []
 		newUsuario.notificacion = false
 		newUsuario.telefono = user.tipo==2 &&user.username
 		newUsuario.email    = user.tipo==1 &&user.username
+		newUsuario.save(callback);	 
+	}
+	creaUsuarioTemporal(user, callback){ 
+		let newUsuario = new User() 
+		newUsuario.estado   = "activo"
+		newUsuario.acceso   = "temporal"
+		newUsuario.nombre   = user.nombre
 		newUsuario.save(callback);	 
 	}
 	facebook(user, callback){
@@ -130,7 +139,6 @@ class userServices {
 		})
 	}
 	modificaUsuario(idUser, data, callback){
-		console.log(data)
 		User.findByIdAndUpdate(idUser, {$set:{
 			'tokenPhone':data.tokenPhone,
 			'nombre':data.nombre,

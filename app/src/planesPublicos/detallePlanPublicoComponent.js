@@ -26,7 +26,7 @@ export default class detallePlanPublicoComponent extends Component{
  			textDate:'Dia',
  			textYear:'Año',
  			fechaLugar:'',
- 			fechaHoy:moment().format('YYYY-MM-DD h:mm'),
+ 			fechaHoy:moment().format('DD-MMM-YYYY h:mm'),
  			asignados:[],
  			usuariosAsignados:[],
  			restricciones:[],

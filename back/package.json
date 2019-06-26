@@ -1,5 +1,5 @@
 {
-  "name": "Venfer ",
+  "name": "Releo",
   "version": "0.1.0",
   "description": "api Venfer",
   "main": "server.js",
@@ -30,6 +30,7 @@
     "mongoose": "^4.6.0",
     "morgan": "^1.7.0",
     "multer": "^1.3.0",
+    "node-fetch": "^2.6.0",
     "nodemailer": "^4.3.1",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",

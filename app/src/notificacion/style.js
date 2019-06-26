@@ -16,6 +16,7 @@ export const style = MediaQueryStyleSheet.create({
 		paddingRight:15,	
 		paddingLeft:15,	
 		marginTop: Platform.OS==='android' ?50 :75,
+		marginBottom:55,
 	},
 	subContenedor:{
 		width:'100%',
@@ -47,7 +48,11 @@ export const style = MediaQueryStyleSheet.create({
  		paddingTop:10, 
  		paddingBottom:10,
  	},
-
+	footer:{
+		position : 'absolute',
+		bottom:0,
+		zIndex:100
+	},
 
  	//////////////////////////////////////////////////////////////////////////////////////
  	/////////////////			LISTADO AMIGOS

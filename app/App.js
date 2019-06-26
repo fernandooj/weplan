@@ -39,10 +39,9 @@ import importarComponent           from './src/importarContactos/importarContact
 import contactoComponent           from './src/contacto/contactoComponent';
  
 
-
 export const URL = 'https://muneo.co/';
-// export const URL = 'http://192.168.0.3:8080/';
-export const VERSION = '1.10.1';
+// export const URL = 'http://192.168.0.5:8080/';
+export const VERSION = '1.11.2';
 axios.defaults.baseURL = URL;
 const win = Dimensions.get('window');
 
@@ -94,10 +93,8 @@ export default class App extends Component<{}> {
  
   render() {
    const {google, local} = this.state
-   console.log(local)
-   
    const NavigationApp = StackNavigator({
-      Home               : {screen: local===1 ?MisPlanesComponent :local===0 ?editPerfilComponent :LoginComponent },
+      Home               : {screen: local===1 ?MisPlanesComponent :local===0 ?editPerfilComponent :homeComponent },
       Login              : {screen: LoginComponent },
       Registro           : {screen: RegistroComponent },
       insertCode         : {screen: insertCodeComponent },

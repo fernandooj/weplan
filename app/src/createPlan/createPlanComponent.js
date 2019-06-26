@@ -46,10 +46,10 @@ export default class createPlanComponent extends Component{
  			showAlertUbicacion:false,
  			position: 1,
  			nombre:'',
-	      	interval: null,
-	      	imagenes:[],
-	      	showTipo:false, //// modal que muestra el tipo del plan
-	      	publico:this.props.navigation.state.params===true ?true :false,  //// determina si el plan va a ser publico o privado
+			interval: null,
+			imagenes:[],
+			showTipo:false, //// modal que muestra el tipo del plan
+			publico:this.props.navigation.state.params===true ?true :false,  //// determina si el plan va a ser publico o privado
 		}
 	}
 
@@ -94,13 +94,7 @@ export default class createPlanComponent extends Component{
 		}else{
 			this.setState({tipoPlan:true})
 		}
-		// this.setState({
-	 //      interval: setInterval(() => {
-	 //        this.setState({
-	 //          position: this.state.position === this.state.imagenes.length ? 0 : this.state.position + 1
-	 //        });
-	 //      }, 2000)
-	 //    });
+ 
 	}
 	componentWillUnmount() {
 		clearInterval(this.state.interval);
@@ -175,7 +169,7 @@ export default class createPlanComponent extends Component{
 	render(){
 		const {nombre, fechaLugar, direccion, restricciones, asignados, imagen, adjuntarAmigos, mapa, restriccion, iconCreate, cargaPlan, imagenes, usuariosAsignados, fechaHoy, tipoPlan, publico, area, costo, saldo, lat, lng, showTipo, guia_inicio, ganapuntos, guardandoPlan, imagenResize} = this.state
 		const {navigate} = this.props.navigation
- 		console.log(imagenResize)
+ 		console.log(fechaLugar)
 		return (
 			<ScrollView style={CreatePlanStyle.contenedorGeneral} keyboardDismissMode='on-drag'> 
 				
@@ -205,28 +199,24 @@ export default class createPlanComponent extends Component{
 						</TouchableOpacity>
 				   </View>
 				}
-				
-
-				
-			   {
-			   	showTipo
-			    &&<View style={CreatePlanStyle.contenedorCambioTipo}>
-				   	<View style={CreatePlanStyle.triangulo}></View>
-				   	<TouchableOpacity style={CreatePlanStyle.btnCambioTipo} onPress={() => this.setState({publico:false, showTipo:false})}>
-				   		<Text style={[CreatePlanStyle.familia, CreatePlanStyle.textoCambio]}>Plan privado</Text>
-				   		{
-				   			!publico &&<Image source={require('../assets/images/tipoPlan.png')} style={CreatePlanStyle.imgCambio} />
-				   		}
-				   	</TouchableOpacity>
-				   	<TouchableOpacity style={CreatePlanStyle.btnCambioTipo2} onPress={() => this.setState({publico:true, showTipo:false})}>	
-				   		<Text style={[CreatePlanStyle.familia, CreatePlanStyle.textoCambio]}>Plan público</Text>
-				   		{
-				   			publico &&<Image source={require('../assets/images/tipoPlan.png')} style={CreatePlanStyle.imgCambio} />
-				   		}
-				   	</TouchableOpacity>
-				   </View>
-			   }
-			   
+			    {
+					showTipo
+					&&<View style={CreatePlanStyle.contenedorCambioTipo}>
+						<View style={CreatePlanStyle.triangulo}></View>
+						<TouchableOpacity style={CreatePlanStyle.btnCambioTipo} onPress={() => this.setState({publico:false, showTipo:false})}>
+							<Text style={[CreatePlanStyle.familia, CreatePlanStyle.textoCambio]}>Plan privado</Text>
+							{
+								!publico &&<Image source={require('../assets/images/tipoPlan.png')} style={CreatePlanStyle.imgCambio} />
+							}
+						</TouchableOpacity>
+						<TouchableOpacity style={CreatePlanStyle.btnCambioTipo2} onPress={() => this.setState({publico:true, showTipo:false})}>	
+							<Text style={[CreatePlanStyle.familia, CreatePlanStyle.textoCambio]}>Plan público</Text>
+							{
+								publico &&<Image source={require('../assets/images/tipoPlan.png')} style={CreatePlanStyle.imgCambio} />
+							}
+						</TouchableOpacity>
+					</View>
+			    }
 				{
 					!cargaPlan
 					?<View style={imagen ?CreatePlanStyle.encabezadoPlan2 :CreatePlanStyle.encabezadoPlan}>
@@ -451,7 +441,8 @@ export default class createPlanComponent extends Component{
 				                updateStateAsignados={(asignados, usuariosAsignados, misUsuarios)=>this.setState({asignados, usuariosAsignados, misUsuarios, adjuntarAmigos:false})}
 				                asignados={this.state.asignados}
 							    usuariosAsignados={this.state.usuariosAsignados}
-							    misUsuarios={this.state.misUsuarios}
+								misUsuarios={this.state.misUsuarios}
+								agregarTemporales
 							    navigate={navigate}
 				            /> 
 				            :null 
@@ -470,21 +461,13 @@ export default class createPlanComponent extends Component{
 					    	<View>
 					    		<Text style={[CreatePlanStyle.costoPlan, CreatePlanStyle.familia]}>Costo de la publicación: {'$ '+Number(costo).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}</Text>
 					    	</View>
-					    	{/*<ModalPicker
-				                data={influencia}
-				                initValue="Area de influencia"
-				                color='#8F9093'
-					            font={15}
-				                onChange={(e)=> this.setState({area:e.key})} 
-				                style={CreatePlanStyle.datePicker}
-				            />*/}
 			            </View>
 			        </View>
 				}
 				
 				{/*  Crear Plan  */}
 					{
-						nombre.length==0 && !cargaPlan
+						nombre.length==0 &&!fechaLugar && !cargaPlan 
 						?<ImageBackground source={require('../assets/images/createDisable.png')} style={CreatePlanStyle.createIconDisable}>
 							<Text style={CreatePlanStyle.familia}>¡ CREA TU PLAN !</Text>
 						</ImageBackground>
@@ -527,21 +510,25 @@ export default class createPlanComponent extends Component{
  	}
 	handleSubmit(){
 		const {navigate} = this.props.navigation
-		let {nombre, descripcion, fechaLugar, lat, lng, asignados, usuariosAsignados, restricciones, imagen, tipo, cargaPlan, planPadre, direccion, area, publico, costo} = this.state
-
+		let {nombre, descripcion, fechaLugar, lat, lng, asignados, usuariosAsignados, restricciones, imagen, tipo, cargaPlan, planPadre, direccion, area, publico, costo, usuarioTemporal} = this.state
+		 
 		nombre 		= cargaPlan.nombre ?cargaPlan.nombre :nombre
 		descripcion = cargaPlan.descripcion ?cargaPlan.descripcion :descripcion
 		lat 		= cargaPlan.lat ?cargaPlan.lat :lat
 		lng 		= cargaPlan.lng ?cargaPlan.lng :lng
-		fechaLugar  = cargaPlan.fechaLugar ?cargaPlan.fechaLugar :fechaLugar
+		fechaLugar  = cargaPlan.fechaLugar ?cargaPlan.fechaLugar : moment(fechaLugar).valueOf()
 		let lugar   = cargaPlan ?cargaPlan.lugar :direccion
 		imagen 		= cargaPlan.imagenResize ?cargaPlan.imagenResize[0] :imagen
 		tipo        = publico ? 'pago' :'suscripcion'
 		area        = cargaPlan ?cargaPlan.area :area
 		let activo  = publico ? false : true
-		 
+		
+	 
+		////////////////////////////////////////////////////////////////////////
+		
 		this.setState({iconCreate:true})
-		fechaLugar = moment(fechaLugar).valueOf();
+		// fechaLugar =fechaLugar).valueOf();
+		console.log(fechaLugar)
 		 
 		if (!fechaLugar) {
 			Alert.alert(
@@ -606,6 +593,7 @@ export default class createPlanComponent extends Component{
 						.then((res)=>{
 							console.log(costo, navigate, id)
 							if(res.data.code===1){
+							
 								usuariosAsignados.map(e=>{
 									sendRemoteNotification(2, e.token, 'chat', 'Te han agregado a un plan', `, Te agrego a ${nombre}`, res.data.rutaImagenResize[0], id)
 								})

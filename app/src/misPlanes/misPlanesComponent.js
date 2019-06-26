@@ -56,8 +56,8 @@ export default class MisPlanesComponent extends Component{
 		.then(res=>{
 			console.log(res.data)
 			if (res.data.code===2) {
-				this.props.navigation.navigate('Login')
-				Toast.show('No éstas logueado')
+				// this.props.navigation.navigate('Login')
+				// Toast.show('No éstas logueado')
 			}else{
 				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 				///////////////////////  ESTE CODIGO LO HIZE POR QUE AL CREAR MAS DE UN ITEM SE DUPLICA EL PLAN, ASI QUE UNO LOS ITEM Y SUMO LOS TOTALES	

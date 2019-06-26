@@ -17,8 +17,7 @@ import {URL}  from '../../App.js';
 
 export default class ItemComponent extends Component{
 	constructor(props) {
-	  	super(props);
-	
+	  super(props);
 		this.state={
 			show:false,
 			misItems:[],
@@ -28,6 +27,7 @@ export default class ItemComponent extends Component{
 			articulosPendientes:[],
 			articulosPublicados:[],
 			noasignados:[],
+			asignados:[],
 			pendientes:[],
 			render:0,
 			total:0
@@ -38,31 +38,45 @@ export default class ItemComponent extends Component{
 	componentWillMount =async() =>{
 		let planId = this.props.navigation.state.params.planId ?this.props.navigation.state.params.planId :this.props.navigation.state.params
 		// let planId = '5b8f5155de373662367ae2eb'	
-		let tipo = this.props.navigation.state.params.tipo ?this.props.navigation.state.params.tipo :await AsyncStorage.getItem('codeTab')
+		let tipo = this.props.navigation.state.params.tipo ?this.props.navigation.state.params.tipo :await AsyncStorage.getItem('codeTab')  /// para identificar que tab queda abierta
 		tipo = parseInt(tipo)
+		console.log(this.props.navigation.state.params.asignados)
 		let guia_inicio   = await AsyncStorage.getItem('articulo');	
 		this.setState({planId, guia_inicio, render:parseInt(tipo)})
 
-		this.socket = SocketIOClient(URL);
-		this.socket.on(`itemCosto${planId}`, this.onReceivedMessage);
-
-		axios.get('/x/v1/ite/item/'+planId)
+		///////////////////////////////////////////////////////////////////////////////////////////////////// 		OBTENGO LOS ASIGNADOS DEL PLAN
+		axios.get(`/x/v1/cha/chat/chatPlan/${planId}/${100}`)
 		.then(e=>{
 			console.log(e.data)
-			this.setState({pago:e.data.pago, deuda:e.data.deuda, total:e.data.total, planId})
-		})		 
+			this.setState({asignados:e.data.plan.asignados})
+		})
 		.catch(err=>{
 			console.log(err)
 		})
- 
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		this.socket = SocketIOClient(URL);
+		this.socket.on(`itemCosto${planId}`, this.onReceivedMessage);
+
+		////////////////////////////////////////////////////////////////////////	ARTICULOS PENDIENTES
 		axios.get('/x/v1/ite/item/pendientes/'+planId)
 		.then(e=>{
+			console.log(e.data)
 			this.setState({articulosPendientes:e.data.pendientes})
 		})		 
 		.catch(err=>{
 			console.log(err)
 		})
- 
+	   	///////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////	MIS ARTICULOS
+		axios.get('/x/v1/ite/item/'+planId)
+		.then(e=>{
+			this.setState({pago:e.data.pago, deuda:e.data.deuda, total:e.data.total, planId, idUsuario:e.data.idUsuario})
+		})		 
+		.catch(err=>{
+			console.log(err)
+		})
+ 		///////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////	ARTICULOS PUBLICADOS
 		axios.get('/x/v1/ite/item/publicados/'+planId)
 		.then(e=>{
 			this.setState({articulosPublicados:e.data.publicados})
@@ -147,8 +161,8 @@ export default class ItemComponent extends Component{
 		);
 	}
 	articulosPendientes(){
-		console.log(this.state.articulosPendientes)
-		return this.state.articulosPendientes.map((e, key)=>{
+		const {loadingAceptarItem, articulosPendientes} = this.state
+		return articulosPendientes.map((e, key)=>{
 			return (
 			    <View style={style.content} key={key}>
 			  		<View style={!key==0 ?style.filaDeuda: [style.filaDeuda, style.filaDeuda]}>
@@ -162,38 +176,18 @@ export default class ItemComponent extends Component{
 							<Text style={[style.valorPositivo, style.familia]}>
 								{'$ '+Number(e.deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
 							</Text>
-							<TouchableOpacity onPress={()=>this.aceptarItem(e.id, e.token, e.titulo, e.imagen, e.deuda, e.valor)} style={style.aceptarPendiente}>
-								<Text style={style.familia}>Aceptar</Text>
-							</TouchableOpacity>
+							{!e.duenoAsigno
+								&&<TouchableOpacity onPress={()=>loadingAceptarItem ?null :this.aceptarItem(e.id, e.token, e.titulo, e.imagen, e.deuda, e.valor)} style={style.aceptarPendiente}>
+									<Text style={style.familia}>{loadingAceptarItem ?"Aceptando..." :"Aceptar"}</Text>
+								</TouchableOpacity>
+							}
+							
 						</View>
 				   	</View>
 			  	</View> 
 			)
 		})
 	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/////// SI ESTA EN LISTADO DE ESPERA Y EL USUARIO ACEPTA ENTRAR 
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	aceptarItem(idItem, token, titulo, imagen, monto){
-		axios.put(`/x/v1/ite/item/activar/${idItem}`, {monto, planId:this.state.planId})
-		.then(e=>{
-			console.log(e.data)
-			if (e.data.code==1) {
-				sendRemoteNotification(4, token, 'Home', `Aceptaron tu item ${titulo}`,  ', esta dentro de tu item', imagen)
-				this.setState({render:2})
-				this.peticion(this.state.planId)
-			}else if(e.data.code==2){
-				this.alerta('Opss!! Articulo Cerrado', 'El dueño del articulo ya lo ha terminado, y ya no puedes ingresar')
-			}else{
-				this.alerta('Opss!! revisa tus datos que falta algo', '')
-			}
-		})
-		.catch(err=>{
-			console.log(err)
-		})
-	}
-
 
 	peticion(planId){
 		axios.get('/x/v1/ite/item/'+planId)
@@ -248,19 +242,25 @@ export default class ItemComponent extends Component{
 		})
 	}
 	articulosMios() {
-	   const {navigate} = this.props.navigation
+		const {navigate} = this.props.navigation
+		const {planId, idUsuario} = this.state
 	   	return this.state.pago.map((e, key)=>{
+			let deuda = idUsuario==e.idUsuario ?e.deuda3 :e.deuda
 			return (
-			   <View style={style.content} key={key}>
+			   <View key={key} style={e.deuda==e.deuda2 ?[style.content, {backgroundColor:"#5cb85c26"}] :style.content}   >
 			   		<View style={!key==0 ?style.boton: [style.boton, style.botonFirst]}>
 				  		<TouchableOpacity style={style.infoItem} onPress={()=>navigate('pagoDeuda', {id:e.id, valor:e.deuda, planId:this.state.planId})}>
 					   		<View style={style.contentText}>
 						   		<Text style={[style.tituloItem, style.familia]}>
 						   			{e.titulo}  
 						   		</Text>
+							{
+								e.deuda==e.deuda2
+								&&<Text>Articulo Saldado</Text>
+							}
 					   		</View>	
 							<Text style={[style.valorPositivo, style.familia]}>
-								{'$ '+Number(e.deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
+								{'$ '+Number(deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
 							</Text>
 					   	</TouchableOpacity>
 					   	{
@@ -275,33 +275,31 @@ export default class ItemComponent extends Component{
 		})
 	}
 	articulosAsignados() {
-	   const {navigate} = this.props.navigation
- 
-	   	return this.state.deuda.map((e, key)=>{
+		const {navigate} = this.props.navigation
+		const {planId} = this.state
+		return this.state.deuda.map((e, key)=>{
 			return (
-			   <View style={style.content} key={key}>
-			  		<TouchableOpacity style={!key==0 ?style.filaDeuda: [style.filaDeuda, style.filaDeuda]} 
-			  			 onPress={()=>navigate('pago', {id:e.id, valor:e.deuda, planId:this.state.planId})}>
-				   		<View style={style.contentText}>
-					   		<Text style={[style.tituloItem, style.familia]}>
-					   			{e.titulo}  
-					   		</Text>
-				   		 	<Text style={[style.by, style.familia]}>By {e.nombre}</Text>  
-				   		</View>	
-						<Text style={style.valorNegativo}>
-							{'$ '+Number(e.deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
-						</Text>
-				   	</TouchableOpacity>
-			  	</View> 
+				<View style={style.content} key={key}>
+					<TouchableOpacity style={!key==0 ?style.filaDeuda: [style.filaDeuda, style.filaDeuda]} 
+							onPress={()=>navigate('pago', {id:e.id, valor:e.deuda, planId:planId})}>
+						<View style={style.contentText}>
+							<Text style={[style.tituloItem, style.familia]}>
+								{e.titulo}  
+							</Text>
+							<Text style={[style.by, style.familia]}>By {e.nombre}</Text>  
+						</View>	
+					<Text style={style.valorNegativo}>
+					
+						{'$ '+Number(e.deuda).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}
+					</Text>
+					</TouchableOpacity>
+				</View> 
 			)
 		})
 	}
-
-
-  	render() {
-		const {show, items, itemsPlan, render, planId, guia_inicio} = this.state
-		const {navigate} = this.props.navigation
-		// alert(typeof (guia_inicio))
+  render() {
+		const {show, items, itemsPlan, asignados, planId, guia_inicio} = this.state
+		const {navigate, state} = this.props.navigation
 		return (
 			<View  style={style.contentItem}>
 				{
@@ -317,7 +315,8 @@ export default class ItemComponent extends Component{
 						  			planId={planId}
 						  			updateItems={(id, deuda, titulo)=>this.updateItems(id, deuda, titulo)}
 						  			close={()=>this.setState({show:false})}
-						  			navigate={navigate}
+										navigate={navigate}
+										asignados={asignados ?asignados :[]}  
 						  		 />
 						  		:null 
 						  	}
@@ -334,6 +333,35 @@ export default class ItemComponent extends Component{
 			</View>
 		);
 	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////// SI ESTA EN LISTADO DE ESPERA Y EL USUARIO ACEPTA ENTRAR 
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	aceptarItem(idItem, token, titulo, imagen, monto){
+		this.setState({loadingAceptarItem:true})
+		axios.put(`/x/v1/ite/item/activar/${idItem}`, {monto, planId:this.state.planId})
+		.then(e=>{
+			console.log(e.data)
+			this.setState({loadingAceptarItem:false})
+			if (e.data.code==1) {
+				sendRemoteNotification(4, token, 'Home', `Aceptaron tu item ${titulo}`,  ', esta dentro de tu item', imagen)
+				this.setState({render:2})
+				this.peticion(this.state.planId)
+			}else if(e.data.code==2){
+				this.alerta('Opss!! Articulo Cerrado', 'El dueño del articulo ya lo ha terminado, y ya no puedes ingresar')
+			}else{
+				this.alerta('Opss!! revisa tus datos que falta algo', '')
+			}
+		})
+		.catch(err=>{
+			this.setState({loadingAceptarItem:false})
+			console.log(err)
+		})
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	/////// CIERRO EL ITEM
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	cerrarItem(id, titulo){
 		axios.get(`x/v1/ite/item/id/${id}`)
 		.then(res=>{

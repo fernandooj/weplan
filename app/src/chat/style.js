@@ -1,9 +1,8 @@
-import {StyleSheet, Dimensions, Platform} from 'react-native';
+import {Dimensions, Platform} from 'react-native';
 var screenWidth = Dimensions.get('window').width;
 var screenHeight = Dimensions.get('window').height;
-
 import { MediaQueryStyleSheet } from "react-native-responsive";
-export const style = MediaQueryStyleSheet.create({ 
+export const style = MediaQueryStyleSheet.create({
  	contenedorGeneral:{
  		flex:1,
  		backgroundColor:'#f8f7fc'
@@ -37,7 +36,7 @@ export const style = MediaQueryStyleSheet.create({
 	},
  	////////////////// cabezera
  	cabezera:{
-		flexWrap: 'wrap', 
+		flexWrap: 'wrap',
 		alignItems: 'center',
 		flexDirection:'row',
 		justifyContent: 'space-between',
@@ -50,13 +49,13 @@ export const style = MediaQueryStyleSheet.create({
 		top:0,
 		left:0,
 		width:'100%',
-		zIndex:100 
+		zIndex:100
 	},
 	btnImagenPlan:{
 		position:'absolute',
 		top:15,
 		left:45,
-		zIndex:1100	
+		zIndex:1100
 	},
 	imagen:{
 		borderRadius:35,
@@ -79,7 +78,7 @@ export const style = MediaQueryStyleSheet.create({
 		width:15,
 		height:28,
 	},
-	iconContenedor:{	
+	iconContenedor:{
 		width:60,
 		height:60,
 		bottom:-5,
@@ -94,15 +93,15 @@ export const style = MediaQueryStyleSheet.create({
 	nombrePlan:{
 		color:'#ffffff',
 		fontSize:18,
-		left:0, 
-		width:150,
-		lineHeight: 17
+		left:25,
+		width:180,
+		// lineHeight: 17
 	},
 	nombrePlanIos:{
 		color:'#ffffff',
 		fontSize:18,
-		left:35,
-		top:1, 
+		left:49,
+		top:1,
 		width:180,
 		// lineHeight: 17
 	},
@@ -146,7 +145,7 @@ export const style = MediaQueryStyleSheet.create({
 		backgroundColor:'#ffffff',
 		padding:8,
 		left:5,
-		 
+
 		width:230,
 		borderRadius:35
 	},
@@ -175,17 +174,7 @@ export const style = MediaQueryStyleSheet.create({
 		height:30,
 	},
  	////////////////// footer
-	footer:{
-		position:'absolute',
-		bottom:0,
-		width:screenWidth,
-		backgroundColor:'#EDEDED',
-		paddingTop:10,
-		paddingBottom:10,
-	},
-	showFooter:{
-		bottom:Platform.OS==='android' ?0 :260
-	},
+ 
 	footer1:{
 		alignItems: 'flex-start',
 		flexDirection:'row',
@@ -201,13 +190,13 @@ export const style = MediaQueryStyleSheet.create({
 		borderWidth: 0,
 		marginRight:10,
 		marginLeft:10,
-		backgroundColor: '#ffffff',	
+		backgroundColor: '#ffffff',
 		fontSize:20,
 		borderRadius: 10,
 	},
 	////////////////// box chat /////////////////
 	box:{
-		alignSelf: 'flex-end',  
+		alignSelf: 'flex-end',
 		borderWidth: 0,
 		borderRadius: 10,
 		borderColor: '#ddd',
@@ -221,9 +210,9 @@ export const style = MediaQueryStyleSheet.create({
 		marginRight: 15,
 		marginBottom:10,
 		// width:screenWidth/1.5,	///////// si quiero que quede el chat de un ancho fijo
-		zIndex:0	
+		zIndex:0
 	},
-	boxLeft:{ 
+	boxLeft:{
 		alignSelf: 'flex-start',
 		marginLeft: 15,
 	},
@@ -261,7 +250,7 @@ export const style = MediaQueryStyleSheet.create({
 		color:'#A5a5a5'
 	},
 	btnAvatarC:{
-		alignSelf: 'flex-end', 
+		alignSelf: 'flex-end',
 		position:'relative',
 		top:-20
 	},
@@ -270,11 +259,11 @@ export const style = MediaQueryStyleSheet.create({
 	},
 	photo:{
 		borderWidth:4,
-		borderRadius:22,	
+		borderRadius:22,
 		borderColor:'#9CB7F5',
 	},
 	photoLeft:{
-		 
+
 	},
 	mensaje:{
 		padding: 10,
@@ -283,14 +272,14 @@ export const style = MediaQueryStyleSheet.create({
 		color:'#000000'
 		// shadowOffset: { width: 0, height: 2 },
 	},
-	
+
 
 	////////////////////////////////////////////
 	////////////////// contenedor 2  ==> items
 	////////////////////////////////////////////
  	contenedorItem:{
- 
-		alignSelf: 'flex-end',  
+
+		alignSelf: 'flex-end',
 		borderWidth: 0,
 		borderRadius: 10,
 		borderColor: '#ddd',
@@ -300,19 +289,19 @@ export const style = MediaQueryStyleSheet.create({
 		marginTop: 5,
 		width:screenWidth/1.5,
 		// backgroundColor:'#ffffff',
-		paddingBottom:20,		
+		paddingBottom:20,
  	},
  	contenedorItemLeft:{
-		alignSelf: 'flex-start',  
+		alignSelf: 'flex-start',
  	},
- 
+
 	headerLeft:{
 		alignSelf: 'flex-start',
 		left:18,
-		borderTopRightRadius:10,  
+		borderTopRightRadius:10,
 	},
 	boxItem:{
-		alignSelf: 'flex-end',  
+		alignSelf: 'flex-end',
 		borderWidth: 0,
 		borderRadius: 10,
 		borderColor: '#ddd',
@@ -323,11 +312,11 @@ export const style = MediaQueryStyleSheet.create({
 		shadowRadius: 2,
 		marginLeft: 15,
 		marginRight: 15,
-		width:screenWidth/1.5,		
+		width:screenWidth/1.5,
 	},
 	boxItem2:{
 		backgroundColor:'#ffffff',
-		alignSelf: 'flex-end',  
+		alignSelf: 'flex-end',
 		shadowOffset: { width: 0, height: 2 },
 		shadowOpacity: Platform.OS==='android' ?0.7 :0,
 		shadowRadius: 2,
@@ -336,11 +325,11 @@ export const style = MediaQueryStyleSheet.create({
 		marginRight: 15,
 		marginBottom:10,
 		width:screenWidth/1.5,
-		borderRadius:10		
+		borderRadius:10
 	},
 
 	cBtnAvatarItem:{
-		alignSelf: 'flex-end', 
+		alignSelf: 'flex-end',
 		position:'relative',
 		top:32,
 		zIndex:100,
@@ -349,15 +338,15 @@ export const style = MediaQueryStyleSheet.create({
 	cBtnAvatarItemLeft:{
 		alignSelf: 'flex-start',
 	},
- 
+
 	fotografia:{
 		position:'absolute',
-		top:85, 
+		top:85,
 		right:screenWidth/1.7,
 		zIndex:100,
 		width:80,
 		height:80,
-		borderRadius:40, 
+		borderRadius:40,
 		zIndex:1000,
 		borderColor:'#9CB7F5',
 		borderWidth:3,
@@ -374,12 +363,12 @@ export const style = MediaQueryStyleSheet.create({
 	 	width:'75%',
 		color:'#7a7a7a',
 		fontSize:15,
-		alignSelf: 'flex-end',  
-	}, 
-	nombreItLeft:{ 
+		alignSelf: 'flex-end',
+	},
+	nombreItLeft:{
 		position:'relative',
- 		left:30 															
-	}, 
+ 		left:30
+	},
 	titulo:{
 		color:'#4A4A4A',
 		fontSize:25,
@@ -448,8 +437,8 @@ export const style = MediaQueryStyleSheet.create({
 		borderRadius:10,
 		borderColor:'#5664ba',
 		position:'relative',
-		padding:7, 
-		paddingLeft:14, 
+		padding:7,
+		paddingLeft:14,
 		height:30,
 		top:10,
 		left:-14,
@@ -460,7 +449,7 @@ export const style = MediaQueryStyleSheet.create({
 	////////////////// contenedor 3  ==> items
 	////////////////////////////////////////////
 	contenedorEncuesta:{
-		alignSelf: 'flex-end',  
+		alignSelf: 'flex-end',
 		borderWidth: 0,
 		borderRadius: 10,
 		borderColor: '#ddd',
@@ -469,10 +458,10 @@ export const style = MediaQueryStyleSheet.create({
 		marginLeft: 25,
 		marginRight: 15,
 		marginTop: 5,
-		width:screenWidth/1.5,	
+		width:screenWidth/1.5,
 	},
 	contenedorEncuestaLeft:{
-		alignSelf: 'flex-start',  
+		alignSelf: 'flex-start',
 	},
 	pNombre:{
 		backgroundColor:'rgba(196, 196, 196, 0.3)',
@@ -492,7 +481,7 @@ export const style = MediaQueryStyleSheet.create({
 		paddingLeft:10,
 		paddingRight:10,
 		paddingTop:15,
- 
+
 	},
 	contenedorTitulos:{
 		borderColor:'#c4c4c4',
@@ -510,7 +499,7 @@ export const style = MediaQueryStyleSheet.create({
 		height:35
 	},
 
-	
+
 	imagenPregunta:{
 		width:100,
 		height:100,
@@ -532,9 +521,9 @@ export const style = MediaQueryStyleSheet.create({
        	// opacity: 0.4,    estos dos codigitos dan la opcion de insertar el porcentaje dentro de la imagen
        	// position:'absolute',
        	opacity: 0.8,
- 
+
        	borderColor:'#9CB7F5',
-		borderWidth:3,	
+		borderWidth:3,
 	},
 	contenedorRespuesta:{
 		flexDirection: 'column',
@@ -548,7 +537,7 @@ export const style = MediaQueryStyleSheet.create({
 		borderRadius:20,
 		zIndex:1000,
 		borderColor:'#9CB7F5',
-		borderWidth:3,	
+		borderWidth:3,
 		flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
@@ -565,8 +554,8 @@ export const style = MediaQueryStyleSheet.create({
 
 	},
 	pPhoto:{
-		alignSelf: 'flex-end', 
-		borderRadius:35,	
+		alignSelf: 'flex-end',
+		borderRadius:35,
 		borderColor:'#9CB7F5',
 		borderWidth:5,
 		position:'relative',
@@ -580,18 +569,18 @@ export const style = MediaQueryStyleSheet.create({
 	mensajeCChat:{
 		backgroundColor:'#afc4f0',
 		borderTopLeftRadius:10,
-		borderTopRightRadius:10, 
+		borderTopRightRadius:10,
 		width:screenWidth-100
 	},
 	cPhotoContainer:{
 		position:'absolute',
-		left:'22%', 
+		left:'22%',
 		top:60,
 		zIndex:100
 	},
 	cPhoto:{
 		borderWidth:4,
-		borderRadius:30,	
+		borderRadius:30,
 		borderColor:'#9CB7F5',
 	},
 	cPhotoLeft:{
@@ -628,7 +617,7 @@ export const style = MediaQueryStyleSheet.create({
 		color:'#636363',
 		padding:7
 	},
-	
+
 	botonesContacto:{
 		flexDirection : 'row',
 		justifyContent: 'space-between',
@@ -645,7 +634,7 @@ export const style = MediaQueryStyleSheet.create({
 		zIndex:100
 	},
 	cBtnAvatarC:{
-		alignSelf: 'flex-end', 
+		alignSelf: 'flex-end',
 		position:'relative',
 		top:30,
 		zIndex:100
@@ -654,7 +643,7 @@ export const style = MediaQueryStyleSheet.create({
 		alignSelf: 'flex-start',
 	},
 	cNombreTipoChat:{
-		alignSelf: 'flex-end', 
+		alignSelf: 'flex-end',
 		color:'#A8A8A8',
 		fontSize:15,
 		padding:5,
@@ -662,7 +651,7 @@ export const style = MediaQueryStyleSheet.create({
 		marginRight:20
 	},
 	cNombreTipoChatLeft:{
-		alignSelf: 'flex-start', 
+		alignSelf: 'flex-start',
 		marginLeft:25
 	},
 	/////////// btn hecho /////////////
@@ -704,17 +693,20 @@ export const style = MediaQueryStyleSheet.create({
 	////////////////////////////////////////////
 	Iphoto:{
 		width:screenWidth-100,
-		height:300,	
+		height:300,
 		borderWidth:4,
-		borderRadius:0,	
+		borderRadius:0,
 		borderColor:'#9CB7F5',
 	},
 },{
 	"@media (max-device-width: 380)": {
 		nombrePlanIos:{
 			fontSize:17,
-			left:55, 
-			// lineHeight: 19
+			left:55,
+		},
+		nombrePlan:{
+			left:38,
+			width:130
 		},
 	}
 },{
@@ -723,7 +715,7 @@ export const style = MediaQueryStyleSheet.create({
 			position:'absolute',
 			top:Platform.OS==='android' ?5 :30,
 			left:Platform.OS==='android' ?30 :40,
-			zIndex:110	
+			zIndex:110
 		},
 		textarea:{
 			width:'60%'
@@ -735,14 +727,8 @@ export const style = MediaQueryStyleSheet.create({
 			width:60,
 			height:60
 		},
-		nombrePlan:{
-			marginLeft:25, 
-			width:130,
-			lineHeight: 17,
-		},
-		iconContenedor:{	
+		iconContenedor:{
 			bottom:-5,
- 
 		},
 		icon:{
 			width:35,
@@ -771,7 +757,7 @@ export const style = MediaQueryStyleSheet.create({
 			width:80,
 			height:80,
 		},
-		 
+
 		contenedorPregunta:{
 			width:80,
 			height:80,
@@ -807,7 +793,7 @@ export const style = MediaQueryStyleSheet.create({
 			width:90,
 			height:50,
 		},
-		
+
 		contenedorPregunta:{
 			width:90,
 			height:55,
@@ -823,9 +809,6 @@ export const style = MediaQueryStyleSheet.create({
 	 	},
 	},
 	"@media (device-height: 812)": {
-		footer:{
-			bottom:Platform.OS==='android' ?0 :20,
-		},
 		fondo:{
 			height:Platform.OS==='android' ?screenHeight-155 :screenHeight-165,
 			marginTop:Platform.OS==='android' ?75 :102,
@@ -840,7 +823,7 @@ export const style = MediaQueryStyleSheet.create({
 	 	contenedorChat2:{
 	 		top:-10,
 	 	},
-		btnImagenPlan:{	
+		btnImagenPlan:{
 			top:Platform.OS==='android' ?15 :31,
 			left:Platform.OS==='android' ?25 :37,
 		},
@@ -850,18 +833,12 @@ export const style = MediaQueryStyleSheet.create({
 		contenedorOpcionesBotonesShow:{
 			bottom:395,
 		},
-		showFooter:{
-			bottom:Platform.OS==='android' ?0 :330
-		},
 	},
 	"@media (min-device-height: 832)": {
 		contenedorChat:{
 	 		top:Platform.OS==='android' ?-300 :-340,
 	 		zIndex :0
 	 	},
-		showFooter:{
-			bottom:Platform.OS==='android' ?0 :340
-		},
 		contenedorOpcionesBotonesShow:{
 			bottom:405,
 		},

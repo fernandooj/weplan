@@ -301,7 +301,11 @@ export const style = MediaQueryStyleSheet.create({
 		color:'#ffffff'
 	},
 	aceptarPendiente:{
-		padding:8,
+		paddingVertical:5,
+		paddingHorizontal:12,
+		backgroundColor:'#79CF40',
+		borderRadius:10,
+		left:35
 	},
 	meInteresa:{
 		width:90,

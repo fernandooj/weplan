@@ -22,6 +22,8 @@ let planServices = require('../services/planServices.js')
 let notificacionService = require('../services/notificacionServices.js');
 let itemServices = require('../services/itemServices.js')
 let pagoServices = require('../services/pagoServices.js')
+let userServices = require('./../services/usersServices.js') 
+const notificacionPush = require('../notificacionPush.js')
 let transporter=null;  
 ///////////////////////////////////////////////////////////////////////////
 /*
@@ -188,20 +190,18 @@ router.get(`/pago/:lat/:lon`, (req,res)=>{
  
 	let lat = req.params.lat!=='undefined' ?req.params.lat :4.597825
 	let lon = req.params.lon!=='undefined' ?req.params.lon :-74.0755723
-	if (!req.session.usuario) {
-		res.json({ status: 'FAIL', mensaje:'sin sesion', planes:[], code:2 });
-	}else{
-		planServices.getByPagoLatLng(lat, lon, (err, planes)=>{
-			if (err) {
-				res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
-			}else{
-				planes = planes.filter(e=>{
-					return (e.dist<e.area)	
-				})
-				res.json({ status: 'SUCCESS', planes, code:1 });	
-			}
-		})
-	}
+	 
+	planServices.getByPagoLatLng(lat, lon, (err, planes)=>{
+		if (err) {
+			res.json({ status: 'ERROR', message: 'no se pudo cargar los planes', code:0 });
+		}else{
+			planes = planes.filter(e=>{
+				return (e.dist<e.area)	
+			})
+			res.json({ status: 'SUCCESS', planes, code:1 });	
+		}
+	})
+	 
 })
 
 
@@ -338,15 +338,26 @@ router.post('/', function(req, res){
 								console.log(notificacion)
 							})
 						})
-					res.json({status:'SUCCESS', message: plan, code:1})  
-				}else{
-					res.json({ status: 'SUCCESS', message: plan, code:1 });	
+						res.json({ status: 'SUCCESS', message: plan, code:1 });	
+					}else{ 
+						req.body.tipo=="pago" ?envioNotificacion(res, plan, `Nuevo plan: ${req.body.titulo}`, req.body.descripcion) :res.json({ status: 'SUCCESS', message: plan, code:1 });	
 				}
 			}
 		})	
     }
 })
 
+const envioNotificacion=(res, plan,  titulo, mensaje)=>{
+	userServices.getAll((err, user)=>{
+		if(!err){
+			 
+			user.map(e=>{
+				notificacionPush(e.tokenPhone, titulo, mensaje)
+			})
+			res.json({status:'SUCCESS', message: plan, code:1})  
+		}
+	})
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////// MODIFICO LAS IMAGENES SI SE ENVIAN DESDE LA WEB / ACEPTAN VARIAS IMAGENES

@@ -171,8 +171,7 @@ export default class infoPlanComponent extends Component{
 	this.state.notificaciones.map(e=>{
 		notifica.push(e._id)
 	})
-	console.log("notifica")
-	console.log(this.state.img1)
+ 
 	let notificacionActiva = this.state.notificaciones.includes(id)
 	let menus = [
 		{funcion:()=>this.silenciar(id), texto:'Silenciar Plan', show: notificacionActiva ?true :false },
@@ -181,7 +180,7 @@ export default class infoPlanComponent extends Component{
 		{funcion:()=>finalizar(data._id, navigate, data), texto:'Finalizar Plan', show: id==data.idUsuario._id ?true :false }
 	]
 	const {nombre, descripcion, fechaLugar, lat, lng, direccion, mapa, loc, lugar, restricciones, restriccion, asignados, adjuntarAmigos, exitoso, img1, imagen} = this.state
- 
+	console.log(asignados)
 	return (
 		<ScrollView  style={style.contenedorGeneral}>
 			{/* si la ubicacion no tiene */}
@@ -399,10 +398,12 @@ export default class infoPlanComponent extends Component{
 				    		?<AgregarAmigosComponent 
 				    			noEdita={permiteEditar?false:true}
 				                titulo='Asignar Amigos'
-				                close={(e)=>this.setState({asignados:[], usuariosAsignados:[], adjuntarAmigos:false})} 
+				                close={(e)=>this.setState({adjuntarAmigos:false})} 
 				                updateStateAsignados={(asignados, usuariosAsignados)=>{this.setState({asignados, usuariosAsignados, adjuntarAmigos:false}); asignados!=this.state.asignados &&this.setState({guardado:true})}}
-				                asignados={this.state.asignados}
-							    usuariosAsignados={this.state.usuariosAsignados}
+								asignados={this.state.asignados}
+								// crearArticulo={asignadosPlan}
+								usuariosAsignados={this.state.usuariosAsignados}
+								agregarTemporales
 				            /> 
 				            :null 
 				        } 

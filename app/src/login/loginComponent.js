@@ -170,13 +170,13 @@ export default class LoginComponent extends Component{
 				<ScrollView keyboardDismissMode='on-drag' style={style.container}>
 				 
 				<ImageBackground style={style.fondoLogin}  source={num===0 ?require('../../splash0.jpg') :num===1 ?require('../../splash1.jpg') :num===2 ?require('../../splash2.jpg') :num===3 ?require('../../splash3.jpg') :num===4 &&require('../../splash4.jpg')} >
-					<View>
+					<TouchableOpacity onPress={()=>navigate("Home")}>
 						<Image
 							style={style.imageLogin}
 							width={140} // height will be calculated automatically
 							source={require('../assets/images/logo.png')}
 					   />
-					</View>
+					</TouchableOpacity>
 					<TextInput
 				        style={[style.input, style.familia]}
 				        onChangeText={(username) => this.setState({username})}

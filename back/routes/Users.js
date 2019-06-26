@@ -9,6 +9,7 @@ let client = null;
 
 let moment   = require('moment');
 let fecha = moment().format('YYYY-MM-DD-h-mm')
+const notificacionPush = require('../notificacionPush.js')
 let itemServices = require('../services/itemServices.js')
 let planServices = require('../services/planServices.js')
 let pagoPublicoServices = require('../services/pagoPublicoServices.js')
@@ -113,6 +114,15 @@ module.exports = function(app, passport){
         })
     })
 
+    app.post('/x/v1/user/usuariosTemporales', (req, res)=>{
+        userServices.creaUsuarioTemporal(req.body, (err, user)=>{
+            if(err){
+                res.json({ estatus: 'FAIL', err:err })
+            }else{
+                res.json({ estatus: 'SUCCESS', user }) 
+            }
+        })  
+    })
 
     app.post('/x/v1/user/resend_token', function(req, res){
         if(req.body.tipo==1){
@@ -763,6 +773,34 @@ module.exports = function(app, passport){
     })  
     app.get('/x/v1/currentversion/ios', (req, res)=>{
         res.json({version:"1.0.5", mensaje:"Trabajamos siempre pensando en mejorar tu experiencia, ¡actualiza tu aplicación para seguir disfrutando de tus mejores planes!"})
+    }) 
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////    envia notificacion por email
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    app.post('/x/v1/user/envioNotificacion/', (req, res)=>{
+        userServices.getEmail(req.body, (err, user)=>{
+            if(!err){
+                console.log(user)
+                notificacionPush(user.tokenPhone, req.body.titulo, req.body.mensaje)
+                res.json({ status: 'SUCCESS', message: 'mensaje enviado', code:1 });
+            }
+        })
+    }) 
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////    envia notificacion a todos los usuarios
+    ///////////////////////////////////////////////////////////////////////////////////////////////
+    app.post('/x/v1/user/envioNotificacion/todos', (req, res)=>{
+        userServices.getAll((err, user)=>{
+            if(!err){
+                console.log(user)
+                user.map(e=>{
+                    notificacionPush(e.tokenPhone, req.body.titulo, req.body.mensaje)
+                })
+                res.json({ status: 'SUCCESS', message: 'mensaje enviado', code:1 });
+            }
+        })
     }) 
 
     // =====================================

@@ -103,7 +103,8 @@ router.get('/:user', (req, res)=>{
 								deuda2:nuevaDeuda2,
 								deuda3:costoCreador,
 								deuda3:e.deuda,
-		 						abierto:data.abierto,
+								abierto:data.abierto,
+								creado:data.createdAt,
 							}
 						})
 
@@ -136,7 +137,7 @@ router.get('/:user', (req, res)=>{
 						let total = sumPago + sumDeuda;
 
 						
-						res.json({ status: 'SUCCESS', pago, deuda, deudaTotal:deuda.length, pagoTotal:pago.length, total, code:1 });	
+						res.json({ status: 'SUCCESS', pago, deuda, deudaTotal:deuda.length, pagoTotal:pago.length, total, idUsuario:req.session.usuario.user._id, code:1 });	
 					}
 				})								
 			}
@@ -181,6 +182,11 @@ router.get('/pendientes/:planId', (req, res)=>{
 						nombre:e.userId.nombre,
 						token:e.userId.tokenPhone,
 						imagen:e.imagenResize,
+						espera:e.espera,
+						idUsuarioSesion: req.session.usuario.user._id, 
+						userId: e.userId,
+						asignadosDueno:e.asignadosDueno,
+						duenoAsigno: isInArray(e.asignadosDueno, req.session.usuario.user._id),
 						deuda:Math.ceil((e.valor/(e.asignados.length+2))/100)*100
 					}
 				})
@@ -262,6 +268,8 @@ router.get('/publicados/:planId', (req, res)=>{
 					nombre:e.userId.nombre,
 					token:e.userId.tokenPhone,
 					imagen:e.imagenResize,
+					espera:e.espera,
+					idUsuarioSesion: req.session.usuario.user._id, 
 					deuda:Math.ceil((e.valor/(e.asignados.length+2))/100)*100
 				}
 			})
@@ -343,11 +351,9 @@ router.post('/:id', (req,res)=>{
 		resizeImagenes(rutaImagenOriginal, randonNumber, extension)
 
 	}else{
- 
 		rutaImagenOriginal  = req.protocol+'://'+req.get('Host') + '/public/images/plan.jpg'
 		rutaImagenResize    = req.protocol+'://'+req.get('Host') + '/public/images/plan.jpg'
 		rutaImagenMiniatura = req.protocol+'://'+req.get('Host') + '/public/images/plan.jpg'
-
 	}
 
 	itemServices.uploadImage(req.params.id, rutaImagenOriginal, rutaImagenResize, rutaImagenMiniatura, (err, item)=>{
@@ -368,17 +374,25 @@ router.post('/:id', (req,res)=>{
 //////////////////////////////////////////////////////////////////////////////////////////
 ////////   CREO UN PRIMER PAGO, O DEUDA 
 //////////////////////////////////////////////////////////////////////////////////////////
-let createPago = function(req, res, id, item){	
-	console.log("req.valor") 
-	console.log(req.valor) 
+let createPago = (req, res, id, item)=>{	
 	let data = {userId:id, itemId:item._id, monto:req.valor, planId:req.planId, abono:true, metodo:null, descripcion:'pago inicial por inscribirse', activo:false} 
 	pagoServices.create(data, null, id, false, (err, pago)=>{
 		if(err){
 			console.log(err)
 		}else{		
-			res.json({ status: 'SUCCESS', item, code:1 });				
+			console.log(id)
+			req.temporales.length>0 ?createPagoTemporal(req, res, id, item) :res.json({ status: 'SUCCESS', item, code:1 });				
 		}
 	})
+}
+const createPagoTemporal=(req, res, id, item)=>{
+	let data = {itemId:item._id, monto:req.deudaAsignados, planId:req.planId, abono:true, metodo:null, descripcion:'pago usuario temporal'} 
+	req.temporales.map(e=>{
+		pagoServices.create(data, e._id, id, true, (err, pago)=>{
+			console.log(pago)
+		})
+	})
+	res.json({status:'SUCCESS', item, code:1}) 
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

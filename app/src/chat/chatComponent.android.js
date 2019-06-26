@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
-import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground, Alert, Keyboard, Modal, Dimensions, BackHandler, Platform, ActivityIndicator, AsyncStorage} from 'react-native'
+import {View, Text, TextInput, ScrollView, TouchableOpacity, Image, ImageBackground, Alert, Keyboard, Modal, Dimensions, BackHandler, Platform, ActivityIndicator, AsyncStorage, KeyboardAvoidingView} from 'react-native'
 import axios from 'axios'
 import SocketIOClient from 'socket.io-client';
 import {sendRemoteNotification} from '../push/envioNotificacion.js'
-import {style} from '../chat/style'
+import {style} from './style'
 import update from 'react-addons-update';
 import moment from 'moment'
 import QRCodeScanner from 'react-native-qrcode-scanner';
@@ -12,6 +12,7 @@ import KeyboardListener from 'react-native-keyboard-listener';
 import Toast from 'react-native-simple-toast';
 import { showLocation, Popup } from 'react-native-map-link'
 import firebase from 'react-native-firebase';
+import ImageEscalable from 'react-native-scalable-image';
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////  ARCHIVOS GENERADOS POR EL EQUIPO  //////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -27,6 +28,7 @@ import {URL, VERSION}  from '../../App.js';
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////// 
 const heightScreen = Dimensions.get('window').height
+const widthScreen  = Dimensions.get('window').width
 
 export default class ChatComponent extends Component{
 	constructor(props){
@@ -94,7 +96,7 @@ export default class ChatComponent extends Component{
 		/////////////////	OBTENGO TODOS LOS MENSAJES Y EL PLAN
 		axios.get(`/x/v1/cha/chat/chatPlan/${planId}/${10}`)
 		.then(e=>{
- 			console.log(e.data.plan.notificaciones)
+ 			console.log(e.data)
 			this.setState({mensajes:e.data.chat, planId, scrollState:1, limite:10, imagen: e.data.plan.imagenResize[0], nombrePlan: e.data.plan.nombre, planId, planAsignados:e.data.planAsignados, notificaciones:e.data.plan.notificaciones, plan:e.data.plan})
 		})
 		.catch(err=>{
@@ -163,30 +165,23 @@ export default class ChatComponent extends Component{
 		const {planId, imagen, nombrePlan, plan, id, notificaciones} = this.state
 		const {navigate} = this.props.navigation
 		return(
-			<View>
-				<View style={style.cabezera}>
-					<TouchableOpacity onPress={() => navigate('misPlanes')} style={style.iconRegresar}>
-						<Image source={require('../assets/images/item3.png')} style={style.imgRegresar}  />
-						 
-					</TouchableOpacity> 
-					<TouchableOpacity onPress={() => navigate('infoPlan', {plan,id})}>
-						<Text style={[style.nombrePlan, style.familia]}>{nombrePlan ?nombrePlan.substring(0, 50) :''}</Text>
+			<View style={style.cabezera}>
+				<TouchableOpacity onPress={() => navigate('misPlanes')} style={style.iconRegresar}>
+					<Image source={require('../assets/images/item3.png')} style={style.imgRegresar}  />
+				</TouchableOpacity> 
+				<TouchableOpacity onPress={() => navigate('infoPlan', {plan,id})}>
+					<Text style={[style.nombrePlan, style.familia]}>{nombrePlan ?nombrePlan.substring(0, 50) :''}</Text>
+				</TouchableOpacity>
+				<View style={style.iconosHeaderContenedor}>
+					<TouchableOpacity onPress={() => navigate('encuesta', {planId, notificaciones, id, nombrePlan, imagen})}  style={style.iconContenedor}>
+						<Image source={require('../assets/images/preguntar.png')} style={style.icon}  />
 					</TouchableOpacity>
-					<View style={style.iconosHeaderContenedor}>
-						<TouchableOpacity onPress={() => navigate('encuesta', {planId, notificaciones, id, nombrePlan, imagen})}  style={style.iconContenedor}>
-							<Image source={require('../assets/images/preguntar.png')} style={style.icon}  />
-						</TouchableOpacity>
-						<TouchableOpacity onPress={() => navigate('item', {planId})} style={style.iconContenedor}>
-							<Image source={require('../assets/images/cuentas.png')} style={style.icon}  />
-						</TouchableOpacity>
-					</View>
+					<TouchableOpacity onPress={() => navigate('item', {planId, notificaciones, id, nombrePlan, imagen, asignados:plan.asignados})} style={style.iconContenedor}>
+						<Image source={require('../assets/images/cuentas.png')} style={style.icon}  />
+					</TouchableOpacity>
 				</View>
 				<TouchableOpacity onPress={() => navigate('infoPlan', {plan,id})} style={style.btnImagenPlan}>
-					<Image
-						style={style.imagen}
-						 
-						source={{uri: imagen}}
-				    />	
+					<Image style={style.imagen} source={{uri: imagen}} />	
 				</TouchableOpacity>
 			</View>
 		)
@@ -547,27 +542,26 @@ export default class ChatComponent extends Component{
 							</TouchableOpacity>
 						}
 						<TouchableOpacity style={e.userId== id ?style.box :[style.box, style.boxLeft]}>
-						{	
-							e.userId!==id
-							&&<View style={style.tituloTipoChat}>
-								<Text style={e.userId== id ?[style.cNombreTipoChat, style.familia] :[style.cNombreTipoChat, style.cNombreTipoChatLeft, style.familia]}>{e.nombre}</Text>
-							</View>
-						}	
-						     
+							{	
+								e.userId!==id
+								&&<View style={style.tituloTipoChat}>
+									<Text style={e.userId== id ?[style.cNombreTipoChat, style.familia] :[style.cNombreTipoChat, style.cNombreTipoChatLeft, style.familia]}>{e.nombre}</Text>
+								</View>
+							}	
 							<Lightbox 
-						      renderContent={() => (
-						        <Image 
-						          	source={{ uri: e.documento }}
-						         	style={{ width: "100%", height:600}}
-						         />
-						       )}
-						    >
-							  <Image
-							   	source={{ uri: e.documento }}
-							    style={style.Iphoto}
-							  />
-							 </Lightbox>	
-						<Text style={e.userId== id ?[style.fechaMapa, style.familia] :[style.fechaMapa, style.fechaLeft, style.familia]}>{e.fecha}</Text>
+								renderContent={() => (
+									<ImageEscalable 
+										source={{ uri: e.documento }}
+										width={widthScreen}
+									/>
+								)}
+							>
+								<Image
+								source={{ uri: e.documento }}
+								style={style.Iphoto}
+								/>
+							</Lightbox>	
+							<Text style={e.userId== id ?[style.fechaMapa, style.familia] :[style.fechaMapa, style.fechaLeft, style.familia]}>{e.fecha}</Text>
 						</TouchableOpacity>
 					</View>	
 				)	
@@ -755,7 +749,7 @@ export default class ChatComponent extends Component{
 			{this.renderQr()}
 
 			{/* FOOTER INPUT / ENVIAR */} 
-				<View style={showMainFooter ?[style.footer, style.showFooter] :[style.footer]}>
+				<KeyboardAvoidingView  behavior="position" enabled>
 					<View style={style.footer1}>
 						<TouchableOpacity onPress={()=>this.setState({showOpciones:!this.state.showOpciones})} style={style.opcionesBtn}>
 							<Image source={require('../assets/images/opciones.png')} style={style.opciones}  />
@@ -775,7 +769,7 @@ export default class ChatComponent extends Component{
 							<Image source={require('../assets/images/enviar.png')} style={style.enviar}  />
 						</TouchableOpacity>
 					</View>
-				</View>
+				</KeyboardAvoidingView>
 			</View>	
 		)
 	}
